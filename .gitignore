@@ -1,0 +1,14 @@
+Adrien's/
+*desktop.ini
+.Rproj.user
+*~$*
+*.tmp
+*.RDataTmp
+*.RDataTmp1
+*.dta
+*.RData
+*.RData.bak
+*.Rhistory
+*.RprofileUnused
+*.Rproj.user/
+*.rproj
