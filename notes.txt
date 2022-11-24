@@ -1,0 +1,25 @@
+var featurearray = {"Economic issues" : [More public services, higher minimum wage,"-"],
+vs. reduce deficit, increase retirement age
+
+"Societal issues" : ["Legalize marijuana","-"],
+vs. restrict immigration
+
+"Climate policy" : ["Insulation plan","Ban the sale of new combustion-engine cars by 2030","-"],
+vs. keep current policies; UK: authorise fracking
+
+"Tax system" : ["National redistribution scheme","Wealth tax","-"],
+vs. tax reductions
+
+"Foreign policy" : ["Global climate scheme","Global tax on millionaires","Global democratic assembly on climate change","Doubling foreign aid","-"]};
+
+decrease payroll tax => tax reductions
+permit completion pipeline => repeal low emission zone? 
+withdrawal of Paris agreement => {}? no ban on ICE?
+marriage anti-gay => increase retirement age
+strict enforcement of immigration and border legislation => same?
+
+increase corporate income tax => wealth tax
+coal exit => insulation Plan 
+trillion dollar investment => {}? ban ICE?
+$15 minimum wage => higher minimum wage? more public services?
+national redistribution => same?
