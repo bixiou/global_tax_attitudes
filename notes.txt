@@ -12,10 +12,10 @@ vs. tax reductions
 
 "Foreign policy" : ["Global climate scheme","Global tax on millionaires","Global democratic assembly on climate change","Doubling foreign aid","-"]};
 
-decrease payroll tax => tax reductions
+decrease payroll tax => tax reductions: Die Unternehmenssteuern sollten auf maximal 25 Prozent begrenzt werden
 permit completion pipeline => repeal low emission zone? 
 withdrawal of Paris agreement => {}? no ban on ICE?
-marriage anti-gay => increase retirement age
+marriage anti-gay => increase retirement age (only FR), ban on burqa (only DE)
 strict enforcement of immigration and border legislation => same?
 
 increase corporate income tax => wealth tax
