@@ -11,3 +11,16 @@ inc_quantiles["CH",] <- round(inc_quantiles["CH",]*742.84/727.21) # Now in 2021 
 inc_quantiles # Now in 2021 LCU for each
 50*round(inc_quantiles/12/50) # Per month, rounded
 rm(qinc)
+
+zipcodes <- read.csv("../data/PC_DGURBA_2018.csv") # 19048 GISCO: Geog Info System of the COmmission (NUTS, LAU), 17650 NSI: National Statistical Institute, 28715 postal/outward codes
+zipcodes <- zipcodes[zipcodes$CNTR_ID %in% c("FR", "DE", "ES", "UK"),-c(5,6)]
+decrit("CNTR_ID", zipcodes) # Close to true numbers (ES: 11752, FR: 6328, DE: 8203, UK: 1.7 million) according to Wikipedia or for DE: https://energizedanalytics.com/en/what-you-always-wanted-to-know-about-german-postal-codes/
+uk_zipcodes <- zipcodes[zipcodes$CNTR_ID == "UK",]
+zipcodes_EU <- zipcodes[zipcodes$CNTR_ID != "UK",]
+uk_outward <- uk_zipcodes[,c(2,5)]
+uk_outward$PC_CNTR <- sub("UK_", "", sub(" .*", "", uk_outward$PC_CNTR), fixed = T)
+duplicate.urbanity <- uk_outward %>%  group_by(PC_CNTR) %>%  summarise(dup.urbanity = length(unique(DGURBA_FINAL_2018)))
+# duplicate.urbanity <- zipcodes %>%  group_by(GISCO_ID) %>%  summarise(dup.urbanity = length(unique(DGURBA_FINAL_2018)))
+decrit("dup.urbanity", duplicate.urbanity) # 30% of outcodes with several urbanity :-/ But GISCO_ID have unique urbanity
+length(unique(zipcodes$GISCO_CODE))
+length(unique(zipcodes_EU$PC_CNTR)) + length(unique(uk_outward$PC_CNTR))

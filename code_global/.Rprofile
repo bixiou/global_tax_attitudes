@@ -1,4 +1,5 @@
 library(utils)
+chooseCRANmirror(ind = 1)
 
 # options(download.file.method = "wget"); # For Ubuntu 14.04
 package <- function(p, version = NULL, remove = FALSE, github = '') {
@@ -24,7 +25,7 @@ package <- function(p, version = NULL, remove = FALSE, github = '') {
 } # loads packages with automatical install if needed
 
 package("stringr")
-package("iatgen") # devtools::install_github("iatgen/iatgen")
+# package("iatgen") # devtools::install_github("iatgen/iatgen") TODO
 package("ggplot2")
 
 # package("qualtRics") # https://cran.r-project.org/web/packages/qualtRics/vignettes/qualtRics.html
@@ -39,7 +40,7 @@ package("ggplot2")
 #' chooseCRANmirror(ind = 1)
 #' package("plyr")
 #' package("tm")
-#' package('tidyverse')
+package('tidyverse')
 #' package("xtable")
 #' package("rms")
 #' package('pwr')
@@ -63,7 +64,7 @@ package("ggplot2")
 #' # package("reticulate")
 #' if (!is.element("gdata", installed.packages()[,1])) package("memisc")
 #' package('gdata')
-#' package("Hmisc")
+package("Hmisc")
 #' package("quantreg")
 #' package("rcompanion")
 #' package("DescTools")
@@ -146,13 +147,13 @@ package("ggplot2")
 #' package("descr")
 #' package("knitr")
 #' # One needs a *patched* version of memisc version 0.99.22 (not a newer), hence the code below (cf. this issue: https://github.com/melff/memisc/issues/62)
-#' if (!is.element("memisc", installed.packages()[,1])) {
-#'   install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
-#' } else if (packageVersion("memisc")!="0.99.22") {
-#'   detach("package:memisc", unload = TRUE)
-#'   remove.packages("memisc")
-#'   install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
-#' } else library(memisc)
+if (!is.element("memisc", installed.packages()[,1])) {
+  install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
+} else if (packageVersion("memisc")!="0.99.22") {
+  detach("package:memisc", unload = TRUE)
+  remove.packages("memisc")
+  install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
+} else library(memisc)
 #' # If this doesn't work (runs infinitely). Download the archive and from the Terminal run `R CMD INSTALL memisc_0.99.22.tar.gz  '
 #' # The following will not work: package("memisc", version = "0.99.22") # in case of bug (endless loop), copy/paste folder /memisc in library and: install.packages("memisc", method = "win.binary") OR install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL). If it still doesn't work, run library(utils); install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL) from R (not RStudio)
 #' # package("estimatr")
@@ -189,48 +190,48 @@ package("ggplot2")
 #' n <- function(var) { as.numeric(as.vector(var)) }
 #' NSPs <- function(QID) { length(V(QID)[V(QID) == "NSP (Je ne veux pas répondre)"])/length(V(QID)) }
 #' nsps <- function(id) { length(v(id)[v(id) == "NSP (Je ne veux pas répondre)"])/length(v(id)) }
-#' Label <- function(var) {
-#'   if (length(annotation(var))==1) { annotation(var)[1] }
-#'   else { label(var)  }
-#' }
-#' is.pnr <- function(variable, empty_as_pnr = T) {
-#'   if (empty_as_pnr) {
-#'     if (is.null(annotation(variable))) return(is.na(variable)|variable=="")
-#'     else return(is.missing(variable)|variable=="")
-#'   } else {
-#'     if (is.null(annotation(variable))) return(is.na(variable))
-#'     else return(is.missing(variable))
-#'   }
-#' }
-#' decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights
-#'   # if (!missing(data)) variable <- data[[variable]]
-#'   if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
-#'   if (!missing(which)) variable <- variable[which]
-#'   if (weight) {
-#'     # if (length(variable) > 1) warning("Field 'variable' is a vector instead of a character, weight will not be used.")
-#'     if (missing(weights)) weights <- data[["weight"]]  #  if (missing(data)) warning("Field 'data' is missing, weight will not be used.") else {
-#'     if (!missing(which)) weights <- weights[which]
-#'     if (length(weights)!=length(variable)) {
-#'       warning("Lengths of weight and variable differ, non-weighted results are provided")
-#'       weights <- NULL
-#'     } }
-#'   if (length(annotation(variable))>0 & !numbers) {
-#'     if (!miss) {
-#'       # if (is.element("Oui", levels(as.factor(variable))) | grepl("(char)", annotation(variable)) | is.element("quotient", levels(as.factor(variable)))  | is.element("Pour", levels(as.factor(variable))) | is.element("Plutôt", levels(as.factor(variable))) ) { describe(as.factor(variable[variable!="" & !is.na(variable)]), weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) }
-#'       # else { describe(variable[variable!="" & !is.na(variable)], weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) }
-#'       if (length(which(!is.na(suppressWarnings(as.numeric(levels(as.factor(variable)))))))==0) { describe(as.factor(variable[variable!=""]), weights = weights[variable!=""], descript=Label(variable)) } # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
-#'       else { describe(as.numeric(as.vector(variable[variable!=""])), weights = weights[variable!=""], descript=Label(variable)) } # avant:  & !is.na(variable)
-#'     }
-#'     else {
-#'       if (length(which(suppressWarnings(!is.na(as.numeric(levels(as.factor(variable)))))))>10) describe(include.missings(variable[variable!="" & !is.na(variable)]), weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
-#'       else describe(as.factor(include.missings(variable)[include.missings(variable)!="" & !is.na(variable)]), weights = weights[include.missings(variable)!="" & !is.na(variable)], descript=Label(variable)) }
-#'   }
-#'   else {
-#'     if (length(annotation(variable))>0) {
-#'       if (miss) describe(variable[variable!=""], weights = weights[variable!=""], descript=Label(variable))
-#'       else describe(variable[variable!="" & !is.missing(variable)], weights = weights[variable!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
-#'     } else describe(variable[variable!=""], weights = weights[variable!=""])  }
-#' }
+Label <- function(var) {
+  if (length(annotation(var))==1) { annotation(var)[1] }
+  else { label(var)  }
+}
+is.pnr <- function(variable, empty_as_pnr = T) {
+  if (empty_as_pnr) {
+    if (is.null(annotation(variable))) return(is.na(variable)|variable=="")
+    else return(is.missing(variable)|variable=="")
+  } else {
+    if (is.null(annotation(variable))) return(is.na(variable))
+    else return(is.missing(variable))
+  }
+}
+decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights
+  # if (!missing(data)) variable <- data[[variable]]
+  if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
+  if (!missing(which)) variable <- variable[which]
+  if (weight) {
+    # if (length(variable) > 1) warning("Field 'variable' is a vector instead of a character, weight will not be used.")
+    if (missing(weights)) weights <- data[["weight"]]  #  if (missing(data)) warning("Field 'data' is missing, weight will not be used.") else {
+    if (!missing(which)) weights <- weights[which]
+    if (length(weights)!=length(variable)) {
+      warning("Lengths of weight and variable differ, non-weighted results are provided")
+      weights <- NULL
+    } }
+  if (length(annotation(variable))>0 & !numbers) {
+    if (!miss) {
+      # if (is.element("Oui", levels(as.factor(variable))) | grepl("(char)", annotation(variable)) | is.element("quotient", levels(as.factor(variable)))  | is.element("Pour", levels(as.factor(variable))) | is.element("Plutôt", levels(as.factor(variable))) ) { describe(as.factor(variable[variable!="" & !is.na(variable)]), weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) }
+      # else { describe(variable[variable!="" & !is.na(variable)], weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) }
+      if (length(which(!is.na(suppressWarnings(as.numeric(levels(as.factor(variable)))))))==0) { describe(as.factor(variable[variable!=""]), weights = weights[variable!=""], descript=Label(variable)) } # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
+      else { describe(as.numeric(as.vector(variable[variable!=""])), weights = weights[variable!=""], descript=Label(variable)) } # avant:  & !is.na(variable)
+    }
+    else {
+      if (length(which(suppressWarnings(!is.na(as.numeric(levels(as.factor(variable)))))))>10) describe(include.missings(variable[variable!="" & !is.na(variable)]), weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
+      else describe(as.factor(include.missings(variable)[include.missings(variable)!="" & !is.na(variable)]), weights = weights[include.missings(variable)!="" & !is.na(variable)], descript=Label(variable)) }
+  }
+  else {
+    if (length(annotation(variable))>0) {
+      if (miss) describe(variable[variable!=""], weights = weights[variable!=""], descript=Label(variable))
+      else describe(variable[variable!="" & !is.missing(variable)], weights = weights[variable!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
+    } else describe(variable[variable!=""], weights = weights[variable!=""])  }
+}
 #' Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TRUE, concatenate = FALSE) {
 #'   if (values) {
 #'     if (length(variable)==1 & is.character(variable)) variable <- data[[variable]]
