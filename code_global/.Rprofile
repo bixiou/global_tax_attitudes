@@ -41,6 +41,9 @@ package("ggplot2")
 #' package("plyr")
 #' package("tm")
 package('tidyverse')
+package("dplyr")
+package("tidyr")
+package("expss") # fre (for weighted frequency table)
 #' package("xtable")
 #' package("rms")
 #' package('pwr')
@@ -65,6 +68,7 @@ package('tidyverse')
 #' if (!is.element("gdata", installed.packages()[,1])) package("memisc")
 #' package('gdata')
 package("Hmisc")
+package("descr") # CrossTable
 #' package("quantreg")
 #' package("rcompanion")
 #' package("DescTools")
@@ -82,7 +86,6 @@ package("Hmisc")
 #' # package("rddtools") # not available
 #' # package("rddapp") # not available
 #' package("mets")
-#' package("descr")
 #' package("stargazer") # To fix the bug with is.na() on R 4.2, run https://gist.github.com/alexeyknorre/b0780836f4cec04d41a863a683f91b53
 #' package("clipr")
 #' package("ergm") # wtd.median
@@ -121,7 +124,6 @@ package("Hmisc")
 #' package("rpart")
 #' package("readr")
 #' package("caTools")
-#' package("dplyr")
 #' package("party")
 #' package("partykit")
 #' package("rpart.plot")
@@ -1265,513 +1267,513 @@ decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FA
 #'   return(paste(res[paste('ci.lower')], res[paste('ci.median')], res[paste('ci.upper')], length(which(!is.na(vec) & vec!=-1)))) }
 #' 
 #' # from http://pcwww.liv.ac.uk/~william/R/crosstab.r http://rstudio-pubs-static.s3.amazonaws.com/6975_c4943349b6174f448104a5513fed59a9.html
-#' Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.vars = NULL, col.vars = NULL, percentages = TRUE,  addmargins = TRUE, subtotals=TRUE) {
-#'   #Declare function used to convert frequency counts into relevant type of proportion or percentage
-#'   mk.pcnt.tbl <- function(tbl, type) {
-#'     a <- length(row.vars)
-#'     b <- length(col.vars)
-#'     mrgn <- switch(type, column.pct = c(row.vars[-a], col.vars),
-#'                    row.pct = c(row.vars, col.vars[-b]),
-#'                    joint.pct = c(row.vars[-a], col.vars[-b]),
-#'                    total.pct = NULL)
-#'     tbl <- prop.table(tbl, mrgn)
-#'     if (percentages) {
-#'       tbl <- tbl * 100
-#'     }
-#'     tbl
-#'   }
-#'   
-#'   #Find no. of vars (all; row; col) for use in subsequent code
-#'   n.row.vars <- length(row.vars)
-#'   n.col.vars <- length(col.vars)
-#'   n.vars <- n.row.vars + n.col.vars
-#'   
-#'   
-#'   #Check to make sure all user-supplied arguments have valid values
-#'   stopifnot(as.integer(dec.places) == dec.places, dec.places > -1)
-#'   #type: see next section of code
-#'   stopifnot(is.character(style))
-#'   stopifnot(is.logical(percentages))
-#'   stopifnot(is.logical(addmargins))
-#'   stopifnot(is.logical(subtotals))
-#'   stopifnot(n.vars>=1)
-#'   
-#'   #Convert supplied table type(s) into full text string (e.g. "f" becomes "frequency")
-#'   #If invalid type supplied, failed match gives user automatic error message
-#'   types <- NULL
-#'   choices <- c("frequency", "row.pct", "column.pct", "joint.pct", "total.pct")
-#'   for (tp in type) types <- c(types, match.arg(tp, choices))
-#'   type <- types
-#'   
-#'   #If no type supplied, default to 'frequency + total' for univariate tables and to
-#'   #'frequency' for multi-dimenstional tables
-#'   
-#'   #For univariate table....
-#'   if (n.vars == 1) {
-#'     if (is.null(type)) {
-#'       # default = freq count + total.pct
-#'       type <- c("frequency", "total.pct")
-#'       #row.vars <- 1
-#'     } else {
-#'       #and any requests for row / col / joint.pct must be changed into requests for 'total.pct'
-#'       type <- ifelse(type == "frequency", "frequency", "total.pct")
-#'     }
-#'     #For multivariate tables...
-#'   } else if (is.null(type)) {
-#'     # default = frequency count
-#'     type <- "frequency"
-#'   }
-#'   
-#'   
-#'   
-#'   #Check for integrity of requested analysis and adjust values of function arguments as required
-#'   
-#'   if ((addmargins==FALSE) & (subtotals==FALSE)) {
-#'     warning("WARNING: Request to suppress subtotals (subtotals=FALSE) ignored because no margins requested (addmargins=FALSE)")
-#'     subtotals <- TRUE
-#'   }
-#'   
-#'   if ((n.vars>1) & (length(type)>1) & (addmargins==TRUE)) {
-#'     warning("WARNING: Only row totals added when more than one table type requested")
-#'     #Code lower down selecting type of margin implements this...
-#'   }
-#'   
-#'   if ((length(type)>1) & (subtotals==FALSE)) {
-#'     warning("WARNING: Can only request supply one table type if requesting suppression of subtotals; suppression of subtotals not executed")
-#'     subtotals <- TRUE
-#'   }
-#'   
-#'   if ((length(type)==1) & (subtotals==FALSE)) {
-#'     choices <- c("frequency", "row.pct", "column.pct", "joint.pct", "total.pct")
-#'     tp <- match.arg(type, choices)
-#'     if (tp %in% c("row.pct","column.pct","joint.pct")) {
-#'       warning("WARNING: subtotals can only be suppressed for tables of type 'frequency' or 'total.pct'")
-#'       subtotals<- TRUE
-#'     }
-#'   }
-#'   
-#'   if ((n.vars > 2) & (n.col.vars>1) & (subtotals==FALSE))
-#'     warning("WARNING: suppression of subtotals assumes only 1 col var; table flattened accordingly")
-#'   
-#'   
-#'   if ( (subtotals==FALSE) & (n.vars>2) )  {
-#'     #If subtotals not required AND total table vars > 2
-#'     #Reassign all but last col.var as row vars
-#'     #[because, for simplicity, Crosstabs assumes removal of subtotals uses tables with only ONE col var]
-#'     #N.B. Subtotals only present in tables with > 2 cross-classified vars...
-#'     if (length(col.vars)>1) {
-#'       row.vars <- c(row.vars,col.vars[-length(col.vars)])
-#'       col.vars <- col.vars[length(col.vars)]
-#'       n.row.vars <- length(row.vars)
-#'       n.col.vars <- 1
-#'     }
-#'   }
-#'   
-#'   #If dec.places not set by user, set to 2 unlesss only one table of type frequency requested,
-#'   #in which case set to 0.  [Leaves user with possibility of having frequency tables with > 0 dp]
-#'   if (is.null(dec.places)) {
-#'     if ((length(type)==1) & (type[1]=="frequency")) {
-#'       dec.places <- 0
-#'     } else {
-#'       dec.places <-2
-#'     }
-#'   }
-#'   
-#'   #Take the original input data, whatever form originally supplied in,
-#'   #convert into table format using requested row and col vars, and save as 'tbl'
-#'   
-#'   args <- list(...)
-#'   
-#'   if (length(args) > 1) {
-#'     if (!all(sapply(args, is.factor)))
-#'       stop("If more than one argument is passed then all must be factors")
-#'     tbl <- table(...)
-#'   }
-#'   else {
-#'     if (is.factor(...)) {
-#'       tbl <- table(...)
-#'     }
-#'     else if (is.table(...)) {
-#'       tbl <- eval(...)
-#'     }
-#'     else if (is.data.frame(...)) {
-#'       #tbl <- table(...)
-#'       if (is.null(row.vars) && is.null(col.vars)) {
-#'         tbl <- table(...)
-#'       }
-#'       else {
-#'         var.names <- c(row.vars,col.vars)
-#'         A <- (...)
-#'         tbl <- table(A[var.names])
-#'         if(length(var.names==1)) names(dimnames(tbl)) <- var.names
-#'         #[table() only autocompletes dimnames for multivariate Crosstabs of dataframes]
-#'       }
-#'     }
-#'     else if (class(...) == "ftable") {
-#'       tbl <- eval(...)
-#'       if (is.null(row.vars) && is.null(col.vars)) {
-#'         row.vars <- names(attr(tbl, "row.vars"))
-#'         col.vars <- names(attr(tbl, "col.vars"))
-#'       }
-#'       tbl <- as.table(tbl)
-#'     }
-#'     else if (class(...) == "ctab") {
-#'       tbl <- eval(...)
-#'       if (is.null(row.vars) && is.null(col.vars)) {
-#'         row.vars <- tbl$row.vars
-#'         col.vars <- tbl$col.vars
-#'       }
-#'       for (opt in c("dec.places", "type", "style", "percentages",
-#'                     "addmargins", "subtotals")) if (is.null(get(opt)))
-#'                       assign(opt, eval(parse(text = paste("tbl$", opt,
-#'                                                           sep = ""))))
-#'       tbl <- tbl$table
-#'     }
-#'     else {
-#'       stop("first argument must be either factors or a table object")
-#'     }
-#'   }
-#'   
-#'   #Convert supplied table style into full text string (e.g. "l" becomes "long")
-#'   style <- match.arg(style, c("long", "wide"))
-#'   
-#'   #Extract row and col names to be used in creating 'tbl' from supplied input data
-#'   nms <- names(dimnames(tbl))
-#'   z <- length(nms)
-#'   if (!is.null(row.vars) && !is.numeric(row.vars)) {
-#'     row.vars <- order(match(nms, row.vars), na.last = NA)
-#'   }
-#'   if (!is.null(col.vars) && !is.numeric(col.vars)) {
-#'     col.vars <- order(match(nms, col.vars), na.last = NA)
-#'   }
-#'   if (!is.null(row.vars) && is.null(col.vars)) {
-#'     col.vars <- (1:z)[-row.vars]
-#'   }
-#'   if (!is.null(col.vars) && is.null(row.vars)) {
-#'     row.vars <- (1:z)[-col.vars]
-#'   }
-#'   if (is.null(row.vars) && is.null(col.vars)) {
-#'     col.vars <- z
-#'     row.vars <- (1:z)[-col.vars]
-#'   }
-#'   
-#'   #Take the original input data, converted into table format using supplied row and col vars (tbl)
-#'   #and create a second version (Crosstab) which stores results as percentages if a percentage table type is requested.
-#'   if (type[1] == "frequency")
-#'     Crosstab <- tbl
-#'   else
-#'     Crosstab <- mk.pcnt.tbl(tbl, type[1])
-#'   
-#'   
-#'   #If multiple table types requested, create and add these to
-#'   if (length(type) > 1) {
-#'     tbldat <- as.data.frame.table(Crosstab)
-#'     z <- length(names(tbldat)) + 1
-#'     tbldat[z] <- 1
-#'     pcntlab <- type
-#'     pcntlab[match("frequency", type)] <- "Count"
-#'     pcntlab[match("row.pct", type)] <- "Row %"
-#'     pcntlab[match("column.pct", type)] <- "Column %"
-#'     pcntlab[match("joint.pct", type)] <- "Joint %"
-#'     pcntlab[match("total.pct", type)] <- "Total %"
-#'     for (i in 2:length(type)) {
-#'       if (type[i] == "frequency")
-#'         Crosstab <- tbl
-#'       else Crosstab <- mk.pcnt.tbl(tbl, type[i])
-#'       Crosstab <- as.data.frame.table(Crosstab)
-#'       Crosstab[z] <- i
-#'       tbldat <- rbind(tbldat, Crosstab)
-#'     }
-#'     tbldat[[z]] <- as.factor(tbldat[[z]])
-#'     levels(tbldat[[z]]) <- pcntlab
-#'     Crosstab <- xtabs(Freq ~ ., data = tbldat)
-#'     names(dimnames(Crosstab))[z - 1] <- ""
-#'   }
-#'   
-#'   
-#'   #Add margins if required, adding only those margins appropriate to user request
-#'   if (addmargins==TRUE) {
-#'     
-#'     vars <- c(row.vars,col.vars)
-#'     
-#'     if (length(type)==1) {
-#'       if (type=="row.pct")
-#'       { Crosstab <- addmargins(Crosstab,margin=c(vars[n.vars]))
-#'       tbl <- addmargins(tbl,margin=c(vars[n.vars]))
-#'       }
-#'       else
-#'       { if (type=="column.pct")
-#'       { Crosstab <- addmargins(Crosstab,margin=c(vars[n.row.vars]))
-#'       tbl <- addmargins(tbl,margin=c(vars[n.row.vars]))
-#'       }
-#'         else
-#'         { if (type=="joint.pct")
-#'         { Crosstab <- addmargins(Crosstab,margin=c(vars[(n.row.vars)],vars[n.vars]))
-#'         tbl <- addmargins(tbl,margin=c(vars[(n.row.vars)],vars[n.vars]))
-#'         }
-#'           else #must be total.pct OR frequency
-#'           { Crosstab <- addmargins(Crosstab)
-#'           tbl <- addmargins(tbl)
-#'           }
-#'         }
-#'       }
-#'     }
-#'     
-#'     #If more than one table type requested, only adding row totals makes any sense...
-#'     if (length(type)>1) {
-#'       Crosstab <- addmargins(Crosstab,margin=c(vars[n.vars]))
-#'       tbl <- addmargins(tbl,margin=c(vars[n.vars]))
-#'     }
-#'     
-#'   }
-#'   
-#'   
-#'   #If subtotals not required, and total vars > 2, create dataframe version of table, with relevent
-#'   #subtotal rows / cols dropped [Subtotals only present in tables with > 2 cross-classified vars]
-#'   t1 <- NULL
-#'   if ( (subtotals==FALSE) & (n.vars>2) )  {
-#'     
-#'     #Create version of Crosstab in ftable format
-#'     t1 <- Crosstab
-#'     t1 <- ftable(t1,row.vars=row.vars,col.vars=col.vars)
-#'     
-#'     #Convert to a dataframe
-#'     t1 <- as.data.frame(format(t1),stringsAsFactors=FALSE)
-#'     
-#'     #Remove backslashes from category names AND colnames
-#'     t1 <- apply(t1[,],2, function(x) gsub("\"","",x))
-#'     #Remove preceding and trailing spaces from category names to enable accurate capture of 'sum' rows/cols
-#'     #[Use of grep might extrac category labels with 'sum' as part of a longer one or two word string...]
-#'     t1 <- apply(t1,2,function(x) gsub("[[:space:]]*$","",gsub("^[[:space:]]*","",x)))
-#'     
-#'     #Reshape dataframe to that variable and category labels display as required
-#'     #(a) Move col category names down one row; and move col variable name one column to right
-#'     t1[2,(n.row.vars+1):ncol(t1)] <- t1[1,(n.row.vars+1):ncol(t1)]
-#'     t1[1,] <- ""
-#'     t1[1,(n.row.vars+2)] <- t1[2,(n.row.vars+1)]
-#'     #(b) Drop the now redundant column separating the row.var labels from the table data + col.var labels
-#'     t1 <- t1[,-(n.row.vars+1)]
-#'     
-#'     #In 'lab', assign category labels for each variable to all rows (to allow identification of sub-totals)
-#'     lab <- t1[,1:n.row.vars]
-#'     for (c in 1:n.row.vars) {
-#'       for (r in 2:nrow(lab)) {
-#'         if (lab[r,c]=="") lab[r,c] <- lab[r-1,c]
-#'       }
-#'     }
-#'     
-#'     lab <- (apply(lab[,1:n.row.vars],2,function(x) x=="Sum"))
-#'     lab <- apply(lab,1,sum)
-#'     #Filter out rows of dataframe containing subtotals
-#'     
-#'     t1 <- t1[((lab==0) | (lab==n.row.vars)),]
-#'     
-#'     #Move the 'Sum' label associated with last row to the first column; in the process
-#'     #setting the final row labels associated with other row variables to ""
-#'     t1[nrow(t1),1] <- "Sum"
-#'     t1[nrow(t1),(2:n.row.vars)] <- ""
-#'     
-#'     #set row and column names to NULL
-#'     rownames(t1) <- NULL
-#'     colnames(t1) <- NULL
-#'     
-#'   }
-#'   
-#'   
-#'   
-#'   #Create output object 'result' [class: Crosstab]
-#'   result <- NULL
-#'   #(a) record of argument values used to produce tabular output
-#'   result$row.vars <- row.vars
-#'   result$col.vars <- col.vars
-#'   result$dec.places <- dec.places
-#'   result$type <- type
-#'   result$style <- style
-#'   result$percentages <- percentages
-#'   result$addmargins <- addmargins
-#'   result$subtotals <- subtotals
-#'   
-#'   #(b) tabular output [3 variants]
-#'   result$table <- tbl  #Stores original cross-tab frequency counts without margins [class: table]
-#'   result$Crosstab <- Crosstab #Stores cross-tab in table format using requested style(frequency/pct) and table margins (on/off)
-#'   #[class: table]
-#'   result$Crosstab.nosub <- t1  #Crosstab with subtotals suppressed [class: dataframe; or NULL if no subtotals suppressed]
-#'   class(result) <- "Crosstab"
-#'   
-#'   #Return 'result' as output of function
-#'   result
-#'   
-#' }
-#' 
-#' print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) {
-#'   
-#'   row.vars <- x$row.vars
-#'   col.vars <- x$col.vars
-#'   n.row.vars <- length(row.vars)
-#'   n.col.vars <- length(col.vars)
-#'   n.vars <- n.row.vars + n.col.vars
-#'   
-#'   if (length(x$type)>1) {
-#'     z<-length(names(dimnames(x$Crosstab)))
-#'     if (x$style=="long") {
-#'       row.vars<-c(row.vars,z)
-#'     } else {
-#'       col.vars<-c(z,col.vars)
-#'     }
-#'   }
-#'   
-#'   if (n.vars==1) {
-#'     if (length(x$type)==1) {
-#'       tmp <- data.frame(round(x$Crosstab,x$dec.places))
-#'       colnames(tmp)[2] <- ifelse(x$type=="frequency","Count","%")
-#'       print(tmp,row.names=FALSE)
-#'     } else {
-#'       print(round(x$Crosstab,x$dec.places))
-#'     }
-#'   }
-#'   
-#'   
-#'   #If table has only 2 dimensions, or subtotals required for >2 dimensional table,
-#'   #print table using ftable() on x$Crosstab
-#'   if ((n.vars == 2) | ((subtotals==TRUE) & (n.vars>2))) {
-#'     
-#'     tbl <- ftable(x$Crosstab,row.vars=row.vars,col.vars=col.vars)
-#'     
-#'     if (!all(as.integer(tbl)==as.numeric(tbl))) tbl <- round(tbl,dec.places)
-#'     print(tbl,...)
-#'     
-#'   }
-#'   
-#'   #If subtotals NOT required AND > 2 dimensions, print table using write.table() on x$Crosstab.nosub
-#'   if ((subtotals==FALSE) & (n.vars>2))  {
-#'     
-#'     t1 <- x$Crosstab.nosub
-#'     
-#'     #Convert numbers to required decimal places, right aligned
-#'     width <- max( nchar(t1[1,]), nchar(t1[2,]), 7 )
-#'     dec.places <- x$dec.places
-#'     number.format <- paste("%",width,".",dec.places,"f",sep="")
-#'     t1[3:nrow(t1),((n.row.vars+1):ncol(t1))] <- sprintf(number.format,as.numeric(t1[3:nrow(t1),((n.row.vars+1):ncol(t1))]))
-#'     
-#'     #Adjust column variable label to same width as numbers, left aligned, padding with trailing spaces as required
-#'     col.var.format <- paste("%-",width,"s",sep="")
-#'     t1[1,(n.row.vars+1):ncol(t1)] <- sprintf(col.var.format,t1[1,(n.row.vars+1):ncol(t1)])
-#'     #Adjust column category labels to same width as numbers, right aligned, padding with preceding spaces as required
-#'     col.cat.format <- paste("%",width,"s",sep="")
-#'     t1[2,(n.row.vars+1):ncol(t1)] <- sprintf(col.cat.format,t1[2,(n.row.vars+1):ncol(t1)])
-#'     
-#'     #Adjust row labels so that each column is of fixed width, using trailing spaces as required
-#'     for (i in 1:n.row.vars) {
-#'       width <- max(nchar(t1[,i])) + 2
-#'       row.lab.format <- paste("%-",width,"s",sep="")
-#'       t1[,i] <- sprintf(row.lab.format,t1[,i])
-#'     }
-#'     
-#'     write.table(t1,quote=FALSE,col.names=FALSE,row.names=FALSE)
-#'     
-#'   }
-#'   
-#' }
-#' 
-#' inflate_for_miss <- function(v) return(c(v[1:(length(v)-1)]/(1-v[length(v)]), v[length(v)]))
-#' 
-#' close <- function(x, y, prec = 0.0001) return(all(abs(x - y) < prec))
-#' 
-#' cor.mtest <- function(mat, ...) {
-#'   mat <- as.matrix(mat)
-#'   n <- ncol(mat)
-#'   p.mat<- matrix(NA, n, n)
-#'   diag(p.mat) <- 0
-#'   for (i in 1:(n - 1)) {
-#'     for (j in (i + 1):n) {
-#'       tmp <- cor.test(mat[, i], mat[, j], ...)
-#'       p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
-#'     }
-#'   }
-#'   colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
-#'   p.mat
-#' }
-#' rquery.wordcloud <- function(x, type=c("text", "url", "file"), lang="english", excludeWords=NULL,
-#'                              textStemming=FALSE,  colorPalette="Dark2", min.freq=3, max.words=200) {
-#'   # http://www.sthda.com/english/wiki/word-cloud-generator-in-r-one-killer-function-to-do-everything-you-need
-#'   if(type[1]=="file") text <- readLines(x)
-#'   else if(type[1]=="url") text <- html_to_text(x)
-#'   else if(type[1]=="text") text <- x
-#'   
-#'   # Load the text as a corpus
-#'   docs <- Corpus(VectorSource(text))
-#'   # Convert the text to lower case
-#'   docs <- tm_map(docs, content_transformer(tolower))
-#'   # Remove numbers
-#'   docs <- tm_map(docs, removeNumbers)
-#'   # Remove stopwords for the language
-#'   docs <- tm_map(docs, removeWords, stopwords(lang))
-#'   # Remove punctuations
-#'   docs <- tm_map(docs, removePunctuation)
-#'   # Eliminate extra white spaces
-#'   docs <- tm_map(docs, stripWhitespace)
-#'   # Remove your own stopwords
-#'   if(!is.null(excludeWords))
-#'     docs <- tm_map(docs, removeWords, excludeWords)
-#'   # Text stemming
-#'   if(textStemming) docs <- tm_map(docs, stemDocument)
-#'   # Create term-document matrix
-#'   tdm <- TermDocumentMatrix(docs)
-#'   m <- as.matrix(tdm)
-#'   v <- sort(rowSums(m),decreasing=TRUE)
-#'   d <- data.frame(word = names(v),freq=v)
-#'   # check the color palette name
-#'   if(!colorPalette %in% rownames(brewer.pal.info)) colors = colorPalette
-#'   else colors = brewer.pal(8, colorPalette)
-#'   # Plot the word cloud
-#'   set.seed(1234)
-#'   wordcloud(d$word,d$freq, min.freq=min.freq, max.words=max.words,
-#'             random.order=FALSE, rot.per=0, #0.35,
-#'             use.r.layout=FALSE, colors=colors)
-#'   
-#'   invisible(list(tdm=tdm, freqTable = d))
-#' }
-#' 
-#' plot_world_map <- function(var, condition = "> 0", df = all, on_control = T, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2]) {
-#'   table <- heatmap_table(vars = var, data = df, along = "country", conditions = c(condition), on_control = T)
-#'   df_countries <- c(Country_Names[colnames(table)], "Wallis and Futuna", "Vatican", "Tobago", "Trinidad", "Sint Maarten", "Liechtenstein", "Saint Kitts", "Nevis", "Monaco", "Jersey", "Barbuda", "Antigua", "Saint Barthelemy", "Reunion", "Grenadines", "Virgin Islands", "Turks and Caicos Islands", "Saint Pierre and Miquelon", "Saint Helena", "Ascension Island", "Niue", "Palau", "Pitcairn Islands", "South Sandwich Islands")
-#'   df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2)))
-#'   
-#'   if (condition != "") {
-#'     breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
-#'     labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
-#'     legend <- paste("Share", condition)
-#'     limits <- c(0, 1)
-#'   } else {
-#'     breaks <- c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf) # c(-Inf, -1, -.5, -.25, 0, .25, .5, 1, Inf)
-#'     labels <- c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2")
-#'     legend <- "Mean"
-#'     limits <- c(-2, 2)
-#'   }
-#'   
-#'   world_map <- map_data(map = "world")
-#'   world_map <- world_map[world_map$region != "Antarctica",]
-#'   # world_map$region <- iso.alpha(world_map$region)
-#'   
-#'   df_na <- data.frame(country = setdiff(world_map$region, df_countries), mean = NA)
-#'   df <- merge(df, df_na, all = T)
-#'   
-#'   df$group <- cut(df$mean, breaks = breaks, labels = labels)
-#'   
-#'   if (!continuous) {
-#'     (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
-#'        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
-#'        scale_fill_manual(name = legend, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 +proj=wintri
-#'   } else {
-#'     (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = mean), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
-#'        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
-#'        scale_fill_distiller(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
-#'   }
-#'   
-#'   if (save) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height)
-#'   # return(plot)
-#' }
-#' 
+Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.vars = NULL, col.vars = NULL, percentages = TRUE,  addmargins = TRUE, subtotals=TRUE) {
+  #Declare function used to convert frequency counts into relevant type of proportion or percentage
+  mk.pcnt.tbl <- function(tbl, type) {
+    a <- length(row.vars)
+    b <- length(col.vars)
+    mrgn <- switch(type, column.pct = c(row.vars[-a], col.vars),
+                   row.pct = c(row.vars, col.vars[-b]),
+                   joint.pct = c(row.vars[-a], col.vars[-b]),
+                   total.pct = NULL)
+    tbl <- prop.table(tbl, mrgn)
+    if (percentages) {
+      tbl <- tbl * 100
+    }
+    tbl
+  }
+
+  #Find no. of vars (all; row; col) for use in subsequent code
+  n.row.vars <- length(row.vars)
+  n.col.vars <- length(col.vars)
+  n.vars <- n.row.vars + n.col.vars
+
+
+  #Check to make sure all user-supplied arguments have valid values
+  stopifnot(as.integer(dec.places) == dec.places, dec.places > -1)
+  #type: see next section of code
+  stopifnot(is.character(style))
+  stopifnot(is.logical(percentages))
+  stopifnot(is.logical(addmargins))
+  stopifnot(is.logical(subtotals))
+  stopifnot(n.vars>=1)
+
+  #Convert supplied table type(s) into full text string (e.g. "f" becomes "frequency")
+  #If invalid type supplied, failed match gives user automatic error message
+  types <- NULL
+  choices <- c("frequency", "row.pct", "column.pct", "joint.pct", "total.pct")
+  for (tp in type) types <- c(types, match.arg(tp, choices))
+  type <- types
+
+  #If no type supplied, default to 'frequency + total' for univariate tables and to
+  #'frequency' for multi-dimenstional tables
+
+  #For univariate table....
+  if (n.vars == 1) {
+    if (is.null(type)) {
+      # default = freq count + total.pct
+      type <- c("frequency", "total.pct")
+      #row.vars <- 1
+    } else {
+      #and any requests for row / col / joint.pct must be changed into requests for 'total.pct'
+      type <- ifelse(type == "frequency", "frequency", "total.pct")
+    }
+    #For multivariate tables...
+  } else if (is.null(type)) {
+    # default = frequency count
+    type <- "frequency"
+  }
+
+
+
+  #Check for integrity of requested analysis and adjust values of function arguments as required
+
+  if ((addmargins==FALSE) & (subtotals==FALSE)) {
+    warning("WARNING: Request to suppress subtotals (subtotals=FALSE) ignored because no margins requested (addmargins=FALSE)")
+    subtotals <- TRUE
+  }
+
+  if ((n.vars>1) & (length(type)>1) & (addmargins==TRUE)) {
+    warning("WARNING: Only row totals added when more than one table type requested")
+    #Code lower down selecting type of margin implements this...
+  }
+
+  if ((length(type)>1) & (subtotals==FALSE)) {
+    warning("WARNING: Can only request supply one table type if requesting suppression of subtotals; suppression of subtotals not executed")
+    subtotals <- TRUE
+  }
+
+  if ((length(type)==1) & (subtotals==FALSE)) {
+    choices <- c("frequency", "row.pct", "column.pct", "joint.pct", "total.pct")
+    tp <- match.arg(type, choices)
+    if (tp %in% c("row.pct","column.pct","joint.pct")) {
+      warning("WARNING: subtotals can only be suppressed for tables of type 'frequency' or 'total.pct'")
+      subtotals<- TRUE
+    }
+  }
+
+  if ((n.vars > 2) & (n.col.vars>1) & (subtotals==FALSE))
+    warning("WARNING: suppression of subtotals assumes only 1 col var; table flattened accordingly")
+
+
+  if ( (subtotals==FALSE) & (n.vars>2) )  {
+    #If subtotals not required AND total table vars > 2
+    #Reassign all but last col.var as row vars
+    #[because, for simplicity, Crosstabs assumes removal of subtotals uses tables with only ONE col var]
+    #N.B. Subtotals only present in tables with > 2 cross-classified vars...
+    if (length(col.vars)>1) {
+      row.vars <- c(row.vars,col.vars[-length(col.vars)])
+      col.vars <- col.vars[length(col.vars)]
+      n.row.vars <- length(row.vars)
+      n.col.vars <- 1
+    }
+  }
+
+  #If dec.places not set by user, set to 2 unlesss only one table of type frequency requested,
+  #in which case set to 0.  [Leaves user with possibility of having frequency tables with > 0 dp]
+  if (is.null(dec.places)) {
+    if ((length(type)==1) & (type[1]=="frequency")) {
+      dec.places <- 0
+    } else {
+      dec.places <-2
+    }
+  }
+
+  #Take the original input data, whatever form originally supplied in,
+  #convert into table format using requested row and col vars, and save as 'tbl'
+
+  args <- list(...)
+
+  if (length(args) > 1) {
+    if (!all(sapply(args, is.factor)))
+      stop("If more than one argument is passed then all must be factors")
+    tbl <- table(...)
+  }
+  else {
+    if (is.factor(...)) {
+      tbl <- table(...)
+    }
+    else if (is.table(...)) {
+      tbl <- eval(...)
+    }
+    else if (is.data.frame(...)) {
+      #tbl <- table(...)
+      if (is.null(row.vars) && is.null(col.vars)) {
+        tbl <- table(...)
+      }
+      else {
+        var.names <- c(row.vars,col.vars)
+        A <- (...)
+        tbl <- table(A[var.names])
+        if(length(var.names==1)) names(dimnames(tbl)) <- var.names
+        #[table() only autocompletes dimnames for multivariate Crosstabs of dataframes]
+      }
+    }
+    else if (class(...) == "ftable") {
+      tbl <- eval(...)
+      if (is.null(row.vars) && is.null(col.vars)) {
+        row.vars <- names(attr(tbl, "row.vars"))
+        col.vars <- names(attr(tbl, "col.vars"))
+      }
+      tbl <- as.table(tbl)
+    }
+    else if (class(...) == "ctab") {
+      tbl <- eval(...)
+      if (is.null(row.vars) && is.null(col.vars)) {
+        row.vars <- tbl$row.vars
+        col.vars <- tbl$col.vars
+      }
+      for (opt in c("dec.places", "type", "style", "percentages",
+                    "addmargins", "subtotals")) if (is.null(get(opt)))
+                      assign(opt, eval(parse(text = paste("tbl$", opt,
+                                                          sep = ""))))
+      tbl <- tbl$table
+    }
+    else {
+      stop("first argument must be either factors or a table object")
+    }
+  }
+
+  #Convert supplied table style into full text string (e.g. "l" becomes "long")
+  style <- match.arg(style, c("long", "wide"))
+
+  #Extract row and col names to be used in creating 'tbl' from supplied input data
+  nms <- names(dimnames(tbl))
+  z <- length(nms)
+  if (!is.null(row.vars) && !is.numeric(row.vars)) {
+    row.vars <- order(match(nms, row.vars), na.last = NA)
+  }
+  if (!is.null(col.vars) && !is.numeric(col.vars)) {
+    col.vars <- order(match(nms, col.vars), na.last = NA)
+  }
+  if (!is.null(row.vars) && is.null(col.vars)) {
+    col.vars <- (1:z)[-row.vars]
+  }
+  if (!is.null(col.vars) && is.null(row.vars)) {
+    row.vars <- (1:z)[-col.vars]
+  }
+  if (is.null(row.vars) && is.null(col.vars)) {
+    col.vars <- z
+    row.vars <- (1:z)[-col.vars]
+  }
+
+  #Take the original input data, converted into table format using supplied row and col vars (tbl)
+  #and create a second version (Crosstab) which stores results as percentages if a percentage table type is requested.
+  if (type[1] == "frequency")
+    Crosstab <- tbl
+  else
+    Crosstab <- mk.pcnt.tbl(tbl, type[1])
+
+
+  #If multiple table types requested, create and add these to
+  if (length(type) > 1) {
+    tbldat <- as.data.frame.table(Crosstab)
+    z <- length(names(tbldat)) + 1
+    tbldat[z] <- 1
+    pcntlab <- type
+    pcntlab[match("frequency", type)] <- "Count"
+    pcntlab[match("row.pct", type)] <- "Row %"
+    pcntlab[match("column.pct", type)] <- "Column %"
+    pcntlab[match("joint.pct", type)] <- "Joint %"
+    pcntlab[match("total.pct", type)] <- "Total %"
+    for (i in 2:length(type)) {
+      if (type[i] == "frequency")
+        Crosstab <- tbl
+      else Crosstab <- mk.pcnt.tbl(tbl, type[i])
+      Crosstab <- as.data.frame.table(Crosstab)
+      Crosstab[z] <- i
+      tbldat <- rbind(tbldat, Crosstab)
+    }
+    tbldat[[z]] <- as.factor(tbldat[[z]])
+    levels(tbldat[[z]]) <- pcntlab
+    Crosstab <- xtabs(Freq ~ ., data = tbldat)
+    names(dimnames(Crosstab))[z - 1] <- ""
+  }
+
+
+  #Add margins if required, adding only those margins appropriate to user request
+  if (addmargins==TRUE) {
+
+    vars <- c(row.vars,col.vars)
+
+    if (length(type)==1) {
+      if (type=="row.pct")
+      { Crosstab <- addmargins(Crosstab,margin=c(vars[n.vars]))
+      tbl <- addmargins(tbl,margin=c(vars[n.vars]))
+      }
+      else
+      { if (type=="column.pct")
+      { Crosstab <- addmargins(Crosstab,margin=c(vars[n.row.vars]))
+      tbl <- addmargins(tbl,margin=c(vars[n.row.vars]))
+      }
+        else
+        { if (type=="joint.pct")
+        { Crosstab <- addmargins(Crosstab,margin=c(vars[(n.row.vars)],vars[n.vars]))
+        tbl <- addmargins(tbl,margin=c(vars[(n.row.vars)],vars[n.vars]))
+        }
+          else #must be total.pct OR frequency
+          { Crosstab <- addmargins(Crosstab)
+          tbl <- addmargins(tbl)
+          }
+        }
+      }
+    }
+
+    #If more than one table type requested, only adding row totals makes any sense...
+    if (length(type)>1) {
+      Crosstab <- addmargins(Crosstab,margin=c(vars[n.vars]))
+      tbl <- addmargins(tbl,margin=c(vars[n.vars]))
+    }
+
+  }
+
+
+  #If subtotals not required, and total vars > 2, create dataframe version of table, with relevent
+  #subtotal rows / cols dropped [Subtotals only present in tables with > 2 cross-classified vars]
+  t1 <- NULL
+  if ( (subtotals==FALSE) & (n.vars>2) )  {
+
+    #Create version of Crosstab in ftable format
+    t1 <- Crosstab
+    t1 <- ftable(t1,row.vars=row.vars,col.vars=col.vars)
+
+    #Convert to a dataframe
+    t1 <- as.data.frame(format(t1),stringsAsFactors=FALSE)
+
+    #Remove backslashes from category names AND colnames
+    t1 <- apply(t1[,],2, function(x) gsub("\"","",x))
+    #Remove preceding and trailing spaces from category names to enable accurate capture of 'sum' rows/cols
+    #[Use of grep might extrac category labels with 'sum' as part of a longer one or two word string...]
+    t1 <- apply(t1,2,function(x) gsub("[[:space:]]*$","",gsub("^[[:space:]]*","",x)))
+
+    #Reshape dataframe to that variable and category labels display as required
+    #(a) Move col category names down one row; and move col variable name one column to right
+    t1[2,(n.row.vars+1):ncol(t1)] <- t1[1,(n.row.vars+1):ncol(t1)]
+    t1[1,] <- ""
+    t1[1,(n.row.vars+2)] <- t1[2,(n.row.vars+1)]
+    #(b) Drop the now redundant column separating the row.var labels from the table data + col.var labels
+    t1 <- t1[,-(n.row.vars+1)]
+
+    #In 'lab', assign category labels for each variable to all rows (to allow identification of sub-totals)
+    lab <- t1[,1:n.row.vars]
+    for (c in 1:n.row.vars) {
+      for (r in 2:nrow(lab)) {
+        if (lab[r,c]=="") lab[r,c] <- lab[r-1,c]
+      }
+    }
+
+    lab <- (apply(lab[,1:n.row.vars],2,function(x) x=="Sum"))
+    lab <- apply(lab,1,sum)
+    #Filter out rows of dataframe containing subtotals
+
+    t1 <- t1[((lab==0) | (lab==n.row.vars)),]
+
+    #Move the 'Sum' label associated with last row to the first column; in the process
+    #setting the final row labels associated with other row variables to ""
+    t1[nrow(t1),1] <- "Sum"
+    t1[nrow(t1),(2:n.row.vars)] <- ""
+
+    #set row and column names to NULL
+    rownames(t1) <- NULL
+    colnames(t1) <- NULL
+
+  }
+
+
+
+  #Create output object 'result' [class: Crosstab]
+  result <- NULL
+  #(a) record of argument values used to produce tabular output
+  result$row.vars <- row.vars
+  result$col.vars <- col.vars
+  result$dec.places <- dec.places
+  result$type <- type
+  result$style <- style
+  result$percentages <- percentages
+  result$addmargins <- addmargins
+  result$subtotals <- subtotals
+
+  #(b) tabular output [3 variants]
+  result$table <- tbl  #Stores original cross-tab frequency counts without margins [class: table]
+  result$Crosstab <- Crosstab #Stores cross-tab in table format using requested style(frequency/pct) and table margins (on/off)
+  #[class: table]
+  result$Crosstab.nosub <- t1  #Crosstab with subtotals suppressed [class: dataframe; or NULL if no subtotals suppressed]
+  class(result) <- "Crosstab"
+
+  #Return 'result' as output of function
+  result
+
+}
+
+print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) {
+
+  row.vars <- x$row.vars
+  col.vars <- x$col.vars
+  n.row.vars <- length(row.vars)
+  n.col.vars <- length(col.vars)
+  n.vars <- n.row.vars + n.col.vars
+
+  if (length(x$type)>1) {
+    z<-length(names(dimnames(x$Crosstab)))
+    if (x$style=="long") {
+      row.vars<-c(row.vars,z)
+    } else {
+      col.vars<-c(z,col.vars)
+    }
+  }
+
+  if (n.vars==1) {
+    if (length(x$type)==1) {
+      tmp <- data.frame(round(x$Crosstab,x$dec.places))
+      colnames(tmp)[2] <- ifelse(x$type=="frequency","Count","%")
+      print(tmp,row.names=FALSE)
+    } else {
+      print(round(x$Crosstab,x$dec.places))
+    }
+  }
+
+
+  #If table has only 2 dimensions, or subtotals required for >2 dimensional table,
+  #print table using ftable() on x$Crosstab
+  if ((n.vars == 2) | ((subtotals==TRUE) & (n.vars>2))) {
+
+    tbl <- ftable(x$Crosstab,row.vars=row.vars,col.vars=col.vars)
+
+    if (!all(as.integer(tbl)==as.numeric(tbl))) tbl <- round(tbl,dec.places)
+    print(tbl,...)
+
+  }
+
+  #If subtotals NOT required AND > 2 dimensions, print table using write.table() on x$Crosstab.nosub
+  if ((subtotals==FALSE) & (n.vars>2))  {
+
+    t1 <- x$Crosstab.nosub
+
+    #Convert numbers to required decimal places, right aligned
+    width <- max( nchar(t1[1,]), nchar(t1[2,]), 7 )
+    dec.places <- x$dec.places
+    number.format <- paste("%",width,".",dec.places,"f",sep="")
+    t1[3:nrow(t1),((n.row.vars+1):ncol(t1))] <- sprintf(number.format,as.numeric(t1[3:nrow(t1),((n.row.vars+1):ncol(t1))]))
+
+    #Adjust column variable label to same width as numbers, left aligned, padding with trailing spaces as required
+    col.var.format <- paste("%-",width,"s",sep="")
+    t1[1,(n.row.vars+1):ncol(t1)] <- sprintf(col.var.format,t1[1,(n.row.vars+1):ncol(t1)])
+    #Adjust column category labels to same width as numbers, right aligned, padding with preceding spaces as required
+    col.cat.format <- paste("%",width,"s",sep="")
+    t1[2,(n.row.vars+1):ncol(t1)] <- sprintf(col.cat.format,t1[2,(n.row.vars+1):ncol(t1)])
+
+    #Adjust row labels so that each column is of fixed width, using trailing spaces as required
+    for (i in 1:n.row.vars) {
+      width <- max(nchar(t1[,i])) + 2
+      row.lab.format <- paste("%-",width,"s",sep="")
+      t1[,i] <- sprintf(row.lab.format,t1[,i])
+    }
+
+    write.table(t1,quote=FALSE,col.names=FALSE,row.names=FALSE)
+
+  }
+
+}
+
+# inflate_for_miss <- function(v) return(c(v[1:(length(v)-1)]/(1-v[length(v)]), v[length(v)]))
+# 
+# close <- function(x, y, prec = 0.0001) return(all(abs(x - y) < prec))
+# 
+# cor.mtest <- function(mat, ...) {
+#   mat <- as.matrix(mat)
+#   n <- ncol(mat)
+#   p.mat<- matrix(NA, n, n)
+#   diag(p.mat) <- 0
+#   for (i in 1:(n - 1)) {
+#     for (j in (i + 1):n) {
+#       tmp <- cor.test(mat[, i], mat[, j], ...)
+#       p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+#     }
+#   }
+#   colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
+#   p.mat
+# }
+# rquery.wordcloud <- function(x, type=c("text", "url", "file"), lang="english", excludeWords=NULL,
+#                              textStemming=FALSE,  colorPalette="Dark2", min.freq=3, max.words=200) {
+#   # http://www.sthda.com/english/wiki/word-cloud-generator-in-r-one-killer-function-to-do-everything-you-need
+#   if(type[1]=="file") text <- readLines(x)
+#   else if(type[1]=="url") text <- html_to_text(x)
+#   else if(type[1]=="text") text <- x
+# 
+#   # Load the text as a corpus
+#   docs <- Corpus(VectorSource(text))
+#   # Convert the text to lower case
+#   docs <- tm_map(docs, content_transformer(tolower))
+#   # Remove numbers
+#   docs <- tm_map(docs, removeNumbers)
+#   # Remove stopwords for the language
+#   docs <- tm_map(docs, removeWords, stopwords(lang))
+#   # Remove punctuations
+#   docs <- tm_map(docs, removePunctuation)
+#   # Eliminate extra white spaces
+#   docs <- tm_map(docs, stripWhitespace)
+#   # Remove your own stopwords
+#   if(!is.null(excludeWords))
+#     docs <- tm_map(docs, removeWords, excludeWords)
+#   # Text stemming
+#   if(textStemming) docs <- tm_map(docs, stemDocument)
+#   # Create term-document matrix
+#   tdm <- TermDocumentMatrix(docs)
+#   m <- as.matrix(tdm)
+#   v <- sort(rowSums(m),decreasing=TRUE)
+#   d <- data.frame(word = names(v),freq=v)
+#   # check the color palette name
+#   if(!colorPalette %in% rownames(brewer.pal.info)) colors = colorPalette
+#   else colors = brewer.pal(8, colorPalette)
+#   # Plot the word cloud
+#   set.seed(1234)
+#   wordcloud(d$word,d$freq, min.freq=min.freq, max.words=max.words,
+#             random.order=FALSE, rot.per=0, #0.35,
+#             use.r.layout=FALSE, colors=colors)
+# 
+#   invisible(list(tdm=tdm, freqTable = d))
+# }
+# 
+# plot_world_map <- function(var, condition = "> 0", df = all, on_control = T, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2]) {
+#   table <- heatmap_table(vars = var, data = df, along = "country", conditions = c(condition), on_control = T)
+#   df_countries <- c(Country_Names[colnames(table)], "Wallis and Futuna", "Vatican", "Tobago", "Trinidad", "Sint Maarten", "Liechtenstein", "Saint Kitts", "Nevis", "Monaco", "Jersey", "Barbuda", "Antigua", "Saint Barthelemy", "Reunion", "Grenadines", "Virgin Islands", "Turks and Caicos Islands", "Saint Pierre and Miquelon", "Saint Helena", "Ascension Island", "Niue", "Palau", "Pitcairn Islands", "South Sandwich Islands")
+#   df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2)))
+# 
+#   if (condition != "") {
+#     breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
+#     labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
+#     legend <- paste("Share", condition)
+#     limits <- c(0, 1)
+#   } else {
+#     breaks <- c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf) # c(-Inf, -1, -.5, -.25, 0, .25, .5, 1, Inf)
+#     labels <- c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2")
+#     legend <- "Mean"
+#     limits <- c(-2, 2)
+#   }
+# 
+#   world_map <- map_data(map = "world")
+#   world_map <- world_map[world_map$region != "Antarctica",]
+#   # world_map$region <- iso.alpha(world_map$region)
+# 
+#   df_na <- data.frame(country = setdiff(world_map$region, df_countries), mean = NA)
+#   df <- merge(df, df_na, all = T)
+# 
+#   df$group <- cut(df$mean, breaks = breaks, labels = labels)
+# 
+#   if (!continuous) {
+#     (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+#        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
+#        scale_fill_manual(name = legend, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 +proj=wintri
+#   } else {
+#     (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = mean), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+#        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
+#        scale_fill_distiller(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
+#   }
+# 
+#   if (save) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height)
+#   # return(plot)
+# }
+
 #' ##### Plot along #####
 #' # gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
 #' # outcomes, covariates: string vectors / subsamples: variable name
