@@ -1,0 +1,15 @@
+Attributes
+Economic issues:Student loan forgiveness,$15 minimum wage,Universal childcare/pre-K,Funding affordable housing,-
+Societal issues:Expanding the Supreme Court,Handgun ban,Making abortion a right at the federal level,-
+Climate policy:Coal exit,Trillion dollar investment in transportation infrastructure and building insulation,Ban the sale of new combustion-engine cars by 2030,-
+Tax system:National redistribution scheme,Wealth tax AND National redistribution scheme
+Weights
+Economic issues:0.2,0.2,0.2,0.2,0.2
+Societal issues:0.25,0.25,0.25,0.25
+Climate policy:0.25,0.25,0.25,0.25
+Tax system:0.5,0.5
+Restrictions
+Economic issues:Student loan forgiveness;Tax system:National redistribution scheme
+Economic issues:Universal childcare/pre-K;Tax system:National redistribution scheme
+Economic issues:Funding affordable housing;Tax system:National redistribution scheme
+Climate policy:Trillion dollar investment in transportation infrastructure and building insulation;Tax system:National redistribution scheme

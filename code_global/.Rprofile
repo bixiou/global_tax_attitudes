@@ -44,6 +44,10 @@ package('tidyverse')
 package("dplyr")
 package("tidyr")
 package("expss") # fre (for weighted frequency table)
+package("GDAtools") # wtable (for weighted frequency crosstable)
+package("beepr") # beep() makes sound 
+package("openxlsx")
+package("cjoint") # conjoint analysis
 #' package("xtable")
 #' package("rms")
 #' package('pwr')
@@ -128,7 +132,6 @@ package("descr") # CrossTable
 #' package("partykit")
 #' package("rpart.plot")
 #' package("Peacock.test")
-#' package("openxlsx")
 #' package("devtools")
 #' package("janitor")
 #' # LDA

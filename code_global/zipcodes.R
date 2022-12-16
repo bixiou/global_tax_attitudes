@@ -18,19 +18,29 @@ zipcodes_EU <- zipcodes[zipcodes$CNTR_ID != "UK",]
 
 ##### UK #####
 # Source: oecd_climate/code_oecd/zipcodes/UK_rural.R (cleaned, also contained region coding); https://www.doogal.co.uk/postcodedownloads.php
-data <- read.csv2("../data/zipcodes_UK.csv", sep=',')
+data <- read.csv2("../data/zipcodes_UK_original.csv", sep=',')
 
 rural <- c("Rural village", "Rural hamlet and isolated dwellings", "Rural town and fringe", "Rural town and fringe in a sparse setting", "Rural hamlet and isolated dwellings in a sparse setting", "Rural village in a sparse setting")
 rural <- c(rural,"", "Accessible rural area", "Remote rural area", "Very remote rural area", "Very remote small town", "Accessible small town", "Remote small town")
 urban_town <- c("Urban city and town", "Urban city and town in a sparse setting")
 urban_large <- c("Urban major conurbation", "Urban minor conurbation", "Large urban area", "Other urban area")
 
+southern.england <- c("South West", "South East", "East of England")
+midlands <- c("West Midlands", "East Midlands")
+northern.england <- c("North West", "Yorkshire and The Humber", "North East")
+
 data$Rural.urban.quota[data$Rural.urban %in% urban_town] <-"City_Town"
 data$Rural.urban.quota[data$Rural.urban %in% rural] <-"Rural"
 data$Rural.urban.quota[data$Rural.urban %in% urban_large] <-"Large_urban"
 
+data$Region.quota[data$Region =="London"] <- "London"
+data$Region.quota[data$Region %in% southern.england] <- "Southern England"
+data$Region.quota[data$Region %in% midlands | data$Country == "Wales"] <- "Central UK"
+data$Region.quota[data$Region %in% northern.england] <- "Northern England"
+data$Region.quota[data$Country %in% c("Scotland", "Northern Ireland")] <- "Northern UK"
+
 data.outcode <- data %>%
-  select(Population, Postcode, Region.quota, Rural.urban.quota) # may bug because dplyr::select is masked by MASS
+  dplyr::select(Population, Postcode, Region.quota, Rural.urban.quota) # may bug because dplyr::select is masked by MASS
 
 data.outcode <- data.outcode %>%
   subset(Region.quota != "")
@@ -90,14 +100,14 @@ data.outcode.urbanity$Urbanity.outcode[(data.outcode.urbanity$City_Town > data.o
 
 # Merging
 data.outcode.urbanity <- data.outcode.urbanity %>%
-  select(outcode, Urbanity.outcode)
+  dplyr::select(outcode, Urbanity.outcode)
 
 data.outcode <- merge(x=data.outcode, y=data.outcode.urbanity, by="outcode", all.x = T)
 
 # Assign values of non-duplicates
 data.outcode$Urbanity.outcode.y[is.na(data.outcode$Urbanity.outcode.y)] <- data.outcode$Urbanity.outcode.x[is.na(data.outcode$Urbanity.outcode.y)]
 data.outcode <- data.outcode %>%
-  rename(Urbanity.outcode = Urbanity.outcode.y)
+  dplyr::rename(Urbanity.outcode = Urbanity.outcode.y)
 
 decrit(data.outcode$Urbanity.outcode, weights = data.outcode$Population, data=data.outcode) # 401/423/176
 decrit(data$Rural.urban.quota, weights = data$Population, data=data) # 396/386/218 By assigning outcodes to a single urbanity, we lose some 4 pp of rurals.
@@ -113,7 +123,7 @@ length(unique(data$Postcode))
 fre(data_uk$Rural.urban, weight = data_uk$Population)
 fre(data$Rural.urban, weight = data$Population)
 CrossTable(data_uk$Rural.urban.quota, data_uk$DGURBA_FINAL_2018)
-CrossTable(data_uk$Rural.urban.quota[!is.na(data$Population)], data_uk$DGURBA_FINAL_2018[!is.na(data$Population)], weights = data$Population[!is.na(data$Population)])
+# CrossTable(data_uk$Rural.urban.quota[!is.na(data$Population)], data_uk$DGURBA_FINAL_2018[!is.na(data$Population)], weights = data$Population[!is.na(data$Population)])
 wtable(data_uk$Rural.urban.quota[!is.na(data$Population)], data_uk$DGURBA_FINAL_2018[!is.na(data$Population)], w = data$Population[!is.na(data$Population)])/20891767
 # Degurba 1 is half in Large_urban, half in City_Town; 2 is half in City_Town, half in Rural; 3 is mostly in Rural. 
 # Conversely, Large_urban is mostly in 1; City_Town is 60% in 2 and 40% in 1; and Rural is 70% in 2 and 30% in 3.
@@ -122,30 +132,33 @@ wtable(data_uk$Rural.urban.quota[!is.na(data$Population)], data_uk$DGURBA_FINAL_
 
 
 ## Export
-zipcodes_UK <- data[,c("Rural.urban.quota", "Postcode")]
-write.csv(zipcodes_UK,"zipcodes_UK.csv", row.names=F)
-zipcodes_UK$Rural.urban.quota[zipcodes_UK$Rural.urban.quota == "Large_urban"] <- 1
-zipcodes_UK$Rural.urban.quota[zipcodes_UK$Rural.urban.quota == "City_Town"] <- 2
-zipcodes_UK$Rural.urban.quota[zipcodes_UK$Rural.urban.quota == "Rural"] <- 3
+postcodes_UK <- data.outcode[,c("outcode", "Urbanity.outcode")]
+postcodes_UK <- postcodes_UK[!duplicated(postcodes_UK),]
+names(postcodes_UK) <- c("zipcode", "urbanity")
+write.csv(postcodes_UK,"zipcodes_UK.csv", row.names=F)
+postcodes_UK$urbanity[postcodes_UK$urbanity == "Large_urban"] <- 1
+postcodes_UK$urbanity[postcodes_UK$urbanity == "City_Town"] <- 2
+postcodes_UK$urbanity[postcodes_UK$urbanity == "Rural"] <- 3
 rm(data_uk, duplicate.urbanity, data.outcode, data.outcode.pop, data.outcode.urbanity, data)
 
 
 ##### Merge EU and UK, export #####
-zipcodes_ES <- zipcodes_EU[zipcodes$CNTR_ID == "ES", c(2,5)]
+zipcodes_ES <- zipcodes_EU[zipcodes_EU$CNTR_ID == "ES", c(2,5)]
 zipcodes_ES$PC_CNTR <- substr(zipcodes_ES$PC_CNTR, 4, 8)
-write.csv(zipcodes_ES, "../data/zipcodes_ES.csv")
-zipcodes_DE <- zipcodes_EU[zipcodes$CNTR_ID == "DE", c(2,5)]
+write.csv(zipcodes_ES, "../data/zipcodes_ES.csv", row.names = FALSE)
+zipcodes_DE <- zipcodes_EU[zipcodes_EU$CNTR_ID == "DE", c(2,5)]
 zipcodes_DE$PC_CNTR <- substr(zipcodes_DE$PC_CNTR, 4, 8)
-write.csv(zipcodes_DE, "../data/zipcodes_DE.csv")
-zipcodes_FR <- zipcodes_EU[zipcodes$CNTR_ID == "FR", c(2,5)]
+write.csv(zipcodes_DE, "../data/zipcodes_DE.csv", row.names = FALSE)
+zipcodes_FR <- zipcodes_EU[zipcodes_EU$CNTR_ID == "FR", c(2,5)]
 zipcodes_FR$PC_CNTR <- substr(zipcodes_FR$PC_CNTR, 4, 8)
-write.csv(zipcodes_FR, "../data/zipcodes_FR.csv")
+write.csv(zipcodes_FR, "../data/zipcodes_FR.csv", row.names = FALSE)
 zipcodes_FR$PC_CNTR <- paste0("F", zipcodes_FR$PC_CNTR)
 zipcodes_ES$PC_CNTR <- paste0("E", zipcodes_ES$PC_CNTR)
 zipcodes_DE$PC_CNTR <- paste0("D", zipcodes_DE$PC_CNTR)
-zipcodes_UK$Postcode <- paste0("U", zipcodes_DE$Postcode)
-zipcodes <- rbind(zipcodes_FR, zipcodes_DE, zipcodes_ES)
-names(zipcodes) <- c("Postcode", "degurba")
-zipcodes <- rbind(zipcodes_UK, zipcodes)
-write.csv(zipcodes_EU, "../data/zipcodes.csv")
-rm(zipcodes, zipcodes_FR, zipcodes_EU, zipcodes_DE, zipcodes_ES, zipcodes_UK, uk_outward)
+postcodes_UK$zipcode <- paste0("U", postcodes_UK$zipcode)
+zipcodes_FDEU <- rbind(zipcodes_FR, zipcodes_DE, zipcodes_ES)
+names(zipcodes_FDEU) <- c("zipcode", "urbanity")
+zipcodes_FDEU <- rbind(postcodes_UK, zipcodes_FDEU)
+write.csv(zipcodes_FDEU, "../data/zipcodes_FDEU.csv", row.names = FALSE, quote = FALSE)
+rm(zipcodes, zipcodes_FR, zipcodes_EU, zipcodes_DE, zipcodes_ES, zipcodes_UK, uk_outward, postcodes_UK)
+
