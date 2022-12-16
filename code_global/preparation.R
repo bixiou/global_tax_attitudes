@@ -12,3 +12,11 @@ inc_quantiles # Now in 2021 LCU for each
 50*round(inc_quantiles/12/50) # Per month, rounded
 rm(qinc)
 
+# Consistency: increase/reduce aid for those with the info + later question
+
+# 26% Les pays pauvres s'en sortiront mieux par eux-mêmes qu'avec notre aide
+# 37% Je serais favorable si l'aide allait directement aux plus pauvres, et pas aux États
+# 26% Je serais favorable si tous les pays riches contribuaient autant que la France
+# 33% La dépense publique doit servir en priorité aux services publics et aux Français
+# 10% Je serais favorable avec un montant plus faible : 2% c'est trop
+
