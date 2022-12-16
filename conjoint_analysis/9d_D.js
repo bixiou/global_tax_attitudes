@@ -1,3 +1,6 @@
+Qualtrics.SurveyEngine.addOnload(function()
+{
+// D
 // Code to randomly generate conjoint profiles in a Qualtrics survey
 
 // Terminology clarification: 
@@ -50,7 +53,7 @@ function weighted_randomize(prob_array, at_key)
 
 var featurearray = {"Economic issues" : ["Student loan forgiveness","$15 minimum wage","Universal childcare/pre-K","Funding affordable housing","-"],"Societal issues" : ["Expanding the Supreme Court","Handgun ban","Making abortion a right at the federal level","-"],"Climate policy" : ["Coal exit","Trillion dollar investment in transportation infrastructure and building insulation","Ban the sale of new combustion-engine cars by 2030","-"],"Tax system" : ["National redistribution scheme","Wealth tax AND National redistribution scheme"]};
 
-var restrictionarray = [[["Economic issues","Student loan forgiveness"],["Tax system","National redistribution scheme"]],[["Economic issues","Universal childcare/pre-K"],["Tax system","National redistribution scheme"]],[["Economic issues","Funding affordable housing"],["Tax system","National redistribution scheme"]],[["Climate policy","Trillion dollar investment in transportation infrastructure and building insulation"],["Tax system","National redistribution scheme"]]];
+var restrictionarray = [];
 
 var probabilityarray = {};
 
@@ -250,3 +253,17 @@ for (var pr = 0; pr < returnarrayKeys.length; pr++){
        Qualtrics.SurveyEngine.setEmbeddedData(returnarrayKeys[pr], returnarray[returnarrayKeys[pr]]); 
 }
 
+
+});
+
+Qualtrics.SurveyEngine.addOnReady(function()
+{
+	/*Place your JavaScript here to run when the page is fully displayed*/
+
+});
+
+Qualtrics.SurveyEngine.addOnUnload(function()
+{
+	/*Place your JavaScript here to run when the page is unloaded*/
+
+});

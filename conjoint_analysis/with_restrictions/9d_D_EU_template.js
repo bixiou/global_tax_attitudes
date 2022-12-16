@@ -1,26 +1,24 @@
 Qualtrics.SurveyEngine.addOnload(function()
-{ // D
+{
 	// Code to randomly generate conjoint profiles in a Qualtrics survey
 	var country = "${q://QID130/ChoiceGroup/SelectedChoices}"
 	if (country == "France" || country == "La France" || country == "Frankreich" || country == "Francia") {
 		var featurearray = {"FR_econ_issues" : ["FR_econ1","FR_econ2","FR_econ3","FR_econ4","-"],"FR_society_issues" : ["FR_soc1","FR_soc2","-"],"FR_climate_pol" : ["FR_climate1","FR_climate2","FR_climate3","-"],"FR_tax_system" : ["FR_tax1","FR_tax2 ET FR_tax1"]};
 
-		// var restrictionarray = [[["FR_econ_issues","FR_econ1"],["FR_tax_system","FR_tax1"]],[["FR_econ_issues","FR_econ4"],["FR_tax_system","FR_tax1"]],[["FR_climate policy","FR_climate2"],["FR_tax_system","FR_tax1"]]];				
+		var restrictionarray = [[["FR_econ_issues","FR_econ1"],["FR_tax_system","FR_tax1"]],[["FR_econ_issues","FR_econ4"],["FR_tax_system","FR_tax1"]],[["FR_climate policy","FR_climate2"],["FR_tax_system","FR_tax1"]]];				
 	} else if (country == "Deutschland" || country == "Germany" || country == "Allemagne" || country == "Alemania") {	 
 		var featurearray = {"DE_econ_issues" : ["DE_econ1","DE_econ2","DE_econ3","DE_econ4","-"],"DE_society_issues" : ["DE_soc1","DE_soc2","-"],"DE_climate_pol" : ["DE_climate1","DE_climate2","DE_climate3","-"],"DE_tax_system" : ["DE_tax1","DE_tax2 UND DE_tax1"]};
 
-		// var restrictionarray = [[["DE_econ_issues","DE_econ1"],["DE_tax_system","DE_tax1"]],[["DE_econ_issues","DE_econ4"],["DE_tax_system","DE_tax1"]],[["DE_climate policy","DE_climate2"],["DE_tax_system","DE_tax1"]]];			
+		var restrictionarray = [[["DE_econ_issues","DE_econ1"],["DE_tax_system","DE_tax1"]],[["DE_econ_issues","DE_econ4"],["DE_tax_system","DE_tax1"]],[["DE_climate policy","DE_climate2"],["DE_tax_system","DE_tax1"]]];			
 	} else if (country == "Spain" || country == "España" || country == "Espagne" || country == "Spanien")  {
 		var featurearray = {"ES_econ_issues" : ["ES_econ1","ES_econ2","ES_econ3","ES_econ4","-"],"ES_society_issues" : ["ES_soc1","ES_soc2","-"],"ES_climate_pol" : ["ES_climate1","ES_climate2","ES_climate3","-"],"ES_tax_system" : ["ES_tax1","ES_tax2 Y ES_tax1"]};
 
-		// var restrictionarray = [[["ES_econ_issues","ES_econ1"],["ES_tax_system","ES_tax1"]],[["ES_econ_issues","ES_econ4"],["ES_tax_system","ES_tax1"]],[["ES_climate policy","ES_climate2"],["ES_tax_system","ES_tax1"]]];						
+		var restrictionarray = [[["ES_econ_issues","ES_econ1"],["ES_tax_system","ES_tax1"]],[["ES_econ_issues","ES_econ4"],["ES_tax_system","ES_tax1"]],[["ES_climate policy","ES_climate2"],["ES_tax_system","ES_tax1"]]];						
 	} else if (country == "United Kingdom" || country == "The United Kingdom" || country == "Reino Unido" || country == "Royaume-Uni" || country == "Vereinigtes Königreich") {         
 		var featurearray = {"UK_econ_issues" : ["UK_econ1","UK_econ2","UK_econ3","UK_econ4","-"],"UK_society_issues" : ["UK_soc1","UK_soc2","-"],"UK_climate_pol" : ["UK_climate1","UK_climate2","UK_climate3","-"],"UK_tax_system" : ["UK_tax1","UK_tax2 AND UK_tax1"]};
 
-		// var restrictionarray = [[["UK_econ_issues","UK_econ1"],["UK_tax_system","UK_tax1"]],[["UK_econ_issues","UK_econ4"],["UK_tax_system","UK_tax1"]],[["UK_climate policy","UK_climate2"],["UK_tax_system","UK_tax1"]]];	
+		var restrictionarray = [[["UK_econ_issues","UK_econ1"],["UK_tax_system","UK_tax1"]],[["UK_econ_issues","UK_econ4"],["UK_tax_system","UK_tax1"]],[["UK_climate policy","UK_climate2"],["UK_tax_system","UK_tax1"]]];	
 	}
-
-	var restrictionarray = [];	
 
 	var probabilityarray = {};		
 // Terminology clarification: 

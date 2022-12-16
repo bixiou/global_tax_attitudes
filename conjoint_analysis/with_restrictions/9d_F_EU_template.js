@@ -1,28 +1,51 @@
 Qualtrics.SurveyEngine.addOnload(function()
-{ // D
-	// Code to randomly generate conjoint profiles in a Qualtrics survey
+{// Code to randomly generate conjoint profiles in a Qualtrics survey
+
 	var country = "${q://QID130/ChoiceGroup/SelectedChoices}"
 	if (country == "France" || country == "La France" || country == "Frankreich" || country == "Francia") {
-		var featurearray = {"FR_econ_issues" : ["FR_econ1","FR_econ2","FR_econ3","FR_econ4","-"],"FR_society_issues" : ["FR_soc1","FR_soc2","-"],"FR_climate_pol" : ["FR_climate1","FR_climate2","FR_climate3","-"],"FR_tax_system" : ["FR_tax1","FR_tax2 ET FR_tax1"]};
+		var featurearray = {
+            "FR_econ_issues" : ["FR_econ1","FR_econ2","FR_econ3","FR_econ4","-"],
+            "FR_society_issues" : ["FR_soc1","FR_soc2","-"],
+            "FR_climate_pol" : ["FR_climate1","FR_climate2","FR_climate3","-"],
+            "FR_tax_system" : ["FR_tax1","FR_tax2","-"],
+            "FR_foreign_policy" : ["FR_foreign1","FR_foreign2","FR_foreign3","FR_foreign4","-"]};
 
-		// var restrictionarray = [[["FR_econ_issues","FR_econ1"],["FR_tax_system","FR_tax1"]],[["FR_econ_issues","FR_econ4"],["FR_tax_system","FR_tax1"]],[["FR_climate policy","FR_climate2"],["FR_tax_system","FR_tax1"]]];				
-	} else if (country == "Deutschland" || country == "Germany" || country == "Allemagne" || country == "Alemania") {	 
-		var featurearray = {"DE_econ_issues" : ["DE_econ1","DE_econ2","DE_econ3","DE_econ4","-"],"DE_society_issues" : ["DE_soc1","DE_soc2","-"],"DE_climate_pol" : ["DE_climate1","DE_climate2","DE_climate3","-"],"DE_tax_system" : ["DE_tax1","DE_tax2 UND DE_tax1"]};
+		var restrictionarray = [
+            [["FR_econ_issues","FR_econ1"],["FR_tax_system","FR_tax1"]],
+            [["FR_econ_issues","FR_econ1"],["FR_tax_system","-"]],
+            [["FR_econ_issues","FR_econ4"],["FR_tax_system","FR_tax1"]],
+            [["FR_econ_issues","FR_econ4"],["FR_tax_system","-"]],
+            [["FR_climate_pol","FR_climate2"],["FR_tax_system","FR_tax1"]],
+            [["FR_climate_pol","FR_climate2"],["FR_tax_system","-"]],
+            [["FR_foreign_policy","FR_foreign4"],["FR_tax_system","FR_tax1"]],
+            [["FR_foreign_policy","FR_foreign4"],["FR_tax_system","-"]],
+            [["FR_foreign_policy","FR_foreign2"],["FR_tax_system","FR_tax2"]]];
+		
+		var probabilityarray = {
+            "FR_econ_issues" : [0.333,0.111,0.111,0.333,0.112], // Don't forget to copy the adjustments to other countries!
+            "FR_society_issues" : [0.3333333333333333,0.3333333333333333,0.3333333333333333],
+            "FR_climate_pol" : [0.166,0.5,0.167,0.167],
+            "FR_tax_system" : [0.35,0.3,0.35],
+            "FR_foreign_policy" : [0.43,0.18,0.13,0.13,0.13]};					
+	} else if (country == "Deutschland" || country == "Germany" || country == "Allemagne" || country == "Alemania") {
+		var featurearray = {"DE_econ_issues" : ["DE_econ1","DE_econ2","DE_econ3","DE_econ4","-"],"DE_society_issues" : ["DE_soc1","DE_soc2","-"],"DE_climate_pol" : ["DE_climate1","DE_climate2","DE_climate3","-"],"DE_tax_system" : ["DE_tax1","DE_tax2","-"],"DE_foreign_policy" : ["DE_foreign1","DE_foreign2","DE_foreign3","DE_foreign4","-"]};
 
-		// var restrictionarray = [[["DE_econ_issues","DE_econ1"],["DE_tax_system","DE_tax1"]],[["DE_econ_issues","DE_econ4"],["DE_tax_system","DE_tax1"]],[["DE_climate policy","DE_climate2"],["DE_tax_system","DE_tax1"]]];			
+		var restrictionarray = [[["DE_econ_issues","DE_econ1"],["DE_tax_system","DE_tax1"]],[["DE_econ_issues","DE_econ1"],["DE_tax_system","-"]],[["DE_econ_issues","DE_econ4"],["DE_tax_system","DE_tax1"]],[["DE_econ_issues","DE_econ4"],["DE_tax_system","-"]],[["DE_climate_pol","DE_climate2"],["DE_tax_system","DE_tax1"]],[["DE_climate_pol","DE_climate2"],["DE_tax_system","-"]],[["DE_foreign_policy","DE_foreign4"],["DE_tax_system","DE_tax1"]],[["DE_foreign_policy","DE_foreign4"],["DE_tax_system","-"]],[["DE_foreign_policy","DE_foreign2"],["DE_tax_system","DE_tax2"]]];
+		
+		var probabilityarray = {"DE_econ_issues" : [0.2,0.2,0.2,0.2,0.2],"DE_society_issues" : [0.3333333333333333,0.3333333333333333,0.3333333333333333],"DE_climate_pol" : [0.25,0.25,0.25,0.25],"DE_tax_system" : [0.25,0.5,0.25],"DE_foreign_policy" : [0.42857142857142855,0.14285714285714285,0.14285714285714285,0.14285714285714285,0.14285714285714285]};								 
 	} else if (country == "Spain" || country == "España" || country == "Espagne" || country == "Spanien")  {
-		var featurearray = {"ES_econ_issues" : ["ES_econ1","ES_econ2","ES_econ3","ES_econ4","-"],"ES_society_issues" : ["ES_soc1","ES_soc2","-"],"ES_climate_pol" : ["ES_climate1","ES_climate2","ES_climate3","-"],"ES_tax_system" : ["ES_tax1","ES_tax2 Y ES_tax1"]};
+		var featurearray = {"ES_econ_issues" : ["ES_econ1","ES_econ2","ES_econ3","ES_econ4","-"],"ES_society_issues" : ["ES_soc1","ES_soc2","-"],"ES_climate_pol" : ["ES_climate1","ES_climate2","ES_climate3","-"],"ES_tax_system" : ["ES_tax1","ES_tax2","-"],"ES_foreign_policy" : ["ES_foreign1","ES_foreign2","ES_foreign3","ES_foreign4","-"]};
 
-		// var restrictionarray = [[["ES_econ_issues","ES_econ1"],["ES_tax_system","ES_tax1"]],[["ES_econ_issues","ES_econ4"],["ES_tax_system","ES_tax1"]],[["ES_climate policy","ES_climate2"],["ES_tax_system","ES_tax1"]]];						
+		var restrictionarray = [[["ES_econ_issues","ES_econ1"],["ES_tax_system","ES_tax1"]],[["ES_econ_issues","ES_econ1"],["ES_tax_system","-"]],[["ES_econ_issues","ES_econ4"],["ES_tax_system","ES_tax1"]],[["ES_econ_issues","ES_econ4"],["ES_tax_system","-"]],[["ES_climate_pol","ES_climate2"],["ES_tax_system","ES_tax1"]],[["ES_climate_pol","ES_climate2"],["ES_tax_system","-"]],[["ES_foreign_policy","ES_foreign4"],["ES_tax_system","ES_tax1"]],[["ES_foreign_policy","ES_foreign4"],["ES_tax_system","-"]],[["ES_foreign_policy","ES_foreign2"],["ES_tax_system","ES_tax2"]]];
+		
+		var probabilityarray = {"ES_econ_issues" : [0.2,0.2,0.2,0.2,0.2],"ES_society_issues" : [0.3333333333333333,0.3333333333333333,0.3333333333333333],"ES_climate_pol" : [0.25,0.25,0.25,0.25],"ES_tax_system" : [0.25,0.5,0.25],"ES_foreign_policy" : [0.42857142857142855,0.14285714285714285,0.14285714285714285,0.14285714285714285,0.14285714285714285]};								
 	} else if (country == "United Kingdom" || country == "The United Kingdom" || country == "Reino Unido" || country == "Royaume-Uni" || country == "Vereinigtes Königreich") {         
-		var featurearray = {"UK_econ_issues" : ["UK_econ1","UK_econ2","UK_econ3","UK_econ4","-"],"UK_society_issues" : ["UK_soc1","UK_soc2","-"],"UK_climate_pol" : ["UK_climate1","UK_climate2","UK_climate3","-"],"UK_tax_system" : ["UK_tax1","UK_tax2 AND UK_tax1"]};
+		var featurearray = {"UK_econ_issues" : ["UK_econ1","UK_econ2","UK_econ3","UK_econ4","-"],"UK_society_issues" : ["UK_soc1","UK_soc2","-"],"UK_climate_pol" : ["UK_climate1","UK_climate2","UK_climate3","-"],"UK_tax_system" : ["UK_tax1","UK_tax2","-"],"UK_foreign_policy" : ["UK_foreign1","UK_foreign2","UK_foreign3","UK_foreign4","-"]};
 
-		// var restrictionarray = [[["UK_econ_issues","UK_econ1"],["UK_tax_system","UK_tax1"]],[["UK_econ_issues","UK_econ4"],["UK_tax_system","UK_tax1"]],[["UK_climate policy","UK_climate2"],["UK_tax_system","UK_tax1"]]];	
+		var restrictionarray = [[["UK_econ_issues","UK_econ1"],["UK_tax_system","UK_tax1"]],[["UK_econ_issues","UK_econ1"],["UK_tax_system","-"]],[["UK_econ_issues","UK_econ4"],["UK_tax_system","UK_tax1"]],[["UK_econ_issues","UK_econ4"],["UK_tax_system","-"]],[["UK_climate_pol","UK_climate2"],["UK_tax_system","UK_tax1"]],[["UK_climate_pol","UK_climate2"],["UK_tax_system","-"]],[["UK_foreign_policy","UK_foreign4"],["UK_tax_system","UK_tax1"]],[["UK_foreign_policy","UK_foreign4"],["UK_tax_system","-"]],[["UK_foreign_policy","UK_foreign2"],["UK_tax_system","UK_tax2"]]];
+		
+		var probabilityarray = {"UK_econ_issues" : [0.2,0.2,0.2,0.2,0.2],"UK_society_issues" : [0.3333333333333333,0.3333333333333333,0.3333333333333333],"UK_climate_pol" : [0.25,0.25,0.25,0.25],"UK_tax_system" : [0.25,0.5,0.25],"UK_foreign_policy" : [0.42857142857142855,0.14285714285714285,0.14285714285714285,0.14285714285714285,0.14285714285714285]};				
 	}
-
-	var restrictionarray = [];	
-
-	var probabilityarray = {};		
 // Terminology clarification: 
 // Task = Set of choices presented to respondent in a single screen (i.e. pair of candidates)
 // Profile = Single list of attributes in a given task (i.e. candidate)
@@ -69,9 +92,9 @@ function weighted_randomize(prob_array, at_key)
 	return(outInt);
 
 }
-
+                    
 // Indicator for whether weighted randomization should be enabled or not
-var weighted = 0;
+var weighted = 1;
 
 // K = Number of tasks displayed to the respondent
 var K = 1;
@@ -83,7 +106,7 @@ var N = 2;
 var num_attributes = featurearray.length;
 
 // Should duplicate profiles be rejected?
-var noDuplicateProfiles = false;
+var noDuplicateProfiles = true;
 
 var attrconstraintarray = [];
 
@@ -136,10 +159,10 @@ for (var h = 0; h < featureArrayKeys.length; h++){
 
 // Initialize the array returned to the user
 // Naming Convention
-// Level Name: D-[task number]-[profile number]-[attribute number]
-// Attribute Name: D-[task number]-[attribute number]
-// Example: D-1-3-2, Returns the level corresponding to Task 1, Profile 3, Attribute 2 
-// D-3-3, Returns the attribute name corresponding to Task 3, Attribute 3
+// Level Name: F-[task number]-[profile number]-[attribute number]
+// Attribute Name: F-[task number]-[attribute number]
+// Example: F-1-3-2, Returns the level corresponding to Task 1, Profile 3, Attribute 2 
+// F-3-3, Returns the attribute name corresponding to Task 3, Attribute 3
 
 var returnarray = {};
 
@@ -169,7 +192,7 @@ for(var p = 1; p <= K; p++){
 				attr = attr + 1;
 	
 				// Create key for attribute name
-				var attr_key = "D-" + p + "-" + attr;
+				var attr_key = "F-" + p + "-" + attr;
 	
                 // Store attribute name in returnarray
                 returnarray[attr_key] = attr_name;
@@ -192,7 +215,7 @@ for(var p = 1; p <= K; p++){
 				profile_dict[attr_name] = chosen_level;
 	
 				// Create key for level in $returnarray
-				var level_key = "D-" + p + "-" + i + "-" + attr;
+				var level_key = "F-" + p + "-" + i + "-" + attr;
 	
 				// Store selected level in $returnarray
 				returnarray[level_key] = chosen_level;
@@ -238,8 +261,8 @@ for(var p = 1; p <= K; p++){
                             attrTemp = attrTemp + 1;
     
                             // Create keys 
-                            var level_key_profile = "D-" + p + "-" + i + "-" + attrTemp;
-                            var level_key_check = "D-" + p + "-" + z + "-" + attrTemp;
+                            var level_key_profile = "F-" + p + "-" + i + "-" + attrTemp;
+                            var level_key_check = "F-" + p + "-" + z + "-" + attrTemp;
     						
                             // If attributes are different, declare not identical
                             if (returnarray[level_key_profile] != returnarray[level_key_check]){
@@ -265,7 +288,6 @@ var returnarrayKeys = Object.keys(returnarray);
 for (var pr = 0; pr < returnarrayKeys.length; pr++){
        Qualtrics.SurveyEngine.setEmbeddedData(returnarrayKeys[pr], returnarray[returnarrayKeys[pr]]); 
 }
-
 
 
 

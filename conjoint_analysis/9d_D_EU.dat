@@ -1,0 +1,11 @@
+Attributes
+econ_issues:econ1,econ2,econ3,econ4,-
+society_issues:soc1,soc2,-
+climate_pol:climate1,climate2,climate3,-
+tax_system:tax1,tax2 AND tax1
+Weights
+econ_issues:0.2,0.2,0.2,0.2,0.2
+society_issues:0.3333333333333333,0.3333333333333333,0.3333333333333333
+climate_pol:0.25,0.25,0.25,0.25
+tax_system:0.5,0.5
+Restrictions

@@ -1,28 +1,5 @@
-Qualtrics.SurveyEngine.addOnload(function()
-{ // D
-	// Code to randomly generate conjoint profiles in a Qualtrics survey
-	var country = "${q://QID130/ChoiceGroup/SelectedChoices}"
-	if (country == "France" || country == "La France" || country == "Frankreich" || country == "Francia") {
-		var featurearray = {"FR_econ_issues" : ["FR_econ1","FR_econ2","FR_econ3","FR_econ4","-"],"FR_society_issues" : ["FR_soc1","FR_soc2","-"],"FR_climate_pol" : ["FR_climate1","FR_climate2","FR_climate3","-"],"FR_tax_system" : ["FR_tax1","FR_tax2 ET FR_tax1"]};
+// Code to randomly generate conjoint profiles in a Qualtrics survey
 
-		// var restrictionarray = [[["FR_econ_issues","FR_econ1"],["FR_tax_system","FR_tax1"]],[["FR_econ_issues","FR_econ4"],["FR_tax_system","FR_tax1"]],[["FR_climate policy","FR_climate2"],["FR_tax_system","FR_tax1"]]];				
-	} else if (country == "Deutschland" || country == "Germany" || country == "Allemagne" || country == "Alemania") {	 
-		var featurearray = {"DE_econ_issues" : ["DE_econ1","DE_econ2","DE_econ3","DE_econ4","-"],"DE_society_issues" : ["DE_soc1","DE_soc2","-"],"DE_climate_pol" : ["DE_climate1","DE_climate2","DE_climate3","-"],"DE_tax_system" : ["DE_tax1","DE_tax2 UND DE_tax1"]};
-
-		// var restrictionarray = [[["DE_econ_issues","DE_econ1"],["DE_tax_system","DE_tax1"]],[["DE_econ_issues","DE_econ4"],["DE_tax_system","DE_tax1"]],[["DE_climate policy","DE_climate2"],["DE_tax_system","DE_tax1"]]];			
-	} else if (country == "Spain" || country == "España" || country == "Espagne" || country == "Spanien")  {
-		var featurearray = {"ES_econ_issues" : ["ES_econ1","ES_econ2","ES_econ3","ES_econ4","-"],"ES_society_issues" : ["ES_soc1","ES_soc2","-"],"ES_climate_pol" : ["ES_climate1","ES_climate2","ES_climate3","-"],"ES_tax_system" : ["ES_tax1","ES_tax2 Y ES_tax1"]};
-
-		// var restrictionarray = [[["ES_econ_issues","ES_econ1"],["ES_tax_system","ES_tax1"]],[["ES_econ_issues","ES_econ4"],["ES_tax_system","ES_tax1"]],[["ES_climate policy","ES_climate2"],["ES_tax_system","ES_tax1"]]];						
-	} else if (country == "United Kingdom" || country == "The United Kingdom" || country == "Reino Unido" || country == "Royaume-Uni" || country == "Vereinigtes Königreich") {         
-		var featurearray = {"UK_econ_issues" : ["UK_econ1","UK_econ2","UK_econ3","UK_econ4","-"],"UK_society_issues" : ["UK_soc1","UK_soc2","-"],"UK_climate_pol" : ["UK_climate1","UK_climate2","UK_climate3","-"],"UK_tax_system" : ["UK_tax1","UK_tax2 AND UK_tax1"]};
-
-		// var restrictionarray = [[["UK_econ_issues","UK_econ1"],["UK_tax_system","UK_tax1"]],[["UK_econ_issues","UK_econ4"],["UK_tax_system","UK_tax1"]],[["UK_climate policy","UK_climate2"],["UK_tax_system","UK_tax1"]]];	
-	}
-
-	var restrictionarray = [];	
-
-	var probabilityarray = {};		
 // Terminology clarification: 
 // Task = Set of choices presented to respondent in a single screen (i.e. pair of candidates)
 // Profile = Single list of attributes in a given task (i.e. candidate)
@@ -69,6 +46,13 @@ function weighted_randomize(prob_array, at_key)
 	return(outInt);
 
 }
+                    
+
+var featurearray = {"Economic issues" : ["£150 billion to upgrade schools, hospitals, care homes and council houses","Real Living Wage of £11 per hour for all workers aged 16 and over","Reduce the average full-time weekly working hours to 32","Re-establish neighbourhood policing and recruit 2,000 more frontline officers","-"],"Societal issues" : ["Strict enforcement of immigration and border legislation","Legalization of cannabis","-"],"Climate policy" : ["Ban of most polluting vehicles in city centers","Insulation plan","Ban the sale of new combustion-engine cars by 2030","-"],"Tax system" : ["National redistribution scheme","Wealth tax AND National redistribution scheme"]};
+
+var restrictionarray = [[["Economic issues","£150 billion to upgrade schools, hospitals, care homes and council houses"],["Tax system","National redistribution scheme"]],[["Economic issues","Re-establish neighbourhood policing and recruit 2,000 more frontline officers"],["Tax system","National redistribution scheme"]],[["Climate policy","Insulation plan"],["Tax system","National redistribution scheme"]]];
+
+var probabilityarray = {};
 
 // Indicator for whether weighted randomization should be enabled or not
 var weighted = 0;
@@ -83,7 +67,7 @@ var N = 2;
 var num_attributes = featurearray.length;
 
 // Should duplicate profiles be rejected?
-var noDuplicateProfiles = false;
+var noDuplicateProfiles = true;
 
 var attrconstraintarray = [];
 
@@ -268,18 +252,3 @@ for (var pr = 0; pr < returnarrayKeys.length; pr++){
 
 
 
-
-
-});
-
-Qualtrics.SurveyEngine.addOnReady(function()
-{
-	/*Place your JavaScript here to run when the page is fully displayed*/
-
-});
-
-Qualtrics.SurveyEngine.addOnUnload(function()
-{
-	/*Place your JavaScript here to run when the page is unloaded*/
-
-});

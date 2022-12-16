@@ -1,3 +1,5 @@
+Qualtrics.SurveyEngine.addOnload(function()
+{ // F
 // Code to randomly generate conjoint profiles in a Qualtrics survey
 
 // Terminology clarification: 
@@ -48,9 +50,9 @@ function weighted_randomize(prob_array, at_key)
 }
                     
 
-var featurearray = {"Economic issues" : ["Student loan forgiveness","$15 minimum wage","Universal childcare/pre-K","Funding affordable housing","-"],"Societal issues" : ["Expanding the Supreme Court","Handgun ban","Making abortion a right at the federal level","-"],"Climate policy" : ["Coal exit","Trillion dollar investment in clean transportation infrastructure and building insulation","Ban the sale of new combustion-engine cars by 2030","-"],"Tax system" : ["National redistribution scheme","Increase corporate income tax rate from 21% to 28%","Wealth tax","-"],"Foreign policy" : ["Global climate scheme","Global tax on millionaires","Global democratic assembly on climate change","Doubling foreign aid","-"]};
+var featurearray = {"Economic issues" : ["Student loan forgiveness","$15 minimum wage","Universal childcare/pre-K","Funding affordable housing","-"],"Societal issues" : ["Expanding the Supreme Court","Handgun ban","Making abortion a right at the federal level","-"],"Climate policy" : ["Coal exit","Trillion dollar investment in clean transportation infrastructure and building insulation","Ban the sale of new combustion-engine cars by 2030","-"],"Tax system" : ["National redistribution scheme","Wealth tax","Increase corporate income tax rate from 21% to 28%","-"],"Foreign policy" : ["Global climate scheme","Global tax on millionaires","Global democratic assembly on climate change","Doubling foreign aid","-"]};
 
-var restrictionarray = [[["Economic issues","Student loan forgiveness"],["Tax system","National redistribution scheme"]],[["Economic issues","Universal childcare/pre-K"],["Tax system","National redistribution scheme"]],[["Economic issues","Universal childcare/pre-K"],["Tax system","-"]],[["Economic issues","Funding affordable housing"],["Tax system","National redistribution scheme"]],[["Economic issues","Funding affordable housing"],["Tax system","-"]],[["Climate policy","Trillion dollar investment in clean transportation infrastructure and building insulation"],["Tax system","National redistribution scheme"]],[["Climate policy","Trillion dollar investment in clean transportation infrastructure and building insulation"],["Tax system","-"]],[["Foreign policy","Doubling foreign aid"],["Tax system","National redistribution scheme"]],[["Foreign policy","Doubling foreign aid"],["Tax system","-"]],[["Foreign policy","Global tax on millionaires"],["Tax system","Wealth tax"]],[["Tax system","-"],["Economic issues","Student loan forgiveness"]]];
+var restrictionarray = [];
 
 var probabilityarray = {"Economic issues" : [0.2,0.2,0.2,0.2,0.2],"Societal issues" : [0.25,0.25,0.25,0.25],"Climate policy" : [0.25,0.25,0.25,0.25],"Tax system" : [0.25,0.25,0.25,0.25],"Foreign policy" : [0.42857142857142855,0.14285714285714285,0.14285714285714285,0.14285714285714285,0.14285714285714285]};
 
@@ -252,3 +254,16 @@ for (var pr = 0; pr < returnarrayKeys.length; pr++){
 
 
 
+});
+
+Qualtrics.SurveyEngine.addOnReady(function()
+{
+	/*Place your JavaScript here to run when the page is fully displayed*/
+
+});
+
+Qualtrics.SurveyEngine.addOnUnload(function()
+{
+	/*Place your JavaScript here to run when the page is unloaded*/
+
+});
