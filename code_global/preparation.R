@@ -2,6 +2,7 @@
 
 source(".Rprofile")
 source("relabel_rename.R")
+# source("conjoint_analysis.R") # TODO
 
 ##### Income quantiles #####
 qinc <- read.csv("../data/EU_income_deciles.tsv", sep = "\t") # equivalised disposable income in LCU
@@ -121,129 +122,6 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   return(e)
 }
 
-convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores_dummies = FALSE, efa = FALSE, combine_age_50 = T) {
-  text_pnr <- c("US" = "I don't know", "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
-                "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
-                "FR" = "Je ne sais pas", "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Préfère ne pas le dire",
-                "UK" = "I don't know", "CN" = "我不知道", "DE" = "Ich weiß es nicht")
-  text_yes <- c("US" = "Yes", 
-                "FR" = "Oui")
-  text_no <- c("No")
-  
-  variables_duration <<- names(e)[grepl('duration', names(e))]
-  for (i in intersect(c(variables_duration, "hh_size", "Nb_children__14", "zipcode", "donation"#, "age"
-  ), names(e))) {
-    lab <- label(e[[i]])
-    e[[i]] <- as.numeric(as.vector( gsub("[^0-9\\.]", "", e[[i]]))) # /!\ this may create an issue with UK zipcodes as it removes letters
-    label(e[[i]]) <- lab
-  }
-  for (v in variables_duration) e[[v]] <- e[[v]]/60
-
-  for (j in intersect(c("couple"), names(e))) {
-    temp <- 1*(e[j][[1]] %in% text_yes) - 0.1*(e[j][[1]] %in% text_pnr) # - (e[j][[1]] %in% text_no)
-    temp[is.na(e[j][[1]])] <- NA
-    e[j][[1]] <- as.item(temp, labels = structure(c(0,-0.1,1), names = c("No","PNR","Yes")),
-                         missing.values = c("",NA,"PNR"), annotation=attr(e[j][[1]], "label"))
-    # e[j][[1]] <- as.item(as.character(e[j][[1]]), labels = structure(yes_no_names, names = c("NA","No","PNR","Yes")),
-    #             missing.values = c("","PNR"), annotation=attr(e[j][[1]], "label"))
-  }
-  
-  for (j in intersect(c(#"gender", "region", "education", "employment_status", "income", "wealth", "survey_biased", "vote", 
-    ), names(e))) {
-    e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label"))) 
-  } 
-  
-  for (j in names(e)) {
-    if ((grepl('race_|home_', j)) & !(grepl('_other$|order_', j))) {
-      temp <- label(e[[j]])
-      e[[j]] <- e[[j]]!="" # e[[j]][e[[j]]!=""] <- TRUE
-      e[[j]][is.na(e[[j]])] <- FALSE
-      label(e[[j]]) <- temp
-    }
-  }
-  
-  if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% text_a_little
-  
-  for (v in intersect(names(e), c(variables_burden_sharing, variables_burden_share, variables_policies_effect, variables_policies_fair, "should_fight_CC", "can_trust_people", "can_trust_govt", "trust_public_spending", "CC_problem"))) { 
-    temp <-  2 * (e[[v]] %in% text_strongly_agree) + (e[[v]] %in% text_somewhat_agree) - (e[[v]] %in% text_somewhat_disagree) - 2 * (e[[v]] %in% text_strongly_disagree) - 0.1 * (e[[v]] %in% text_pnr | is.na(e[[v]]))
-    e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                                               names = c("Strongly disagree","Somewhat disagree","Neither agree or disagree","Somewhat agree","Strongly agree","PNR")),
-                      missing.values=-0.1, annotation=Label(e[[v]]))
-  }
-  
-  e$owner <- e$home_owner == T | e$home_landlord == T
-  label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
-  
-  for (v in c(variables_policy , variables_tax, variables_support, "insulation_support", "global_quota", variables_gas_spike, variables_fine_support)) {
-    if (v %in% names(e)) {
-      temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr) # | is.na(e[[v]]))
-      temp[is.na(e[[v]])] <- NA
-      e[[v]] <- as.item(temp, labels = structure(c(-2:2,-0.1),
-                                                 names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support","PNR")),
-                        missing.values=c(-0.1,NA), annotation=Label(e[[v]])) 
-    } }
-  
-  if ("interest_politics" %in% names(e)) temp <-  (e$interest_politics %in% text_interest_politics_lot) - (e$interest_politics %in% text_interest_politics_no) - 0.1 * (e$interest_politics %in% text_pnr)
-  if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-1:1,-0.1),
-                                                                                                 names = c("Not really or not at all","A little", "A lot","PNR")),
-                                                                        missing.values=-0.1, annotation=Label(e$interest_politics))
-  
-  if ("vote_participation" %in% names(e)) {
-    e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
-    if ("vote_voters_2016" %in% names(e)) {
-      e$vote_participation_2016[e$vote_participation_2016 %in% text_vote_participation_no_right] <- "No right to vote"
-      e$vote_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"] <- e$vote_voters_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"]
-      e$vote_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"] <- e$vote_non_voters_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"]
-      e$vote_participation_2016 <- as.item(as.character(e$vote_participation_2016), missing.values = 'PNR', annotation=Label(e$vote_participation_2016))
-      e$vote_2016 <- as.item(as.character(e$vote_2016), missing.values = 'PNR', annotation=Label(e$vote_2016))
-      e$vote_2016_factor <- as.factor(e$vote_2016)
-      e$vote_2016_factor <- relevel(relevel(e$vote_2016_factor, "Stein"), "Clinton")
-    }
-    e$vote[!is.na(e$vote_voters) & e$vote_participation=="Yes"] <- e$vote_voters[!is.na(e$vote_voters) & e$vote_participation=="Yes"]
-    e$vote[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"] <- e$vote_non_voters[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"]
-    e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
-    e$vote <- as.item(as.character(e$vote), missing.values = 'PNR', annotation=Label(e$vote))
-    e$voted <- e$vote_participation == 'Yes'
-    label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
-  }
-  
-  e$survey_biased[e$survey_biased %in% text_survey_biased_pro_envi] <- "Yes, pro environment"
-  e$survey_biased[e$survey_biased %in% text_survey_biased_anti_envi] <- "Yes, anti environment"
-  e$survey_biased[e$survey_biased %in% text_survey_biased_left] <- "Yes, left"
-  e$survey_biased[e$survey_biased %in% text_survey_biased_right] <- "Yes, right"
-  e$survey_biased[e$survey_biased %in% text_survey_biased_no] <- "No" 
-  if ("Yes, right" %in% levels(as.factor(e$survey_biased))) e$survey_biased <- relevel(relevel(as.factor(e$survey_biased), "Yes, right"), "No")
-  e$survey_biased_yes <- e$survey_biased != 'No'
-  e$survey_biased_left <- e$survey_biased == "Yes, left"
-  e$survey_biased_right <- e$survey_biased == "Yes, right"
-  label(e$survey_biased_yes) <- "survey_biased_yes: T/F Finds the survey biased (survey_biased != No)"
-  label(e$survey_biased_left) <- "survey_biased_left: T/F Finds the survey left-wing biased (survey_biased == Yes, left)"
-  label(e$survey_biased_right) <- "survey_biased_right: T/F Finds the survey right-wing biased (survey_biased == Yes, right)"
-  
-  print("all_policies undefined")
-  all_policies <- c(variables_policies_support, "standard_public_transport_support", "tax_transfers_progressive_support", variables_fine_support, variables_policy, variables_tax, "global_quota", variables_global_policies, "insulation_support", variables_beef, variables_policy_additional) # include also should_fight_CC, burden_share, if_other_do_less/more, variables_flight_quota ?
-  
-  e$share_policies_supported <- rowMeans(e[, intersect(all_policies, names(e))] > 0, na.rm = T)
-  label(e$share_policies_supported) <- "share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent."
-  
-  for (i in seq_along(variables_matrices)) if (length(intersect(variables_matrices[[i]], names(e))) > 0) {
-    e[[paste0("spread_", names(variables_matrices)[i])]] <- apply(X = e[, intersect(variables_matrices[[i]], names(e))], MARGIN = 1, FUN = function(v) return(max(v, na.rm = T) - min(v, na.rm = T)))
-    e[[paste0("all_same_", names(variables_matrices)[i])]] <- e[[paste0("spread_", names(variables_matrices)[i])]] == 0
-    label(e[[paste0("spread_", names(variables_matrices)[i])]]) <- paste0("spread_", names(variables_matrices)[i], ": Spread between max and min value in the respondent's answers to the matrix ", names(variables_matrices)[i])
-    label(e[[paste0("all_same_", names(variables_matrices)[i])]]) <- paste0("all_same_", names(variables_matrices)[i], ": T/F Indicator that all answers to the matrix ", names(variables_matrices)[i], " are identical.")
-  }
-  variables_spread <<- intersect(paste0("spread_", names(variables_matrices)), names(e))
-  variables_all_same <<- intersect(paste0("all_same_", names(variables_matrices)), names(e))
-  names_matrices <<- gsub("all_same_", "", variables_all_same)
-  e$mean_spread <- rowMeans(e[, variables_spread], na.rm = T)
-  e$share_all_same <- rowMeans(e[, variables_all_same], na.rm = T)
-  label(e$mean_spread) <- paste0("mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: ", paste(names_matrices, collapse = ", "), "). -Inf indicates that all answers were NA.")
-  label(e$share_all_same) <- paste0("mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: ",  paste(names_matrices, collapse = ", "), ").")
-  
-  print(paste("convert: success", country))
-  return(e)
-}
-
 # 26% Les pays pauvres s'en sortiront mieux par eux-mêmes qu'avec notre aide
 # 37% Je serais favorable si l'aide allait directement aux plus pauvres, et pas aux États
 # 26% Je serais favorable si tous les pays riches contribuaient autant que la France
@@ -310,6 +188,272 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   return(e)
 }
 
+convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores_dummies = FALSE, efa = FALSE, combine_age_50 = T) {
+  text_pnr <- c("US" = "I don't know", "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
+                "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
+                "FR" = "Je ne sais pas", "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Préfère ne pas le dire",
+                "UK" = "I don't know", "DE" = "Ich weiß es nicht")
+  text_yes <- c("US" = "Yes", 
+                "FR" = "Oui")
+  text_no <- c("No")
+  text_intensity <- c("Not at all", "A little", "Moderately", "A little", "A great deal")
+  text_support <- c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support")
+  text_importance <- c("Not at all important", "Not so important", "Quite important", "Very important")
+  text_problem <- c("Not an important issue for me", "An issue but there are other priorities", "An issue but we do already what we can", "An important issue, we should do more", "One of the most pressing issue of our time")
+  foreign_aid_amounts <- c(.1, .2, .5, 1.0, 1.7, 2.6, 4, 6, 9, 13, 25)
+  foreign_aid_means <- c(0, .15, .4, .8, 1.4, 2.2, 3.35, 5, 7.5, 11, 19, 30)
+  names(foreign_aid_means) <- c(foreign_aid_amounts, 30) # sub(".0", "", temp)
+  
+  if ("petition_gcs" %in% names(e)) {
+    e$branch_petition[!is.na(e$petition_gcs)] <- "gcs"
+    e$branch_petition[!is.na(e$petition_nr)] <- "nr"
+    for (m in c("gcs", "nr")) e$petition[e$branch_petition == m] <- e[[paste0("petition_", m)]][e$branch_petition == m]
+    label(e$branch_petition) <- "branch_petition: gcs/nr Whether the petition question is on the global climate scheme or national redistribution."
+    label(e$petition) <- "petition: Yes/No Willing to sign a petition on gcs/nr (depends on branch_petition)."
+  }
+  
+  variables_support <<- names(e)[grepl('support', names(e))]
+  variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|foreign_aid|_tax_", names(e))]
+  variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
+  variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
+  variables_support_binary <<- c("gcs_support", "nr_support", "support_igr")
+  variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
+  variables_petition <<- names(e)[grepl('petition', names(e))]
+  variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
+  variables_problem <<- names(e)[grepl('problem_', names(e))]
+  variables_win_lose <<- names(e)[grepl('win_lose', names(e))]
+  variables_foreign_aid_amount <<- c("foreign_aid_belief", "foreign_aid_preferred_no_info", "foreign_aid_preferred_info", "foreign_aid_preferred")
+  variables_duration <<- names(e)[grepl('duration', names(e))]
+  variables_donation <<- c("donation_nation", "donation_africa", "donation")
+  variables_list_exp <<- names(e)[grepl('list_exp', names(e))]
+  variables_belief <<- c("gcs_belief", "nr_belief")
+  variables_points <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
+  
+  variables_foreign_aid_raise <<- names(e)[grepl('foreign_aid_raise_how', names(e))]
+  variables_foreign_aid_reduce <<- names(e)[grepl('foreign_aid_reduce_how', names(e))]
+  variables_foreign_aid_no_ <<- names(e)[grepl('foreign_aid_no_', names(e))]
+  variables_foreign_aid_condition <<- names(e)[grepl('foreign_aid_condition', names(e))]
+  
+  variables_conjoint <<- names(e)[grepl('conjoint_', names(e)) & !grepl("order|duration", names(e))]
+  variables_conjoint_a <<- c("conjoint_irg_ir")
+  variables_conjoint_b <<- c("conjoint_ir_gr", "conjoint_r_igr", "conjoint_gr_r", "conjoint_ir_r")
+  variables_conjoint_c <<- c("conjoint_left_right", "conjoint_leftg_right")
+  variables_conjoint_d <<- c("conjoint_left_a_b", "conjoint_left_ag_b")
+  conjoint_position_g <<- c("A", "B", "B", "A", "None", "None", "A", "Random", "A")
+  names(conjoint_position_g) <<- variables_conjoint
+  
+  variables_matrices <<- list("global_policies" = variables_global_policies,
+                              "climate_policies" = variables_climate_policies,
+                              "problem" = variables_problem,
+                              "gcs_important" = variables_gcs_important)
+  
+  for (i in intersect(c(variables_duration, "hh_size", "Nb_children__14", "zipcode", variables_donation, variables_belief, variables_list_exp, variables_points, "global_tax_global_share" #, "age"
+  ), names(e))) {
+    lab <- label(e[[i]])
+    e[[i]] <- as.numeric(as.vector( gsub("[^0-9\\.]", "", e[[i]]))) # /!\ this may create an issue with UK zipcodes as it removes letters
+    label(e[[i]]) <- lab
+  }
+  for (v in variables_duration) e[[v]] <- e[[v]]/60
+  
+  for (j in intersect(c("couple", variables_petition, variables_support_binary), names(e))) {
+    temp <- 1*(e[j][[1]] %in% text_yes) - 0.1*(e[j][[1]] %in% text_pnr) # - (e[j][[1]] %in% text_no)
+    temp[is.na(e[j][[1]])] <- NA
+    e[j][[1]] <- as.item(temp, labels = structure(c(0,-0.1,1), names = c("No","PNR","Yes")),
+                         missing.values = c("",NA,"PNR"), annotation=attr(e[j][[1]], "label"))
+    # e[j][[1]] <- as.item(as.character(e[j][[1]]), labels = structure(yes_no_names, names = c("NA","No","PNR","Yes")),
+    #             missing.values = c("","PNR"), annotation=attr(e[j][[1]], "label"))
+  }
+  
+  for (j in intersect(c("gender", "region", "education", "employment_status", "income", "wealth", "survey_biased", "vote" # TODO
+  ), names(e))) {
+    e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label"))) 
+  } 
+  
+  for (j in names(e)) {
+    if ((grepl('race_|home_|foreign_aid_raise_how|foreign_aid_reduce_how|foreign_aid_condition|foreign_aid_no_', j)) & !(grepl('_other$|order_', j))) {
+      temp <- label(e[[j]])
+      e[[j]] <- e[[j]]!="" # e[[j]][e[[j]]!=""] <- TRUE
+      e[[j]][is.na(e[[j]])] <- FALSE
+      label(e[[j]]) <- temp
+    }
+  }
+  
+  if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% c("A little") # TODO
+  
+  e$owner <- e$home_owner == T | e$home_landlord == T
+  label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
+  
+  for (v in c(variables_support_likert)) {
+    if (v %in% names(e)) {
+      temp <-  temp <- 2 * (e[[v]] %in% text_support[5]) + (e[[v]] %in% text_support[4]) - (e[[v]] %in% text_support[2]) - 2 * (e[[v]] %in% text_support[1])
+      temp[is.na(e[[v]])] <- NA
+      e[[v]] <- as.item(temp, labels = structure(c(-2:2), names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support")), missing.values=c(NA), annotation=Label(e[[v]])) 
+    } }
+  
+  for (v in intersect(variables_gcs_important, names(e))) {
+    temp <-  temp <- 2 * (e[[v]] %in% text_importance[4]) + (e[[v]] %in% text_importance[3]) - (e[[v]] %in% text_importance[2]) - 2 * (e[[v]] %in% text_importance[1])
+    temp[is.na(e[[v]])] <- NA
+    e[[v]] <- as.item(temp, labels = structure(c(-2:2), names = sub(" important", "", text_importance)), missing.values=c(NA), annotation=Label(e[[v]]))    
+  }
+  
+  for (v in intersect(variables_problem, names(e))) {
+    temp <-  temp <- 2 * (e[[v]] %in% text_problem[5]) + (e[[v]] %in% text_problem[4]) - (e[[v]] %in% text_problem[2]) - 2 * (e[[v]] %in% text_problem[1])
+    temp[is.na(e[[v]])] <- NA
+    e[[v]] <- as.item(temp, labels = structure(c(-2:2), names = c("Not an issue", "Not a priority", "Already addressed", "Important, should do more", "Most pressing issue")), missing.values=c(NA), annotation=Label(e[[v]]))    
+  }
+  
+  if ("foreign_aid_preferred_info" %in% names(e)) {
+    e$branch_foreign_aid_preferred[!is.na(e$foreign_aid_preferred_info)] <- "Info"
+    e$branch_foreign_aid_preferred[!is.na(e$foreign_aid_preferred_no_info)] <- "No info"
+    e$info_foreign_aid <- e$branch_foreign_aid_preferred == "Info"
+    e$foreign_aid_preferred[e$info_foreign_aid == T] <- e$foreign_aid_preferred_info[e$info_foreign_aid == T]
+    e$foreign_aid_preferred[e$info_foreign_aid == FALSE] <- e$foreign_aid_preferred_no_info[e$info_foreign_aid == FALSE]
+    label(e$branch_foreign_aid_preferred) <- "branch_foreign_aid_preferred: Info/No info Whether the info on the actual amount of foreign aid was given before asking the preferred amount."
+    label(e$info_foreign_aid) <- "info_foreign_aid: T/F Whether the info on the actual amount of foreign aid was given before asking the preferred amount."
+    label(e$foreign_aid_preferred) <- "foreign_aid_preferred: 0/.15/.4/.8/1.4/2.2/3.35/5/7.5/11/19/30 Amount of preferred foreign aid (mean of interval in % of nation's public spending). Depending on info_foreign_aid, info on actual amount is randomly given or not beforehand."
+  }
+  
+  for (v in intersect(variables_foreign_aid_amount, names(e))) {
+    e[[paste0(v, "_original")]] <- e[[v]]
+    temp <- as.numeric(gsub("[^0-9\\.]", "", gsub(".*to", "", e[[v]])))
+    temp[grepl("More", e[[v]])] <- 30
+    temp <- foreign_aid_means[sub(".0", "", temp)]
+    e[[v]] <- as.item(temp, labels = structure(c(foreign_aid_means), names = c("< .1", ".1 - .2", ".3 - .5", ".6 - 1", "1.1 - 1.7", "1.8 - 2.6", "2.7 - 4", "4.1 - 6", "6.1 - 9", "9.1 - 13", "13.1 - 25", "> 25")# foreign_aid_amounts
+    ), annotation = Label(e[[v]])) # TODO
+  }
+  
+  for (v in intersect(variables_win_lose, names(e))) e[[paste0(v, "_original")]] <- e[[v]]
+  if ("nr_win_lose" %in% names(e)) {
+    e$nr_win_lose[e$nr_win_lose == "Typical Americans would lose and the richest Americans would lose."] <- "Typical lose, richest lose"
+    e$nr_win_lose[e$nr_win_lose == "Typical Americans would lose and the richest Americans would win."] <- "Typical lose, richest win"
+    e$nr_win_lose[e$nr_win_lose == "Typical Americans would win and the richest Americans would lose."] <- "Typical win, richest lose"
+    e$nr_win_lose[e$nr_win_lose == "Typical Americans would win and the richest Americans would win."] <- "Typical win, richest win"
+    e$nr_understood <- e$nr_win_lose == "Typical win, richest lose"
+    label(e$nr_understood) <- "nr_understood: T/F Correct answer to nr_win_lose (in national redistribution, typical people win, richest lose)."
+    e$score_understood <- e$nr_understood + e$gcs_understood + e$both_understood 
+    label(e$score_understood) <- "score_understood: [0-3] Number correct answers to understanding questions (nr/gcs/both_understood)."
+  }
+  
+  if ("gcs_win_lose" %in% names(e)) {
+    e$gcs_win_lose[e$gcs_win_lose == "Typical Americans would lose and the 700 million poorest humans would lose."] <- "Typical lose, poorest lose"
+    e$gcs_win_lose[e$gcs_win_lose == "Typical Americans would lose and the 700 million poorest humans would win."] <- "Typical lose, poorest win"
+    e$gcs_win_lose[e$gcs_win_lose == "Typical Americans would win and the 700 million poorest humans would lose."] <- "Typical win, poorest lose"
+    e$gcs_win_lose[e$gcs_win_lose == "Typical Americans would win and the 700 million poorest humans would win."] <- "Typical win, poorest win"
+    e$gcs_understood <- e$gcs_win_lose == "Typical lose, poorest win"
+    label(e$gcs_understood) <- "gcs_understood: T/F Correct answer to gcs_win_lose (in global climate scheme, typical high-income win, 700M poorest lose)."
+  }
+  
+  if ("both_win_lose" %in% names(e)) {
+    e$both_win_lose[e$both_win_lose == "A typical American would gain financially."] <- "Win"
+    e$both_win_lose[e$both_win_lose == "A typical American would lose out financially."] <- "Lose"
+    e$both_win_lose[e$both_win_lose == "A typical American would neither gain nor lose."] <- "Unaffected"
+    e$both_understood <- e$both_win_lose == "Unaffected"
+    label(e$both_understood) <- "both_understood: T/F Correct answer to both_win_lose (in national redistribution + global climate scheme combined, typical people in high-income countries are unaffected)."
+  }
+  
+  if ("donation_nation" %in% names(e) & sum(!is.na(e$donation_nation)) != 0) {
+    e$branch_donation[!is.na(e$donation_africa)] <- "Africa"
+    e$branch_donation[!is.na(e$donation_nation)] <- "Own nation"
+    e$donation[replace_na(e$branch_donation, "na") == "Africa"] <- e$donation_africa[replace_na(e$branch_donation, "na") == "Africa"]
+    e$donation[replace_na(e$branch_donation, "na") == "Own nation"] <- e$donation_nation[replace_na(e$branch_donation, "na") == "Own nation"]
+    label(e$branch_donation) <- "branch_donation: Africa/Own nation Whether the donation is for poor people in Africa or in one's nation."
+    label(e$donation) <- "donation: [0-100] Percentage of potential lottery gain donated to poor people in Africa or in one's nation (depending on branch_donation)."
+  }
+  
+  for (v in intersect(names(e), c(variables_conjoint))) {
+    e[[v]] <- sub(".* (.*)", "\\1", e[[v]])
+    e[[v]][e[[v]] == "them"] <- "None"
+    if (v %in% variables_conjoint_c) e[[v]][e[[v]] %in% c("Democrat", "A")] <- "Left"
+    if (v %in% variables_conjoint_c) e[[v]][e[[v]] %in% c("Republican", "B")] <- "Right"
+    if (v %in% variables_conjoint_a) e$conjoint_a <- e[[v]] == conjoint_position_g[v]
+    if (v %in% variables_conjoint_b) e$conjoint_b[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == conjoint_position_g[v]
+    if (v %in% variables_conjoint_b) e$branch_conjoint_b[!is.na(e[[v]])] <- sub("conjoint_", "", v)
+    if (v %in% variables_conjoint_c) e$conjoint_c[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "Left" #conjoint_position_g[v]
+    if (v %in% variables_conjoint_c) e$branch_conjoint_c[!is.na(e[[v]])] <- sub("conjoint_", "", v)
+    if (v %in% "conjoint_left_ag_b") e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == conjoint_position_g[v]
+    if (v == "conjoint_ir_r") e$conjoint_b[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
+  }
+  label(e$branch_conjoint_b) <- "branch_conjoint_b: ir_gr/r_igr/gr_r/ir_r Random branch faced by the respondent in conjoint analysis (b)."
+  label(e$branch_conjoint_c) <- "branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'"
+  label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
+  label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
+  label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
+  e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
+  label(e$conjoint_d) <- "conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican."
+  label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
+  label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
+  label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
+  e$branch_b_gcs <- grepl("g", e$branch_conjoint_b)
+  label(e$branch_b_gcs) <- "branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_ir_r'."
+  e$conjoint_b_na <- e$conjoint_b
+  e$conjoint_b_na[e$branch_b_gcs == FALSE] <- NA
+  label(e$conjoint_b_na) <- "conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_ir_r'."
+  e$branch_c_gcs <- grepl("g_", e$branch_conjoint_c)
+  label(e$branch_c_gcs) <- "branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'."
+  e$conjoint_r_type <- "None"
+  e$conjoint_r_type[e$`F-1-1-5` %in% policies_names["foreign1",]] <- "A"
+  e$conjoint_r_type[e$`F-1-2-5` %in% policies_names["foreign1",]] <- "B"
+  e$conjoint_r_type[e$`F-1-1-5` %in% policies_names["foreign1",] & e$`F-1-2-5` %in% policies_names["foreign1",]] <- "Both"
+  label(e$conjoint_r_type) <- "conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b"
+  e$conjoint_r <- e$conjoint_left_a_b == e$conjoint_r_type
+  e$conjoint_r[e$conjoint_r_type %in% c("None", "Both")] <- NA
+  label(e$conjoint_r) <- "conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican."
+  
+  if ("interest_politics" %in% names(e)) temp <- 2 * (e[[v]] %in% text_intensity[5]) + (e[[v]] %in% text_intensity[4]) - (e[[v]] %in% text_intensity[2]) - 2 * (e[[v]] %in% text_intensity[1])
+  if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-2:2),  names = c(text_intensity)), annotation=Label(e$interest_politics))
+  
+  # if ("vote_participation" %in% names(e)) {
+  #   e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
+  #   if ("vote_voters_2016" %in% names(e)) {
+  #     e$vote_participation_2016[e$vote_participation_2016 %in% text_vote_participation_no_right] <- "No right to vote"
+  #     e$vote_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"] <- e$vote_voters_2016[!is.na(e$vote_voters_2016) & e$vote_participation_2016=="Yes"]
+  #     e$vote_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"] <- e$vote_non_voters_2016[!is.na(e$vote_non_voters_2016) & e$vote_participation_2016!="Yes"]
+  #     e$vote_participation_2016 <- as.item(as.character(e$vote_participation_2016), missing.values = 'PNR', annotation=Label(e$vote_participation_2016))
+  #     e$vote_2016 <- as.item(as.character(e$vote_2016), missing.values = 'PNR', annotation=Label(e$vote_2016))
+  #     e$vote_2016_factor <- as.factor(e$vote_2016)
+  #     e$vote_2016_factor <- relevel(relevel(e$vote_2016_factor, "Stein"), "Clinton")
+  #   }
+  #   e$vote[!is.na(e$vote_voters) & e$vote_participation=="Yes"] <- e$vote_voters[!is.na(e$vote_voters) & e$vote_participation=="Yes"]
+  #   e$vote[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"] <- e$vote_non_voters[!is.na(e$vote_non_voters) & e$vote_participation!="Yes"]
+  #   e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
+  #   e$vote <- as.item(as.character(e$vote), missing.values = 'PNR', annotation=Label(e$vote))
+  #   e$voted <- e$vote_participation == 'Yes'
+  #   label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
+  # }
+  
+  e$survey_biased[e$survey_biased %in% c("Yes, left-wing biased")] <- "Yes, left"
+  e$survey_biased[e$survey_biased %in% c("Yes, right-wing biased")] <- "Yes, right"
+  e$survey_biased[e$survey_biased %in% c("No, I do not feel it was biased")] <- "No" 
+  if ("Yes, right" %in% levels(as.factor(e$survey_biased))) e$survey_biased <- relevel(relevel(as.factor(e$survey_biased), "Yes, right"), "No")
+  e$survey_biased_yes <- e$survey_biased != 'No'
+  e$survey_biased_left <- e$survey_biased == "Yes, left"
+  e$survey_biased_right <- e$survey_biased == "Yes, right"
+  label(e$survey_biased_yes) <- "survey_biased_yes: T/F Finds the survey biased (survey_biased != No)"
+  label(e$survey_biased_left) <- "survey_biased_left: T/F Finds the survey left-wing biased (survey_biased == Yes, left)"
+  label(e$survey_biased_right) <- "survey_biased_right: T/F Finds the survey right-wing biased (survey_biased == Yes, right)"
+  
+  e$share_policies_supported <- rowMeans(e[, intersect(variables_support, names(e))] > 0, na.rm = T)
+  label(e$share_policies_supported) <- "share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent."
+  
+  for (i in seq_along(variables_matrices)) if (length(intersect(variables_matrices[[i]], names(e))) > 0) {
+    e[[paste0("spread_", names(variables_matrices)[i])]] <- apply(X = e[, intersect(variables_matrices[[i]], names(e))], MARGIN = 1, FUN = function(v) return(max(v, na.rm = T) - min(v, na.rm = T)))
+    e[[paste0("all_same_", names(variables_matrices)[i])]] <- e[[paste0("spread_", names(variables_matrices)[i])]] == 0
+    label(e[[paste0("spread_", names(variables_matrices)[i])]]) <- paste0("spread_", names(variables_matrices)[i], ": Spread between max and min value in the respondent's answers to the matrix ", names(variables_matrices)[i])
+    label(e[[paste0("all_same_", names(variables_matrices)[i])]]) <- paste0("all_same_", names(variables_matrices)[i], ": T/F Indicator that all answers to the matrix ", names(variables_matrices)[i], " are identical.")
+  }
+  variables_spread <<- intersect(paste0("spread_", names(variables_matrices)), names(e))
+  variables_all_same <<- intersect(paste0("all_same_", names(variables_matrices)), names(e))
+  names_matrices <<- gsub("all_same_", "", variables_all_same)
+  e$mean_spread <- rowMeans(e[, variables_spread], na.rm = T)
+  e$share_all_same <- rowMeans(e[, variables_all_same], na.rm = T)
+  label(e$mean_spread) <- paste0("mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: ", paste(names_matrices, collapse = ", "), "). -Inf indicates that all answers were NA.")
+  label(e$share_all_same) <- paste0("mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: ",  paste(names_matrices, collapse = ", "), ").")
+  
+  print(paste("convert: success", country))
+  return(e)
+}
+
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
 eup <- prepare(country = "EU", wave = "pilot", weighting = FALSE)
-
+# TODO: merge
+e <- ep <- merge(us1p, eup, all = T)
