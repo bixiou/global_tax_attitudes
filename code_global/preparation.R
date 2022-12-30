@@ -151,7 +151,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   for (j in intersect(c(#"gender", "region", "education", "employment_status", "income", "wealth", "survey_biased", "vote", 
     ), names(e))) {
     e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label"))) 
-  } # TODO all $likert scales?
+  } 
   
   for (j in names(e)) {
     if ((grepl('race_|home_', j)) & !(grepl('_other$|order_', j))) {
@@ -174,7 +174,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$owner <- e$home_owner == T | e$home_landlord == T
   label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
   
-  for (v in c(variables_policy , variables_tax, variables_support, "insulation_support", "global_quota", variables_gas_spike, variables_fine_support)) { # TODO compatibility pilots 1, 2
+  for (v in c(variables_policy , variables_tax, variables_support, "insulation_support", "global_quota", variables_gas_spike, variables_fine_support)) {
     if (v %in% names(e)) {
       temp <-  2 * (e[[v]] %in% text_support_strongly) + (e[[v]] %in% text_support_somewhat) - (e[[v]] %in% text_support_not_really) - 2 * (e[[v]] %in% text_support_not_at_all) - 0.1 * (e[[v]] %in% text_pnr) # | is.na(e[[v]]))
       temp[is.na(e[[v]])] <- NA
@@ -285,7 +285,7 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   if (only_finished | incl_quality_fail) { # TODO: le faire marcher même pour les autres
     e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa, combine_age_50 = combine_age_50)
     e <- e[,!duplicated(names(e))]
-    if (!incl_quality_fail) e <- e[e$attention_test == T, ]
+    # if (!incl_quality_fail) e <- e[e$attention_test == T, ] # TODO!
     # if (weighting) {
     #   e$weight <- weighting(e)
     #   if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
@@ -310,6 +310,6 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   return(e)
 }
 
-us1p <- prepare(country = "US1", wave = "pilot")
-eup <- prepare(country = "EU", wave = "pilot")
+us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
+eup <- prepare(country = "EU", wave = "pilot", weighting = FALSE)
 

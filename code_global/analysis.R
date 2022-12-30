@@ -3,7 +3,7 @@ e <- eup
 
 
 ##### Duration #####
-decrit(e$duration) # US1p:  / EU: 
+decrit(e$duration) # US1p:  / EU:  num
 decrit(e$duration_gcs) # US1p:  / EU: 
 decrit(e$duration_gcs) # US1p:  / EU: 
 decrit(e$duration_conjoint_a) # US1p:  / EU: 
@@ -54,7 +54,7 @@ decrit(e$foreign_aid_raise_support)
 
 ##### GCS #####
 decrit(e$gcs_support)
-decrit(e$gcs_belief)
+decrit(e$gcs_belief) # num
 decrit(e$petition_gcs)
 decrit(e$points_foreign1_gcs)
 decrit(e$support_igr)
@@ -68,7 +68,7 @@ decrit(e$gcs_important_fuel_corruption)
 decrit(e$gcs_important_fuel_fraud)
 decrit(e$gcs_important_difficult_enact)
 decrit(e$gcs_important_having_info)
-e$gcs_belief[!is.na(e$gcs_field)]
+e$gcs_field[!is.na(e$gcs_field)]
 
 
 ##### NR ######
@@ -101,20 +101,20 @@ decrit(e$conjoint_left_ag_b)
 
 
 ##### Donation #####
-decrit(e$donation_nation)
-decrit(e$donation_africa)
+decrit(e$donation_nation) # TODO
+decrit(e$donation_africa) # num
 decrit(e$negotiation)
 
 
 ##### Wealth tax #####
 decrit(e$global_tax_support)
 decrit(e$national_tax_support)
-decrit(e$global_tax_global_share)
+decrit(e$global_tax_global_share) # num
 decrit(e$global_tax_sharing)
 
 
 ##### Foreign aid #####
-decrit(e$foreign_aid_belief)
+decrit(e$foreign_aid_belief) # TODO
 decrit(e$foreign_aid_preferred_no_info)
 decrit(e$foreign_aid_preferred_info)
 # decrit(e$foreign_aid_condition_)
@@ -127,7 +127,7 @@ e$foreign_aid_reduce_how_other[!is.na(e$foreign_aid_reduce_how_other)]
 
 
 ##### 100 points #####
-decrit(e$points_econ1)
+decrit(e$points_econ1) # num
 decrit(e$points_econ2)
 decrit(e$points_econ3)
 decrit(e$points_econ4)
@@ -149,7 +149,8 @@ decrit(e$points_foreign4_aid)
 ##### Politics #####
 decrit(e$political_affiliation)
 decrit(e$left_right)
-decrit(e$group_defended)
+table(e$group_defended)
 decrit(e$problem_inequality)
 decrit(e$problem_climate)
 decrit(e$problem_poverty)
+
