@@ -1,138 +1,167 @@
 e <- us1p
 e <- eup
-# TODO! Spanish questionnaire, update .js
+# TODO! Spanish questionnaire, update .js, quotas, socio-demos
 
 ##### Duration #####
-decrit(e$duration) # US1p: 9.5 / EU: 15 TODO! certain are NA
-decrit(e$duration_gcs) # US1p:  2.7/ EU: 2.5
-decrit(e$duration_conjoint_a) # same
-decrit(e$duration_conjoint_b) # US1p: .5 / EU: 
-decrit(e$duration_conjoint_c) # NA
-decrit(e$duration_conjoint_d) # US1p: .3 / EU: .4
-decrit(e$duration_gcs_perception) # US2p:  / EU:  NA
-decrit(e$duration_other_policies) # US2p:  / EU: 1.35
-decrit(e$duration_100_points) # US2p:  / EU:  NA
-decrit(e$duration_feedback) # US1p: .35 / EU: .3
+decrit("duration", data = e) # US1p: 9.5 / EU: 15 
+decrit("duration_gcs", data = e) # US1p:  2.7/ EU: 2.5
+decrit("duration_conjoint_a", data = e) # same
+decrit("duration_conjoint_b", data = e) # US1p: .5 / EU: 
+decrit("duration_conjoint_c", data = e) # NA
+decrit("duration_conjoint_d", data = e) # US1p: .3 / EU: .4
+decrit("duration_gcs_perception", data = e) # US2p:  / EU:  NA
+decrit("duration_other_policies", data = e) # US2p:  / EU: 1.35
+decrit("duration_points", data = e) # US2p: .73 / EU: .71
+decrit("duration_feedback", data = e) # US1p: .35 / EU: .3
 
 
 ##### Attention #####
-decrit(e$attention_test) # TODO
-decrit(e$score_understood) # 1.6 (random: 1.33)
-decrit(e$nr_understood)
-decrit(e$gcs_understood)
-decrit(e$both_understood)
-decrit(e$nr_win_lose)
-decrit(e$gcs_win_lose)
-decrit(e$both_win_lose)
-decrit(e$click_details)
-decrit(e$dropout)
+decrit("attention_test", data = e) # NAs because I removed donation question
+decrit("score_understood) # 1.6 (random: 1.33", data = e)
+decrit("nr_understood", data = e)
+decrit("gcs_understood", data = e)
+decrit("both_understood", data = e)
+decrit("nr_win_lose", data = e)
+decrit("gcs_win_lose", data = e)
+decrit("both_win_lose", data = e)
+decrit("click_details", data = e)
+decrit("dropout", data = e)
 
 
 ##### Other #####
-decrit(e$survey_biased) # TODO
+decrit("survey_biased", data = e) 
 e$comment_field[!is.na(e$comment_field)]
-decrit(e$interview)
+decrit("interview", data = e)
 
 
 ##### Socio-demos #####
-# TODO
-decrit(e$language) # TODO = country
+decrit("gender", data = e)
+decrit("age", data = e) # TODO 
+decrit("diploma", data = e)
+decrit("income", data = e) # TODO 
+decrit("urbanitry", data = e) # TODO 
+decrit("urban_category", data = e)
+decrit("race", data = e) # TODO 
+decrit("region", data = e)
+decrit("country", data = e)
+decrit("employment_status", data = e)# TODO 
+decrit("age_exact", data = e)
+decrit("education", data = e) # ISCED
+decrit("education_original", data = e)# TODO
+decrit("couple", data = e)
+decrit("hh_size", data = e)
+decrit("home_tenant", data = e)
+decrit("owner", data = e)
+decrit("wealth", data = e)# TODO 
+decrit("language", data = e)
+CrossTable(e$language, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = F, total.c = F, total.r = F, cell.layout = F)
+decrit("number_same_ip", data = e)
 
 
 ##### Support #####
-decrit(e$support_igr)
-decrit(e$nr_support)
-decrit(e$gcs_support)
-decrit(e$climate_compensation_support)
-decrit(e$climate_mitigation_support)
-decrit(e$climate_adaptation_support)
-decrit(e$debt_cancellation_support)
-decrit(e$democratise_un_imf_support)
-decrit(e$remove_tariffs_support)
-decrit(e$global_min_wage_support)
-decrit(e$global_register_support)
-decrit(e$cap_wealth_100m_support) # TODO: reword?
-decrit(e$foreign_aid_raise_support)
+decrit("support_igr", data = e)
+decrit("nr_support", data = e)
+decrit("gcs_support", data = e)
+decrit("climate_compensation_support", data = e)
+decrit("climate_mitigation_support", data = e)
+decrit("climate_adaptation_support", data = e)
+decrit("debt_cancellation_support", data = e)
+decrit("democratise_un_imf_support", data = e)
+decrit("remove_tariffs_support", data = e)
+decrit("global_min_wage_support", data = e)
+decrit("global_register_support", data = e)
+decrit("cap_wealth_100m_support", data = e) # TODO: reword?
+decrit("foreign_aid_raise_support", data = e)
 
 
 ##### GCS #####
-decrit(e$gcs_support)
-decrit(e$gcs_belief) 
-decrit(e$petition_gcs) # TODO: petition == support
-decrit(e$points_foreign1_gcs)
-decrit(e$support_igr)
-decrit(e$branch_gcs_perception)
-decrit(e$gcs_important_limit_CC)
-decrit(e$gcs_important_hurt_economy)
-decrit(e$gcs_important_hurt_me) # TODO!: number missing vary per argument
-decrit(e$gcs_important_change_lifestyles)
-decrit(e$gcs_important_hurt_poor)
-decrit(e$gcs_important_foster_cooperation)
-decrit(e$gcs_important_fuel_corruption)
-decrit(e$gcs_important_fuel_fraud)
-decrit(e$gcs_important_difficult_enact)
-decrit(e$gcs_important_having_info)
+decrit("gcs_support", data = e)
+decrit("gcs_belief", data = e) 
+decrit("petition_gcs", data = e)
+decrit("points_foreign1_gcs", data = e)
+decrit("support_igr", data = e)
+decrit("branch_gcs_perception", data = e)
+decrit("gcs_important_limit_CC", data = e)
+decrit("gcs_important_hurt_economy", data = e)
+decrit("gcs_important_hurt_me", data = e) 
+decrit("gcs_important_change_lifestyles", data = e)
+decrit("gcs_important_hurt_poor", data = e)
+decrit("gcs_important_foster_cooperation", data = e)
+decrit("gcs_important_fuel_corruption", data = e)
+decrit("gcs_important_fuel_fraud", data = e)
+decrit("gcs_important_difficult_enact", data = e)
+decrit("gcs_important_having_info", data = e)
 e$gcs_field[!is.na(e$gcs_field)]
 
 
 ##### NR ######
-decrit(e$nr_support)
-decrit(e$nr_belief)
-decrit(e$petition_nr)
-decrit(e$points_tax1_nr)
+decrit("nr_support", data = e)
+decrit("nr_belief", data = e)
+decrit("petition_nr", data = e)
+decrit("points_tax1_nr", data = e)
+
+
+##### Petition #####
+decrit("petition_matches_support", data = e) # 77%
+summary(lm(petition_matches_support ~ branch_petition, data = e))
+decrit("petition_yes_support_no", data = e)
+decrit("petition_no_support_yes", data = e)
 
 
 ##### List experiment #####
-decrit(e$list_exp_ir) # TODO!
-decrit(e$list_exp_igr)
-decrit(e$list_exp_i)
+decrit("list_exp_ir", data = e) # TODO!
+decrit("list_exp_igr", data = e)
+decrit("list_exp_i", data = e)
 mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T)
 mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T)
 
 
 ##### Conjoint analysis #####
 # a
-decrit(e$conjoint_a) # TODO T == gcs_support
-decrit(e$conjoint_irg_ir)
+decrit("conjoint_a", data = e)
+decrit("conjoint_irg_ir", data = e)
+decrit("conjoint_a_matches_support", data = e) # 84%
+decrit("conjoint_a_irg_support_no", data = e) 
+decrit("conjoint_a_ir_support_yes", data = e) 
 # b
-decrit(e$conjoint_b) # TODO!
-decrit(e$conjoint_b_na)
-decrit(e$conjoint_ir_gr)
-decrit(e$conjoint_r_igr)
-decrit(e$conjoint_gr_r)
-decrit(e$conjoint_ir_r)
+decrit("conjoint_b", data = e) # TODO!
+decrit("conjoint_b_na", data = e)
+decrit("conjoint_ir_gr", data = e)
+decrit("conjoint_r_igr", data = e)
+decrit("conjoint_gr_r", data = e)
+decrit("conjoint_ir_r", data = e)
 # c
-decrit(e$conjoint_c)
-decrit(e$conjoint_left_right)
-decrit(e$conjoint_leftg_right)
+decrit("conjoint_c", data = e)
+decrit("conjoint_left_right", data = e)
+decrit("conjoint_leftg_right", data = e)
 summary(lm(conjoint_c ~ branch_c_gcs, data = e)) # -.15***
 # d
-decrit(e$conjoint_d)
-decrit(e$conjoint_left_a_b)
-decrit(e$conjoint_left_ag_b)
+decrit("conjoint_d", data = e)
+decrit("conjoint_left_a_b", data = e)
+decrit("conjoint_left_ag_b", data = e)
 
 
 ##### Donation #####
-decrit(e$donation_nation) # TODO! put back
-decrit(e$donation_africa) 
+decrit("donation_nation", data = e) # TODO! put back
+decrit("donation_africa", data = e) 
 summary(lm(donation ~ branch_donation, data = e))
-decrit(e$negotiation)
+decrit("negotiation", data = e)
 
 
 ##### Wealth tax #####
-decrit(e$global_tax_support)
-decrit(e$national_tax_support)
-decrit(e$global_tax_global_share) 
+decrit("global_tax_support", data = e)
+decrit("national_tax_support", data = e)
+decrit("global_tax_global_share", data = e) 
 table(e$global_tax_sharing)
 
 
 ##### Foreign aid #####
-decrit(e$foreign_aid_belief, numbers = T) # TODO raise/reduce
-decrit(e$foreign_aid_preferred_no_info, numbers = T)
-decrit(e$foreign_aid_preferred_info, numbers = T)
-# decrit(e$foreign_aid_condition_)
-# decrit(e$foreign_aid_raise_)
-# decrit(e$foreign_aid_reduce_)
+decrit("foreign_aid_belief, numbers = T", data = e) # TODO raise/reduce
+decrit("foreign_aid_preferred_no_info, numbers = T", data = e)
+decrit("foreign_aid_preferred_info, numbers = T", data = e)
+# decrit("foreign_aid_condition_", data = e)
+# decrit("foreign_aid_raise_", data = e)
+# decrit("foreign_aid_reduce_", data = e)
 e$foreign_aid_condition_other[!is.na(e$foreign_aid_condition_other)]
 e$foreign_aid_no_other[!is.na(e$foreign_aid_no_other)]
 e$foreign_aid_raise_how_other[!is.na(e$foreign_aid_raise_how_other)]
@@ -142,30 +171,30 @@ summary(lm(foreign_aid_preferred ~ info_foreign_aid, data = e))
 
 ##### 100 points #####
 policies_names
-decrit(e$points_econ1) 
-decrit(e$points_econ2) # 
-decrit(e$points_econ3)
-decrit(e$points_econ4) # 
-decrit(e$points_soc1)
-decrit(e$points_soc2) #
-decrit(e$points_soc3) # US1p
-decrit(e$points_climate1)
-decrit(e$points_climate2)
-decrit(e$points_climate3)
-decrit(e$points_tax1_nr)
-decrit(e$points_tax2_wealth_tax)
-decrit(e$points_tax3) # US1p
-decrit(e$points_foreign1_gcs)
-decrit(e$points_foreign2_tax_rich) # 
-decrit(e$points_foreign3_assembly)
-decrit(e$points_foreign4_aid)
+decrit("points_econ1", data = e) 
+decrit("points_econ2", data = e) # 
+decrit("points_econ3", data = e)
+decrit("points_econ4", data = e) # 
+decrit("points_soc1", data = e)
+decrit("points_soc2", data = e) #
+decrit("points_soc3", data = e) # US1p
+decrit("points_climate1", data = e)
+decrit("points_climate2", data = e)
+decrit("points_climate3", data = e)
+decrit("points_tax1_nr", data = e)
+decrit("points_tax2_wealth_tax", data = e)
+decrit("points_tax3", data = e) # US1p
+decrit("points_foreign1_gcs", data = e)
+decrit("points_foreign2_tax_rich", data = e) # 
+decrit("points_foreign3_assembly", data = e)
+decrit("points_foreign4_aid", data = e)
 
 
 ##### Politics #####
-decrit(e$political_affiliation)
-decrit(e$left_right)
+decrit("political_affiliation", data = e)
+decrit("left_right", data = e)
 table(e$group_defended)
-decrit(e$problem_inequality)
-decrit(e$problem_climate)
-decrit(e$problem_poverty)
+decrit("problem_inequality", data = e)
+decrit("problem_climate", data = e)
+decrit("problem_poverty", data = e)
 
