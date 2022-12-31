@@ -1,6 +1,6 @@
 e <- us1p
 e <- eup
-
+# TODO! Spanish questionnaire, update .js
 
 ##### Duration #####
 decrit(e$duration) # US1p: 9.5 / EU: 15 TODO! certain are NA
@@ -61,9 +61,10 @@ decrit(e$gcs_belief)
 decrit(e$petition_gcs) # TODO: petition == support
 decrit(e$points_foreign1_gcs)
 decrit(e$support_igr)
+decrit(e$branch_gcs_perception)
 decrit(e$gcs_important_limit_CC)
 decrit(e$gcs_important_hurt_economy)
-decrit(e$gcs_important_hurt_me) # TODO: number missing vary per argument
+decrit(e$gcs_important_hurt_me) # TODO!: number missing vary per argument
 decrit(e$gcs_important_change_lifestyles)
 decrit(e$gcs_important_hurt_poor)
 decrit(e$gcs_important_foster_cooperation)
@@ -85,6 +86,8 @@ decrit(e$points_tax1_nr)
 decrit(e$list_exp_ir) # TODO!
 decrit(e$list_exp_igr)
 decrit(e$list_exp_i)
+mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T)
+mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T)
 
 
 ##### Conjoint analysis #####
@@ -110,7 +113,7 @@ decrit(e$conjoint_left_ag_b)
 
 
 ##### Donation #####
-decrit(e$donation_nation) 
+decrit(e$donation_nation) # TODO! put back
 decrit(e$donation_africa) 
 summary(lm(donation ~ branch_donation, data = e))
 decrit(e$negotiation)
@@ -120,7 +123,7 @@ decrit(e$negotiation)
 decrit(e$global_tax_support)
 decrit(e$national_tax_support)
 decrit(e$global_tax_global_share) 
-decrit(e$global_tax_sharing)
+table(e$global_tax_sharing)
 
 
 ##### Foreign aid #####

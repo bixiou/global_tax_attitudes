@@ -212,11 +212,23 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     label(e$petition) <- "petition: Yes/No Willing to sign a petition on gcs/nr (depends on branch_petition)."
   }
   
+  if ("global_tax_sharing" %in% names(e)) {
+    e$global_tax_sharing_original <- e$global_tax_sharing
+    e$global_tax_sharing[grepl("whole wealth tax financing national budgets", e$global_tax_sharing)] <- "No"
+    e$global_tax_sharing[grepl("half of it financing low-income countries", e$global_tax_sharing)] <- "Yes"
+    e$global_tax_sharing[is.na(e$global_tax_sharing_original)] <- NA
+    label(e$global_tax_sharing) <- "global_tax_sharing: T/F/NA Prefers to allocate half of global wealth tax to low-income countries rather than keeping all in collector country's national budgets. NA if the question is not asked (cf. branch_global_tax)."
+    e$branch_global_tax[!is.na(e$global_tax_sharing)] <- "sharing"
+    e$branch_global_tax[!is.na(e$global_tax_global_share)] <- "global_share"
+    e$branch_global_tax[!is.na(e$global_tax_support)] <- "separate"
+    label(e$branch_global_tax) <- "branch_global_tax: separate/sharing/global_share/NA Way to ask the preference for funding low-income countries through a global tax on the rich: either 'separate'ly the support for a national and a global tax on millionaires; whether to allocate half or none of the global tax to low-income countries; the 'global_share' in 0 to 100%."
+  }
+  
   variables_support <<- names(e)[grepl('support', names(e))]
   variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|foreign_aid|_tax_", names(e))]
   variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
   variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
-  variables_support_binary <<- c("gcs_support", "nr_support", "support_igr")
+  variables_support_binary <<- c("gcs_support", "nr_support", "support_igr", "global_tax_sharing")
   variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
   variables_petition <<- names(e)[grepl('petition', names(e))]
   variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
@@ -293,7 +305,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   for (v in intersect(variables_gcs_important, names(e))) {
     temp <-  temp <- 2 * (e[[v]] %in% text_importance[4]) + (e[[v]] %in% text_importance[3]) - (e[[v]] %in% text_importance[2]) - 2 * (e[[v]] %in% text_importance[1])
     temp[is.na(e[[v]])] <- NA
-    e[[v]] <- as.item(temp, labels = structure(c(-2:2), names = sub(" important", "", text_importance)), missing.values=c(NA), annotation=Label(e[[v]]))    
+    e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2), names = sub(" important", "", text_importance)), missing.values=c(NA), annotation=Label(e[[v]]))    
+    e$branch_gcs_perception[!is.na(e$gcs_field)] <- "field"
+    e$branch_gcs_perception[!is.na(e[[v]])] <- "gcs_important"
+    label(e$branch_gcs_perception) <- "branch_gcs_perception: field/gcs_important/NA Whether the perception of the global climate scheme is asked as a matrix 'gcs_important' or an entry field 'field'"
   }
   
   for (v in intersect(variables_problem, names(e))) {
@@ -330,8 +345,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$nr_win_lose[e$nr_win_lose == "Typical Americans would win and the richest Americans would win."] <- "Typical win, richest win"
     e$nr_understood <- e$nr_win_lose == "Typical win, richest lose"
     label(e$nr_understood) <- "nr_understood: T/F Correct answer to nr_win_lose (in national redistribution, typical people win, richest lose)."
-    e$score_understood <- e$nr_understood + e$gcs_understood + e$both_understood 
-    label(e$score_understood) <- "score_understood: [0-3] Number correct answers to understanding questions (nr/gcs/both_understood)."
   }
   
   if ("gcs_win_lose" %in% names(e)) {
@@ -350,6 +363,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$both_understood <- e$both_win_lose == "Unaffected"
     label(e$both_understood) <- "both_understood: T/F Correct answer to both_win_lose (in national redistribution + global climate scheme combined, typical people in high-income countries are unaffected)."
   }
+  
+  e$score_understood <- e$nr_understood + e$gcs_understood + e$both_understood
+  label(e$score_understood) <- "score_understood: [0-3] Number correct answers to understanding questions (nr/gcs/both_understood)."
   
   if ("donation_nation" %in% names(e) & sum(!is.na(e$donation_nation)) != 0) {
     e$branch_donation[!is.na(e$donation_africa)] <- "Africa"
@@ -455,5 +471,5 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
 eup <- prepare(country = "EU", wave = "pilot", weighting = FALSE)
-# TODO: merge
+
 e <- ep <- merge(us1p, eup, all = T)
