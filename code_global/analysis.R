@@ -36,12 +36,12 @@ decrit("interview", data = e)
 
 ##### Socio-demos #####
 decrit("gender", data = e)
-decrit("age", data = e) # TODO 
+decrit("age", data = e) 
 decrit("diploma", data = e)
 decrit("income", data = e) # TODO 
 decrit("urbanitry", data = e) # TODO 
 decrit("urban_category", data = e)
-decrit("race", data = e) # TODO 
+decrit("race", data = e) 
 decrit("region", data = e)
 decrit("country", data = e)
 decrit("employment_status", data = e)# TODO 

@@ -304,6 +304,24 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% c("A little")
   
+  temp <- as.numeric(as.vector(gsub("[^0-9\\.]", "", gsub(".*to", "", e$age_exact))))
+  temp <- temp - 1.5
+  temp[temp == 18.5] <- 19.5
+  temp[temp == 22.5] <- 23
+  temp[temp == 97.5] <- 95
+  temp[temp == 98.5] <- 101
+  e$age_exact <- as.item(temp, labels = structure(c(16.5, 19.5, 23, seq(27.5, 87.5, 5), 95, 101), names = c("< 18", "18-20", "21-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-99", "100+")), missing.values=c(NA), annotation=Label(e$age_exact))
+  temp <- 21.5*(e$age_exact < 25) + 30*(e$age_exact < 35 & e$age_exact > 25) + 42.5*(e$age_exact < 50 & e$age_exact > 35) + 57.5*(e$age_exact < 65 & e$age_exact > 50) + 71*(e$age_exact > 65)
+  e$age <- as.item(temp, labels = structure(c(21.5, 30, 42.5, 57.5, 71), names = c("18-24", "25-34", "35-49", "50-64", "65+")), missing.values=c(NA), annotation=Label(e$age_exact))
+  
+  if ("race_black" %in% names(e)) {
+    e$race <- "Other"
+    e$race[e$race_white==T & e$race_asian == FALSE & e$race_native == FALSE] <- "White only"
+    e$race[e$race_hispanic==T] <- "Hispanic"
+    e$race[e$race_black==T] <- "Black"
+    label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
+  }
+
   e$owner <- e$home_owner == T | e$home_landlord == T
   label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
   
