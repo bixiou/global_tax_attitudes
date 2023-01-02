@@ -285,10 +285,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     #             missing.values = c("","PNR"), annotation=attr(e[j][[1]], "label"))
   }
   
-  for (j in intersect(c("gender", "region", "education", "employment_status", "vote" # TODO
-  ), names(e))) {
-    e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label")))
-  }
+  # for (j in intersect(c("region", "education", "employment_status", "vote" # TODO
+  # ), names(e))) {
+  #   e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label")))
+  # }
   
   for (j in names(e)) {
     if ((grepl('race_|home_|foreign_aid_raise_how|foreign_aid_reduce_how|foreign_aid_condition|foreign_aid_no_', j)) & !(grepl('_other$|order_', j))) {
@@ -390,6 +390,22 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$owner <- e$home_owner == T | e$home_landlord == T
   label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
   
+  if ("list_exp_igr" %in% names(e)) {
+    e$branch_list_exp[!is.na(e$list_exp_i)] <- "i"
+    e$branch_list_exp[!is.na(e$list_exp_igr)] <- "igr"
+    e$branch_list_exp[!is.na(e$list_exp_gr)] <- "gr"
+    e$branch_list_exp[!is.na(e$list_exp_ir)] <- "ir"
+    if (wave == "pilot") e$list_exp_ir[e$branch_list_exp == "gr"] <- e$list_exp_gr[e$branch_list_exp == "gr"]
+    if (wave == "pilot") e$branch_list_exp[!is.na(e$list_exp_gr)] <- "ir"
+    label(e$branch_list_exp) <- "branch_list_exp: i/ir/gr/igr Variant of the list experiment faced, where i denotes coal exit (US) or the buildings' insulation plan (EU), r the national redistribution, and g the global climate scheme. Marriage only for opposite-sex couples (US) and death penalty for major crimes (EU) were also systematically included."
+    e$branch_list_exp_g <- grepl("g", e$branch_list_exp)
+    e$branch_list_exp_r <- grepl("r", e$branch_list_exp)
+    label(e$branch_list_exp_r) <- "branch_list_exp_r: T/F r (national redistribution) is present in the list experiment."
+    label(e$branch_list_exp_g) <- "branch_list_exp_g: T/F g (global climate scheme) is present in the list experiment."
+    for (v in c("i", "ir", "gr", "igr")) e$list_exp[e$branch_list_exp == v] <- e[[paste0("list_exp_", v)]][e$branch_list_exp == v]
+    label(e$list_exp) <- "list_exp: [0-4] Number of supported policies in the list experiment (combining all branches, cf. branch_list_exp and variables_list_exp)."
+  }
+  
   for (v in c(variables_support_likert)) {
     if (v %in% names(e)) {
       temp <-  temp <- 2 * (e[[v]] %in% text_support[5]) + (e[[v]] %in% text_support[4]) - (e[[v]] %in% text_support[2]) - 2 * (e[[v]] %in% text_support[1])
@@ -468,6 +484,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   e$score_understood <- e$nr_understood + e$gcs_understood + e$both_understood
   label(e$score_understood) <- "score_understood: [0-3] Number correct answers to understanding questions (nr/gcs/both_understood)."
+  e$z_score_understood <- (e$score_understood - mean(e$score_understood)) / sd(e$score_understood) # TODO weighted
+  label(e$z_score_understood) <- "z_score_understood: Normalized score_understood."
   
   if ("donation_nation" %in% names(e) & sum(!is.na(e$donation_nation)) != 0) {
     e$branch_donation[!is.na(e$donation_africa)] <- "Africa"

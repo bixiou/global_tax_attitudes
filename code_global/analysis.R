@@ -1,23 +1,27 @@
 e <- us1p
 e <- eup
-# TODO! Spanish questionnaire, update .js, quotas
+e <- ep
+# TODO! Spanish questionnaire, update .js, quotas, IAT/device, dropouts (IR: complete/(complete+screenout)); remove PNR wealth (5%), put back email, donation, rewards.
 
 ##### Duration #####
-decrit("duration", data = e) # US1p: 9 / EU: 15 
+decrit("duration", data = us1p) # US1p: 8.44 / EU: 14.75
+decrit("duration", data = eup)
+decrit("duration", data = us1p, which = us1p$duration > 4) # US1p: 9 / EU: 15.9
+decrit("duration", data = eup, which = eup$duration > 6)
 decrit("duration_gcs", data = e) # US1p:  2.7/ EU: 2.5
 decrit("duration_conjoint_a", data = e) # same
 decrit("duration_conjoint_b", data = e) # US1p: .5 / EU: 
 decrit("duration_conjoint_c", data = e) # NA
 decrit("duration_conjoint_d", data = e) # US1p: .3 / EU: .4
-decrit("duration_gcs_perception", data = e) # US2p:  / EU:  NA
+decrit("duration_gcs_perception", data = e) # US2p:  / EU: .8 NA
 decrit("duration_other_policies", data = e) # US2p:  / EU: 1.35
-decrit("duration_points", data = e) # US2p: .73 / EU: .71
+decrit("duration_points", data = e) # US2p: .9 / EU: .9
 decrit("duration_feedback", data = e) # US1p: .35 / EU: .3
 
 
 ##### Attention #####
 decrit("attention_test", data = e) # NAs because I removed donation question
-decrit("score_understood", data = e) # 1.6 (random: .83)
+decrit("score_understood", data = e) # 1.5 (random: .83)
 decrit("nr_understood", data = e)
 decrit("gcs_understood", data = e)
 decrit("both_understood", data = e)
@@ -25,7 +29,7 @@ decrit("nr_win_lose", data = e)
 decrit("gcs_win_lose", data = e)
 decrit("both_win_lose", data = e)
 decrit("click_details", data = e)
-decrit("dropout", data = e)
+decrit("dropout", data = e) # TODO!
 
 
 ##### Other #####
@@ -65,6 +69,9 @@ decrit("number_same_ip", data = e)
 decrit("support_igr", data = e)
 decrit("nr_support", data = e)
 decrit("gcs_support", data = e)
+CrossTable(e$gcs_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
+CrossTable(e$nr_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
+CrossTable(e$support_igr, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 decrit("climate_compensation_support", data = e)
 decrit("climate_mitigation_support", data = e)
 decrit("climate_adaptation_support", data = e)
@@ -74,7 +81,14 @@ decrit("remove_tariffs_support", data = e)
 decrit("global_min_wage_support", data = e)
 decrit("global_register_support", data = e)
 decrit("cap_wealth_100m_support", data = e) # TODO: reword?
-decrit("foreign_aid_raise_support", data = e)
+decrit("foreign_aid_raise_support", data = e) # TODO item
+means_support <- indiferrents_support <- relative_majority_support <- c()
+for (v in variables_support) means_support[v] <- mean(e[[v]] > 0, na.rm = T)
+for (v in variables_other_policies) indiferrents_support[v] <- mean(e[[v]] == 0, na.rm = T)
+for (v in variables_other_policies) relative_majority_support[v] <- mean(e[[v]][e[[v]] != 0] > 0, na.rm = T)
+-sort(-means_support)
+-sort(-indiferrents_support)
+-sort(-relative_majority_support)
 
 
 ##### GCS #####
@@ -84,17 +98,24 @@ decrit("petition_gcs", data = e)
 decrit("points_foreign1_gcs", data = e)
 decrit("support_igr", data = e)
 decrit("branch_gcs_perception", data = e)
-decrit("gcs_important_limit_CC", data = e)
+decrit("gcs_important_limit_CC", data = e) #
 decrit("gcs_important_hurt_economy", data = e)
-decrit("gcs_important_hurt_me", data = e) 
-decrit("gcs_important_change_lifestyles", data = e)
+decrit("gcs_important_hurt_me", data = e) #
+decrit("gcs_important_change_lifestyles", data = e) #
+decrit("gcs_important_reduce_poverty", data = e) #
 decrit("gcs_important_hurt_poor", data = e)
 decrit("gcs_important_foster_cooperation", data = e)
-decrit("gcs_important_fuel_corruption", data = e)
+decrit("gcs_important_fuel_corruption", data = e) # 
 decrit("gcs_important_fuel_fraud", data = e)
 decrit("gcs_important_difficult_enact", data = e)
 decrit("gcs_important_having_info", data = e)
+means_gcs_important <- c()
+for (v in variables_gcs_important) means_gcs_important[v] <- mean(e[[v]], na.rm = T)
+-sort(-means_gcs_important)
 e$gcs_field[!is.na(e$gcs_field)]
+summary(lm(gcs_support ~ z_score_understood, data = e)) # +7pp
+summary(lm(gcs_support ~ z_score_understood + education + income_factor + as.factor(age_exact), data = e))
+summary(lm(gcs_support ~ gcs_understood + nr_understood + both_understood, data = e))
 
 
 ##### NR ######
@@ -102,6 +123,8 @@ decrit("nr_support", data = e)
 decrit("nr_belief", data = e)
 decrit("petition_nr", data = e)
 decrit("points_tax1_nr", data = e)
+summary(lm(nr_support ~ z_score_understood, data = e)) # +12pp
+summary(lm(nr_support ~ gcs_understood + nr_understood + both_understood, data = e))
 
 
 ##### Petition #####
@@ -112,11 +135,15 @@ decrit("petition_no_support_yes", data = e)
 
 
 ##### List experiment #####
-decrit("list_exp_ir", data = e) # TODO!
+decrit("branch_list_exp", data = e)
+decrit("list_exp_ir", data = e) 
 decrit("list_exp_igr", data = e)
 decrit("list_exp_i", data = e)
-mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T)
-mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T)
+mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # 60%
+mean(e$gcs_support) + (mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$gcs_support[e$branch_list_exp != "igr"], na.rm = T))/2 # 66%
+mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T) # 67%
+mean(e$nr_support) + (mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) - mean(e$nr_support[e$branch_list_exp != "ir"], na.rm = T))/2 # 59%
+summary(lm(list_exp ~ branch_list_exp_g * branch_list_exp_r, data = e))
 
 
 ##### Conjoint analysis #####
@@ -127,21 +154,27 @@ decrit("conjoint_a_matches_support", data = e) # 84%
 decrit("conjoint_a_irg_support_no", data = e) 
 decrit("conjoint_a_ir_support_yes", data = e) 
 # b
-decrit("conjoint_b", data = e) # TODO!
+decrit("conjoint_b", data = e) # TODO?
 decrit("conjoint_b_na", data = e)
 decrit("conjoint_ir_gr", data = e)
+decrit("gcs_support", data = e, which = e$branch_conjoint_b == "ir_gr")
 decrit("conjoint_r_igr", data = e)
 decrit("conjoint_gr_r", data = e)
 decrit("conjoint_ir_r", data = e)
+decrit("branch_conjoint_b", data = e)
+# summary(lm(conjoint_b ~ branch_conjoint_b, data = e))
 # c
 decrit("conjoint_c", data = e)
 decrit("conjoint_left_right", data = e)
 decrit("conjoint_leftg_right", data = e)
 summary(lm(conjoint_c ~ branch_c_gcs, data = e)) # -.1
+decrit("gcs_support", data = e, which = e$branch_conjoint_c == "left_right")
 # d
-decrit("conjoint_d", data = e)
-decrit("conjoint_left_a_b", data = e)
+decrit("conjoint_d", data = e) # 59%
 decrit("conjoint_left_ag_b", data = e)
+# r
+decrit("conjoint_r", data = e) # 65%
+decrit("conjoint_left_a_b", data = e)
 
 
 ##### Donation #####
@@ -149,13 +182,14 @@ decrit("donation_nation", data = e) # TODO! put back
 decrit("donation_africa", data = e) 
 summary(lm(donation ~ branch_donation, data = e))
 decrit("negotiation", data = e)
+CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 
 
 ##### Wealth tax #####
 decrit("global_tax_support", data = e)
 decrit("national_tax_support", data = e)
 decrit("global_tax_global_share", data = e) 
-table(e$global_tax_sharing)
+decrit("global_tax_sharing", data = e) 
 
 
 ##### Foreign aid #####
@@ -170,9 +204,16 @@ decrit("foreign_aid_more_less", data = e, which = e$info_foreign_aid == FALSE)
 # decrit("foreign_aid_reduce_", data = e)
 e$foreign_aid_condition_other[!is.na(e$foreign_aid_condition_other)]
 e$foreign_aid_no_other[!is.na(e$foreign_aid_no_other)]
-e$foreign_aid_raise_how_other[!is.na(e$foreign_aid_raise_how_other)]
-e$foreign_aid_reduce_how_other[!is.na(e$foreign_aid_reduce_how_other)]
 summary(lm(foreign_aid_preferred ~ info_foreign_aid, data = e))
+means_foreign_aid_condition <- means_variables_foreign_aid_no_ <- means_variables_foreign_aid_raise <- means_variables_foreign_aid_reduce <- c()
+for (v in variables_foreign_aid_condition) means_foreign_aid_condition[v] <- mean(e[[v]], na.rm = T)
+for (v in variables_foreign_aid_no_) means_variables_foreign_aid_no_[v] <- mean(e[[v]], na.rm = T)
+for (v in variables_foreign_aid_raise) means_variables_foreign_aid_raise[v] <- mean(e[[v]], na.rm = T)
+for (v in variables_foreign_aid_reduce) means_variables_foreign_aid_reduce[v] <- mean(e[[v]], na.rm = T)
+-sort(-means_foreign_aid_condition)
+-sort(-means_variables_foreign_aid_no_)
+-sort(-means_variables_foreign_aid_raise)
+-sort(-means_variables_foreign_aid_reduce)
 
 
 ##### 100 points #####
@@ -182,25 +223,27 @@ decrit("points_econ2", data = e) #
 decrit("points_econ3", data = e)
 decrit("points_econ4", data = e) # 
 decrit("points_soc1", data = e)
-decrit("points_soc2", data = e) #
+decrit("points_soc2", data = e) 
 decrit("points_soc3", data = e) # US1p
 decrit("points_climate1", data = e)
 decrit("points_climate2", data = e)
-decrit("points_climate3", data = e)
+decrit("points_climate3", data = e) #-
 decrit("points_tax1_nr", data = e)
-decrit("points_tax2_wealth_tax", data = e)
+decrit("points_tax2_wealth_tax", data = e) #
 decrit("points_tax3", data = e) # US1p
 decrit("points_foreign1_gcs", data = e)
 decrit("points_foreign2_tax_rich", data = e) # 
 decrit("points_foreign3_assembly", data = e)
-decrit("points_foreign4_aid", data = e)
+decrit("points_foreign4_aid", data = e) #-
 
 
 ##### Politics #####
 decrit("political_affiliation", data = e)
 decrit("left_right", data = e)
-table(e$group_defended)
+table(e$group_defended) # TODO: item
 decrit("problem_inequality", data = e)
 decrit("problem_climate", data = e)
 decrit("problem_poverty", data = e)
-
+means_variables_problem <- c()
+for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]], na.rm = T)
+-sort(-means_variables_problem)
