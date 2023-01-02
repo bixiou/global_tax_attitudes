@@ -1,9 +1,9 @@
 e <- us1p
 e <- eup
-# TODO! Spanish questionnaire, update .js, quotas, socio-demos
+# TODO! Spanish questionnaire, update .js, quotas
 
 ##### Duration #####
-decrit("duration", data = e) # US1p: 9.5 / EU: 15 
+decrit("duration", data = e) # US1p: 9 / EU: 15 
 decrit("duration_gcs", data = e) # US1p:  2.7/ EU: 2.5
 decrit("duration_conjoint_a", data = e) # same
 decrit("duration_conjoint_b", data = e) # US1p: .5 / EU: 
@@ -17,7 +17,7 @@ decrit("duration_feedback", data = e) # US1p: .35 / EU: .3
 
 ##### Attention #####
 decrit("attention_test", data = e) # NAs because I removed donation question
-decrit("score_understood) # 1.6 (random: 1.33", data = e)
+decrit("score_understood", data = e) # 1.6 (random: .83)
 decrit("nr_understood", data = e)
 decrit("gcs_understood", data = e)
 decrit("both_understood", data = e)
@@ -37,22 +37,25 @@ decrit("interview", data = e)
 ##### Socio-demos #####
 decrit("gender", data = e)
 decrit("age", data = e) 
+decrit("diploma_25_64", data = e, miss = F)
+decrit("diploma_25_64", data = e, miss = T)
 decrit("diploma", data = e)
-decrit("income", data = e) # TODO 
-decrit("urbanitry", data = e) # TODO 
-decrit("urban_category", data = e)
+decrit("income_decile", data = e)
+decrit("income_quartile", data = e)
+decrit("urbanity", data = e) 
 decrit("race", data = e) 
 decrit("region", data = e)
 decrit("country", data = e)
-decrit("employment_status", data = e)# TODO 
+decrit("employment_status", data = e) 
+decrit("employment_agg", data = e) 
 decrit("age_exact", data = e)
-decrit("education", data = e) # ISCED
-decrit("education_original", data = e)# TODO
+decrit("education", data = e) 
+decrit("education_original", data = e)
 decrit("couple", data = e)
 decrit("hh_size", data = e)
 decrit("home_tenant", data = e)
 decrit("owner", data = e)
-decrit("wealth", data = e)# TODO 
+decrit("wealth", data = e, miss = F)
 decrit("language", data = e)
 CrossTable(e$language, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = F, total.c = F, total.r = F, cell.layout = F)
 decrit("number_same_ip", data = e)
@@ -134,7 +137,7 @@ decrit("conjoint_ir_r", data = e)
 decrit("conjoint_c", data = e)
 decrit("conjoint_left_right", data = e)
 decrit("conjoint_leftg_right", data = e)
-summary(lm(conjoint_c ~ branch_c_gcs, data = e)) # -.15***
+summary(lm(conjoint_c ~ branch_c_gcs, data = e)) # -.1
 # d
 decrit("conjoint_d", data = e)
 decrit("conjoint_left_a_b", data = e)
@@ -156,9 +159,12 @@ table(e$global_tax_sharing)
 
 
 ##### Foreign aid #####
-decrit("foreign_aid_belief, numbers = T", data = e) # TODO raise/reduce
-decrit("foreign_aid_preferred_no_info, numbers = T", data = e)
-decrit("foreign_aid_preferred_info, numbers = T", data = e)
+decrit("foreign_aid_belief", numbers = T, data = e) 
+decrit("foreign_aid_preferred_no_info", numbers = T, data = e)
+decrit("foreign_aid_preferred_info", numbers = T, data = e)
+decrit("foreign_aid_more_less", data = e)
+decrit("foreign_aid_more_less", data = e, which = e$info_foreign_aid == T)
+decrit("foreign_aid_more_less", data = e, which = e$info_foreign_aid == FALSE)
 # decrit("foreign_aid_condition_", data = e)
 # decrit("foreign_aid_raise_", data = e)
 # decrit("foreign_aid_reduce_", data = e)

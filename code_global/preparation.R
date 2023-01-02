@@ -33,7 +33,7 @@ names(countries) <- countries_names
   "income" = c("Q1", "Q2", "Q3", "Q4"),
   "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
   "urbanity" = c("Cities", "Towns and suburbs", "Rural"),
-  "diploma" = c("Below upper secondary", "Upper secondary", "Above upper secondary", "Not 25-64"),
+  "diploma" = c("Below upper secondary", "Upper secondary", "Post secondary", "Not 25-64"), # "Not 25-64"
   "EU_country" = c("FR", "DE", "ES", "UK"),
   "US_region" = c("Northeast", "Midwest", "West","South"),
   "US_race" = c("White only", "Hispanic", "Black", "Other"),
@@ -195,19 +195,22 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
 }
 
 convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores_dummies = FALSE, efa = FALSE, combine_age_50 = T) {
-  text_pnr <- c("US" = "I don't know", "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
+  text_pnr <<- c("US" = "I don't know", "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                 "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
                 "FR" = "Je ne sais pas", "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Préfère ne pas le dire",
                 "UK" = "I don't know", "DE" = "Ich weiß es nicht")
-  text_yes <- c("US" = "Yes", 
+  text_yes <<- c("US" = "Yes", 
                 "FR" = "Oui")
-  text_no <- c("No")
-  text_intensity <- c("Not at all", "A little", "Moderately", "A little", "A great deal")
-  text_support <- c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support")
-  text_importance <- c("Not at all important", "Not so important", "Quite important", "Very important")
-  text_problem <- c("Not an important issue for me", "An issue but there are other priorities", "An issue but we do already what we can", "An important issue, we should do more", "One of the most pressing issue of our time")
-  foreign_aid_amounts <- c(.1, .2, .5, 1.0, 1.7, 2.6, 4, 6, 9, 13, 25)
-  foreign_aid_means <- c(0, .15, .4, .8, 1.4, 2.2, 3.35, 5, 7.5, 11, 19, 30)
+  text_no <<- c("No")
+  text_intensity <<- c("Not at all", "A little", "Moderately", "A little", "A great deal")
+  text_support <<- c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support")
+  text_importance <<- c("Not at all important", "Not so important", "Quite important", "Very important")
+  text_problem <<- c("Not an important issue for me", "An issue but there are other priorities", "An issue but we do already what we can", "An important issue, we should do more", "One of the most pressing issue of our time")
+  foreign_aid_amounts <<- c(.1, .2, .5, 1.0, 1.7, 2.6, 4, 6, 9, 13, 25)
+  foreign_aid_means <<- c(0, .15, .4, .8, 1.4, 2.2, 3.35, 5, 7.5, 11, 19, 30)
+  foreign_aid_actual_amounts <<- c("FR" = .8, "DE" = 1.3, "ES" = .5, "UK" = 1.7, "US" = .4)
+  foreign_aid_actual_amounts_min <<- c("FR" = .6, "DE" = 1.1, "ES" = .3, "UK" = 1.1, "US" = .3)
+  foreign_aid_actual_amounts_max <<- c("FR" = 1, "DE" = 1.7, "ES" = .5, "UK" = 1.7, "US" = .5)
   names(foreign_aid_means) <- c(foreign_aid_amounts, 30) # sub(".0", "", temp)
   
   if ("petition_gcs" %in% names(e)) {
@@ -229,13 +232,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$branch_global_tax[!is.na(e$global_tax_support)] <- "separate"
     label(e$branch_global_tax) <- "branch_global_tax: separate/sharing/global_share/NA Way to ask the preference for funding low-income countries through a global tax on the rich: either 'separate'ly the support for a national and a global tax on millionaires; whether to allocate half or none of the global tax to low-income countries; the 'global_share' in 0 to 100%."
   }
-  
-  if ("wealth_couple" %in% names(e)) {
-    e$wealth[!is.na(e$wealth_couple)] <- e$wealth_couple[!is.na(e$wealth_couple)]
-    e$wealth[!is.na(e$wealth_single)] <- e$wealth_single[!is.na(e$wealth_single)]
-    label(e$wealth) <- "wealth: Quartile of wealth (from wealth_couple and wealth_single)."
-  }
-  
+
   variables_support <<- names(e)[grepl('support', names(e))]
   variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|foreign_aid|_tax_", names(e))]
   variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
@@ -288,7 +285,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     #             missing.values = c("","PNR"), annotation=attr(e[j][[1]], "label"))
   }
   
-  for (j in intersect(c("gender", "region", "education", "employment_status", "income", "wealth", "vote" # TODO
+  for (j in intersect(c("gender", "region", "education", "employment_status", "vote" # TODO
   ), names(e))) {
     e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label")))
   }
@@ -303,6 +300,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   }
   
   if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% c("A little")
+  
+  e$country_name <- e$country
+  if (grepl("US", country)) e$country_name <- "United States"
+  e$country <- countries[e$country_name]
   
   temp <- as.numeric(as.vector(gsub("[^0-9\\.]", "", gsub(".*to", "", e$age_exact))))
   temp <- temp - 1.5
@@ -322,6 +323,70 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
   }
 
+  e$income_original <- e$income
+  if (grepl("US", country)) {
+    income_string <- c("< 20k", "20-35k", "35-42k", "42-50k", "50-65k", "65-82k", "82-103k", "103-130k", "130-145k", "145-165k", "165-250k", "> 250k")
+    income_number <- c(15, 28, 39, 46, 58, 74, 92, 116, 142, 155, 205, 285)
+    decile <- c(1, 2, 3, 3, 4, 5, 6, 7, 8, 8, 9, 10)
+    quartile <- c(1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4)
+    names(income_number) <- names(decile) <- names(quartile) <- income_string
+    temp <- as.numeric(income_number[as.vector(gsub("less than \\$", "< ", gsub("between \\$", "", gsub(",000", "k", gsub(",001 and \\$", "-", gsub("165,000 a", "165,001 a", e$income_original))))))])
+    e$income <- as.item(temp, labels = structure(income_number, names = income_string), missing.values=c(NA), annotation=Label(e$income))
+    e$income_decile <- as.numeric(decile[as.character(e$income)])
+    e$income_quartile <- as.numeric(quartile[as.character(e$income)])
+  } else {
+    e$income_quartile <- ceiling(as.numeric(as.vector(gsub("[^0-9\\.]", "", gsub("and.*", "", e$income_original))))/250)
+    e$income_decile <- ceiling(as.numeric(as.vector(gsub("900", "901", gsub("[^0-9\\.]", "", gsub("and.*", "", e$income_original)))))/100)
+  }
+  e$income_factor <- as.factor(e$income_quartile)
+  label(e$income_decile) <- "income_decile: [1-10] Decile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
+  label(e$income_quartile) <- "income_quartile: [1-4] Quartile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
+  label(e$income_factor) <- "income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
+  
+  e$urban_category <- as.numeric(e$urban_category)
+  e$urban_category[e$urban_category == 0] <- NA
+  label(e$urban_category) <- "urban_category: [1-4] Computed from the zipcode. NA indicates an unrecognized zipcode. For FR/DE/ES, Eurostat's degree of urbanization (1: Cities, 2: Towns and suburbs, 3: Rural). For the UK we use another classification that tends to classify zipcodes as more rural than Eurostat (cf. zipcodes.R). For the US, recoded from RUCA codes (1: Core metropolitan, 2: Metro non-core or micropolitan, 3: Small town, 4: Rural)."
+  temp <- as.numeric(as.vector(e$urban_category))
+  if (grepl("US", country)) temp <- as.numeric(as.vector(e$urban_category - 1 * (e$urban_category > 2)))
+  e$urbanity <- as.item(temp, labels = structure(1:3, names = c("Cities", "Towns and suburbs", "Rural")), missing.values=c(NA), annotation="urbanity: 1: Cities / 2: Towns and suburbs / 3: Rural. Computed from the zipcode. For EU, equals urban_category; for the U.S., urbanity = 1; 2; 3 (resp.) corresponds to urban_category = 1; 2 or 3; 4.")
+  e$urban <- e$urban_category == 1
+  label(e$urban) <- "urban: T/F urban_category == 1: Cities (EU) or Core metropolitan (US)."
+  
+  e$education_original <- e$education
+  # ISCED_EU <- c("0-1", "2", "3 pro basic", "3 pro advanced", "3 general", "4-5", "6", "7-8")
+  ISCED <- c("0-1", "2", "3.1", "3.2", "3.3", "4-5", "6", "7-8")
+  names(ISCED) <- c("Primary school or less", "Eigth grade", "Some high school", "Regular high school diploma/GED or alternative credential", "Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)", "Bachelor's degree (for example: BA, BS)", "Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD)")
+  e$education <- ISCED[e$education_original]
+  label(e$education) <- "education: What is the highest level of education you have completed? /!\ For EU, the values don't correspond to the responses. To see the correspondence between values and responses in each country, cf. specificities.xlsx$Education"
+  e$diploma[e$education %in% c("0-1", "2")] <- 1 
+  e$diploma[grepl("3", e$education)] <- 2 
+  e$diploma[e$education %in% c("4-5", "6", "7-8")] <- 3 
+  e$diploma <- as.item(e$diploma, labels = structure(1:3, names = c("Below upper secondary", "Upper secondary", "Post secondary")), missing.values=c(NA, "Not 25-64"), annotation="diploma: 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.")
+  e$diploma_25_64 <- e$diploma
+  e$diploma_25_64[e$age < 25 | e$age > 65] <- 0 # "Not 25-64"
+  e$diploma_25_64 <- as.item(as.numeric(as.vector(e$diploma_25_64)), labels = structure(c(1:3, 0), names = c("Below upper secondary", "Upper secondary", "Post secondary", "Not 25-64")), missing.values=c(NA, 0), 
+                             annotation="diploma_25_64: 0: Not 25-64 if age is not within 25-64 (missing value) / 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.")
+  
+  e$employment_status <- gsub(" \\(.*\\)", "", e$employment_status)
+  
+  e$employment_agg <-  "Not working"
+  e$employment_agg[e$employment_status == "Student"] <- "Student"
+  e$employment_agg[e$employment_status == "Retired"] <- "Retired"
+  e$employment_agg[e$employment_status == "Self-employed" | e$employment_status == "Full-time employed" | e$employment_status == "Part-time employed"] <- "Working"
+  e$employment_agg <- as.factor(e$employment_agg)
+  
+  e$inactive <- e$employment_agg %in% c("Retired", "Not working")
+  e$employment <- e$employment_agg == "Working"
+  e$employment[e$age == "65+"] <- NA
+  label(e$employment) <- "employment: T/F/NA indicator that the respondent is employed (employment_agg == Working), NA if s-he is above 65."
+  
+  if ("wealth_couple" %in% names(e)) {
+    e$wealth[!is.na(e$wealth_couple)] <- e$wealth_couple[!is.na(e$wealth_couple)]
+    e$wealth[!is.na(e$wealth_single)] <- e$wealth_single[!is.na(e$wealth_single)]
+    temp <-  grepl("Less than \\$0", e$wealth) + 2 * grepl("Close to \\$0", e$wealth) + 3 * grepl("Between \\$4,000", e$wealth) + 4 * (e$wealth %in% c("Between $120,000 and $380,000", "Between $60,000 and $190,000")) + 5 * grepl("More than", e$wealth)
+    e$wealth <- as.item(temp, labels = structure(c(1:5, 0), names = c("Q1","Q2","Q3","Q4","Q5", "PNR")), missing.values = c(NA, 0), annotation="wealth: Quintile of wealth (from wealth_couple and wealth_single).")
+  }
+  
   e$owner <- e$home_owner == T | e$home_landlord == T
   label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
   
@@ -365,6 +430,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     temp <- foreign_aid_means[sub(".0", "", temp)]
     e[[v]] <- as.item(temp, labels = structure(c(foreign_aid_means), names = c("< 0.1%", "0.1 to 0.2", "0.3 to 0.5", "0.6 to 1", "1.1 to 1.7", "1.8 to 2.6", "2.7 to 4", "4.1 to 6", "6.1 to 9", "9.1 to 13", "13.1 to 25", "> 25%")# foreign_aid_amounts
     ), annotation = Label(e[[v]])) 
+  }
+  
+  if ("foreign_aid_preferred" %in% names(e)) {
+    e$foreign_aid_more_less[e$info_foreign_aid == T] <- ((e$foreign_aid_preferred > foreign_aid_actual_amounts_max[e$country]) - (e$foreign_aid_preferred < foreign_aid_actual_amounts_min[e$country]))[e$info_foreign_aid == T]
+    e$foreign_aid_more_less[e$info_foreign_aid == FALSE] <- ((e$foreign_aid_preferred > e$foreign_aid_belief) - (e$foreign_aid_preferred < e$foreign_aid_belief))[e$info_foreign_aid == FALSE]
+    e$foreign_aid_more_less <- as.item(e$foreign_aid_more_less, labels = structure(-1:1, names = c("Less", "Same"," More")), missing.values = NA, 
+                                       annotation = "foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
   }
   
   for (v in intersect(variables_win_lose, names(e))) e[[paste0(v, "_original")]] <- e[[v]]
@@ -515,11 +587,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$share_all_same <- rowMeans(e[, variables_all_same], na.rm = T)
   label(e$mean_spread) <- paste0("mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: ", paste(names_matrices, collapse = ", "), "). -Inf indicates that all answers were NA.")
   label(e$share_all_same) <- paste0("mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: ",  paste(names_matrices, collapse = ", "), ").")
-  
-  e$country_name <- e$country
-  if (grepl("US", country)) e$country_name <- "United States"
-  e$country <- countries[e$country_name]
-  
+
   e$wrong_language <- (e$country == "US" & e$language != "EN") | (e$country == "DE" & e$language != "DE") | (e$country == "FR" & e$language != "FR") | (e$country == "ES" & e$language != "ES-ES") | (e$country == "UK" & e$language != "EN-GB")
   label(e$wrong_language) <- "wrong_language: T/F The language does not correspond to the respondent's country (including Spanish in the U.S.)."
   

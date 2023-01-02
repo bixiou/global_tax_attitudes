@@ -1,0 +1,577 @@
+StartDate,EndDate,Status,IPAddress,Progress,Duration (in seconds),Finished,RecordedDate,ResponseId,RecipientLastName,RecipientFirstName,RecipientEmail,ExternalReference,LocationLatitude,LocationLongitude,DistributionChannel,UserLanguage,Q2.1,Q2.2,Q2.4,Q228,Q258,Q2.6_1,Q2.6_2,Q2.6_8,Q2.6_4,Q2.6_3,Q2.6_5,Q2.6_6,Q2.6_7,Q2.14,Q2.8,Q2.9,Q2.15_1,Q2.15_2,Q2.15_3,Q2.15_4,Q50,Q2.16,Q24.6,Q57_First Click,Q57_Last Click,Q57_Page Submit,Q57_Click Count,Q259,Q261,Q54,Q262,Q264_1,Q263,Q265_1,Q266,Q267,Q268,Q269,Q61_First Click,Q61_Last Click,Q61_Page Submit,Q61_Click Count,Q277,Q47,Q60_First Click,Q60_Last Click,Q60_Page Submit,Q60_Click Count,Q280,Q281,Q282,Q283,Q58_First Click,Q58_Last Click,Q58_Page Submit,Q58_Click Count,Q284,Q285,Q59_First Click,Q59_Last Click,Q59_Page Submit,Q59_Click Count,Q30,Q48,Q62,Q275_1,Q276_1,Q270,Q271,Q56,Q272,Q23.1,Q52_1,Q53_1,Q23.4,Q24.1,Q24.2,Q273_1,Q273_2,Q273_3,Q274,Q64_First Click,Q64_Last Click,Q64_Page Submit,Q64_Click Count,Q63_1,Q63_2,Q63_3,Q63_4,Q63_5,Q63_6,Q63_7,Q63_8,Q63_9,Q63_10,Q63_11,Q63_12,Q63_13,Q63_14,Q63_15,Q63_16,Q63_17,Q63_DO_1,Q63_DO_2,Q63_DO_3,Q63_DO_4,Q63_DO_5,Q63_DO_6,Q63_DO_7,Q63_DO_8,Q63_DO_9,Q63_DO_10,Q63_DO_11,Q63_DO_12,Q63_DO_13,Q63_DO_14,Q63_DO_15,Q63_DO_16,Q63_DO_17,Q56_First Click,Q56_Last Click,Q56_Page Submit,Q56_Click Count,Q25.1,Q25.2,Q51,Finished,Q_TerminateFlag,Q_TotalDuration,PSID,PID,urban_category,region,D-1-1,D-1-2,D-1-3,D-1-4,D-1-1-1,D-1-1-2,D-1-1-3,D-1-1-4,D-1-2-1,D-1-2-2,D-1-2-3,D-1-2-4,F-1-1,F-1-2,F-1-3,F-1-4,F-1-5,F-1-1-1,F-1-1-2,F-1-1-3,F-1-1-4,F-1-1-5,F-1-2-1,F-1-2-2,F-1-2-3,F-1-2-4,F-1-2-5,click_details,Q_Language,qvc,qvq,qvq1,qvq2,qvs,m,GlobalClimateScheme(incl.listexperiment)_DO_Q268,GlobalClimateScheme(incl.listexperiment)_DO_Q258,GlobalClimateScheme(incl.listexperiment)_DO_Q269,GlobalClimateScheme(incl.listexperiment)_DO_Q259,GlobalClimateScheme(incl.listexperiment)_DO_Q264,GlobalClimateScheme(incl.listexperiment)_DO_Q265,GlobalClimateScheme(incl.listexperiment)_DO_Q266,GlobalClimateScheme(incl.listexperiment)_DO_Q267,GlobalClimateScheme(incl.listexperiment)_DO_Q54,GlobalClimateScheme(incl.listexperiment)_DO_Q261,GlobalClimateScheme(incl.listexperiment)_DO_Q262,GlobalClimateScheme(incl.listexperiment)_DO_Q57,GlobalClimateScheme(incl.listexperiment)_DO_Q263,"Conjointanalysis(a,b)_DO_Q280","Conjointanalysis(a,b)_DO_Q281","Conjointanalysis(a,b)_DO_Q47","Conjointanalysis(a,b)_DO_Q277","Conjointanalysis(a,b)_DO_Q60","Conjointanalysis(a,b)_DO_Q61","Conjointanalysis(a,b)_DO_Q282","Conjointanalysis(a,b)_DO_Q283",Conjointanalysis(c)_DO_Q58,Conjointanalysis(c)_DO_Q284,Conjointanalysis(c)_DO_Q285,Donationlottery_DO_Q62,Donationlottery_DO_Q275,Donationlottery_DO_Q276,Petition_DO_Q270,Petition_DO_Q271
+Start Date,End Date,Response Type,IP Address,Progress,Duration (in seconds),Finished,Recorded Date,Response ID,Recipient Last Name,Recipient First Name,Recipient Email,External Data Reference,Location Latitude,Location Longitude,Distribution Channel,User Language,What is your gender?,How old are you?,What is your ZIP code?,Do you live with your partner (if you have one)?,"How many people are in your household? 
+The household includes: you, the members of your family who live with you, and your dependents.",What race or ethnicity do you identify with? (Multiple answers are possible) - White,What race or ethnicity do you identify with? (Multiple answers are possible) - Black or African American,What race or ethnicity do you identify with? (Multiple answers are possible) - Hispanic,What race or ethnicity do you identify with? (Multiple answers are possible) - Asian,What race or ethnicity do you identify with? (Multiple answers are possible) - American Indian or Alaskan Native,What race or ethnicity do you identify with? (Multiple answers are possible) - Native Hawaiian or Pacific Islander,What race or ethnicity do you identify with? (Multiple answers are possible) - Other,What race or ethnicity do you identify with? (Multiple answers are possible) - Prefer not to say,"What is the annual gross income of your household (before taxes)?
+
+This includes all income: wages, self-employment earnings, Social Security benefits, pensions, investment income, welfare payments, and income from other sources.",What is the highest level of education you have completed?,What is your employment status?,Are you a homeowner or a tenant? (Multiple answers are possible) - Tenant,Are you a homeowner or a tenant? (Multiple answers are possible) - Owner,Are you a homeowner or a tenant? (Multiple answers are possible) - Landlord renting out property,Are you a homeowner or a tenant? (Multiple answers are possible) - Hosted free of charge,"What is the estimated value of your household's assets (in U.S. dollars)? (note that you don't have to answer that question.)
+
+ 
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth $300,000 and you have $100,000 left to repay on your mortgage, your assets are $200,000.
+
+ 
+I estimate my household's assets net of debt to be:","What
+is the estimated value of your assets (in U.S. dollars)?  (note that you don't have to answer that question.)
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth $300,000 and you have $100,000 left to repay on your mortgage, your assets are $200,000.
+I estimate my assets net of debt to be:","What do you consider to be your political affiliation, as of today?",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,Who would win or lose financially in the Global climate scheme?,Who would win or lose financially in the National redistribution scheme?,"If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical American be financially affected?",Do you support the Global climate scheme?,"According to you, what percentage of Americans answer Yes to the previous question? - Percentage of Americans in favor of Global climate scheme",Do you support the National redistribution scheme?,"According to you, what percentage of Americans answer Yes to the previous question? - Percentage of Americans in favor of National redistribution","Among the policies below, how many do you support?
+
+	National redistribution scheme
+	Coal exit
+	Marriage only for opposite-sex couples","Among the policies below, how many do you support?
+
+	National redistribution scheme
+	Global climate scheme
+	Coal exit
+	Marriage only for opposite-sex couples","Among the policies below, how many do you support?
+
+	Coal exit
+	Marriage only for opposite-sex couples","Among the policies below, how many do you support?
+
+	National redistribution scheme
+	Coal exit
+	Marriage only for opposite-sex couples",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   Coal exit
+   Coal exit
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Global climate scheme","Do you support Bundle A (combining Coal exit, the National redistribution scheme, and the Global climate scheme)?",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   Coal exit
+   Global climate scheme
+  
+  
+   National redistribution scheme
+   National redistribution scheme","Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   
+   Coal exit
+  
+  
+   
+   Global climate scheme","Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Global climate scheme","Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Coal exit",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Imagine if the Democratic and Republican presidential candidates in 2024 campaigned with the following policies in their platforms.
+
+
+
+Which of these candidates would you vote for? 
+
+ 
+  
+   Democrat
+   Republican
+  
+  
+   Increase corporate income tax rate from 21% to 28%
+   Decrease the payroll tax
+  
+  
+   Coal exit
+   Permit completion of the Keystone pipeline
+  
+  
+   Trillion dollar investment in clean transportation infrastructure and building insulation
+   Withdrawal of the Paris agreement
+  
+  
+   $15 minimum wage
+   Marriage only for opposite-sex couples
+  
+  
+   National redistribution scheme
+   Strict enforcement of immigration and border legislation","Imagine if the Democratic and Republican presidential candidates in 2024 campaigned with the following policies in their platforms.
+
+
+
+Which of these candidates would you vote for?
+ 
+
+ 
+  
+   Democrat
+   Republican
+  
+  
+   Increase corporate income tax rate from 21% to 28%
+   Decrease the payroll tax
+  
+  
+   Coal exit
+   Permit completion of the Keystone pipeline
+  
+  
+   Trillion dollar investment in clean transportation infrastructure and building insulation
+   Withdrawal of the Paris agreement
+  
+  
+   $15 minimum wage
+   Marriage only for opposite-sex couples
+  
+  
+   National redistribution scheme
+   Strict enforcement of immigration and border legislation
+  
+  
+   Global climate scheme",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Imagine that the two main candidates at the 2024 Democratic party presidential primary campaign with the following key policies in their platforms.
+
+ Which of these candidates do you prefer?
+
+
+
+
+
+
+
+
+ 
+
+    Candidate A
+    
+    Candidate B
+
+
+[Field-F-1-1]
+[Field-F-1-1-1]
+[Field-F-1-2-1]
+
+[Field-F-1-2]
+[Field-F-1-1-2]
+[Field-F-1-2-2]
+
+[Field-F-1-3]
+[Field-F-1-1-3]
+[Field-F-1-2-3]
+
+[Field-F-1-4]
+[Field-F-1-1-4]
+[Field-F-1-2-4]
+
+[Field-F-1-5]
+[Field-F-1-1-5]
+[Field-F-1-2-5]","Imagine that the two main candidates at the 2024 Democratic party presidential primary campaign with the following key policies in their platforms.
+
+ Which of these candidates do you prefer?
+
+
+
+
+
+
+
+
+ 
+
+Candidate A
+
+Candidate B
+
+
+[Field-D-1-1]
+[Field-D-1-1-1]
+[Field-D-1-2-1]
+
+[Field-D-1-2]
+[Field-D-1-1-2]
+[Field-D-1-2-2]
+
+[Field-D-1-3]
+[Field-D-1-1-3]
+[Field-D-1-2-3]
+
+[Field-D-1-4]
+[Field-D-1-1-4]
+[Field-D-1-2-4]
+
+    Foreign policy
+    Global climate scheme
+    -","Please select ""A little"" (this is a test to see if you are paying attention).","By taking this survey, you are automatically entered into a lottery to win $100 in panel points. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery. The payment will be made to you in the same way as your compensation for this survey, so no further action is required on your part.
+
+ 
+
+Should you be selected in the lottery, you can also donate a part of this additional compensation to American people living in poverty through the charity GiveDirectly. The charity GiveDirectly provides small amounts of cash to people in need in the U.S.
+
+ 
+In case you are winner of the lottery, what share of the $100 would you donate to American people living in poverty through GiveDirectly? - Amount donated to American people in need (in $)","By taking this survey, you are automatically entered into a lottery to win $100 in panel points. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery. The payment will be made to you in the same way as your compensation for this survey, so no further action is required on your part.
+
+ 
+
+Should you be selected in the lottery, you can also donate a part of this additional compensation to African people living in poverty through the charity GiveDirectly. The charity GiveDirectly provides small amounts of cash to people in need in Africa.
+
+ 
+
+In case you are winner of the lottery, what share of the $100 would you donate to African people living in poverty through GiveDirectly? - Amount donated to African people in need (in $)","Would you be willing to sign a petition for the Global climate scheme? 
+
+As soon as the survey is complete, we will send the results to the U.S. President's office, informing him what share of American people are willing to endorse the Global climate scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)","Would you be willing to sign a petition for the National redistribution scheme?
+ 
+
+As soon as the survey is complete, we will send the results to the U.S. President's office, informing him what share of American people are willing to endorse the National redistribution scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)","In international climate negotiations, would you prefer U.S. diplomats to defend U.S. interests or global justice?",How much did you give to charities in 2022?,To what extent are you interested in politics?,"Where would you rate yourself on a scale of 1 to 5, where 1 means you think the government should do only those things necessary to provide the most basic government functions, and 5 means you think the government should take active steps in every area it can to try and improve the lives of its citizens? - Desired involvement of government","On economic policy matters, where do you see yourself on a scale of 1 to 5, where 1 is Left (favoring equality and government interventions) and 5 is Right (favoring free competition and little government intervention)? - Left (1) to Right (5) on economic issues",Did you vote in the 2020 U.S. presidential election?,Which candidate did you vote for in the 2020 U.S. presidential election?,"Even if you did not vote in the 2020 U.S. presidential election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.",To what extent do you think the following issues are a problem? - Income inequality in the U.S.,To what extent do you think the following issues are a problem? - Climate change,To what extent do you think the following issues are a problem? - Global poverty,What group do you defend when you vote?,Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Student loan forgiveness","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - $15 minimum wage","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Universal childcare/pre-K","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Funding affordable housing","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Expanding the Supreme Court","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Handgun ban","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Making abortion a right at the federal level","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Coal exit","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Trillion dollar investment in clean transportation infrastructure and building insulation","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Ban the sale of new combustion-engine cars by 2030","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - National redistribution scheme","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Wealth tax","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Increase corporate income tax rate from 21% to 28%","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Global climate scheme","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Global tax on millionaires","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Global democratic assembly on climate change","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Doubling foreign aid","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Student loan forgiveness","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - $15 minimum wage","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Universal childcare/pre-K","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Funding affordable housing","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Expanding the Supreme Court","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Handgun ban","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Making abortion a right at the federal level","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Coal exit","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Trillion dollar investment in clean transportation infrastructure and building insulation","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Ban the sale of new combustion-engine cars by 2030","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - National redistribution scheme","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Wealth tax","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Increase corporate income tax rate from 21% to 28%","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Global climate scheme","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Global tax on millionaires","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Global democratic assembly on climate change","In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Doubling foreign aid",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,Do you feel that this survey was politically biased?,"The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below.","Lastly, are you interested to be interviewed by a researcher (through videoconferencing) for 30 min? 
+This is totally optional and will not be rewarded.",Finished,Q_TerminateFlag,Q_TotalDuration,PSID,PID,urban_category,region,D-1-1,D-1-2,D-1-3,D-1-4,D-1-1-1,D-1-1-2,D-1-1-3,D-1-1-4,D-1-2-1,D-1-2-2,D-1-2-3,D-1-2-4,F-1-1,F-1-2,F-1-3,F-1-4,F-1-5,F-1-1-1,F-1-1-2,F-1-1-3,F-1-1-4,F-1-1-5,F-1-2-1,F-1-2-2,F-1-2-3,F-1-2-4,F-1-2-5,click_details,Q_Language,qvc,qvq,qvq1,qvq2,qvs,m,Global Climate Scheme (incl. list experiment) - Display Order - Q268,Global Climate Scheme (incl. list experiment) - Display Order - Q258,Global Climate Scheme (incl. list experiment) - Display Order - Q269,Global Climate Scheme (incl. list experiment) - Display Order - Q259,Global Climate Scheme (incl. list experiment) - Display Order - Q264,Global Climate Scheme (incl. list experiment) - Display Order - Q265,Global Climate Scheme (incl. list experiment) - Display Order - Q266,Global Climate Scheme (incl. list experiment) - Display Order - Q267,Global Climate Scheme (incl. list experiment) - Display Order - Q54,Global Climate Scheme (incl. list experiment) - Display Order - Q261,Global Climate Scheme (incl. list experiment) - Display Order - Q262,Global Climate Scheme (incl. list experiment) - Display Order - Q57,Global Climate Scheme (incl. list experiment) - Display Order - Q263,"Conjoint analysis (a, b) - Display Order - Q280","Conjoint analysis (a, b) - Display Order - Q281","Conjoint analysis (a, b) - Display Order - Q47","Conjoint analysis (a, b) - Display Order - Q277","Conjoint analysis (a, b) - Display Order - Q60","Conjoint analysis (a, b) - Display Order - Q61","Conjoint analysis (a, b) - Display Order - Q282","Conjoint analysis (a, b) - Display Order - Q283",Conjoint analysis (c) - Display Order - Q58,Conjoint analysis (c) - Display Order - Q284,Conjoint analysis (c) - Display Order - Q285,Donation lottery - Display Order - Q62,Donation lottery - Display Order - Q275,Donation lottery - Display Order - Q276,Petition - Display Order - Q270,Petition - Display Order - Q271
+"{""ImportId"":""startDate"",""timeZone"":""Europe/Berlin""}","{""ImportId"":""endDate"",""timeZone"":""Europe/Berlin""}","{""ImportId"":""status""}","{""ImportId"":""ipAddress""}","{""ImportId"":""progress""}","{""ImportId"":""duration""}","{""ImportId"":""finished""}","{""ImportId"":""recordedDate"",""timeZone"":""Europe/Berlin""}","{""ImportId"":""_recordId""}","{""ImportId"":""recipientLastName""}","{""ImportId"":""recipientFirstName""}","{""ImportId"":""recipientEmail""}","{""ImportId"":""externalDataReference""}","{""ImportId"":""locationLatitude""}","{""ImportId"":""locationLongitude""}","{""ImportId"":""distributionChannel""}","{""ImportId"":""userLanguage""}","{""ImportId"":""QID1""}","{""ImportId"":""QID2""}","{""ImportId"":""QID8_TEXT""}","{""ImportId"":""QID228""}","{""ImportId"":""QID257""}","{""ImportId"":""QID130"",""choiceId"":""1""}","{""ImportId"":""QID130"",""choiceId"":""2""}","{""ImportId"":""QID130"",""choiceId"":""8""}","{""ImportId"":""QID130"",""choiceId"":""4""}","{""ImportId"":""QID130"",""choiceId"":""3""}","{""ImportId"":""QID130"",""choiceId"":""5""}","{""ImportId"":""QID130"",""choiceId"":""6""}","{""ImportId"":""QID130"",""choiceId"":""7""}","{""ImportId"":""QID4""}","{""ImportId"":""QID3""}","{""ImportId"":""QID9""}","{""ImportId"":""QID5"",""choiceId"":""1""}","{""ImportId"":""QID5"",""choiceId"":""2""}","{""ImportId"":""QID5"",""choiceId"":""3""}","{""ImportId"":""QID5"",""choiceId"":""4""}","{""ImportId"":""QID289""}","{""ImportId"":""QID6""}","{""ImportId"":""QID153""}","{""ImportId"":""QID296_FIRST_CLICK""}","{""ImportId"":""QID296_LAST_CLICK""}","{""ImportId"":""QID296_PAGE_SUBMIT""}","{""ImportId"":""QID296_CLICK_COUNT""}","{""ImportId"":""QID259""}","{""ImportId"":""QID261""}","{""ImportId"":""QID293""}","{""ImportId"":""QID262""}","{""ImportId"":""QID264_1""}","{""ImportId"":""QID263""}","{""ImportId"":""QID265_1""}","{""ImportId"":""QID266""}","{""ImportId"":""QID267""}","{""ImportId"":""QID268""}","{""ImportId"":""QID269""}","{""ImportId"":""QID300_FIRST_CLICK""}","{""ImportId"":""QID300_LAST_CLICK""}","{""ImportId"":""QID300_PAGE_SUBMIT""}","{""ImportId"":""QID300_CLICK_COUNT""}","{""ImportId"":""QID277""}","{""ImportId"":""QID286""}","{""ImportId"":""QID299_FIRST_CLICK""}","{""ImportId"":""QID299_LAST_CLICK""}","{""ImportId"":""QID299_PAGE_SUBMIT""}","{""ImportId"":""QID299_CLICK_COUNT""}","{""ImportId"":""QID280""}","{""ImportId"":""QID281""}","{""ImportId"":""QID282""}","{""ImportId"":""QID283""}","{""ImportId"":""QID297_FIRST_CLICK""}","{""ImportId"":""QID297_LAST_CLICK""}","{""ImportId"":""QID297_PAGE_SUBMIT""}","{""ImportId"":""QID297_CLICK_COUNT""}","{""ImportId"":""QID284""}","{""ImportId"":""QID285""}","{""ImportId"":""QID298_FIRST_CLICK""}","{""ImportId"":""QID298_LAST_CLICK""}","{""ImportId"":""QID298_PAGE_SUBMIT""}","{""ImportId"":""QID298_CLICK_COUNT""}","{""ImportId"":""QID279""}","{""ImportId"":""QID287""}","{""ImportId"":""QID301""}","{""ImportId"":""QID275_1""}","{""ImportId"":""QID276_1""}","{""ImportId"":""QID270""}","{""ImportId"":""QID271""}","{""ImportId"":""QID294""}","{""ImportId"":""QID272""}","{""ImportId"":""QID52""}","{""ImportId"":""QID291_1""}","{""ImportId"":""QID292_1""}","{""ImportId"":""QID55""}","{""ImportId"":""QID56""}","{""ImportId"":""QID151""}","{""ImportId"":""QID273_1""}","{""ImportId"":""QID273_2""}","{""ImportId"":""QID273_3""}","{""ImportId"":""QID274""}","{""ImportId"":""QID303_FIRST_CLICK""}","{""ImportId"":""QID303_LAST_CLICK""}","{""ImportId"":""QID303_PAGE_SUBMIT""}","{""ImportId"":""QID303_CLICK_COUNT""}","{""ImportId"":""QID302_1""}","{""ImportId"":""QID302_2""}","{""ImportId"":""QID302_3""}","{""ImportId"":""QID302_4""}","{""ImportId"":""QID302_5""}","{""ImportId"":""QID302_6""}","{""ImportId"":""QID302_7""}","{""ImportId"":""QID302_8""}","{""ImportId"":""QID302_9""}","{""ImportId"":""QID302_10""}","{""ImportId"":""QID302_11""}","{""ImportId"":""QID302_12""}","{""ImportId"":""QID302_13""}","{""ImportId"":""QID302_14""}","{""ImportId"":""QID302_15""}","{""ImportId"":""QID302_16""}","{""ImportId"":""QID302_17""}","{""ImportId"":""QID302_DO"",""choiceId"":""1""}","{""ImportId"":""QID302_DO"",""choiceId"":""2""}","{""ImportId"":""QID302_DO"",""choiceId"":""3""}","{""ImportId"":""QID302_DO"",""choiceId"":""4""}","{""ImportId"":""QID302_DO"",""choiceId"":""5""}","{""ImportId"":""QID302_DO"",""choiceId"":""6""}","{""ImportId"":""QID302_DO"",""choiceId"":""7""}","{""ImportId"":""QID302_DO"",""choiceId"":""8""}","{""ImportId"":""QID302_DO"",""choiceId"":""9""}","{""ImportId"":""QID302_DO"",""choiceId"":""10""}","{""ImportId"":""QID302_DO"",""choiceId"":""11""}","{""ImportId"":""QID302_DO"",""choiceId"":""12""}","{""ImportId"":""QID302_DO"",""choiceId"":""13""}","{""ImportId"":""QID302_DO"",""choiceId"":""14""}","{""ImportId"":""QID302_DO"",""choiceId"":""15""}","{""ImportId"":""QID302_DO"",""choiceId"":""16""}","{""ImportId"":""QID302_DO"",""choiceId"":""17""}","{""ImportId"":""QID295_FIRST_CLICK""}","{""ImportId"":""QID295_LAST_CLICK""}","{""ImportId"":""QID295_PAGE_SUBMIT""}","{""ImportId"":""QID295_CLICK_COUNT""}","{""ImportId"":""QID57""}","{""ImportId"":""QID58_TEXT""}","{""ImportId"":""QID290""}","{""ImportId"":""Finished""}","{""ImportId"":""Q_TerminateFlag""}","{""ImportId"":""Q_TotalDuration""}","{""ImportId"":""PSID""}","{""ImportId"":""PID""}","{""ImportId"":""urban_category""}","{""ImportId"":""region""}","{""ImportId"":""D-1-1""}","{""ImportId"":""D-1-2""}","{""ImportId"":""D-1-3""}","{""ImportId"":""D-1-4""}","{""ImportId"":""D-1-1-1""}","{""ImportId"":""D-1-1-2""}","{""ImportId"":""D-1-1-3""}","{""ImportId"":""D-1-1-4""}","{""ImportId"":""D-1-2-1""}","{""ImportId"":""D-1-2-2""}","{""ImportId"":""D-1-2-3""}","{""ImportId"":""D-1-2-4""}","{""ImportId"":""F-1-1""}","{""ImportId"":""F-1-2""}","{""ImportId"":""F-1-3""}","{""ImportId"":""F-1-4""}","{""ImportId"":""F-1-5""}","{""ImportId"":""F-1-1-1""}","{""ImportId"":""F-1-1-2""}","{""ImportId"":""F-1-1-3""}","{""ImportId"":""F-1-1-4""}","{""ImportId"":""F-1-1-5""}","{""ImportId"":""F-1-2-1""}","{""ImportId"":""F-1-2-2""}","{""ImportId"":""F-1-2-3""}","{""ImportId"":""F-1-2-4""}","{""ImportId"":""F-1-2-5""}","{""ImportId"":""click_details""}","{""ImportId"":""Q_Language""}","{""ImportId"":""qvc""}","{""ImportId"":""qvq""}","{""ImportId"":""qvq1""}","{""ImportId"":""qvq2""}","{""ImportId"":""qvs""}","{""ImportId"":""m""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q268""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q258""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q269""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q259""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q264""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q265""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q266""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q267""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q54""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q261""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q262""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q57""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q263""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q280""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q281""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q47""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q277""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q60""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q61""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q282""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q283""}","{""ImportId"":""BL_8faNyywlojTnlFs_DO"",""choiceId"":""Q58""}","{""ImportId"":""BL_8faNyywlojTnlFs_DO"",""choiceId"":""Q284""}","{""ImportId"":""BL_8faNyywlojTnlFs_DO"",""choiceId"":""Q285""}","{""ImportId"":""BL_a9tLjZ3CfhLkCns_DO"",""choiceId"":""Q62""}","{""ImportId"":""BL_a9tLjZ3CfhLkCns_DO"",""choiceId"":""Q275""}","{""ImportId"":""BL_a9tLjZ3CfhLkCns_DO"",""choiceId"":""Q276""}","{""ImportId"":""BL_bdcGvXyd9QQO3hs_DO"",""choiceId"":""Q270""}","{""ImportId"":""BL_bdcGvXyd9QQO3hs_DO"",""choiceId"":""Q271""}"
+2022-12-21 11:47:04,2022-12-21 11:47:40,IP Address,169.255.160.42,100,35,True,2022-12-21 11:47:40,R_1lnLyipiR5Ajqs1,,,,,-20.0509,57.544,anonymous,EN,Woman,Below 18,99950,No,2,,Black or African American,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,35,,,,,,,,,,,,,,,,,Societal issues,Climate policy,Foreign policy,Economic issues,Tax system,Making abortion a right at the federal level,Trillion dollar investment in clean transportation infrastructure and building insulation,Global climate scheme,$15 minimum wage,Wealth tax,Expanding the Supreme Court,Ban the sale of new combustion-engine cars by 2030,Global climate scheme,Student loan forgiveness,-,,EN,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2022-12-21 15:08:35,2022-12-21 15:08:56,IP Address,169.255.160.42,100,20,True,2022-12-21 15:08:56,R_RfszGXvJbBAiV5n,,,,,-20.0509,57.544,anonymous,EN,Woman,Below 18,99950,No,2,,,,Asian,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,20,,,,,,,,,,,,,,,,,Tax system,Climate policy,Foreign policy,Societal issues,Economic issues,Wealth tax,Coal exit,Global tax on millionaires,-,-,National redistribution scheme,Coal exit,Global climate scheme,Expanding the Supreme Court,Funding affordable housing,,EN,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2022-12-21 15:12:39,2022-12-21 15:12:58,Spam,169.255.160.42,100,18,True,2022-12-21 15:12:58,R_2wR052gIhYgYPMB,,,,,-20.0509,57.544,anonymous,EN,Woman,Below 18,99950,No,2,,,,Asian,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,18,,,,,,,,,,,,,,,,,Societal issues,Foreign policy,Tax system,Climate policy,Economic issues,-,Doubling foreign aid,Wealth tax,Ban the sale of new combustion-engine cars by 2030,-,Making abortion a right at the federal level,-,Increase corporate income tax rate from 21% to 28%,Ban the sale of new combustion-engine cars by 2030,Funding affordable housing,,EN,97189_357ae033,97189,97189,97189,97189,231106397671549,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2022-12-23 19:04:46,2022-12-23 19:05:07,IP Address,223.233.73.237,100,20,True,2022-12-23 19:05:07,R_1gFKKPXlvknIMYn,,,,,28.6542,77.2373,anonymous,EN,Woman,Below 18,12456,Yes,2,,,Hispanic,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,20,,,,,,,,,,,,,,,,,Foreign policy,Societal issues,Climate policy,Tax system,Economic issues,Doubling foreign aid,-,Ban the sale of new combustion-engine cars by 2030,Increase corporate income tax rate from 21% to 28%,-,-,Expanding the Supreme Court,Ban the sale of new combustion-engine cars by 2030,National redistribution scheme,Funding affordable housing,,EN,97189_357ae033,97189,97189,97189,97189,231297886704725,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2022-12-21 10:00:34,2022-12-21 10:27:28,IP Address,,2,1613,False,2022-12-28 10:27:33,R_vkP4FQTR5nfE0c9,,,,,,,anonymous,EN,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,,1613,,,,,,,,,,,,,,,,,Climate policy,Societal issues,Foreign policy,Tax system,Economic issues,Ban the sale of new combustion-engine cars by 2030,Handgun ban,Global climate scheme,Wealth tax,$15 minimum wage,Coal exit,Making abortion a right at the federal level,Global democratic assembly on climate change,-,$15 minimum wage,,EN,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2022-12-28 10:45:35,2022-12-28 10:55:15,IP Address,223.233.73.237,100,580,True,2022-12-28 10:55:15,R_YRLGsTwNEzXuiul,,,,,28.6542,77.2373,anonymous,EN,Woman,25 to 29,14523,Yes,4,White,,,,,,,,"between $42,001 and $50,000","Bachelor's degree (for example: BA, BS)",Full-time employed,,Owner,,,"Between $120,000 and $380,000",,Democrat,41.092,59.518,60.404,11,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would lose out financially.,No,48,No,29,,,1,,89.568,92.368,93.916,3,Bundle B,Yes,89.568,92.368,93.915,3,,,,Bundle B,,,,,,Republican,1.901,1.901,3.214,1,Candidate A,Candidate B,,,,Yes,,U.S. interests,"Between $1,001 and $5,000.",A lot,2,2,I didn't have the right to vote in the U.S.,,Biden,An issue but we do already what we can,"An important issue, we should do more","An important issue, we should do more",My State,265.966,274.56,275.682,9,,,0,,,59,,0,,0,,41,0,,,,,,,6,,,1,,5,,3,,2,4,,,,,1.214,5.312,6.11,5,"Yes, right-wing biased",dvvrrd,No,1,,580,,,0,Northeast,Climate policy,Economic issues,Tax system,Societal issues,Ban the sale of new combustion-engine cars by 2030,Universal childcare/pre-K,National redistribution scheme,-,Trillion dollar investment in transportation infrastructure and building insulation,Student loan forgiveness,National redistribution scheme,Making abortion a right at the federal level,Societal issues,Climate policy,Tax system,Economic issues,Foreign policy,-,-,Wealth tax,$15 minimum wage,Global climate scheme,Making abortion a right at the federal level,-,Wealth tax,$15 minimum wage,Global climate scheme,1,EN,97189_357ae033,97189,97189,97189,97189,231709584143553,9,1,,2,6,8,,,4,3,5,10,7,,,2,1,4,5,,3,,,1,,,,1,
+2022-12-28 10:51:02,2022-12-28 10:57:48,IP Address,182.69.179.179,100,406,True,2022-12-28 10:57:49,R_3IBY7qQteEZD87n,,,,,28.6542,77.2373,anonymous,EN,Woman,21 to 24,90267,Yes,3,White,,,,,,,,"between $42,001 and $50,000","Bachelor's degree (for example: BA, BS)",Full-time employed,,Owner,,,"Between $120,000 and $380,000",,Republican,3.592,75.497,78.646,12,Typical Americans would win and the 700 million poorest humans would lose.,Typical Americans would lose and the richest Americans would win.,A typical American would neither gain nor lose.,Yes,82,Yes,78,,,,2,1.596,6.756,8.012,4,Bundle A,Yes,1.596,6.756,8.011,4,Bundle A,,,,,,,,,,,,,,,,,,,,Yes,U.S. interests,"Between $501 and $1,000.",Moderately,4,4,Yes,Hawkins,,An issue but there are other priorities,An issue but there are other priorities,An issue but there are other priorities,Americans,2.189,37.981,43.952,35,,0,,98,,0,,,0,,,,,2,,0,,,5,,1,,4,,,3,,,,,2,,6,,27.228,29.521,30.87,3,"Yes, left-wing biased",,Yes,1,,406,,,"1",West,Tax system,Economic issues,Societal issues,Climate policy,Wealth tax AND National redistribution scheme,-,Making abortion a right at the federal level,Trillion dollar investment in transportation infrastructure and building insulation,Wealth tax AND National redistribution scheme,Funding affordable housing,Handgun ban,Ban the sale of new combustion-engine cars by 2030,Climate policy,Tax system,Foreign policy,Societal issues,Economic issues,-,National redistribution scheme,Global climate scheme,Expanding the Supreme Court,Student loan forgiveness,-,Increase corporate income tax rate from 21% to 28%,-,Making abortion a right at the federal level,-,1,EN,97189_357ae033,97189,97189,97189,97189,231709919358045,,1,9,2,6,8,,,4,3,5,10,7,3,,2,1,4,5,,,1,,,,,,,1
+2022-12-28 15:28:15,2022-12-28 15:41:43,IP Address,122.223.140.216,100,808,True,2022-12-28 15:41:43,R_1IaDqf2YLQsTxL1,,,,,35.6918,139.7002,anonymous,EN,Man,30 to 34,10001,Yes,2,,,,Asian,,,,,"between $103,001 and $130,000","Bachelor's degree (for example: BA, BS)",Full-time employed,Tenant,,,,"More than $380,000",,Democrat,12.326,208.967,210.285,16,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would lose and the richest Americans would win.,A typical American would neither gain nor lose.,Yes,46,Yes,52,,,2,,4.469,14.594,15.905,4,Bundle A,Yes,4.468,14.594,15.905,4,Bundle B,,,,,,,,,Democrat,2.951,8.082,8.739,4,Candidate B,Candidate B,,,,,No,Global justice,Less than $100.,Moderately,3,3,Prefer not to say,,Prefer not to say,An issue but we do already what we can,An issue but we do already what we can,An issue but we do already what we can,My family and myself,8.56,21.377,22.801,6,,,0,30,2,,5,,,10,,,,,,53,,,,5,3,2,,6,,,4,,,,,,1,,2.662,31.076,32.994,4,"No, I do not feel it was biased",cscscsc,No,1,,808,,,"1",Northeast,Societal issues,Climate policy,Tax system,Economic issues,Handgun ban,Coal exit,National redistribution scheme,Universal childcare/pre-K,-,Coal exit,National redistribution scheme,Funding affordable housing,Tax system,Climate policy,Foreign policy,Economic issues,Societal issues,Increase corporate income tax rate from 21% to 28%,Coal exit,Global tax on millionaires,-,Expanding the Supreme Court,Wealth tax,-,-,Universal childcare/pre-K,Handgun ban,1,EN,97189_357ae033,97189,97189,97189,97189,231726950987910,9,1,,2,6,8,,,4,3,5,10,7,3,,2,1,4,5,,,,,1,,,,,1
+2022-12-28 17:43:20,2022-12-28 18:01:43,IP Address,73.218.56.50,100,1102,True,2022-12-28 18:01:43,R_2V4nDFoNN1BtI1o,,,,,43.011,-71.4571,anonymous,EN,Woman,60 to 64,03303,Yes,2,White,,,,,,,,"between $20,001 and $35,000",Regular high school diploma/GED or alternative credential,Inactive (not searching for a job),,Owner,,,,,Republican,82.053,199.992,202.89,17,Typical Americans would win and the 700 million poorest humans would lose.,Typical Americans would lose and the richest Americans would win.,A typical American would lose out financially.,No,61,No,53,1,,,,94.451,104.932,107.783,5,Bundle B,No,94.448,104.931,107.782,5,,,Bundle B,,,,,,Republican,,,,,,,,,,,,Yes,U.S. interests,Less than $100.,Moderately,5,4,Yes,Trump,,An issue but there are other priorities,An issue but there are other priorities,One of the most pressing issue of our time,Americans,14.669,180.196,183.384,15,0,,,80,,,,5,,,5,10,,,,,0,2,,,5,,,,3,,,4,6,,,,,1,3.771,117.6,119.136,5,"No, I do not feel it was biased",thanks i believe the government needs a complete overhaul all the way through it things are too politically motivated and noone cares about the ruth and the people we have too many homeless people here now we don need extra people to take care of,No,1,,1102,,,"3",Northeast,Economic issues,Societal issues,Tax system,Climate policy,Universal childcare/pre-K,Making abortion a right at the federal level,National redistribution scheme,Coal exit,Funding affordable housing,Making abortion a right at the federal level,National redistribution scheme,Ban the sale of new combustion-engine cars by 2030,Societal issues,Climate policy,Economic issues,Tax system,Foreign policy,Making abortion a right at the federal level,Ban the sale of new combustion-engine cars by 2030,Universal childcare/pre-K,Increase corporate income tax rate from 21% to 28%,Global climate scheme,Handgun ban,-,Funding affordable housing,Increase corporate income tax rate from 21% to 28%,Global climate scheme,1,EN,97189_357ae033,97189,97189,97189,97189,231735250965616,,1,,2,6,8,9,,4,3,5,10,7,,,2,1,4,5,3,,,1,,,,,,1
+2022-12-28 19:16:07,2022-12-28 19:29:49,IP Address,50.234.94.70,100,821,True,2022-12-28 19:29:50,R_2w1wYMVb1H4YPW2,,,,,41.2723,-75.8887,anonymous,EN,Woman,65 to 69,18704,No,1,White,,,,,,,,"between $42,001 and $50,000",Regular high school diploma/GED or alternative credential,Full-time employed,,,,Hosted free of charge,,"Between $60,000 and $190,000",Non-Affiliated,71.997,357.287,363.086,14,Typical Americans would lose and the 700 million poorest humans would lose.,Typical Americans would lose and the richest Americans would win.,A typical American would lose out financially.,No,61,No,39,,,1,,40.331,64.235,65.632,5,Bundle B,No,40.331,64.235,65.632,5,,,Bundle B,,,,,,,,21.428,21.428,23.121,1,Candidate B,Candidate B,,,,No,,Global justice,I did not make donations to charities last year.,A little,5,3,No,,Prefer not to say,"An important issue, we should do more",One of the most pressing issue of our time,An issue but we do already what we can,Sentient beings (humans and animals),15.144,90.632,92.517,16,,20,,20,,,20,,,,,,20,20,,,0,,2,,6,,,4,,,,,,3,1,,,5,5.569,15.12,16.655,3,"No, I do not feel it was biased",no comments,No,1,,821,,,"1",Northeast,Societal issues,Tax system,Economic issues,Climate policy,Making abortion a right at the federal level,National redistribution scheme,$15 minimum wage,-,Handgun ban,National redistribution scheme,$15 minimum wage,Coal exit,Economic issues,Tax system,Societal issues,Climate policy,Foreign policy,-,Increase corporate income tax rate from 21% to 28%,Making abortion a right at the federal level,Ban the sale of new combustion-engine cars by 2030,Global climate scheme,Funding affordable housing,Increase corporate income tax rate from 21% to 28%,-,Coal exit,Global climate scheme,1,EN,97189_357ae033,97189,97189,97189,97189,231740951918620,9,1,,2,6,8,,,4,3,5,10,7,,,2,1,4,5,3,,1,,,,,,1,
+2022-12-28 19:47:10,2022-12-28 19:58:29,IP Address,68.169.242.125,100,679,True,2022-12-28 19:58:30,R_3HjeS2tBmqprTck,,,,,42.4862,-91.1121,anonymous,EN,Woman,40 to 44,52040,Yes,5 or more,White,,,,,,,,"between $65,001 and $82,000","2-year college degree or associates degree (for example: AA, AS)",Full-time employed,,Owner,,,"Between $120,000 and $380,000",,Independent,214.914,296.385,297.89,9,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would neither gain nor lose.,Yes,2,Yes,1,,,1,,9.095,27.343,29.222,3,Bundle A,Yes,9.096,27.344,29.223,3,,,Bundle A,,,,,,,,25.058,25.058,29.152,1,Candidate A,Candidate A,,,,Yes,,Global justice,I did not make donations to charities last year.,Moderately,5,1,Yes,Biden,,One of the most pressing issue of our time,"An important issue, we should do more",One of the most pressing issue of our time,Humans,14.191,28.927,32.899,3,25,50,0,,0,,,0,,,,,,,25,,,4,1,5,,3,,,2,,,,,,,6,,,3.5,15.004,16.634,4,"No, I do not feel it was biased",,No,1,,679,,,"3",Midwest,Societal issues,Tax system,Climate policy,Economic issues,Making abortion a right at the federal level,Wealth tax AND National redistribution scheme,Trillion dollar investment in transportation infrastructure and building insulation,Universal childcare/pre-K,-,Wealth tax AND National redistribution scheme,Ban the sale of new combustion-engine cars by 2030,Funding affordable housing,Foreign policy,Climate policy,Societal issues,Economic issues,Tax system,Global democratic assembly on climate change,Trillion dollar investment in clean transportation infrastructure and building insulation,Making abortion a right at the federal level,Funding affordable housing,-,Global tax on millionaires,Coal exit,Expanding the Supreme Court,Funding affordable housing,National redistribution scheme,1,EN,97189_357ae033,97189,97189,97189,97189,231742859134997,9,1,,2,6,8,,,4,3,5,10,7,,,2,1,4,5,3,,1,,,,,,1,
+2022-12-28 21:20:06,2022-12-28 21:29:27,IP Address,24.194.125.185,100,561,True,2022-12-28 21:29:28,R_3fk41E5totyA0Mz,,,,,43.0642,-74.334,anonymous,EN,Woman,25 to 29,12078,No,2,White,,,,,,,,"between $20,001 and $35,000","Some college, no degree",Inactive (not searching for a job),,Owner,,,,Close to $0,Independent,35.533,112.093,113.061,14,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would neither gain nor lose.,No,50,No,50,,,,3,15.437,19.092,19.844,3,Bundle B,No,15.436,19.092,19.843,3,,,,Bundle B,,,,,,,5.421,5.421,6.146,1,Candidate A,Candidate A,,,,No,,Global justice,I did not make donations to charities last year.,Moderately,3,3,Yes,Trump,,An issue but we do already what we can,An issue but we do already what we can,An issue but we do already what we can,My family and myself,182.191,275.766,295.437,3,,,,43,,0,,,,41,,,0,16,,,0,,,,3,,2,,,,4,,,5,1,,,6,5.973,13.117,19.371,3,"No, I do not feel it was biased",No comment.,No,1,,561,,,"3",Northeast,Tax system,Climate policy,Societal issues,Economic issues,National redistribution scheme,Trillion dollar investment in transportation infrastructure and building insulation,Making abortion a right at the federal level,Student loan forgiveness,National redistribution scheme,-,-,Funding affordable housing,Societal issues,Economic issues,Foreign policy,Climate policy,Tax system,-,Funding affordable housing,Global tax on millionaires,-,-,-,$15 minimum wage,Global tax on millionaires,-,-,1,EN,97189_357ae033,97189,97189,97189,97189,231748568930318,,1,9,2,6,8,,,4,3,5,10,7,,,2,1,4,5,,3,1,,,,,,1,
+2022-12-28 22:22:10,2022-12-28 22:31:34,IP Address,172.223.174.49,100,564,True,2022-12-28 22:31:35,R_2YRp16oqfOZ4u8z,,,,,36.3031,-88.3126,anonymous,EN,Woman,55 to 59,38317,Yes,2,White,,,,,,,,"between $35,001 and $42,000",Regular high school diploma/GED or alternative credential,Retired,,Owner,,,"Between $4,000 and $120,000",,Independent,0.239,256.395,257.232,63,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would gain financially.,No,74,No,83,,,1,,6.144,29.824,30.503,10,Bundle A,Yes,6.145,29.825,30.504,10,,,Bundle A,,,,,,,Republican,1.882,26.577,27.695,8,Candidate A,Candidate B,,,,No,,U.S. interests,Between $101 and $500.,Moderately,1,5,Yes,Trump,,Not an important issue for me,"An important issue, we should do more",One of the most pressing issue of our time,Humans,13.961,36.446,38.095,11,0,83,11,,,,0,0,,,,,,,6,,,3,5,4,,,,6,2,,,,,,,1,,,3.343,19.835,21.074,7,"No, I do not feel it was biased","Great ",No,1,,564,,,"4",South,Societal issues,Climate policy,Tax system,Economic issues,Making abortion a right at the federal level,Coal exit,National redistribution scheme,-,-,Ban the sale of new combustion-engine cars by 2030,Wealth tax AND National redistribution scheme,Universal childcare/pre-K,Economic issues,Tax system,Foreign policy,Climate policy,Societal issues,Universal childcare/pre-K,National redistribution scheme,Global democratic assembly on climate change,-,Making abortion a right at the federal level,$15 minimum wage,Wealth tax,Global tax on millionaires,Ban the sale of new combustion-engine cars by 2030,Handgun ban,1,EN,97189_357ae033,97189,97189,97189,97189,231752382053391,9,1,,2,6,8,,,4,3,5,10,7,,,2,1,4,5,3,,,,1,,,,1,
+2022-12-28 22:53:12,2022-12-28 23:03:54,IP Address,73.91.6.121,100,642,True,2022-12-28 23:03:54,R_26gOjoXox0BNcsD,,,,,27.3678,-82.5253,anonymous,EN,Man,65 to 69,34235,No,2,White,,,,,,,,"between $165,000 and $250,000","Some college, no degree",Retired,,Owner,,,,"More than $190,000",Republican,2.048,162.62,163.685,28,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would lose out financially.,No,28,No,39,,,,0,8.469,44.998,46.03,8,Bundle B,No,8.469,44.998,46.03,8,Bundle A,,,,,,,,,Republican,,,,,,,,,,No,,U.S. interests,Between $101 and $500.,A great deal,2,5,Yes,Trump,,Not an important issue for me,Not an important issue for me,An issue but there are other priorities,Americans,7.474,142.718,145.43,45,,,,,,,,,35,1,,35,,,20,3,6,,,,,,,,,4,1,,5,,,2,6,3,5.833,54.607,55.859,16,"Yes, left-wing biased","Good survey with a slight liberal bias. ",Yes,1,,642,,,"1",South,Tax system,Economic issues,Climate policy,Societal issues,National redistribution scheme,Universal childcare/pre-K,Ban the sale of new combustion-engine cars by 2030,-,National redistribution scheme,Student loan forgiveness,-,Expanding the Supreme Court,Foreign policy,Tax system,Societal issues,Climate policy,Economic issues,Global democratic assembly on climate change,-,-,-,Universal childcare/pre-K,Global climate scheme,Increase corporate income tax rate from 21% to 28%,Expanding the Supreme Court,-,$15 minimum wage,1,EN,97189_357ae033,97189,97189,97189,97189,231754287702062,,1,9,2,6,8,,,4,3,5,10,7,3,,2,1,4,5,,,,,1,,,,1,
+2022-12-28 23:55:10,2022-12-28 23:59:58,IP Address,68.169.141.108,100,287,True,2022-12-28 23:59:59,R_2cpcurDCvCJ63y5,,,,,35.0956,-85.1769,anonymous,EN,Woman,45 to 49,37416,Yes,2,White,,,,,,,,"less than $20,000",Regular high school diploma/GED or alternative credential,Inactive (not searching for a job),Tenant,,,,"Between $4,000 and $120,000",,Democrat,1.813,44.766,45.4,29,Typical Americans would win and the 700 million poorest humans would lose.,Typical Americans would win and the richest Americans would lose.,A typical American would neither gain nor lose.,Yes,30,Yes,50,3,,,,1.811,13.64,14.561,9,Bundle A,Yes,1.811,13.64,14.561,9,,Bundle B,,,,,,,Democrat,,1.194,4.548,5.501,4,Candidate A,Candidate B,,,,Yes,,U.S. interests,I did not make donations to charities last year.,Moderately,3,2,Yes,Biden,,An issue but we do already what we can,An issue but we do already what we can,An issue but we do already what we can,Americans,1.28,39.521,40.5,12,25,25,,,,0,,,,,,,25,25,,,0,5,1,,,,2,,,,,,,6,4,,,3,6.454,17.586,18.4,5,"No, I do not feel it was biased",,Yes,1,,287,,,"1",South,Tax system,Climate policy,Economic issues,Societal issues,Wealth tax AND National redistribution scheme,Trillion dollar investment in transportation infrastructure and building insulation,Funding affordable housing,-,National redistribution scheme,Trillion dollar investment in transportation infrastructure and building insulation,$15 minimum wage,Expanding the Supreme Court,Societal issues,Tax system,Climate policy,Economic issues,Foreign policy,Expanding the Supreme Court,National redistribution scheme,-,Funding affordable housing,Global climate scheme,-,Increase corporate income tax rate from 21% to 28%,-,Student loan forgiveness,Global climate scheme,1,EN,97189_357ae033,97189,97189,97189,97189,231758096628783,,1,,2,6,8,9,,4,3,5,10,7,,3,2,1,4,5,,,,1,,,,,1,
+2022-12-29 00:57:07,2022-12-29 01:06:40,IP Address,63.155.3.126,100,573,True,2022-12-29 01:06:41,R_2frPn1gUo8WAbhz,,,,,44.0563,-122.9164,anonymous,EN,Woman,60 to 64,97404,Yes,2,,,,,,,Other,,"between $20,001 and $35,000","Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD)",Self-employed,,Owner,,,"Between $4,000 and $120,000",,Democrat,135.725,198.474,200.024,10,Typical Americans would win and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would win.,A typical American would gain financially.,Yes,52,Yes,51,,,,2,15.638,23.238,28.237,4,Bundle A,Yes,15.638,23.237,28.237,4,,Bundle B,,,,,,,,Democrat,10.435,10.435,12.398,1,Candidate A,Candidate A,,,,No,,Global justice,Less than $100.,A lot,5,1,Yes,Biden,,"An important issue, we should do more",One of the most pressing issue of our time,One of the most pressing issue of our time,Humans,40.242,87.432,92.042,8,,,10,,,,,10,20,,,,20,20,20,,,,,5,,,,,2,3,,,,6,4,1,,,5.002,21.194,22.388,2,"No, I do not feel it was biased",,No,1,,573,,,"1",West,Tax system,Societal issues,Climate policy,Economic issues,National redistribution scheme,Handgun ban,-,Funding affordable housing,National redistribution scheme,Making abortion a right at the federal level,Coal exit,Funding affordable housing,Economic issues,Foreign policy,Tax system,Climate policy,Societal issues,Funding affordable housing,Global democratic assembly on climate change,Increase corporate income tax rate from 21% to 28%,-,Making abortion a right at the federal level,Universal childcare/pre-K,Global democratic assembly on climate change,Increase corporate income tax rate from 21% to 28%,-,Expanding the Supreme Court,1,EN,97189_357ae033,97189,97189,97189,97189,231761902425333,,1,9,2,6,8,,,4,3,5,10,7,,3,2,1,4,5,,,,,1,,,,1,
+2022-12-29 00:57:08,2022-12-29 01:08:26,IP Address,108.7.189.99,100,678,True,2022-12-29 01:08:27,R_zd7XidIO0Dw2fOp,,,,,42.7287,-71.1834,anonymous,EN,Woman,65 to 69,01845,Yes,3,White,,,,,,,,"between $103,001 and $130,000","Some college, no degree",Full-time employed,,Owner,,,Less than $0 (I have a net debt),,Democrat,1.809,255.066,256.281,51,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would win.,A typical American would neither gain nor lose.,Yes,52,No,38,,,1,,3.258,26.693,27.9,13,Bundle A,Yes,3.258,26.692,27.9,13,,Bundle B,,,,,,,Democrat,,1.681,26.448,27.571,10,Candidate B,Candidate A,,,,,Yes,Global justice,Between $101 and $500.,Moderately,5,2,Yes,Biden,,An issue but there are other priorities,"An important issue, we should do more",One of the most pressing issue of our time,Americans,2.299,77.538,78.765,20,10,,,,,30,,10,20,,10,,,,20,,,2,,,,,5,,6,1,,3,,,,4,,,2.077,25.712,26.489,9,"No, I do not feel it was biased","Very interesting survey ",No,1,,678,,,"1",Northeast,Societal issues,Economic issues,Tax system,Climate policy,Making abortion a right at the federal level,-,Wealth tax AND National redistribution scheme,Coal exit,Expanding the Supreme Court,$15 minimum wage,Wealth tax AND National redistribution scheme,Ban the sale of new combustion-engine cars by 2030,Foreign policy,Economic issues,Climate policy,Societal issues,Tax system,Global climate scheme,Student loan forgiveness,-,Handgun ban,National redistribution scheme,Global climate scheme,Funding affordable housing,Trillion dollar investment in clean transportation infrastructure and building insulation,Expanding the Supreme Court,National redistribution scheme,1,EN,97189_357ae033,97189,97189,97189,97189,231761903479030,9,1,,2,6,8,,,4,3,5,10,7,,3,2,1,4,5,,,,1,,,,,,1
+2022-12-29 01:27:08,2022-12-29 01:45:09,IP Address,146.115.215.200,100,1081,True,2022-12-29 01:45:10,R_2bNlyXuqn4gP8s2,,,,,40.5995,-75.3763,anonymous,EN,Man,40 to 44,18103,Yes,3,White,,,,,,,,"between $65,001 and $82,000","Bachelor's degree (for example: BA, BS)",Full-time employed,,Owner,,,"Between $120,000 and $380,000",,Democrat,61.51,768.799,769.54,14,Typical Americans would lose and the 700 million poorest humans would lose.,Typical Americans would win and the richest Americans would lose.,A typical American would lose out financially.,No,77,Yes,70,,,,2,5.921,17.088,17.769,3,Bundle B,No,5.921,17.088,17.768,3,,,,Bundle B,,,,,,,11.446,12.213,13.77,2,Candidate A,Candidate B,,,,,No,U.S. interests,Less than $100.,A lot,4,4,Yes,Biden,,An issue but there are other priorities,An issue but we do already what we can,An issue but there are other priorities,Americans,7.67,30.925,33.893,11,,8,,10,,42,,0,,,,0,40,,,,,,4,,1,,5,,6,,,,3,2,,,,,1.646,5.88,6.766,2,"No, I do not feel it was biased",,No,1,,1081,,,"1",Northeast,Tax system,Economic issues,Societal issues,Climate policy,National redistribution scheme,Student loan forgiveness,Handgun ban,Trillion dollar investment in transportation infrastructure and building insulation,Wealth tax AND National redistribution scheme,Universal childcare/pre-K,-,Trillion dollar investment in transportation infrastructure and building insulation,Societal issues,Foreign policy,Economic issues,Tax system,Climate policy,Handgun ban,Global climate scheme,Funding affordable housing,-,-,Handgun ban,Global democratic assembly on climate change,Universal childcare/pre-K,Wealth tax,Ban the sale of new combustion-engine cars by 2030,1,EN,97189_357ae033,97189,97189,97189,97189,231763747289281,,1,9,2,6,8,,,4,3,5,10,7,,,2,1,4,5,,3,1,,,,,,,1
+2022-12-29 01:58:13,2022-12-29 02:02:44,IP Address,76.173.77.231,100,271,True,2022-12-29 02:02:45,R_1Nblv3xTzidIjtz,,,,,20.8427,-156.333,anonymous,EN,Man,65 to 69,96768,No,1,White,,,,,,,,"between $145,001 and $165,000","2-year college degree or associates degree (for example: AA, AS)",Retired,,Owner,,,,"More than $190,000",Other,1.799,126.731,127.177,88,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would lose and the richest Americans would win.,A typical American would neither gain nor lose.,Yes,8,No,8,,1,,,1.178,5.122,8.613,7,Bundle A,No,1.178,5.122,8.613,7,,Bundle B,,,,,,,,,0.74,2.725,3.32,5,Candidate A,Candidate B,,,,,No,Global justice,"Between $1,001 and $5,000.",Not at all,3,3,No,,Biden,One of the most pressing issue of our time,One of the most pressing issue of our time,One of the most pressing issue of our time,My family and myself,0.917,15.46,17.249,19,,12,,20,,,,32,,,,9,14,,,13,,,4,,3,,,,6,,,,2,5,,,1,,3.25,9.584,10.273,6,"No, I do not feel it was biased",,No,1,,271,,,"2",West,Societal issues,Climate policy,Economic issues,Tax system,-,Trillion dollar investment in transportation infrastructure and building insulation,Funding affordable housing,National redistribution scheme,Making abortion a right at the federal level,Coal exit,Funding affordable housing,Wealth tax AND National redistribution scheme,Societal issues,Climate policy,Tax system,Foreign policy,Economic issues,Handgun ban,Coal exit,Increase corporate income tax rate from 21% to 28%,Global climate scheme,Funding affordable housing,Making abortion a right at the federal level,Trillion dollar investment in clean transportation infrastructure and building insulation,Increase corporate income tax rate from 21% to 28%,Global tax on millionaires,Funding affordable housing,1,EN,97189_357ae033,97189,97189,97189,97189,231765656342631,,1,,2,6,8,,9,4,3,5,10,7,,3,2,1,4,5,,,1,,,,,,,1
+2022-12-29 01:58:08,2022-12-29 02:03:17,IP Address,96.253.94.86,100,309,True,2022-12-29 02:03:18,R_3IWz05XW8w4HPMt,,,,,37.5157,-77.2758,anonymous,EN,Man,30 to 34,23150,No,5 or more,,Black or African American,,,,,,,"between $82,001 and $103,000","2-year college degree or associates degree (for example: AA, AS)",Full-time employed,,Owner,,,,"Between $60,000 and $190,000",Democrat,3.207,104.759,105.301,56,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would gain financially.,Yes,38,Yes,43,,,0,,2.415,11.7,12.3,10,Bundle A,Yes,2.415,11.7,12.301,10,,,Bundle A,,,,,,,None of them,0.857,9.377,9.945,9,Candidate A,Candidate A,,,,Yes,,Global justice,Between $101 and $500.,A great deal,4,4,Yes,Biden,,"An important issue, we should do more","An important issue, we should do more",One of the most pressing issue of our time,Humans,2.318,15.54,16.061,14,,,1,27,15,,,,21,,24,,,,,,12,,,5,2,3,,,,4,,6,,,,,,1,3.672,21.963,22.59,11,"No, I do not feel it was biased",I liked the survey overall.,No,1,,309,,,"1",South,Climate policy,Societal issues,Economic issues,Tax system,-,Handgun ban,Universal childcare/pre-K,Wealth tax AND National redistribution scheme,Trillion dollar investment in transportation infrastructure and building insulation,Making abortion a right at the federal level,Universal childcare/pre-K,Wealth tax AND National redistribution scheme,Climate policy,Economic issues,Societal issues,Tax system,Foreign policy,-,$15 minimum wage,Making abortion a right at the federal level,Increase corporate income tax rate from 21% to 28%,Global tax on millionaires,Ban the sale of new combustion-engine cars by 2030,Universal childcare/pre-K,-,-,-,1,EN,97189_357ae033,97189,97189,97189,97189,231765651510373,9,1,,2,6,8,,,4,3,5,10,7,,,2,1,4,5,3,,,,1,,,,1,
+2022-12-29 03:00:10,2022-12-29 03:05:03,IP Address,72.92.241.65,100,293,True,2022-12-29 03:05:04,R_2uPQMF4bE5NFrQM,,,,,41.7816,-71.3897,anonymous,EN,Woman,25 to 29,02888,Yes,4,White,,,,,,,,"between $65,001 and $82,000","Some college, no degree",Inactive (not searching for a job),,Owner,,,"Between $120,000 and $380,000",,Non-Affiliated,1.977,53.439,54.336,25,Typical Americans would win and the 700 million poorest humans would lose.,Typical Americans would lose and the richest Americans would win.,A typical American would neither gain nor lose.,No,92,No,74,,,,0,8.957,18.922,19.919,8,Bundle B,No,8.957,18.922,19.919,8,,Bundle A,,,,,,,,,0.957,20.932,22.105,11,Candidate A,Candidate A,,,,No,,U.S. interests,I did not make donations to charities last year.,A little,2,4,No,,Jorgensen,"An important issue, we should do more","An important issue, we should do more","An important issue, we should do more",Humans,4.543,27.737,28.796,11,,,,,5,,,,0,,,,26,,69,0,0,,,,,6,,,,3,,,,4,,1,5,2,3.76,10.093,10.704,5,"No, I do not feel it was biased",,No,1,,293,,,"1",Northeast,Tax system,Economic issues,Societal issues,Climate policy,National redistribution scheme,Universal childcare/pre-K,-,Ban the sale of new combustion-engine cars by 2030,Wealth tax AND National redistribution scheme,Funding affordable housing,-,Trillion dollar investment in transportation infrastructure and building insulation,Climate policy,Foreign policy,Economic issues,Societal issues,Tax system,Ban the sale of new combustion-engine cars by 2030,Global democratic assembly on climate change,Universal childcare/pre-K,Making abortion a right at the federal level,Wealth tax,Coal exit,Global climate scheme,Funding affordable housing,Handgun ban,Wealth tax,1,EN,97189_357ae033,97189,97189,97189,97189,231769462777927,,1,9,2,6,8,,,4,3,5,10,7,,3,2,1,4,5,,,1,,,,,,1,
+2022-12-29 03:31:07,2022-12-29 03:36:19,IP Address,107.198.104.66,100,311,True,2022-12-29 03:36:21,R_5q0jTOxWwvPO6vD,,,,,37.6451,-84.7703,anonymous,EN,Woman,60 to 64,40422,Yes,2,White,,,,,,,,"between $65,001 and $82,000","Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD)",Retired,,Owner,,,"Between $4,000 and $120,000",,Republican,25.273,60.966,63.28,9,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would neither gain nor lose.,No,12,No,10,,,,1,6.66,23.314,25.702,3,Bundle A,Yes,6.659,23.314,25.702,3,,,,Bundle A,,,,,Republican,,,,,,,,,,,,No,U.S. interests,Between $101 and $500.,Moderately,2,2,Yes,Trump,,"An important issue, we should do more",An issue but we do already what we can,An issue but we do already what we can,Americans,11.137,49.6,51.441,13,0,,19,30,,18,,,,,,,12,,21,,,3,,2,4,,1,,,,,,,5,,6,,,7.495,19.965,21.894,4,"No, I do not feel it was biased",none,No,1,,311,,,"3",South,Climate policy,Economic issues,Societal issues,Tax system,Coal exit,Student loan forgiveness,Making abortion a right at the federal level,Wealth tax AND National redistribution scheme,Trillion dollar investment in transportation infrastructure and building insulation,$15 minimum wage,-,Wealth tax AND National redistribution scheme,Foreign policy,Economic issues,Climate policy,Societal issues,Tax system,Global tax on millionaires,$15 minimum wage,Trillion dollar investment in clean transportation infrastructure and building insulation,Expanding the Supreme Court,Wealth tax,-,Funding affordable housing,-,Expanding the Supreme Court,Increase corporate income tax rate from 21% to 28%,1,EN,97189_357ae033,97189,97189,97189,97189,231771364928515,,1,9,2,6,8,,,4,3,5,10,7,,,2,1,4,5,,3,,1,,,,,,1
+2022-12-29 03:31:50,2022-12-29 03:45:01,IP Address,69.88.220.75,100,790,True,2022-12-29 03:45:02,R_3RqFGa2BarOcBWe,,,,,40.5452,-84.39,anonymous,EN,Woman,60 to 64,45885,Yes,2,White,,,,,,,,"between $130,001 and $145,000","Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD)",Retired,Tenant,,,,"More than $380,000",,Democrat,49.589,290.644,291.955,29,Typical Americans would lose and the 700 million poorest humans would lose.,Typical Americans would win and the richest Americans would lose.,A typical American would lose out financially.,No,60,Yes,64,1,,,,13.789,52.326,53.881,7,Bundle B,No,13.788,52.326,53.881,7,Bundle A,,,,,,,,Democrat,,16.302,42.06,43.163,4,Candidate A,Candidate A,,,,,Yes,U.S. interests,"Between $1,001 and $5,000.",Moderately,3,4,Yes,Biden,,An issue but we do already what we can,"An important issue, we should do more","An important issue, we should do more",Humans,19.633,58.388,60.181,11,,,0,,,0,,,10,,50,,40,,,,0,,,6,,,3,,,2,,4,,5,,,,1,8.492,21.6,22.655,4,"No, I do not feel it was biased",,Yes,1,,790,,,"3",Midwest,Economic issues,Societal issues,Climate policy,Tax system,Universal childcare/pre-K,Handgun ban,-,Wealth tax AND National redistribution scheme,-,Expanding the Supreme Court,Ban the sale of new combustion-engine cars by 2030,Wealth tax AND National redistribution scheme,Tax system,Economic issues,Climate policy,Societal issues,Foreign policy,Increase corporate income tax rate from 21% to 28%,Funding affordable housing,Ban the sale of new combustion-engine cars by 2030,Making abortion a right at the federal level,Global tax on millionaires,National redistribution scheme,Universal childcare/pre-K,Trillion dollar investment in clean transportation infrastructure and building insulation,Expanding the Supreme Court,-,1,EN,97189_357ae033,97189,97189,97189,97189,231771408349196,,1,,2,6,8,9,,4,3,5,10,7,3,,2,1,4,5,,,,1,,,,,,1
+2022-12-29 04:04:16,2022-12-29 04:09:50,IP Address,71.87.195.161,100,334,True,2022-12-29 04:09:51,R_Tw5VH7A0tGFaQPn,,,,,36.5491,-82.5584,anonymous,EN,Woman,65 to 69,37601,No,1,White,,,,,,,,"less than $20,000","Bachelor's degree (for example: BA, BS)",Retired,Tenant,,,,,"Between $4,000 and $60,000",Republican,1.649,77.445,78.082,32,Typical Americans would lose and the 700 million poorest humans would lose.,Typical Americans would lose and the richest Americans would lose.,A typical American would lose out financially.,No,12,No,6,,,,1,4.423,29.3,30.067,14,Bundle B,No,4.422,29.3,30.067,14,Bundle A,,,,,,,,,,,,,,,,,,,No,,U.S. interests,I did not make donations to charities last year.,A great deal,1,5,Yes,Trump,,An issue but there are other priorities,Not an important issue for me,Not an important issue for me,Americans,3.528,62.686,63.133,24,0,,40,60,,,0,,,,0,,,,,,0,1,,4,6,,,3,,,,2,,,,,,5,3.743,11.946,12.663,5,"Yes, left-wing biased",,No,1,,334,,,"1",South,Economic issues,Climate policy,Societal issues,Tax system,$15 minimum wage,Coal exit,-,National redistribution scheme,Student loan forgiveness,-,Handgun ban,Wealth tax AND National redistribution scheme,Economic issues,Tax system,Climate policy,Societal issues,Foreign policy,Universal childcare/pre-K,Wealth tax,Coal exit,-,Global climate scheme,$15 minimum wage,Increase corporate income tax rate from 21% to 28%,Coal exit,Expanding the Supreme Court,Global climate scheme,1,EN,97189_357ae033,97189,97189,97189,97189,231773400923363,,1,9,2,6,8,,,4,3,5,10,7,3,,2,1,4,5,,,1,,,,,,1,
+2022-12-29 04:33:08,2022-12-29 04:37:45,IP Address,108.53.216.251,100,276,True,2022-12-29 04:37:45,R_1cS1CAU643qkB7f,,,,,40.7523,-74.2172,anonymous,EN,Woman,25 to 29,07017,No,3,White,,,,,,,,"between $20,001 and $35,000",Regular high school diploma/GED or alternative credential,Inactive (not searching for a job),Tenant,,,,,"Between $4,000 and $60,000",Republican,0.789,53.145,54.101,31,Typical Americans would win and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would neither gain nor lose.,Yes,61,Yes,74,3,,,,1.276,11.94,12.815,13,Bundle B,Yes,1.276,11.94,12.815,13,Bundle A,,,,,,,,,Republican,,,,,,,,,,Yes,,U.S. interests,Less than $100.,A great deal,5,5,Yes,Trump,,An issue but there are other priorities,An issue but we do already what we can,An issue but we do already what we can,Americans,1.043,6.721,7.607,7,,0,,1,,41,,,,,,0,,,58,,0,,4,,3,,1,,,,,,5,,,2,,6,1.72,8.259,9.143,9,"Yes, left-wing biased","Good ",Yes,1,,276,,,"1",Northeast,Societal issues,Tax system,Climate policy,Economic issues,Making abortion a right at the federal level,Wealth tax AND National redistribution scheme,-,Universal childcare/pre-K,Handgun ban,Wealth tax AND National redistribution scheme,-,$15 minimum wage,Foreign policy,Societal issues,Tax system,Climate policy,Economic issues,Global climate scheme,Handgun ban,National redistribution scheme,Coal exit,Funding affordable housing,Global climate scheme,Making abortion a right at the federal level,Wealth tax,Coal exit,Student loan forgiveness,1,EN,97189_357ae033,97189,97189,97189,97189,231775174701292,,1,,2,6,8,9,,4,3,5,10,7,3,,2,1,4,5,,,,,1,,,,1,
+2022-12-29 05:04:39,2022-12-29 05:30:14,IP Address,99.178.170.158,100,1535,True,2022-12-29 05:30:15,R_25X65By55nxgOrH,,,,,35.7178,-78.8428,anonymous,EN,Woman,50 to 54,27606,Yes,3,White,,,,,,,,"between $65,001 and $82,000","Bachelor's degree (for example: BA, BS)",Full-time employed,,Owner,,,"Between $120,000 and $380,000",,Republican,3.335,1136.059,1137.048,177,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would neither gain nor lose.,Yes,42,Yes,78,,,,3,0.875,33.727,34.47,24,Bundle A,Yes,0.874,33.726,34.47,24,Bundle B,,,,,,,,,,,,,,,,,,,,Yes,U.S. interests,Between $101 and $500.,A little,2,5,Yes,Trump,,"An important issue, we should do more","An important issue, we should do more",An issue but there are other priorities,Sentient beings (humans and animals),2.138,84.772,85.467,47,,,20,,,,,,,20,20,20,10,10,,,,,,1,,,,,,,3,2,5,4,6,,,,3.084,12.002,12.701,12,"No, I do not feel it was biased",,Yes,1,,1535,,,"1",South,Tax system,Climate policy,Societal issues,Economic issues,National redistribution scheme,Trillion dollar investment in transportation infrastructure and building insulation,-,Funding affordable housing,Wealth tax AND National redistribution scheme,Ban the sale of new combustion-engine cars by 2030,Handgun ban,Funding affordable housing,Foreign policy,Societal issues,Climate policy,Tax system,Economic issues,Doubling foreign aid,Handgun ban,Ban the sale of new combustion-engine cars by 2030,National redistribution scheme,Universal childcare/pre-K,Global climate scheme,Expanding the Supreme Court,-,National redistribution scheme,Funding affordable housing,1,EN,97189_357ae033,97189,97189,97189,97189,231777110650051,,1,9,2,6,8,,,4,3,5,10,7,3,,2,1,4,5,,,1,,,,,,,1
+2022-12-29 06:37:20,2022-12-29 06:49:40,IP Address,137.26.107.185,100,740,True,2022-12-29 06:49:41,R_2WxyaJ4awhNSFWC,,,,,42.8431,-106.313,anonymous,EN,Woman,25 to 29,80011,Yes,2,,,,,American Indian or Alaskan Native,,,,"between $42,001 and $50,000",Regular high school diploma/GED or alternative credential,Full-time employed,Tenant,,,,"Between $4,000 and $120,000",,Other,4.412,113.22,114.084,41,Typical Americans would win and the 700 million poorest humans would win.,Typical Americans would lose and the richest Americans would win.,A typical American would lose out financially.,No,79,No,43,0,,,,8.63,33.347,34.276,17,Bundle B,No,8.63,33.347,34.276,17,Bundle A,,,,,,,,,,69.005,85.963,88.04,14,Candidate A,Candidate B,,,,,No,Global justice,Less than $100.,A little,1,1,Prefer not to say,,Trump,"An important issue, we should do more","An important issue, we should do more","An important issue, we should do more",Americans,6.484,43.125,45.288,31,50,15,,35,,,,0,,0,,,,,,,0,3,1,,4,,,,2,,5,,,,,,,6,5.321,38.926,39.938,10,"No, I do not feel it was biased","All in all a good survey
+",No,1,,740,,,"1",West,Economic issues,Societal issues,Tax system,Climate policy,-,Handgun ban,National redistribution scheme,Coal exit,Student loan forgiveness,Handgun ban,Wealth tax AND National redistribution scheme,Coal exit,Tax system,Climate policy,Foreign policy,Economic issues,Societal issues,National redistribution scheme,Coal exit,Global climate scheme,Universal childcare/pre-K,Expanding the Supreme Court,Wealth tax,Ban the sale of new combustion-engine cars by 2030,Global democratic assembly on climate change,Funding affordable housing,Making abortion a right at the federal level,1,EN,97189_357ae033,97189,97189,97189,97189,231782804750481,,1,,2,6,8,9,,4,3,5,10,7,3,,2,1,4,5,,,1,,,,,,,1
+2022-12-29 07:08:10,2022-12-29 07:13:05,IP Address,71.193.250.227,100,294,True,2022-12-29 07:13:05,R_3fIRMOWaaWmAdXF,,,,,44.6554,-123.135,anonymous,EN,Woman,55 to 59,97322,Yes,2,White,,,,,,,,"between $82,001 and $103,000","Some college, no degree",Inactive (not searching for a job),,Owner,,,"More than $380,000",,Republican,5.216,52.378,53.457,35,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would lose and the richest Americans would win.,A typical American would neither gain nor lose.,No,66,No,60,,,,1,5.586,18.418,19.526,12,Bundle B,No,5.586,18.417,19.526,12,,,,Bundle B,,,,,Republican,,,,,,,,,,,,No,U.S. interests,"Between $501 and $1,000.",Moderately,3,3,Yes,Trump,,An issue but there are other priorities,An issue but we do already what we can,An issue but we do already what we can,People sharing my culture or religion,2.95,34.825,36.001,21,,,,,0,,0,,32,0,,35,,,33,,,,,,,5,,2,,1,4,,6,,,3,,,3.612,19.533,20.791,12,"No, I do not feel it was biased",None,No,1,,294,,,"1",West,Climate policy,Economic issues,Societal issues,Tax system,Trillion dollar investment in transportation infrastructure and building insulation,Funding affordable housing,Making abortion a right at the federal level,Wealth tax AND National redistribution scheme,Coal exit,$15 minimum wage,Handgun ban,National redistribution scheme,Tax system,Economic issues,Societal issues,Foreign policy,Climate policy,National redistribution scheme,-,-,Global climate scheme,-,Increase corporate income tax rate from 21% to 28%,Student loan forgiveness,Handgun ban,Global climate scheme,Ban the sale of new combustion-engine cars by 2030,1,EN,97189_357ae033,97189,97189,97189,97189,231784699371554,,1,9,2,6,8,,,4,3,5,10,7,,,2,1,4,5,,3,,1,,,,,,1
+2022-12-29 07:08:15,2022-12-29 07:16:39,IP Address,71.173.204.20,100,503,True,2022-12-29 07:16:39,R_2WSV1GKvrEKGf0i,,,,,40.275,-76.8039,anonymous,EN,Man,35 to 39,17111,Yes,2,White,,,,,,,,"less than $20,000",Regular high school diploma/GED or alternative credential,Unemployed (searching for a job),,Owner,,,Close to $0,,Independent,201.346,244.969,245.904,8,Typical Americans would lose and the 700 million poorest humans would lose.,Typical Americans would lose and the richest Americans would lose.,A typical American would neither gain nor lose.,No,40,No,30,,,,0,2.618,25.913,27.165,4,Bundle B,No,2.618,25.913,27.165,4,,,Bundle B,,,,,,,,23.556,23.556,24.281,1,Candidate B,Candidate A,,,,,No,U.S. interests,I did not make donations to charities last year.,Not at all,2,4,No,,Trump,Not an important issue for me,"An important issue, we should do more","An important issue, we should do more",Americans,9.072,42.68,43.793,6,,,20,25,5,,,10,,30,10,,,,,,,,,6,5,1,,,2,,3,4,,,,,,,3.519,14.767,15.507,3,"No, I do not feel it was biased",none,No,1,,503,,,"1",Northeast,Societal issues,Tax system,Economic issues,Climate policy,-,National redistribution scheme,$15 minimum wage,Coal exit,Making abortion a right at the federal level,National redistribution scheme,-,Coal exit,Tax system,Societal issues,Foreign policy,Climate policy,Economic issues,National redistribution scheme,Handgun ban,Global tax on millionaires,Trillion dollar investment in clean transportation infrastructure and building insulation,Student loan forgiveness,Increase corporate income tax rate from 21% to 28%,Making abortion a right at the federal level,Global climate scheme,Trillion dollar investment in clean transportation infrastructure and building insulation,Funding affordable housing,1,EN,97189_357ae033,97189,97189,97189,97189,231784705504292,,1,9,2,6,8,,,4,3,5,10,7,,,2,1,4,5,3,,1,,,,,,,1
+2022-12-29 07:08:12,2022-12-29 08:04:05,IP Address,66.91.185.228,100,3353,True,2022-12-29 08:04:06,R_RzvmSLaFaw9D78t,,,,,19.706,-155.0928,anonymous,EN,Woman,65 to 69,96728,No,1,White,,,,,,,,"between $20,001 and $35,000","Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD)",Self-employed,,Owner,,,,"More than $190,000",Democrat,855.846,978.149,979.013,12,Typical Americans would lose and the 700 million poorest humans would win.,Typical Americans would win and the richest Americans would lose.,A typical American would lose out financially.,Yes,68,Yes,76,,3,,,12.202,23.348,25.313,3,Bundle A,Yes,12.202,23.348,25.313,3,,,,Bundle A,,,,,,Democrat,16.19,16.19,17.788,1,Candidate A,Candidate A,,,,,Yes,U.S. interests,Less than $100.,Moderately,5,2,Yes,Biden,,"An important issue, we should do more",One of the most pressing issue of our time,An issue but we do already what we can,Americans,33.792,100.92,106.581,14,,,,,,,,15,20,30,0,,,,30,,5,,,,,,,,2,1,3,4,,,,5,,6,4.048,19.945,44.376,4,"No, I do not feel it was biased",Coal exit should happen quicker if possible.,No,1,,3353,,,"3",West,Societal issues,Economic issues,Tax system,Climate policy,-,Funding affordable housing,Wealth tax AND National redistribution scheme,Coal exit,Making abortion a right at the federal level,-,National redistribution scheme,Coal exit,Economic issues,Societal issues,Tax system,Foreign policy,Climate policy,Universal childcare/pre-K,Expanding the Supreme Court,Increase corporate income tax rate from 21% to 28%,Global climate scheme,Coal exit,Funding affordable housing,-,Increase corporate income tax rate from 21% to 28%,-,-,1,EN,97189_357ae033,97189,97189,97189,97189,231784701474851,,1,,2,6,8,,9,4,3,5,10,7,,,2,1,4,5,,3,,,1,,,,,1
