@@ -1,7 +1,7 @@
 e <- us1p
 e <- eup
 e <- ep
-# TODO! Spanish questionnaire, update .js, quotas, IAT/device, dropouts (IR: complete/(complete+screenout)); remove PNR wealth (5%), put back email, donation, rewards.
+# TODO! Spanish questionnaire, update .js, quotas, IAT/device, dropouts (IR: complete/(complete+screenout)); remove PNR wealth (5%), put back email, donation, rewards; add list experiment to US2p
 
 ##### Duration #####
 decrit("duration", data = us1p) # US1p: 8.44 / EU: 14.75
