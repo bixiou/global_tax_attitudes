@@ -1,7 +1,8 @@
 e <- us1p
 e <- eup
 e <- ep
-# TODO! Spanish questionnaire, update .js, quotas, IAT/device, dropouts (IR: complete/(complete+screenout)); remove PNR wealth (5%), put back email, donation, rewards; add list experiment to US2p
+# TODO! vote, dropouts (IR: complete/(complete+screenout))
+# TODO Spanish questionnaire, update .js, IAT/device, remove PNR wealth (5%) or exclude, put back email, donation, rewards; add list experiment to US2p
 
 ##### Duration #####
 decrit("duration", data = us1p) # US1p: 8.44 / EU: 14.75
@@ -67,8 +68,8 @@ decrit("number_same_ip", data = e)
 
 ##### Support #####
 decrit("support_igr", data = e)
-decrit("nr_support", data = e)
 decrit("gcs_support", data = e)
+decrit("nr_support", data = e)
 CrossTable(e$gcs_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 CrossTable(e$nr_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 CrossTable(e$support_igr, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
