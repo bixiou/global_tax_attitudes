@@ -24,6 +24,7 @@ policies_names <- policies_names[is.na(as.numeric(row.names(policies_names))),] 
 countries_names <- c("France", "Germany", "Spain", "United Kingdom", "United States")
 names(countries_names) <- countries <- c("FR", "DE", "ES", "UK", "US")
 names(countries) <- countries_names
+major_candidates <- minor_candidates <- list()
 
 
 ##### Quotas #####
@@ -544,8 +545,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     if ("vote_participation" %in% names(e)) { # TODO
       e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
 
-      major_candidates <<- list()
-      minor_candidates <<- list()
       major_threshold <- 5 # 5% is the treshold to be considered a major candidate
       for (c in tolower(countries)) {
         if (paste0("vote_", c, "_voters") %in% names(e)) {

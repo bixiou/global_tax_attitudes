@@ -1,8 +1,10 @@
 e <- us1p
 e <- eup
 e <- ep
-# TODO! vote
-# TODO Spanish questionnaire, update .js, IAT/device, remove PNR wealth (5%) or exclude, put back email, donation, rewards; add list experiment to US2p; national parties in EU votes
+# TODO tooltip Spanish; correct => expected; 28 países, la mayoría de ellos en África, donde viven 700 millones de personas
+# TODO separate descriptions; list exp warning
+# TODO remove PNR wealth (5%) or exclude, put back email, donation, rewards
+# TODO check IAT
 
 ##### Duration #####
 print(paste0(round(100*sum(us1pa$finished == 1 & is.na(us1pa$excluded), na.rm = T)/sum(us1pa$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1p")) # 100%
@@ -148,8 +150,10 @@ decrit("petition_no_support_yes", data = e)
 ##### List experiment #####
 decrit("branch_list_exp", data = e)
 decrit("list_exp_ir", data = e) 
+decrit("list_exp_gr", data = e) 
 decrit("list_exp_igr", data = e)
 decrit("list_exp_i", data = e)
+mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_gr, na.rm = T) # 44%
 mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # 60%
 mean(e$gcs_support) + (mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$gcs_support[e$branch_list_exp != "igr"], na.rm = T))/2 # 66%
 mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T) # 67%
@@ -175,11 +179,11 @@ decrit("conjoint_ir_r", data = e)
 decrit("branch_conjoint_b", data = e)
 # summary(lm(conjoint_b ~ branch_conjoint_b, data = e))
 # c
-decrit("conjoint_c", data = e)
+decrit("conjoint_c", data = e) # TODO! non-right
 decrit("conjoint_left_right", data = e)
 decrit("conjoint_leftg_right", data = e)
-summary(lm(conjoint_c ~ branch_c_gcs, data = e)) # -.1
-decrit("gcs_support", data = e, which = e$branch_conjoint_c == "left_right")
+summary(lm(conjoint_c ~ branch_c_gcs, data = e[e$country == "FR",])) # -.1
+decrit("gcs_support", data = e, which = e$branch_conjoint_c == "leftg_right")
 # d
 decrit("conjoint_d", data = e) # 59%
 decrit("conjoint_left_ag_b", data = e)
@@ -252,8 +256,11 @@ decrit("points_foreign4_aid", data = e) #-
 decrit("political_affiliation", data = e)
 decrit("left_right", data = e)
 table(e$group_defended) # TODO: item
+major_candidates
+minor_candidates
 decrit("vote", data = e, which = e$country == "US")
 decrit("vote_agg", data = e, which = e$country == "FR")
+table(e$vote[e$country == "FR",])
 decrit("vote", data = e, which = e$country == "UK")
 decrit("vote", data = e, which = e$country == "DE")
 decrit("vote", data = e, which = e$country == "ES")
