@@ -1,9 +1,20 @@
 e <- us1p
 e <- eup
 e <- ep
-# TODO! Spanish questionnaire, update .js, quotas, IAT/device, dropouts (IR: complete/(complete+screenout)); remove PNR wealth (5%), put back email, donation, rewards; add list experiment to US2p
+# TODO! vote
+# TODO Spanish questionnaire, update .js, IAT/device, remove PNR wealth (5%) or exclude, put back email, donation, rewards; add list experiment to US2p; national parties in EU votes
 
 ##### Duration #####
+print(paste0(round(100*sum(us1pa$finished == 1 & is.na(us1pa$excluded), na.rm = T)/sum(us1pa$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1p")) # 100%
+print(paste0(round(100*sum(eupa$finished == 1 & is.na(eupa$excluded), na.rm = T)/sum(eupa$finished == 1 | eupa$excluded=="Screened", na.rm = T)), "% IR in EUp")) # 86%
+print(paste0(round(100*sum(us1pa$excluded=="QuotaMet", na.rm = T)/nrow(us1pa)), "% QuotaMet")) # 4%
+print(paste0(round(100*sum(us1pa$excluded=="Screened", na.rm = T)/nrow(us1pa)), "% Screened")) # 0%
+print(paste0(round(100*sum(us1pa$dropout)/sum(is.na(us1pa$excluded))), "% dropout in US1p")) # 1%
+print(paste0(round(100*sum(eupa$excluded=="QuotaMet", na.rm = T)/nrow(eupa)), "% QuotaMet")) # 7%
+print(paste0(round(100*sum(eupa$excluded=="Screened", na.rm = T)/nrow(eupa)), "% Screened")) # 11%
+print(paste0(round(100*sum(eupa$dropout)/sum(is.na(eupa$excluded))), "% dropout in EUp")) # 14% EU
+print(paste0(round(100*sum(eupa$dropout & as.numeric(eupa$progress > 15))/sum(is.na(eupa$excluded))), "% dropout excluding sociodemos")) # 13% 
+print(paste0(round(100*sum(eupa$dropout & as.numeric(eupa$progress == 16))/sum(is.na(eupa$excluded))), "% dropout at policy description")) # 7% (progress = 16 at policy description *for EUp*)
 decrit("duration", data = us1p) # US1p: 8.44 / EU: 14.75
 decrit("duration", data = eup)
 decrit("duration", data = us1p, which = us1p$duration > 4) # US1p: 9 / EU: 15.9
@@ -67,8 +78,8 @@ decrit("number_same_ip", data = e)
 
 ##### Support #####
 decrit("support_igr", data = e)
-decrit("nr_support", data = e)
 decrit("gcs_support", data = e)
+decrit("nr_support", data = e)
 CrossTable(e$gcs_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 CrossTable(e$nr_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 CrossTable(e$support_igr, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
@@ -241,6 +252,16 @@ decrit("points_foreign4_aid", data = e) #-
 decrit("political_affiliation", data = e)
 decrit("left_right", data = e)
 table(e$group_defended) # TODO: item
+decrit("vote", data = e, which = e$country == "US")
+decrit("vote_agg", data = e, which = e$country == "FR")
+decrit("vote", data = e, which = e$country == "UK")
+decrit("vote", data = e, which = e$country == "DE")
+decrit("vote", data = e, which = e$country == "ES")
+decrit("vote_us_voters", data = e)
+decrit("vote_fr_voters", data = e)
+decrit("vote_uk_voters", data = e)
+decrit("vote_de_voters", data = e)
+decrit("vote_es_voters", data = e)
 decrit("problem_inequality", data = e)
 decrit("problem_climate", data = e)
 decrit("problem_poverty", data = e)
