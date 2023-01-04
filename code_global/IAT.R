@@ -2,15 +2,15 @@
 # Takes 5-6 min and requires a computer (with keyboard)
 # Specify beforehand which policies are national and which ones are global
 writeIATfull(IATname="global_policy",
-             posname="Fair", 
-             negname="Unfair",
+             posname="Good", # Fair
+             negname="Bad", # Unfair
              Aname="Global",
              Bname="National",
              catType="words",
-             poswords = c("Fair", "Equitable", "Honest", "Just", "Positive", "Valid"), # from Carbon tax acceptance in a polarized society: Bridging the partisan divide over climate policy in the US (22), see also https://osf.io/mjxv9/?view_only=27d2c3fc8b4c4b3fb1bc672cb630b5da for details
-             negwords = c("Unfair", "Unbalanced", "Costly", "Improper", "Negative", "Bad"),
+             poswords = c("Good", "Equitable", "Appropriate", "Fair", "Positive", "Useful"), # 15 syllabs in each c("Fair", "Equitable", "Honest", "Just", "Positive", "Valid") from Carbon tax acceptance in a polarized society: Bridging the partisan divide over climate policy in the US (22), see also https://osf.io/mjxv9/?view_only=27d2c3fc8b4c4b3fb1bc672cb630b5da for details
+             negwords = c("Bad", "Unsound", "Inappropriate", "Unfair", "Negative", "Harmful"), # c("Unfair", "Unbalanced", "Costly", "Improper", "Negative", "Bad")
              tgtType="words", 
-             Awords = c("Global wealth tax", "Foreign aid", "Overseas Development Assistance", "Global climate program", "Global basic income", "Paris agreement"), # Carbon tax, climate tax, ecological tax, energy tax, environmental tax, pollution tax
+             Awords = c("Global wealth tax", "Foreign aid", "Overseas Development Assistance", "Global climate program", "Global basic income", "Paris agreement"), # 33 syllabs in each # Carbon tax, climate tax, ecological tax, energy tax, environmental tax, pollution tax
              Bwords = c("Federal wealth tax", "Food stamps", # now renamed Supplemental Nutrition Assistance Program 
                         "Medicare / Medicaid", "National carbon fee and divdend", "Earned Income Tax Credit", "Clean Power Plan"), # Consumption tax, sales tax, gross receipt tax, value added tax, use tax, excise tax
              

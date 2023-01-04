@@ -1,10 +1,12 @@
 e <- us1p
 e <- eup
 e <- ep
-# TODO tooltip Spanish; correct => expected; 28 países, la mayoría de ellos en África, donde viven 700 millones de personas
-# TODO separate descriptions; list exp warning
-# TODO remove PNR wealth (5%) or exclude, put back email, donation, rewards
-# TODO check IAT
+# TODO mettre soutien/Croyances GCS+NR dans le bloc d'avant
+# TODO! US/EU: separate descriptions; list exp warning
+# TODO US/EU: tooltip Spanish; correct => expected; 28 países, la mayoría de ellos en África, donde viven 700 millones de personas
+# TODO read fields
+# TODO US/EU: remove PNR wealth (5%) or exclude, put back email, welcome amount incentives
+# TODO US2 IAT: change to good/bad and check
 
 ##### Duration #####
 print(paste0(round(100*sum(us1pa$finished == 1 & is.na(us1pa$excluded), na.rm = T)/sum(us1pa$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1p")) # 100%
@@ -153,11 +155,15 @@ decrit("list_exp_ir", data = e)
 decrit("list_exp_gr", data = e) 
 decrit("list_exp_igr", data = e)
 decrit("list_exp_i", data = e)
-mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_gr, na.rm = T) # 44%
 mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # 60%
-mean(e$gcs_support) + (mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$gcs_support[e$branch_list_exp != "igr"], na.rm = T))/2 # 66%
+mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) # 68%
+mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 74%
+mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_gr, na.rm = T) # 44%
+mean(e$list_exp_igr, na.rm = T) - mean(c(e$list_exp_ir, e$list_exp_gr), na.rm = T) # 55%
+mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 75%
 mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T) # 67%
-mean(e$nr_support) + (mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) - mean(e$nr_support[e$branch_list_exp != "ir"], na.rm = T))/2 # 59%
+mean(c(e$list_exp_ir, e$list_exp_gr), na.rm = T) - mean(e$list_exp_i, na.rm = T) # 72%
+mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 59%
 summary(lm(list_exp ~ branch_list_exp_g * branch_list_exp_r, data = e))
 
 

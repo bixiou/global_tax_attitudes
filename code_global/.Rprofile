@@ -25,7 +25,7 @@ package <- function(p, version = NULL, remove = FALSE, github = '') {
 } # loads packages with automatical install if needed
 
 package("stringr")
-# package("iatgen") # devtools::install_github("iatgen/iatgen") TODO
+package("iatgen") # devtools::install_github("iatgen/iatgen") TODO
 package("ggplot2")
 
 # package("qualtRics") # https://cran.r-project.org/web/packages/qualtRics/vignettes/qualtRics.html
