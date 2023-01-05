@@ -4,8 +4,7 @@ e <- ep
 # TODO mettre soutien/Croyances GCS+NR dans le bloc d'avant
 # TODO! US/EU: separate descriptions; list exp warning
 # TODO US/EU: tooltip Spanish; correct => expected; 28 países, la mayoría de ellos en África, donde viven 700 millones de personas
-# TODO read fields
-# TODO US/EU: remove PNR wealth (5%) or exclude, put back email, welcome amount incentives
+# TODO US/EU: remove PNR wealth (5%) or exclude, put back email, welcome: amount incentives
 # TODO US2 IAT: change to good/bad and check
 
 ##### Duration #####
@@ -49,7 +48,7 @@ decrit("dropout", data = e) # TODO!
 
 ##### Other #####
 decrit("survey_biased", data = e) 
-e$comment_field[!is.na(e$comment_field)]
+e$comment_field[!is.na(e$comment_field)] # US1p/EUp1 all good except two people who complain about the layout, one doesn't give details and one say there is too much space between questions.
 decrit("interview", data = e)
 
 
