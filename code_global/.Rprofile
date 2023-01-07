@@ -25,7 +25,11 @@ package <- function(p, version = NULL, remove = FALSE, github = '') {
 } # loads packages with automatical install if needed
 
 package("stringr")
-package("iatgen") # devtools::install_github("iatgen/iatgen") TODO
+if (!is.element("iatgen", installed.packages()[,1])) {
+  warning("/!\ Install iatgen manually from github!")
+  # package("devtools")
+  # devtools::install_github("iatgen/iatgen")
+} else library(iatgen)
 package("ggplot2")
 
 # package("qualtRics") # https://cran.r-project.org/web/packages/qualtRics/vignettes/qualtRics.html
@@ -48,6 +52,7 @@ package("GDAtools") # wtable (for weighted frequency crosstable)
 package("beepr") # beep() makes sound 
 package("openxlsx")
 package("cjoint") # conjoint analysis
+package("modelsummary")
 #' package("xtable")
 #' package("rms")
 #' package('pwr')
@@ -207,6 +212,15 @@ is.pnr <- function(variable, empty_as_pnr = T) {
     if (is.null(annotation(variable))) return(is.na(variable))
     else return(is.missing(variable))
   }
+}
+is.binary <- function(vec) { return((is.logical(vec) | all(unique(as.numeric(vec)) %in% c(0, 1, NA)))) }
+majority <- function(vec) {
+  if (is.binary(vec)) return(100*mean(vec, na.rm = T))
+  else return(100 * sum(!is.na(vec) & vec > 0) / sum(!is.na(vec) & vec != 0))
+}
+positive <- function(vec) {
+  if (is.binary(vec)) return(100*mean(vec, na.rm = T))
+  else return(100 * sum(!is.na(vec) & vec > 0) / sum(!is.na(vec)))
 }
 decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights
   # if (!missing(data)) variable <- data[[variable]]
@@ -2097,3 +2111,4 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #'   
 #'   return(final)
 #' }
+

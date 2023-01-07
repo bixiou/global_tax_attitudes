@@ -27,20 +27,27 @@ writeIATfull(IATname="global_policy",
 )
 
 # In the example code below we use correct.error=FALSE hence algorithm D600
-dat <- read.csv("../data/IAT_test.csv", header=T)
+# dat <- read.csv("../data/US2_pilot.csv", header=T)
 ### Collapse  IAT data down ####
-dat$compatible.crit <- combineIATfourblocks(dat$Q4.RP4, dat$Q18.LP4, dat$Q14.RN7, dat$Q28.LN7)
-dat$incompatible.crit <- combineIATfourblocks(dat$Q7.RP7, dat$Q21.LP7, dat$Q11.RN4, dat$Q25.LN4)
+# e$compatible.crit <- combineIATfourblocks(e$Q4.RP4, e$Q18.LP4, e$Q14.RN7, e$Q28.LN7)
+# e$incompatible.crit <- combineIATfourblocks(e$Q7.RP7, e$Q21.LP7, e$Q11.RN4, e$Q25.LN4)
+# ### Collapse  IAT practice blocks ####
+# e$compatible.prac<- combineIATfourblocks(e$Q3.RP3, e$Q17.LP3, e$Q13.RN6, e$Q27.LN6)
+# e$incompatible.prac <- combineIATfourblocks(e$Q6.RP6, e$Q20.LP6, e$Q10.RN3, e$Q24.LN3)
 
+e <- us2p
+
+e$compatible.crit <- combineIATfourblocks(e$iat_rp4, e$iat_lp4, e$iat_rn7, e$iat_ln7)
+e$incompatible.crit <- combineIATfourblocks(e$iat_rp7, e$iat_lp7, e$iat_rn4, e$iat_ln4)
 ### Collapse  IAT practice blocks ####
-dat$compatible.prac<- combineIATfourblocks(dat$Q3.RP3, dat$Q17.LP3, dat$Q13.RN6, dat$Q27.LN6)
-dat$incompatible.prac <- combineIATfourblocks(dat$Q6.RP6, dat$Q20.LP6, dat$Q10.RN3, dat$Q24.LN3)
+e$compatible.prac<- combineIATfourblocks(e$iat_rp3, e$iat_lp3, e$iat_rn6, e$iat_ln6)
+e$incompatible.prac <- combineIATfourblocks(e$iat_rp6, e$iat_lp6, e$iat_rn3, e$iat_ln3)
 
 ### Clean the IAT ### 
-clean <- cleanIAT(prac1=dat$compatible.prac, 
-                  crit1=dat$compatible.crit, 
-                  prac2=dat$incompatible.prac, 
-                  crit2=dat$incompatible.crit, 
+clean <- cleanIAT(prac1=e$compatible.prac, 
+                  crit1=e$compatible.crit, 
+                  prac2=e$incompatible.prac, 
+                  crit2=e$incompatible.crit, 
                   
                   timeout.drop=TRUE, 
                   timeout.ms=10000, 
@@ -56,7 +63,8 @@ clean <- cleanIAT(prac1=dat$compatible.prac,
                   )
 
 ### NUMBER OF PARTICIPANTS WHO COMPLETED THE IAT ###
-sum(!clean$skipped)
+sum(!clean$skipped) # 37
+decrit(e$branch_iat) # 51
 
 ### TIMEOUT DROP RATE (% of TRIALS dropped because they exceed 10s) ###
 clean$timeout.rate
@@ -67,7 +75,7 @@ clean$fastprt.rate
 # clean$drop.participant # gives the T/F vector of whether each respondent is dropped due to rushing
 
 ### ERROR RATE (typically < 10%) ###
-clean$error.rate 
+clean$error.rate # 16%
 # clean$error.rate.prt # error rate for each respondent
 # Error rates for each block:
 clean$error.rate.prac1
@@ -77,19 +85,25 @@ clean$error.rate.crit2
 
 ### RELIABILITY ANALYSIS (cf. De Houwer and De Bruycker, 2007) ###
 IATreliability(clean)$reliability
-IATalpha(clean)$alpha.total # more crude estimate using Cronbach alpha, cf. https://github.com/iatgen/iatgen
+IATalpha(clean)$alpha.total # more crude estimate using Cronbach alpha, cf. https://github.com/iatgen/iatgen # I guess we can just ignore the warning, it's what they do here: https://github.com/iatgen/iatgen/blob/master/README.md
 
 # place back into dat
-dat$D <- clean$D
+e$D <- clean$D
 
 #### test for IAT effect ####
-mean(clean$D, na.rm=T)
-sd(clean$D, na.rm=T)
-t.test(clean$D)
-mean(clean$D, na.rm=T) / sd(clean$D, na.rm=T) #cohen d
+# D > 0 <=> respondent was faster in the compatible block i.e. A with pos i.e. global with good
+mean(e$D, na.rm=T) # -.44***
+sd(e$D, na.rm=T)
+t.test(e$D)
+mean(e$D, na.rm=T) / sd(e$D, na.rm=T) #cohen d: -.94
+datasummary(D ~ Mean * branch_iat, data = e) # LN: -.27 / RN: .-40 / RP: -.61 / LP: bug (due to typo in Qualtrics)
+mean(e$D[e$left_right < 3], na.rm=T) # -.41
+mean(e$D[e$gcs_support > 0], na.rm=T) # -.30
+mean(e$D[e$debt_cancellation_support > 0], na.rm=T) # -.52
+mean(e$D[e$foreign_aid_more_less == "More"], na.rm=T) # -.31
 
 # Density plot of the D score
-ggplot(dat, aes(x=D)) + geom_density(color="black", fill="light blue") + theme_light()
+ggplot(e, aes(x=D)) + geom_density(color="black", fill="light blue") + theme_light() # mostly negative
 # write.csv(clean$D, "iat_results.csv") # these D-scores can be correlated with other measures
 
 ### RT DESCRIPTIVES BY BLOCK

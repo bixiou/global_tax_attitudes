@@ -1,11 +1,13 @@
 e <- us1p
+e <- us2p
 e <- eup
+e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
 # TODO mettre soutien/Croyances GCS+NR dans le bloc d'avant
 # TODO! US/EU: separate descriptions; list exp warning
 # TODO US/EU: tooltip Spanish; correct => expected; 28 países, la mayoría de ellos en África, donde viven 700 millones de personas
 # TODO US/EU: remove PNR wealth (5%) or exclude, put back email, welcome: amount incentives
-# TODO US2 IAT: change to good/bad and check
+# TODO weights
 
 ##### Duration #####
 print(paste0(round(100*sum(us1pa$finished == 1 & is.na(us1pa$excluded), na.rm = T)/sum(us1pa$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1p")) # 100%
@@ -15,34 +17,47 @@ print(paste0(round(100*sum(us1pa$excluded=="Screened", na.rm = T)/nrow(us1pa)), 
 print(paste0(round(100*sum(us1pa$dropout)/sum(is.na(us1pa$excluded))), "% dropout in US1p")) # 1%
 print(paste0(round(100*sum(eupa$excluded=="QuotaMet", na.rm = T)/nrow(eupa)), "% QuotaMet")) # 7%
 print(paste0(round(100*sum(eupa$excluded=="Screened", na.rm = T)/nrow(eupa)), "% Screened")) # 11%
-print(paste0(round(100*sum(eupa$dropout)/sum(is.na(eupa$excluded))), "% dropout in EUp")) # 14% EU
+print(paste0(round(100*sum(eupa$dropout)/sum(is.na(eupa$excluded))), "% dropout in EUp")) # 17% EU
+print(paste0(round(100*sum(us1p$dropout)/sum(is.na(us1p$excluded))), "% dropout in US1p")) # 17% EU
+print(paste0(round(100*sum(us2p$dropout)/sum(is.na(us2p$excluded))), "% dropout in US2p")) # 17% EU
 print(paste0(round(100*sum(eupa$dropout & as.numeric(eupa$progress > 15))/sum(is.na(eupa$excluded))), "% dropout excluding sociodemos")) # 13% 
 print(paste0(round(100*sum(eupa$dropout & as.numeric(eupa$progress == 16))/sum(is.na(eupa$excluded))), "% dropout at policy description")) # 7% (progress = 16 at policy description *for EUp*)
-decrit("duration", data = us1p) # US1p: 8.44 / EU: 14.75
+decrit("duration", data = us1p) # US1p: 8.44 / US2p: 16.5 / EUp: 15.75
+decrit("duration", data = us2p) 
+decrit("duration", data = us2p, which = is.na(us2p$branch_iat)) # 12.8
+decrit("duration", data = us2p, which = !is.na(us2p$branch_iat)) # 18.5 => duration IAT: 5.6
 decrit("duration", data = eup)
-decrit("duration", data = us1p, which = us1p$duration > 4) # US1p: 9 / EU: 15.9
+decrit("duration", data = e) 
+decrit("duration", data = us1p, which = us1p$duration > 4) # US1p: 9 / US2p: 12.9 / EU: 17
+decrit("duration", data = us2p, which = us2p$duration > 6) 
 decrit("duration", data = eup, which = eup$duration > 6)
-decrit("duration_gcs", data = e) # US1p:  2.7/ EU: 2.5
+decrit("duration_gcs", data = e) # US1p: 2.7 / EU: 2.5 / US2p: 1.7
+decrit("duration_nr", data = e) # US2p: .73
+decrit("duration_both", data = e) # US2p: .66
 decrit("duration_conjoint_a", data = e) # same
 decrit("duration_conjoint_b", data = e) # US1p: .5 / EU: 
 decrit("duration_conjoint_c", data = e) # NA
 decrit("duration_conjoint_d", data = e) # US1p: .3 / EU: .4
-decrit("duration_gcs_perception", data = e) # US2p:  / EU: .8 NA
-decrit("duration_other_policies", data = e) # US2p:  / EU: 1.35
-decrit("duration_points", data = e) # US2p: .9 / EU: .9
-decrit("duration_feedback", data = e) # US1p: .35 / EU: .3
+decrit("duration_gcs_perception", data = e) # US2p: .7 / EU: .8 NA
+decrit("duration_other_policies", data = e) # US2p: 1.25 / EU: 1.35
+decrit("duration_points", data = e) # US1p: .9 / EU: .9
+decrit("duration_donation", data = e) # US2p: .5
+decrit("duration_list_exp", data = e) # US2p: .6
+decrit("duration_feedback", data = e) # US1p: .35 / EU: .3 / US2p: .5
+# US2p: 16.5 = 6.64 + socio-demos/politics + wealth + foreign aid + IAT
 
 
 ##### Attention #####
 decrit("attention_test", data = e) # NAs because I removed donation question
-decrit("score_understood", data = e) # 1.5 (random: .83)
+decrit("score_understood", data = e) # 1.5 (random: .83). US2p: 1.7
 decrit("nr_understood", data = e)
 decrit("gcs_understood", data = e)
 decrit("both_understood", data = e)
 decrit("nr_win_lose", data = e)
 decrit("gcs_win_lose", data = e)
 decrit("both_win_lose", data = e)
-decrit("click_details", data = e)
+decrit("click_details", data = e) # 10%
+decrit("click_reminder", data = e) # 13%
 decrit("dropout", data = e) # TODO!
 
 
@@ -66,6 +81,7 @@ decrit("region", data = e)
 decrit("country", data = e)
 decrit("employment_status", data = e) 
 decrit("employment_agg", data = e) 
+decrit("age", data = e, numbers = T) 
 decrit("age_exact", data = e)
 decrit("education", data = e) 
 decrit("education_original", data = e)
@@ -80,6 +96,9 @@ decrit("number_same_ip", data = e)
 
 
 ##### Support #####
+# 'positive' gives the share of positive answers and 'majority' the share of positive answers among non-indifferent.
+datasummary(eval(str2expression(paste(paste(c(variables_support, "petition_gcs", "petition_nr"), collapse = ' + '), " ~ positive + majority + majority * country"))), data = e, fmt = 0, output = "markdown")
+majority(e$climate_mitigation_support)
 decrit("support_igr", data = e)
 decrit("gcs_support", data = e)
 decrit("nr_support", data = e)
@@ -123,10 +142,13 @@ decrit("gcs_important_fuel_corruption", data = e) #
 decrit("gcs_important_fuel_fraud", data = e)
 decrit("gcs_important_difficult_enact", data = e)
 decrit("gcs_important_having_info", data = e)
+decrit("order_wealth_separate", data = e)
 means_gcs_important <- c()
 for (v in variables_gcs_important) means_gcs_important[v] <- mean(e[[v]], na.rm = T)
 -sort(-means_gcs_important)
 e$gcs_field[!is.na(e$gcs_field)]
+summary(lm(gcs_support ~ branch_gcs, data = e))
+summary(lm(nr_support ~ branch_gcs, data = e))
 summary(lm(gcs_support ~ z_score_understood, data = e)) # +7pp
 summary(lm(gcs_support ~ z_score_understood + education + income_factor + as.factor(age_exact), data = e))
 summary(lm(gcs_support ~ gcs_understood + nr_understood + both_understood, data = e))
@@ -154,16 +176,16 @@ decrit("list_exp_ir", data = e)
 decrit("list_exp_gr", data = e) 
 decrit("list_exp_igr", data = e)
 decrit("list_exp_i", data = e)
-mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # 60%
-mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) # 68%
+mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # 67%
+mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) # 67%
 mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 74%
-mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_gr, na.rm = T) # 44%
-mean(e$list_exp_igr, na.rm = T) - mean(c(e$list_exp_ir, e$list_exp_gr), na.rm = T) # 55%
-mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 75%
-mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T) # 67%
-mean(c(e$list_exp_ir, e$list_exp_gr), na.rm = T) - mean(e$list_exp_i, na.rm = T) # 72%
-mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 59%
-summary(lm(list_exp ~ branch_list_exp_g * branch_list_exp_r, data = e))
+mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_gr, na.rm = T) # 92%
+mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 79%
+mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T) # 57%
+mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 53%
+mean(e$list_exp_gr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # -26%
+summary(lm(list_exp ~ (branch_list_exp == "gr") + (branch_list_exp == "i") + (branch_list_exp == "igr"), data = e))
+# TODO! why not same coef in reg and mean differences? Add branch: r? ig/g?
 
 
 ##### Conjoint analysis #####
@@ -198,9 +220,10 @@ decrit("conjoint_left_a_b", data = e)
 
 
 ##### Donation #####
-decrit("donation_nation", data = e) # TODO! put back
+decrit("donation_nation", data = e) 
 decrit("donation_africa", data = e) 
 summary(lm(donation ~ branch_donation, data = e))
+decrit(!(e$donation %in% c(0, 100))) # 88%
 decrit("negotiation", data = e)
 CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 
@@ -209,7 +232,12 @@ CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, pro
 decrit("global_tax_support", data = e)
 decrit("national_tax_support", data = e)
 decrit("global_tax_global_share", data = e) 
+median(e$global_tax_global_share, na.rm = T) 
 decrit("global_tax_sharing", data = e) 
+CrossTable(e$global_tax_sharing, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
+summary(lm(global_tax_support > 0 ~ branch_global_tax, data = e))
+summary(lm(national_tax_support > 0 ~ branch_global_tax, data = e))
+summary(lm(global_tax_support - national_tax_support ~ branch_global_tax, data = e))
 
 
 ##### Foreign aid #####
@@ -257,6 +285,10 @@ decrit("points_foreign3_assembly", data = e)
 decrit("points_foreign4_aid", data = e) #-
 
 
+##### IAT #####
+decrit("branch_iat", data = e) # 59% enter IAT
+
+
 ##### Politics #####
 decrit("political_affiliation", data = e)
 decrit("left_right", data = e)
@@ -265,7 +297,7 @@ major_candidates
 minor_candidates
 decrit("vote", data = e, which = e$country == "US")
 decrit("vote_agg", data = e, which = e$country == "FR")
-table(e$vote[e$country == "FR",])
+table(e$vote[e$country == "DE",])
 decrit("vote", data = e, which = e$country == "UK")
 decrit("vote", data = e, which = e$country == "DE")
 decrit("vote", data = e, which = e$country == "ES")

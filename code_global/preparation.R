@@ -1,4 +1,5 @@
 # Consistency: increase/reduce aid for those with the info + later question; petition_yes_support_no; duplicate_ip
+# TODO order_
 
 source(".Rprofile")
 source("relabel_rename.R")
@@ -109,7 +110,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   
   # The commented lines below should be executed before creating relabel_and_rename, to ease the filling of each name and label
   # remove_id("UA")
-  # e <- read_csv("../data/US1_pilot.csv")
+  # e <- read_csv("../data/US2_pilot.csv")
   # for (i in 1:length(e)) {
   #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
   #   print(paste(i, label(e[[i]])))
@@ -231,12 +232,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$global_tax_sharing) <- "global_tax_sharing: T/F/NA Prefers to allocate half of global wealth tax to low-income countries rather than keeping all in collector country's national budgets. NA if the question is not asked (cf. branch_global_tax)."
       e$branch_global_tax[!is.na(e$global_tax_sharing)] <- "sharing"
       e$branch_global_tax[!is.na(e$global_tax_global_share)] <- "global_share"
-      e$branch_global_tax[!is.na(e$global_tax_support)] <- "separate"
-      label(e$branch_global_tax) <- "branch_global_tax: separate/sharing/global_share/NA Way to ask the preference for funding low-income countries through a global tax on the rich: either 'separate'ly the support for a national and a global tax on millionaires; whether to allocate half or none of the global tax to low-income countries; the 'global_share' in 0 to 100%."
+      e$branch_global_tax[e$order_global_tax == 1] <- "global_first"
+      e$branch_global_tax[e$order_national_tax == 1] <- "national_first"
+      label(e$branch_global_tax) <- "branch_global_tax: global_first/national_first/sharing/global_share/NA Way to ask the preference for funding low-income countries through a global tax on the rich: either separately the support for a national and a global tax on millionaires (with either the global or national question asked first); whether to allocate half or none of the global tax to low-income countries; the 'global_share' in 0 to 100%."
     }
   }
 
-  variables_support <<- names(e)[grepl('support', names(e))]
+  variables_support <<- names(e)[grepl('support', names(e)) & !grepl("foreign_aid_raise_support", names(e))]
   variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|foreign_aid|_tax_", names(e))]
   variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
   variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
@@ -400,12 +402,15 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$branch_list_exp[!is.na(e$list_exp_gr)] <- "gr"
       e$branch_list_exp[!is.na(e$list_exp_ir)] <- "ir"
       if (wave == "pilot" & country != "US2") e$list_exp_ir[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")] <- e$list_exp_gr[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")]
+      if (wave == "pilot" & country != "US2") e$list_exp_gr[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")] <- NA
       if (wave == "pilot" & country != "US2") e$branch_list_exp[!is.na(e$list_exp_gr) & e$country %in% c("US", "FR", "UK")] <- "ir"
       label(e$branch_list_exp) <- "branch_list_exp: i/ir/gr/igr Variant of the list experiment faced, where i denotes coal exit (US) or the buildings' insulation plan (EU), r the national redistribution, and g the global climate scheme. Marriage only for opposite-sex couples (US) and death penalty for major crimes (EU) were also systematically included."
       e$branch_list_exp_g <- grepl("g", e$branch_list_exp)
       e$branch_list_exp_r <- grepl("r", e$branch_list_exp)
+      e$branch_list_exp_i <- grepl("i", e$branch_list_exp)
       label(e$branch_list_exp_r) <- "branch_list_exp_r: T/F r (national redistribution) is present in the list experiment."
       label(e$branch_list_exp_g) <- "branch_list_exp_g: T/F g (global climate scheme) is present in the list experiment."
+      label(e$branch_list_exp_i) <- "branch_list_exp_i: T/F i (coal exit (US) / thermal insulation plan (EU)) is present in the list experiment."
       for (v in c("i", "ir", "gr", "igr")) e$list_exp[e$branch_list_exp == v] <- e[[paste0("list_exp_", v)]][e$branch_list_exp == v]
       label(e$list_exp) <- "list_exp: [0-4] Number of supported policies in the list experiment (combining all branches, cf. branch_list_exp and variables_list_exp)."
     }
@@ -455,7 +460,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     if ("foreign_aid_preferred" %in% names(e)) {
       e$foreign_aid_more_less[e$info_foreign_aid == T] <- ((e$foreign_aid_preferred > foreign_aid_actual_amounts_max[e$country]) - (e$foreign_aid_preferred < foreign_aid_actual_amounts_min[e$country]))[e$info_foreign_aid == T]
       e$foreign_aid_more_less[e$info_foreign_aid == FALSE] <- ((e$foreign_aid_preferred > e$foreign_aid_belief) - (e$foreign_aid_preferred < e$foreign_aid_belief))[e$info_foreign_aid == FALSE]
-      e$foreign_aid_more_less <- as.item(e$foreign_aid_more_less, labels = structure(-1:1, names = c("Less", "Same"," More")), missing.values = NA, 
+      e$foreign_aid_more_less <- as.item(e$foreign_aid_more_less, labels = structure(-1:1, names = c("Less", "Same", "More")), missing.values = NA, 
                                          annotation = "foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
     }
     
@@ -513,31 +518,48 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       if (v %in% "conjoint_left_ag_b") e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == conjoint_position_g[v]
       if (v == "conjoint_ir_r") e$conjoint_b[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
     }
-    label(e$branch_conjoint_b) <- "branch_conjoint_b: ir_gr/r_igr/gr_r/ir_r Random branch faced by the respondent in conjoint analysis (b)."
-    label(e$branch_conjoint_c) <- "branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'"
-    label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
-    label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
-    label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
-    e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
-    label(e$conjoint_d) <- "conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican."
-    label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
-    label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
-    label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
-    e$branch_b_gcs <- grepl("g", e$branch_conjoint_b)
-    label(e$branch_b_gcs) <- "branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_ir_r'."
-    e$conjoint_b_na <- e$conjoint_b
-    e$conjoint_b_na[e$branch_b_gcs == FALSE] <- NA
-    label(e$conjoint_b_na) <- "conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_ir_r'."
-    e$branch_c_gcs <- grepl("g_", e$branch_conjoint_c)
-    label(e$branch_c_gcs) <- "branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'."
-    e$conjoint_r_type <- "None"
-    e$conjoint_r_type[e$`F-1-1-5` %in% policies_names["foreign1",]] <- "A"
-    e$conjoint_r_type[e$`F-1-2-5` %in% policies_names["foreign1",]] <- "B"
-    e$conjoint_r_type[e$`F-1-1-5` %in% policies_names["foreign1",] & e$`F-1-2-5` %in% policies_names["foreign1",]] <- "Both"
-    label(e$conjoint_r_type) <- "conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b"
-    e$conjoint_r <- e$conjoint_left_a_b == e$conjoint_r_type
-    e$conjoint_r[e$conjoint_r_type %in% c("None", "Both")] <- NA
-    label(e$conjoint_r) <- "conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican."
+    if ("conjoint_a" %in% names(e)) {
+      label(e$branch_conjoint_b) <- "branch_conjoint_b: ir_gr/r_igr/gr_r/ir_r Random branch faced by the respondent in conjoint analysis (b)."
+      label(e$branch_conjoint_c) <- "branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'"
+      label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
+      label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
+      label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
+      e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
+      label(e$conjoint_d) <- "conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican."
+      label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
+      label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
+      label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
+      e$branch_b_gcs <- grepl("g", e$branch_conjoint_b)
+      label(e$branch_b_gcs) <- "branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_ir_r'."
+      e$conjoint_b_na <- e$conjoint_b
+      e$conjoint_b_na[e$branch_b_gcs == FALSE] <- NA
+      label(e$conjoint_b_na) <- "conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_ir_r'."
+      e$branch_c_gcs <- grepl("g_", e$branch_conjoint_c)
+      label(e$branch_c_gcs) <- "branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'."
+      e$conjoint_r_type <- "None"
+      e$conjoint_r_type[e$`F-1-1-5` %in% policies_names["foreign1",]] <- "A"
+      e$conjoint_r_type[e$`F-1-2-5` %in% policies_names["foreign1",]] <- "B"
+      e$conjoint_r_type[e$`F-1-1-5` %in% policies_names["foreign1",] & e$`F-1-2-5` %in% policies_names["foreign1",]] <- "Both"
+      label(e$conjoint_r_type) <- "conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b"
+      e$conjoint_r <- e$conjoint_left_a_b == e$conjoint_r_type
+      e$conjoint_r[e$conjoint_r_type %in% c("None", "Both")] <- NA
+      label(e$conjoint_r) <- "conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican."
+    }
+    
+    if ("iat_lp5" %in% names(e)) {
+      e$branch_iat <- NA
+      e$branch_iat[!is.na(e$iat_ln1)] <- "LN"
+      e$branch_iat[!is.na(e$iat_lp1)] <- "LP"
+      e$branch_iat[!is.na(e$iat_rn1)] <- "RN"
+      e$branch_iat[!is.na(e$iat_rp1)] <- "RP"
+      label(e$branch_iat) <- "branch_iat: LN/LP/RN/RP/NA Branch of the Implicit Association Test (Left vs. Right & Positive vs. Negative). NA for those without IAT (because their device is a phone or their language Spanish)."
+    }
+    
+    if ("branch_gcs_info" %in% names(e)) {
+      for (m in c("info", "nothing", "field", "important")) e$branch_gcs[!is.na(e[[paste0("branch_gcs_", m)]])] <- m
+      e$branch_gcs <- relevel(as.factor(e$branch_gcs), "nothing")
+      label(e$branch_gcs) <- "branch_gcs: info/nothing/field/important Whether gcs/nr_support is preceded by the info on the actual support, nothing, gcs_field or variables_gcs_important."
+    }
     
     if ("interest_politics" %in% names(e)) temp <- 2 * (e[[v]] %in% text_intensity[5]) + (e[[v]] %in% text_intensity[4]) - (e[[v]] %in% text_intensity[2]) - 2 * (e[[v]] %in% text_intensity[1])
     if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-2:2),  names = c(text_intensity)), annotation=Label(e$interest_politics))
@@ -628,11 +650,16 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   return(e)
 }
 
+##### Run #####
+
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
+us2p <- prepare(country = "US2", wave = "pilot", weighting = FALSE)
 eup <- prepare(country = "EU", wave = "pilot", weighting = FALSE)
 
-e <- ep <- merge(us1p, eup, all = T)
+usp <- merge(us1p, us2p, all = T)
+e <- ep <- merge(usp, eup, all = T)
 
 # variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
 eupa <- prepare(country = "EU", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 us1pa <- prepare(country = "US1", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+us2pa <- prepare(country = "US2", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
