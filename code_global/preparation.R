@@ -403,7 +403,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$branch_list_exp[!is.na(e$list_exp_ir)] <- "ir"
       if (wave == "pilot" & country != "US2") e$list_exp_ir[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")] <- e$list_exp_gr[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")]
       if (wave == "pilot" & country != "US2") e$list_exp_gr[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")] <- NA
-      if (wave == "pilot" & country != "US2") e$branch_list_exp[!is.na(e$list_exp_gr) & e$country %in% c("US", "FR", "UK")] <- "ir"
+      if (wave == "pilot" & country != "US2") e$branch_list_exp[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")] <- "ir"
       label(e$branch_list_exp) <- "branch_list_exp: i/ir/gr/igr Variant of the list experiment faced, where i denotes coal exit (US) or the buildings' insulation plan (EU), r the national redistribution, and g the global climate scheme. Marriage only for opposite-sex couples (US) and death penalty for major crimes (EU) were also systematically included."
       e$branch_list_exp_g <- grepl("g", e$branch_list_exp)
       e$branch_list_exp_r <- grepl("r", e$branch_list_exp)

@@ -3,10 +3,12 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO mettre soutien/Croyances GCS+NR dans le bloc d'avant
-# TODO! US/EU: separate descriptions; list exp warning
-# TODO US/EU: tooltip Spanish; correct => expected; 28 países, la mayoría de ellos en África, donde viven 700 millones de personas
+# TODO! pre-registration plan
+# TODO test US1
+# TODO ETS2
 # TODO US/EU: remove PNR wealth (5%) or exclude, put back email, welcome: amount incentives
+# TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
+# TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 # TODO weights
 
 ##### Duration #####
@@ -185,8 +187,22 @@ mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T) # 57%
 mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 53%
 mean(e$list_exp_gr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # -26%
 summary(lm(list_exp ~ (branch_list_exp == "gr") + (branch_list_exp == "i") + (branch_list_exp == "igr"), data = e))
-# TODO! why not same coef in reg and mean differences? Add branch: r? ig/g?
-
+# 1 nr_support: ir - i / igr - ig / gr - g => nr - n
+# 2 gcs_support: igr - ir / gr - r / ig - i => ng - n
+# 0 gcs_support en double
+# 3 nb of options: igr - ir, gr - r / igr - ig, ir - i => okl - ok, ol - o
+# 4 prefer i or g: gr - ir
+# 5 i_support: igr - ir / ig - g / ir - r
+# 6 l_support: gr - r - g / ir - i - r / igr - gr - i
+# interaction r and g: impossible, conjoint analysis for that
+# i, ir, gr, igr: 12456
+# r, ir, gr, igr: 02345
+# g, ir, gr, igr: 12456
+# i, ig, ir, igr: 0123
+# i, r, ir, gr, igr: 0123456
+# g, r, ir, gr, igr: 0123456
+# i, g, ir, gr, igr: 123456
+# i, ig, ir, gr, igr: 123456
 
 ##### Conjoint analysis #####
 # a
