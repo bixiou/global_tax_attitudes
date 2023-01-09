@@ -65,7 +65,7 @@ temp <- readLines("../conjoint_analysis/ca_e.csv")
 writeLines(c(temp[1], temp), "../conjoint_analysis/ca_e.csv")
 ca_e <- read.qualtrics("../conjoint_analysis/ca_e.csv", responses = "conjoint_d_number", covariates = covariates_conjoint, ranks = NULL) # read.with.qualtRics
 
-ca_e <- read.qualtrics("../data/US1n.csv", responses = "Q30", covariates = covariates_conjoint, ranks = NULL, new.format = T) # read.with.qualtRics
+ca_e <- read.qualtrics("../data/US1n.csv", responses = "Q30", covariates = covariates_conjoint, ranks = NULL, new.format = T) # TODO new or old?
 
 # qualtrics_results <- read.csv("../conjoint_analysis/ca_e.csv", stringsAsFactors=F)
 # var_names <- as.character(qualtrics_results[1,])
@@ -76,17 +76,23 @@ ca_e <- read.qualtrics("../data/US1n.csv", responses = "Q30", covariates = covar
 # attr_name_cols <- grep(attr_regexp, var_names, perl=TRUE)
 # qualtrics_data[attr_name_cols] <- lapply(qualtrics_data[attr_name_cols], function (x) sub("\\s+$", "", x))
 
-design_cjoint <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # gives the probability that a profile appears: sum(design_cjoint$J)=1, dim(design_cjoint$J) = 5 4 4 4 5.
+design_cjoint <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # gives the probability that a profile appears: sum(design_cjoint$J)=1, dim(design_cjoint$J) = 5 4 4 4 5. # TODO
 
-
+# conjoint_attributes <- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
+conjoint_attributes <<- c("econ_issues", "society_issues", "climate_pol", "tax_system", "foreign_policy")
+names(conjoint_attributes) <<- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy") # TODO: UK EconomicS issues => Economic issues
+# c("Economic.issues", "Societal.issues", "Climate.policy", "Tax.system", "Foreign.policy")
+variables_conjoint_attr <<- paste0("F-1-", 1:5)
+if (!grepl("EU", country)) for (v in variables_conjoint_attr) e[[v]] <- conjoint_attributes[e[[v]]]
 ##### Analysis #####
-# formula_cjoint <- as.formula(paste0("conjoint_d_number ~ ", paste(paste0("`F-1-", 1:5, "`"), collapse = '+')))
+formula_cjoint <- as.formula(paste0("conjoint_d_number ~ ", paste(paste0("`F-1-", 1:5, "`"), collapse = '+')))
 formula_cjoint <- as.formula("selected ~ Tax.system + Societal.issues + Foreign.policy + Economic.issues + Climate.policy")
-# formula_cjoint <- as.formula("conjoint_d_number ~ econ_issues + society_issues + climate_pol + tax_system + foreign_policy")
+formula_cjoint <- as.formula("selected ~ econ_issues + society_issues + climate_pol + tax_system + foreign_policy")
 baselines <- list()
 baselines$attribute <- "level"
 amce <- amce(formula_cjoint, ca_e, weights= NULL, design = design_cjoint) # , baselines = baselines
 amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected),], cluster = FALSE, weights= NULL)
+amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected) & !is.na(ca_e$climate_pol) & !is.na(ca_e$econ_issues) & !is.na(ca_e$foreign_policy) & !is.na(ca_e$society_issues),], cluster = FALSE, weights= NULL)
 summary(amce)
 plot(amce)
 
