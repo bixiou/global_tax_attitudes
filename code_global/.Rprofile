@@ -196,7 +196,7 @@ if (!is.element("memisc", installed.packages()[,1])) {
 #' # eval(parse(along)) !!along as.name(along) substitute(eval(along)) eval(along) substitute(temp) deparse(substitute(temp)) eval(as.symbol()) eval(str2expression(along))
 #' # Fs <- function(QID) { s[QID][[1]] }
 #' # Vs <- function(QID) { as.vector(Fs(QID))  }
-#' d <- function(str) return(eval(str2expression(tolower(str)))) # data from name
+d <- function(str) return(eval(str2expression(tolower(str)))) # data from name
 #' n <- function(var) { as.numeric(as.vector(var)) }
 #' NSPs <- function(QID) { length(V(QID)[V(QID) == "NSP (Je ne veux pas répondre)"])/length(V(QID)) }
 #' nsps <- function(id) { length(v(id)[v(id) == "NSP (Je ne veux pas répondre)"])/length(v(id)) }

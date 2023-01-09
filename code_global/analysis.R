@@ -3,7 +3,6 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO US2 separate understanding
 # TODO conjoint, list exp change letters
 # TODO conjoint analysis (d)
 # TODO ETS2, wealth limit "for each human"

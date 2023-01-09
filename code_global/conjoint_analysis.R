@@ -33,27 +33,60 @@ js_D <- readLines("../conjoint_analysis/9d_D_EU_template.js")
 js_F <- readLines("../conjoint_analysis/9d_F_EU_template.js")
 for (name in row.names(policies_names)) for (c in colnames(policies_names)) js_D <- gsub(paste0(c, '_', name), policies_names[name, c], js_D)
 for (name in row.names(policies_names)) for (c in colnames(policies_names)) js_F <- gsub(paste0(c, '_', name), policies_names[name, c], js_F)
-writeLines(js_D, "../conjoint_analysis/9d_D_EU.js")
-writeLines(js_F, "../conjoint_analysis/9d_F_EU.js") # Directly paste-able into Qualtrics
+writeLines(js_D, "../conjoint_analysis/9d_D_EU.js") # (d): no foreign policy in it, GCS vs. nothing instead
+writeLines(js_F, "../conjoint_analysis/9d_F_EU.js") # (r) Directly paste-able into Qualtrics
 
 
 ##### Import to R #####
-# Useful only in case of restrictions or weighted randomization. If it bugs, add a blank line after Restrictions in the .dat or check above "/!\" below 4. in How to.
-design_cjoint <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # gives the probability that a profile appears: sum(design_cjoint$J)=1, dim(design_cjoint$J) = 5 4 4 4 5.
-
 # The CSV should be the raw CSV exported by Qualtrics, with answers should shown as "coded values" and not as choice text
-cols_conjoint <- c(12:13) # number (or name) of names(data) corresponding to the conjoint analysis' tasks
-covariates_conjoint <- c() # names of the covariates to be included
-cols_rankings <- c(10:11) # An integer vector with the identifiers of the CSV columns that contain the conjoint rankings or ratings. (?)
+cols_conjoint <- which(grepl("F-1-1-|F-1-2-", names(e)) & !grepl("_original", names(e))) # number (or name) of names(data) corresponding to the conjoint analysis' tasks
+# covariates_conjoint <- names(e)[grepl("F-|conjoint_d_number", names(e))]
+covariates_conjoint <- names(e)[cols_conjoint]  # names of the covariates to be included
+cols_rankings <- which(names(e) == "conjoint_d_number") # An integer vector with the identifiers of the CSV columns that contain the conjoint rankings or ratings. (?)
+
+# Useful only in case of restrictions or weighted randomization. If it bugs, add a blank line after Restrictions in the .dat or check above "/!\" below 4. in How to.
+for (n in c("usp", "eup", "ep")) {
+  csv.path <- paste0("../conjoint_analysis/ca_", n, ".csv")
+  write.csv(d(n)[, grepl("F-|conjoint_d_number", names(d(n)))], csv.path)
+  cols_conjoint <- which(grepl("F-1-1-|F-1-2-", names(d(n))))
 # Pb? the function below might only works with PHP export (but JS export is better)
-ca <- read.qualtrics("../data/raw.csv", responses = cols_conjoint, covariates = covariates_conjoint, ranks = cols_rankings)
+  ca_usp <- read.qualtrics(csv.path, responses = cols_conjoint, covariates = names(d(n))[cols_conjoint], ranks = "conjoint_d_number")
+  eval(str2expression(paste0("ca_", n, " <- read.qualtrics(csv.path, responses = cols_conjoint, covariates = names(d(", n, "))[cols_conjoint], ranks = 'conjoint_d_number')")))
+}
+for (v in names(e)[grepl("F-1-", names(e))]) {
+  e[[paste0(v, "_original")]] <- e[[v]]
+  temp <- as.numeric(sapply(e[[v]], function(i) { which(policies_names==i) %% 20 }))
+  temp[temp == 0] <- 20
+  e[[v]] <- row.names(policies_names)[temp]
+  e[[v]][e[[paste0(v, "_original")]] == "-"] <- "-"
+} # TODO correct the NAs (it can be a " " at the end of a name for example)
+write.csv(e[, grepl("F-|conjoint_d_number", names(e)) & !grepl("_original", names(e))], "../conjoint_analysis/ca_e.csv")
+temp <- readLines("../conjoint_analysis/ca_e.csv")
+writeLines(c(temp[1], temp), "../conjoint_analysis/ca_e.csv")
+ca_e <- read.qualtrics("../conjoint_analysis/ca_e.csv", responses = "conjoint_d_number", covariates = covariates_conjoint, ranks = NULL) # read.with.qualtRics
+
+ca_e <- read.qualtrics("../data/US1n.csv", responses = "Q30", covariates = covariates_conjoint, ranks = NULL, new.format = T) # read.with.qualtRics
+
+# qualtrics_results <- read.csv("../conjoint_analysis/ca_e.csv", stringsAsFactors=F)
+# var_names <- as.character(qualtrics_results[1,])
+# q_names <- colnames(qualtrics_results)
+# qualtrics_data <- qualtrics_results[2:nrow(qualtrics_results),]
+# colnames(qualtrics_data) <- var_names
+# attr_regexp <-  paste(c("^F-[0-9]+-[0-9]+(?!-)"),collapse="")
+# attr_name_cols <- grep(attr_regexp, var_names, perl=TRUE)
+# qualtrics_data[attr_name_cols] <- lapply(qualtrics_data[attr_name_cols], function (x) sub("\\s+$", "", x))
+
+design_cjoint <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # gives the probability that a profile appears: sum(design_cjoint$J)=1, dim(design_cjoint$J) = 5 4 4 4 5.
 
 
 ##### Analysis #####
-formula_cjoint <- as.formula("")
+# formula_cjoint <- as.formula(paste0("conjoint_d_number ~ ", paste(paste0("`F-1-", 1:5, "`"), collapse = '+')))
+formula_cjoint <- as.formula("selected ~ Tax.system + Societal.issues + Foreign.policy + Economic.issues + Climate.policy")
+# formula_cjoint <- as.formula("conjoint_d_number ~ econ_issues + society_issues + climate_pol + tax_system + foreign_policy")
 baselines <- list()
 baselines$attribute <- "level"
-amce <- amce(formula_cjoint, ca, weights= NULL, design = design_cjoint) # , baselines = baselines
+amce <- amce(formula_cjoint, ca_e, weights= NULL, design = design_cjoint) # , baselines = baselines
+amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected),], cluster = FALSE, weights= NULL)
 summary(amce)
 plot(amce)
 
