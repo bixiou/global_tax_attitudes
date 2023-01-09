@@ -207,7 +207,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   text_intensity <<- c("Not at all", "A little", "Moderately", "A little", "A great deal")
   text_support <<- c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support")
   text_importance <<- c("Not at all important", "Not so important", "Quite important", "Very important")
-  text_problem <<- c("Not an important issue for me", "An issue but there are other priorities", "An issue but we do already what we can", "An important issue, we should do more", "One of the most pressing issue of our time")
+  text_problem <<- c("Not an important issue for me", "An issue but there are other priorities", "An issue but we already do what we can", "An important issue, we should do more", "One of the most pressing issue of our time")
+  if (wave == "pilot") text_problem <<- "An issue but we do already what we can"
   foreign_aid_amounts <<- c(.1, .2, .5, 1.0, 1.7, 2.6, 4, 6, 9, 13, 25)
   foreign_aid_means <<- c(0, .15, .4, .8, 1.4, 2.2, 3.35, 5, 7.5, 11, 19, 30)
   foreign_aid_actual_amounts <<- c("FR" = .8, "DE" = 1.3, "ES" = .5, "UK" = 1.7, "US" = .4)
