@@ -27,7 +27,7 @@
 
 
 ###### Prepare EU JavaScript #####
-policies_names <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies", rowNames = T, rows = c(1, 16:41), cols = 1:5))
+policies_names <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies", rowNames = T, rows = c(1, 16:41), cols = 1:6))
 policies_names <- policies_names[is.na(as.numeric(row.names(policies_names))),] # NAs by coercion normal
 js_D <- readLines("../conjoint_analysis/9d_D_EU_template.js")
 js_F <- readLines("../conjoint_analysis/9d_F_EU_template.js")
@@ -39,10 +39,10 @@ writeLines(js_F, "../conjoint_analysis/9d_F_EU.js") # (r) Directly paste-able in
 
 ##### Import to R #####
 # The CSV should be the raw CSV exported by Qualtrics, with answers should shown as "coded values" and not as choice text
-cols_conjoint <- which(grepl("F-1-1-|F-1-2-", names(e)) & !grepl("_original", names(e))) # number (or name) of names(data) corresponding to the conjoint analysis' tasks
+# cols_conjoint <- which(grepl("F-1-1-|F-1-2-", names(e)) & !grepl("_original", names(e))) # number (or name) of names(data) corresponding to the conjoint analysis' tasks
 # covariates_conjoint <- names(e)[grepl("F-|conjoint_d_number", names(e))]
-covariates_conjoint <- names(e)[cols_conjoint]  # names of the covariates to be included
-cols_rankings <- which(names(e) == "conjoint_d_number") # An integer vector with the identifiers of the CSV columns that contain the conjoint rankings or ratings. (?)
+# covariates_conjoint <- variables_conjoint_r_levels # names(e)[cols_conjoint]  # names of the covariates to be included
+# cols_rankings <- which(names(e) == "conjoint_r_number") # An integer vector with the identifiers of the CSV columns that contain the conjoint rankings or ratings. (?)
 
 # Useful only in case of restrictions or weighted randomization. If it bugs, add a blank line after Restrictions in the .dat or check above "/!\" below 4. in How to.
 for (n in c("usp", "eup", "ep")) {
@@ -50,22 +50,15 @@ for (n in c("usp", "eup", "ep")) {
   write.csv(d(n)[, grepl("F-|conjoint_d_number", names(d(n)))], csv.path)
   cols_conjoint <- which(grepl("F-1-1-|F-1-2-", names(d(n))))
 # Pb? the function below might only works with PHP export (but JS export is better)
-  ca_usp <- read.qualtrics(csv.path, responses = cols_conjoint, covariates = names(d(n))[cols_conjoint], ranks = "conjoint_d_number")
-  eval(str2expression(paste0("ca_", n, " <- read.qualtrics(csv.path, responses = cols_conjoint, covariates = names(d(", n, "))[cols_conjoint], ranks = 'conjoint_d_number')")))
+  ca_usp <- read.qualtrics(csv.path, responses = 'conjoint_r_number', covariates = variables_conjoint_r_levels) # names(d(n))[cols_conjoint]
+  eval(str2expression(paste0("ca_", n, " <- read.qualtrics(csv.path, responses = 'conjoint_r_number', covariates = variables_conjoint_r_levels)")))
 }
-for (v in names(e)[grepl("F-1-", names(e))]) {
-  e[[paste0(v, "_original")]] <- e[[v]]
-  temp <- as.numeric(sapply(e[[v]], function(i) { which(policies_names==i) %% 20 }))
-  temp[temp == 0] <- 20
-  e[[v]] <- row.names(policies_names)[temp]
-  e[[v]][e[[paste0(v, "_original")]] == "-"] <- "-"
-} # TODO correct the NAs (it can be a " " at the end of a name for example)
 write.csv(e[, grepl("F-|conjoint_d_number", names(e)) & !grepl("_original", names(e))], "../conjoint_analysis/ca_e.csv")
 temp <- readLines("../conjoint_analysis/ca_e.csv")
 writeLines(c(temp[1], temp), "../conjoint_analysis/ca_e.csv")
-ca_e <- read.qualtrics("../conjoint_analysis/ca_e.csv", responses = "conjoint_d_number", covariates = covariates_conjoint, ranks = NULL) # read.with.qualtRics
+ca_e <- read.qualtrics("../conjoint_analysis/ca_e.csv", responses = "conjoint_d_number", covariates = variables_conjoint_r_levels) # read.with.qualtRics
 
-ca_e <- read.qualtrics("../data/US1n.csv", responses = "Q30", covariates = covariates_conjoint, ranks = NULL, new.format = T) # TODO new or old?
+ca_e <- read.qualtrics("../data/US1n.csv", responses = "Q30", covariates = variables_conjoint_r_levels, ranks = NULL, new.format = T) # TODO new or old?
 
 # qualtrics_results <- read.csv("../conjoint_analysis/ca_e.csv", stringsAsFactors=F)
 # var_names <- as.character(qualtrics_results[1,])
@@ -78,19 +71,14 @@ ca_e <- read.qualtrics("../data/US1n.csv", responses = "Q30", covariates = covar
 
 design_cjoint <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # gives the probability that a profile appears: sum(design_cjoint$J)=1, dim(design_cjoint$J) = 5 4 4 4 5. # TODO
 
-# conjoint_attributes <- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
-conjoint_attributes <<- c("econ_issues", "society_issues", "climate_pol", "tax_system", "foreign_policy")
-names(conjoint_attributes) <<- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy") # TODO: UK EconomicS issues => Economic issues
-# c("Economic.issues", "Societal.issues", "Climate.policy", "Tax.system", "Foreign.policy")
-variables_conjoint_attr <<- paste0("F-1-", 1:5)
-if (!grepl("EU", country)) for (v in variables_conjoint_attr) e[[v]] <- conjoint_attributes[e[[v]]]
+# TODO: UK EconomicS issues => Economic issues
 ##### Analysis #####
 formula_cjoint <- as.formula(paste0("conjoint_d_number ~ ", paste(paste0("`F-1-", 1:5, "`"), collapse = '+')))
 formula_cjoint <- as.formula("selected ~ Tax.system + Societal.issues + Foreign.policy + Economic.issues + Climate.policy")
 formula_cjoint <- as.formula("selected ~ econ_issues + society_issues + climate_pol + tax_system + foreign_policy")
 baselines <- list()
 baselines$attribute <- "level"
-amce <- amce(formula_cjoint, ca_e, weights= NULL, design = design_cjoint) # , baselines = baselines
+# amce <- amce(formula_cjoint, ca_e, weights= NULL, design = design_cjoint) # , baselines = baselines
 amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected),], cluster = FALSE, weights= NULL)
 amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected) & !is.na(ca_e$climate_pol) & !is.na(ca_e$econ_issues) & !is.na(ca_e$foreign_policy) & !is.na(ca_e$society_issues),], cluster = FALSE, weights= NULL)
 summary(amce)

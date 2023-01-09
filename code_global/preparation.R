@@ -21,7 +21,12 @@ inc_quantiles # Now in 2021 LCU for each
 rm(qinc)
 
 policies_names <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies", rowNames = T, rows = c(1, 16:41), cols = 1:5))
-policies_names <- policies_names[is.na(as.numeric(row.names(policies_names))),] # NAs by coercion normal
+policies.names <- policies_names <- policies_names[is.na(as.numeric(row.names(policies_names))),] # NAs by coercion normal
+# conjoint_attributes <<- c("econ_issues", "society_issues", "climate_pol", "tax_system", "foreign_policy")
+conjoint_attributes <<- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
+# c("Economic.issues", "Societal.issues", "Climate.policy", "Tax.system", "Foreign.policy")
+row.names(policies.names)[which(policies.names %in% conjoint_attributes) %% 20] <- conjoint_attributes
+
 countries_names <- c("France", "Germany", "Spain", "United Kingdom", "United States")
 names(countries_names) <- countries <- c("FR", "DE", "ES", "UK", "US")
 names(countries) <- countries_names
@@ -266,6 +271,12 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_conjoint_b <<- c("conjoint_ir_gr", "conjoint_r_igr", "conjoint_gr_r", "conjoint_ir_r")
   variables_conjoint_c <<- c("conjoint_left_right", "conjoint_leftg_right")
   variables_conjoint_d <<- c("conjoint_left_a_b", "conjoint_left_ag_b")
+  variables_conjoint_attr <<- paste0("F-1-", 1:5)
+  variables_conjoint_r_levels <<- names(e)[grepl("F-1-1-|F-1-2-", names(e))]
+  variables_conjoint_d_levels <<- names(e)[grepl("D-1-1-|D-1-2-", names(e))]
+  variables_conjoint_r <<- c(variables_conjoint_attr, variables_conjoint_r_levels)
+  variables_conjoint_d <<- c(variables_conjoint_attr, variables_conjoint_d_levels)
+  variables_conjoint_levels <<- c(variables_conjoint_d_levels, variables_conjoint_r_levels)
   conjoint_position_g <<- c("A", "B", "B", "A", "None", "None", "A", "Random", "A")
   names(conjoint_position_g) <<- variables_conjoint
   
@@ -526,9 +537,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
       label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
       e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
-      e$conjoint_d_number <- as.numeric(2 - 1*(e$conjoint_d))
       label(e$conjoint_d) <- "conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican."
-      label(e$conjoint_d_number) <- "conjoint_d_number: 1/2 (instead of A/B) Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican."
       label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
       label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
       label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
@@ -547,6 +556,22 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$conjoint_r <- e$conjoint_left_a_b == e$conjoint_r_type
       e$conjoint_r[e$conjoint_r_type %in% c("None", "Both")] <- NA
       label(e$conjoint_r) <- "conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican."
+      
+      e$conjoint_r_number <- 1*(e$conjoint_left_a_b == "A") + 2*(e$conjoint_left_a_b == "B")
+      label(e$conjoint_r_number) <- "conjoint_r_number: 1/2 (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican."
+      # conjoint_attributes <- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
+      # if (!grepl("EU", country)) for (v in variables_conjoint_attr) e[[v]] <- conjoint_attributes[e[[v]]]
+      for (v in c(variables_conjoint_r,variables_conjoint_d_levels)) {
+        e[[paste0(v, "_original")]] <- e[[v]]
+        temp <- as.numeric(sapply(e[[v]], function(i) { which(policies.names==i) %% 20 }))
+        temp[temp == 0] <- 20
+        e[[v]] <- row.names(policies.names)[temp]
+        e[[v]][e[[paste0(v, "_original")]] == "-"] <- "-"
+      } 
+      # temp <- c() # To correct the NAs (it can be a " " at the end of a name for example)
+      # for (v in c(variables_conjoint_r_levels)) temp <- c(temp, e[[paste0(v, "_original")]][is.na(e[[v]]) & !is.na(e[[paste0(v, "_original")]])])
+      # unique(temp)
+      
     }
     
     if ("iat_lp5" %in% names(e)) {
