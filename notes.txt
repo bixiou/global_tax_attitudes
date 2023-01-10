@@ -1,3 +1,41 @@
+Different framing of burden-sharing, depending on what should be split:
+- mitigation costs: this is the most used as it is easiest to explain. The issue is that it is not specified how agents pay (or if some agents receive payments) and implicitly, there is no negative costs (transfers exceeding the costs) and the carbon price is not uniform. Used in .
+- emission: this one is vague as it doesn't state at which date emissions pc converge (if they do) and whether there are side payments.
+- emission rights: this one is the most accurate as there is no need of a BAU scenario to compute the mitigation needed and its cost.
+
+Different fairness principles:
+- equal emission right per capita: using this as a baseline, we can call 'grandfathering' any principle that is more regressive and 'historical responsibility' any principle that is more progressive
+- equal emission reduction (in share of current emission) per capita: grandfathering
+- emission rights proportional to current emissions: grandfathering
+- costs proportional to current emissions: polluter-pay principle
+- costs proportional to cumulative emissions: so-called historical responsibility but may actually have a grandfathering component
+
+Surveys of population:
+- Schleich et al. (Climate Policy, 16) find an identical ranking of fairness principles in China, Germany, and the US: accountability (costs according to emissions) followed by capability (according to economic strength), egalitarianism (equal emission per capita), and sovereignty (constant share of global emission) (see Lange & Schiwplies (17) for the definitions). [other findings: international agreements are important but current ones are unsuccessful, people find themselves poorly represented in climate negotiations]
+- Bechtel & Scheve (PNAS, 13) find with a conjoint analysis on FR, DE, UK, US that a climate agreement is 5 p.p. less likely to be preferred (to a random alternative) if only rich countries pay (other burden-sharing are: pay prop. to current emissions / historical emissions / rich countries pay more than poor countries) [TODO: check SI that these are the verbatim] and 15 p.p. more likely to be preferred if it includes 160 (out of 192) countries rather than 20 => confirms preference for global policies (rather than only partial coverage). Finds that costs is what matters most: preference decreases by 30pp if it’s 2.5% of GDP compared to 0.5%.
+- Carlsson et al. (REE, 13) find using a 09 choice experiment that Americans prefer capacity to pay > current responsibility > historical responsibility > equal emissions per capita while Chinese prefer historical > capacity > current > equal emissions.
+  Capacity to pay: Countries with high income levels must pay a larger share of the costs than countries with low income levels. This option says that countries with greater ability to pay should pay more
+  Current responsibility: Countries with currently high emissions levels must pay a larger share of the costs than countries with currently low emissions levels. This option says that those countries that are currently a larger part of the problem should pay more.
+  Historical responsibility: Countries with a history of high emissions levels must pay a larger share of the costs than countries with a history of lower emissions. This option recognizes that CO2 builds up in the atmosphere over many years. Thus, countries with a history of high emissions should pay more because they caused more of the problem.
+  Equal emissions pc: Countries with emissions per person greater than an agreed amount must pay, and they must pay more the higher their emissions per person area.
+- Carlsson et al. (Ecol Eco, 11) find that Swedes prefer that "all countries are allowed to emit an equal amount per capita" rather than options where emissions reduce in relation to current or historical emissions and continue to be higher in high-emitting countries. 
+- Meilland et al. (13) find that most favored fairness principle is Equality in per capita emissions: “all countries commit to converge to the same average of total emissions per inhabitant, compatible with a controlled climate change” 
+- Dechezleprêtre et al. (WP, 22) 
+
+Surveys of negotiators:
+- Hjerpe et al. (WP, 11)
+- Dannenberg et al. (ERE, 10): measuring negotiators' equity preferences, regional differences in addressing climate change are driven more by national interests than by different equity concerns.
+- Lange et al. (Energy Econ, 07): Mix of self-serving bias and support for egalitarian principle.
+- Kesternich et al. (EEPS, 21): kind of convergence on ability-to-pay.
+
+Other papers:
+- Lange & Schwirplies (ERE, 17) develop a theoretical model (building on Buchholz et al. (05)), supported by data, justifying that climate negotiators (chosen by the citizens) have lower environmental preferences than their citizens and equity views more aligned with the other negotiators. 
+
+
+
+
+
+____________________________________________
 var featurearray = {"Economic issues" : [More public services, higher minimum wage,"-"],
 vs. reduce deficit, increase retirement age
 
