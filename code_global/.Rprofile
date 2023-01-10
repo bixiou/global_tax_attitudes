@@ -51,7 +51,7 @@ package("expss") # fre (for weighted frequency table)
 package("GDAtools") # wtable (for weighted frequency crosstable)
 package("beepr") # beep() makes sound 
 package("openxlsx")
-package("cjoint") # conjoint analysis
+package("cjoint") # conjoint analysis /!\ I fixed a bug in the program => to install my version, package("devtools"), clone repo, setwd(/cjoint/R), build(), install()
 package("modelsummary")
 #' package("xtable")
 #' package("rms")
@@ -2111,4 +2111,5 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #'   
 #'   return(final)
 #' }
+
 

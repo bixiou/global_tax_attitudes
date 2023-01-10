@@ -20,12 +20,12 @@ inc_quantiles # Now in 2021 LCU for each
 50*round(inc_quantiles/12/50) # Per month, rounded
 rm(qinc)
 
-policies_names <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies", rowNames = T, rows = c(1, 16:41), cols = 1:5))
-policies.names <- policies_names <- policies_names[is.na(as.numeric(row.names(policies_names))),] # NAs by coercion normal
-# conjoint_attributes <<- c("econ_issues", "society_issues", "climate_pol", "tax_system", "foreign_policy")
-conjoint_attributes <<- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
-# c("Economic.issues", "Societal.issues", "Climate.policy", "Tax.system", "Foreign.policy")
-row.names(policies.names)[which(policies.names %in% conjoint_attributes) %% 20] <- conjoint_attributes
+policies.names <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies", rowNames = T, rows = c(1, 16:41), cols = 1:6))
+policies.names <- policies.names[is.na(as.numeric(row.names(policies.names))),] # NAs by coercion normal
+conjoint_attributes <- c("econ_issues", "society_issues", "climate_pol", "tax_system", "foreign_policy")
+conjoint.attributes <- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
+names(conjoint.attributes) <- conjoint_attributes # c("Economic.issues", "Societal.issues", "Climate.policy", "Tax.system", "Foreign.policy")
+# row.names(policies.names)[unique(which(policies.names %in% conjoint_attributes) %% 20)] <- conjoint_attributes
 
 countries_names <- c("France", "Germany", "Spain", "United Kingdom", "United States")
 names(countries_names) <- countries <- c("FR", "DE", "ES", "UK", "US")
@@ -549,29 +549,39 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$branch_c_gcs <- grepl("g_", e$branch_conjoint_c)
       label(e$branch_c_gcs) <- "branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'."
       e$conjoint_r_type <- "None"
-      e$conjoint_r_type[e$`F-1-1-5` %in% policies_names["foreign1",]] <- "A"
-      e$conjoint_r_type[e$`F-1-2-5` %in% policies_names["foreign1",]] <- "B"
-      e$conjoint_r_type[e$`F-1-1-5` %in% policies_names["foreign1",] & e$`F-1-2-5` %in% policies_names["foreign1",]] <- "Both"
+      e$conjoint_r_type[e$`F-1-1-5` %in% policies.names["foreign1",]] <- "A"
+      e$conjoint_r_type[e$`F-1-2-5` %in% policies.names["foreign1",]] <- "B"
+      e$conjoint_r_type[e$`F-1-1-5` %in% policies.names["foreign1",] & e$`F-1-2-5` %in% policies.names["foreign1",]] <- "Both"
       label(e$conjoint_r_type) <- "conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b"
       e$conjoint_r <- e$conjoint_left_a_b == e$conjoint_r_type
       e$conjoint_r[e$conjoint_r_type %in% c("None", "Both")] <- NA
       label(e$conjoint_r) <- "conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican."
       
-      e$conjoint_r_number <- 1*(e$conjoint_left_a_b == "A") + 2*(e$conjoint_left_a_b == "B")
-      label(e$conjoint_r_number) <- "conjoint_r_number: 1/2 (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican."
       # conjoint_attributes <- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
       # if (!grepl("EU", country)) for (v in variables_conjoint_attr) e[[v]] <- conjoint_attributes[e[[v]]]
-      for (v in c(variables_conjoint_r,variables_conjoint_d_levels)) {
+      for (v in c(variables_conjoint_r, variables_conjoint_d_levels)) {
         e[[paste0(v, "_original")]] <- e[[v]]
-        temp <- as.numeric(sapply(e[[v]], function(i) { which(policies.names==i) %% 20 }))
+        temp <- sapply(e[[v]], function(i) { which(policies.names==i)[1] %% 20 })
         temp[temp == 0] <- 20
         e[[v]] <- row.names(policies.names)[temp]
         e[[v]][e[[paste0(v, "_original")]] == "-"] <- "-"
+        e[[v]][e[[paste0(v, "_original")]] == "Increase corporate income tax rate from 21% to 28%"] <- "tax3"
+        e[[v]][e[[paste0(v, "_original")]] == "Making abortion a right at the federal level"] <- "soc3"
       } 
-      # temp <- c() # To correct the NAs (it can be a " " at the end of a name for example)
-      # for (v in c(variables_conjoint_r_levels)) temp <- c(temp, e[[paste0(v, "_original")]][is.na(e[[v]]) & !is.na(e[[paste0(v, "_original")]])])
-      # unique(temp)
       
+      e$conjoint_r_wrong_level <- FALSE
+      unrecognized_levels <- c()
+      for (v in c(variables_conjoint_r_levels)) {
+        e$conjoint_r_wrong_level[is.na(e[[v]]) & !is.na(e[[paste0(v, "_original")]])] <- T
+        # respondents_with_wrong_levels <- c(respondents_with_wrong_levels, which(is.na(e[[v]]) & !is.na(e[[paste0(v, "_original")]])))
+        unrecognized_levels <- c(unrecognized_levels, e[[paste0(v, "_original")]][is.na(e[[v]]) & !is.na(e[[paste0(v, "_original")]])])
+      }
+      # respondents_with_wrong_levels <- unique(respondents_with_wrong_levels)
+      unrecognized_levels <- unique(unrecognized_levels) # In EUp there are 58 respondents affected: 55 in UK, 1 in DE, 2 in ES. This is because we updated the policies names in the meantime.
+      if (length(unrecognized_levels) > 0) print(paste("There are", length(unrecognized_levels), "unrecognized levels in conjoint analysis (r).", sum(e$conjoint_r_wrong_level), "respondents are affected."))
+      e$conjoint_r_number <- 1*(e$conjoint_left_a_b == "A") + 2*(e$conjoint_left_a_b == "B")
+      e$conjoint_r_number[e$conjoint_r_wrong_level==T] <- NA
+      label(e$conjoint_r_number) <- "conjoint_r_number: 1/2/NA (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican. NA if question not asked or there is some unrecognized level (conjoint_r_wrong_level == T)."
     }
     
     if ("iat_lp5" %in% names(e)) {
@@ -673,6 +683,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$duplicate_ip <- e$number_same_ip > 1
   label(e$number_same_ip) <- "number_same_ip: Number of respondents with the same IP."
   label(e$duplicate_ip) <- "duplicate_ip: T/F The respondent's IP is used by other respondents."
+  
+  e$n <- paste0(country, ifelse(wave == "pilot", "p", ""), 1:nrow(e))
   
   print(paste("convert: success", country))
   return(e)
