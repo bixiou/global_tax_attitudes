@@ -1,0 +1,823 @@
+Variable,Label,Levels
+date,date: Start Date,[string variable]
+date_end,date_end: End Date,[string variable]
+status_response,status_response: Response Type,IP Address
+ip,ip: IP Address,[string variable]
+progress,progress: Progress,100
+time,time: Duration (in seconds),[string variable]
+terminated,terminated: Finished,True
+date_recored,date_recored: Recorded Date,[string variable]
+ID_qualtrics,ID_qualtrics: Response ID,[string variable]
+name,name: Recipient Last Name,"NA"
+firstname,firstname: Recipient First Name,"NA"
+mmail,mmail: Recipient Email,"NA"
+ref,ref: External Data Reference,"NA"
+lat,lat: Location Latitude,[string variable]
+long,long: Location Longitude,[string variable]
+distr,distr: Distribution Channel,anonymous
+lang,lang: User Language,EN
+gender,gender: What is your gender?,Woman / Man / Other
+age_exact,age_exact: How old are you?,< 18: 16.5 / 18-20: 19.5 / 21-24: 23 / 25-29: 27.5 / 30-34: 32.5 / 35-39: 37.5 / 40-44: 42.5 / 45-49: 47.5 / 50-54: 52.5 / 55-59: 57.5 / 60-64: 62.5 / 65-69: 67.5 / 70-74: 72.5 / 75-79: 77.5 / 80-84: 82.5 / 85-89: 87.5 / 90-99: 95 / 100+: 101
+zipcode,zipcode: What is your ZIP code?,min: 501 / max: 98058
+couple,couple: Do you live with your partner (if you have one)?,PNR: -0.1 / No: 0 / Yes: 1
+hh_size,"hh_size: How many people are in your household? 
+The household includes: you, the members of your family who live with you, and your dependents.",1 / 2 / 3 / 4 / 5
+race_white,race_white: What race or ethnicity do you identify with? (Multiple answers are possible) - White,TRUE / FALSE
+race_black,race_black: What race or ethnicity do you identify with? (Multiple answers are possible) - Black or African American,TRUE / FALSE
+race_hispanic,race_hispanic: What race or ethnicity do you identify with? (Multiple answers are possible) - Hispanic,TRUE / FALSE
+race_asian,race_asian: What race or ethnicity do you identify with? (Multiple answers are possible) - Asian,TRUE / FALSE
+race_native,race_native: What race or ethnicity do you identify with? (Multiple answers are possible) - American Indian or Alaskan Native,TRUE / FALSE
+race_hawaii,race_hawaii: What race or ethnicity do you identify with? (Multiple answers are possible) - Native Hawaiian or Pacific Islander,TRUE / FALSE
+race_other,race_other: What race or ethnicity do you identify with? (Multiple answers are possible) - Other,"NA / Other"
+race_pnr,race_pnr: What race or ethnicity do you identify with? (Multiple answers are possible) - Prefer not to say,TRUE / FALSE
+income,"income: What is the annual gross income of your household (before taxes)?
+
+This includes all income: wages, self-employment earnings, Social Security benefits, pensions, investment income, welfare payments, and income from other sources.",< 20k: 15 / 20-35k: 28 / 35-42k: 39 / 42-50k: 46 / 50-65k: 58 / 65-82k: 74 / 82-103k: 92 / 103-130k: 116 / 130-145k: 142 / 145-165k: 155 / 165-250k: 205 / > 250k: 285
+education,"education: What is the highest level of education you have completed? /! For EU, the values don't correspond to the responses. To see the correspondence between values and responses in each country, cf. specificities.xlsx$Education",6 / 3.2 / 4-5 / 3.3 / 7-8 / 3.1 / 2
+employment_status,employment_status: What is your employment status?,Full-time employed / Inactive / Retired / Self-employed / Unemployed / Student / Part-time employed
+home_tenant,home_tenant: Are you a homeowner or a tenant? (Multiple answers are possible) - Tenant,TRUE / FALSE
+home_owner,home_owner: Are you a homeowner or a tenant? (Multiple answers are possible) - Owner,TRUE / FALSE
+home_landlord,home_landlord: Are you a homeowner or a tenant? (Multiple answers are possible) - Landlord renting out property,TRUE / FALSE
+home_hosted,home_hosted: Are you a homeowner or a tenant? (Multiple answers are possible) - Hosted free of charge,TRUE / FALSE
+wealth_couple,"wealth_couple: What is the estimated value of your household's assets (in U.S. dollars)? (note that you don't have to answer that question.)
+
+ 
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth $300,000 and you have $100,000 left to repay on your mortgage, your assets are $200,000.
+
+ 
+I estimate my household's assets net of debt to be:","Between $120,000 and $380,000 / More than $380,000 / NA / Between $4,000 and $120,000 / Less than $0 (I have a net debt) / Close to $0"
+wealth_single,"wealth_single: What
+is the estimated value of your assets (in U.S. dollars)?  (note that you don't have to answer that question.)
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth $300,000 and you have $100,000 left to repay on your mortgage, your assets are $200,000.
+I estimate my assets net of debt to be:","NA / Between $60,000 and $190,000 / Close to $0 / More than $190,000 / Between $4,000 and $60,000 / Less than $0 (I have a net debt)"
+political_affiliation,"political_affiliation: What do you consider to be your political affiliation, as of today?",Democrat / Republican / Non-Affiliated / Independent / Other
+Q57_First,Q57_First: Timing - First Click,[string variable]
+Q57_Last,Q57_Last: Timing - Last Click,[string variable]
+duration_gcs,duration_gcs: Timing - Page Submit,min: 0.285 / max: 18.951
+Q57_Click,Q57_Click: Timing - Click Count,[string variable]
+gcs_win_lose,gcs_win_lose: Who would win or lose financially in the Global climate scheme?,"Typical lose, poorest win / Typical win, poorest lose / Typical lose, poorest lose / Typical win, poorest win"
+nr_win_lose,nr_win_lose: Who would win or lose financially in the National redistribution scheme?,"Typical win, richest lose / Typical lose, richest win / Typical win, richest win / Typical lose, richest lose"
+both_win_lose,"both_win_lose: If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical American be financially affected?",Lose / Unaffected / Win
+gcs_support,gcs_support: Do you support the Global climate scheme?,PNR: -0.1 / No: 0 / Yes: 1
+gcs_belief,"gcs_belief: According to you, what percentage of Americans answer Yes to the previous question? - Percentage of Americans in favor of Global climate scheme",min: 0 / max: 100
+nr_support,nr_support: Do you support the National redistribution scheme?,PNR: -0.1 / No: 0 / Yes: 1
+nr_belief,"nr_belief: According to you, what percentage of Americans answer Yes to the previous question? - Percentage of Americans in favor of National redistribution",min: 0 / max: 100
+list_exp_l,"list_exp_l: Among the policies below, how many do you support?
+
+	Coal exit
+	Marriage only for opposite-sex couples",0 / 1 / 2
+list_exp_rl,"list_exp_rl: Among the policies below, how many do you support?
+
+	National redistribution scheme
+	Coal exit
+	Marriage only for opposite-sex couples",0 / 1 / 2 / 3
+Q61_First ,Q61_First : Timing - First Click,[string variable]
+Q61_Last,Q61_Last: Timing - Last Click,[string variable]
+duration_conjoint_a,duration_conjoint_a: Timing - Page Submit,min: 0.077 / max: 2.472
+Q61_Click ,Q61_Click : Timing - Click Count,[string variable]
+conjoint_crg_cr,"conjoint_crg_cr: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   Coal exit
+   Coal exit
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Global climate scheme",B / A
+support_cgr,"support_cgr: Do you support Bundle A (combining Coal exit, the National redistribution scheme, and the Global climate scheme)?",PNR: -0.1 / No: 0 / Yes: 1
+Q60_First,Q60_First: Timing - First Click,[string variable]
+Q60_Last,Q60_Last: Timing - Last Click,[string variable]
+duration_conjoint_b,duration_conjoint_b: Timing - Page Submit,min: 0.077 / max: 2.472
+Q60_Click,Q60_Click: Timing - Click Count,[string variable]
+conjoint_cr_gr,"conjoint_cr_gr: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   Coal exit
+   Global climate scheme
+  
+  
+   National redistribution scheme
+   National redistribution scheme","NA / A / B"
+conjoint_r_rcg,"conjoint_r_rcg: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   
+   Coal exit
+  
+  
+   
+   Global climate scheme","NA / B / A"
+conjoint_rg_r,"conjoint_rg_r: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Global climate scheme","NA / B / A"
+conjoint_rc_r,"conjoint_rc_r: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Coal exit",B / NA / A
+Q58_First,Q58_First: Timing - First Click,[string variable]
+Q58_Last,Q58_Last: Timing - Last Click,[string variable]
+duration_conjoint_c,duration_conjoint_c: Timing - Page Submit,min: 0.041 / max: 2.387
+Q58_Click,Q58_Click: Timing - Click Count,[string variable]
+conjoint_left_right,"conjoint_left_right: Imagine if the Democratic and Republican presidential candidates in 2024 campaigned with the following policies in their platforms.
+
+
+
+Which of these candidates would you vote for? 
+
+ 
+  
+   Democrat
+   Republican
+  
+  
+   Increase corporate income tax rate from 21% to 28%
+   Decrease the payroll tax
+  
+  
+   Coal exit
+   Permit completion of the Keystone pipeline
+  
+  
+   Trillion dollar investment in clean transportation infrastructure and building insulation
+   Withdrawal of the Paris agreement
+  
+  
+   $15 minimum wage
+   Marriage only for opposite-sex couples
+  
+  
+   National redistribution scheme
+   Strict enforcement of immigration and border legislation","NA / Right / Left / None"
+conjoint_leftg_right,"conjoint_leftg_right: Imagine if the Democratic and Republican presidential candidates in 2024 campaigned with the following policies in their platforms.
+
+
+
+Which of these candidates would you vote for?
+ 
+
+ 
+  
+   Democrat
+   Republican
+  
+  
+   Increase corporate income tax rate from 21% to 28%
+   Decrease the payroll tax
+  
+  
+   Coal exit
+   Permit completion of the Keystone pipeline
+  
+  
+   Trillion dollar investment in clean transportation infrastructure and building insulation
+   Withdrawal of the Paris agreement
+  
+  
+   $15 minimum wage
+   Marriage only for opposite-sex couples
+  
+  
+   National redistribution scheme
+   Strict enforcement of immigration and border legislation
+  
+  
+   Global climate scheme",Right / NA / Left / None
+Q59_First,Q59_First: Timing - First Click,[string variable]
+Q59_Last,Q59_Last: Timing - Last Click,[string variable]
+duration_conjoint_d,duration_conjoint_d: Timing - Page Submit,min: 0.031 / max: 1.5
+Q59_Click,Q59_Click: Timing - Click Count,[string variable]
+conjoint_left_a_b,"conjoint_left_a_b: Imagine that the two main candidates at the 2024 Democratic party presidential primary campaign with the following key policies in their platforms.
+
+ Which of these candidates do you prefer?
+
+
+
+
+
+
+
+
+ 
+
+    Candidate A
+    
+    Candidate B
+
+
+[Field-F-1-1]
+[Field-F-1-1-1]
+[Field-F-1-2-1]
+
+[Field-F-1-2]
+[Field-F-1-1-2]
+[Field-F-1-2-2]
+
+[Field-F-1-3]
+[Field-F-1-1-3]
+[Field-F-1-2-3]
+
+[Field-F-1-4]
+[Field-F-1-1-4]
+[Field-F-1-2-4]
+
+[Field-F-1-5]
+[Field-F-1-1-5]
+[Field-F-1-2-5]",A / NA / B
+conjoint_left_ag_b,"conjoint_left_ag_b: Imagine that the two main candidates at the 2024 Democratic party presidential primary campaign with the following key policies in their platforms.
+
+ Which of these candidates do you prefer?
+
+
+
+
+
+
+
+
+ 
+
+Candidate A
+
+Candidate B
+
+
+[Field-D-1-1]
+[Field-D-1-1-1]
+[Field-D-1-2-1]
+
+[Field-D-1-2]
+[Field-D-1-1-2]
+[Field-D-1-2-2]
+
+[Field-D-1-3]
+[Field-D-1-1-3]
+[Field-D-1-2-3]
+
+[Field-D-1-4]
+[Field-D-1-1-4]
+[Field-D-1-2-4]
+
+    Foreign policy
+    Global climate scheme
+    -",B / NA / A
+attention_test,"attention_test: Please select ""A little"" (this is a test to see if you are paying attention).","NA"
+petition_gcs,"petition_gcs: Would you be willing to sign a petition for the Global climate scheme? 
+
+As soon as the survey is complete, we will send the results to the U.S. President's office, informing him what share of American people are willing to endorse the Global climate scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)",PNR: -0.1 / No: 0 / Yes: 1
+donation_charities,donation_charities: How much did you give to charities in 2022?,"Between $1,001 and $5,000. / Between $501 and $1,000. / Less than $100. / I did not make donations to charities last year. / Between $101 and $500. / More than $5,000."
+interested_politics,interested_politics: To what extent are you interested in politics?,A lot / Moderately / A little / A great deal / Not at all
+involvement_govt,"involvement_govt: Where would you rate yourself on a scale of 1 to 5, where 1 means you think the government should do only those things necessary to provide the most basic government functions, and 5 means you think the government should take active steps in every area it can to try and improve the lives of its citizens? - Desired involvement of government",2 / 4 / 3 / 5 / 1
+left_right,"left_right: On economic policy matters, where do you see yourself on a scale of 1 to 5, where 1 is Left (favoring equality and government interventions) and 5 is Right (favoring free competition and little government intervention)? - Left (1) to Right (5) on economic issues",2 / 4 / 3 / 1 / 5
+vote_participation,vote_participation: Did you vote in the 2020 U.S. presidential election?,No right to vote / Yes / Prefer not to say / No
+vote_us_voters,vote_us_voters: Which candidate did you vote for in the 2020 U.S. presidential election?,"NA / Hawkins / Trump / Biden / Prefer not to say / Jorgensen"
+vote_us_non_voters,"vote_us_non_voters: Even if you did not vote in the 2020 U.S. presidential election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.",Biden / NA / Prefer not to say / Jorgensen / Trump
+problem_inequality,problem_inequality: To what extent do you think the following issues are a problem? - Income inequality in the U.S.,"Not an issue: -2 / Not a priority: -1 / Already addressed: 0 / Important, should do more: 1 / Most pressing issue: 2"
+problem_climate,problem_climate: To what extent do you think the following issues are a problem? - Climate change,"Not an issue: -2 / Not a priority: -1 / Already addressed: 0 / Important, should do more: 1 / Most pressing issue: 2"
+problem_poverty,problem_poverty: To what extent do you think the following issues are a problem? - Global poverty,"Not an issue: -2 / Not a priority: -1 / Already addressed: 0 / Important, should do more: 1 / Most pressing issue: 2"
+group_defended,group_defended: What group do you defend when you vote?,My State / Americans / My family and myself / Sentient beings (humans and animals) / Humans / People sharing my culture or religion / My relatives and/or colleagues
+Q64_First,Q64_First: Timing - First Click,[string variable]
+Q64_Last,Q64_Last: Timing - Last Click,[string variable]
+duration_points,duration_points: Timing - Page Submit,min: 0.1 / max: 5.355
+Q64_Click,Q64_Click: Timing - Click Count,[string variable]
+points_econ1,"points_econ1: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Student loan forgiveness",min: 0 / max: 59
+points_econ2,"points_econ2: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - $15 minimum wage",min: 0 / max: 100
+points_econ3,"points_econ3: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Universal childcare/pre-K",min: 0 / max: 100
+points_econ4,"points_econ4: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Funding affordable housing",min: 0 / max: 98
+points_soc1,"points_soc1: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Expanding the Supreme Court",0 / 2 / 5 / 7 / 10 / 12 / 15 / 19 / 20 / 24 / 25 / 40
+points_soc2,"points_soc2: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Handgun ban",min: 0 / max: 59
+points_soc3,"points_soc3: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Making abortion a right at the federal level",min: 0 / max: 81
+points_climate1,"points_climate1: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Coal exit",min: 0 / max: 51
+points_climate2,"points_climate2: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Trillion dollar investment in clean transportation infrastructure and building insulation",min: 0 / max: 100
+points_climate3,"points_climate3: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Ban the sale of new combustion-engine cars by 2030",min: 0 / max: 52
+points_tax1_nr,"points_tax1_nr: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - National redistribution scheme",min: 0 / max: 80
+points_tax2_wealth_tax,"points_tax2_wealth_tax: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Wealth tax",min: 0 / max: 78
+points_tax3_corporate_tax,"points_tax3_corporate_tax: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Increase corporate income tax rate from 21% to 28%",min: 0 / max: 40
+points_foreign1_gcs,"points_foreign1_gcs: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Global climate scheme",min: 0 / max: 100
+points_foreign2_tax_rich,"points_foreign2_tax_rich: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Global tax on millionaires",min: 0 / max: 100
+points_foreign3_assembly,"points_foreign3_assembly: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Global democratic assembly on climate change",0 / 3 / 10 / 13 / 20 / 25 / 29 / 30 / 39 / 45 / 50 / 53
+points_foreign4_aid,"points_foreign4_aid: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Doubling foreign aid",0 / 3 / 5 / 6 / 10 / 12 / 15 / 54
+points_order_econ1,"points_order_econ1: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Student loan forgiveness","NA / 2 / 4 / 3 / 5 / 1 / 6"
+points_order_econ2,"points_order_econ2: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - $15 minimum wage","NA / 5 / 2 / 1 / 4 / 3 / 6"
+points_order_econ3,"points_order_econ3: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Universal childcare/pre-K",6 / NA / 5 / 4 / 2 / 1 / 3
+points_order_econ4,"points_order_econ4: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Funding affordable housing","NA / 1 / 3 / 5 / 6 / 2 / 4"
+points_order_soc1,"points_order_soc1: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Expanding the Supreme Court","NA / 2 / 3 / 6 / 5 / 1 / 4"
+points_order_soc2,"points_order_soc2: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Handgun ban",1 / 4 / NA / 2 / 5 / 3 / 6
+points_order_soc3,"points_order_soc3: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Making abortion a right at the federal level","NA / 6 / 4 / 3 / 2 / 1 / 5"
+points_order_climate1,"points_order_climate1: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Coal exit",5 / NA / 3 / 2 / 6 / 4 / 1
+points_order_climate2,"points_order_climate2: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Trillion dollar investment in clean transportation infrastructure and building insulation","NA / 3 / 4 / 1 / 2 / 6 / 5"
+points_order_climate3,"points_order_climate3: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Ban the sale of new combustion-engine cars by 2030",3 / NA / 4 / 1 / 5 / 6 / 2
+points_order_tax1_nr,"points_order_tax1_nr: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - National redistribution scheme","NA / 4 / 3 / 6 / 2 / 1 / 5"
+points_order_tax2_wealth_tax,"points_order_tax2_wealth_tax: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Wealth tax",2 / NA / 6 / 5 / 3 / 1 / 4
+points_order_tax3_corporate_tax,"points_order_tax3_corporate_tax: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Increase corporate income tax rate from 21% to 28%",4 / NA / 3 / 5 / 6 / 2 / 1
+points_order_foreign1_gcs,"points_order_foreign1_gcs: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Global climate scheme","NA / 2 / 1 / 4 / 6 / 3 / 5"
+points_order_foreign2_tax_rich,"points_order_foreign2_tax_rich: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Global tax on millionaires","NA / 6 / 1 / 2 / 4 / 3 / 5"
+points_order_foreign3_assembly,"points_order_foreign3_assembly: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Global democratic assembly on climate change","NA / 6 / 1 / 5 / 4 / 2 / 3"
+points_order_foreign4_aid,"points_order_foreign4_aid: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - Doubling foreign aid","NA / 1 / 5 / 6 / 3 / 2 / 4"
+Q56_First,Q56_First: Timing - First Click,[string variable]
+Q56_Last,Q56_Last: Timing - Last Click,[string variable]
+duration_feedback,duration_feedback: Timing - Page Submit,min: 0.089 / max: 7.451
+Q56_Click,Q56_Click: Timing - Click Count,[string variable]
+survey_biased,,"No / Yes, left / Yes, right"
+comment_field,"comment_field: The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below.",[string variable]
+interview,"interview: Lastly, are you interested to be interviewed by a researcher (through videoconferencing) for 30 min? 
+This is totally optional and will not be rewarded.",No / Yes
+finished,finished: Finished,1
+excluded,excluded: Q_TerminateFlag,"NA"
+duration,duration: Q_TotalDuration,min: 1.85 / max: 55.883
+PSID,PSID: PSID,"NA"
+PID,PID: PID,"NA"
+urban_category,"urban_category: [1-4] Computed from the zipcode. NA indicates an unrecognized zipcode. For FR/DE/ES, Eurostat's degree of urbanization (1: Cities, 2: Towns and suburbs, 3: Rural). For the UK we use another classification that tends to classify zipcodes as more rural than Eurostat (cf. zipcodes.R). For the US, recoded from RUCA codes (1: Metropolitan core (RUCA 1, 73% pop), 2: Metro non-core (2-3), 3: Micropolitan or Small town (< 50k, 4-9), 4: Rural (10)).",1 / 2 / 3 / 4
+region,region: region,Northeast / West / Midwest / South
+D-1-1,D-1-1: D-1-1,Climate policy / Tax system / Societal issues / Economic issues
+D-1-2,D-1-2: D-1-2,Economic issues / Climate policy / Societal issues / Tax system
+D-1-3,D-1-3: D-1-3,Tax system / Societal issues / Economic issues / Climate policy
+D-1-4,D-1-4: D-1-4,Societal issues / Climate policy / Economic issues / Tax system
+D-1-1-1,,climate3 / NA / soc2 / econ3 / soc3 / tax1 / - / climate1 / econ2 / soc1 / econ1 / econ4
+D-1-1-2,,econ3 / - / climate1 / soc3 / tax1 / NA / soc2 / econ1 / econ4 / climate3 / econ2 / soc1
+D-1-1-3,,tax1 / soc3 / econ2 / NA / climate3 / econ4 / - / soc2 / econ3 / soc1 / climate1 / econ1
+D-1-1-4,,- / NA / econ3 / climate1 / econ1 / econ4 / tax1 / climate3 / econ2 / soc2 / soc3 / soc1
+D-1-2-1,,"NA / - / econ4 / soc2 / tax1 / soc1 / soc3 / econ1 / climate1 / econ3 / climate3"
+D-1-2-2,,econ1 / econ4 / climate1 / soc3 / tax1 / NA / - / climate3 / econ2 / econ3 / soc1 / soc2
+D-1-2-3,,tax1 / soc2 / econ2 / climate3 / - / NA / climate1 / econ4 / econ3 / soc3 / soc1
+D-1-2-4,,soc3 / climate3 / econ4 / climate1 / econ3 / soc1 / NA / econ2 / tax1 / - / econ1
+F-1-1,,society_issues / climate_pol / tax_system / econ_issues / foreign_policy
+F-1-2,,climate_pol / tax_system / econ_issues / foreign_policy / society_issues
+F-1-3,,tax_system / foreign_policy / econ_issues / society_issues / climate_pol
+F-1-4,,econ_issues / society_issues / tax_system / climate_pol / foreign_policy
+F-1-5,,foreign_policy / econ_issues / society_issues / tax_system / climate_pol
+F-1-1-1,,[string variable]
+F-1-1-2,,[string variable]
+F-1-1-3,,[string variable]
+F-1-1-4,,[string variable]
+F-1-1-5,,[string variable]
+F-1-2-1,,[string variable]
+F-1-2-2,,[string variable]
+F-1-2-3,,[string variable]
+F-1-2-4,,[string variable]
+F-1-2-5,,[string variable]
+click_details,click_details: click_details,1
+language,language: Q_Language,EN
+qvc,qvc: qvc,97189_357ae033
+qvq,qvq: qvq,97189
+qvq1,qvq1: qvq1,97189
+qvq2,qvq2: qvq2,97189
+qvs,qvs: qvs,97189
+ID,ID: m,[string variable]
+order_268,order_268: Global Climate Scheme (incl. list experiment) - Display Order - Q268,9 / NA
+order_258,order_258: Global Climate Scheme (incl. list experiment) - Display Order - Q258,1
+order_269,order_269: Global Climate Scheme (incl. list experiment) - Display Order - Q269,"NA / 9"
+order_259,order_259: Global Climate Scheme (incl. list experiment) - Display Order - Q259,2
+order_264,order_264: Global Climate Scheme (incl. list experiment) - Display Order - Q264,6
+order_265,order_265: Global Climate Scheme (incl. list experiment) - Display Order - Q265,8
+order_266,order_266: Global Climate Scheme (incl. list experiment) - Display Order - Q266,"NA / 9"
+order_267,order_267: Global Climate Scheme (incl. list experiment) - Display Order - Q267,"NA / 9"
+order_54,order_54: Global Climate Scheme (incl. list experiment) - Display Order - Q54,4
+order_261,order_261: Global Climate Scheme (incl. list experiment) - Display Order - Q261,3
+order_262,order_262: Global Climate Scheme (incl. list experiment) - Display Order - Q262,5
+order_57,order_57: Global Climate Scheme (incl. list experiment) - Display Order - Q57,10
+order_263,order_263: Global Climate Scheme (incl. list experiment) - Display Order - Q263,7
+order_conjoint_280,"order_conjoint_280: Conjoint analysis (a, b) - Display Order - Q280","NA / 3 / 4"
+order_conjoint_281,"order_conjoint_281: Conjoint analysis (a, b) - Display Order - Q281","NA / 3 / 4"
+order_conjoint_47,"order_conjoint_47: Conjoint analysis (a, b) - Display Order - Q47",2 / 3
+order_conjoint_277,"order_conjoint_277: Conjoint analysis (a, b) - Display Order - Q277",1 / 2
+order_conjoint_60,"order_conjoint_60: Conjoint analysis (a, b) - Display Order - Q60",4 / 1
+order_conjoint_61,"order_conjoint_61: Conjoint analysis (a, b) - Display Order - Q61",5
+order_conjoint_282,"order_conjoint_282: Conjoint analysis (a, b) - Display Order - Q282","NA / 3 / 4"
+order_conjoint_283,"order_conjoint_283: Conjoint analysis (a, b) - Display Order - Q283",3 / NA / 4
+order_conjoint_58,order_conjoint_58: Conjoint analysis (c) - Display Order - Q58,"NA / 1"
+order_conjoint_284,order_conjoint_284: Conjoint analysis (c) - Display Order - Q284,"NA / 1 / 2"
+order_conjoint_285,order_conjoint_285: Conjoint analysis (c) - Display Order - Q285,1 / NA / 2
+order_conjoint_62,order_conjoint_62: Donation lottery - Display Order - Q62,"NA"
+order_conjoint_275,order_conjoint_275: Donation lottery - Display Order - Q275,"NA"
+order_conjoint_276,order_conjoint_276: Donation lottery - Display Order - Q276,"NA"
+order_conjoint_270,order_conjoint_270: Petition - Display Order - Q270,1 / NA
+order_conjoint_271,order_conjoint_271: Petition - Display Order - Q271,"NA / 1"
+branch_petition,branch_petition: gcs/nr Whether the petition question is on the global climate scheme or national redistribution.,gcs / nr
+petition,petition: Yes/No Willing to sign a petition on gcs/nr (depends on branch_petition).,PNR: -0.1 / No: 0 / Yes: 1
+attentive,,TRUE / FALSE
+country_name,,United States
+country,,US
+age,age_exact: How old are you?,18-24: 21.5 / 25-34: 30 / 35-49: 42.5 / 50-64: 57.5 / 65+: 71
+race,race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08,White only / Other / Black / Hispanic
+income_original,"income: What is the annual gross income of your household (before taxes)?
+
+This includes all income: wages, self-employment earnings, Social Security benefits, pensions, investment income, welfare payments, and income from other sources.","between $42,001 and $50,000 / between $103,001 and $130,000 / between $20,001 and $35,000 / between $65,001 and $82,000 / between $35,001 and $42,000 / between $165,000 and $250,000 / less than $20,000 / between $145,001 and $165,000 / between $82,001 and $103,000 / between $130,001 and $145,000 / between $50,001 and $65,000 / I prefer not to answer"
+income_decile,"income_decile: [1-10] Decile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9
+income_quartile,"income_quartile: [1-4] Quartile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4
+income_factor,"income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4
+urbanity,"urbanity: 1: Cities / 2: Towns and suburbs / 3: Rural. Computed from the zipcode. For EU, equals urban_category; for the U.S., urbanity = 1; 2; 3 (resp.) corresponds to urban_category = 1; 2 or 3; 4.",Cities: 1 / Towns and suburbs: 2 / Rural: 3
+urban,urban: T/F urban_category == 1: Cities (EU) or Core metropolitan (US).,TRUE / FALSE / NA
+education_original,education: What is the highest level of education you have completed?,"Bachelor's degree (for example: BA, BS) / Regular high school diploma/GED or alternative credential / 2-year college degree or associates degree (for example: AA, AS) / Some college, no degree / Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD) / Some high school / Eigth grade"
+diploma,"diploma: 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.",Below upper secondary: 1 / Upper secondary: 2 / Post secondary: 3
+diploma_25_64,"diploma_25_64: 0: Not 25-64 if age is not within 25-64 (missing value) / 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.",Not 25-64: 0 / Below upper secondary: 1 / Upper secondary: 2 / Post secondary: 3
+employment_agg,,Not working / Retired / Student / Working
+inactive,,TRUE / FALSE
+employment,"employment: T/F/NA indicator that the respondent is employed (employment_agg == Working), NA if s-he is above 65.",TRUE / FALSE / NA
+wealth,wealth: Quintile of wealth (from wealth_couple and wealth_single).,PNR: 0 / Q1: 1 / Q2: 2 / Q3: 3 / Q4: 4 / Q5: 5
+owner,owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?,TRUE / FALSE
+branch_list_exp,"branch_list_exp: i/ir/gr/igr Variant of the list experiment faced, where i denotes coal exit (US) or the buildings' insulation plan (EU), r the national redistribution, and g the global climate scheme. Marriage only for opposite-sex couples (US) and death penalty for major crimes (EU) were also systematically included.",l / rl / rgl
+branch_list_exp_g,branch_list_exp_g: T/F g (global climate scheme) is present in the list experiment.,TRUE / FALSE
+branch_list_exp_r,branch_list_exp_r: T/F r (national redistribution) is present in the list experiment.,TRUE / FALSE
+list_exp,"list_exp: [0-4] Number of supported policies in the list experiment (combining all branches, cf. branch_list_exp and variables_list_exp).",0 / 1 / 2 / 3 / 4
+gcs_win_lose_original,gcs_win_lose: Who would win or lose financially in the Global climate scheme?,Typical Americans would lose and the 700 million poorest humans would win. / Typical Americans would win and the 700 million poorest humans would lose. / Typical Americans would lose and the 700 million poorest humans would lose. / Typical Americans would win and the 700 million poorest humans would win.
+nr_win_lose_original,nr_win_lose: Who would win or lose financially in the National redistribution scheme?,Typical Americans would win and the richest Americans would lose. / Typical Americans would lose and the richest Americans would win. / Typical Americans would win and the richest Americans would win. / Typical Americans would lose and the richest Americans would lose.
+both_win_lose_original,"both_win_lose: If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical American be financially affected?",A typical American would lose out financially. / A typical American would neither gain nor lose. / A typical American would gain financially.
+nr_understood,"nr_understood: T/F Correct answer to nr_win_lose (in national redistribution, typical people win, richest lose).",TRUE / FALSE
+gcs_understood,"gcs_understood: T/F Correct answer to gcs_win_lose (in global climate scheme, typical high-income win, 700M poorest lose).",TRUE / FALSE
+both_understood,"both_understood: T/F Correct answer to both_win_lose (in national redistribution + global climate scheme combined, typical people in high-income countries are unaffected).",TRUE / FALSE
+score_understood,score_understood: [0-3] Number correct answers to understanding questions (nr/gcs/both_understood).,0 / 1 / 2 / 3
+z_score_understood,z_score_understood: Normalized score_understood.,-1.483 / -0.446 / 0.591 / 1.627
+conjoint_a,"conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir.",TRUE / FALSE
+conjoint_b,"conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle.",TRUE / FALSE
+branch_conjoint_b,branch_conjoint_b: ir_gr/r_igr/gr_r/ir_r Random branch faced by the respondent in conjoint analysis (b).,rc_r / cr_gr / rg_r / r_rcg
+conjoint_c,conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE / NA
+branch_conjoint_c,"branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'",leftg_right / NA / left_right
+conjoint_d,"conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
+branch_b_gcs,"branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE
+conjoint_b_na,"conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE / NA
+branch_c_gcs,"branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'.",TRUE / FALSE
+conjoint_r_type,conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b,Both / None / B / A
+conjoint_r,"conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
+F-1-1_original,F-1-1: F-1-1,Societal issues / Climate policy / Tax system / Economic issues / Foreign policy
+F-1-2_original,F-1-2: F-1-2,Climate policy / Tax system / Economic issues / Foreign policy / Societal issues
+F-1-3_original,F-1-3: F-1-3,Tax system / Foreign policy / Economic issues / Societal issues / Climate policy
+F-1-4_original,F-1-4: F-1-4,Economic issues / Societal issues / Tax system / Climate policy / Foreign policy
+F-1-5_original,F-1-5: F-1-5,Foreign policy / Economic issues / Societal issues / Tax system / Climate policy
+F-1-1-1_original,F-1-1-1: F-1-1-1,[string variable]
+F-1-1-2_original,F-1-1-2: F-1-1-2,[string variable]
+F-1-1-3_original,F-1-1-3: F-1-1-3,[string variable]
+F-1-1-4_original,F-1-1-4: F-1-1-4,[string variable]
+F-1-1-5_original,F-1-1-5: F-1-1-5,[string variable]
+F-1-2-1_original,F-1-2-1: F-1-2-1,[string variable]
+F-1-2-2_original,F-1-2-2: F-1-2-2,[string variable]
+F-1-2-3_original,F-1-2-3: F-1-2-3,[string variable]
+F-1-2-4_original,F-1-2-4: F-1-2-4,[string variable]
+F-1-2-5_original,F-1-2-5: F-1-2-5,[string variable]
+D-1-1-1_original,D-1-1-1: D-1-1-1,Ban the sale of new combustion-engine cars by 2030 / Wealth tax AND National redistribution scheme / Handgun ban / Universal childcare/pre-K / Making abortion a right at the federal level / National redistribution scheme / - / Coal exit / $15 minimum wage / Trillion dollar investment in transportation infrastructure and building insulation / Expanding the Supreme Court / Student loan forgiveness / Funding affordable housing
+D-1-1-2_original,D-1-1-2: D-1-1-2,Universal childcare/pre-K / - / Coal exit / Making abortion a right at the federal level / National redistribution scheme / Wealth tax AND National redistribution scheme / Trillion dollar investment in transportation infrastructure and building insulation / Handgun ban / Student loan forgiveness / Funding affordable housing / Ban the sale of new combustion-engine cars by 2030 / $15 minimum wage / Expanding the Supreme Court
+D-1-1-3_original,D-1-1-3: D-1-1-3,National redistribution scheme / Making abortion a right at the federal level / $15 minimum wage / Trillion dollar investment in transportation infrastructure and building insulation / Ban the sale of new combustion-engine cars by 2030 / Funding affordable housing / - / Wealth tax AND National redistribution scheme / Handgun ban / Universal childcare/pre-K / Expanding the Supreme Court / Coal exit / Student loan forgiveness
+D-1-1-4_original,D-1-1-4: D-1-1-4,- / Trillion dollar investment in transportation infrastructure and building insulation / Universal childcare/pre-K / Coal exit / Student loan forgiveness / Funding affordable housing / National redistribution scheme / Wealth tax AND National redistribution scheme / Ban the sale of new combustion-engine cars by 2030 / $15 minimum wage / Handgun ban / Making abortion a right at the federal level / Expanding the Supreme Court
+D-1-2-1_original,D-1-2-1: D-1-2-1,Trillion dollar investment in transportation infrastructure and building insulation / Wealth tax AND National redistribution scheme / - / Funding affordable housing / Handgun ban / National redistribution scheme / Expanding the Supreme Court / Making abortion a right at the federal level / Student loan forgiveness / Coal exit / Universal childcare/pre-K / Ban the sale of new combustion-engine cars by 2030
+D-1-2-2_original,D-1-2-2: D-1-2-2,Student loan forgiveness / Funding affordable housing / Coal exit / Making abortion a right at the federal level / National redistribution scheme / Wealth tax AND National redistribution scheme / - / Ban the sale of new combustion-engine cars by 2030 / Trillion dollar investment in transportation infrastructure and building insulation / $15 minimum wage / Universal childcare/pre-K / Expanding the Supreme Court / Handgun ban
+D-1-2-3_original,D-1-2-3: D-1-2-3,National redistribution scheme / Handgun ban / $15 minimum wage / Ban the sale of new combustion-engine cars by 2030 / - / Wealth tax AND National redistribution scheme / Coal exit / Funding affordable housing / Universal childcare/pre-K / Making abortion a right at the federal level / Trillion dollar investment in transportation infrastructure and building insulation / Expanding the Supreme Court
+D-1-2-4_original,D-1-2-4: D-1-2-4,Making abortion a right at the federal level / Ban the sale of new combustion-engine cars by 2030 / Funding affordable housing / Coal exit / Universal childcare/pre-K / Expanding the Supreme Court / Trillion dollar investment in transportation infrastructure and building insulation / Wealth tax AND National redistribution scheme / $15 minimum wage / National redistribution scheme / - / Student loan forgiveness
+conjoint_r_wrong_level,,TRUE / FALSE
+conjoint_r_number,"conjoint_r_number: 1/2/NA (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican. NA if question not asked or there is some unrecognized level (conjoint_r_wrong_level == T).",1 / 2
+vote,"vote: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.",Biden / Hawkins / Prefer not to say / Trump / Jorgensen
+vote_agg,"vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than 5% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters.",Biden / Other / Prefer not to say / Trump
+voted,voted: Has voted in last election: Yes to vote_participation.,TRUE / FALSE
+survey_biased_yes,survey_biased_yes: T/F Finds the survey biased (survey_biased != No),TRUE / FALSE
+survey_biased_left,"survey_biased_left: T/F Finds the survey left-wing biased (survey_biased == Yes, left)",TRUE / FALSE
+survey_biased_right,"survey_biased_right: T/F Finds the survey right-wing biased (survey_biased == Yes, right)",TRUE / FALSE
+petition_matches_support,petition_matches_support: T/F The answer to the petition coincides with the answer to the support (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE
+petition_yes_support_no,petition_yes_support_no: T/F Willing to sign the petition but does not support (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE
+petition_no_support_yes,petition_no_support_yes: T/F Not willing to sign the petition but supports (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE
+conjoint_a_matches_support,conjoint_a_matches_support: T/F The answer to conjoint analysis (a) (irg vs. ir) corresponds to the answer to the support of GCS.,TRUE / FALSE
+conjoint_a_irg_support_no,conjoint_a_irg_support_no: T/F Prefers irg to ir in conjoint analysis (a) but does not support GCS.,TRUE / FALSE
+conjoint_a_ir_support_yes,conjoint_a_ir_support_yes: T/F Prefers ir to irg in conjoint analysis (a) but supports GCS.,TRUE / FALSE
+share_policies_supported,share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent.,0 / 0.333 / 0.667 / 1
+spread_problem,spread_problem: Spread between max and min value in the respondent's answers to the matrix problem,0 / 2
+all_same_problem,all_same_problem: T/F Indicator that all answers to the matrix problem are identical.,TRUE / FALSE
+mean_spread,mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: problem). -Inf indicates that all answers were NA.,0 / 2
+share_all_same,mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: problem).,0 / 1
+wrong_language,wrong_language: T/F The language does not correspond to the respondent's country (including Spanish in the U.S.).,TRUE / FALSE
+number_same_ip,number_same_ip: Number of respondents with the same IP.,1
+duplicate_ip,duplicate_ip: T/F The respondent's IP is used by other respondents.,TRUE / FALSE
+n,,[string variable]
+valid,valid: Respondents that has not been screened out due to speed or failure to the attention test.,TRUE / FALSE
+dropout,dropout: Respondent who did not complete the survey though was not excluded.,TRUE / FALSE
+finished_attentive,finished_attentive: Respondent completed the survey and did not fail the attention test.,TRUE / FALSE
+NA,NA,NA
+NA,NA,NA
+NA,NA,NA

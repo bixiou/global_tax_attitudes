@@ -248,7 +248,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|foreign_aid|_tax_", names(e))]
   variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
   variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
-  variables_support_binary <<- c("gcs_support", "nr_support", "support_igr", "global_tax_sharing")
+  variables_support_binary <<- c("gcs_support", "nr_support", "support_cgr", "global_tax_sharing")
   variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
   variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition', names(e))]
   variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
@@ -267,8 +267,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_foreign_aid_condition <<- names(e)[grepl('foreign_aid_condition', names(e))]
   
   variables_conjoint <<- names(e)[grepl('conjoint_', names(e)) & !grepl("order|duration", names(e))]
-  variables_conjoint_a <<- c("conjoint_irg_ir")
-  variables_conjoint_b <<- c("conjoint_ir_gr", "conjoint_r_igr", "conjoint_gr_r", "conjoint_ir_r")
+  variables_conjoint_a <<- c("conjoint_crg_cr")
+  variables_conjoint_b <<- c("conjoint_cr_gr", "conjoint_r_rcg", "conjoint_rg_r", "conjoint_rc_r")
   variables_conjoint_c <<- c("conjoint_left_right", "conjoint_leftg_right")
   variables_conjoint_d <<- c("conjoint_left_a_b", "conjoint_left_ag_b")
   variables_conjoint_attr <<- paste0("F-1-", 1:5)
@@ -408,22 +408,20 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
   
   if (only_finished) {
-    if ("list_exp_igr" %in% names(e)) {
-      e$branch_list_exp[!is.na(e$list_exp_i)] <- "i"
-      e$branch_list_exp[!is.na(e$list_exp_igr)] <- "igr"
-      e$branch_list_exp[!is.na(e$list_exp_gr)] <- "gr"
-      e$branch_list_exp[!is.na(e$list_exp_ir)] <- "ir"
-      if (wave == "pilot" & country != "US2") e$list_exp_ir[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")] <- e$list_exp_gr[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")]
-      if (wave == "pilot" & country != "US2") e$list_exp_gr[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")] <- NA
-      if (wave == "pilot" & country != "US2") e$branch_list_exp[e$branch_list_exp == "gr" & e$country %in% c("US", "FR", "UK")] <- "ir"
+    if ("list_exp_rgl" %in% names(e)) {
+      e$branch_list_exp[!is.na(e$list_exp_l)] <- "l"
+      e$branch_list_exp[!is.na(e$list_exp_rgl)] <- "rgl"
+      e$branch_list_exp[!is.na(e$list_exp_gl)] <- "gl"
+      e$branch_list_exp[!is.na(e$list_exp_rl)] <- "rl"
+      if (wave == "pilot" & country != "US2") e$list_exp_rl[e$branch_list_exp == "gl" & e$country %in% c("US", "FR", "UK")] <- e$list_exp_gl[e$branch_list_exp == "gl" & e$country %in% c("US", "FR", "UK")]
+      if (wave == "pilot" & country != "US2") e$list_exp_gl[e$branch_list_exp == "gl" & e$country %in% c("US", "FR", "UK")] <- NA
+      if (wave == "pilot" & country != "US2") e$branch_list_exp[e$branch_list_exp == "gl" & e$country %in% c("US", "FR", "UK")] <- "rl"
       label(e$branch_list_exp) <- "branch_list_exp: i/ir/gr/igr Variant of the list experiment faced, where i denotes coal exit (US) or the buildings' insulation plan (EU), r the national redistribution, and g the global climate scheme. Marriage only for opposite-sex couples (US) and death penalty for major crimes (EU) were also systematically included."
       e$branch_list_exp_g <- grepl("g", e$branch_list_exp)
       e$branch_list_exp_r <- grepl("r", e$branch_list_exp)
-      e$branch_list_exp_i <- grepl("i", e$branch_list_exp)
       label(e$branch_list_exp_r) <- "branch_list_exp_r: T/F r (national redistribution) is present in the list experiment."
       label(e$branch_list_exp_g) <- "branch_list_exp_g: T/F g (global climate scheme) is present in the list experiment."
-      label(e$branch_list_exp_i) <- "branch_list_exp_i: T/F i (coal exit (US) / thermal insulation plan (EU)) is present in the list experiment."
-      for (v in c("i", "ir", "gr", "igr")) e$list_exp[e$branch_list_exp == v] <- e[[paste0("list_exp_", v)]][e$branch_list_exp == v]
+      for (v in c("l", "rl", "gl", "rgl")) e$list_exp[e$branch_list_exp == v] <- e[[paste0("list_exp_", v)]][e$branch_list_exp == v]
       label(e$list_exp) <- "list_exp: [0-4] Number of supported policies in the list experiment (combining all branches, cf. branch_list_exp and variables_list_exp)."
     }
     
@@ -528,7 +526,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       if (v %in% variables_conjoint_c) e$conjoint_c[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "Left" #conjoint_position_g[v]
       if (v %in% variables_conjoint_c) e$branch_conjoint_c[!is.na(e[[v]])] <- sub("conjoint_", "", v)
       if (v %in% "conjoint_left_ag_b") e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == conjoint_position_g[v]
-      if (v == "conjoint_ir_r") e$conjoint_b[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
+      if (v == "conjoint_rc_r") e$conjoint_b[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
     }
     if ("conjoint_a" %in% names(e)) {
       label(e$branch_conjoint_b) <- "branch_conjoint_b: ir_gr/r_igr/gr_r/ir_r Random branch faced by the respondent in conjoint analysis (b)."
@@ -542,10 +540,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
       label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
       e$branch_b_gcs <- grepl("g", e$branch_conjoint_b)
-      label(e$branch_b_gcs) <- "branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_ir_r'."
+      label(e$branch_b_gcs) <- "branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_rc_r'."
       e$conjoint_b_na <- e$conjoint_b
       e$conjoint_b_na[e$branch_b_gcs == FALSE] <- NA
-      label(e$conjoint_b_na) <- "conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_ir_r'."
+      label(e$conjoint_b_na) <- "conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_rc_r'."
       e$branch_c_gcs <- grepl("g_", e$branch_conjoint_c)
       label(e$branch_c_gcs) <- "branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'."
       e$conjoint_r_type <- "None"
@@ -703,3 +701,8 @@ e <- ep <- merge(usp, eup, all = T)
 eupa <- prepare(country = "EU", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 us1pa <- prepare(country = "US1", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 us2pa <- prepare(country = "US2", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+
+export_codebook(us1p, "../data/codebook_us1p.csv", stata = FALSE, omit = which(names(us1p) %in% c("list_exp_gl", "donation_nation", "donation_africa")))
+export_codebook(us2p, "../data/codebook_us2p.csv", stata = FALSE)
+export_codebook(eup, "../data/codebook_eup.csv", stata = FALSE)
+export_codebook(eup, "../data/codebook_ep.csv", stata = FALSE)

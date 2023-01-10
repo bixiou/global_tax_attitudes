@@ -3,13 +3,11 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO conjoint, list exp change letters
-# TODO conjoint analysis (d)
+# TODO! weights
 # TODO ETS2, wealth limit "for each human"
 # TODO US/EU: remove PNR wealth (5%) or exclude, put back email, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
-# TODO weights
 
 ##### Duration #####
 print(paste0(round(100*sum(us1pa$finished == 1 & is.na(us1pa$excluded), na.rm = T)/sum(us1pa$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1p")) # 100%
@@ -101,12 +99,12 @@ decrit("number_same_ip", data = e)
 # 'positive' gives the share of positive answers and 'majority' the share of positive answers among non-indifferent.
 datasummary(eval(str2expression(paste(paste(c(variables_support, "petition_gcs", "petition_nr"), collapse = ' + '), " ~ positive + majority + majority * country"))), data = e, fmt = 0, output = "markdown")
 majority(e$climate_mitigation_support)
-decrit("support_igr", data = e)
+decrit("support_cgr", data = e)
 decrit("gcs_support", data = e)
 decrit("nr_support", data = e)
 CrossTable(e$gcs_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 CrossTable(e$nr_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
-CrossTable(e$support_igr, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
+CrossTable(e$support_cgr, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 decrit("climate_compensation_support", data = e)
 decrit("climate_mitigation_support", data = e)
 decrit("climate_adaptation_support", data = e)
@@ -131,7 +129,7 @@ decrit("gcs_support", data = e)
 decrit("gcs_belief", data = e) 
 decrit("petition_gcs", data = e)
 decrit("points_foreign1_gcs", data = e)
-decrit("support_igr", data = e)
+decrit("support_cgr", data = e)
 decrit("branch_gcs_perception", data = e)
 decrit("gcs_important_limit_CC", data = e) #
 decrit("gcs_important_hurt_economy", data = e)
@@ -174,19 +172,20 @@ decrit("petition_no_support_yes", data = e)
 
 ##### List experiment #####
 decrit("branch_list_exp", data = e)
-decrit("list_exp_ir", data = e) 
-decrit("list_exp_gr", data = e) 
-decrit("list_exp_igr", data = e)
-decrit("list_exp_i", data = e)
-mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # 67%
-mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) # 67%
-mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 74%
-mean(e$list_exp_igr, na.rm = T) - mean(e$list_exp_gr, na.rm = T) # 92%
-mean(e$gcs_support[e$branch_list_exp == "igr"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "igr"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 79%
-mean(e$list_exp_ir, na.rm = T) - mean(e$list_exp_i, na.rm = T) # 57%
-mean(e$nr_support[e$branch_list_exp == "ir"], na.rm = T) # 53%
-mean(e$list_exp_gr, na.rm = T) - mean(e$list_exp_ir, na.rm = T) # -26%
-summary(lm(list_exp ~ (branch_list_exp == "gr") + (branch_list_exp == "i") + (branch_list_exp == "igr"), data = e))
+decrit("list_exp_rl", data = e) # ir
+decrit("list_exp_gl", data = e) # gr
+decrit("list_exp_rgl", data = e) # igr
+decrit("list_exp_l", data = e) # i
+mean(e$list_exp_rgl, na.rm = T) - mean(e$list_exp_rl, na.rm = T) # 67%
+mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) # 67%
+mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "rgl"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "rl"], na.rm = T) # 74%
+mean(e$list_exp_rgl, na.rm = T) - mean(e$list_exp_gl, na.rm = T) # 92%
+mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "rgl"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "rl"], na.rm = T) # 79%
+mean(e$list_exp_rl, na.rm = T) - mean(e$list_exp_l, na.rm = T) # 57%
+mean(e$nr_support[e$branch_list_exp == "rl"], na.rm = T) # 53%
+mean(e$list_exp_gl, na.rm = T) - mean(e$list_exp_rl, na.rm = T) # -26%
+summary(lm(list_exp ~ branch_list_exp_r * branch_list_exp_r, data = e))
+summary(lm(list_exp ~ (branch_list_exp == "gl") + (branch_list_exp == "l") + (branch_list_exp == "rgl"), data = e))
 # Done: switched to i, r, ir, gr, igr
 # 1 nr_support: ir - i / igr - ig / gr - g => nr - n
 # 2 gcs_support: igr - ir / gr - r / ig - i => ng - n
@@ -209,18 +208,18 @@ summary(lm(list_exp ~ (branch_list_exp == "gr") + (branch_list_exp == "i") + (br
 ##### Conjoint analysis #####
 # a
 decrit("conjoint_a", data = e)
-decrit("conjoint_irg_ir", data = e)
+decrit("conjoint_crg_cr", data = e)
 decrit("conjoint_a_matches_support", data = e) # 84%
 decrit("conjoint_a_irg_support_no", data = e) 
 decrit("conjoint_a_ir_support_yes", data = e) 
 # b
 decrit("conjoint_b", data = e) # TODO?
 decrit("conjoint_b_na", data = e)
-decrit("conjoint_ir_gr", data = e)
+decrit("conjoint_cr_gr", data = e)
 decrit("gcs_support", data = e, which = e$branch_conjoint_b == "ir_gr")
-decrit("conjoint_r_igr", data = e)
-decrit("conjoint_gr_r", data = e)
-decrit("conjoint_ir_r", data = e)
+decrit("conjoint_r_rcg", data = e)
+decrit("conjoint_rg_r", data = e)
+decrit("conjoint_rc_r", data = e)
 decrit("branch_conjoint_b", data = e)
 # summary(lm(conjoint_b ~ branch_conjoint_b, data = e))
 # c

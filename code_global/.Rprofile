@@ -251,35 +251,35 @@ decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FA
       else describe(variable[variable!="" & !is.missing(variable)], weights = weights[variable!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
     } else describe(variable[variable!=""], weights = weights[variable!=""])  }
 }
-#' Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TRUE, concatenate = FALSE) {
-#'   if (values) {
-#'     if (length(variable)==1 & is.character(variable)) variable <- data[[variable]]
-#'     if (length(annotation(variable))==1 & !is.null(labels(variable))) Levs <- as.character(labels(variable)) 
-#'     else if (is.factor(variable)) Levs <- levels(variable)
-#'     else if (is.numeric(variable)) { 
-#'       if (length(unique(variable)) > 13) {
-#'         Levs <- round(c(min(variable, na.rm = T), max(variable, na.rm = T)), 3)
-#'         names(Levs) <- c("min", "max") 
-#'       } else Levs <- round(sort(unique(variable)), 3) }
-#'     else if (is.character(variable)) Levs <- if (length(unique(variable)) > 13) "[string variable]" else as.character(unique(variable))
-#'     else if (is.logical(variable)) Levs <- if (any(is.pnr(variable))) "TRUE / FALSE / NA" else "TRUE / FALSE"
-#'     if (concatenate) {
-#'       if (is.null(names(Levs))) Levs <- paste(Levs, collapse = " / ")
-#'       else Levs <- paste(sapply(1:length(Levs), function(i) return(paste0(names(Levs)[i], ": ", Levs[i]))), collapse = " / ")
-#'     }
-#'   } else {
-#'     Levs <- decrit(variable, miss = miss, numbers = numbers, data = data)$values$value
-#'     if (is.null(Levs)) {
-#'       if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
-#'       Levs <- unique(variable)
-#'       if (concatenate) Levs <- paste(Levs, collapse = " / ") } }
-#'   return(Levs)
-#'   # if (is.character(var) & length(var)==1) var <- data[[var]]
-#'   # if (length(annotation(var))>0) { # works but cubmbersome and doesn't allow to get rid of missings
-#'   #   if (is.character(var)) levels(as.factor(include.missings(var)))
-#'   #   else return(as.vector(labels(var))) }
-#'   # else return(levels(as.factor(var))) # as.factor may cause issues as it converts to string
-#' }
+Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TRUE, concatenate = FALSE) {
+  if (values) {
+    if (length(variable)==1 & is.character(variable)) variable <- data[[variable]]
+    if (length(annotation(variable))==1 & !is.null(labels(variable))) Levs <- as.character(labels(variable))
+    else if (is.factor(variable)) Levs <- levels(variable)
+    else if (is.numeric(variable)) {
+      if (length(unique(variable)) > 13) {
+        Levs <- round(c(min(variable, na.rm = T), max(variable, na.rm = T)), 3)
+        names(Levs) <- c("min", "max")
+      } else Levs <- round(sort(unique(variable)), 3) }
+    else if (is.character(variable)) Levs <- if (length(unique(variable)) > 13) "[string variable]" else as.character(unique(variable))
+    else if (is.logical(variable)) Levs <- if (any(is.pnr(variable))) "TRUE / FALSE / NA" else "TRUE / FALSE"
+    if (concatenate) {
+      if (is.null(names(Levs))) Levs <- paste(Levs, collapse = " / ")
+      else Levs <- paste(sapply(1:length(Levs), function(i) return(paste0(names(Levs)[i], ": ", Levs[i]))), collapse = " / ")
+    }
+  } else {
+    Levs <- decrit(variable, miss = miss, numbers = numbers, data = data)$values$value
+    if (is.null(Levs)) {
+      if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
+      Levs <- unique(variable)
+      if (concatenate) Levs <- paste(Levs, collapse = " / ") } }
+  return(Levs)
+  # if (is.character(var) & length(var)==1) var <- data[[var]]
+  # if (length(annotation(var))>0) { # works but cubmbersome and doesn't allow to get rid of missings
+  #   if (is.character(var)) levels(as.factor(include.missings(var)))
+  #   else return(as.vector(labels(var))) }
+  # else return(levels(as.factor(var))) # as.factor may cause issues as it converts to string
+}
 #' # decrit <- function(variable, miss = FALSE, weights = NULL, numbers = FALSE, data = e, which = NULL, weight = T) {
 #' #   # if (!missing(data)) variable <- data[[variable]]
 #' #   if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
@@ -338,40 +338,41 @@ decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FA
 #' #       else describe(variable[variable!="" & !is.missing(variable)], weights = weights[variable!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
 #' #     } else describe(variable[variable!=""], weights = weights[variable!=""])  }
 #' # }
-#' export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, dta_file = NULL, csv_file = NULL, rds_file = NULL, keep = NULL, omit = NULL, folder = "../data/") {
-#'   if (missing(keep)) keep <- 1:length(data)
-#'   if (!missing(omit)) keep <- setdiff(keep, omit)
-#'   
-#'   if (stata) {
-#'     data_stata <- janitor::clean_names(eval(data))
-#'     names_stata <- c()
-#'     for (i in seq_along(names(data_stata))) {
-#'       names_stata[i] <- ifelse(nchar(names(data_stata)[i]) < 33, names(data_stata)[i], paste(substr(names(data_stata)[i], 1, 27), i, sep = "_"))
-#'       # Shorten string values
-#'       if (is.character(data_stata[[i]]) && any(nchar(data_stata[[i]]) > 127, na.rm = T)) data_stata[[i]] <- substr(data_stata[[i]], 1, 128) }
-#'     names(data_stata) <- names_stata
-#'     if (!missing(dta_file)) {
-#'       # attr(data_stata, "label.table") <- list()
-#'       # attr(data_stata, "val.labels") <- c()
-#'       # attr(data_stata, "label") <- "data.frame"
-#'       # for (i in seq_along(names(data))) {
-#'       #   if (length(annotation(data[[i]]))==1) { # This is supposed to export value labels in Stata but it doesn't seem to work, because it relies on write.dta (note write_dta), which is deprecated
-#'       #     attr(data_stata, "label.table") <- c(attr(data_stata, "label.table"), list(Levels(data[[i]])))
-#'       #     attr(data_stata, "val.labels") <- c(attr(data_stata, "val.labels"), names_stata[i]) }
-#'       # }
-#'       haven::write_dta(data_stata[,keep], paste0(folder, dta_file, ".dta"))
-#'     }
-#'     if (!missing(csv_file)) write.csv(data_stata[,keep], paste0(folder, csv_file, ".csv"))
-#'     if (!missing(rds_file)) saveRDS(data_stata[,keep], file = paste0(folder, rds_file, ".rds"))
-#'     
-#'     codebook <- data.frame(names(data), names_stata, sapply(names(data), function(n) return(Label(data[[n]]))), sapply(names(data), function(n) { Levels(data[[n]], concatenate = T) } ))
-#'     names(codebook) <- c("Variable", "Variable Stata", "Label", "Levels")
-#'   } else {
-#'     codebook <- data.frame(names(data), sapply(names(data), function(n) return(Label(data[[n]]))), sapply(names(data), function(n) { Levels(data[[n]], concatenate = T) } ))
-#'     names(codebook) <- c("Variable", "Label", "Levels")
-#'   }
-#'   write_csv(codebook[keep,], file)
-#' }
+export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, dta_file = NULL, csv_file = NULL, rds_file = NULL, keep = NULL, omit = NULL, folder = "../data/") {
+  if (missing(keep)) keep <- 1:length(data)
+  if (!missing(omit)) keep <- setdiff(keep, omit)
+
+  if (stata) {
+    data_stata <- janitor::clean_names(eval(data))
+    names_stata <- c()
+    for (i in seq_along(names(data_stata))) {
+      names_stata[i] <- ifelse(nchar(names(data_stata)[i]) < 33, names(data_stata)[i], paste(substr(names(data_stata)[i], 1, 27), i, sep = "_"))
+      # Shorten string values
+      if (is.character(data_stata[[i]]) && any(nchar(data_stata[[i]]) > 127, na.rm = T)) data_stata[[i]] <- substr(data_stata[[i]], 1, 128) }
+    names(data_stata) <- names_stata
+    if (!missing(dta_file)) {
+      # attr(data_stata, "label.table") <- list()
+      # attr(data_stata, "val.labels") <- c()
+      # attr(data_stata, "label") <- "data.frame"
+      # for (i in seq_along(names(data))) {
+      #   if (length(annotation(data[[i]]))==1) { # This is supposed to export value labels in Stata but it doesn't seem to work, because it relies on write.dta (note write_dta), which is deprecated
+      #     attr(data_stata, "label.table") <- c(attr(data_stata, "label.table"), list(Levels(data[[i]])))
+      #     attr(data_stata, "val.labels") <- c(attr(data_stata, "val.labels"), names_stata[i]) }
+      # }
+      haven::write_dta(data_stata[,keep], paste0(folder, dta_file, ".dta"))
+    }
+    if (!missing(csv_file)) write.csv(data_stata[,keep], paste0(folder, csv_file, ".csv"))
+    if (!missing(rds_file)) saveRDS(data_stata[,keep], file = paste0(folder, rds_file, ".rds"))
+
+    codebook <- data.frame(names(data), names_stata, sapply(names(data), function(n) return(Label(data[[n]]))), sapply(names(data), function(n) { Levels(data[[n]], concatenate = T) } ))
+    names(codebook) <- c("Variable", "Variable Stata", "Label", "Levels")
+  } else { 
+    data <- data[, keep]
+    codebook <- data.frame(names(data), sapply(names(data), function(n) return(Label(data[[n]]))), sapply(names(data), function(n) { Levels(data[[n]], concatenate = T) } ))
+    names(codebook) <- c("Variable", "Label", "Levels")
+  }
+  write_csv(codebook[keep,], file)
+}
 #' export_stats_desc <- function(data, file, miss = TRUE, sorted_by_n = FALSE, return = FALSE, fill_extern = FALSE) {
 #'   original_width <- getOption("width")
 #'   options(width = 10000)

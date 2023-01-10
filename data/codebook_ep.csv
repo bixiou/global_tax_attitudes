@@ -1,0 +1,1078 @@
+Variable,Label,Levels
+date,date: Start Date,[string variable]
+date_end,date_end: End Date,[string variable]
+status_response,status_response: Response Type,IP Address
+ip,ip: IP Address,[string variable]
+progress,progress: Progress,100
+time,time: Duration (in seconds),[string variable]
+terminated,terminated: Finished,True
+date_recored,date_recored: Recorded Date,[string variable]
+ID_qualtrics,ID_qualtrics: Response ID,[string variable]
+name,name: Recipient Last Name,"NA"
+firstname,firstname: Recipient First Name,"NA"
+mmail,mmail: Recipient Email,"NA"
+ref,ref: External Data Reference,"NA"
+lat,lat: Location Latitude,[string variable]
+long,long: Location Longitude,[string variable]
+distr,distr: Distribution Channel,anonymous
+lang,lang: User Language,EN-GB / FR / DE / ES-ES
+consent,"consent: Welcome to this survey!
+
+
+
+This survey is anonymous and is conducted for research purposes on a representative sample of 1000 British people.
+
+ 
+It takes around 20 min to complete.
+
+ 
+
+The survey contains lotteries and awards for those who get the correct answer to some understanding questions.
+
+If you are attentive and lucky, you can win up to £250 in Amazon vouchers. (See terms and conditions).
+ 
+
+Please answer every question carefully.
+
+ 
+
+Do you agree to participate in the survey?",1 / Yes
+gender,gender: What is your gender?,Woman / Man
+age_exact,age_exact: How old are you?,< 18: 16.5 / 18-20: 19.5 / 21-24: 23 / 25-29: 27.5 / 30-34: 32.5 / 35-39: 37.5 / 40-44: 42.5 / 45-49: 47.5 / 50-54: 52.5 / 55-59: 57.5 / 60-64: 62.5 / 65-69: 67.5 / 70-74: 72.5 / 75-79: 77.5 / 80-84: 82.5 / 85-89: 87.5 / 90-99: 95 / 100+: 101
+country,,ES / UK / FR / DE
+couple,couple: Do you live with your partner (if you have one)?,PNR: -0.1 / No: 0 / Yes: 1
+hh_size,"hh_size: How many people are in your household? 
+The household includes: you, the members of your family who live with you, and your dependents.",1 / 2 / 3 / 4 / 5
+zipcode,zipcode: How many children below 14 live with you?,0 / 1 / 2 / 3 / 4
+Nb_children__14,Nb_children__14: What is your Outcode (the left part of your postcode)?,min: 0 / max: 98574
+income,"income: What is the monthly income of your household after taxes and transfers?
+
+This includes all income: salaries, pensions, allowances, property income, etc.",between £251 and £300 / between £301 and £400 / between £401 and £500 / between £201 and £250 / more than £900 / between £101 and £200 / between £601 and £700 / between £751 and £800 / less than £100 / between £801 and £900 / between £701 and £750 / between £501 and £600
+education,"education: What is the highest level of education you have completed? /! For EU, the values don't correspond to the responses. To see the correspondence between values and responses in each country, cf. specificities.xlsx$Education",3.3 / 6 / 4-5 / 3.1 / 3.2 / 7-8 / 2 / 0-1
+employment_status,employment_status: What is your employment status?,Full-time employed / Retired / Student / Part-time employed / Self-employed / Inactive / Unemployed
+home_tenant,home_tenant: Are you a homeowner or a tenant? (Multiple answers are possible) - Tenant,TRUE / FALSE
+home_owner,home_owner: Are you a homeowner or a tenant? (Multiple answers are possible) - Owner,TRUE / FALSE
+home_landlord,home_landlord: Are you a homeowner or a tenant? (Multiple answers are possible) - Landlord renting out property,TRUE / FALSE
+home_hosted,home_hosted: Are you a homeowner or a tenant? (Multiple answers are possible) - Hosted free of charge,TRUE / FALSE
+wealth_couple,"wealth_couple: What is the estimated value of your household's assets (in £)? (note that you don't have to answer that question.)
+
+ 
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth £300,000 and you have £100,000 left to repay on your mortgage, your assets are £200,000.
+
+ 
+I estimate my household's assets net of debt to be:","Between $4,000 and $120,000 / Less than $0 (I have a net debt) / Close to $0 / NA / More than $380,000 / Between $120,000 and $380,000"
+wealth_single,"wealth_single: What
+is the estimated value of your assets (in £)? (note that you don't have to answer that question.)
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth £300,000 and you have £100,000 left to repay on your mortgage, your assets are £200,000.
+I estimate my assets net of debt to be:","NA / Between $4,000 and $60,000 / Close to $0 / Less than $0 (I have a net debt) / More than $190,000 / Between $60,000 and $190,000"
+Q116_First,Q116_First: Timing - First Click,[string variable]
+Q116_Last,Q116_Last: Timing - Last Click,[string variable]
+duration_gcs,duration_gcs: Timing - Page Submit,min: 0.001 / max: 0.122
+Q116_Click,Q116_Click: Timing - Click Count,[string variable]
+gcs_win_lose,gcs_win_lose: Who would win or lose financially in the Global climate scheme?Three respondents with the expected answer will get £50 in Amazon vouchers.,"Typical lose, poorest win / Typical win, poorest lose / Typical win, poorest win / Typical lose, poorest lose"
+Q115_First,Q115_First: Timing - First Click,[string variable]
+Q115_Last,Q115_Last: Timing - Last Click,[string variable]
+duration_nr,duration_nr: Timing - Page Submit,min: 0.03 / max: 4.325
+Q115_Click,Q115_Click: Timing - Click Count,[string variable]
+nr_win_lose,nr_win_lose: Who would win or lose financially in the National redistribution scheme?Three respondents with the expected answer will get £50 in Amazon vouchers.,"Typical lose, richest win / Typical win, richest lose / Typical win, richest win / Typical lose, richest lose"
+Q114_First,Q114_First: Timing - First Click,[string variable]
+Q114_Last,Q114_Last: Timing - Last Click,[string variable]
+duration_both,duration_both: Timing - Page Submit,min: 0.03 / max: 10.717
+Q114_Click,Q114_Click: Timing - Click Count,[string variable]
+both_win_lose,"both_win_lose: If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical British person be financially affected?
+Three respondents with the expected answer will get £50 in Amazon vouchers.",Lose / Unaffected / Win
+Q10_First,Q10_First: Timing - First Click,[string variable]
+Q10_Last,Q10_Last: Timing - Last Click,[string variable]
+Q10_Click,Q10_Click: Timing - Click Count,[string variable]
+gcs_support,gcs_support: Do you support the Global climate scheme?,PNR: -0.1 / No: 0 / Yes: 1
+gcs_belief,"gcs_belief: According to you, what percentage of British people answer Yes to the previous question?
+
+You can win up to £50 in Amazon vouchers if you are close enough to the truth. - Percentage of Americans in favor of Global climate scheme",min: 0 / max: 100
+nr_support,nr_support: Do you support the National redistribution scheme?,PNR: -0.1 / No: 0 / Yes: 1
+nr_belief,"nr_belief: According to you, what percentage of British people answer Yes to the previous question?
+
+You can win up to £50 in Amazon vouchers if you are close enough to the truth. - Percentage of Americans in favor of National redistribution",min: 0 / max: 100
+list_exp_gl,"list_exp_gl: Beware, this question is quite unusual.
+
+Among the policies below, how many do you support?
+
+	Global climate scheme
+	Insulation plan
+	Death penalty for major crimes",0 / 1 / 2 / 3
+list_exp_rgl,"list_exp_rgl: Beware, this question is quite unusual.
+
+Among the policies below, how many do you support?
+
+	National redistribution scheme
+	Global climate scheme
+	Insulation plan
+	Death penalty for major crimes",0 / 1 / 2 / 3 / 4
+list_exp_l,"list_exp_l: Beware, this question is quite unusual.
+
+Among the policies below, how many do you support?
+
+	Insulation plan
+	Death penalty for major crimes",0 / 1 / 2
+list_exp_rl,"list_exp_rl: Beware, this question is quite unusual.
+
+Among the policies below, how many do you support?
+
+	National redistribution scheme
+	Insulation plan
+	Death penalty for major crimes",0 / 1 / 2 / 3
+Q61_First ,Q61_First : Timing - First Click,[string variable]
+Q61_Last,Q61_Last: Timing - Last Click,[string variable]
+duration_conjoint_a,duration_conjoint_a: Timing - Page Submit,min: 0.058 / max: 12.321
+Q61_Click ,Q61_Click : Timing - Click Count,[string variable]
+conjoint_crg_cr,"conjoint_crg_cr: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   Insulation plan
+   Insulation plan
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Global climate scheme",A / B
+support_cgr,"support_cgr: Do you support Bundle A (combining the Insulation plan, the National redistribution scheme, and the Global climate scheme)?",PNR: -0.1 / No: 0 / Yes: 1
+Q60_First,Q60_First: Timing - First Click,[string variable]
+Q60_Last,Q60_Last: Timing - Last Click,[string variable]
+duration_conjoint_b,duration_conjoint_b: Timing - Page Submit,min: 0.058 / max: 12.321
+Q60_Click,Q60_Click: Timing - Click Count,[string variable]
+conjoint_cr_gr,"conjoint_cr_gr: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   Insulation plan
+   Global climate scheme
+  
+  
+   National redistribution scheme
+   National redistribution scheme","NA / A / B"
+conjoint_r_rcg,"conjoint_r_rcg: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   
+   Insulation plan
+  
+  
+   
+   Global climate scheme","NA / A / B"
+conjoint_rg_r,"conjoint_rg_r: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Global climate scheme","NA / A / B"
+conjoint_rc_r,"conjoint_rc_r: Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Insulation plan",A / NA / B
+Q58_First,Q58_First: Timing - First Click,[string variable]
+Q58_Last,Q58_Last: Timing - Last Click,[string variable]
+duration_conjoint_c,duration_conjoint_c: Timing - Page Submit,min: 0.037 / max: 2.065
+Q58_Click,Q58_Click: Timing - Click Count,[string variable]
+conjoint_left_right,"conjoint_left_right: Imagine if the two favorite candidates in your constituency in the next general election campaigned with the following policies in their party's platforms.
+
+
+
+Which of these candidates would you vote for? 
+
+ 
+  
+   Candidate A
+   Candidate B
+  
+  
+   Windfall tax on oil companies
+   Cut the burden of tax on business
+  
+  
+   Ban the sale of new combustion-engine cars by 2030
+   £100 billion for infrastructures like road and rail
+  
+  
+   £150 billion to upgrade schools, hospitals, care homes and council houses
+   Tougher sentencing for the worst offenders and 10,000 more prison places
+  
+  
+   National redistribution scheme
+   Strict enforcement of immigration and border legislation","NA / Right / Left / None"
+conjoint_leftg_right,"conjoint_leftg_right: Imagine if the two favorite candidates in your constituency in the next general election campaigned with the following policies in their party's platforms.
+
+
+
+Which of these candidates would you vote for? 
+
+ 
+  
+   Candidate A
+   Candidate B
+  
+  
+   Windfall tax on oil companies
+   Cut the burden of tax on business
+  
+  
+   Ban the sale of new combustion-engine cars by 2030
+   £100 billion for infrastructures like road and rail
+  
+  
+   £150 billion to upgrade schools, hospitals, care homes and council houses
+   Tougher sentencing for the worst offenders and 10,000 more prison places
+  
+  
+   National redistribution scheme
+   Strict enforcement of immigration and border legislation
+  
+  
+   Global climate scheme","NA / Right / Left / None"
+Q59_First,Q59_First: Timing - First Click,[string variable]
+Q59_Last,Q59_Last: Timing - Last Click,[string variable]
+duration_gcs_perception,duration_gcs_perception: Timing - Page Submit,min: 0.016 / max: 6.965
+Q59_Click,Q59_Click: Timing - Click Count,[string variable]
+gcs_important_limit_CC,"gcs_important_limit_CC: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would succeed in limiting climate change.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_hurt_economy,"gcs_important_hurt_economy: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would hurt the U.S. economy.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_hurt_me,"gcs_important_hurt_me: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would penalize my household.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_change_lifestyles,"gcs_important_change_lifestyles: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would make people change their lifestyle.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_reduce_poverty,"gcs_important_reduce_poverty: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would reduce poverty in low-income countries.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_hurt_poor,"gcs_important_hurt_poor: When determining your support or opposition to the Global climate scheme, which points are important to you? - It might be detrimental to some poor countries.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_foster_cooperation,"gcs_important_foster_cooperation: When determining your support or opposition to the Global climate scheme, which points are important to you? - It could foster global cooperation.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_fuel_corruption,"gcs_important_fuel_corruption: When determining your support or opposition to the Global climate scheme, which points are important to you? - It could fuel corruption in low-income countries.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_fuel_fraud,"gcs_important_fuel_fraud: When determining your support or opposition to the Global climate scheme, which points are important to you? - It could be subject to fraud.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_difficult_enact,"gcs_important_difficult_enact: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would be technically difficult to put in place.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_important_having_info,"gcs_important_having_info: When determining your support or opposition to the Global climate scheme, which points are important to you? - I don't have enough information on this scheme and its consequences.",Not at all: -2 / Not so: -1 / Quite: 1 / Very: 2
+gcs_field,"gcs_field: When thinking about the Global climate scheme, what comes to your mind?
+
+Please list pros and cons of the Global climate scheme.",[string variable]
+attention_test,"attention_test: To show that you are attentive, please select ""A little"" in the following list:",A little / NA / A lot
+donation_nation,"donation_nation: By taking this survey, you are automatically entered into a lottery to win £100 in Amazon vouchers. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery.
+
+
+ 
+
+Should you be selected in the lottery, you can donate a part of this additional compensation to British people living in poverty through a charity. We would channel this donation to a charity that provides small amounts of cash to people in need in the UK.
+
+ 
+In case you are winner of the lottery, what share of the £100 would you donate to British people living in poverty? - Amount donated to American people in need (in $)",min: 0 / max: 100
+donation_africa,"donation_africa: By taking this survey, you are automatically entered into a lottery to win £100 in Amazon vouchers. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery.
+
+
+ 
+
+Should you be selected in the lottery, you can donate a part of this additional compensation to African people living in poverty through a charity. We would channel this donation to a charity that provides small amounts of cash to people in need in Africa.
+
+ 
+In case you are winner of the lottery, what share of the £100 would you donate to African people living in poverty? - Amount donated to African people in need (in $)",min: 0 / max: 100
+global_tax_support,"global_tax_support: Do you support or oppose a tax on millionaires of all countries to finance low-income countries?
+
+This would finance infrastructure and public services such as access to drinking water, healthcare, and education.",Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+national_tax_support,national_tax_support: Do you support or oppose a tax on millionaires in the UK to increase the budget of the National Health Service and state-funded schools?,Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+global_tax_global_share,"global_tax_global_share: Imagine a wealth tax applying on households with net worth above £5 million, enacted in all countries around the world.
+
+In the UK, the tax revenues collected would be £20 billion per year (that is, 0.7% of UK GDP), while it would be $1 billion in all low-income countries taken together (700 million people live in a low-income country, most of them in Africa).
+
+Each country would retain part of the revenues it collects, and the remaining part would be pooled at the global level to finance infrastructure and public services in low-income countries.
+
+ 
+
+What percentage should be pooled to finance low-income countries (instead of retained in the country's national budget)? - Percent of wealth tax that should go to low-income countries",0 / 10 / 20 / 30 / 40 / 50 / 60 / 70 / 80
+global_tax_sharing,global_tax_sharing: T/F/NA Prefers to allocate half of global wealth tax to low-income countries rather than keeping all in collector country's national budgets. NA if the question is not asked (cf. branch_global_tax).,PNR: -0.1 / No: 0 / Yes: 1
+foreign_aid_belief,"foreign_aid_belief: To the best of your guess, what percentage of the British government's spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?
+
+
+
+For information, government spending totals 41% of UK GDP, it includes national and local government spending, and apart from foreign aid, it covers the following items: defense, social security (retirement pensions), health (the NHS), welfare benefits, education, roads, justice, and other programs.",< 0.1%: 0 / 0.1 to 0.2: 0.15 / 0.3 to 0.5: 0.4 / 0.6 to 1: 0.8 / 1.1 to 1.7: 1.4 / 1.8 to 2.6: 2.2 / 2.7 to 4: 3.35 / 4.1 to 6: 5 / 6.1 to 9: 7.5 / 9.1 to 13: 11 / 13.1 to 25: 19 / > 25%: 30
+foreign_aid_preferred_no_info,"foreign_aid_preferred_no_info: If you could choose the government spending, what percentage would you allocate to foreign aid?",< 0.1%: 0 / 0.1 to 0.2: 0.15 / 0.3 to 0.5: 0.4 / 0.6 to 1: 0.8 / 1.1 to 1.7: 1.4 / 1.8 to 2.6: 2.2 / 2.7 to 4: 3.35 / 4.1 to 6: 5 / 6.1 to 9: 7.5 / 9.1 to 13: 11 / 13.1 to 25: 19 / > 25%: 30
+foreign_aid_preferred_info,"foreign_aid_preferred_info: Actually, 1.7% of the UK government spending is allocated to foreign aid.
+
+
+
+If you could choose the government spending, what percentage would you allocate to foreign aid?",< 0.1%: 0 / 0.1 to 0.2: 0.15 / 0.3 to 0.5: 0.4 / 0.6 to 1: 0.8 / 1.1 to 1.7: 1.4 / 1.8 to 2.6: 2.2 / 2.7 to 4: 3.35 / 4.1 to 6: 5 / 6.1 to 9: 7.5 / 9.1 to 13: 11 / 13.1 to 25: 19 / > 25%: 30
+foreign_aid_raise_how_defense,"foreign_aid_raise_how_defense: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on defense",TRUE / FALSE
+foreign_aid_raise_how_pensions,"foreign_aid_raise_how_pensions: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on retirement pensions",TRUE / FALSE
+foreign_aid_raise_how_healthcare,"foreign_aid_raise_how_healthcare: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on healthcare (Medicare and Medicaid)",TRUE / FALSE
+foreign_aid_raise_how_welfare,"foreign_aid_raise_how_welfare: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on welfare benefits (like EITC or food stamps)",TRUE / FALSE
+foreign_aid_raise_how_education,"foreign_aid_raise_how_education: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on education",TRUE / FALSE
+foreign_aid_raise_how_other,"foreign_aid_raise_how_other: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on other programs and federal agencies","NA / Lower spending on other programs and federal agencies"
+foreign_aid_raise_how_wealthy,"foreign_aid_raise_how_wealthy: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher taxes on the wealthiest",TRUE / FALSE
+foreign_aid_raise_how_corporations,"foreign_aid_raise_how_corporations: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher corporate income tax rate",TRUE / FALSE
+foreign_aid_raise_how_income_tax,"foreign_aid_raise_how_income_tax: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher personal income tax rates",TRUE / FALSE
+foreign_aid_raise_how_deficit,"foreign_aid_raise_how_deficit: Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher public deficit",TRUE / FALSE
+foreign_aid_reduce_how_defense,"foreign_aid_reduce_how_defense: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on defense",TRUE / FALSE
+foreign_aid_reduce_how_pensions,"foreign_aid_reduce_how_pensions: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on retirement pensions",TRUE / FALSE
+foreign_aid_reduce_how_healthcare,"foreign_aid_reduce_how_healthcare: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on healthcare (Medicare and Medicaid)",TRUE / FALSE
+foreign_aid_reduce_how_welfare,"foreign_aid_reduce_how_welfare: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on welfare benefits (like EITC or food stamps)",TRUE / FALSE
+foreign_aid_reduce_how_education,"foreign_aid_reduce_how_education: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on education",TRUE / FALSE
+foreign_aid_reduce_how_other,"foreign_aid_reduce_how_other: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on other programs and federal agencies","NA / Higher spending on other programs and federal agencies"
+foreign_aid_reduce_how_wealthy,"foreign_aid_reduce_how_wealthy: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower taxes on the wealthiest",TRUE / FALSE
+foreign_aid_reduce_how_corporations,"foreign_aid_reduce_how_corporations: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower corporate income tax rate",TRUE / FALSE
+foreign_aid_reduce_how_income_tax,"foreign_aid_reduce_how_income_tax: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower personal income tax rates",TRUE / FALSE
+foreign_aid_reduce_how_deficit,"foreign_aid_reduce_how_deficit: Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower public deficit",TRUE / FALSE
+Q102_First,Q102_First: Timing - First Click,[string variable]
+Q102_Last,Q102_Last: Timing - Last Click,[string variable]
+duration_other_policies,duration_other_policies: Timing - Page Submit,min: 0.152 / max: 20.081
+Q102_Click,Q102_Click: Timing - Click Count,[string variable]
+negotiation,"negotiation: In international climate negotiations, would you prefer British diplomats to defend British  interests or global justice?",U.S. interests / Global justice
+climate_compensation_support,"climate_compensation_support: The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - Payments from high-income countries to compensate low-income countries for climate damages",Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+climate_mitigation_support,"climate_mitigation_support: The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - High-income countries funding renewable energy in low-income countries",Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+climate_adaptation_support,"climate_adaptation_support: The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - High-income countries contributing $100 billion per year to help low-income countries adapt to climate change",Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+debt_cancellation_support,debt_cancellation_support: Do you support or oppose the following global policies? - Cancellation of low-income countries' public debt,Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+democratise_un_imf_support,"democratise_un_imf_support: Do you support or oppose the following global policies? - Democratise international institutions (UN, IMF) by making a country's voting right proportional to its population",Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+remove_tariffs_support,remove_tariffs_support: Do you support or oppose the following global policies? - Removing tariffs on imports from low-income countries,Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+global_min_wage_support,global_min_wage_support: Do you support or oppose the following global policies? - A minimum wage in all countries at 50% of local median wage,Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+global_register_support,global_register_support: Do you support or oppose the following global policies? - Fight tax evasion by creating a global financial register to record ownership of all assets,Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+cap_wealth_support,cap_wealth_support: Do you support or oppose the following global policies? - A maximum wealth limit of $100 million,Strongly oppose: -2 / Somewhat oppose: -1 / Indifferent: 0 / Somewhat support: 1 / Strongly support: 2
+foreign_aid_raise_support,"foreign_aid_raise_support: Currently, 1.7% of UK government spending (that is, 0.7% of UK GDP) is spent on foreign aid to reduce poverty in low-income countries.
+
+
+
+Do you support the UK transferring more money to low-income countries?","Yes, but only if some conditions are met. / No, U.S. foreign aid should remain stable. / Yes, U.S. foreign aid should be increased. / No, U.S. foreign aid should be reduced."
+foreign_aid_condition_human_rights,foreign_aid_condition_human_rights: What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That recipient countries comply with climate targets and human rights.,TRUE / FALSE
+foreign_aid_condition_fight_migration,foreign_aid_condition_fight_migration: What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That recipient countries cooperate to fight illegal migrations.,TRUE / FALSE
+foreign_aid_condition_all_high_income,foreign_aid_condition_all_high_income: What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That other high-income countries also increase their foreign aid.,TRUE / FALSE
+foreign_aid_condition_tax_rich,foreign_aid_condition_tax_rich: What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That this is financed by increased taxes on millionaires.,TRUE / FALSE
+foreign_aid_condition_no_diversion,foreign_aid_condition_no_diversion: What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That we can be sure the aid reaches people in need and money is not diverted.,TRUE / FALSE
+foreign_aid_condition_other_choice,foreign_aid_condition_other_choice: What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - Other:,TRUE / FALSE
+foreign_aid_condition_other,foreign_aid_condition_other: What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Other: - Text,"NA"
+foreign_aid_no_ineffective,foreign_aid_no_ineffective: Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid perpetuates poverty as it makes people feel less responsible for themselves.,TRUE / FALSE
+foreign_aid_no_diversion,foreign_aid_no_diversion: Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid is not effective as most of it is diverted.,TRUE / FALSE
+foreign_aid_no_pressure,foreign_aid_no_pressure: Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid is a pressure tactic for high-income countries that prevents low-income countries from developing freely.,TRUE / FALSE
+foreign_aid_no_not_our_role,foreign_aid_no_not_our_role: Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - The U.S. is not responsible for what happens in other countries.,TRUE / FALSE
+foreign_aid_no_nation_first,foreign_aid_no_nation_first: Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Charity begins at home: there is already a lot to do to support the American people in need.,TRUE / FALSE
+foreign_aid_no_other_choice,foreign_aid_no_other_choice: Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Other:,TRUE / FALSE
+foreign_aid_no_other,foreign_aid_no_other: Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Other: - Text,"NA / Que chacun prenne ses responsabilités."
+petition_gcs,"petition_gcs: Would you be willing to sign a petition for the Global climate scheme?
+
+ 
+
+As soon as the survey is complete, we will send the results to the Prime Minister's office, informing him what share of British people are willing to endorse the Global climate scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)",PNR: -0.1 / No: 0 / Yes: 1
+petition_nr,"petition_nr: Would you be willing to sign a petition for the National redistribution scheme?
+ 
+
+As soon as the survey is complete, we will send the results to the Prime Minister's office, informing him what share of British people are willing to endorse the National redistribution scheme scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)",PNR: -0.1 / No: 0 / Yes: 1
+donation_charities,donation_charities: How much did you give to charities in 2022?,"Between $101 and $500. / Between $501 and $1,000. / I did not make donations to charities last year. / Less than $100. / Between $1,001 and $5,000. / More than $5,000."
+interested_politics,interested_politics: To what extent are you interested in politics?,A lot / Moderately / Not at all / A little / A great deal
+involvement_govt,"involvement_govt: Where would you rate yourself on a scale of 1 to 5, where 1 means you think the government should do only those things necessary to provide the most basic government functions, and 5 means you think the government should take active steps in every area it can to try and improve the lives of its citizens? - Desired involvement of government",3 / 2 / 4 / 5 / 1
+left_right,"left_right: On economic policy matters, where do you see yourself on a scale from 1 to 5, where 1 is Left (favoring equality and government interventions) and 5 is Right (favoring free competition and little government intervention)? - Left (1) to Right (5) on economic issues",3 / 2 / 4 / 5 / 1
+vote_participation,vote_participation: Did you vote in the 2019 UK general election?,Yes / No right to vote / No / Prefer not to say
+vote_fr_voters,vote_fr_voters: Which candidate did you vote for in the 2022 French presidential election election?,"NA / Préfère ne pas le dire / Marine Le Pen / Jean-Luc Mélenchon / Emmanuel Macron / Yannick Jadot / Éric Zemmour / Nicolas Dupont-Aignan / Fabien Roussel / Anne Hidalgo"
+vote_fr_non_voters,"vote_fr_non_voters: Even if you did not vote in the 2022 French presidential election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.","NA / Nicolas Dupont-Aignan / Préfère ne pas le dire / Anne Hidalgo / Valérie Pécresse / Emmanuel Macron / Jean-Luc Mélenchon / Philippe Poutou"
+vote_de_voters,vote_de_voters: Which candidate did you vote for in the 2021 German federal election election?,"NA / SPD / CDU/CSU / Grüne / Ich möchte das nicht beantworten / AfD / Sonstige / Die Linke / Freie Wähler"
+vote_de_non_voters,"vote_de_non_voters: Even if you did not vote in the 2021 German federal election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.","NA / SPD / Tierschutzpartei"
+vote_es_voters,vote_es_voters: Which candidate did you vote for in the last Spanish general election of November 2019?,Vox / NA / PP / PSOE / Otro / Ciudadanos / Prefiero no decirlo / JxCat–Junts / Unidas Podemos
+vote_es_non_voters,"vote_es_non_voters: Even if you did not vote in the last Spanish general election of November 2019, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.","NA / PP / Prefiero no decirlo / Partido Animalista (PACMA) / PSOE / Otro / Unidas Podemos"
+vote_uk_voters,vote_uk_voters: Which candidate did you vote for in the 2019 UK general election election?,"NA / Liberal Democrats / Labour / Other / Conservative / SNP / Green / DUP / Sinn Féin / Prefer not to say"
+vote_uk_non_voters,"vote_uk_non_voters: Even if you did not vote in the 2019 UK general election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.","NA / Labour / Conservative / Liberal Democrats / Prefer not to say"
+problem_inequality,problem_inequality: To what extent do you think the following issues are a problem? - Income inequality in the U.S.,"Not an issue: -2 / Not a priority: -1 / Already addressed: 0 / Important, should do more: 1 / Most pressing issue: 2"
+problem_climate,problem_climate: To what extent do you think the following issues are a problem? - Climate change,"Not an issue: -2 / Not a priority: -1 / Already addressed: 0 / Important, should do more: 1 / Most pressing issue: 2"
+problem_poverty,problem_poverty: To what extent do you think the following issues are a problem? - Global poverty,"Not an issue: -2 / Not a priority: -1 / Already addressed: 0 / Important, should do more: 1 / Most pressing issue: 2"
+group_defended,group_defended: What group do you defend when you vote?,Humans / My relatives and/or colleagues / People sharing my culture or religion / Americans / My family and myself / Sentient beings (humans and animals) / My State / My town
+Q104_First,Q104_First: Timing - First Click,[string variable]
+Q104_Last,Q104_Last: Timing - Last Click,[string variable]
+duration_conjoint_d,duration_conjoint_d: Timing - Page Submit,min: 0.036 / max: 11.62
+Q64_First,Q64_First: Timing - Click Count,[string variable]
+conjoint_left_a_b,"conjoint_left_a_b: Imagine that a Left or Center-left coalition wins the next elections. Here are two possible platforms on which the coalition may campaign (the policies in each platform are randomly drawn from a pool of credible Left/Center-left policies).
+
+ Even if you do not support the Left, which of these platforms do you prefer?
+
+
+
+
+
+
+
+
+ 
+
+    Candidate A
+    
+    Candidate B
+
+
+[Field-F-1-1]
+[Field-F-1-1-1]
+[Field-F-1-2-1]
+
+[Field-F-1-2]
+[Field-F-1-1-2]
+[Field-F-1-2-2]
+
+[Field-F-1-3]
+[Field-F-1-1-3]
+[Field-F-1-2-3]
+
+[Field-F-1-4]
+[Field-F-1-1-4]
+[Field-F-1-2-4]
+
+[Field-F-1-5]
+[Field-F-1-1-5]
+[Field-F-1-2-5]",A / B
+conjoint_left_ag_b,"conjoint_left_ag_b: Imagine that a Left or Center-left coalition wins the next elections. Here are two possible platforms on which the coalition may campaign (the policies in each platform are randomly drawn from a pool of credible Left/Center-left policies).
+
+ Even if you do not support the Left, which of these platforms do you prefer?
+
+
+
+
+
+
+
+
+ 
+
+Candidate A
+
+Candidate B
+
+
+[Field-D-1-1]
+[Field-D-1-1-1]
+[Field-D-1-2-1]
+
+[Field-D-1-2]
+[Field-D-1-1-2]
+[Field-D-1-2-2]
+
+[Field-D-1-3]
+[Field-D-1-1-3]
+[Field-D-1-2-3]
+
+[Field-D-1-4]
+[Field-D-1-1-4]
+[Field-D-1-2-4]
+
+    Foreign policy
+    Global climate scheme
+    -",A / B
+Q64_Last,Q64_Last: Timing - Last Click,[string variable]
+duration_points,duration_points: Timing - Page Submit,min: 0.105 / max: 5.793
+Q64_Click,Q64_Click: Timing - Click Count,[string variable]
+points_econ1,"points_econ1: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - econ1",min: 0 / max: 75
+points_econ2,"points_econ2: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - econ2",min: 0 / max: 80
+points_econ3,"points_econ3: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - econ3",min: 0 / max: 100
+points_econ4,"points_econ4: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - econ4",min: 0 / max: 83
+points_soc1,"points_soc1: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - soc1",min: 0 / max: 100
+points_soc2,"points_soc2: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - soc2",min: 0 / max: 100
+points_climate1,"points_climate1: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - climate1",min: 0 / max: 100
+points_climate2,"points_climate2: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - climate2",min: 0 / max: 100
+points_climate3,"points_climate3: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - climate3",min: 0 / max: 70
+points_tax1_nr,"points_tax1_nr: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - tax1",min: 0 / max: 100
+points_tax2_wealth_tax,"points_tax2_wealth_tax: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - tax2",min: 0 / max: 100
+points_foreign1_gcs,"points_foreign1_gcs: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - foreign1",min: 0 / max: 100
+points_foreign2_tax_rich,"points_foreign2_tax_rich: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - foreign2",min: 0 / max: 80
+points_foreign3_assembly,"points_foreign3_assembly: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - foreign3",min: 0 / max: 100
+points_foreign4_aid,"points_foreign4_aid: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - foreign4",min: 0 / max: 100
+points_order_econ1,"points_order_econ1: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - econ1",2 / 1 / 4 / NA / 5 / 6 / 3
+points_order_econ2,"points_order_econ2: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - econ2",3 / 8 / NA / 4 / 5 / 2 / 1 / 6
+points_order_econ3,"points_order_econ3: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - econ3",8 / 14 / NA / 2 / 3 / 6 / 5 / 1 / 4
+points_order_econ4,"points_order_econ4: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - econ4",4 / 11 / NA / 3 / 1 / 6 / 5 / 2
+points_order_soc1,"points_order_soc1: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - soc1",6 / 3 / NA / 5 / 1 / 4 / 2
+points_order_soc2,"points_order_soc2: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - soc2",9 / 7 / 3 / NA / 6 / 2 / 5 / 1 / 4
+points_order_climate1,"points_order_climate1: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - climate1",12 / 10 / NA / 1 / 2 / 6 / 5 / 3 / 4
+points_order_climate2,"points_order_climate2: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - climate2",11 / 13 / NA / 1 / 4 / 5 / 3 / 6 / 2
+points_order_climate3,"points_order_climate3: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - climate3",5 / 2 / NA / 3 / 4 / 1 / 6
+points_order_tax1_nr,"points_order_tax1_nr: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - tax1",13 / 6 / 1 / 4 / 2 / NA / 5 / 3
+points_order_tax2_wealth_tax,"points_order_tax2_wealth_tax: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - tax2",15 / 5 / NA / 2 / 1 / 3 / 6 / 4
+points_order_foreign1_gcs,"points_order_foreign1_gcs: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - foreign1",1 / 4 / NA / 6 / 5 / 2 / 3
+points_order_foreign2_tax_rich,"points_order_foreign2_tax_rich: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - foreign2",10 / 12 / 2 / 6 / NA / 3 / 4 / 5 / 1
+points_order_foreign3_assembly,"points_order_foreign3_assembly: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - foreign3",14 / 9 / NA / 5 / 6 / 3 / 4 / 1 / 2
+points_order_foreign4_aid,"points_order_foreign4_aid: Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - foreign4",7 / 5 / 6 / NA / 4 / 2 / 1 / 3
+Q103_First,Q103_First: Timing - First Click,[string variable]
+Q103_Last,Q103_Last: Timing - Last Click,[string variable]
+duration_feedback,duration_feedback: Timing - Page Submit,min: 0.043 / max: 3.177
+Q103_Click,Q103_Click: Timing - Click Count,[string variable]
+survey_biased,,"No / Yes, left / Yes, right"
+comment_field,"comment_field: The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below.",[string variable]
+interview,"interview: Lastly, are you interested to be interviewed by a researcher (through videoconferencing) for 30 min?
+
+This is totally optional and will not be rewarded.","NA / Yes / No"
+finished,finished: Finished,1
+excluded,excluded: Q_TerminateFlag,"NA"
+duration,duration: Q_TotalDuration,min: 2.917 / max: 8580.633
+click_reminder,click_reminder: click_reminder,"NA / 1"
+urban_category,"urban_category: [1-4] Computed from the zipcode. NA indicates an unrecognized zipcode. For FR/DE/ES, Eurostat's degree of urbanization (1: Cities, 2: Towns and suburbs, 3: Rural). For the UK we use another classification that tends to classify zipcodes as more rural than Eurostat (cf. zipcodes.R). For the US, recoded from RUCA codes (1: Metropolitan core (RUCA 1, 73% pop), 2: Metro non-core (2-3), 3: Micropolitan or Small town (< 50k, 4-9), 4: Rural (10)).",1 / 2 / 3
+region,region: region,"NA"
+D-1-1,D-1-1: D-1-1,[string variable]
+D-1-2,D-1-2: D-1-2,[string variable]
+D-1-3,D-1-3: D-1-3,[string variable]
+D-1-4,D-1-4: D-1-4,[string variable]
+D-1-1-1,,- / NA / soc1 / climate2 / soc2 / econ2 / climate3 / tax1 / econ1 / econ4 / econ3 / climate1
+D-1-1-2,,econ4 / - / econ1 / tax1 / soc1 / econ2 / climate2 / soc2 / econ3 / NA / climate1 / climate3
+D-1-1-3,,"NA / econ1 / - / climate3 / climate1 / tax1 / soc1 / econ3 / econ4 / climate2 / soc2 / econ2"
+D-1-1-4,,"NA / tax1 / econ3 / - / soc2 / econ2 / econ4 / climate3 / econ1 / climate1 / soc1 / climate2"
+D-1-2-1,,soc1 / NA / - / climate3 / soc2 / tax1 / econ2 / climate2 / econ3 / climate1 / econ1 / econ4
+D-1-2-2,,econ1 / soc2 / econ3 / - / NA / econ4 / climate2 / econ2 / soc1 / tax1 / climate3 / climate1
+D-1-2-3,,- / econ3 / econ2 / NA / climate3 / tax1 / climate1 / soc1 / soc2 / econ1 / econ4 / climate2
+D-1-2-4,,"NA / tax1 / econ3 / econ2 / climate3 / soc2 / - / climate2 / econ4 / econ1 / soc1 / climate1"
+F-1-1,,"NA / foreign_policy / tax_system / society_issues / climate_pol / econ_issues"
+F-1-2,,climate_pol / foreign_policy / tax_system / society_issues / econ_issues / NA
+F-1-3,,"NA / tax_system / climate_pol / foreign_policy / society_issues / econ_issues"
+F-1-4,,"NA / society_issues / econ_issues / foreign_policy / climate_pol / tax_system"
+F-1-5,,foreign_policy / society_issues / NA / climate_pol / tax_system / econ_issues
+F-1-1-1,,[string variable]
+F-1-1-2,,[string variable]
+F-1-1-3,,[string variable]
+F-1-1-4,,[string variable]
+F-1-1-5,,[string variable]
+F-1-2-1,,[string variable]
+F-1-2-2,,[string variable]
+F-1-2-3,,[string variable]
+F-1-2-4,,[string variable]
+F-1-2-5,,[string variable]
+click_details,click_details: click_details,"NA"
+language,language: Q_Language,EN-GB / FR / DE / ES-ES
+qvc,qvc: qvc,97189_95512806 / NA / 97189_795e7b23 / 97189_452d8f97 / 97189_7787f61d
+qvq,qvq: qvq,97189_1fb19d3b / NA / 97189_a1aaeafd / 97189_23e146f0 / 97189_109fdb7f
+qvq1,qvq1: qvq1,97189 / NA
+qvq2,qvq2: qvq2,97189 / NA
+qvs,qvs: qvs,97189_4201aa2d / NA / 97189_07a05d59 / 97189_32538aa3 / 97189_ada13611
+ID,ID: m,[string variable]
+wealth_tax_separate,wealth_tax_separate: FL_12 - Block Randomizer - Display Order - Wealthtax(separate),"NA / 1"
+wealth_tax_pooled,wealth_tax_pooled: FL_12 - Block Randomizer - Display Order - Wealthtax(pooled),1 / NA
+order_100,order_100: Global Climate Scheme (incl. list experiment) - Display Order - Q100,10 / 1
+order_268,order_268: Global Climate Scheme (incl. list experiment) - Display Order - Q268,"NA / 9 / 7"
+order_269,order_269: Global Climate Scheme (incl. list experiment) - Display Order - Q269,"NA / 9 / 7"
+order_264,order_264: Global Climate Scheme (incl. list experiment) - Display Order - Q113,"NA / 13 / 2"
+order_265,order_265: Global Climate Scheme (incl. list experiment) - Display Order - Q264,6 / 4
+order_266,order_266: Global Climate Scheme (incl. list experiment) - Display Order - Q265,8 / 6
+order_267,order_267: Global Climate Scheme (incl. list experiment) - Display Order - Q266,"NA / 9 / 7"
+order_261,order_261: Global Climate Scheme (incl. list experiment) - Display Order - Q267,9 / NA / 7
+order_262,order_262: Global Climate Scheme (incl. list experiment) - Display Order - Q262,5 / 3
+order_263,order_263: Global Climate Scheme (incl. list experiment) - Display Order - Q263,7 / 5
+order_conjoint_280,"order_conjoint_280: Conjoint analysis (a, b) - Display Order - Q280","NA / 3 / 4"
+order_conjoint_281,"order_conjoint_281: Conjoint analysis (a, b) - Display Order - Q281","NA / 3 / 4"
+order_conjoint_106,"order_conjoint_106: Conjoint analysis (a, b) - Display Order - Q106",4 / 1
+order_conjoint_107,"order_conjoint_107: Conjoint analysis (a, b) - Display Order - Q107",5
+order_conjoint_47,"order_conjoint_47: Conjoint analysis (a, b) - Display Order - Q47",2 / 3
+order_conjoint_277,"order_conjoint_277: Conjoint analysis (a, b) - Display Order - Q277",1 / 2
+order_conjoint_282,"order_conjoint_282: Conjoint analysis (a, b) - Display Order - Q282","NA / 3 / 4"
+order_conjoint_283,"order_conjoint_283: Conjoint analysis (a, b) - Display Order - Q283",3 / NA / 4
+order_conjoint_105,order_conjoint_105: Conjoint analysis (c) - Display Order - Q105,1 / NA
+order_conjoint_284,order_conjoint_284: Conjoint analysis (c) - Display Order - Q284,"NA / 1 / 2"
+order_conjoint_285,order_conjoint_285: Conjoint analysis (c) - Display Order - Q285,"NA / 1 / 2"
+order_conjoint_273,order_conjoint_273: Perceptions climate scheme - Display Order - Q273,"NA / 1 / 2"
+order_conjoint_272,order_conjoint_272: Perceptions climate scheme - Display Order - Q272,1 / NA / 2
+order_conjoint_101,order_conjoint_101: Perceptions climate scheme - Display Order - Q101,"NA / 1"
+order_conjoint_108,order_conjoint_108: Donation lottery - Display Order - Q108,1 / NA
+order_conjoint_275,order_conjoint_275: Donation lottery - Display Order - Q275,2 / NA
+order_conjoint_276,order_conjoint_276: Donation lottery - Display Order - Q276,"NA / 2"
+order_global_tax,order_global_tax: Wealth tax (separate) - Display Order - Q276,"NA / 2 / 1"
+order_national_tax,order_national_tax: Wealth tax (separate) - Display Order - Q277,"NA / 1 / 2"
+order_conjoint_278,order_conjoint_278: Wealth tax (pooled) - Display Order - Q278,"NA / 1"
+order_conjoint_279,order_conjoint_279: Wealth tax (pooled) - Display Order - Q279,1 / NA
+order_conjoint_3,order_conjoint_3: Foreign aid (randomized) - Display Order - Q3,"NA / 1"
+order_conjoint_2,order_conjoint_2: Foreign aid (randomized) - Display Order - Q2,1 / NA
+order_conjoint_270,order_conjoint_270: Petition - Display Order - Q270,1 / NA
+order_conjoint_271,order_conjoint_271: Petition - Display Order - Q271,"NA / 1"
+branch_petition,branch_petition: gcs/nr Whether the petition question is on the global climate scheme or national redistribution.,gcs / nr
+petition,petition: Yes/No Willing to sign a petition on gcs/nr (depends on branch_petition).,PNR: -0.1 / No: 0 / Yes: 1
+global_tax_sharing_original,"global_tax_sharing: Imagine a wealth tax applying on households with net worth above £5 million, enacted in all countries around the world.
+
+In the UK, the tax revenues collected would be £20 billion per year (that is, 0.7% of UK GDP), while it would be $1 billion in all low-income countries taken together (700 million people live in a low-income country, most of them in Africa).
+
+ 
+
+Which of the following options would you prefer?","The whole wealth tax financing national budgets in each country. For example, in the U.S., it could finance affordable housing and universal childcare/pre-K. / NA / Half of the wealth tax financing national budgets in each country, half of it financing low-income countries. For example, it could finance universal childcare/pre-K in the U.S. and access to drinking water, healthcare, and education in Africa."
+branch_global_tax,branch_global_tax: global_first/national_first/sharing/global_share/NA Way to ask the preference for funding low-income countries through a global tax on the rich: either separately the support for a national and a global tax on millionaires (with either the global or national question asked first); whether to allocate half or none of the global tax to low-income countries; the 'global_share' in 0 to 100%.,sharing / global_share / national_first / global_first
+attentive,,TRUE / FALSE
+country_name,country: In which country do you live?,Spain / United Kingdom / France / Germany
+age,age_exact: How old are you?,18-24: 21.5 / 25-34: 30 / 35-49: 42.5 / 50-64: 57.5 / 65+: 71
+income_original,"income: What is the monthly income of your household after taxes and transfers?
+
+This includes all income: salaries, pensions, allowances, property income, etc.",between £251 and £300 / between £301 and £400 / between £401 and £500 / between £201 and £250 / more than £900 / between £101 and £200 / between £601 and £700 / between £751 and £800 / less than £100 / between £801 and £900 / between £701 and £750 / between £501 and £600
+income_quartile,"income_quartile: [1-4] Quartile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4
+income_decile,"income_decile: [1-10] Decile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10
+income_factor,"income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4
+urbanity,"urbanity: 1: Cities / 2: Towns and suburbs / 3: Rural. Computed from the zipcode. For EU, equals urban_category; for the U.S., urbanity = 1; 2; 3 (resp.) corresponds to urban_category = 1; 2 or 3; 4.",Cities: 1 / Towns and suburbs: 2 / Rural: 3
+urban,urban: T/F urban_category == 1: Cities (EU) or Core metropolitan (US).,TRUE / FALSE / NA
+education_original,education: What is the highest level of education you have completed?,"Some college, no degree / Bachelor's degree (for example: BA, BS) / 2-year college degree or associates degree (for example: AA, AS) / Some high school / Regular high school diploma/GED or alternative credential / Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD) / Eigth grade / Primary school or less"
+diploma,"diploma: 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.",Below upper secondary: 1 / Upper secondary: 2 / Post secondary: 3
+diploma_25_64,"diploma_25_64: 0: Not 25-64 if age is not within 25-64 (missing value) / 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.",Not 25-64: 0 / Below upper secondary: 1 / Upper secondary: 2 / Post secondary: 3
+employment_agg,,Not working / Retired / Student / Working
+inactive,,TRUE / FALSE
+employment,"employment: T/F/NA indicator that the respondent is employed (employment_agg == Working), NA if s-he is above 65.",TRUE / FALSE / NA
+wealth,wealth: Quintile of wealth (from wealth_couple and wealth_single).,PNR: 0 / Q1: 1 / Q2: 2 / Q3: 3 / Q4: 4 / Q5: 5
+owner,owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?,TRUE / FALSE
+branch_list_exp,"branch_list_exp: i/ir/gr/igr Variant of the list experiment faced, where i denotes coal exit (US) or the buildings' insulation plan (EU), r the national redistribution, and g the global climate scheme. Marriage only for opposite-sex couples (US) and death penalty for major crimes (EU) were also systematically included.",rgl / rl / l / gl
+branch_list_exp_g,branch_list_exp_g: T/F g (global climate scheme) is present in the list experiment.,TRUE / FALSE
+branch_list_exp_r,branch_list_exp_r: T/F r (national redistribution) is present in the list experiment.,TRUE / FALSE
+list_exp,"list_exp: [0-4] Number of supported policies in the list experiment (combining all branches, cf. branch_list_exp and variables_list_exp).",0 / 1 / 2 / 3 / 4
+branch_gcs_perception,branch_gcs_perception: field/gcs_important/NA Whether the perception of the global climate scheme is asked as a matrix 'gcs_important' or an entry field 'field',field / NA / gcs_important
+branch_foreign_aid_preferred,branch_foreign_aid_preferred: Info/No info Whether the info on the actual amount of foreign aid was given before asking the preferred amount.,No info / Info
+info_foreign_aid,info_foreign_aid: T/F Whether the info on the actual amount of foreign aid was given before asking the preferred amount.,TRUE / FALSE
+foreign_aid_preferred,"foreign_aid_preferred: 0/.15/.4/.8/1.4/2.2/3.35/5/7.5/11/19/30 Amount of preferred foreign aid (mean of interval in % of nation's public spending). Depending on info_foreign_aid, info on actual amount is randomly given or not beforehand.",< 0.1%: 0 / 0.1 to 0.2: 0.15 / 0.3 to 0.5: 0.4 / 0.6 to 1: 0.8 / 1.1 to 1.7: 1.4 / 1.8 to 2.6: 2.2 / 2.7 to 4: 3.35 / 4.1 to 6: 5 / 6.1 to 9: 7.5 / 9.1 to 13: 11 / 13.1 to 25: 19 / > 25%: 30
+foreign_aid_belief_original,"foreign_aid_belief: To the best of your guess, what percentage of the British government's spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?
+
+
+
+For information, government spending totals 41% of UK GDP, it includes national and local government spending, and apart from foreign aid, it covers the following items: defense, social security (retirement pensions), health (the NHS), welfare benefits, education, roads, justice, and other programs.",2.7% to 4% / 0.3% to 0.5% / 0.6% to 1.0% / 0.1% to 0.2% / 1.1% to 1.7% / 1.8% to 2.6% / Less than 0.1% / 4.1% to 6% / 6.1% to 9% / 9.1% to 13% / More than 25% / 13.1% to 25%
+foreign_aid_preferred_no_info_original,"foreign_aid_preferred_no_info: If you could choose the government spending, what percentage would you allocate to foreign aid?",0.6% to 1.0% / 1.8% to 2.6% / NA / 0.3% to 0.5% / 1.1% to 1.7% / 2.7% to 4% / Less than 0.1% / More than 25% / 6.1% to 9% / 4.1% to 6% / 9.1% to 13% / 13.1% to 25% / 0.1% to 0.2%
+foreign_aid_preferred_info_original,"foreign_aid_preferred_info: Actually, 1.7% of the UK government spending is allocated to foreign aid.
+
+
+
+If you could choose the government spending, what percentage would you allocate to foreign aid?","NA / 0.3% to 0.5% / 0.6% to 1.0% / 6.1% to 9% / 1.1% to 1.7% / Less than 0.1% / 4.1% to 6% / 1.8% to 2.6% / 13.1% to 25% / 2.7% to 4% / 9.1% to 13% / 0.1% to 0.2%"
+foreign_aid_preferred_original,"foreign_aid_preferred: 0/.15/.4/.8/1.4/2.2/3.35/5/7.5/11/19/30 Amount of preferred foreign aid (mean of interval in % of nation's public spending). Depending on info_foreign_aid, info on actual amount is randomly given or not beforehand.",0.6% to 1.0% / 1.8% to 2.6% / 0.3% to 0.5% / 1.1% to 1.7% / 6.1% to 9% / 2.7% to 4% / Less than 0.1% / 4.1% to 6% / 13.1% to 25% / More than 25% / 9.1% to 13% / 0.1% to 0.2%
+foreign_aid_more_less,"foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.",Less: -1 / Same: 0 / More: 1
+gcs_win_lose_original,gcs_win_lose: Who would win or lose financially in the Global climate scheme?Three respondents with the expected answer will get £50 in Amazon vouchers.,Typical Americans would lose and the 700 million poorest humans would win. / Typical Americans would win and the 700 million poorest humans would lose. / Typical Americans would win and the 700 million poorest humans would win. / Typical Americans would lose and the 700 million poorest humans would lose.
+nr_win_lose_original,nr_win_lose: Who would win or lose financially in the National redistribution scheme?Three respondents with the expected answer will get £50 in Amazon vouchers.,Typical Americans would lose and the richest Americans would win. / Typical Americans would win and the richest Americans would lose. / Typical Americans would win and the richest Americans would win. / Typical Americans would lose and the richest Americans would lose.
+both_win_lose_original,"both_win_lose: If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical British person be financially affected?
+Three respondents with the expected answer will get £50 in Amazon vouchers.",A typical American would lose out financially. / A typical American would neither gain nor lose. / A typical American would gain financially.
+nr_understood,"nr_understood: T/F Correct answer to nr_win_lose (in national redistribution, typical people win, richest lose).",TRUE / FALSE
+gcs_understood,"gcs_understood: T/F Correct answer to gcs_win_lose (in global climate scheme, typical high-income win, 700M poorest lose).",TRUE / FALSE
+both_understood,"both_understood: T/F Correct answer to both_win_lose (in national redistribution + global climate scheme combined, typical people in high-income countries are unaffected).",TRUE / FALSE
+score_understood,score_understood: [0-3] Number correct answers to understanding questions (nr/gcs/both_understood).,0 / 1 / 2 / 3
+z_score_understood,z_score_understood: Normalized score_understood.,-1.781 / -0.765 / 0.25 / 1.265
+branch_donation,branch_donation: Africa/Own nation Whether the donation is for poor people in Africa or in one's nation.,Own nation / Africa / NA
+donation,donation: [0-100] Percentage of potential lottery gain donated to poor people in Africa or in one's nation (depending on branch_donation).,min: 0 / max: 100
+conjoint_a,"conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir.",TRUE / FALSE
+conjoint_b,"conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle.",TRUE / FALSE
+branch_conjoint_b,branch_conjoint_b: ir_gr/r_igr/gr_r/ir_r Random branch faced by the respondent in conjoint analysis (b).,rc_r / cr_gr / rg_r / r_rcg
+conjoint_c,conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE / NA
+branch_conjoint_c,"branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'","NA / leftg_right / left_right"
+conjoint_d,"conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican.",TRUE / FALSE
+branch_b_gcs,"branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE
+conjoint_b_na,"conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE / NA
+branch_c_gcs,"branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'.",TRUE / FALSE
+conjoint_r_type,conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b,None / A / B / Both
+conjoint_r,"conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
+F-1-1_original,F-1-1: F-1-1,[string variable]
+F-1-2_original,F-1-2: F-1-2,[string variable]
+F-1-3_original,F-1-3: F-1-3,[string variable]
+F-1-4_original,F-1-4: F-1-4,[string variable]
+F-1-5_original,F-1-5: F-1-5,[string variable]
+F-1-1-1_original,F-1-1-1: F-1-1-1,[string variable]
+F-1-1-2_original,F-1-1-2: F-1-1-2,[string variable]
+F-1-1-3_original,F-1-1-3: F-1-1-3,[string variable]
+F-1-1-4_original,F-1-1-4: F-1-1-4,[string variable]
+F-1-1-5_original,F-1-1-5: F-1-1-5,[string variable]
+F-1-2-1_original,F-1-2-1: F-1-2-1,[string variable]
+F-1-2-2_original,F-1-2-2: F-1-2-2,[string variable]
+F-1-2-3_original,F-1-2-3: F-1-2-3,[string variable]
+F-1-2-4_original,F-1-2-4: F-1-2-4,[string variable]
+F-1-2-5_original,F-1-2-5: F-1-2-5,[string variable]
+D-1-1-1_original,D-1-1-1: D-1-1-1,[string variable]
+D-1-1-2_original,D-1-1-2: D-1-1-2,[string variable]
+D-1-1-3_original,D-1-1-3: D-1-1-3,[string variable]
+D-1-1-4_original,D-1-1-4: D-1-1-4,[string variable]
+D-1-2-1_original,D-1-2-1: D-1-2-1,[string variable]
+D-1-2-2_original,D-1-2-2: D-1-2-2,[string variable]
+D-1-2-3_original,D-1-2-3: D-1-2-3,[string variable]
+D-1-2-4_original,D-1-2-4: D-1-2-4,[string variable]
+conjoint_r_wrong_level,,TRUE / FALSE
+conjoint_r_number,"conjoint_r_number: 1/2/NA (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican. NA if question not asked or there is some unrecognized level (conjoint_r_wrong_level == T).",1 / 2
+vote,"vote: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.",[string variable]
+vote_agg,"vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than 5% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters.",[string variable]
+voted,voted: Has voted in last election: Yes to vote_participation.,TRUE / FALSE
+survey_biased_yes,survey_biased_yes: T/F Finds the survey biased (survey_biased != No),TRUE / FALSE
+survey_biased_left,"survey_biased_left: T/F Finds the survey left-wing biased (survey_biased == Yes, left)",TRUE / FALSE
+survey_biased_right,"survey_biased_right: T/F Finds the survey right-wing biased (survey_biased == Yes, right)",TRUE / FALSE
+petition_matches_support,petition_matches_support: T/F The answer to the petition coincides with the answer to the support (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE
+petition_yes_support_no,petition_yes_support_no: T/F Willing to sign the petition but does not support (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE
+petition_no_support_yes,petition_no_support_yes: T/F Not willing to sign the petition but supports (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE
+conjoint_a_matches_support,conjoint_a_matches_support: T/F The answer to conjoint analysis (a) (irg vs. ir) corresponds to the answer to the support of GCS.,TRUE / FALSE
+conjoint_a_irg_support_no,conjoint_a_irg_support_no: T/F Prefers irg to ir in conjoint analysis (a) but does not support GCS.,TRUE / FALSE
+conjoint_a_ir_support_yes,conjoint_a_ir_support_yes: T/F Prefers ir to irg in conjoint analysis (a) but supports GCS.,TRUE / FALSE
+share_policies_supported,share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent.,min: 0 / max: 1
+spread_global_policies,spread_global_policies: Spread between max and min value in the respondent's answers to the matrix global_policies,0 / 1 / 2 / 3 / 4
+all_same_global_policies,all_same_global_policies: T/F Indicator that all answers to the matrix global_policies are identical.,TRUE / FALSE
+spread_climate_policies,spread_climate_policies: Spread between max and min value in the respondent's answers to the matrix climate_policies,0 / 1 / 2 / 3 / 4
+all_same_climate_policies,all_same_climate_policies: T/F Indicator that all answers to the matrix climate_policies are identical.,TRUE / FALSE
+spread_problem,spread_problem: Spread between max and min value in the respondent's answers to the matrix problem,0 / 2
+all_same_problem,all_same_problem: T/F Indicator that all answers to the matrix problem are identical.,TRUE / FALSE
+spread_gcs_important,spread_gcs_important: Spread between max and min value in the respondent's answers to the matrix gcs_important,-Inf / 0 / 1 / 2 / 3 / 4
+all_same_gcs_important,all_same_gcs_important: T/F Indicator that all answers to the matrix gcs_important are identical.,TRUE / FALSE
+mean_spread,"mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: global_policies, climate_policies, problem, gcs_important). -Inf indicates that all answers were NA.",min: -Inf / max: 3.5
+share_all_same,"mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: global_policies, climate_policies, problem, gcs_important).",0 / 0.25 / 0.5 / 0.75 / 1
+wrong_language,wrong_language: T/F The language does not correspond to the respondent's country (including Spanish in the U.S.).,TRUE / FALSE
+number_same_ip,number_same_ip: Number of respondents with the same IP.,1 / 2
+duplicate_ip,duplicate_ip: T/F The respondent's IP is used by other respondents.,TRUE / FALSE
+n,,[string variable]
+valid,valid: Respondents that has not been screened out due to speed or failure to the attention test.,TRUE / FALSE
+dropout,dropout: Respondent who did not complete the survey though was not excluded.,TRUE / FALSE
+finished_attentive,finished_attentive: Respondent completed the survey and did not fail the attention test.,TRUE / FALSE

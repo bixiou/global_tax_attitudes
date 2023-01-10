@@ -43,14 +43,17 @@ writeLines(js_F, "../conjoint_analysis/9d_F_EU.js") # (r) Directly paste-able in
 
 formula_cjoint_generic <- as.formula("selected ~ econ_issues + society_issues + climate_pol + tax_system + foreign_policy")
 formula_cjoint_specific <- as.formula("selected ~ `Economic issues` + `Societal issues` + `Climate policy` + `Tax system` + `Foreign policy`")
-amce <- ca <- list()
+# /!\ If Error in if (any(as.vector(r_1) - as.vector(cross_tab_std[m,... add a (second) blank line at the end of the .dat
+design_cjoint_US <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # gives the probability that a profile appears: sum(design_cjoint$J)=1, dim(design_cjoint$J) = 5 4 4 4 5. 
+design_cjoint_EU <- makeDesign(filename = "../conjoint_analysis/9d_F_EU.dat") 
+design_cjoint_both <- makeDesign(filename = "../conjoint_analysis/9d_F_both.dat") # The weighted are the average of the US and EU weights
+amce <- ca <- list() # We should have "Old qualtrics format detected." (otherwise it would assume new format and delete the first observation).
 for (n in c("usp", "eup", "ep")) {
   print(n)
   csv.path <- paste0("../conjoint_analysis/ca_", n, ".csv")
   write.csv(d(n)[!is.na(d(n)$conjoint_r_number), c(variables_conjoint_r, 'conjoint_r_number', 'n')], csv.path, row.names = FALSE)
   temp <- readLines(csv.path)
   writeLines(c(temp[1], temp), csv.path)
-# Pb? the function below might only works with PHP export (but JS export is better)
   ca[[n]] <- read.qualtrics(csv.path, responses = 'conjoint_r_number', covariates = c(variables_conjoint_r_levels), respondentID = "n") # names(d(n))[cols_conjoint]
   names(ca[[n]])[1] <- "n"
   ca[[n]] <- merge(d(n)[, c("country", "n")], ca[[n]])
@@ -67,22 +70,36 @@ for (n in c("usp", "eup", "ep")) {
     ca[[n]][[paste0(conjoint.attributes[i], ".rowpos")]] <- ca[[n]][[paste0(conjoint_attributes[i], ".rowpos")]]
   }
   formula_cjoint <- if (grepl("us", n)) formula_cjoint_specific else formula_cjoint_generic
-  amce[[n]] <- amce(formula_cjoint, ca[[n]], cluster = FALSE, weights= NULL)
+  design_cjoint <- if (grepl("us", n)) design_cjoint_US else { if (n %in% c("e", "ep")) design_cjoint_both else design_cjoint_EU }
+  # amce[[n]] <- amce(formula_cjoint, ca[[n]], cluster = FALSE, weights= NULL)
+  amce[[n]] <- amce(formula_cjoint, ca[[n]], design = design_cjoint, cluster = FALSE, weights= NULL)
 }
-# ca_e <- read.qualtrics("../data/EUn.csv", responses = "Q30", covariates = variables_conjoint_r_levels, ranks = NULL, new.format = T) # TODO new or old?
+# ca_e <- read.qualtrics("../data/EUn.csv", responses = "Q30", covariates = variables_conjoint_r_levels, ranks = NULL, new.format = T) 
+for (c in countries[-5]) {
+  print(c)  # TODO break long string
+  amce[[c]] <- amce(formula_cjoint_generic, ca$eup[ca$eup$country == c,], design = design_cjoint_EU, cluster = FALSE, weights= NULL)
+  for (i in names(amce[[c]]$user.levels)) if (amce[[c]]$user.levels[[i]] %in% row.names(policies.names)) amce[[c]]$user.levels[[i]] <- policies.names[amce[[c]]$user.levels[[i]], c]
+  for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], c]
+}
+# TODO merge D and F (by defining GCS/- as the levels of foreign).
+# TODO? put in preparation
 
-design_cjoint <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # gives the probability that a profile appears: sum(design_cjoint$J)=1, dim(design_cjoint$J) = 5 4 4 4 5. # TODO
 
-# TODO: UK EconomicS issues => Economic issues
 ##### Analysis #####
-baselines <- list()
-baselines$attribute <- "level"
-Amce <- amce(formula_cjoint, ca[[n]], cluster = FALSE, weights= NULL)
-# Amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected),], cluster = FALSE, weights= NULL)
-summary(Amce)
+# baselines <- list()
+# baselines$attribute <- "level"
+# Amce <- amce(formula_cjoint_specific, ca[["usp"]], cluster = FALSE, weights= NULL, design = design_cjoint_US)
+# Amce <- amce(formula_cjoint_generic, ca[["eup"]], cluster = FALSE, weights= NULL, design = design_cjoint_EU)
+# Amce <- amce(formula_cjoint, ca[[n]], cluster = FALSE, weights= NULL)
+# # Amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected),], cluster = FALSE, weights= NULL)
+# summary(Amce)
 plot(Amce)
 
-plot(amce[["usp"]]) # GCS is foreign1
-plot(amce[["eup"]])
-plot(amce[["ep"]])
-summary(amce[["usp"]])
+plot(amce$usp) # GCS is foreign1
+plot(amce$eup)
+plot(amce$ep)
+plot(amce$FR, text.size = 12)
+plot(amce$DE)
+plot(amce$ES)
+plot(amce$UK)
+summary(amce$usp)
