@@ -4,7 +4,8 @@ e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
 # TODO! weights
-# TODO ETS2, wealth limit "for each human"
+# TODO US2/EU interests even if it goes against global justice, US interests to the extent it respects global justice, global justice to the extent it respects US interests, global justice even if it goes against US interests
+# TODO ETS2
 # TODO US/EU: remove PNR wealth (5%) or exclude, put back email, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
