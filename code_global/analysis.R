@@ -4,9 +4,9 @@ e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
 # TODO! weights
-# TODO US2/EU interests even if it goes against global justice, US interests to the extent it respects global justice, global justice to the extent it respects US interests, global justice even if it goes against US interests
+# TODO US2/EU interests, even if it goes against global justice; U.S. interests, to the extent it respects global justice; Indifferent or don't know; Global justice, to the extent it respects U.S. interests, Global justice, even if it goes against U.S. interests
 # TODO ETS2
-# TODO US/EU: remove PNR wealth (5%) or exclude, put back email, welcome: amount incentives
+# TODO US/EU: put back email?, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 
@@ -100,12 +100,12 @@ decrit("number_same_ip", data = e)
 # 'positive' gives the share of positive answers and 'majority' the share of positive answers among non-indifferent.
 datasummary(eval(str2expression(paste(paste(c(variables_support, "petition_gcs", "petition_nr"), collapse = ' + '), " ~ positive + majority + majority * country"))), data = e, fmt = 0, output = "markdown")
 majority(e$climate_mitigation_support)
-decrit("support_cgr", data = e)
+decrit("cgr_support", data = e)
 decrit("gcs_support", data = e)
 decrit("nr_support", data = e)
 CrossTable(e$gcs_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 CrossTable(e$nr_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
-CrossTable(e$support_cgr, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
+CrossTable(e$cgr_support, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
 decrit("climate_compensation_support", data = e)
 decrit("climate_mitigation_support", data = e)
 decrit("climate_adaptation_support", data = e)
@@ -130,7 +130,7 @@ decrit("gcs_support", data = e)
 decrit("gcs_belief", data = e) 
 decrit("petition_gcs", data = e)
 decrit("points_foreign1_gcs", data = e)
-decrit("support_cgr", data = e)
+decrit("cgr_support", data = e)
 decrit("branch_gcs_perception", data = e)
 decrit("gcs_important_limit_CC", data = e) #
 decrit("gcs_important_hurt_economy", data = e)

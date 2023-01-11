@@ -11,7 +11,7 @@ Different fairness principles:
 - costs proportional to cumulative emissions: so-called historical responsibility but may actually have a grandfathering component
 
 Surveys of population:
-- Schleich et al. (Climate Policy, 16) find an identical ranking of fairness principles in China, Germany, and the US: accountability (costs according to emissions) followed by capability (according to economic strength), egalitarianism (equal emission per capita), and sovereignty (constant share of global emission) (see Lange & Schiwplies (17) for the computations). 
+- Schleich et al. (Climate Policy, 16) ask for ranking (TODO check) and find an identical ranking of fairness principles in China, Germany, and the US: accountability (costs according to emissions) followed by capability (according to economic strength), egalitarianism (equal emission per capita), and sovereignty (constant share of global emission) (see Lange & Schiwplies (17) for the computations). 
   Polluter-pays: Every country has to bear costs according to the emissions it causes (hence countries causing higher emissions have a higher share of the costs).
   Ability-to-pay: Every country has to bear costs according to its economic strength (hence richer countries have a higher share of the costs).
   Egalitarian: Every country is allowed to produce the same amount of emissions per capita (hence countries with currently high emissions per capita have higher costs).

@@ -22,6 +22,7 @@ rm(qinc)
 
 policies.names <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies", rowNames = T, rows = c(1, 16:41), cols = 1:6))
 policies.names <- policies.names[is.na(as.numeric(row.names(policies.names))),] # NAs by coercion normal
+# write.csv(policies.names, "../data/policies_names.csv") # to recover it in case specificities.xlsx is modified
 conjoint_attributes <- c("econ_issues", "society_issues", "climate_pol", "tax_system", "foreign_policy")
 conjoint.attributes <- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
 names(conjoint.attributes) <- conjoint_attributes # c("Economic.issues", "Societal.issues", "Climate.policy", "Tax.system", "Foreign.policy")
@@ -213,7 +214,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   text_support <<- c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support")
   text_importance <<- c("Not at all important", "Not so important", "Quite important", "Very important")
   text_problem <<- c("Not an important issue for me", "An issue but there are other priorities", "An issue but we already do what we can", "An important issue, we should do more", "One of the most pressing issue of our time")
-  if (wave == "pilot") text_problem <<- "An issue but we do already what we can"
+  if (wave == "pilot") text_problem[3] <<- "An issue but we do already what we can"
   foreign_aid_amounts <<- c(.1, .2, .5, 1.0, 1.7, 2.6, 4, 6, 9, 13, 25)
   foreign_aid_means <<- c(0, .15, .4, .8, 1.4, 2.2, 3.35, 5, 7.5, 11, 19, 30)
   foreign_aid_actual_amounts <<- c("FR" = .8, "DE" = 1.3, "ES" = .5, "UK" = 1.7, "US" = .4)
@@ -245,10 +246,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   }
 
   variables_support <<- names(e)[grepl('support', names(e)) & !grepl("foreign_aid_raise_support", names(e))]
-  variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|foreign_aid|_tax_", names(e))]
+  variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|cgr|foreign_aid|_tax_", names(e))]
   variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
   variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
-  variables_support_binary <<- c("gcs_support", "nr_support", "support_cgr", "global_tax_sharing")
+  variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
   variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
   variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition', names(e))]
   variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
@@ -263,14 +264,19 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   variables_foreign_aid_raise <<- names(e)[grepl('foreign_aid_raise_how', names(e))]
   variables_foreign_aid_reduce <<- names(e)[grepl('foreign_aid_reduce_how', names(e))]
-  variables_foreign_aid_no_ <<- names(e)[grepl('foreign_aid_no_', names(e))]
-  variables_foreign_aid_condition <<- names(e)[grepl('foreign_aid_condition', names(e))]
+  variables_foreign_aid_no <<- names(e)[grepl('foreign_aid_no_', names(e)) & names(e) != "foreign_aid_no_other"]
+  variables_foreign_aid_condition <<- names(e)[grepl('foreign_aid_condition', names(e)) & names(e) != "foreign_aid_condition_other"]
   
   variables_conjoint <<- names(e)[grepl('conjoint_', names(e)) & !grepl("order|duration", names(e))]
   variables_conjoint_a <<- c("conjoint_crg_cr")
   variables_conjoint_b <<- c("conjoint_cr_gr", "conjoint_r_rcg", "conjoint_rg_r", "conjoint_rc_r")
   variables_conjoint_c <<- c("conjoint_left_right", "conjoint_leftg_right")
   variables_conjoint_d <<- c("conjoint_left_a_b", "conjoint_left_ag_b")
+  variables_conjoint_a_binary <<- c("conjoint_crg_cr_binary")
+  variables_conjoint_b_binary <<- paste0(variables_conjoint_b, "_binary")
+  variables_conjoint_c_binary <<- paste0(variables_conjoint_c, "_binary")
+  variables_conjoint_d_binary <<- paste0(variables_conjoint_d, "_binary")
+  variables_conjoint_binary <<- c(variables_conjoint_a_binary, variables_conjoint_b_binary, variables_conjoint_c_binary, variables_conjoint_d_binary)
   variables_conjoint_attr <<- paste0("F-1-", 1:5)
   variables_conjoint_r_levels <<- names(e)[grepl("F-1-1-|F-1-2-", names(e))]
   variables_conjoint_d_levels <<- names(e)[grepl("D-1-1-|D-1-2-", names(e))]
@@ -278,7 +284,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_conjoint_d <<- c(variables_conjoint_attr, variables_conjoint_d_levels)
   variables_conjoint_levels <<- c(variables_conjoint_d_levels, variables_conjoint_r_levels)
   conjoint_position_g <<- c("A", "B", "B", "A", "None", "None", "A", "Random", "A")
-  names(conjoint_position_g) <<- variables_conjoint
+  conjoint_position_1 <<- c("A", "B", "B", "A", "A", "A", "A", "A", "A")
+  names(conjoint_position_g) <<- names(conjoint_position_1) <<- variables_conjoint
   
   variables_matrices <<- list("global_policies" = variables_global_policies,
                               "climate_policies" = variables_climate_policies,
@@ -308,7 +315,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   # }
   
   for (j in names(e)) {
-    if ((grepl('race_|home_|foreign_aid_raise_how|foreign_aid_reduce_how|foreign_aid_condition|foreign_aid_no_', j)) & !(grepl('_other$|order_', j))) {
+    if ((grepl('race_|home_|foreign_aid_raise_how|foreign_aid_reduce_how|foreign_aid_condition|foreign_aid_no_', j) & !(grepl('_other$|order_', j))) | grepl('how_other', j)) {
       temp <- label(e[[j]])
       e[[j]] <- e[[j]]!="" # e[[j]][e[[j]]!=""] <- TRUE
       e[[j]][is.na(e[[j]])] <- FALSE
@@ -470,9 +477,18 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     if ("foreign_aid_preferred" %in% names(e)) {
       e$foreign_aid_more_less[e$info_foreign_aid == T] <- ((e$foreign_aid_preferred > foreign_aid_actual_amounts_max[e$country]) - (e$foreign_aid_preferred < foreign_aid_actual_amounts_min[e$country]))[e$info_foreign_aid == T]
       e$foreign_aid_more_less[e$info_foreign_aid == FALSE] <- ((e$foreign_aid_preferred > e$foreign_aid_belief) - (e$foreign_aid_preferred < e$foreign_aid_belief))[e$info_foreign_aid == FALSE]
-      e$foreign_aid_more_less <- as.item(e$foreign_aid_more_less, labels = structure(-1:1, names = c("Less", "Same", "More")), missing.values = NA, 
-                                         annotation = "foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
+      e$foreign_aid_more_less <- as.item(e$foreign_aid_more_less, labels = structure(-1:1, names = c("Less", "Same", "More")), missing.values = NA, annotation = "foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
     }
+    for (v in intersect(names(e), variables_foreign_aid_reduce)) e[[v]][e$info_foreign_aid == FALSE | e$foreign_aid_more_less >= 0] <- NA
+    for (v in intersect(names(e), variables_foreign_aid_raise)) e[[v]][e$info_foreign_aid == FALSE | e$foreign_aid_more_less <= 0] <- NA
+    
+    if ("foreign_aid_raise_support" %in% names(e)) {
+      e$foreign_aid_raise_support_original <- e$foreign_aid_raise_support
+      temp <- -2 * grepl("reduce", e$foreign_aid_raise_support) -1*grepl("remain stable", e$foreign_aid_raise_support) + 1*grepl("increase", e$foreign_aid_raise_support)
+      e$foreign_aid_raise_support <- as.item(temp, labels = structure(-2:1, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))     
+    }
+    for (v in intersect(names(e), variables_foreign_aid_no)) e[[v]][e$foreign_aid_raise_support >= 0] <- NA
+    for (v in intersect(names(e), variables_foreign_aid_condition)) e[[v]][e$foreign_aid_raise_support != 0] <- NA
     
     for (v in intersect(variables_win_lose, names(e))) e[[paste0(v, "_original")]] <- e[[v]]
     if ("nr_win_lose" %in% names(e)) {
@@ -518,6 +534,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     for (v in intersect(names(e), c(variables_conjoint))) {
       e[[v]] <- sub(".* (.*)", "\\1", e[[v]])
       e[[v]][e[[v]] == "them"] <- "None"
+      e[[paste0(v, "_binary")]] <- e[[v]] == conjoint_position_1[v]
+      label(e[[paste0(v, "_binary")]]) <- paste0(v, "binary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.")
       if (v %in% variables_conjoint_c) e[[v]][e[[v]] %in% c("Democrat", "A")] <- "Left"
       if (v %in% variables_conjoint_c) e[[v]][e[[v]] %in% c("Republican", "B")] <- "Right"
       if (v %in% variables_conjoint_a) e$conjoint_a <- e[[v]] == conjoint_position_g[v]
