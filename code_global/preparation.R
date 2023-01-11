@@ -261,6 +261,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_list_exp <<- names(e)[grepl('list_exp', names(e))]
   variables_belief <<- c("gcs_belief", "nr_belief")
   variables_points <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
+  variables_understood <<- paste0(c("nr", "gcs", "both", "score"), "_understood")
   
   variables_foreign_aid_raise <<- names(e)[grepl('foreign_aid_raise_how', names(e))]
   variables_foreign_aid_reduce <<- names(e)[grepl('foreign_aid_reduce_how', names(e))]

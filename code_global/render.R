@@ -15,6 +15,11 @@ labels_vars <- c(
   "income" = "Income",
   "education" = "Education",
   "employment_status" = "Employment status",
+  "race" = "Race",
+  "race_white" = "Race: White",
+  "race_black" = "Race: Black",
+  "race_hispanic" = "Race: Hispanic",
+  "race_asian" = "Race: Asian",
   "home_tenant" = "Home: tenant",
   "home_owner" = "Home: owner",
   "home_landlord" = "Home: landlord",
@@ -120,9 +125,12 @@ labels_vars <- c(
   "petition_nr" = "Petition for R",
   "donation_charities" = "Donation to charities",
   "interested_politics" = "Interest in politics",
+  "group_defended" = "Group defended when voting",
   "involvement_govt" = "Govt involvement",
+  "political_affiliation" = "Political affiliation",
   "left_right" = "Left - right on economics",
   "vote_participation" = "Vote participation",
+  "voted" = "Voted at last election",
   "vote_fr_voters" = "Vote (voters)",
   "vote_fr_non_voters" = "Vote (non voters)",
   "vote_de_voters" = "Vote (voters)",
@@ -134,7 +142,6 @@ labels_vars <- c(
   "problem_inequality" = "Income inequality in [Country]",
   "problem_climate" = "Climate change",
   "problem_poverty" = "Global poverty",
-  "group_defended" = "Group defended when voting",
   "points_econ1" = "econ1",
   "points_econ2" = "econ2",
   "points_econ3" = "econ3",
@@ -150,7 +157,11 @@ labels_vars <- c(
   "points_foreign2_tax_rich" = "foreign2: Global tax on millionaires",
   "points_foreign3_assembly" = "foreign3: Global democratic assembly on climate change",
   "points_foreign4_aid" = "foreign4: Doubling foreign aid",
-  "survey_biased" = "Finds the survey biased", 
+  "survey_biased" = "Survey biased", 
+  "survey_biased_yes" = "Survey is biased", 
+  "survey_biased_left" = "Survey is left-wing biased", 
+  "survey_biased_right" = "Survey is right-wing biased", 
+  "survey_biased_no" = "Survey is not biased", 
   "interview" = "Agrees for interview",
   "duration" = "Duration",
   "duration_gcs" = "Duration: G comprehension",
@@ -164,7 +175,15 @@ labels_vars <- c(
   "duration_gcs_perception" = "Duration: G perceptions",
   "duration_other_policies" = "Duration: other policies",
   "duration_feedback" = "Duration: feedback",
-  "duration_points" = "Duration: 100 points"
+  "duration_points" = "Duration: 100 points",
+  "score_understood" = "Number of correct answers to understanding questions",
+  "gcs_understood" = "With G, typical [country] people lose and poorest humans win",
+  "nr_understood" = "With R, typical [country] people win and richest win",
+  "both_understood" = "With G+R, typical [country] people neither win nor lose",
+  "share_policies_supported" = "Share of policies supported",
+  "dropout" = "Dropped out",
+  "petition_matches_support" = "Petition and support answers match",
+  "conjoint_a_matches_support" = "Conjoint (a) and support answers match"
 )
 
 fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE) {
@@ -206,6 +225,12 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
 
 # TODO conjoint
 heatmaps_defs <- list(
+  "global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1")),
+  "global_tax_sharing" = list(vars = c("global_tax_sharing"), conditions = c(">= 1")),
+  "list_exp" = list(vars = variables_list_exp, conditions = c("")),
+  "understood_all" = list(vars = variables_understood, conditions = c("")),
+  "understood_each" = list(vars = variables_understood[1:3], conditions = c(">= 1")),
+  "understood_score" = list(vars = variables_understood[4], conditions = c("")),
   "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
   "petition" = list(vars = variables_petition, conditions = ">= 1"),
@@ -222,21 +247,24 @@ heatmaps_defs <- list(
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
   "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)]),
-  "foreign_aid_condition" = list(vars = variables_foreign_aid_condition[!grepl("other", variables_foreign_aid_condition)])
+  "foreign_aid_condition" = list(vars = variables_foreign_aid_condition[!grepl("other", variables_foreign_aid_condition)]),
+  "share_policies_supported" = list(vars = c("share_policies_supported"), conditions = c("")),
+  "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), conditions = c(">= 1"))
 )
 
-variable_groupings <- c("support", "other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "petition", "gcs_important", "problem", "foreign_aid_amount", "duration", "donation", "belief", "points", "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "conjoint", "conjoint_a", "conjoint_b", "conjoint_c")
+variable_groupings <- c("support", "other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "petition", "gcs_important", "problem", "foreign_aid_amount", "duration", "donation", "belief", "points", "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "list_exp", "understood") # misses socio-demos, politics, win_lose/understood
 
 heatmaps_defs <- fill_heatmaps(variable_groupings, heatmaps_defs)
 # heatmaps_defs$foreign_aid_no
 
 heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE) {
-  for (heatmap in heatmaps_defs) heatmap_wrapper(vars = heatmap$vars, data = data, labels = heatmap$labels, name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, trim = trim) 
+  for (heatmap in heatmaps) heatmap_wrapper(vars = heatmap$vars, data = data, labels = heatmap$labels, name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, trim = trim) 
 }
 
 heatmap_multiple()
+heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "understood_all", "understood_each", "understood_score")])
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
-heatmap_multiple(heatmaps = heatmaps_defs)
-# TODO trim, break labels
+# heatmap_multiple(heatmaps = heatmaps_defs)
+# TODO trim, break labels / short labels
 
 # heatmap_wrapper(vars = variables_support_likert, conditions = ">= 1", data = e) 
