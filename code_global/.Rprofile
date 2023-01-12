@@ -67,10 +67,10 @@ package("modelsummary")
 #' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/RTools42/usr/bin", sep = .Platform$path.sep))
 #' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "/home/adrien/anaconda3/bin", sep = .Platform$path.sep))
 #' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/Users/fabre/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep)) # to correct bug orca, add folder of orca.exe
-#' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/Users/fabre/.conda/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep)) # to correct bug orca, add folder of orca.exe
+Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/Users/fabre/.conda/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep)) # to correct bug orca, add folder of orca.exe
 #' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/ProgramData/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep))
 #' # /!\ To install plotly, you first need to install kaleido and orca. Run Anaconda in administrator mode and run: pip install kaleido; conda install -c plotly plotly-orca; then set orca path as above
-#' if (!is.element("plotly", installed.packages()[,1])) install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) else library(plotly)
+if (!is.element("plotly", installed.packages()[,1])) install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) else library(plotly)
 #' # package("plotly") # in case of bug due to kaleido: "pip install kaleido" in the python console
 #' # package("plotly", version = "4.9.4.1") # If bug, do instead: install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) The last version of Plotly changes the place of Legend and makes it over several lines unless one increases width. If the install bugs as admin, try as simple user. If it still bugs, make sure Rtools is installed and found by R. If already installed (to check: package("installr"); install.Rtools()), try: write('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', file = "~/.Renviron", append = TRUE) then check that Sys.which("make") returns "C:\\rtools40\\usr\\bin\\make.exe". (cf. https://cran.r-project.org/bin/windows/Rtools/rtools40.html)
 #' # On ARM Mac, if this doesn't work (runs infinitely). Download the archive and from the Terminal run `R CMD INSTALL plotly.R-4.9.4.1.tar.gz'
@@ -104,7 +104,6 @@ package("descr") # CrossTable
 #' package("plotrix")
 #' package("grDevices")
 #' package("colorspace")
-#' package("RColorBrewer")
 #' package("colorRamps")
 #' package("ordinal")
 #' package("oglmx")
@@ -117,6 +116,7 @@ package("descr") # CrossTable
 #' # remove.packages("corrplot")
 #' # package("prettydoc")
 #' # package("seriation")
+package("RColorBrewer")
 package("corrplot") #, github = 'taiyun')#, version = "0.88")
 #' package("psy")
 #' package("lavaan")
@@ -794,54 +794,54 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
 #'   else return(matrice)
 #'   # return(as.data.frame(matrice))
 #' }
-#' data1 <- function(vars, data=e, weights=T) {
-#'   if (is.null(data[['weight']])) weights <- F # TODO? warning
-#'   res <- c()
-#'   for (var in vars) {
-#'     if (weights) { res <- c(res, sum(data[['weight']][which(data[[var]]==TRUE)])/sum(data[['weight']][which(data[[var]]==TRUE | data[[var]]==FALSE)])) }
-#'     else { res <- c(res, length(which(data[[var]]==T))/length(which(data[[var]]==T | data[[var]]==FALSE))) }
-#'   }
-#'   return( matrix(res, ncol=length(vars)) )
-#' }
-#' dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE) {
-#'   missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "Don't know", "PNR or other", "NSP ou autre", "PNR ou autre") # TODO: allow for non-standard PNR in a more straightforward way than adding the argument "fr" and putting its value below
-#'   if (is.null(data[['weight']])) weights <- F # TODO? warning
-#'   mat <- c()
-#'   if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !any(grepl("item", class(data[[var]])))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
-#'   else v <- data[[var]]
-#'   if (setequal(levels(v), c(T, F))) levels <- c(T) # before: not this line
-#'   else if (is.null(annotation(v))) levels <- levels(v)
-#'   else levels <- labels(v)@.Data
-#'   levels <- levels[!(levels %in% missing_labels)]
-#'   if (rev_legend) levels <- rev(levels) # new (05/20)
-#'   if (weights) N <- sum(data[['weight']][!is.missing(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
-#'   else N <- length(which(!is.missing(v) & (!(v %in% missing_labels)))) # c("NSP", "Non concerné·e")
-#'   for (val in levels) { # before: no %in% nowhere below
-#'     if (weights) mat <- c(mat, sum(data[['weight']][which(v==val)])/N)
-#'     else mat <- c(mat, length(which(v==val))/N) }
-#'   if (rev) mat <- rev(mat)
-#'   if (miss) {
-#'     if (is.null(annotation(v))) {
-#'       if (weights) mat <- c(mat, sum(data[['weight']][which(is.na(v) | v %in% missing_labels)])/N) # c("NSP", "Non concerné·e")
-#'       else mat <- c(mat, length(which(is.na(v) | v %in% missing_labels))/N) # c("NSP", "Non concerné·e")
-#'     } else  {
-#'       if (weights) mat <- c(mat, sum(data[['weight']][which(is.missing(v) & !is.na(v))])/N) # was defined without " & (!(v %in% c("NSP", "Non concerné·e")))" here and line below
-#'       else mat <- c(mat, length(which(is.missing(v) & !is.na(v)))/N) } } # mais ça semble équivalent pck les NSP sont missing dans ces cas-là
-#'   if (max(nchar(levels))==3 & 'Oui' %in% levels & 'Non' %in% levels) { if (which(levels=='Non') < which(levels=='Oui')) mat[2:1] <- mat[1:2]; levels[c(which(levels=='Oui'),which(levels=='Non'))] <- c('Non', 'Oui') }
-#'   if ((return %in% c("levels", "legend")) & miss & fr==TRUE) return(c(levels, 'NSP'))
-#'   else if ((return %in% c("levels", "legend")) & miss & (fr==FALSE)) return(c(levels, 'PNR'))
-#'   else if ((return %in% c("levels", "legend")) & miss & is.character(fr)) return(c(levels, fr))
-#'   else if ((return %in% c("levels", "legend")) & (!(miss))) return(levels)
-#'   else if (return == "N") return(N)
-#'   else return(matrix(mat, ncol=1))
-#' }
-#' dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE) {
-#'   if (is.logical(data[[vars[1]]])) return(data1(vars, data, weights))
-#'   else {
-#'     res <- c()
-#'     for (var in vars) res <- c(res, dataN(var, data, miss, weights, return, fr, rev))
-#'     return(matrix(res, ncol=length(vars))) }
-#' }
+data1 <- function(vars, data=e, weights=T) {
+  if (is.null(data[['weight']])) weights <- F # TODO? warning
+  res <- c()
+  for (var in vars) {
+    if (weights) { res <- c(res, sum(data[['weight']][which(data[[var]]==TRUE)])/sum(data[['weight']][which(data[[var]]==TRUE | data[[var]]==FALSE)])) }
+    else { res <- c(res, length(which(data[[var]]==T))/length(which(data[[var]]==T | data[[var]]==FALSE))) }
+  }
+  return( matrix(res, ncol=length(vars)) )
+}
+dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE) {
+  missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "Don't know", "PNR or other", "NSP ou autre", "PNR ou autre") # TODO: allow for non-standard PNR in a more straightforward way than adding the argument "fr" and putting its value below
+  if (is.null(data[['weight']])) weights <- F # TODO? warning
+  mat <- c()
+  if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !any(grepl("item", class(data[[var]])))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
+  else v <- data[[var]]
+  if (setequal(levels(v), c(T, F))) levels <- c(T) # before: not this line
+  else if (is.null(annotation(v))) levels <- levels(v)
+  else levels <- labels(v)@.Data
+  levels <- levels[!(levels %in% missing_labels)]
+  if (rev_legend) levels <- rev(levels) # new (05/20)
+  if (weights) N <- sum(data[['weight']][!is.missing(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
+  else N <- length(which(!is.missing(v) & (!(v %in% missing_labels)))) # c("NSP", "Non concerné·e")
+  for (val in levels) { # before: no %in% nowhere below
+    if (weights) mat <- c(mat, sum(data[['weight']][which(v==val)])/N)
+    else mat <- c(mat, length(which(v==val))/N) }
+  if (rev) mat <- rev(mat)
+  if (miss) {
+    if (is.null(annotation(v))) {
+      if (weights) mat <- c(mat, sum(data[['weight']][which(is.na(v) | v %in% missing_labels)])/N) # c("NSP", "Non concerné·e")
+      else mat <- c(mat, length(which(is.na(v) | v %in% missing_labels))/N) # c("NSP", "Non concerné·e")
+    } else  {
+      if (weights) mat <- c(mat, sum(data[['weight']][which(is.missing(v) & !is.na(v))])/N) # was defined without " & (!(v %in% c("NSP", "Non concerné·e")))" here and line below
+      else mat <- c(mat, length(which(is.missing(v) & !is.na(v)))/N) } } # mais ça semble équivalent pck les NSP sont missing dans ces cas-là
+  if (max(nchar(levels))==3 & 'Oui' %in% levels & 'Non' %in% levels) { if (which(levels=='Non') < which(levels=='Oui')) mat[2:1] <- mat[1:2]; levels[c(which(levels=='Oui'),which(levels=='Non'))] <- c('Non', 'Oui') }
+  if ((return %in% c("levels", "legend")) & miss & fr==TRUE) return(c(levels, 'NSP'))
+  else if ((return %in% c("levels", "legend")) & miss & (fr==FALSE)) return(c(levels, 'PNR'))
+  else if ((return %in% c("levels", "legend")) & miss & is.character(fr)) return(c(levels, fr))
+  else if ((return %in% c("levels", "legend")) & (!(miss))) return(levels)
+  else if (return == "N") return(N)
+  else return(matrix(mat, ncol=1))
+}
+dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE) {
+  if (is.logical(data[[vars[1]]])) return(data1(vars, data, weights))
+  else {
+    res <- c()
+    for (var in vars) res <- c(res, dataN(var, data, miss, weights, return, fr, rev))
+    return(matrix(res, ncol=length(vars))) }
+}
 #' dataN2 <- function(var, df = list(c, e), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
 #'   if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))
 #'   else return(cbind(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[2]], miss = miss, weights = weights, fr = fr, rev = rev))) }
@@ -941,197 +941,197 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
 #'     } }
 #' }
 #' color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
-#' color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') { # TODO! whitout white
-#'   if (is.matrix(v)) n <- nrow(v)
-#'   else if (length(v) > 1) n <- length(v)
-#'   else n <- v # cf. http://research.stowers.org/mcm/efg/R/Color/Chart/ColorChart.pdf
-#'   if (grey & grey_replaces_last & n > 1) n <- n-1
-#'   if (theme=='rainbow') {
-#'     if (n == 1) cols <- c("#66B3B3") # "brown": #A52A2A Presentation Teal: #008096 (title) #1A8C8C (dark) #66B3B3 #99CCCC (light)
-#'     else if (n == 2) cols <- c("#66B3B3", "#A52A2A") # c("lightgreen", "plum") = c("#90EE90", "#DDA0DD")
-#'     else if (n == 3) cols <- color5[c(1,3,5)]
-#'     else if (n == 4) cols <- c(rainbow(4, end=4/15)[1:3], "#228B22")
-#'     else if (n == 5) cols <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
-#'     else if (n == 6) cols <- rainbow(6)
-#'     else if (n == 7) cols <- c("#000000", rainbow(7)[c(1:3,5:7)])
-#'     else cols <- rainbow(n) # diverge_hcl green2red brewer.pal(n, Spectral/RdBu...)  https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
-#'   } else if (theme=='default') {
-#'     cols <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))(n)
-#'   } else {
-#'     cols <- rev(brewer.pal(max(n, 3), theme))
-#'     if (n == 1) cols <- cols[1]
-#'     # if (n == 2) cols <- cols[c(1,3)]
-#'     else if (n %% 2 == 0) cols <- rev(brewer.pal(n+2, theme))[c(1:(n/2),(n/2+2):(n+1))] }
-#'   if (n > 10) cols <- colorRampPalette(cols)(n)
-#'   if (rev_color) cols <- rev(cols)
-#'   if (grey & n > 1) return(c(cols, "#D3D3D3")) # lightgrey
-#'   else return(cols)
-#' }
+color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') { # TODO! whitout white
+  if (is.matrix(v)) n <- nrow(v)
+  else if (length(v) > 1) n <- length(v)
+  else n <- v # cf. http://research.stowers.org/mcm/efg/R/Color/Chart/ColorChart.pdf
+  if (grey & grey_replaces_last & n > 1) n <- n-1
+  if (theme=='rainbow') {
+    if (n == 1) cols <- c("#66B3B3") # "brown": #A52A2A Presentation Teal: #008096 (title) #1A8C8C (dark) #66B3B3 #99CCCC (light)
+    else if (n == 2) cols <- c("#66B3B3", "#A52A2A") # c("lightgreen", "plum") = c("#90EE90", "#DDA0DD")
+    else if (n == 3) cols <- color5[c(1,3,5)]
+    else if (n == 4) cols <- c(rainbow(4, end=4/15)[1:3], "#228B22")
+    else if (n == 5) cols <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
+    else if (n == 6) cols <- rainbow(6)
+    else if (n == 7) cols <- c("#000000", rainbow(7)[c(1:3,5:7)])
+    else cols <- rainbow(n) # diverge_hcl green2red brewer.pal(n, Spectral/RdBu...)  https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf
+  } else if (theme=='default') {
+    cols <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))(n)
+  } else {
+    cols <- rev(brewer.pal(max(n, 3), theme))
+    if (n == 1) cols <- cols[1]
+    # if (n == 2) cols <- cols[c(1,3)]
+    else if (n %% 2 == 0) cols <- rev(brewer.pal(n+2, theme))[c(1:(n/2),(n/2+2):(n+1))] }
+  if (n > 10) cols <- colorRampPalette(cols)(n)
+  if (rev_color) cols <- rev(cols)
+  if (grey & n > 1) return(c(cols, "#D3D3D3")) # lightgrey
+  else return(cols)
+}
 #' # accord5 <- c("Pas du tout d'accord", "Pas vraiment d'accord", "Indifférent-e", "Assez d'accord", "Tout à fait d'accord")
 #' oui_non5 <- c("Non, pas du tout", "Non, pas vraiment", "Indifférent-e/NSP", "Oui, plutôt", "Oui, tout à fait")
 #' yes_no5 <- c("Not at all", "Not really", "Indifferent/PNR", "Rather yes", "Yes, completely")
 #' # agree5 <- c("Strongly disagree", "Disagree", "Indifferent", "Agree", "Strongly agree")
 #' # evol5 <- c("Baisser fortement", "Baisser légèrement", "Maintenir au niveau", "Augmenter légèrement", "Augmenter fortement")
 #' # evolve5 <- c("Strongly decrease", "Slightly decrease", "Maintain", "Slightly increase", "Strongly increase")
-#' order_agree <- function(data, miss, rev = T, n = ncol(data)) {
-#'   agree <- c()
-#'   if (!missing(miss)) {
-#'     if (miss) for (i in 1:n) agree <- c(agree, sum(data[floor(nrow(data)/2+1):max(1,(nrow(data)-1)),i]))
-#'     else for (i in 1:n) agree <- c(agree, sum(data[ifelse(nrow(data)==1,1,ceiling(nrow(data)/2+1)):nrow(data),i]))
-#'   } else {
-#'     if (nrow(data)==5 | nrow(data)==6) { for (i in 1:n) { agree <- c(agree, data[4, i] + data[5, i]) } }
-#'     else if (nrow(data)==7) { for (i in 1:n) { agree <- c(agree, data[6, i] + data[7, i]) } }
-#'     else { for (i in 1:n) { agree <- c(agree, data[1, i]) } } }
-#'   return(order(agree, decreasing = rev)) }
-#' barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, margin_r=0, margin_l=NA, online=FALSE, export_xls = F, digits = 0,
-#'                    display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Computer Modern') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern)
-#'   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
-#'   if (!missing(miss)) nsp <- miss
-#'   if (missing(data) & !missing(vars)) {
-#'     data <- dataKN(vars, data=df, miss=miss, weights = weights, return = "", fr=fr, rev=rev)
-#'     N <- dataN(vars[1], data=df, miss=miss, weights = weights, return = "N")
-#'     if (missing(legend) & missing(hover)) {
-#'       if (is.logical(df[[vars[1]]])) hover <- legend <- labels # data1(var = vars[1], data=df, weights = weights)
-#'       else hover <- legend <- dataN(var = vars[1], data=df, miss=miss, weights = weights, return = "legend", fr=fr, rev_legend = rev) } }
-#'   if (length(color)==0) color <- color(data, nsp, rev_color = rev_color)
-#'   margin_t <- 0 + 25*(!(thin))
-#'   if (title!="") { margin_t <- 100 }
-#'   if (grepl("<br>", title)) { margin_t <- 150 }
-#'   legendSize <- 15+2 # 10, 13
-#'   legendY <- 1.1  + 0.3*thin/(ncol(data)-1) # last term may be problematic
-#'   legendX <- 0.2
-#'   legendFont = font #'Open Sans'
-#'   if (is.na(margin_l)) { margin_l <- 4.7*max(nchar(labels)/(1 + str_count(labels, '<br>'))) }
-#'   if (max(nchar(labels)) > 25) { legendSize <- 15 } # 9, 13
-#'   # if (max(nchar(labels)) > 50) { legendSize <- 8 }
-#'   # if (max(nchar(labels)) > 60) { legendSize <- 7 }
-#'   if (max(nchar(labels)) > 50) { # 70
-#'     legendSize <- 13 # 11
-#'     # legendY = 1.2
-#'     legendX= -0.2 # 1
-#'     # if (ncol(data)>1) margin_t = 170
-#'   }
-#'   if (!is.na(legend_x)) legendX <- legend_x
-#'   if (!showLegend) { margin_t <- max(0, margin_t - 70) }
-#'   if (ncol(data)==1) legendY <- 1.5 + 0.3*thin
-#'   if (sort) {
-#'     order <- order_agree(data = data, miss = miss, rev = rev, n = length(labels))
-#'     labels <- labels[order]
-#'     data <- matrix(data[, order], nrow=nrow(data))
-#'   }
-#'   if (nrow(data)==1 & (sort | !showLegend)) {  # new: add !showLegend to manage responsable_CC i.e. comparisons of a multiple answer question
-#'     if (!sort) order <- 1:length(labels)
-#'     hover <- hover[order]
-#'     value <- c()
-#'     for (i in 1:length(hover)) {
-#'       hover[i] <- paste(hover[i], "<br>Choisi dans ", round(100*data[1, i]), "% des réponses", sep="")
-#'       value[i] <- paste(ifelse(data[1, i] > 0.01, round(100*data[1, i]), round(100*data[1, i], 1)), '%', sep='')
-#'       value[i] <- paste(round(100*data[1, i], digits = digits), '%', sep='') } # '%  '
-#'     hovers <- matrix(hover, nrow=length(hover))
-#'     values <- matrix(value, nrow=length(hover))
-#'   }
-#'   else {
-#'     hovers <- values <- c()
-#'     if (nsp) {
-#'       for (i in 1:(length(hover)-1)) {
-#'         for (j in 1:length(labels)) {
-#'           hovers <- c(hovers, paste(hover[i], '<br>', round(100*data[i, j]/(1+data[length(hover), j])), '% des réponses<br>', round(100*data[i, j]), '% des réponses exprimées') )
-#'           values <- c(values, paste(round(100*data[i, j]/(1+data[length(hover), j]), digits = digits), '%', sep='')) # '%  '
-#'         }
-#'       }
-#'       for (j in 1:length(labels)) {
-#'         hovers <- c(hovers, paste(hover[length(hover)], '<br>', round(100*data[length(hover), j]/(1+data[length(hover), j])), '% des réponses<br>') )
-#'         values <- c(values, paste(round(100*data[length(hover), j]/(1+data[length(hover), j]), digits = digits), '%', sep='')) # '%  '
-#'       }
-#'     }
-#'     else {
-#'       if (is.element(hover[length(hover)],c("PNR", "PNR or other", "NSP"))) hover <- hover[1:(length(hover)-1)]
-#'       if (is.element(legend[length(legend)],c("PNR", "PNR or other", "NSP"))) legend <- legend[1:(length(legend)-1)]
-#'       for (i in 1:length(hover)) {
-#'         for (j in 1:length(labels)) {
-#'           hovers <- c(hovers, paste(hover[i], '<br>', round(100*data[i, j]), '% des réponses exprimées<br>') )
-#'           values <- c(values, paste(round(100*data[i, j], digits = digits), '%', sep='')) # '%  '
-#'         }
-#'       }
-#'     }
-#'     hovers <- matrix(hovers, ncol=length(hover))
-#'     values <- matrix(values, ncol=length(hover))
-#'   }
-#'   if (!(display_values)) values <- replace(values, T, '')
-#'   
-#'   bars <- plot_ly(x = data[1,], y = labels, type = 'bar', orientation = 'h', text = values[,1], textposition = 'auto', 
-#'                   error_x = list(visible = error_margin, array=qnorm(1-0.05/2)*sqrt(data[1,]*(1-data[1,])/(N-1)), color = color_margin), # sort=FALSE, 
-#'                   hoverinfo = hovers[,1], name=legend[1], marker = list(color = color[1], line = list(color = 'white'))) %>% # , width = 0
-#'     
-#'     plotly::layout(xaxis = list(title = "",
-#'                                 showgrid = show_ticks,
-#'                                 showline = FALSE,
-#'                                 showticklabels = show_ticks,
-#'                                 gridcolor = toRGB("gray70"), # + noir, + proche de 0
-#'                                 gridwidth = 1,
-#'                                 griddash = "dot",
-#'                                 autotick = FALSE,
-#'                                 ticks = "outside",
-#'                                 tick0 = 0,
-#'                                 dtick = 0.1,
-#'                                 ticklen = 5*show_ticks,
-#'                                 tickwidth = 1,
-#'                                 tickcolor = toRGB("gray70"),
-#'                                 zeroline = T,
-#'                                 range = xrange,
-#'                                 domain = c(0.01 + 0.14*(!(" " %in% labels)), 1)
-#'     ),
-#'     yaxis = list(title = "",
-#'                  showgrid = FALSE,
-#'                  showline = FALSE,
-#'                  showticklabels = FALSE,
-#'                  categoryorder = "trace",
-#'                  # automargin = T,
-#'                  zeroline = FALSE),
-#'     hovermode = 'closest',
-#'     barmode = ifelse(grouped, 'group', 'stack'),
-#'     title = list(text = title, font = list(color = 'black')),
-#'     # title = title,
-#'     # titlefont = list(color='black'),
-#'     font = list(color='black', size=legendSize-1),
-#'     # paper_bgcolor = 'rgb(248, 248, 255)', plot_bgcolor = 'rgb(248, 248, 255)',
-#'     margin = list(l = margin_l, r = margin_r, t = margin_t, b = 24, autoexpand = thin), # 21, autoexpand=FALSE removes useless margin at bottom but creates bug with legend
-#'     # margin = list(b = 20, t = margin_t),
-#'     legend = list(orientation='h', y=legendY, x=legendX, traceorder='normal', font=list(size=legendSize+2, color='black', family = font)), # family='Balto',  , family=legendFont
-#'     # showlegend = (showLegend & !((("Yes" %in% legend) | ("Oui" %in% legend)) & (length(legend)<4)))) %>%
-#'     showlegend = (showLegend & !(setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP'))))
-#'     ) %>%
-#'     
-#'     # labeling the y-axis
-#'     add_annotations(xref = 'paper', yref = 'y', x = 0.14, y = labels,
-#'                     xanchor = 'right',
-#'                     text = labels,
-#'                     font = list(family = font, size = 14+2, color = 'black'),
-#'                     showarrow = FALSE, align = 'right') # %>%
-#'   # Legend in the Yes/No case
-#'   if ((setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP')))) {
-#'     bars <- bars %>% add_annotations(xref = 'x', yref = 'paper',
-#'                                      x = c(0.1, 0.9, 1.1),
-#'                                      y = 1.5,
-#'                                      text = legend,
-#'                                      font = list(family = font, size = 16, color = 'black'),
-#'                                      showarrow = FALSE) } # %>%
-#'   # print(nrow(data))
-#'   # print(hover)
-#'   # print(nrow(hovers))
-#'   # print(ncol(hovers))
-#'   if (nrow(data)>1) { for (i in 2:nrow(data)) { # evaluate=TRUE,
-#'     bars <- add_trace(bars, x = data[i,], name=legend[i], text = values[,i], hoverinfo = 'text', hovertext = hovers[,i], marker = list(color = color[i]),
-#'                       error_x = list(visible = error_margin, array=qnorm(1-0.05/2)*sqrt(data[i,]*(1-data[i,])/(N-1)), color = color_margin)) # width thickness (in px)
-#'   } } # /!\ When data and vars are not provided, N cannot be computed, but error_margin=T still returns a (zero) confidence interval
-#'   if (online) { api_create(bars, filename=file, sharing="public") }
-#'   if (!missing(file) & save) save_plotly(bars, filename = file) # new
-#'   if (export_xls) {
-#'     table <- as.data.frame(data, row.names = legend)
-#'     names(table) <- labels
-#'     return(table) }
-#'   else return(bars)
-#' }
+order_agree <- function(data, miss, rev = T, n = ncol(data)) {
+  agree <- c()
+  if (!missing(miss)) {
+    if (miss) for (i in 1:n) agree <- c(agree, sum(data[floor(nrow(data)/2+1):max(1,(nrow(data)-1)),i]))
+    else for (i in 1:n) agree <- c(agree, sum(data[ifelse(nrow(data)==1,1,ceiling(nrow(data)/2+1)):nrow(data),i]))
+  } else {
+    if (nrow(data)==5 | nrow(data)==6) { for (i in 1:n) { agree <- c(agree, data[4, i] + data[5, i]) } }
+    else if (nrow(data)==7) { for (i in 1:n) { agree <- c(agree, data[6, i] + data[7, i]) } }
+    else { for (i in 1:n) { agree <- c(agree, data[1, i]) } } }
+  return(order(agree, decreasing = rev)) }
+barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, margin_r=0, margin_l=NA, online=FALSE, export_xls = F, digits = 0,
+                   display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
+  if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
+  if (!missing(miss)) nsp <- miss
+  if (missing(data) & !missing(vars)) {
+    data <- dataKN(vars, data=df, miss=miss, weights = weights, return = "", fr=fr, rev=rev)
+    N <- dataN(vars[1], data=df, miss=miss, weights = weights, return = "N")
+    if ((missing(legend) || is.null(legend)) & missing(hover)) {
+      if (is.logical(df[[vars[1]]])) hover <- legend <- labels # data1(var = vars[1], data=df, weights = weights)
+      else hover <- legend <- dataN(var = vars[1], data=df, miss=miss, weights = weights, return = "legend", fr=fr, rev_legend = rev) } }
+  if (length(color)==0) color <- color(data, nsp, rev_color = rev_color)
+  margin_t <- 0 + 25*(!(thin))
+  if (title!="") { margin_t <- 100 }
+  if (grepl("<br>", title)) { margin_t <- 150 }
+  legendSize <- 15+2 # 10, 13
+  legendY <- 1.1  + 0.3*thin/(ncol(data)-1) # last term may be problematic
+  legendX <- 0.2
+  legendFont = font #'Open Sans'
+  if (is.na(margin_l)) { margin_l <- 4.7*max(nchar(labels)/(1 + str_count(labels, '<br>'))) }
+  if (max(nchar(labels)) > 25) { legendSize <- 15 } # 9, 13
+  # if (max(nchar(labels)) > 50) { legendSize <- 8 }
+  # if (max(nchar(labels)) > 60) { legendSize <- 7 }
+  if (max(nchar(labels)) > 50) { # 70
+    legendSize <- 13 # 11
+    # legendY = 1.2
+    legendX= -0.2 # 1
+    # if (ncol(data)>1) margin_t = 170
+  }
+  if (!is.na(legend_x)) legendX <- legend_x
+  if (!showLegend) { margin_t <- max(0, margin_t - 70) }
+  if (ncol(data)==1) legendY <- 1.5 + 0.3*thin
+  if (sort) {
+    order <- order_agree(data = data, miss = miss, rev = rev, n = length(labels))
+    labels <- labels[order]
+    data <- matrix(data[, order], nrow=nrow(data))
+  }
+  if (nrow(data)==1 & (sort | !showLegend)) {  # new: add !showLegend to manage responsable_CC i.e. comparisons of a multiple answer question
+    if (!sort) order <- 1:length(labels)
+    hover <- hover[order]
+    value <- c()
+    for (i in 1:length(hover)) {
+      hover[i] <- paste(hover[i], "<br>Choisi dans ", round(100*data[1, i]), "% des réponses", sep="")
+      value[i] <- paste(ifelse(data[1, i] > 0.01, round(100*data[1, i]), round(100*data[1, i], 1)), '%', sep='')
+      value[i] <- paste(round(100*data[1, i], digits = digits), '%', sep='') } # '%  '
+    hovers <- matrix(hover, nrow=length(hover))
+    values <- matrix(value, nrow=length(hover))
+  }
+  else {
+    hovers <- values <- c()
+    if (nsp) {
+      for (i in 1:(length(hover)-1)) {
+        for (j in 1:length(labels)) {
+          hovers <- c(hovers, paste(hover[i], '<br>', round(100*data[i, j]/(1+data[length(hover), j])), '% des réponses<br>', round(100*data[i, j]), '% des réponses exprimées') )
+          values <- c(values, paste(round(100*data[i, j]/(1+data[length(hover), j]), digits = digits), '%', sep='')) # '%  '
+        }
+      }
+      for (j in 1:length(labels)) {
+        hovers <- c(hovers, paste(hover[length(hover)], '<br>', round(100*data[length(hover), j]/(1+data[length(hover), j])), '% des réponses<br>') )
+        values <- c(values, paste(round(100*data[length(hover), j]/(1+data[length(hover), j]), digits = digits), '%', sep='')) # '%  '
+      }
+    }
+    else {
+      if (is.element(hover[length(hover)],c("PNR", "PNR or other", "NSP"))) hover <- hover[1:(length(hover)-1)]
+      if (is.element(legend[length(legend)],c("PNR", "PNR or other", "NSP"))) legend <- legend[1:(length(legend)-1)]
+      for (i in 1:length(hover)) {
+        for (j in 1:length(labels)) {
+          hovers <- c(hovers, paste(hover[i], '<br>', round(100*data[i, j]), '% des réponses exprimées<br>') )
+          values <- c(values, paste(round(100*data[i, j], digits = digits), '%', sep='')) # '%  '
+        }
+      }
+    }
+    hovers <- matrix(hovers, ncol=length(hover))
+    values <- matrix(values, ncol=length(hover))
+  }
+  if (!(display_values)) values <- replace(values, T, '')
+
+  bars <- plot_ly(x = data[1,], y = labels, type = 'bar', orientation = 'h', text = values[,1], textposition = 'auto',
+                  error_x = list(visible = error_margin, array=qnorm(1-0.05/2)*sqrt(data[1,]*(1-data[1,])/(N-1)), color = color_margin), # sort=FALSE,
+                  hoverinfo = hovers[,1], name=legend[1], marker = list(color = color[1], line = list(color = 'white'))) %>% # , width = 0
+
+    plotly::layout(xaxis = list(title = "",
+                                showgrid = show_ticks,
+                                showline = FALSE,
+                                showticklabels = show_ticks,
+                                gridcolor = toRGB("gray70"), # + noir, + proche de 0
+                                gridwidth = 1,
+                                griddash = "dot",
+                                autotick = FALSE,
+                                ticks = "outside",
+                                tick0 = 0,
+                                dtick = 0.1,
+                                ticklen = 5*show_ticks,
+                                tickwidth = 1,
+                                tickcolor = toRGB("gray70"),
+                                zeroline = T,
+                                range = xrange,
+                                domain = c(0.01 + 0.14*(!(" " %in% labels)), 1)
+    ),
+    yaxis = list(title = "",
+                 showgrid = FALSE,
+                 showline = FALSE,
+                 showticklabels = FALSE,
+                 categoryorder = "trace",
+                 # automargin = T,
+                 zeroline = FALSE),
+    hovermode = 'closest',
+    barmode = ifelse(grouped, 'group', 'stack'),
+    title = list(text = title, font = list(color = 'black')),
+    # title = title,
+    # titlefont = list(color='black'),
+    font = list(color='black', size=legendSize-1),
+    # paper_bgcolor = 'rgb(248, 248, 255)', plot_bgcolor = 'rgb(248, 248, 255)',
+    margin = list(l = margin_l, r = margin_r, t = margin_t, b = 24, autoexpand = thin), # 21, autoexpand=FALSE removes useless margin at bottom but creates bug with legend
+    # margin = list(b = 20, t = margin_t),
+    legend = list(orientation='h', y=legendY, x=legendX, traceorder='normal', font=list(size=legendSize+2, color='black', family = font)), # family='Balto',  , family=legendFont
+    # showlegend = (showLegend & !((("Yes" %in% legend) | ("Oui" %in% legend)) & (length(legend)<4)))) %>%
+    showlegend = (showLegend & !(setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP'))))
+    ) %>%
+
+    # labeling the y-axis
+    add_annotations(xref = 'paper', yref = 'y', x = 0.14, y = labels,
+                    xanchor = 'right',
+                    text = labels,
+                    font = list(family = font, size = 14+2, color = 'black'),
+                    showarrow = FALSE, align = 'right') # %>%
+  # Legend in the Yes/No case
+  if ((setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP')))) {
+    bars <- bars %>% add_annotations(xref = 'x', yref = 'paper',
+                                     x = c(0.1, 0.9, 1.1),
+                                     y = 1.5,
+                                     text = legend,
+                                     font = list(family = font, size = 16, color = 'black'),
+                                     showarrow = FALSE) } # %>%
+  # print(nrow(data))
+  # print(hover)
+  # print(nrow(hovers))
+  # print(ncol(hovers))
+  if (nrow(data)>1) { for (i in 2:nrow(data)) { # evaluate=TRUE,
+    bars <- add_trace(bars, x = data[i,], name=legend[i], text = values[,i], hoverinfo = 'text', hovertext = hovers[,i], marker = list(color = color[i]),
+                      error_x = list(visible = error_margin, array=qnorm(1-0.05/2)*sqrt(data[i,]*(1-data[i,])/(N-1)), color = color_margin)) # width thickness (in px)
+  } } # /!\ When data and vars are not provided, N cannot be computed, but error_margin=T still returns a (zero) confidence interval
+  if (online) { api_create(bars, filename=file, sharing="public") }
+  if (!missing(file) & save) save_plotly(bars, filename = file) # new
+  if (export_xls) {
+    table <- as.data.frame(data, row.names = legend)
+    names(table) <- labels
+    return(table) }
+  else return(bars)
+}
 #' # plot(1:3,1:3) # example
 #' # dev.copy(png, filename="test.png") # save plot from R (not plotly)
 #' # dev.off()
@@ -1159,28 +1159,28 @@ save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = 
     if (trim & format == 'png') image_write(image_trim(image_read(file)), file)
     if (trim & format == 'pdf') plot_crop(file) } # to crop pdf, see also code_oecd/crop_pdf.sh and run it in the desired folder
 }
-#' save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', format = 'pdf', trim = T) { # in case connection refused, turn off Windows Defender on private networks
-#'   if (any(class(plot) == "data.frame")) {
-#'     # file <- paste(folder, "xls/", filename, ".xlsx", sep='')
-#'     file <- paste(sub("figures", "xlsx", folder), filename, ".xlsx", sep='')
-#'     write.xlsx(plot, file, row.names = T, overwrite = T)
-#'     print(file)
-#'   } else {
-#'     file <- paste(folder, filename, ".", format, sep='')
-#'     # print(file)
-#'     if (grepl('webshot', method)) { # four times faster: 2.5s (vs. 10s) but saves useless widgets and doesn't exactly respect the display
-#'       saveWidget(plot, 'temp.html')
-#'       webshot('temp.html', file, delay = 0.1, vwidth = width, vheight = height)
-#'       file.remove('temp.html')}
-#'     # else orca(plot, file = file, width = width, height = height, format = format) # bug with encoding in Windows
-#'     else {
-#'       server <- orca_serve() # doesn't work within a function because requires admin rights
-#'       server$export(plot, file = file, width = width, height = height)
-#'       server$close()
-#'     }
-#'     if (trim & format == 'png') image_write(image_trim(image_read(file)), file)
-#'     if (trim & format == 'pdf') plot_crop(file) }
-#' }
+save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', format = 'pdf', trim = T) { # in case connection refused, turn off Windows Defender on private networks
+  if (any(class(plot) == "data.frame")) {
+    # file <- paste(folder, "xls/", filename, ".xlsx", sep='')
+    file <- paste(sub("figures", "xlsx", folder), filename, ".xlsx", sep='')
+    write.xlsx(plot, file, row.names = T, overwrite = T)
+    print(file)
+  } else {
+    file <- paste(folder, filename, ".", format, sep='')
+    # print(file)
+    if (grepl('webshot', method)) { # four times faster: 2.5s (vs. 10s) but saves useless widgets and doesn't exactly respect the display
+      saveWidget(plot, 'temp.html')
+      webshot('temp.html', file, delay = 0.1, vwidth = width, vheight = height)
+      file.remove('temp.html')}
+    # else orca(plot, file = file, width = width, height = height, format = format) # bug with encoding in Windows
+    else {
+      server <- orca_serve() # doesn't work within a function because requires admin rights
+      server$export(plot, file = file, width = width, height = height)
+      server$close()
+    }
+    if (trim & format == 'png') image_write(image_trim(image_read(file)), file)
+    if (trim & format == 'pdf') plot_crop(file) }
+}
 #' correlogram <- function(grep = NULL, vars = NULL, df = e) {
 #'   if (missing(vars)) vars <- names(df)[grepl(grep, names(df)) & !grepl("_funding|_correct", names(df))]
 #'   data <- df[,vars]
@@ -1189,11 +1189,11 @@ save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = 
 #'   p.mat <- cor.mtest(data) # corrplot does not work when some packages are loaded before 'corrplot' => if it doesn't work, restart R and load only corrplot.
 #'   corrplot(corr, method='color', p.mat = p.mat, sig.level = 0.01, diag=FALSE, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = T, type='upper') #, order='hclust'
 #' }
-automatic_folder <- function(along = "country_name", data = e) {
-  if (along == "country_name") {
+automatic_folder <- function(along = "country_name", data = e, several = "country_comparison") {
+  if (along %in% c("country", "country_name", "wave")) {
     folder <- unique(data[[along]])
-    if (length(folder) > 1) folder <- '../figures/country_comparison/'
-    else folder <- paste0("../figures/", folder)
+    if (length(folder) > 1) folder <- paste0('../figures/', several, '/')
+    else folder <- paste0("../figures/", folder, "/")
     return(folder)
   } else warning("'folder' missing")
 }
@@ -2123,4 +2123,6 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #'   return(final)
 #' }
 
-
+utomatic_folder <- function()
+print("b")
+print("a")

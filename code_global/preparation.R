@@ -285,7 +285,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   variables_conjoint_d <<- c(variables_conjoint_attr, variables_conjoint_d_levels)
   variables_conjoint_levels <<- c(variables_conjoint_d_levels, variables_conjoint_r_levels)
   conjoint_position_g <<- c("A", "B", "B", "A", "None", "None", "A", "Random", "A")
-  conjoint_position_1 <<- c("A", "B", "B", "A", "A", "A", "A", "A", "A")
+  conjoint_position_1 <<- c("A", "B", "B", "A", "A", "Left", "Left", "A", "A")
   names(conjoint_position_g) <<- names(conjoint_position_1) <<- variables_conjoint
   
   variables_matrices <<- list("global_policies" = variables_global_policies,
@@ -326,9 +326,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% c("A little")
   
+  e$wave <- paste0(country, ifelse(wave == "pilot", "p", ""))
   e$country_name <- e$country
   if (grepl("US", country)) e$country_name <- "United States"
   e$country <- countries[e$country_name]
+  
   
   temp <- as.numeric(as.vector(gsub("[^0-9\\.]", "", gsub(".*to", "", e$age_exact))))
   temp <- temp - 1.5
@@ -535,8 +537,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     for (v in intersect(names(e), c(variables_conjoint))) {
       e[[v]] <- sub(".* (.*)", "\\1", e[[v]])
       e[[v]][e[[v]] == "them"] <- "None"
-      e[[paste0(v, "_binary")]] <- e[[v]] == conjoint_position_1[v]
-      label(e[[paste0(v, "_binary")]]) <- paste0(v, "binary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.")
       if (v %in% variables_conjoint_c) e[[v]][e[[v]] %in% c("Democrat", "A")] <- "Left"
       if (v %in% variables_conjoint_c) e[[v]][e[[v]] %in% c("Republican", "B")] <- "Right"
       if (v %in% variables_conjoint_a) e$conjoint_a <- e[[v]] == conjoint_position_g[v]
@@ -546,6 +546,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       if (v %in% variables_conjoint_c) e$branch_conjoint_c[!is.na(e[[v]])] <- sub("conjoint_", "", v)
       if (v %in% "conjoint_left_ag_b") e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == conjoint_position_g[v]
       if (v == "conjoint_rc_r") e$conjoint_b[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
+      e[[paste0(v, "_binary")]] <- e[[v]] == conjoint_position_1[v]
+      label(e[[paste0(v, "_binary")]]) <- paste0(v, "binary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.")
     }
     if ("conjoint_a" %in% names(e)) {
       label(e$branch_conjoint_b) <- "branch_conjoint_b: ir_gr/r_igr/gr_r/ir_r Random branch faced by the respondent in conjoint analysis (b)."
@@ -701,7 +703,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   label(e$number_same_ip) <- "number_same_ip: Number of respondents with the same IP."
   label(e$duplicate_ip) <- "duplicate_ip: T/F The respondent's IP is used by other respondents."
   
-  e$n <- paste0(country, ifelse(wave == "pilot", "p", ""), 1:nrow(e))
+  e$n <- paste0(country, ifelse(wave == "pilot", "p_", "_"), 1:nrow(e))
   
   print(paste("convert: success", country))
   return(e)
