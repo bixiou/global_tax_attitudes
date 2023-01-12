@@ -316,6 +316,7 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
   }
   return(plots)
 }
+# TODO automatize miss, width, height, thin, and binary params
 
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
   "understood_each" = list(vars = variables_understood[1:3]),
@@ -352,10 +353,9 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = e)
 ##### Run #####
 barres_multiple(barres = barres_defs, df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
-# US1p failed: conjoint, 
 (temp <- barres(vars = "petition", rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars["petition"])))
 (test <- barres(vars = c("cap_wealth_support", "remove_tariffs_support"), rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("cap_wealth_support", "remove_tariffs_support")])))
-save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
++save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
 heatmap_multiple()
 heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "understood_all", "understood_each", "understood_score")])
@@ -363,3 +363,16 @@ heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "u
 # heatmap_multiple(heatmaps = heatmaps_defs)
 # TODO trim, break labels / short labels, change >><< into bold for barres/plotly, adjust width/height and other parameters, binary no label
 # TODO? Arial or Computer modern (Times)?
+
+# x heatmap OECD
+# - support (HEAT + ctry)
+# - conjoint (heat + ctry + (r) + by party)
+# - prioritization (distr + heterog distr + PLOT_ALONG)
+# - list exp (TAB + heat + ctry)
+# - foreign aid evolution (ctry + heterog)
+# - foreign aid why (ctry)
+# - petition (ctry + heterog + tab)
+# - belief (CDF + ctry + heterog)
+# - negotiation (ctry + heterog)
+# - group defended (ctry + heterog)
+# - problem (ctry + heat)

@@ -70,8 +70,8 @@ package("modelsummary")
 Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/Users/fabre/.conda/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep)) # to correct bug orca, add folder of orca.exe
 #' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/ProgramData/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep))
 #' # /!\ To install plotly, you first need to install kaleido and orca. Run Anaconda in administrator mode and run: pip install kaleido; conda install -c plotly plotly-orca; then set orca path as above
-if (!is.element("plotly", installed.packages()[,1])) install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) else library(plotly)
-#' # package("plotly") # in case of bug due to kaleido: "pip install kaleido" in the python console
+if (!is.element("plotly", installed.packages()[,1])) install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) else library(plotly) # If bug change .libPaths() (to /Program Files instead of Users/.../AppData)
+# package("plotly") # in case of bug due to kaleido: "pip install kaleido" in the python console
 #' # package("plotly", version = "4.9.4.1") # If bug, do instead: install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) The last version of Plotly changes the place of Legend and makes it over several lines unless one increases width. If the install bugs as admin, try as simple user. If it still bugs, make sure Rtools is installed and found by R. If already installed (to check: package("installr"); install.Rtools()), try: write('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', file = "~/.Renviron", append = TRUE) then check that Sys.which("make") returns "C:\\rtools40\\usr\\bin\\make.exe". (cf. https://cran.r-project.org/bin/windows/Rtools/rtools40.html)
 #' # On ARM Mac, if this doesn't work (runs infinitely). Download the archive and from the Terminal run `R CMD INSTALL plotly.R-4.9.4.1.tar.gz'
 #' # package("reticulate")
@@ -117,7 +117,7 @@ package("descr") # CrossTable
 #' # package("prettydoc")
 #' # package("seriation")
 package("RColorBrewer")
-package("corrplot") #, github = 'taiyun')#, version = "0.88")
+package("corrplot") #, github = 'taiyun')#, version = "0.88") # 0.92 installed: is that an issue?
 #' package("psy")
 #' package("lavaan")
 #' package("StatMatch")
@@ -2122,7 +2122,3 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #'   
 #'   return(final)
 #' }
-
-utomatic_folder <- function()
-print("b")
-print("a")

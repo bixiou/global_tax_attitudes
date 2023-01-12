@@ -215,6 +215,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   text_importance <<- c("Not at all important", "Not so important", "Quite important", "Very important")
   text_problem <<- c("Not an important issue for me", "An issue but there are other priorities", "An issue but we already do what we can", "An important issue, we should do more", "One of the most pressing issue of our time")
   if (wave == "pilot") text_problem[3] <<- "An issue but we do already what we can"
+  text_negotiation <<- c("U.S. interests, even if it goes against global justice", "U.S. interests, to the extent it respects global justice", "Indifferent or don't know", "Global justice, to the extent it respects U.S. interests", "Global justice, even if it goes against U.S. interests")
   foreign_aid_amounts <<- c(.1, .2, .5, 1.0, 1.7, 2.6, 4, 6, 9, 13, 25)
   foreign_aid_means <<- c(0, .15, .4, .8, 1.4, 2.2, 3.35, 5, 7.5, 11, 19, 30)
   foreign_aid_actual_amounts <<- c("FR" = .8, "DE" = 1.3, "ES" = .5, "UK" = 1.7, "US" = .4)
@@ -452,9 +453,18 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     }
     
     for (v in intersect(variables_problem, names(e))) {
-      temp <-  temp <- 2 * (e[[v]] %in% text_problem[5]) + (e[[v]] %in% text_problem[4]) - (e[[v]] %in% text_problem[2]) - 2 * (e[[v]] %in% text_problem[1])
+      temp <- 2 * (e[[v]] %in% text_problem[5]) + (e[[v]] %in% text_problem[4]) - (e[[v]] %in% text_problem[2]) - 2 * (e[[v]] %in% text_problem[1])
       temp[is.na(e[[v]])] <- NA
       e[[v]] <- as.item(temp, labels = structure(c(-2:2), names = c("Not an issue", "Not a priority", "Already addressed", "Important, should do more", "Most pressing issue")), missing.values=c(NA), annotation=Label(e[[v]]))    
+    }
+    
+    if ("negotiation" %in% names(e) & wave != "pilot") {
+      e$negotiation_original <- e$negotiation
+      temp <- 2 * (e$negotiation_original %in% text_negotiation[5]) + (e$negotiation_original %in% text_negotiation[4]) - (e$negotiation_original %in% text_negotiation[2]) - 2 * (e$negotiation_original %in% text_negotiation[1])
+      e$negotiation <- as.item(temp, labels = structure(c(-2:2), names = c("Only [Country] interest", "[Country] then global", "Indifferent or don't know", "Global then [Country]", "Only global justice")
+                                                          # works: c("[Country] interest, not global justice", "[Country] interest, with global justice", "Indifferent or don't know", "Global justice, with [Country] interest", "Global justice, not [Country] interest") 
+                                                        # too long: c("[Country] interest, even against global justice", "[Country] interest, respecting global justice", "Indifferent or don't know", "Global justice, respecting [Country] interest", "Global justice, even against [Country] interest")
+                                                        ), missing.values=c(NA), annotation=Label(e[[v]]))  
     }
     
     if ("foreign_aid_preferred_info" %in% names(e)) {
@@ -710,6 +720,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 }
 
 ##### Run #####
+
+e <- us1 <- prepare(country = "US1", weighting = FALSE)
 
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
 us2p <- prepare(country = "US2", wave = "pilot", weighting = FALSE)
