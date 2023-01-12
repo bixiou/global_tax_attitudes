@@ -1,3 +1,4 @@
+##### labels_vars #####
 labels_vars <- c(
   "finished" = "Finished",
   "excluded" = "Excluded",
@@ -188,6 +189,55 @@ labels_vars <- c(
   "conjoint_a_matches_support" = "Conjoint (a) and support answers match"
 )
 
+##### labels_vars_short_html #####
+labels_vars_short_html <- c(
+  "list_exp_gl" = "G/C/O",
+  "list_exp_rgl" = "R/G/C/O", 
+  "list_exp_l" = "C/O",
+  "list_exp_rl" = "R/C/O",   
+  "conjoint_crg_cr_binary" = ">>C+R+G<< vs. C+R",
+  "conjoint_cr_gr_binary" = "C+R vs. >>G+R<<",
+  "conjoint_r_rcg_binary" = "R vs. >>R+C+G<<",
+  "conjoint_rg_r_binary" = ">>R+G<< vs. R",
+  "conjoint_rc_r_binary" = ">>R+C<< vs. R",
+  "conjoint_left_right_binary" = ">>Left<< vs. Right",
+  "conjoint_leftg_right_binary" = ">>Left+G<< vs. Right",
+  "conjoint_left_a_b_binary" = "Random program >>A<< vs. B",
+  "conjoint_left_ag_b_binary" = "Random program >>A+G<< vs. B",
+  "gcs_important_limit_CC" = "It would succeed in limiting climate change",
+  "gcs_important_hurt_economy" = "It would hurt the [Country] economy",
+  "gcs_important_hurt_me" = "It would penalize my household",
+  "gcs_important_change_lifestyles" = "It would make people change their lifestyle",
+  "gcs_important_reduce_poverty" = "It would reduce poverty in low-income countries",
+  "gcs_important_hurt_poor" = "It might be detrimental to some poor countries",
+  "gcs_important_foster_cooperation" = "It could foster global cooperation",
+  "gcs_important_fuel_corruption" = "It could fuel corruption<br>in low-income countries",
+  "gcs_important_fuel_fraud" = "It could be subject to fraud",
+  "gcs_important_difficult_enact" = "It would be technically difficult<br>to put in place",
+  "gcs_important_having_info" = "Having enough information<br>on this scheme and its consequences",
+  "negotiation" = "What [Country] should defend in climate negotiations",
+  "climate_compensation_support" = "Payments from high-income countries to compensate<br>low-income countries for climate damages",
+  "climate_mitigation_support" = "High-income countries funding renewable<br>energy in low-income countries",
+  "climate_adaptation_support" = "High-income countries contributing $100 billion per year<br>to help low-income countries adapt to climate change",
+  "debt_cancellation_support" = "Cancellation of low-income countries' public debt",
+  "democratise_un_imf_support" = "Democratise international institutions (UN, IMF) by making<br>a country's voting right proportional to its population",
+  "remove_tariffs_support" = "Removing tariffs on imports from low-income countries",
+  "global_min_wage_support" = "A minimum wage in all countries<br>at 50% of local median wage",
+  "global_register_support" = "Fight tax evasion by creating a global financial register<br>to record ownership of all assets",
+  "cap_wealth_support" = "A maximum wealth limit of<br>$10 billion (US) / €100 million (EU)",
+  "foreign_aid_condition_human_rights" = "That recipient countries comply<br>with climate targets and human rights",
+  "foreign_aid_condition_fight_migration" = "That recipient countries cooperate<br>to fight illegal migrations",
+  "foreign_aid_condition_all_high_income" = "That other high-income countries<br>also increase their foreign aid",
+  "foreign_aid_condition_tax_rich" = "That this is financed by<br>increased taxes on millionaires",
+  "foreign_aid_condition_no_diversion" = "That we can be sure the aid reaches<br>people in need and money is not diverted",
+  "foreign_aid_condition_other_choice" = "Other",
+  "foreign_aid_no_ineffective" = "Aid perpetuates poverty as it makes<br>people feel less responsible for themselves",
+  "foreign_aid_no_diversion" = "Aid is not effective<br>as most of it is diverted",
+  "foreign_aid_no_pressure" = "Aid is a pressure tactic for high-income countries that<br>prevents low-income countries from developing freely",
+  "foreign_aid_no_not_our_role" = "[Country] is not responsible<br>for what happens in other countries",
+  "foreign_aid_no_nation_first" = "Charity begins at home: there is already<br>a lot to do to support the American people in need"
+)
+
 fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE) {
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type heatmaps_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # /!\ Bug if an object named 'heatmaps' exists in the environment.
@@ -223,6 +273,7 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
 }
 # (heatmaps_defs <- fill_heatmaps(c("other_policies"), list()))
 
+##### heatmaps_defs #####
 heatmaps_defs <- list(
   "global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1")),
   "global_tax_sharing" = list(vars = c("global_tax_sharing"), conditions = c(">= 1")),
@@ -251,6 +302,7 @@ heatmaps_defs <- list(
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), conditions = c(">= 1"))
 )
 
+##### vars_heatmaps #####
 vars_heatmaps <- c("support", "other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "petition", "gcs_important", "problem", 
                         "foreign_aid_amount", "duration", "donation", "belief", "points", "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", 
                         "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "list_exp", "understood") # misses socio-demos, politics
@@ -262,11 +314,13 @@ heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE) {
   for (heatmap in heatmaps) heatmap_wrapper(vars = heatmap$vars, data = data, labels = heatmap$labels, name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, trim = trim) 
 }
 
+
+##### Barres #####
 barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print = T, export_xls = FALSE, trim = FALSE, method = 'orca', format = 'pdf') {
   if (missing(folder)) folder <- automatic_folder(along = "country", data = df, several = "all")
   for (def in barres) {
     tryCatch({
-      plot <- barres(vars = def$vars, df = df, export_xls = export_xls, labels = def$labels, miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend)
+      plot <- barres(vars = def$vars, df = df, export_xls = export_xls, labels = def$labels, miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend)
       if (print) print(plot)
       save_plotly(plot, filename = def$name, folder = folder, width = def$width, height = def$height, method = method, trim = trim, format = format)
       print(paste0(def$name, ": success"))
@@ -275,18 +329,21 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
 }
 
 fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, 
-                        showLegend = T, width = dev.size('px')[1], height = dev.size('px')[2]) { # width/height could be NULL by default as well, so plotly decides the size
+                        short_labels = T, width = dev.size('px')[1]) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2]
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type plots_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # If df$var and variables_var both exist, giving 'var' (resp. 'variables_var') will yield var (resp. variables_var)
   # /!\ Bug if an object named 'plots' exists in the environment.
+  if (!exists("labels_vars")) warning("'labels_vars' should exist but does not.")
+  labels <- labels_vars
+  if (exists("labels_vars_short_html") & short_labels) labels[names(labels_vars_short_html)] <- labels_vars_short_html
   if (missing(list_var_list)) list_var_list <- list()
   if (is.character(list_var_list)) {
     vec_vars <- list_var_list
     list_var_list <- list()
     for (vars in vec_vars) {
       multi <- grepl("^variables_", vars) | (exists(paste0("variables_", vars)) & !vars %in% names(df))
-      vars <- sub("variables_", "", vars)
-      if (!vars %in% names(plots)) list_var_list[[vars]]$vars <- if (multi) eval(str2expression(paste0("variables_", vars))) else vars # do not override an already defined variable vec with this name
+      variables <- ifelse(multi, paste0("variables_", sub("variables_", "", vars)), sub("variables_", "", vars))
+      if (!vars %in% names(plots)) list_var_list[[vars]]$vars <- if (multi) eval(str2expression(variables)) else variables # do not override an already defined variable vec with this name
     } 
   }  
   if (length(list_var_list) != length(names(list_var_list))) warning("'list_var_list' cannot be an unnamed list.")
@@ -299,32 +356,41 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
   }
   # We complete the missing fields of plots 
   for (name in names(plots)) {
-    if (!"vars" %in% names(plots[[name]])) plots[[name]]$vars <- vars
+    if (!"vars" %in% names(plots[[name]])) plots[[name]]$vars <- if (name %in% names(df)) name else eval(str2expression(paste0("variables_", sub("variables_", "", name))))
     if (!"name" %in% names(plots[[name]])) plots[[name]]$name <- name
     if (!"labels" %in% names(plots[[name]])) {
       plots[[name]]$labels <- c()
-      for (var in plots[[name]]$vars) plots[[name]]$labels <- c(plots[[name]]$labels, ifelse(var %in% names(labels_vars), labels_vars[var], var))
+      for (var in plots[[name]]$vars) plots[[name]]$labels <- c(plots[[name]]$labels, ifelse(var %in% names(labels), labels[var], var))
     }
     if (!"miss" %in% names(plots[[name]])) plots[[name]]$miss <- miss
     if (!"sort" %in% names(plots[[name]])) plots[[name]]$sort <- sort
     if (!"thin" %in% names(plots[[name]])) plots[[name]]$thin <- thin
     if (!"rev" %in% names(plots[[name]])) plots[[name]]$rev <- rev
     if (!"rev_color" %in% names(plots[[name]])) plots[[name]]$rev_color <- rev_color
-    if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- showLegend
+    if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- !is.binary(df[[plots[[name]]$vars[1]]])
     if (!"width" %in% names(plots[[name]])) plots[[name]]$width <- width
-    if (!"height" %in% names(plots[[name]])) plots[[name]]$height <- height
+    if (!"height" %in% names(plots[[name]]) & "heigth" %in% names(plots[[name]])) plots[[name]]$height <- plots[[name]]$heigth
+    if (!"height" %in% names(plots[[name]])) plots[[name]]$height <- fig_height(nb_bars = length(plots[[name]]$labels), large = any(grepl("<br>", plots[[name]]$labels))) # height
   }
   return(plots)
 }
-# TODO automatize miss, width, height, thin, and binary params
+# TODO automatize miss, width, thin params
 
+##### barres_defs #####
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
-  "understood_each" = list(vars = variables_understood[1:3]),
+  "understood_each" = list(vars = variables_understood[1:3], width = 1380),
+  "problem" = list(width = 1050),
+  "climate_policies" = list(width = 1221),
+  "global_policies" = list(width = 1270),
+  "other_policies" = list(width = 1270),
+  "climate_policies" = list(width = 1221),
+  "variables_list_exp" = list(width = 500), # TODO manage the different branches e.g. as heterogeneity
+  "variables_petition" = list(vars = c("petition_gcs", "petition_nr"), width = 500),
   # "understood_score" = list(vars = variables_understood[4]), # TODO
   # "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   # "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
   # "petition" = list(vars = variables_petition, conditions = ">= 1"),
-  "conjoint" = list(vars = variables_conjoint_binary),
+  "conjoint" = list(vars = variables_conjoint_binary, width = 900),
   # "conjoint_a" = list(vars = variables_conjoint_a_binary, conditions = ">= 1"),
   # "conjoint_b" = list(vars = variables_conjoint_b_binary, conditions = ">= 1"),
   # "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
@@ -336,26 +402,26 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "foreign_aid_amount" = list(vars = variables_foreign_aid_amount, conditions = c(""), percent = FALSE),
   # "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   # "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
-  "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)]),
-  "foreign_aid_condition" = list(vars = variables_foreign_aid_condition[!grepl("other", variables_foreign_aid_condition)]),
-  "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"))
+  "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)], width = 1125),
+  "foreign_aid_condition" = list(vars = variables_foreign_aid_condition[!grepl("other", variables_foreign_aid_condition)], width = 955),
+  "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 950)
 )
 
 # TODO "foreign_aid_amount", "duration", "donation", "belief", "points", "share_policies_supported", socio-demos, politics, survey_biased, individual variables
-vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "petition", "gcs_important", "problem", 
-                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing",
-                  "conjoint_a", "conjoint_b", "conjoint_c", "list_exp") 
+vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
+                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "variables_list_exp") 
 
 barres_defs <- fill_barres(vars_barres, barres_defs, df = e)
-# heatmaps_defs$foreign_aid_no
+# barres_defs$foreign_aid_no
 
 
 ##### Run #####
-barres_multiple(barres = barres_defs, df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs, df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
+(temp <- barres(vars = variables_foreign_aid_raise, rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=labels_vars[variables_foreign_aid_raise]))
 (temp <- barres(vars = "petition", rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars["petition"])))
 (test <- barres(vars = c("cap_wealth_support", "remove_tariffs_support"), rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("cap_wealth_support", "remove_tariffs_support")])))
-+save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
+save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
 heatmap_multiple()
 heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "understood_all", "understood_each", "understood_score")])

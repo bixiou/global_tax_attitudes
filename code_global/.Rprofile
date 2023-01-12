@@ -68,7 +68,7 @@ package("modelsummary")
 #' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "/home/adrien/anaconda3/bin", sep = .Platform$path.sep))
 #' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/Users/fabre/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep)) # to correct bug orca, add folder of orca.exe
 Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/Users/fabre/.conda/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep)) # to correct bug orca, add folder of orca.exe
-#' Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/ProgramData/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep))
+Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/ProgramData/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep))
 #' # /!\ To install plotly, you first need to install kaleido and orca. Run Anaconda in administrator mode and run: pip install kaleido; conda install -c plotly plotly-orca; then set orca path as above
 if (!is.element("plotly", installed.packages()[,1])) install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) else library(plotly) # If bug change .libPaths() (to /Program Files instead of Users/.../AppData)
 # package("plotly") # in case of bug due to kaleido: "pip install kaleido" in the python console
@@ -987,6 +987,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
                    display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
+  labels <- unname(labels)
   if (missing(data) & !missing(vars)) {
     data <- dataKN(vars, data=df, miss=miss, weights = weights, return = "", fr=fr, rev=rev)
     N <- dataN(vars[1], data=df, miss=miss, weights = weights, return = "N")
@@ -1136,7 +1137,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
 #' # dev.copy(png, filename="test.png") # save plot from R (not plotly)
 #' # dev.off()
 #' # orca(example, file = "image.png") # BEST METHOD, cf. below
-#' fig_height <- function(nb_bars, large = F) return(ifelse(nb_bars == 1, 140, 220 + 30*(nb_bars - 2)) + 10*nb_bars*large) # 2 ~ 220, 3 ~ 250, 4 ~ 280, 5 ~ 325, 6 ~ 360, 7 ~ 380, TRUE ~ 400 # 2 ~ 200-240, 3 ~ 240-275, 4 ~ 270-340, 5 ~ 320-340, 6 ~ 400, 7 ~ 340-430,
+fig_height <- function(nb_bars, large = F) return(ifelse(nb_bars == 1, 140, 220 + 30*(nb_bars - 2)) + 10*nb_bars*large) # 2 ~ 220, 3 ~ 250, 4 ~ 280, 5 ~ 325, 6 ~ 360, 7 ~ 380, TRUE ~ 400 # 2 ~ 200-240, 3 ~ 240-275, 4 ~ 270-340, 5 ~ 320-340, 6 ~ 400, 7 ~ 340-430,
 save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='dev', trim = T, format = 'png') {
   if (any(class(plot) %in% c("data.frame", "array"))) {
     # file <- paste(folder, "xls/", filename, ".xlsx", sep='')

@@ -142,7 +142,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 # 33% La dépense publique doit servir en priorité aux services publics et aux Français
 # 10% Je serais favorable avec un montant plus faible : 2% c'est trop
 
-prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = FALSE, zscores = T, zscores_dummies = FALSE, remove_id = FALSE, efa = FALSE, combine_age_50 = T) { #(country!="DK") # , exclude_quotas_full=TRUE
+prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = FALSE, zscores = T, zscores_dummies = FALSE, remove_id = FALSE, efa = FALSE, combine_age_50 = T, define_var_lists = T) { #(country!="DK") # , exclude_quotas_full=TRUE
   # if (country == "US") {
   #   if (wave == "pilot1") e <- read_csv("../data/US_pilot.csv") 
   #   else if (wave == "pilot2") e <- read_csv("../data/US_pilot2.csv") 
@@ -175,7 +175,7 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   if (exclude_speeder) e <- e[as.numeric(as.vector(e$duration)) > duration_min,] # & !incl_quality_fail
   if (only_finished & !incl_quality_fail) e <- e[e$finished==1,] 
   # if (only_finished | incl_quality_fail) { # TODO: le faire marcher même pour les autres
-    e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa, combine_age_50 = combine_age_50, only_finished = only_finished)
+    e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa, combine_age_50 = combine_age_50, only_finished = only_finished, define_var_lists = define_var_lists)
     e <- e[,!duplicated(names(e))]
     # if (!incl_quality_fail) e <- e[e$attention_test == T, ] # TODO!
     # if (weighting) {
@@ -202,7 +202,7 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   return(e)
 }
 
-convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores_dummies = FALSE, efa = FALSE, combine_age_50 = T, only_finished = T) {
+convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores_dummies = FALSE, efa = FALSE, combine_age_50 = T, only_finished = T, define_var_lists = T) {
   text_pnr <<- c("US" = "I don't know", "US" = "Prefer not to say",  "US" = "Don't know, or prefer not to say",  "US" = "Don't know",  "US" = "Don't know or prefer not to say", "US" = "I don't know",
                 "US" = "Don't know, prefer not to say",  "US" = "Don't know, or prefer not to say.",  "US" = "Don't know,  or prefer not to say", "US" = "I am not in charge of paying for heating; utilities are included in my rent", "PNR",
                 "FR" = "Je ne sais pas", "FR" = "Ne sais pas, ne souhaite pas répondre", "FR" = "NSP (Ne sais pas, ne se prononce pas)", "FR" = "NSP (Ne sait pas, ne se prononce pas)", "FR" = "Préfère ne pas le dire",
@@ -246,54 +246,57 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     }
   }
 
-  variables_support <<- names(e)[grepl('support', names(e)) & !grepl("foreign_aid_raise_support", names(e))]
-  variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|cgr|foreign_aid|_tax_", names(e))]
-  variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
-  variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
-  variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
-  variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
-  variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition', names(e))]
-  variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
-  variables_problem <<- names(e)[grepl('problem_', names(e))]
-  variables_win_lose <<- names(e)[grepl('win_lose', names(e))]
-  variables_foreign_aid_amount <<- c("foreign_aid_belief", "foreign_aid_preferred_no_info", "foreign_aid_preferred_info", "foreign_aid_preferred")
-  variables_duration <<- names(e)[grepl('duration', names(e))]
-  variables_donation <<- c("donation_nation", "donation_africa", "donation")
-  variables_list_exp <<- names(e)[grepl('list_exp', names(e))]
-  variables_belief <<- c("gcs_belief", "nr_belief")
-  variables_points <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
-  variables_understood <<- paste0(c("nr", "gcs", "both", "score"), "_understood")
-  
-  variables_foreign_aid_raise <<- names(e)[grepl('foreign_aid_raise_how', names(e))]
-  variables_foreign_aid_reduce <<- names(e)[grepl('foreign_aid_reduce_how', names(e))]
-  variables_foreign_aid_no <<- names(e)[grepl('foreign_aid_no_', names(e)) & names(e) != "foreign_aid_no_other"]
-  variables_foreign_aid_condition <<- names(e)[grepl('foreign_aid_condition', names(e)) & names(e) != "foreign_aid_condition_other"]
-  
-  variables_conjoint <<- names(e)[grepl('conjoint_', names(e)) & !grepl("order|duration", names(e))]
-  variables_conjoint_a <<- c("conjoint_crg_cr")
-  variables_conjoint_b <<- c("conjoint_cr_gr", "conjoint_r_rcg", "conjoint_rg_r", "conjoint_rc_r")
-  variables_conjoint_c <<- c("conjoint_left_right", "conjoint_leftg_right")
-  variables_conjoint_d <<- c("conjoint_left_a_b", "conjoint_left_ag_b")
-  variables_conjoint_a_binary <<- c("conjoint_crg_cr_binary")
-  variables_conjoint_b_binary <<- paste0(variables_conjoint_b, "_binary")
-  variables_conjoint_c_binary <<- paste0(variables_conjoint_c, "_binary")
-  variables_conjoint_d_binary <<- paste0(variables_conjoint_d, "_binary")
-  variables_conjoint_binary <<- c(variables_conjoint_a_binary, variables_conjoint_b_binary, variables_conjoint_c_binary, variables_conjoint_d_binary)
-  variables_conjoint_attr <<- paste0("F-1-", 1:5)
-  variables_conjoint_r_levels <<- names(e)[grepl("F-1-1-|F-1-2-", names(e))]
-  variables_conjoint_d_levels <<- names(e)[grepl("D-1-1-|D-1-2-", names(e))]
-  variables_conjoint_r <<- c(variables_conjoint_attr, variables_conjoint_r_levels)
-  variables_conjoint_d <<- c(variables_conjoint_attr, variables_conjoint_d_levels)
-  variables_conjoint_levels <<- c(variables_conjoint_d_levels, variables_conjoint_r_levels)
-  conjoint_position_g <<- c("A", "B", "B", "A", "None", "None", "A", "Random", "A")
-  conjoint_position_1 <<- c("A", "B", "B", "A", "A", "Left", "Left", "A", "A")
-  names(conjoint_position_g) <<- names(conjoint_position_1) <<- variables_conjoint
-  
-  variables_matrices <<- list("global_policies" = variables_global_policies,
-                              "climate_policies" = variables_climate_policies,
-                              "problem" = variables_problem,
-                              "gcs_important" = variables_gcs_important)
-  
+  if (define_var_lists) {
+    variables_support <<- names(e)[grepl('support', names(e)) & !grepl("foreign_aid_raise_support", names(e))]
+    variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|cgr|foreign_aid|_tax_|order_", names(e))]
+    variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
+    variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
+    variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
+    variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
+    variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition', names(e))]
+    variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
+    variables_problem <<- names(e)[grepl('problem_', names(e))]
+    variables_win_lose <<- names(e)[grepl('win_lose', names(e))]
+    variables_foreign_aid_amount <<- c("foreign_aid_belief", "foreign_aid_preferred_no_info", "foreign_aid_preferred_info", "foreign_aid_preferred")
+    variables_duration <<- names(e)[grepl('duration', names(e))]
+    variables_donation <<- c("donation_nation", "donation_africa", "donation")
+    variables_list_exp <<- names(e)[grepl('list_exp', names(e))]
+    variables_belief <<- c("gcs_belief", "nr_belief")
+    variables_points <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
+    variables_understood <<- paste0(c("nr", "gcs", "both", "score"), "_understood")
+    
+    variables_foreign_aid_raise <<- names(e)[grepl('foreign_aid_raise_how', names(e))]
+    variables_foreign_aid_reduce <<- names(e)[grepl('foreign_aid_reduce_how', names(e))]
+    variables_foreign_aid_no <<- names(e)[grepl('foreign_aid_no_', names(e)) & names(e) != "foreign_aid_no_other"]
+    variables_foreign_aid_condition <<- names(e)[grepl('foreign_aid_condition', names(e)) & names(e) != "foreign_aid_condition_other"]
+    
+    variables_conjoint <<- names(e)[grepl('conjoint_', names(e)) & !grepl("order|duration", names(e))]
+    variables_conjoint_a <<- c("conjoint_crg_cr")
+    variables_conjoint_b <<- c("conjoint_cr_gr", "conjoint_r_rcg", "conjoint_rg_r", "conjoint_rc_r")
+    variables_conjoint_c <<- c("conjoint_left_right", "conjoint_leftg_right")
+    variables_conjoint_d <<- c("conjoint_left_a_b", "conjoint_left_ag_b")
+    variables_conjoint_a_binary <<- c("conjoint_crg_cr_binary")
+    variables_conjoint_b_binary <<- paste0(variables_conjoint_b, "_binary")
+    variables_conjoint_c_binary <<- paste0(variables_conjoint_c, "_binary")
+    variables_conjoint_d_binary <<- paste0(variables_conjoint_d, "_binary")
+    variables_conjoint_binary <<- c(variables_conjoint_a_binary, variables_conjoint_b_binary, variables_conjoint_c_binary, variables_conjoint_d_binary)
+    variables_conjoint_attr <<- paste0("F-1-", 1:5)
+    variables_conjoint_r_levels <<- names(e)[grepl("F-1-1-|F-1-2-", names(e))]
+    variables_conjoint_d_levels <<- names(e)[grepl("D-1-1-|D-1-2-", names(e))]
+    variables_conjoint_r <<- c(variables_conjoint_attr, variables_conjoint_r_levels)
+    variables_conjoint_d <<- c(variables_conjoint_attr, variables_conjoint_d_levels)
+    variables_conjoint_levels <<- c(variables_conjoint_d_levels, variables_conjoint_r_levels)
+    conjoint_position_g <<- c("A", "B", "B", "A", "None", "None", "A", "Random", "A")
+    conjoint_position_1 <<- c("A", "B", "B", "A", "A", "Left", "Left", "A", "A")
+    names(conjoint_position_g) <<- names(conjoint_position_1) <<- variables_conjoint
+    
+    variables_matrices <<- list("global_policies" = variables_global_policies,
+                                "climate_policies" = variables_climate_policies,
+                                "problem" = variables_problem,
+                                "gcs_important" = variables_gcs_important)
+    
+  }
+ 
   for (i in intersect(c(variables_duration, "hh_size", "Nb_children__14", "zipcode", variables_donation, variables_belief, variables_list_exp, variables_points, "global_tax_global_share" #, "age"
   ), names(e))) {
     lab <- label(e[[i]])
@@ -721,7 +724,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 
 ##### Run #####
 
-e <- us1 <- prepare(country = "US1", weighting = FALSE)
+e <- us1 <- prepare(country = "US1", weighting = FALSE, define_var_lists = FALSE)
 
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
 us2p <- prepare(country = "US2", wave = "pilot", weighting = FALSE)
@@ -739,3 +742,5 @@ export_codebook(us1p, "../data/codebook_us1p.csv", stata = FALSE, omit = which(n
 export_codebook(us2p, "../data/codebook_us2p.csv", stata = FALSE)
 export_codebook(eup, "../data/codebook_eup.csv", stata = FALSE)
 export_codebook(eup, "../data/codebook_ep.csv", stata = FALSE)
+
+variables_list_exp <- c("list_exp_l", "list_exp_gl", "list_exp_rl", "list_exp_rgl")
