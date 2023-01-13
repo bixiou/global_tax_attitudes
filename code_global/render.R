@@ -418,7 +418,6 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = e)
 ##### Run #####
 barres_multiple(barres = barres_defs, df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
-(temp <- barres(vars = variables_foreign_aid_raise, rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=labels_vars[variables_foreign_aid_raise]))
 (temp <- barres(vars = "petition", rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars["petition"])))
 (test <- barres(vars = c("cap_wealth_support", "remove_tariffs_support"), rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("cap_wealth_support", "remove_tariffs_support")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
