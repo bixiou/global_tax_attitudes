@@ -609,7 +609,7 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
 #'   decote <- (ir < seuil_decote) * 0.75 * (seuil_decote - ir)
 #'   return(pmax((ir-decote),0)) # vrai calcul
 #' }
-#' representativity_index <- function(weights, digits = 3) { return(round(sum(weights)^2/(length(weights)*sum(weights^2)), 3)) }
+representativity_index <- function(weights, digits = 3) { return(round(sum(weights)^2/(length(weights)*sum(weights^2)), 3)) }
 #' 
 #' 
 #' ##### Graphiques #####
@@ -1100,7 +1100,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     # margin = list(b = 20, t = margin_t),
     legend = list(orientation='h', y=legendY, x=legendX, traceorder='normal', font=list(size=legendSize+2, color='black', family = font)), # family='Balto',  , family=legendFont
     # showlegend = (showLegend & !((("Yes" %in% legend) | ("Oui" %in% legend)) & (length(legend)<4)))) %>%
-    showlegend = (showLegend & !(setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP'))))
+    showlegend = showLegend # (showLegend & !(setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP')) | setequal(legend, c('Yes', 'No')) | setequal(legend, c('Oui', 'Non'))))
     ) %>%
 
     # labeling the y-axis
@@ -1110,13 +1110,23 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
                     font = list(family = font, size = 14+2, color = 'black'),
                     showarrow = FALSE, align = 'right') # %>%
   # Legend in the Yes/No case
-  if ((setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP')))) {
-    bars <- bars %>% add_annotations(xref = 'x', yref = 'paper',
-                                     x = c(0.1, 0.9, 1.1),
-                                     y = 1.5,
-                                     text = legend,
-                                     font = list(family = font, size = 16, color = 'black'),
-                                     showarrow = FALSE) } # %>%
+  if (showLegend == FALSE) {
+    if ((setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP')))) {
+      bars <- bars %>% add_annotations(xref = 'x', yref = 'paper',
+                                       x = c(0.1, 0.9, 1.1),
+                                       y = 1.5,
+                                       text = legend,
+                                       font = list(family = font, size = 16, color = 'black'),
+                                       showarrow = FALSE) } # %>%
+    if ((setequal(legend, c('Yes', 'No')) | setequal(legend, c('Oui', 'Non')))) {
+      bars <- bars %>% add_annotations(xref = 'x', yref = 'paper',
+                                       x = c(0.1, 0.9),
+                                       y = 1.5,
+                                       text = legend,
+                                       font = list(family = font, size = 16, color = 'black'),
+                                       showarrow = FALSE) } # %>%    
+  }
+
   # print(nrow(data))
   # print(hover)
   # print(nrow(hovers))
@@ -1209,7 +1219,7 @@ heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T, perc
   par(xpd=TRUE)
   return(corrplot(data, method='color', col = if(colors %in% c('RdBu', 'BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdYlBu')) COL2(colors) else COL1(colors), tl.cex = 1.3, na.label = "NA", number.cex = 1.3, mar = c(1,1,1.3,3), cl.pos = 'n', col.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = (proportion | percent), type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale # cex # mar ...1.1
 }
-heatmap_table <- function(vars, labels = vars, data = e, along = "country_name", special = c(), conditions = c("", ">= 1", "/"), on_control = FALSE, alphabetical = T, export_xls = T, filename = "", sort = FALSE, folder = NULL) {
+heatmap_table <- function(vars, labels = vars, data = e, along = "country_name", special = c(), conditions = c("", ">= 1", "/"), on_control = FALSE, alphabetical = T, export_xls = T, filename = "", sort = FALSE, folder = NULL, weights = T) {
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
   e <- data
   if (on_control) e <- e[e$treatment=="None",]
@@ -1243,7 +1253,8 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
     for (v in 1:nb_vars) {
       var_c <- df_c[[vars[v]]][!is.na(df_c[[vars[v]]])]
-      if (length(var_c) > 0) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])")))
+      if (weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])")))
+      if (!weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("mean(var_c", conditions[v], ", na.rm = T)")))
     }
   }
   row.names(table) <- labels
@@ -1251,7 +1262,7 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
   if (export_xls) save_plot(table, filename = sub("figures", "xlsx", paste0(folder, filename)))
   return(table)
 }
-heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(), conditions = c("", ">= 1", "/"), data = e, width = NULL, height = NULL, alphabetical = T, on_control = FALSE, export_xls = T, format = 'pdf', sort = FALSE, proportion = NULL, percent = FALSE, trim = T, colors = 'RdYlBu', folder = NULL) {
+heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(), conditions = c("", ">= 1", "/"), data = e, width = NULL, height = NULL, alphabetical = T, on_control = FALSE, export_xls = T, format = 'pdf', sort = FALSE, proportion = NULL, percent = FALSE, trim = T, colors = 'RdYlBu', folder = NULL, weights = T) {
   # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
   # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
   # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few).
@@ -1276,17 +1287,18 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
                                 TRUE ~ "unknown"), sep = "_")
     tryCatch({
       if (cond %in% c("/", "-")) { # TODO: manage binary for / or -
-        pos <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = ">= 1", on_control = on_control, alphabetical = alphabetical, sort = FALSE)
-        neg <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = "<= -1", on_control = on_control, alphabetical = alphabetical, sort = FALSE)
+        pos <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = ">= 1", on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights)
+        neg <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = "<= -1", on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights)
         if (cond == "-") temp <- pos - neg else temp <- pos / (pos + neg)
         for (i in 1:length(vars)) if (is.logical(data[[vars[i]]])) temp[i, ] <- pos[i, ]
-      } else {  temp <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical, sort = FALSE) }
+      } else {  temp <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights) }
       if (!missing(labels_along) & length(labels_along) == ncol(temp)) colnames(temp) <- labels_along
       if (sort) temp <- temp[order(-temp[,1]),]
       if (export_xls) save_plot(as.data.frame(temp), filename = sub("figures", "xlsx", paste0(folder, filename)))
       heatmap_plot(temp, proportion = ifelse(missing(proportion), cond != "", proportion), percent = percent, colors = colors)
       save_plot(filename = paste0(folder, filename), width = width, height = height, format = format, trim = trim)
-    }, error = function(cond) { print(filename) } )
+      print(paste0(filename, ": success"))
+    }, error = function(cond) { print(paste0(filename, ": fail.")) } )
   }
 }
 

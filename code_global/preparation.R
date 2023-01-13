@@ -38,14 +38,14 @@ major_candidates <- minor_candidates <- list()
 {
   levels_quotas <- list(
   "gender" = c("Woman", "Other", "Man"), # we could add: urbanity, education, wealth, occupation, employment_agg, marital_status, Nb_children, HH_size, home (ownership)
-  "income" = c("Q1", "Q2", "Q3", "Q4"),
+  "income_quartile" = 1:4, #c("Q1", "Q2", "Q3", "Q4"),
   "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
   "urbanity" = c("Cities", "Towns and suburbs", "Rural"),
-  "diploma" = c("Below upper secondary", "Upper secondary", "Post secondary", "Not 25-64"), # "Not 25-64"
+  "diploma_25_64" = c("Below upper secondary", "Upper secondary", "Post secondary", "Not 25-64"), # "Not 25-64"
   "EU_country" = c("FR", "DE", "ES", "UK"),
   "US_region" = c("Northeast", "Midwest", "West","South"),
   "US_race" = c("White only", "Hispanic", "Black", "Other"),
-  "US_vote_2020" = c("Biden", "Trump", "Other/Non-voter"), #, "PNR/no right"),
+  "US_vote_us" = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"),
   "EU_urbanity" = c("Cities", "Towns and suburbs", "Rural"),
   "US_urban" = c(TRUE, FALSE)#,
   # "college_OECD" = c("College Degree", "No college"),
@@ -62,34 +62,35 @@ major_candidates <- minor_candidates <- list()
   # "DE_urban_category" = c("Rural", "Towns_and_Suburbs", "Cities"),
 )
   
-  quotas <- list("EU" = c("gender", "income", "age", "urbanity", "diploma", "country"),
-                 "US" = c("gender", "income", "age", "urbanity", "diploma", "region", "race"), 
-                 "US_vote" = c("gender", "income", "age", "urbanity", "diploma", "region", "race", "vote_2020"),
-                 "FR" = c("gender", "income", "age", "urbanity", "diploma"), #, "urban_category") From oecd_climate: Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
+  quotas <- list("EU" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "country"),
+                 "US" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "region", "race"), 
+                 "US_vote" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "region", "race", "vote_us"),
+                 "FR" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"), #, "urban_category") From oecd_climate: Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
                  # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
-                 "DE" = c("gender", "income", "age", "urbanity", "diploma"),
-                 "ES" = c("gender", "income", "age", "urbanity", "diploma"),
-                 "UK" = c("gender", "income", "age", "urbanity", "diploma")
+                 "DE" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"),
+                 "ES" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"),
+                 "UK" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64")
   )
   
   qs <- read.xlsx("../questionnaire/specificities.xlsx", sheet = "Quotas", rowNames = T, rows = c(1, 6, 8), cols = 1:34)
   pop_freq <- list(
     "EU" = list(
       "gender" = c(qs["EU","women"], 0.001, qs["EU","men"])/1000,
-      "income" = rep(.25, 4),
-      "age" = qs["EU", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000,
-      "urbanity" = qs["EU", c("Cities", "Towns.and.suburbs", "Rural")]/1000,
-      "diploma" = qs["EU", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, 
-      "EU_country" = qs["EU", c("FR", "DE", "ES", "UK")]/1000
+      "income_quartile" = rep(.25, 4),
+      "age" = unlist(qs["EU", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000),
+      "urbanity" = unlist(qs["EU", c("Cities", "Towns.and.suburbs", "Rural")]/1000),
+      "diploma_25_64" = unlist(c(qs["EU", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(pop_freq$EU$age[c(1,5)]))), 
+      "EU_country" = unlist(qs["EU", c("FR", "DE", "ES", "UK")]/1000)
     ),
     "US" = list(
       "gender" = c(qs["US","women"], 0.001, qs["US","men"])/1000,
-      "income" = rep(.25, 4),
-      "age" = qs["US", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000,
+      "income_quartile" = rep(.25, 4),
+      "age" = unlist(qs["US", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000),
       "urbanity" = c(qs["US", "Cities"], 0.001, qs["US","Rural"])/1000,
-      "diploma" = qs["US", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, 
-      "US_region" = qs["US", c("Region.1", "Region.2", "Region.3", "Region.4")]/1000,
-      "US_race" = qs["US", c("White.non.Hispanic", "Hispanic", "Black", "Other")]/1000
+      "diploma_25_64" = unlist(c(qs["US", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(pop_freq$US$age[c(1,5)]))), 
+      "US_region" = unlist(qs["US", c("Region.1", "Region.2", "Region.3", "Region.4")]/1000),
+      "US_race" = unlist(qs["US", c("White.non.Hispanic", "Hispanic", "Black", "Other")]/1000),
+      "US_vote_us" = c(0.342171, 0.312823, 0.345006, 0.000001)
     ))
   for (c in c("EU", "US")) pop_freq[[c]]$diploma <- c(unlist(pop_freq[[c]]$diploma), "Not 25-64" = 1-sum(pop_freq[[c]]$diploma))
 }
@@ -141,6 +142,50 @@ relabel_and_rename <- function(e, country, wave = NULL) {
 # 26% Je serais favorable si tous les pays riches contribuaient autant que la France
 # 33% La dépense publique doit servir en priorité aux services publics et aux Français
 # 10% Je serais favorable avec un montant plus faible : 2% c'est trop
+weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_for_missing_level = F, combine_age_50 = FALSE, trim = T) {
+  if (!missing(variant)) print(variant)
+  vars <- quotas[[paste0(c(country, variant), collapse = "_")]]
+  freqs <- list()
+  for (v in vars) {
+    if (!(v %in% names(e))) warning(paste(v, "not in data"))
+    e[[v]] <- as.character(e[[v]])
+    e[[v]][is.na(e[[v]])] <- "NA"
+    var <- ifelse(v %in% names(levels_quotas), v, paste(country, v, sep="_"))
+    if (!(var %in% names(levels_quotas))) warning(paste(var, "not in levels_quotas"))
+    levels_v <- as.character(levels_quotas[[var]])
+    missing_levels <- setdiff(levels(as.factor(e[[v]])), levels_v)
+    present_levels <- which(levels_v %in% levels(as.factor(e[[v]])))
+    if (length(present_levels) != length(levels_v)) warning(paste0("Following levels are missing from data: ", var, ": ", paste(levels_v[!1:length(levels_v) %in% present_levels], collapse = ', '), " (for ", country, "). Weights are still computed, neglecting this category."))
+    prop_v <- pop_freq[[country]][[var]][present_levels]
+    if (v == "age" & combine_age_50) {
+      e$age_50 <- e$age
+      e$age_50[e$age == "65+"] <- "50-64"
+      prop_v[4] <- prop_v[4] + prop_v[5]
+      prop_v <- prop_v[1:4]
+      levels_v <- levels_v[1:4]
+      present_levels <- present_levels[1:4]
+      v <- "age_50"
+      vars[vars == "age"] <- "age_50"
+    }
+    if (min_weight_for_missing_level) freq_missing <- rep(0.000001, length(missing_levels)) # imputes 0 weight for levels present in data but not in the weight's definitio
+    else freq_missing <- vapply(missing_levels, function(x) sum(e[[v]]==x), FUN.VALUE = c(0))
+    freq_v <- c(prop_v*(nrow(e)-sum(freq_missing)), freq_missing)
+    df <- data.frame(c(levels_v[present_levels], missing_levels), freq_v)
+    # df <- data.frame(c(levels_v, missing_levels), nrow(e)*c(pop_freq[[country]][[var]], rep(0.0001, length(missing_levels))))
+    names(df) <- c(v, "Freq")
+    freqs <- c(freqs, list(df))
+  }
+  # print(freqs)
+  unweigthed <- svydesign(ids=~1, data=e)
+  raked <- rake(design= unweigthed, sample.margins = lapply(vars, function(x) return(as.formula(paste("~", x)))), population.margins = freqs)
+  
+  if (printWeights) {    print(summary(weights(raked))  )
+    print(paste("(mean w)^2 / (n * mean w^2): ", representativity_index(weights(raked)), " (pb if < 0.5)")) # <0.5 : problématique
+    print(paste("proportion not in [0.25; 4]: ", round(length(which(weights(raked)<0.25 | weights(raked)>4))/ length(weights(raked)), 3), "Nb obs. in sample: ", nrow(e)))
+  }
+  if (trim) return(weights(trimWeights(raked, lower=0.25, upper=4, strict=TRUE)))
+  else return(weights(raked, lower=0.25, upper=4, strict=TRUE))
+}
 
 prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_screened=TRUE, only_finished=TRUE, only_known_agglo=T, duration_min=0, country = "US", wave = NULL, weighting = TRUE, replace_brackets = FALSE, zscores = T, zscores_dummies = FALSE, remove_id = FALSE, efa = FALSE, combine_age_50 = T, define_var_lists = T) { #(country!="DK") # , exclude_quotas_full=TRUE
   # if (country == "US") {
@@ -178,12 +223,13 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
     e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa, combine_age_50 = combine_age_50, only_finished = only_finished, define_var_lists = define_var_lists)
     e <- e[,!duplicated(names(e))]
     # if (!incl_quality_fail) e <- e[e$attention_test == T, ] # TODO!
-    # if (weighting) {
-    #   e$weight <- weighting(e)
-    #   if ("vote_2020" %in% names(e) & (sum(e$vote_2020=="PNR/no right")!=0)) e$weight_vote <- weighting(e, vote = T)  }
+    if (weighting) {
+      e$weight <- weighting(e, sub("[0-9]+[a-z]*", "", country))
+      if ("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
+    }
     
-    # e$left_right_na <- as.numeric(e$left_right)
-    # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)
+  # e$left_right_na <- as.numeric(e$left_right)
+  # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)
   # } else e <- create_education(e, country, only = TRUE)
   
   
@@ -361,7 +407,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     decile <- c(1, 2, 3, 3, 4, 5, 6, 7, 8, 8, 9, 10)
     quartile <- c(1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4)
     names(income_number) <- names(decile) <- names(quartile) <- income_string
-    temp <- as.numeric(income_number[as.vector(gsub("less than \\$", "< ", gsub("between \\$", "", gsub(",000", "k", gsub(",001 and \\$", "-", gsub("165,000 a", "165,001 a", e$income_original))))))])
+    temp <- as.numeric(income_number[as.vector(gsub("less than \\$", "< ", gsub("between \\$", "", gsub(",000", "k", gsub(",001 and \\$", "-", gsub("165,000 a", "165,001 a", gsub("more than \\$", "> ", e$income_original)))))))])
     e$income <- as.item(temp, labels = structure(income_number, names = income_string), missing.values=c(NA), annotation=Label(e$income))
     e$income_decile <- as.numeric(decile[as.character(e$income)])
     e$income_quartile <- as.numeric(quartile[as.character(e$income)])
@@ -657,6 +703,15 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       minor_candidates <<- minor_candidates
     }
     
+    if ("vote_us_voters" %in% names(e)) {
+      e$vote_us <- "Other/Non-voter" # What respondent voted in 2020. 
+      e$vote_us[e$vote_participation %in% c("No right to vote", "Prefer not to say") | e$vote_us_voters %in% c("PNR", "Prefer not to say")] <- "PNR/no right"
+      e$vote_us[e$vote_us_voters == "Biden"] <- "Biden"
+      e$vote_us[e$vote_us_voters == "Trump"] <- "Trump"
+      e$vote_us <- as.item(e$vote_us, annotation = "vote_us: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
+      missing.values(e$vote_us) <- "PNR/no right"
+    }
+    
     e$survey_biased[e$survey_biased %in% c("Yes, left-wing biased")] <- "Yes, left"
     e$survey_biased[e$survey_biased %in% c("Yes, right-wing biased")] <- "Yes, right"
     e$survey_biased[e$survey_biased %in% c("No, I do not feel it was biased")] <- "No"
@@ -724,7 +779,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 
 ##### Run #####
 
-e <- us1 <- prepare(country = "US1", weighting = FALSE, define_var_lists = FALSE)
+e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
 
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
 us2p <- prepare(country = "US2", wave = "pilot", weighting = FALSE)

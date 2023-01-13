@@ -310,17 +310,21 @@ vars_heatmaps <- c("support", "other_policies", "climate_policies", "global_poli
 heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 # heatmaps_defs$foreign_aid_no
 
-heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE) {
-  for (heatmap in heatmaps) heatmap_wrapper(vars = heatmap$vars, data = data, labels = heatmap$labels, name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, trim = trim) 
+heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T) {
+  for (heatmap in heatmaps) {
+    vars_present <- heatmap$vars %in% names(data)
+    heatmap_wrapper(vars = heatmap$vars[vars_present], data = data, labels = heatmap$labels[vars_present], name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, trim = trim, weights = weights) 
+  }
 }
 
 
 ##### Barres #####
-barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print = T, export_xls = FALSE, trim = FALSE, method = 'orca', format = 'pdf') {
+barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print = T, export_xls = FALSE, trim = FALSE, method = 'orca', format = 'pdf', weights = T) {
   if (missing(folder)) folder <- automatic_folder(along = "country", data = df, several = "all")
   for (def in barres) {
     tryCatch({
-      plot <- barres(vars = def$vars, df = df, export_xls = export_xls, labels = def$labels, miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend)
+      vars_present <- def$vars %in% names(df)
+      plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, weights = weights)
       if (print) print(plot)
       save_plotly(plot, filename = def$name, folder = folder, width = def$width, height = def$height, method = method, trim = trim, format = format)
       print(paste0(def$name, ": success"))
@@ -328,7 +332,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
   }
 }
 
-fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, 
+fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, rev_legend = FALSE,
                         short_labels = T, width = dev.size('px')[1]) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2]
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type plots_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # If df$var and variables_var both exist, giving 'var' (resp. 'variables_var') will yield var (resp. variables_var)
@@ -364,10 +368,16 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
     }
     if (!"miss" %in% names(plots[[name]])) plots[[name]]$miss <- miss
     if (!"sort" %in% names(plots[[name]])) plots[[name]]$sort <- sort
-    if (!"thin" %in% names(plots[[name]])) plots[[name]]$thin <- thin
     if (!"rev" %in% names(plots[[name]])) plots[[name]]$rev <- rev
     if (!"rev_color" %in% names(plots[[name]])) plots[[name]]$rev_color <- rev_color
-    if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- !is.binary(df[[plots[[name]]$vars[1]]])
+    if (!"rev_legend" %in% names(plots[[name]])) plots[[name]]$rev_legend <- rev_legend
+    vars_in <- plots[[name]]$vars[plots[[name]]$vars %in% names(df)]
+    var_example <- vars_in[1]
+    if (!"legend" %in% names(plots[[name]]) & !is.na(var_example)) plots[[name]]$legend <- dataN(var_example, data=df, miss=plots[[name]]$miss, return = "legend", fr=F, rev_legend = plots[[name]]$rev_legend)
+    # yes_no <- setequal(plots[[name]]$legend, c('Yes', 'No', 'PNR')) | setequal(plots[[name]]$legend, c('Oui', 'Non', 'NSP')) | setequal(plots[[name]]$legend, c('Yes', 'No')) | setequal(plots[[name]]$legend, c('Oui', 'Non'))
+    # if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- if (is.na(var_example))  T else (!is.binary(df[[var_example]]) | yes_no)
+    if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- if (is.na(var_example))  T else (!is.logical(df[[var_example]]))
+    if (!"thin" %in% names(plots[[name]])) plots[[name]]$thin <- thin #& !yes_no
     if (!"width" %in% names(plots[[name]])) plots[[name]]$width <- width
     if (!"height" %in% names(plots[[name]]) & "heigth" %in% names(plots[[name]])) plots[[name]]$height <- plots[[name]]$heigth
     if (!"height" %in% names(plots[[name]])) plots[[name]]$height <- fig_height(nb_bars = length(plots[[name]]$labels), large = any(grepl("<br>", plots[[name]]$labels))) # height
@@ -380,8 +390,10 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
   "understood_each" = list(vars = variables_understood[1:3], width = 1380),
   "problem" = list(width = 1050),
+  "support_binary" = list(width = 700),
+  "support_likert" = list(width = 1275),
   "climate_policies" = list(width = 1221),
-  "global_policies" = list(width = 1270),
+  "global_policies" = list(width = 1275),
   "other_policies" = list(width = 1270),
   "climate_policies" = list(width = 1221),
   "variables_list_exp" = list(width = 500), # TODO manage the different branches e.g. as heterogeneity
@@ -416,13 +428,12 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = e)
 
 
 ##### Run #####
-barres_multiple(barres = barres_defs, df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
-
-(temp <- barres(vars = "petition", rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars["petition"])))
+barres_multiple(barres = barres_defs["foreign_aid_no"], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+(temp <- barres(vars = variables_support_binary[1:3], rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = F, miss=F, showLegend = T, legend = c("No", "Yes"), labels=unname(labels_vars[variables_support_binary[1:3]])))
 (test <- barres(vars = c("cap_wealth_support", "remove_tariffs_support"), rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("cap_wealth_support", "remove_tariffs_support")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
-heatmap_multiple()
+heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "understood_all", "understood_each", "understood_score")])
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
