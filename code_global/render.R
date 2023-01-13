@@ -30,9 +30,9 @@ labels_vars <- c(
   "gcs_win_lose" = "Win/lose to G",
   "nr_win_lose" = "Win/lose to R",
   "both_win_lose" = "Win/lose to G+R",
-  "gcs_support" = "Global climate scheme",
-  "nr_support" = "National redistribution scheme",
-  "cgr_support" = "Support for C+G+R",
+  "gcs_support" = "Global climate scheme (G)",
+  "nr_support" = "National redistribution scheme (R)",
+  "cgr_support" = "Coal exit + G + R", # "Support for C+G+R",
   "gcs_belief" = "Belief about G",
   "nr_belief" = "Belief about N",
   "list_exp_gl" = "List exp.: G/C/O",
@@ -77,7 +77,7 @@ labels_vars <- c(
   "remove_tariffs_support" = "Removing tariffs on imports from low-income countries",
   "global_min_wage_support" = "A minimum wage in all countries at 50% of local median wage",
   "global_register_support" = "Fight tax evasion by creating a global financial register to record ownership of all assets",
-  "cap_wealth_support" = "A maximum wealth limit of $10 billion (US) / €100 million (EU)",
+  "cap_wealth_support" = "A maximum wealth limit of $10 billion for each human", #(US) / €100 million (EU)",
   "attention_test" = "Attention test",
   "donation_nation" = "Donation to own country",
   "donation_africa" = "Donation to Africa",
@@ -195,15 +195,15 @@ labels_vars_short_html <- c(
   "list_exp_rgl" = "R/G/C/O", 
   "list_exp_l" = "C/O",
   "list_exp_rl" = "R/C/O",   
-  "conjoint_crg_cr_binary" = ">>C+R+G<< vs. C+R",
-  "conjoint_cr_gr_binary" = "C+R vs. >>G+R<<",
-  "conjoint_r_rcg_binary" = "R vs. >>R+C+G<<",
-  "conjoint_rg_r_binary" = ">>R+G<< vs. R",
-  "conjoint_rc_r_binary" = ">>R+C<< vs. R",
-  "conjoint_left_right_binary" = ">>Left<< vs. Right",
-  "conjoint_leftg_right_binary" = ">>Left+G<< vs. Right",
-  "conjoint_left_a_b_binary" = "Random program >>A<< vs. B",
-  "conjoint_left_ag_b_binary" = "Random program >>A+G<< vs. B",
+  "conjoint_crg_cr_binary" = "<b>C+R+G</b> vs. C+R",
+  "conjoint_cr_gr_binary" = "C+R vs. <b>G+R</b>",
+  "conjoint_r_rcg_binary" = "R vs. <b>R+C+G</b>",
+  "conjoint_rg_r_binary" = "<b>R+G</b> vs. R",
+  "conjoint_rc_r_binary" = "<b>R+C</b> vs. R",
+  "conjoint_left_right_binary" = "<b>Left</b> vs. Right",
+  "conjoint_leftg_right_binary" = "<b>Left+G</b> vs. Right",
+  "conjoint_left_a_b_binary" = "Random program <b>A</b> vs. B",
+  "conjoint_left_ag_b_binary" = "Random program <b>A+G</b> vs. B",
   "gcs_important_limit_CC" = "It would succeed in limiting climate change",
   "gcs_important_hurt_economy" = "It would hurt the [Country] economy",
   "gcs_important_hurt_me" = "It would penalize my household",
@@ -390,7 +390,7 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
   "understood_each" = list(vars = variables_understood[1:3], width = 1380),
   "problem" = list(width = 1050),
-  "support_binary" = list(width = 700),
+  "support_binary" = list(width = 770),
   "support_likert" = list(width = 1275),
   "climate_policies" = list(width = 1221),
   "global_policies" = list(width = 1275),
@@ -402,7 +402,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   # "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
   # "petition" = list(vars = variables_petition, conditions = ">= 1"),
-  "conjoint" = list(vars = variables_conjoint_binary, width = 900),
+  "conjoint" = list(vars = rev(variables_conjoint_binary), width = 900, sort = FALSE),
   # "conjoint_a" = list(vars = variables_conjoint_a_binary, conditions = ">= 1"),
   # "conjoint_b" = list(vars = variables_conjoint_b_binary, conditions = ">= 1"),
   # "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
@@ -419,6 +419,27 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 950)
 )
 
+thresholds_donation <- c(0, 5, 25, 50, 90)
+thresholds_points <- c(0, 8, 15, 18, 25)
+thresholds_share_policies <- c(0, 0.25, 0.5, 0.75, 1)
+thresholds_foreign_aid <- c(0.2, 0.5, 1, 1.7, 2.6, 6)
+thresholds_belief <- c(20, 40, 60, 80) # TODO add actual value
+
+agg_thresholds <- function(vec, thresholds, labels = NULL, min = -Inf, max = +Inf) {
+  vec <- c(min, thresholds, max)
+  vec_agg <- rep(NA, length(vec))
+  values <- c()
+  if (missing(labels)) levels <- c()
+  for (i in 2:length(thresholds)) {
+    values <- c(values, (thresholds[i] + thresholds[i-1])/2)
+    if (missing(labels)) levels <- c(levels, paste(thresholds[i-1], "-", thresholds[i]))
+    vec_agg[vec < thresholds[i] & vec >= thresholds[i-1]] <- (thresholds[i] + thresholds[i-1])/2 }
+  vec_agg <- as.item(vec_agg, labels = structure(values, names = values), missing.values = c("",NA), annotation=attr(vec, "label"))
+}
+
+for (v in intersect(variables_donation, names(e))) {
+  e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]])
+}
 # TODO "foreign_aid_amount", "duration", "donation", "belief", "points", "share_policies_supported", socio-demos, politics, survey_biased, individual variables
 vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
                   "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "variables_list_exp") 
@@ -428,7 +449,7 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = e)
 
 
 ##### Run #####
-barres_multiple(barres = barres_defs["foreign_aid_no"], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs["conjoint"], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (temp <- barres(vars = variables_support_binary[1:3], rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = F, miss=F, showLegend = T, legend = c("No", "Yes"), labels=unname(labels_vars[variables_support_binary[1:3]])))
 (test <- barres(vars = c("cap_wealth_support", "remove_tariffs_support"), rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("cap_wealth_support", "remove_tariffs_support")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
@@ -437,7 +458,7 @@ heatmap_multiple() # Doesn't work if data contains a single country (by design, 
 heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "understood_all", "understood_each", "understood_score")])
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
-# TODO trim, break labels / short labels, change >><< into bold for barres/plotly, adjust width/height and other parameters, binary no label
+# TODO trim, break labels automatically
 # TODO? Arial or Computer modern (Times)?
 
 # x heatmap OECD

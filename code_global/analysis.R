@@ -185,8 +185,12 @@ mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) + mean(e$nr_support[e
 mean(e$list_exp_rl, na.rm = T) - mean(e$list_exp_l, na.rm = T) # 57%
 mean(e$nr_support[e$branch_list_exp == "rl"], na.rm = T) # 53%
 mean(e$list_exp_gl, na.rm = T) - mean(e$list_exp_rl, na.rm = T) # -26%
-summary(lm(list_exp ~ branch_list_exp_r * branch_list_exp_r, data = e))
+summary(lm(list_exp ~ branch_list_exp_g * branch_list_exp_r, data = e, weights = NULL))
 summary(lm(list_exp ~ (branch_list_exp == "gl") + (branch_list_exp == "l") + (branch_list_exp == "rgl"), data = e))
+desc_table(dep_vars = "list_exp", filename = "US1/reg_list_exp", dep.var.labels = "Number of supported policies", weights = NULL, omit = c(), 
+           indep_vars = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), nolabel = F,
+           indep_labels = c("List contains: G", "List contains: R", "List contains: G \\times R"))
+
 # Done: switched to i, r, ir, gr, igr
 # 1 nr_support: ir - i / igr - ig / gr - g => nr - n
 # 2 gcs_support: igr - ir / gr - r / ig - i => ng - n
