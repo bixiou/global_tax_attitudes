@@ -151,11 +151,13 @@ labels_vars <- c(
   "points_econ4" = "econ4",
   "points_soc1" = "soc1",
   "points_soc2" = "soc2",
+  "points_soc3" = "Making abortion a right at the federal level",
   "points_climate1" = "climate1",
   "points_climate2" = "climate2",
   "points_climate3" = "climate3",
   "points_tax1_nr" = "tax1: National redistribution scheme",
   "points_tax2_wealth_tax" = "tax2: Wealth tax",
+  "points_tax3" = "Increase corporate income tax<br>rate from 21% to 28%",
   "points_foreign1_gcs" = "foreign1: Global climate scheme",
   "points_foreign2_tax_rich" = "foreign2: Global tax on millionaires",
   "points_foreign3_assembly" = "foreign3: Global democratic assembly on climate change",
@@ -188,6 +190,7 @@ labels_vars <- c(
   "petition_matches_support" = "Petition and support answers match",
   "conjoint_a_matches_support" = "Conjoint (a) and support answers match"
 )
+for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
 
 ##### labels_vars_short_html #####
 labels_vars_short_html <- c(
@@ -236,6 +239,27 @@ labels_vars_short_html <- c(
   "foreign_aid_no_pressure" = "Aid is a pressure tactic for high-income countries that<br>prevents low-income countries from developing freely",
   "foreign_aid_no_not_our_role" = "[Country] is not responsible<br>for what happens in other countries",
   "foreign_aid_no_nation_first" = "Charity begins at home: there is already<br>a lot to do to support the American people in need"
+)
+
+##### labels_vars_US #####
+labels_vars_us <- c(
+  "points_econ1_agg" = "Student loan forgiveness",
+  "points_econ2_agg" = "$15 minimum wage",
+  "points_econ3_agg" = "Universal childcare/pre-K",
+  "points_econ4_agg" = "Funding affordable housing",
+  "points_soc1_agg" = "Expanding the Supreme Court",
+  "points_soc2_agg" = "Handgun ban",
+  "points_soc3_agg" = "Making abortion a right at the federal level", # TODO
+  "points_climate1_agg" = "Coal exit",
+  "points_climate2_agg" = "Trillion dollar investment in clean transportation<br>infrastructure and building insulation",
+  "points_climate3_agg" = "Ban the sale of new<br>combustion-engine cars by 2030",
+  "points_tax1_nr_agg" = "National redistribution scheme",
+  "points_tax2_wealth_tax_agg" = "Wealth tax",
+  "points_tax3_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
+  "points_foreign1_gcs_agg" = "Global climate scheme",
+  "points_foreign2_tax_rich_agg" = "Global tax on millionaires",
+  "points_foreign3_assembly_agg" = "Global democratic assembly on climate change",
+  "points_foreign4_aid_agg" = "Doubling foreign aid"
 )
 
 fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE) {
@@ -340,6 +364,7 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
   if (!exists("labels_vars")) warning("'labels_vars' should exist but does not.")
   labels <- labels_vars
   if (exists("labels_vars_short_html") & short_labels) labels[names(labels_vars_short_html)] <- labels_vars_short_html
+  if (grepl("us", deparse(substitute(df)))) labels[names(labels_vars_us)] <- labels_vars_us
   if (missing(list_var_list)) list_var_list <- list()
   if (is.character(list_var_list)) {
     vec_vars <- list_var_list
@@ -398,11 +423,17 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "climate_policies" = list(width = 1221),
   "variables_list_exp" = list(width = 500), # TODO manage the different branches e.g. as heterogeneity
   "variables_petition" = list(vars = c("petition_gcs", "petition_nr"), width = 500),
-  # "understood_score" = list(vars = variables_understood[4]), # TODO
+  "variables_donation" = list(vars = c("donation_africa_agg", "donation_nation_agg"), width = 835),
+  "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 1080),
+  "belief" = list(vars = variables_belief_agg, width = 750),
+  "points" = list(vars = variables_points_agg, width = 1080, sort = FALSE),
+  "points_us" = list(vars = variables_points_us_agg, width = 1080, sort = FALSE),
+  "share_policies_supported" = list(vars = "share_policies_supported_agg", width = 950),
+  # # "understood_score" = list(vars = variables_understood[4]), # TODO
   # "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   # "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
   # "petition" = list(vars = variables_petition, conditions = ">= 1"),
-  "conjoint" = list(vars = rev(variables_conjoint_binary), width = 900, sort = FALSE),
+  "conjoint" = list(vars = variables_conjoint_binary, width = 900, sort = FALSE),
   # "conjoint_a" = list(vars = variables_conjoint_a_binary, conditions = ">= 1"),
   # "conjoint_b" = list(vars = variables_conjoint_b_binary, conditions = ">= 1"),
   # "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
@@ -419,37 +450,17 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 950)
 )
 
-thresholds_donation <- c(0, 5, 25, 50, 90)
-thresholds_points <- c(0, 8, 15, 18, 25)
-thresholds_share_policies <- c(0, 0.25, 0.5, 0.75, 1)
-thresholds_foreign_aid <- c(0.2, 0.5, 1, 1.7, 2.6, 6)
-thresholds_belief <- c(20, 40, 60, 80) # TODO add actual value
-
-agg_thresholds <- function(vec, thresholds, labels = NULL, min = -Inf, max = +Inf) {
-  vec <- c(min, thresholds, max)
-  vec_agg <- rep(NA, length(vec))
-  values <- c()
-  if (missing(labels)) levels <- c()
-  for (i in 2:length(thresholds)) {
-    values <- c(values, (thresholds[i] + thresholds[i-1])/2)
-    if (missing(labels)) levels <- c(levels, paste(thresholds[i-1], "-", thresholds[i]))
-    vec_agg[vec < thresholds[i] & vec >= thresholds[i-1]] <- (thresholds[i] + thresholds[i-1])/2 }
-  vec_agg <- as.item(vec_agg, labels = structure(values, names = values), missing.values = c("",NA), annotation=attr(vec, "label"))
-}
-
-for (v in intersect(variables_donation, names(e))) {
-  e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]])
-}
-# TODO "foreign_aid_amount", "duration", "donation", "belief", "points", "share_policies_supported", socio-demos, politics, survey_biased, individual variables
+# TODO "duration", socio-demos, politics, survey_biased, individual variables
 vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
                   "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "variables_list_exp") 
 
-barres_defs <- fill_barres(vars_barres, barres_defs, df = e)
+barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 # barres_defs$foreign_aid_no
 
 
 ##### Run #####
-barres_multiple(barres = barres_defs["conjoint"], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("points_us", "belief", "variables_donation", "share_policies_supported")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("foreign_aid_amount")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (temp <- barres(vars = variables_support_binary[1:3], rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = F, miss=F, showLegend = T, legend = c("No", "Yes"), labels=unname(labels_vars[variables_support_binary[1:3]])))
 (test <- barres(vars = c("cap_wealth_support", "remove_tariffs_support"), rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("cap_wealth_support", "remove_tariffs_support")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)

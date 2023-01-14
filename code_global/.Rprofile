@@ -223,6 +223,36 @@ positive <- function(vec) {
   if (is.binary(vec)) return(100*mean(vec, na.rm = T))
   else return(100 * sum(!is.na(vec) & vec > 0) / sum(!is.na(vec)))
 }
+agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T # min = 0, max = Inf, 
+) {
+  # strict_ineq_lower == T means intervals 50,60 are of type ];] while == F means [;[.
+  # shift = 1 (with strict_ineq_lower == T) means levels ]50;60] will be displayed as "[begin]51[sep]60[end]".
+  # thresholds <- c(min, thresholds, max)
+  min <- thresholds[1]
+  max <- thresholds[length(thresholds)]
+  shift_left <- ifelse(strict_ineq_lower, shift, 0)
+  shift_right <- ifelse(strict_ineq_lower, 0, shift)
+  vec_agg <- rep(NA, length(vec))
+  values <- c()
+  if (missing(labels)) levels <- c()
+  else levels <- labels
+  for (i in 2:length(thresholds)) {
+    values <- c(values, (thresholds[i] + thresholds[i-1])/2)
+    min_i <- ifelse(i > 2, thresholds[i-2], min)
+    max_i <- ifelse(i <= length(thresholds) - 2, thresholds[i+2], max)
+    next_i <- ifelse(i <= length(thresholds) - 1, thresholds[i+1], max)
+    if (missing(labels)) levels <- c(levels, if (thresholds[i-1]==thresholds[i]) paste0(begin, thresholds[i], end) else paste0(begin, thresholds[i-1] + (shift_left*(i < length(thresholds)) + shift_right*(thresholds[i-1] == min_i))*(i > 2), sep, 
+                                                                                                                               thresholds[i] - (shift_right*(i > 2) + shift_left*(thresholds[i] == next_i))*(i < length(thresholds)), end))
+    if (strict_ineq_lower) vec_agg[(vec <= thresholds[i] & vec < max_i & vec > thresholds[i-1]) | (vec == max_i & i == length(thresholds)) | (vec == thresholds[i] & i < length(thresholds) & vec < max_i) | (i == 2 & vec == min)] <- (thresholds[i] + thresholds[i-1])/2 
+    else vec_agg[(vec < thresholds[i] & vec >= thresholds[i-1] & vec > min_i) | (vec == min_i & i == 2) | (vec == thresholds[i-1] & i > 2 & vec > min_i) | (i == length(thresholds) & vec == max)] <- (thresholds[i] + thresholds[i-1])/2 
+  }
+  if (min == -Inf & strict_ineq_lower) levels[1] <- sub("-Inf - ", "≤ ", levels[1])
+  if (min == -Inf & !strict_ineq_lower) levels[1] <- sub("-Inf - ", "< ", levels[1])
+  if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub("(.*)- Inf", "> \\1", levels[length(levels)])
+  if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub("(.*)- Inf", "≥ \\1", levels[length(levels)])
+  vec_agg[is.na(vec)] <- NA
+  vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
+}
 decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights
   # if (!missing(data)) variable <- data[[variable]]
   if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
@@ -987,7 +1017,8 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
                    display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
-  labels <- unname(labels)
+  labels <- rev(unname(labels))
+  vars <- rev(vars)
   if (missing(data) & !missing(vars)) {
     data <- dataKN(vars, data=df, miss=miss, weights = weights, return = "", fr=fr, rev=rev)
     N <- dataN(vars[1], data=df, miss=miss, weights = weights, return = "N")

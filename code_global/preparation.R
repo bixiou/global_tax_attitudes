@@ -336,20 +336,27 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     conjoint_position_1 <<- c("A", "B", "B", "A", "A", "Left", "Left", "A", "A")
     names(conjoint_position_g) <<- names(conjoint_position_1) <<- variables_conjoint
     
+    variables_foreign_aid_amount_agg <<- paste0(variables_foreign_aid_amount, "_agg")
+    variables_belief_agg <<- paste0(variables_belief, "_agg")
+    variables_donation_agg <<- paste0(variables_donation, "_agg")
+    variables_points_agg <<- paste0(variables_points, "_agg")
+    
     variables_matrices <<- list("global_policies" = variables_global_policies,
                                 "climate_policies" = variables_climate_policies,
                                 "problem" = variables_problem,
                                 "gcs_important" = variables_gcs_important)
     
   }
- 
+  if (country %in% c("US1", "US1p")) variables_points_us <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
+  if (country %in% c("US1", "US1p")) variables_points_us_agg <<- paste0(variables_points_us, "_agg")
+  
   for (i in intersect(c(variables_duration, "hh_size", "Nb_children__14", "zipcode", variables_donation, variables_belief, variables_list_exp, variables_points, "global_tax_global_share" #, "age"
   ), names(e))) {
     lab <- label(e[[i]])
     e[[i]] <- as.numeric(as.vector( gsub("[^0-9\\.]", "", e[[i]]))) # /!\ this may create an issue with UK zipcodes as it removes letters
     label(e[[i]]) <- lab
   }
-  for (v in variables_duration) e[[v]] <- e[[v]]/60
+  for (v in intersect(variables_duration, names(e))) e[[v]] <- e[[v]]/60
   
   for (j in intersect(c("couple", variables_petition, variables_support_binary), names(e))) {
     temp <- 1*(e[j][[1]] %in% text_yes) - 0.1*(e[j][[1]] %in% text_pnr) # - (e[j][[1]] %in% text_no)
@@ -761,6 +768,12 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     label(e$mean_spread) <- paste0("mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: ", paste(names_matrices, collapse = ", "), "). -Inf indicates that all answers were NA.")
     label(e$share_all_same) <- paste0("mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: ",  paste(names_matrices, collapse = ", "), ").")
   }
+  
+  for (v in intersect(variables_donation, names(e))) e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]], c(0, 0, 25, 50, 90, 100), shift = 1)
+  for (v in intersect(variables_points, names(e))) e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]], c(0, 0, 8, 14, 18, 25, 50, 100), shift = 1)
+  for (v in intersect(c("share_policies_supported"), names(e))) e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]], c(0, 0, 0.25, 0.5, 0.75, 1, 1), shift = 0.01)
+  for (v in intersect(variables_foreign_aid_amount, names(e))) e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]], c(-Inf, 0.2, 0.5, 1, 1.7, 2.6, 6, Inf), shift = 0.1)
+  for (v in intersect(variables_belief, names(e))) e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]], c(0, 20, 40, 60, 80, 100), shift = 1) # TODO add actual value
   
   e$wrong_language <- (e$country == "US" & e$language != "EN") | (e$country == "DE" & e$language != "DE") | (e$country == "FR" & e$language != "FR") | (e$country == "ES" & e$language != "ES-ES") | (e$country == "UK" & e$language != "EN-GB")
   label(e$wrong_language) <- "wrong_language: T/F The language does not correspond to the respondent's country (including Spanish in the U.S.)."
