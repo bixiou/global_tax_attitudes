@@ -48,7 +48,7 @@ design_cjoint_US <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # giv
 design_cjoint_EU <- makeDesign(filename = "../conjoint_analysis/9d_F_EU.dat") 
 design_cjoint_both <- makeDesign(filename = "../conjoint_analysis/9d_F_both.dat") # The weighted are the average of the US and EU weights
 amce <- ca <- list() # We should have "Old qualtrics format detected." (otherwise it would assume new format and delete the first observation).
-for (n in c("usp", "eup", "ep")) {
+for (n in c("us1", "usp", "eup", "ep")) {
   print(n)
   csv.path <- paste0("../conjoint_analysis/ca_", n, ".csv")
   write.csv(d(n)[!is.na(d(n)$conjoint_r_number), c(variables_conjoint_r, 'conjoint_r_number', 'n')], csv.path, row.names = FALSE)
@@ -95,6 +95,8 @@ for (c in countries[-5]) {
 # summary(Amce)
 plot(Amce)
 
+plot(amce$us1, xlab = "Average Marginal Component Effect", text.size = 12)
+save_plot (filename = "ca_r", folder = '../figures/US1/', width = 800, height = 500, method='dev', trim = T, format = 'png') # solve bug PDF
 plot(amce$usp) # GCS is foreign1
 plot(amce$eup)
 plot(amce$ep)

@@ -426,7 +426,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "variables_donation" = list(vars = c("donation_africa_agg", "donation_nation_agg"), width = 835),
   "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 1080),
   "belief" = list(vars = variables_belief_agg, width = 750),
-  "points" = list(vars = variables_points_agg, width = 1080, sort = FALSE),
+  "points" = list(vars = variables_points_agg, width = 1080, sort = FALSE), # TODO: average
   "points_us" = list(vars = variables_points_us_agg, width = 1080, sort = FALSE),
   "share_policies_supported" = list(vars = "share_policies_supported_agg", width = 950),
   # # "understood_score" = list(vars = variables_understood[4]), # TODO
@@ -473,10 +473,10 @@ heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "u
 # TODO? Arial or Computer modern (Times)?
 
 # x heatmap OECD
-# - support (HEAT + ctry)
+# v support (HEAT + ctry)
 # - conjoint (heat + ctry + (r) + by party)
 # - prioritization (distr + heterog distr + PLOT_ALONG)
-# - list exp (TAB + heat + ctry)
+# v list exp (TAB + heat + ctry)
 # - foreign aid evolution (ctry + heterog)
 # - foreign aid why (ctry)
 # - petition (ctry + heterog + tab)

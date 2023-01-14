@@ -156,7 +156,7 @@ package("dplR") # latexify, used in table_mean_lines_save
 #' package("modi")
 #' package("kableExtra")
 #' package("descr")
-#' package("knitr")
+package("knitr") # plot_crop
 #' # One needs a *patched* version of memisc version 0.99.22 (not a newer), hence the code below (cf. this issue: https://github.com/melff/memisc/issues/62)
 if (!is.element("memisc", installed.packages()[,1])) {
   install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
@@ -181,8 +181,8 @@ if (!is.element("memisc", installed.packages()[,1])) {
 #' # install_github("rstudio/webshot2")
 #' # package("webshot2")
 #' package("htmlwidgets")
-#' # package("magick") # Bug sur Ubuntu, ne surtout pas décommenter sur Ubuntu
-#' library(magick) 
+# package("magick") # Bug sur Ubuntu, ne surtout pas décommenter sur Ubuntu
+library(magick) # image_write
 #' # install_github(repo = "MatthieuStigler/RCompAngrist", subdir = "RCompAngrist")
 #' # package("RCompAngrist")
 #' 
