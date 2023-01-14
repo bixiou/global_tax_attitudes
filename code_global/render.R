@@ -110,7 +110,7 @@ labels_vars <- c(
   "foreign_aid_reduce_how_corporations" = "Lower corporate income tax rate",
   "foreign_aid_reduce_how_income_tax" = "Lower personal income tax rates",
   "foreign_aid_reduce_how_deficit" = "Lower public deficit",
-  "foreign_aid_raise_support" = "Preferred evolution of [Country]'s foreign aid",
+  "foreign_aid_raise_support" = "Should [Country]'s foreign aid increase?",
   "foreign_aid_condition_human_rights" = "That recipient countries comply with climate targets and human rights",
   "foreign_aid_condition_fight_migration" = "That recipient countries cooperate to fight illegal migrations",
   "foreign_aid_condition_all_high_income" = "That other high-income countries also increase their foreign aid",
@@ -414,10 +414,12 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
 ##### barres_defs #####
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
   "understood_each" = list(vars = variables_understood[1:3], width = 1380),
-  "problem" = list(width = 1050),
+  "problem" = list(width = 1335),
   "support_binary" = list(width = 770),
   "support_likert" = list(width = 1275),
-  "climate_policies" = list(width = 1221),
+  "negotiation" = list(width = 1200),
+  "group_defended" = list(width = 1221), # TODO
+  "foreign_aid_raise_support" = list(width = 1425),
   "global_policies" = list(width = 1275),
   "other_policies" = list(width = 1270),
   "climate_policies" = list(width = 1221),
@@ -439,10 +441,6 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
   # "conjoint_d" = list(vars = variables_conjoint_d_binary, conditions = ">= 1"),
   # "duration" = list(vars = variables_duration, conditions = ""),
-  # "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), percent = FALSE), # removes 'donation'
-  # "belief" = list(vars = variables_belief, conditions = "", percent = FALSE), 
-  # "points" = list(vars = variables_points, conditions = c("", ">= 1"), percent = FALSE), # TODO: 0 digit
-  # "foreign_aid_amount" = list(vars = variables_foreign_aid_amount, conditions = c(""), percent = FALSE),
   # "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   # "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
   "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)], width = 1125),
@@ -459,7 +457,7 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 
 
 ##### Run #####
-barres_multiple(barres = barres_defs[c("points_us", "belief", "variables_donation", "share_policies_supported")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("negotiation", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 barres_multiple(barres = barres_defs[c("foreign_aid_amount")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (temp <- barres(vars = variables_support_binary[1:3], rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = F, miss=F, showLegend = T, legend = c("No", "Yes"), labels=unname(labels_vars[variables_support_binary[1:3]])))
 (test <- barres(vars = c("cap_wealth_support", "remove_tariffs_support"), rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("cap_wealth_support", "remove_tariffs_support")])))
@@ -472,15 +470,16 @@ heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "u
 # TODO trim, break labels automatically
 # TODO? Arial or Computer modern (Times)?
 
+# x: done; v: done for US1, waiting for EU; ~: needs to be improved; -: needs to be done
 # x heatmap OECD
 # v support (HEAT + ctry)
-# - conjoint (heat + ctry + (r) + by party)
-# - prioritization (distr + heterog distr + PLOT_ALONG)
+# ~ conjoint (heat + ctry + (r) + by party)
+# ~ prioritization (distr + heterog distr + PLOT_ALONG)
 # v list exp (TAB + heat + ctry)
 # - foreign aid evolution (ctry + heterog)
-# - foreign aid why (ctry)
-# - petition (ctry + heterog + tab)
-# - belief (CDF + ctry + heterog)
-# - negotiation (ctry + heterog)
-# - group defended (ctry + heterog)
-# - problem (ctry + heat)
+# v foreign aid why (ctry)
+# v petition (ctry + heterog + tab)
+# v belief (CDF + ctry + heterog)
+# v negotiation (ctry + heterog)
+# v group defended (ctry + heterog)
+# v problem (ctry + heat)
