@@ -1240,11 +1240,11 @@ automatic_folder <- function(along = "country_name", data = e, several = "countr
     return(folder)
   } else warning("'folder' missing")
 }
-heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T, percent = FALSE, colors = 'RdYlBu') { # type in full, upper, lower
+heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T, percent = FALSE, colors = 'RdYlBu', nb_digits = NULL) { # type in full, upper, lower
   diag <- if(type=="full") T else F
   # color_lims <- if(proportion) c(0,1) else { if (min(data)>=2 & max(data)<= 2) c(-2,2) else c(min(0, data), max(data)) }
   color_lims <- if(proportion) c(0,1) else { if (min(data, na.rm=T)>=2 & max(data, na.rm=T)<= 2) c(-2,2) else c(min(0, data, na.rm=T), max(data, na.rm=T)) }
-  nb_digits <- if(proportion | percent) 0 else 1
+  if (missing(nb_digits) || is.null(nb_digits)) nb_digits <- if(proportion | percent) 0 else 1
   # color2 <- c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061")
   # col <- colorRampPalette(color2)(200)
   # # if (proportion) col <- colorRampPalette(c(rep("#67001F", 10), col2))(200)
@@ -1294,7 +1294,7 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
   if (export_xls) save_plot(table, filename = sub("figures", "xlsx", paste0(folder, filename)))
   return(table)
 }
-heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(), conditions = c("", ">= 1", "/"), data = e, width = NULL, height = NULL, alphabetical = T, on_control = FALSE, export_xls = T, format = 'pdf', sort = FALSE, proportion = NULL, percent = FALSE, trim = T, colors = 'RdYlBu', folder = NULL, weights = T) {
+heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(), conditions = c("", ">= 1", "/"), data = e, width = NULL, height = NULL, alphabetical = T, on_control = FALSE, export_xls = T, format = 'pdf', sort = FALSE, proportion = NULL, percent = FALSE, nb_digits = NULL, trim = T, colors = 'RdYlBu', folder = NULL, weights = T) {
   # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
   # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
   # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few).
@@ -1327,7 +1327,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
       if (!missing(labels_along) & length(labels_along) == ncol(temp)) colnames(temp) <- labels_along
       if (sort) temp <- temp[order(-temp[,1]),]
       if (export_xls) save_plot(as.data.frame(temp), filename = sub("figures", "xlsx", paste0(folder, filename)))
-      heatmap_plot(temp, proportion = ifelse(missing(proportion), cond != "", proportion), percent = percent, colors = colors)
+      heatmap_plot(temp, proportion = ifelse(is.null(proportion), cond != "", proportion), percent = percent, nb_digits = nb_digits, colors = colors)
       save_plot(filename = paste0(folder, filename), width = width, height = height, format = format, trim = trim)
       print(paste0(filename, ": success"))
     }, error = function(cond) { print(paste0(filename, ": fail.")) } )

@@ -96,7 +96,7 @@ for (c in countries[-5]) {
 plot(Amce)
 
 plot(amce$us1, xlab = "Average Marginal Component Effect", text.size = 12)
-save_plot (filename = "ca_r", folder = '../figures/US1/', width = 800, height = 500, method='dev', trim = T, format = 'png') # solve bug PDF
+save_plot (filename = "ca_r", folder = '../figures/US1/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
 plot(amce$usp) # GCS is foreign1
 plot(amce$eup)
 plot(amce$ep)

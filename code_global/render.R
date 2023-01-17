@@ -252,7 +252,7 @@ labels_vars_us <- c(
   "points_econ4_agg" = "Funding affordable housing",
   "points_soc1_agg" = "Expanding the Supreme Court",
   "points_soc2_agg" = "Handgun ban",
-  "points_soc3_agg" = "Making abortion a right at the federal level", # TODO
+  "points_soc3_agg" = "Making abortion a right at the federal level",
   "points_climate1_agg" = "Coal exit",
   "points_climate2_agg" = "Trillion dollar investment in clean transportation<br>infrastructure and building insulation",
   "points_climate3_agg" = "Ban the sale of new<br>combustion-engine cars by 2030",
@@ -265,7 +265,7 @@ labels_vars_us <- c(
   "points_foreign4_aid_agg" = "Doubling foreign aid"
 )
 
-fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE) {
+fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL) {
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type heatmaps_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # /!\ Bug if an object named 'heatmaps' exists in the environment.
   if (missing(list_var_list)) list_var_list <- list()
@@ -295,6 +295,9 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
     }
     if (!"conditions" %in% names(heatmaps[[name]])) heatmaps[[name]]$conditions <- conditions
     if (!"sort" %in% names(heatmaps[[name]])) heatmaps[[name]]$sort <- sort
+    if (!"percent" %in% names(heatmaps[[name]])) heatmaps[[name]]$percent <- percent
+    if (!"proportion" %in% names(heatmaps[[name]])) heatmaps[[name]]$proportion <- proportion
+    if (!"nb_digits" %in% names(heatmaps[[name]])) heatmaps[[name]]$nb_digits <- nb_digits
   }
   return(heatmaps)
 }
@@ -317,10 +320,10 @@ heatmaps_defs <- list(
   "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
   "conjoint_d" = list(vars = variables_conjoint_d_binary, conditions = ">= 1"),
   "duration" = list(vars = variables_duration, conditions = ""),
-  "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), percent = FALSE), # removes 'donation'
-  "belief" = list(vars = variables_belief, conditions = "", percent = FALSE), 
-  "points" = list(vars = variables_points, conditions = c("", ">= 1"), percent = FALSE), # TODO: 0 digit in heatmap
-  "foreign_aid_amount" = list(vars = variables_foreign_aid_amount, conditions = c(""), percent = FALSE),
+  "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), nb_digits = 0), # removes 'donation'
+  "belief" = list(vars = variables_belief, conditions = "", nb_digits = 0), 
+  "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0), # TODO! 0 digit in heatmap
+  "foreign_aid_amount" = list(vars = variables_foreign_aid_amount, conditions = c(""), nb_digits = 1),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
   "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)]),
@@ -340,7 +343,7 @@ heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T) {
   for (heatmap in heatmaps) {
     vars_present <- heatmap$vars %in% names(data)
-    heatmap_wrapper(vars = heatmap$vars[vars_present], data = data, labels = heatmap$labels[vars_present], name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, trim = trim, weights = weights) 
+    heatmap_wrapper(vars = heatmap$vars[vars_present], data = data, labels = heatmap$labels[vars_present], name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights) 
   }
 }
 
@@ -454,7 +457,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 950)
 )
 
-# TODO "duration", socio-demos, politics, survey_biased, individual variables
+# TODO! "duration", socio-demos, politics, survey_biased, individual variables
 vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
                   "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "group_defended") 
 
@@ -477,7 +480,14 @@ save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 700
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
-heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "understood_all", "understood_each", "understood_score")])
+heatmap_multiple(heatmaps_defs[c("points", "donation", "belief", "foreign_aid_amount")])
+
+(nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name)))))
+# Regroup heatmaps by nb of variables to change the size of the Viewer before each run and have nice saved plots
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]])
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2]])
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4]])
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
 # TODO trim, break labels automatically

@@ -4,6 +4,7 @@
 source(".Rprofile")
 source("relabel_rename.R")
 # source("conjoint_analysis.R")
+# Our panelist is Bilendi/Respondi. Their partner panelist in the U.S. is Prodedge. 
 
 ##### Income quantiles and policies names #####
 qinc <- read.csv("../data/EU_income_deciles.tsv", sep = "\t") # equivalised disposable income in LCU
