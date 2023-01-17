@@ -129,6 +129,7 @@ labels_vars <- c(
   "donation_charities" = "Donation to charities",
   "interested_politics" = "Interest in politics",
   "group_defended" = "Group defended when voting",
+  "group_defended_agg" = "Group defended when voting",
   "involvement_govt" = "Govt involvement",
   "political_affiliation" = "Political affiliation",
   "left_right" = "Left - right on economics",
@@ -181,14 +182,16 @@ labels_vars <- c(
   "duration_other_policies" = "Duration: other policies",
   "duration_feedback" = "Duration: feedback",
   "duration_points" = "Duration: 100 points",
-  "score_understood" = "Number of correct answers to understanding questions",
+  "score_understood" = "Number of correct answers<br>to understanding questions",
   "gcs_understood" = "With G, typical [country] people lose and poorest humans win",
   "nr_understood" = "With R, typical [country] people win and richest win",
   "both_understood" = "With G+R, typical [country] people neither win nor lose",
   "share_policies_supported" = "Share of policies supported",
   "dropout" = "Dropped out",
   "petition_matches_support" = "Petition and support answers match",
-  "conjoint_a_matches_support" = "Conjoint (a) and support answers match"
+  "conjoint_a_matches_support" = "Conjoint (a) and support answers match",
+  "nationalist" = "Nationalist",
+  "universalist" = "Universalist"
 )
 for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
 
@@ -316,7 +319,7 @@ heatmaps_defs <- list(
   "duration" = list(vars = variables_duration, conditions = ""),
   "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), percent = FALSE), # removes 'donation'
   "belief" = list(vars = variables_belief, conditions = "", percent = FALSE), 
-  "points" = list(vars = variables_points, conditions = c("", ">= 1"), percent = FALSE), # TODO: 0 digit
+  "points" = list(vars = variables_points, conditions = c("", ">= 1"), percent = FALSE), # TODO: 0 digit in heatmap
   "foreign_aid_amount" = list(vars = variables_foreign_aid_amount, conditions = c(""), percent = FALSE),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
@@ -343,6 +346,8 @@ heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, w
 
 
 ##### Barres #####
+data_list_exp <- function(data) return(cbind(t(t(c(0, 0, dataN("list_exp_l", data, miss = F)))), t(t(c(0, dataN("list_exp_gl", data, miss = F)))), t(t(c(0, dataN("list_exp_rl", data, miss = F)))), dataN("list_exp_rgl", data, miss = F)))
+
 barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print = T, export_xls = FALSE, trim = FALSE, method = 'orca', format = 'pdf', weights = T) {
   if (missing(folder)) folder <- automatic_folder(along = "country", data = df, several = "all")
   for (def in barres) {
@@ -381,7 +386,7 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
     if (!is.list(list_var_list[[name]])) list_var_list[[name]] <- list(vars = list_var_list[[name]])
     var_list <- list_var_list[[name]]
     if (!name %in% names(plots)) plots[[name]] <- var_list
-    else for (key in names(var_list)) plots[[name]][[key]] <- var_list[[key]] # TODO? if (!key %in% names(plots[[name]])) ?
+    else for (key in names(var_list)) plots[[name]][[key]] <- var_list[[key]] 
   }
   # We complete the missing fields of plots 
   for (name in names(plots)) {
@@ -418,20 +423,21 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "support_binary" = list(width = 770),
   "support_likert" = list(width = 1275),
   "negotiation" = list(width = 1200),
-  "group_defended" = list(width = 1221), # TODO
+  "group_defended" = list(width = 1250), 
+  "group_defended_agg" = list(width = 1150), 
   "foreign_aid_raise_support" = list(width = 1425),
   "global_policies" = list(width = 1275),
   "other_policies" = list(width = 1270),
   "climate_policies" = list(width = 1221),
-  "variables_list_exp" = list(width = 500), # TODO manage the different branches e.g. as heterogeneity
+  "variables_list_exp" = list(width = 500),
   "variables_petition" = list(vars = c("petition_gcs", "petition_nr"), width = 500),
   "variables_donation" = list(vars = c("donation_africa_agg", "donation_nation_agg"), width = 835),
   "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 1080),
   "belief" = list(vars = variables_belief_agg, width = 750),
-  "points" = list(vars = variables_points_agg, width = 1080, sort = FALSE), # TODO: average
+  "points" = list(vars = variables_points_agg, width = 1080, sort = FALSE), # TODO! average
   "points_us" = list(vars = variables_points_us_agg, width = 1080, sort = FALSE),
   "share_policies_supported" = list(vars = "share_policies_supported_agg", width = 950),
-  # # "understood_score" = list(vars = variables_understood[4]), # TODO
+  "understood_score" = list(vars = variables_understood[4], width = 650), 
   # "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   # "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
   # "petition" = list(vars = variables_petition, conditions = ">= 1"),
@@ -450,24 +456,32 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
 
 # TODO "duration", socio-demos, politics, survey_biased, individual variables
 vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
-                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "variables_list_exp") 
+                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "group_defended") 
 
 barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 # barres_defs$foreign_aid_no
 
 
 ##### Run #####
-barres_multiple(barres = barres_defs[c("negotiation", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+# Bars
+barres_multiple(barres = barres_defs[c("understood_score")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+
 barres_multiple(barres = barres_defs[c("foreign_aid_amount")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
-(temp <- barres(vars = variables_support_binary[1:3], rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = F, miss=F, showLegend = T, legend = c("No", "Yes"), labels=unname(labels_vars[variables_support_binary[1:3]])))
-(test <- barres(vars = c("cap_wealth_support", "remove_tariffs_support"), rev = F, rev_color = T, export_xls = F, df = usp, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("cap_wealth_support", "remove_tariffs_support")])))
+(test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
+# list_exp
+(temp <- barres(data = data_list_exp(us1), rev = F, rev_color = T, export_xls = F, sort = F, thin = T, miss=F, showLegend = T, legend = c(0:4), labels=labels_vars[variables_list_exp]))
+save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 700, height = fig_height(4), trim = FALSE)
+
+# Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
+
 heatmap_multiple(heatmaps_defs[c("support_match", "share_policies_supported", "understood_all", "understood_each", "understood_score")])
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
 # TODO trim, break labels automatically
+# TODO refresh Viewer with laptop
 # TODO? Arial or Computer modern (Times)?
 
 # x: done; v: done for US1, waiting for EU; ~: needs to be improved; -: needs to be done

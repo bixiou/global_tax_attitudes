@@ -3,7 +3,6 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO! weights
 # TODO US2/EU interests, even if it goes against global justice; U.S. interests, to the extent it respects global justice; Indifferent or don't know; Global justice, to the extent it respects U.S. interests, Global justice, even if it goes against U.S. interests
 # TODO ETS2
 # TODO US/EU: put back email?, welcome: amount incentives
@@ -114,8 +113,8 @@ decrit("democratise_un_imf_support", data = e)
 decrit("remove_tariffs_support", data = e)
 decrit("global_min_wage_support", data = e)
 decrit("global_register_support", data = e)
-decrit("cap_wealth_100m_support", data = e) # TODO: reword?
-decrit("foreign_aid_raise_support", data = e) # TODO item
+decrit("cap_wealth_100m_support", data = e) 
+decrit("foreign_aid_raise_support", data = e) 
 means_support <- indiferrents_support <- relative_majority_support <- c()
 for (v in variables_support) means_support[v] <- mean(e[[v]] > 0, na.rm = T)
 for (v in variables_other_policies) indiferrents_support[v] <- mean(e[[v]] == 0, na.rm = T)
@@ -218,7 +217,7 @@ decrit("conjoint_a_matches_support", data = e) # 84%
 decrit("conjoint_a_irg_support_no", data = e) 
 decrit("conjoint_a_ir_support_yes", data = e) 
 # b
-decrit("conjoint_b", data = e) # TODO?
+decrit("conjoint_b", data = e)
 decrit("conjoint_b_na", data = e)
 decrit("conjoint_cr_gr", data = e)
 decrit("gcs_support", data = e, which = e$branch_conjoint_b == "ir_gr")
@@ -314,7 +313,7 @@ decrit("branch_iat", data = e) # 59% enter IAT
 ##### Politics #####
 decrit("political_affiliation", data = e)
 decrit("left_right", data = e)
-table(e$group_defended) # TODO: item
+decrit(e$group_defended) 
 major_candidates
 minor_candidates
 decrit("vote", data = e, which = e$country == "US")

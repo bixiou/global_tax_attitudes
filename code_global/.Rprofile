@@ -1018,7 +1018,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
   labels <- rev(unname(labels))
-  vars <- rev(vars)
+  if (!missing(vars)) vars <- rev(vars)
   if (missing(data) & !missing(vars)) {
     data <- dataKN(vars, data=df, miss=miss, weights = weights, return = "", fr=fr, rev=rev)
     N <- dataN(vars[1], data=df, miss=miss, weights = weights, return = "N")
