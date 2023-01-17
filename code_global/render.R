@@ -322,7 +322,7 @@ heatmaps_defs <- list(
   "duration" = list(vars = variables_duration, conditions = ""),
   "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), nb_digits = 0), # removes 'donation'
   "belief" = list(vars = variables_belief, conditions = "", nb_digits = 0), 
-  "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0), # TODO! 0 digit in heatmap
+  "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0),
   "foreign_aid_amount" = list(vars = variables_foreign_aid_amount, conditions = c(""), nb_digits = 1),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
