@@ -4,6 +4,7 @@
 source(".Rprofile")
 source("relabel_rename.R")
 # source("conjoint_analysis.R")
+# Our panelist is Bilendi/Respondi. Their partner panelist in the U.S. is Prodedge. 
 
 ##### Income quantiles and policies names #####
 qinc <- read.csv("../data/EU_income_deciles.tsv", sep = "\t") # equivalised disposable income in LCU
@@ -307,6 +308,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     variables_duration <<- names(e)[grepl('duration', names(e))]
     variables_donation <<- c("donation_nation", "donation_africa", "donation")
     variables_list_exp <<- names(e)[grepl('list_exp', names(e))]
+    if (wave != "pilot") variables_list_exp <<- c("list_exp_rgl", "list_exp_rl", "list_exp_gl", "list_exp_l")
     variables_belief <<- c("gcs_belief", "nr_belief")
     variables_points <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
     variables_understood <<- paste0(c("nr", "gcs", "both", "score"), "_understood")
@@ -367,7 +369,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     #             missing.values = c("","PNR"), annotation=attr(e[j][[1]], "label"))
   }
   
-  # for (j in intersect(c("region", "education", "employment_status", "vote" # TODO
+  # for (j in intersect(c("region", "education", "employment_status", "vote" 
   # ), names(e))) {
   #   e[j][[1]] <- as.item(as.factor(e[j][[1]]), missing.values = c("PNR", "", NA), annotation=paste(attr(e[j][[1]], "label")))
   # }
@@ -587,7 +589,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$both_understood) <- "both_understood: T/F Correct answer to both_win_lose (in national redistribution + global climate scheme combined, typical people in high-income countries are unaffected)."
     }
     
-    e$score_understood <- e$nr_understood + e$gcs_understood + e$both_understood
+    e$score_understood <- as.numeric(e$nr_understood + e$gcs_understood + e$both_understood)
     label(e$score_understood) <- "score_understood: [0-3] Number correct answers to understanding questions (nr/gcs/both_understood)."
     e$z_score_understood <- (e$score_understood - mean(e$score_understood)) / sd(e$score_understood) # TODO weighted
     label(e$z_score_understood) <- "z_score_understood: Normalized score_understood."
@@ -688,7 +690,21 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     if ("interest_politics" %in% names(e)) temp <- 2 * (e[[v]] %in% text_intensity[5]) + (e[[v]] %in% text_intensity[4]) - (e[[v]] %in% text_intensity[2]) - 2 * (e[[v]] %in% text_intensity[1])
     if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-2:2),  names = c(text_intensity)), annotation=Label(e$interest_politics))
     
-    if ("vote_participation" %in% names(e)) { # TODO
+    if ("group_defended" %in% names(e)) {
+      e$group_defended_original <- e$group_defended
+      temp <- 0*grepl("myself", e$group_defended) + 1*grepl("relatives", e$group_defended) + 2*grepl("town", e$group_defended) + 3*grepl("State", e$group_defended) + 4*grepl("religion", e$group_defended) + 5*grepl("Americans", e$group_defended) + 6*grepl("Humans", e$group_defended) + 7*grepl("animals", e$group_defended)
+      e$group_defended <- as.item(temp, labels = structure(0:7, names = c("Family and self", "Relatives", "Town", "State or region", "Culture or religion", "Fellow citizens", "Humans", "Sentient beings")), annotation = Label(e$group_defended))
+      e$nationalist <- e$group_defended == 5
+      e$universalist <- e$group_defended > 5
+      label(e$nationalist) <- "nationalist: T/F Defends one's nation / fellow citizens when one votes (cf. group_defended)."
+      label(e$universalist) <- "universalist: T/F Defends humans or sentient beings (humans and animals) when one votes (cf. group_defended)."
+      e$group_defended_agg <- sign(e$group_defended - 5)
+      e$group_defended_agg[e$group_defended == 0] <- -2
+      e$group_defended_agg <- as.item(e$group_defended_agg, labels = structure(-2:1, names = c("Family and self", "Group of related people", "Fellow citizens", "Humans or sentient beings") #c("Egoistic", "Tribalist", "Nationalist", "Universalist")
+                                                                             ), annotation = "group_defended_agg: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; and where 'Humans or sentient beings' gathers Humans and Sentient beings (humans or animals)")
+    }
+    
+    if ("vote_participation" %in% names(e)) { 
       e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
 
       major_threshold <- 5 # 5% is the treshold to be considered a major candidate
