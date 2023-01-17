@@ -436,6 +436,7 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
 #'     nb_manquants <<- des_miss     }
 #'   if (return) return(output)
 #' }
+reg_formula <- function(dep_var, indep_vars) return(as.formula(paste(dep_var, "~", paste(indep_vars, collapse = '+'))))
 desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = NULL, weights = data$weight, add_lines = NULL, model.numbers = T, #!mean_above,
                        save_folder = "../tables/", dep.var.labels = NULL, dep.var.caption = c(""), digits= 3, mean_control = FALSE, logit = FALSE, atmean = T, robust_SE = T, omit = c("Constant", "Gender: Other", "econ_leaningPNR"),
                        mean_above = T, only_mean = F, keep = indep_vars, nolabel = F, indep_vars_included = T, no.space = T, print_regs = FALSE, replace_endAB = NULL, oecd_latex = FALSE) {

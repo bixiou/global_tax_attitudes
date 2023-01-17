@@ -188,7 +188,9 @@ labels_vars <- c(
   "share_policies_supported" = "Share of policies supported",
   "dropout" = "Dropped out",
   "petition_matches_support" = "Petition and support answers match",
-  "conjoint_a_matches_support" = "Conjoint (a) and support answers match"
+  "conjoint_a_matches_support" = "Conjoint (a) and support answers match",
+  "woman" = "Gender: Woman",
+  "man" = "Gender: Man"
 )
 for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
 

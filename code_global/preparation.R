@@ -388,7 +388,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   if (grepl("US", country)) e$country_name <- "United States"
   e$country <- countries[e$country_name]
   
-  
+  e$woman <- e$gender == "Woman"
+  e$man <- e$gender == "Man"
   temp <- as.numeric(as.vector(gsub("[^0-9\\.]", "", gsub(".*to", "", e$age_exact))))
   temp <- temp - 1.5
   temp[temp == 18.5] <- 19.5
