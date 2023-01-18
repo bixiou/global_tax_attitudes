@@ -96,7 +96,19 @@ package("descr") # CrossTable
 #' # package("rddtools") # not available
 #' # package("rddapp") # not available
 #' package("mets")
-package("stargazer") # To fix the bug with is.na() on R 4.2, run https://gist.github.com/alexeyknorre/b0780836f4cec04d41a863a683f91b53
+package("stargazer") # To fix the bug with is.na() on R 4.2, run the code below from https://gist.github.com/alexeyknorre/b0780836f4cec04d41a863a683f91b53
+temp <- getwd()
+setwd(.libPaths()[2])
+detach("package:stargazer",unload=T)
+remove.packages("stargazer")
+download.file("https://cran.r-project.org/src/contrib/stargazer_5.2.3.tar.gz", destfile = "stargazer_5.2.3.tar.gz")
+untar("stargazer_5.2.3.tar.gz")
+stargazer_src <- readLines("stargazer/R/stargazer-internal.R")
+stargazer_src[1990] <- stargazer_src[1995]
+stargazer_src[1995] <- ""
+writeLines(stargazer_src, con="stargazer/R/stargazer-internal.R")
+install.packages("stargazer", repos = NULL, type="source")
+setwd(temp)
 #' package("clipr")
 #' package("ergm") # wtd.median
 #' package("mfx")

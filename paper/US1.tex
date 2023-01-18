@@ -1,9 +1,10 @@
+\documentclass{nature}
 % \documentclass[12pt,english]{article}
 % \usepackage[utf8]{inputenc}
 % \usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
 % \usepackage{bm}
-% \usepackage{amsmath}
-% \usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amssymb}
 % \usepackage{indentfirst}
 % \usepackage[hyperpageref]{backref} % back references biblio
 % \usepackage{tocbibind}
@@ -28,7 +29,7 @@
 % \usepackage{graphicx}
 % \usepackage{tikz}
 % \usepackage{gensymb}
-% \usepackage{eurosym}
+\usepackage{eurosym}
 % \usepackage{textcomp}
 
 % \usepackage{tabulary}
@@ -135,9 +136,6 @@
 
 % \end{document}
 
-
-\documentclass{nature}
-
 % The following allows keeping figures within the text (otherwise nature.cls would ignore them)
 \usepackage{graphicx}
 \makeatletter
@@ -197,16 +195,27 @@
 \item TU Berlin
 \end{affiliations}
 
-\begin{abstract}
-  \cite{dechezlepretre_fighting_2022-1}
+\begin{abstract} % 250 words. TODO? mention more the other measures?
+  The ``global climate scheme'' (a global carbon price funding a global basic income) would be an effective and progressive way to combat climate change, and poverty. Yet, such policy is mostly absent from political platforms and the policy debate. Using surveys on 40,000 respondents in 20 countries covering 72\% of global CO$_\text{2}$ emissions, we document majority support for this and other global policies. Using a complementary survey on 3,000 U.S. respondents,% and four European countries, 
+  we test several hypotheses that could could reconcile strong stated support with a lack of salience of these issues. The complementary analyses show that the stated support is mostly sincere, although we cannot rule out insincerity for 3\% to 9\% of the population from the willingness to sign a real-stake petition and a list experiment, respectively. Global redistributive policies rank high (though not highest) in the prioritization of policies. Conjoint analyses reveal that the Democratic party would not significantly lose votes if it endorsed the global climate scheme, while a candidate at the Democratic primary would actually win votes by doing so. Accurate beliefs about the level of support for the scheme dismisses the hypothesis of pluralistic ignorance of the support. Strong universalistic attitudes are confirmed in more general questions, suggesting that the support cannot be explained away by malleable opinion or experimenter demand. Finally, we conclude that there is no compelling reason why global policies do not enter the public debate or political platforms, as they seem genuinely supported by a majority of the population.
 \end{abstract}
 
 % Intro
+Transfers from high- to low-income people, hence from high- to low-income countries, are warranted by many ethical paradigms. This is the case of utilitarianism, the benchmark ethical theory used in economics. Utilitarianism assigns the same weight to each person and thus considers that a dollar is better allocated to a low-income person, which has a higher marginal utility than a high-income person.\cite{mill_utilitarianism_1861} 
 
-\begin{figure}
-\caption{Points.}
-\makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/US1/points_us}}
-\end{figure}
+Addressing global poverty, inequalities and climate change are at the heart of the universally agreed Sustainable Development Goals (SDG). % 12 out of  17
+It has been pointed out that low-income countries generally do not have enough domestic resources to eliminate the poverty gap in the short run.\cite{bolch_arithmetics_2022} In other words, it would hardly be possible to achieve the first SDG and end extreme poverty by 2030 without international transfers. 
+
+Climate change is another issue that calls for a global response and international transfers. Postulating %Assuming
+that each human has an equal right to emit CO$_\text{2}$, low emitters have a legitimate claim \textit{vis-à-vis} high emitters, that can be settled by monetary transfers. Coupling this burden-sharing principle to the carbon budget (remaining emissions that would be compatible with the Paris agreement) naturally defines a global climate policy. We call it the ``Global climate scheme'' and denote it \textit{G}; it consists of a global cap-and-trade system where emission rights are auctioned each year to polluting firms and the revenues finance a global basic income. Using the price and emissions trajectories from the Stern-Stiglitz report,\cite{stern_report_2017} we estimate that the basic income would amount to \$30 per month for each human above 15 in 2030, enough to lift out of extreme poverty the 700 million people who live with less than PPP \$2 per day. Conversely, high emitters like a typical American (with median U.S. CO$_\text{2}$ emissions) would lose in net \$85 per month, as they would face \$115 per month in price increases (assuming a carbon price of \$90/tCO$_\text{2}$ in 2030).
+% G default policy for economists, we focus on it; transfers at heart of COP; global wealth tax proposed by Piketty, Saez (fair and effective); democratisation of int'l institutions recurring topic.
+% Few studies on CC burden-sharing, all compatible with G
+% Few studies on global policies, but they show support (Ghassim, Carattini 19)
+% Here, two sets of results. First, twenty countries. Second, dig deeper using complementary survey.
+
+If high emitters share universalistic ethical values, we expect strong support for G, even in high-income countries. If, on the contrary, people defend their own financial interest, we expect low support for G in high-income countries. 
+
+In this paper, we study attitudes toward global policies that address climate change, global poverty or inequalities, with a focus on G. We measure stated support for different global policies using unpublished results from a recent survey\cite{dechezlepretre_fighting_2022-1} on climate attitudes on 40,000 respondents in 20 countries covering 72\% of global CO$_\text{2}$ emissions. We then conduct a representative survey on 3,000 U.S. respondents to study in detail the sincerity and rationales behind the support for G, the attitudes toward various global policies, global redistribution, and universalistic values.
 
 \section*{Results}
 % % 4 most important figures: heatmap OECD, heatmap support, prioritization or conjoint (r), list exp (table)
@@ -220,8 +229,34 @@
 % H3 belief: No pluralistic ignorance
 % H4: A strong majority is universalist/cosmopolitan (TODO: which word?), even a majority for non-Republican
 
+\begin{figure}
+  \caption{Share of support (somewhat or strongly) for the main global policies among non-\textit{indifferent}.} % TODO: add G to this heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/OECD/Heatplot_burden_share_all_positive_countries.pdf}}
+\end{figure}
 
-\section*{Discussion}
+
+\begin{figure}
+  \caption{Support for various global policies in the U.S.}
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/US1/support_likert.pdf}}
+\end{figure}
+
+
+\begin{figure}
+  \caption{Points.}
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/US1/points_us.pdf}}
+\end{figure}
+
+
+\begin{figure}
+  \caption{Conjoint analysis.}
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/US1/ca_r.png}}
+\end{figure}
+
+\begin{table}
+\input{../tables/US1/reg_list_exp.tex}
+\end{table}
+
+\section*{Discussion} % Summary, conclusion
 
 
 \begin{methods}

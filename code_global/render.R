@@ -495,6 +495,7 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
 # heatmap_multiple(heatmaps = heatmaps_defs)
 # TODO trim, break labels automatically
 # TODO refresh Viewer with laptop
+# TODO choose separately the width of the bars
 # TODO? Arial or Computer modern (Times)?
 
 # x: done; v: done for US1, waiting for EU; ~: needs to be improved; -: needs to be done
