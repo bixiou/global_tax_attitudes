@@ -23,6 +23,7 @@ rm(qinc)
 
 policies.names <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies", rowNames = T, rows = c(1, 16:41), cols = 1:6))
 policies.names <- policies.names[is.na(as.numeric(row.names(policies.names))),] # NAs by coercion normal
+policies.names.us <- rbind(policies.names, "tax3" = c(rep(NA, 4), "Increase corporate income tax rate from 21% to 28%"), "soc3" = c(rep(NA, 4), "Making abortion a right at the federal level"))
 # write.csv(policies.names, "../data/policies_names.csv") # to recover it in case specificities.xlsx is modified
 conjoint_attributes <- c("econ_issues", "society_issues", "climate_pol", "tax_system", "foreign_policy")
 conjoint.attributes <- c("Economic issues", "Societal issues", "Climate policy", "Tax system", "Foreign policy")
@@ -349,7 +350,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                 "gcs_important" = variables_gcs_important)
     
   }
-  if (country %in% c("US1", "US1p")) variables_points_us <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
+  if (country %in% c("US1", "US1p")) variables_points <- variables_points_us <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
   if (country %in% c("US1", "US1p")) variables_points_us_agg <<- paste0(variables_points_us, "_agg")
   
   for (i in intersect(c(variables_duration, "hh_size", "Nb_children__14", "zipcode", variables_donation, variables_belief, variables_list_exp, variables_points, "global_tax_global_share" #, "age"

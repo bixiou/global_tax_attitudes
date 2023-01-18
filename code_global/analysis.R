@@ -179,6 +179,8 @@ summary(lm(nr_support ~ gcs_understood + nr_understood + both_understood, data =
 
 
 ##### Petition #####
+decrit("petition_gcs", data = e)
+decrit("petition_nr", data = e)
 decrit("petition_matches_support", data = e) # 77%
 summary(lm(petition_matches_support ~ branch_petition, data = e))
 decrit("petition_yes_support_no", data = e)
@@ -314,11 +316,12 @@ decrit("points_climate2", data = e)
 decrit("points_climate3", data = e) #-
 decrit("points_tax1_nr", data = e)
 decrit("points_tax2_wealth_tax", data = e) #
-decrit("points_tax3", data = e) # US1p
+decrit("points_tax3_corporate_tax", data = e) # US1p
 decrit("points_foreign1_gcs", data = e)
 decrit("points_foreign2_tax_rich", data = e) # 
 decrit("points_foreign3_assembly", data = e)
 decrit("points_foreign4_aid", data = e) #-
+(mean_points <- sort(setNames(sapply(variables_points_us, function(v) round(wtd.mean(e[[v]], na.rm = T, weights = NULL), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"]))))
 
 
 ##### IAT #####
@@ -328,7 +331,7 @@ decrit("branch_iat", data = e) # 59% enter IAT
 ##### Politics #####
 decrit("political_affiliation", data = e)
 decrit("left_right", data = e)
-decrit(e$group_defended) 
+decrit("group_defended", data = e) 
 major_candidates
 minor_candidates
 decrit("vote", data = e, which = e$country == "US")
