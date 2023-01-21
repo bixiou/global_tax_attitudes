@@ -524,7 +524,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$negotiation <- as.item(temp, labels = structure(c(-2:2), names = c("Only [Country] interest", "[Country] then global", "Indifferent or don't know", "Global then [Country]", "Only global justice")
                                                           # works: c("[Country] interest, not global justice", "[Country] interest, with global justice", "Indifferent or don't know", "Global justice, with [Country] interest", "Global justice, not [Country] interest") 
                                                         # too long: c("[Country] interest, even against global justice", "[Country] interest, respecting global justice", "Indifferent or don't know", "Global justice, respecting [Country] interest", "Global justice, even against [Country] interest")
-                                                        ), missing.values=c(NA), annotation=Label(e[[v]]))  
+                                                        ), missing.values=c(NA), annotation=Label(e$negotiation_original))  
     }
     
     if ("foreign_aid_preferred_info" %in% names(e)) {

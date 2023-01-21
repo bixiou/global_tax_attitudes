@@ -470,7 +470,7 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 
 ##### Run #####
 # Bars
-barres_multiple(barres = barres_defs[c("negotiation")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("conjoint")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
 barres_multiple(barres = barres_defs[c("foreign_aid_amount")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))

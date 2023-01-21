@@ -55,6 +55,7 @@ summary(lm(petition_matches_support ~ branch_petition, data = e))
 # => G is supported for itself, rather independently from R or C, with similar support to both, and it doesn't significantly penalize the Left, and would help a Democratic candidate
 decrit("cgr_support", data = e) # 53%
 barres_multiple(barres = barres_defs[c("conjoint", "points")], df = us1, folder = "../figures/US1/")
+summary(lm(conjoint_c ~ branch_c_gcs, data = e, weights = e$weight)) # TODO! share of None increases, explaining decline in Left/conjoint_c
 # Prioritization: G has mean only slightly lower than average, makes better than ban of cars and coal exit; global tax on millionaires does as well as wealth tax and almost as good as $15 minimum wage
 (mean_points <- sort(setNames(sapply(variables_points_us, function(v) round(wtd.mean(e[[v]], na.rm = T, weights = NULL), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"]))))
 decrit("points_foreign1_gcs", data = e) # mean: 15.2
