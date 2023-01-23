@@ -19,15 +19,15 @@ decrit("gcs_support", data = e) # 54%
 decrit("nr_support", data = e) # 54%
 # Other policies
 means_support <- indiferrents_support <- relative_majority_support <- c()
-for (v in variables_support) means_support[v] <- mean(e[[v]] > 0, na.rm = T)
-for (v in variables_other_policies) relative_majority_support[v] <- mean(e[[v]][e[[v]] != 0] > 0, na.rm = T)
+for (v in variables_support) means_support[v] <- wtd.mean(e[[v]] > 0, na.rm = T, weights = e$weight)
+for (v in variables_other_policies) relative_majority_support[v] <- wtd.mean(e[[v]][e[[v]] != 0] > 0, na.rm = T, weights = e$weight[e[[v]] != 0])
 -sort(-means_support)
 -sort(-relative_majority_support)
 # Foreign aid
 decrit("foreign_aid_raise_support", data = e) 
 means_foreign_aid_condition <- means_variables_foreign_aid_no_ <- means_variables_foreign_aid_raise <- means_variables_foreign_aid_reduce <- c()
-for (v in variables_foreign_aid_condition) means_foreign_aid_condition[v] <- mean(e[[v]], na.rm = T)
-for (v in variables_foreign_aid_no_) means_variables_foreign_aid_no_[v] <- mean(e[[v]], na.rm = T)
+for (v in variables_foreign_aid_condition) means_foreign_aid_condition[v] <- wtd.mean(e[[v]], na.rm = T, weights = e$weight)
+for (v in variables_foreign_aid_no_) means_variables_foreign_aid_no_[v] <- wtd.mean(e[[v]], na.rm = T, weights = e$weight)
 -sort(-means_foreign_aid_condition)
 -sort(-means_variables_foreign_aid_no_)
 barres_multiple(barres = barres_defs[c("support_likert", "support_binary", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/")
@@ -36,7 +36,7 @@ barres_multiple(barres = barres_defs[c("support_likert", "support_binary", "fore
 ##### H1, H2 #####
 # List experiment TODO: check litterature
 # There seems to be a 8pp social norm (differential of 3pp with NR). No effect of the number of options.
-summary(lm(list_exp ~ branch_list_exp_g * branch_list_exp_r, data = e, weights = NULL))
+summary(lm(list_exp ~ branch_list_exp_g * branch_list_exp_r, data = e, weights = e$weight))
 mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) # 54%
 mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "rgl"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "rl"], na.rm = T) # 55%
 mean(e$gcs_support[e$branch_list_exp == "gl"], na.rm = T) # 52%
@@ -58,7 +58,7 @@ barres_multiple(barres = barres_defs[c("conjoint", "points")], df = us1, folder 
 summary(lm(conjoint_c ~ branch_c_gcs, data = e, weights = e$weight)) # TODO! share of None increases, explaining decline in Left/conjoint_c
 # Prioritization: G has mean only slightly lower than average, makes better than ban of cars and coal exit; global tax on millionaires does as well as wealth tax and almost as good as $15 minimum wage
 (mean_points <- sort(setNames(sapply(variables_points_us, function(v) round(wtd.mean(e[[v]], na.rm = T, weights = NULL), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"]))))
-decrit("points_foreign1_gcs", data = e) # mean: 15.2
+decrit("points_foreign1_gcs", data = e) # mean: 15.4
 
 
 ##### H3 #####
