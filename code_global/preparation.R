@@ -1,4 +1,5 @@
 # Consistency: increase/reduce aid for those with the info + later question; petition_yes_support_no; duplicate_ip
+# TODO! Change G => GCS
 # TODO order_
 
 source(".Rprofile")

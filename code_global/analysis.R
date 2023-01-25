@@ -322,6 +322,7 @@ decrit("points_foreign2_tax_rich", data = e) #
 decrit("points_foreign3_assembly", data = e)
 decrit("points_foreign4_aid", data = e) #-
 (mean_points <- sort(setNames(sapply(variables_points_us, function(v) round(wtd.mean(e[[v]], na.rm = T, weights = NULL), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"]))))
+(positive_points <- sort(setNames(sapply(variables_points_us, function(v) round(100*wtd.mean(e[[v]] > 0, na.rm = T, weights = NULL))), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"]))))
 
 
 ##### IAT #####
