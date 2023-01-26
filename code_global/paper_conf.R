@@ -70,6 +70,7 @@ barres_multiple(barres = barres_defs[c("belief")], df = us1, folder = "../figure
 
 ##### H4 #####
 # A strong majority is universalist/cosmopolitan (TODO: which word?), even a majority for non-Republican
+summary(lm(donation ~ branch_donation, data = e, weights = e$weight)) # +2.5% to nation (p=0.06)
 decrit("group_defended", data = e) # 44% universalist
 decrit("group_defended", data = e, which = e$political_affiliation != "Republican") # 51% universalist
 decrit("negotiation", data = e) # Median for Country's interest to the extent it respects global justice

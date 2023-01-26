@@ -1,3 +1,7 @@
+% Thomas => Intro, paragraph CA, conclusion
+% GCS/NR vs. G/R
+% test hypotheses 2 (is G realistic) and 3 (is G new to you?) in US2?
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% NATURE CLIMATE CHANGE FORMAT %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,14 +68,15 @@
 \usepackage[super,comma,sort]{natbib}
 % \usepackage[round,sort&compress]{natbib}
 \usepackage{url} % [hyphens]
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation.
 \usepackage[pagebackref]{hyperref}
+% \usepackage{multibib} % incompatible with backref
 \hypersetup{
   colorlinks=true, % breaklinks=true,
   urlcolor=purple,    % color of external links
   linkcolor=blue,  % color of toc, list of figs etc.
   citecolor=violet,   % color of links to bibliography
 }
-% \usepackage[hyperpageref]{backref} % back references biblio
 \usepackage{bm}
 \usepackage{indentfirst}
 \usepackage{tocbibind}
@@ -110,7 +115,6 @@
 \usepackage{rotating}
 \usepackage{fancyhdr}
 \usepackage{tocloft}
-\usepackage{multibib}
 \usepackage{titletoc}
 \usepackage[export]{adjustbox}
 \usepackage[anythingbreaks]{breakurl} % for links
@@ -339,6 +343,7 @@ To explain a strong support for the GCS despite its absence from political platf
 % H4: A strong majority is universalist/cosmopolitan (TODO: which word?), even a majority for non-Republican
 % TD It is not obvious how these answers are informative of malleable opinions. So I don't think we should state the hypothesis and sell this as a test.
 %Another hypothesis to explain the discrepancy between the lack of interest for global policies in the public debate despite a strong stated support is that opinions on the topic are weak and malleable. A way to test this is to
+% TODO!! donation
 We ask broad question on people's values, to see whether their core values are consistent with universalism. Asked what group they defend when they vote ($n$ = 3,000), 19\% choose ``sentient beings (humans and animals)'', 25\% ``humans'', 34\% ``Americans'', 15\% ``My family and myself'', and the rest (7\%) choose another group (mostly ``My State or region'' or ``People sharing my culture or religion''). The first two categories can be described as universalist, and they represent close to one out of two people. The share of universalist even constitutes a majority (at 51\%) of non-Republicans. 
 When asked what should U.S. diplomats defend in international climate negotiations, only 14\% prefer ``U.S. interests, even if it goes against global justice''; 25\% prefer global justice (mitigated or not by U.S. interests) and the bulk of respondents (37\%) prefer ``U.S. interests, to the extent it respects global justice'' ($n$ = 3,000). 
 Finally, when asked to judge the extent to which climate change, global poverty and U.S. inequality are an issue, climate change is generally viewed as the biggest problem (with a mean of 0.40 once we recode answers between $-2$ and $2$), followed by global poverty (0.20) and U.S. inequality (0.19, $n$ = 3,000). 
