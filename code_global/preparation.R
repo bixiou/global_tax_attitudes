@@ -621,16 +621,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e[[paste0(v, "_binary")]]) <- paste0(v, "binary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.")
     }
     if ("conjoint_a" %in% names(e)) {
-      label(e$branch_conjoint_b) <- "branch_conjoint_b: ir_gr/r_igr/gr_r/ir_r Random branch faced by the respondent in conjoint analysis (b)."
+      label(e$branch_conjoint_b) <- "branch_conjoint_b: cr_gr/r_rcg/rc_r/rg_r Random branch faced by the respondent in conjoint analysis (b)."
       label(e$branch_conjoint_c) <- "branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'"
-      label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
-      label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
+      label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. rcg > cr."
+      label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or cr > r in case GCS is in no bundle."
       label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
       e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
       label(e$conjoint_d) <- "conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican."
-      label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. irg > ir."
-      label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or ir > r in case GCS is in no bundle."
-      label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
       e$branch_b_gcs <- grepl("g", e$branch_conjoint_b)
       label(e$branch_b_gcs) <- "branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_rc_r'."
       e$conjoint_b_na <- e$conjoint_b
@@ -766,8 +763,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$conjoint_a_irg_support_no <- e$conjoint_a == T & e$gcs_support == "No"
       e$conjoint_a_ir_support_yes <- e$conjoint_a == F & e$gcs_support == "Yes"
       label(e$conjoint_a_matches_support) <- "conjoint_a_matches_support: T/F The answer to conjoint analysis (a) (irg vs. ir) corresponds to the answer to the support of GCS."
-      label(e$conjoint_a_irg_support_no) <- "conjoint_a_irg_support_no: T/F Prefers irg to ir in conjoint analysis (a) but does not support GCS."
-      label(e$conjoint_a_ir_support_yes) <- "conjoint_a_ir_support_yes: T/F Prefers ir to irg in conjoint analysis (a) but supports GCS."
+      label(e$conjoint_a_rcg_support_no) <- "conjoint_a_rcg_support_no: T/F Prefers rcg to rc in conjoint analysis (a) but does not support GCS."
+      label(e$conjoint_a_rc_support_yes) <- "conjoint_a_rc_support_yes: T/F Prefers rc to rcg in conjoint analysis (a) but supports GCS."
     }
     
     e$share_policies_supported <- rowMeans(e[, intersect(variables_support, names(e))] > 0, na.rm = T)
