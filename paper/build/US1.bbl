@@ -1,0 +1,42 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Dechezlepr{\^e}tre et~al.(2022)Dechezlepr{\^e}tre, Fabre, Kruse,
+  Planterose, Sanchez~Chico, \& Stantcheva]{dechezlepretre_fighting_2022}
+A.~Dechezlepr{\^e}tre, A.~Fabre, T.~Kruse, B.~Planterose, A.~Sanchez~Chico, \&
+  S.~Stantcheva.
+\newblock Fighting climate change: {{International}} attitudes toward climate
+  policies.
+\newblock \emph{NBER Working Paper}, 2022.
+\newblock
+  \url{https://www.nber.org/system/files/working_papers/w30265/w30265.pdf}.
+
+\bibitem[Douenne \& Fabre(2022)]{douenne_yellow_2022}
+T.~Douenne \& A.~Fabre.
+\newblock Yellow {{Vests}}, {{Pessimistic Beliefs}}, and {{Carbon Tax
+  Aversion}}.
+\newblock \emph{American Economic Journal: Economic Policy}, 2022.
+\newblock \url{https://halshs.archives-ouvertes.fr/halshs-02482639}.
+
+\bibitem[Ghassim(2020)]{ghassim_who_2020}
+F.~Ghassim.
+\newblock \emph{Who on Earth Wants Global Democracy \textendash{} and Why
+  (Not)? {{A}} Theoretical and Experimental Study of International Public
+  Opinion}.
+\newblock PhD thesis, University of Oxford, 2020.
+\newblock
+  \url{https://ora.ox.ac.uk/objects/uuid:5d63ad08-7e5d-4287-8d0f-9f5eab58d38d}.
+
+\bibitem[Klenert et~al.(2018)Klenert, Mattauch, Combet, Edenhofer, Hepburn,
+  Rafaty, \& Stern]{klenert_making_2018}
+D.~Klenert, L.~Mattauch, E.~Combet, O.~Edenhofer, C.~Hepburn, R.~Rafaty, \&
+  N.~Stern.
+\newblock Making carbon pricing work for citizens.
+\newblock \emph{Nature Climate Change}, 2018.
+\newblock \url{https://www.nature.com/articles/s41558-018-0201-2}.
+
+\end{thebibliography}

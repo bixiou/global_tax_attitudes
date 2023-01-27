@@ -12,7 +12,7 @@ package <- function(p, version = NULL, remove = FALSE, github = '') {
       if (github != '') {
         package("devtools")
         install_github(paste0(github, '/', p))
-      } else install.packages(p)
+      } else install.packages(p) # , repos='https://cran.rstudio.com/', type = 'source' may help in case of bug
     } else {
       try({detach("package:devtools", unload = T)})
       package("remotes")
