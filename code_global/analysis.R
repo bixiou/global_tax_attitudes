@@ -10,7 +10,8 @@ e <- ep
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 
 ##### Duration #####
-print(paste0(round(100*sum(us1pa$finished == 1 & is.na(us1pa$excluded), na.rm = T)/sum(us1pa$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1p")) # 100%
+print(paste0(round(100*sum(us1a$finished == 1 & is.na(us1a$excluded), na.rm = T)/sum(us1a$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1")) # 92% % incidence rate
+print(paste0(round(100*sum(us1a$dropout)/sum(is.na(us1a$excluded))), "% dropout in US1")) # 11% US1
 print(paste0(round(100*sum(eupa$finished == 1 & is.na(eupa$excluded), na.rm = T)/sum(eupa$finished == 1 | eupa$excluded=="Screened", na.rm = T)), "% IR in EUp")) # 86%
 print(paste0(round(100*sum(us1pa$excluded=="QuotaMet", na.rm = T)/nrow(us1pa)), "% QuotaMet")) # 4%
 print(paste0(round(100*sum(us1pa$excluded=="Screened", na.rm = T)/nrow(us1pa)), "% Screened")) # 0%
