@@ -166,9 +166,10 @@ package("dplR") # latexify, used in table_mean_lines_save
 #' package("maps")
 #' package("forcats")
 #' package("modi")
-#' package("kableExtra")
 #' package("descr")
-package("knitr") # plot_crop
+package("knitr") # plot_crop, representativeness_table
+options(knitr.kable.NA = '')
+package("kableExtra") # add_header_above in representativeness_table
 #' # One needs a *patched* version of memisc version 0.99.22 (not a newer), hence the code below (cf. this issue: https://github.com/melff/memisc/issues/62)
 if (!is.element("memisc", installed.packages()[,1])) {
   install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
@@ -209,7 +210,10 @@ library(magick) # image_write
 #' # eval(parse(along)) !!along as.name(along) substitute(eval(along)) eval(along) substitute(temp) deparse(substitute(temp)) eval(as.symbol()) eval(str2expression(along))
 #' # Fs <- function(QID) { s[QID][[1]] }
 #' # Vs <- function(QID) { as.vector(Fs(QID))  }
-d <- function(str) return(eval(str2expression(tolower(str)))) # data from name
+d <- function(str, alt_data = eu, alt_var = "country") {
+  if (exists(tolower(str))) return(eval(str2expression(tolower(str)))) # data from name
+  else return(alt_data[alt_data[[alt_var]] == tolower(str),])
+}
 #' n <- function(var) { as.numeric(as.vector(var)) }
 #' NSPs <- function(QID) { length(V(QID)[V(QID) == "NSP (Je ne veux pas répondre)"])/length(V(QID)) }
 #' nsps <- function(id) { length(v(id)[v(id) == "NSP (Je ne veux pas répondre)"])/length(v(id)) }
@@ -226,6 +230,7 @@ is.pnr <- function(variable, empty_as_pnr = T) {
     else return(is.missing(variable))
   }
 }
+no.na <- function(vec) return(replace_na(as.vector(vec), "na"))
 is.binary <- function(vec) { return((is.logical(vec) | all(unique(as.numeric(vec)) %in% c(0, 1, NA)))) }
 majority <- function(vec) {
   if (is.binary(vec)) return(100*mean(vec, na.rm = T))
@@ -2180,3 +2185,63 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #'   
 #'   return(final)
 #' }
+
+representativeness_table <- function(country_list, weighted = T, non_weighted = T, label_operator = union,
+                                     filename = NULL, folder = "../tables/sample_composition/", return_table = FALSE, threshold_skip = 0.01) {
+  rows <- c()
+  pop <- sample <- sample_weighted <- labels <- list()
+  for (i in seq_along(country_list)) {
+    df <- d(country_list[i])
+    k <- country_list[i]
+    c <- sub("[0-9p]+", "", k)
+    
+    labels[[k]] <- "Sample size"
+    pop[[k]] <- ""
+    sample[[k]] <- sample_weighted[[k]] <- prettyNum(nrow(df), big.mark = ",")
+    for (q in quotas[[c]]) {
+      q_name <- ifelse(q %in% names(levels_quotas), q, paste0(c, "_", q))
+      for (j in seq_along(levels_quotas[[q_name]])) {
+        # print(paste(c, q, j))
+        if (pop_freq[[c]][[q_name]][j] > threshold_skip) {
+          labels[[k]] <- c(labels[[k]], paste0(capitalize(q), ": ", levels_quotas[[q_name]][j]))
+          pop[[k]] <- c(pop[[k]], sprintf("%.2f", round(pop_freq[[c]][[q_name]][j], digits = 2)))
+          sample[[k]] <- c(sample[[k]], sprintf("%.2f", round(mean(as.character(df[[q]]) == levels_quotas[[q_name]][j], na.rm = T), digits = 2)))
+          if (weighted) sample_weighted[[k]] <- c(sample_weighted[[k]], sprintf("%.2f", round(wtd.mean(as.character(df[[q]]) == levels_quotas[[q_name]][j], na.rm = T, weights = df$weight), digits = 2)))
+        }
+      }
+    }
+    names(pop[[k]]) <- names(sample[[k]]) <- labels[[k]]
+    if (weighted) names(sample_weighted[[k]]) <- labels[[k]]
+    rows <- label_operator(rows, labels[[k]])
+  }
+  
+  table <- data.frame(row.names = rows)
+  for (k in country_list) {
+    table[[paste0(k, "_pop")]] <- pop[[k]][rows]
+    if (non_weighted) table[[paste0(k, "_sample")]] <- sample[[k]][rows]
+    if (weighted) table[[paste0(k, "_sample_weighted")]] <- sample_weighted[[k]][rows]
+  }
+  
+  if (return_table) return(table)
+  else export_representativeness_table(table = table, country_list = country_list, weighted = weighted, non_weighted = non_weighted, filename = filename, folder = folder)
+}
+# representativeness_table(c("US1"), return_table = T)
+export_representativeness_table <- function(table, country_list, weighted = T, non_weighted = T, filename = NULL, folder = "../tables/sample_composition") {
+  header <- c("", rep((1 + weighted + non_weighted), length(country_list)))
+  names(header) <- c("", country_list)
+  
+  line_sep <- c()
+  for (i in 2:nrow(table)) {
+    previous <- substr(row.names(table)[i-1], 1, 5)
+    current <- substr(row.names(table)[i], 1, 5)
+    line_sep <- c(line_sep, if (previous == current) "" else "\\addlinespace")
+  }
+  
+  latex_output <- kbl(table, "latex", caption = NULL, position = "b",
+                      col.names = rep(c("Population", if (non_weighted) "Sample", if (weighted) "Weighted sample"), length(country_list)), booktabs = TRUE,
+                      linesep = line_sep) %>% add_header_above(header)
+  
+  if (is.null(filename)) filename <- paste(country_list, collapse = "_")
+  cat(paste(latex_output, collapse="\n"), file = paste0(folder, filename, ".tex")) 
+}
+# representativeness_table(c("US1"), return_table = F)

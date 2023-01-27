@@ -93,6 +93,7 @@ decrit("wealth", data = e, miss = F)
 decrit("language", data = e, weight = F)
 CrossTable(e$language, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = F, total.c = F, total.r = F, cell.layout = F)
 decrit("number_same_ip", data = e)
+representativeness_table(c("US1"), return_table = F)
 
 
 ##### Support #####

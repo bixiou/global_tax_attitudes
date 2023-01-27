@@ -80,3 +80,7 @@ for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]][e$politic
 for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]], na.rm = T)
 -sort(-means_variables_problem) # CC n°1, global poverty ~ country inequality
 barres_multiple(barres = barres_defs[c("negotiation", "group_defended_agg", "problem")], df = us1, folder = "../figures/US1/")
+
+
+##### Appendices #####
+representativeness_table(c("US1"), return_table = F) # TODO: vote, employment status, custom rows/style

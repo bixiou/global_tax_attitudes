@@ -227,7 +227,7 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
     e <- e[,!duplicated(names(e))]
     # if (!incl_quality_fail) e <- e[e$attention_test == T, ] # TODO!
     if (weighting) {
-      e$weight <- weighting(e, sub("[0-9]+[a-z]*", "", country))
+      e$weight <- weighting(e, sub("[0-9p]+", "", country))
       if ("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
     }
     
