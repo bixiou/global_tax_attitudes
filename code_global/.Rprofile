@@ -221,7 +221,7 @@ Label <- function(var) {
   if (length(annotation(var))==1) { annotation(var)[1] }
   else { label(var)  }
 }
-break_string <- function(string, max_length = 60, soft_max_length = T, sep = "<br>", max_lines = 3) {
+break_string <- function(string, max_length = 57, soft_max_length = T, sep = "<br>", max_lines = 3) {
   n <- nchar(string)
   nb_pieces <- min(ceiling(n/max_length), max_lines)
   max <- floor(n/nb_pieces)
@@ -235,7 +235,7 @@ break_string <- function(string, max_length = 60, soft_max_length = T, sep = "<b
   return(paste(broken_string, collapse = sep))
 }
 
-break_strings <- function(strings, max_length = 60, soft_max_length = T, sep = "<br>", max_lines = 3) {
+break_strings <- function(strings, max_length = 57, soft_max_length = T, sep = "<br>", max_lines = 3) {
   broken_strings <- strings
   for (s in seq_along(strings)) if (!grepl(sep, strings[s])) {
     broken_strings[s] <- break_string(strings[s], max_length = max_length, soft_max_length = soft_max_length, sep = sep, max_lines = max_lines) }

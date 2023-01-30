@@ -184,9 +184,9 @@ labels_vars <- c(
   "duration_feedback" = "Duration: feedback",
   "duration_points" = "Duration: 100 points",
   "score_understood" = "Number of correct answers<br>to understanding questions",
-  "gcs_understood" = "With GCS, typical [country] people lose and poorest humans win",
-  "nr_understood" = "With NR, typical [country] people win and richest win",
-  "both_understood" = "With GCS+NR, typical [country] people neither win nor lose",
+  "gcs_understood" = "With GCS,<br>typical [country] people lose and poorest humans win",
+  "nr_understood" = "With NR,<br>typical [country] people win and richest lose",
+  "both_understood" = "With GCS+NR,<br>typical [country] people neither win nor lose",
   "share_policies_supported" = "Share of policies supported",
   "dropout" = "Dropped out",
   "petition_matches_support" = "Petition and support answers match",
@@ -372,7 +372,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
 }
 
 fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, rev_legend = FALSE,
-                        short_labels = T, width = dev.size('px')[1], labels_max_length = 60) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2]
+                        short_labels = T, width = 850, labels_max_length = 57) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2], width = dev.size('px')[1]
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type plots_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # If df$var and variables_var both exist, giving 'var' (resp. 'variables_var') will yield var (resp. variables_var)
   # /!\ Bug if an object named 'plots' exists in the environment.
@@ -430,30 +430,30 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
 
 ##### barres_defs #####
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
-  "understood_each" = list(vars = variables_understood[1:3], width = 1480),
-  "problem" = list(width = 1335),
-  "support_binary" = list(width = 770),
-  "support_likert" = list(width = 850), # 1275
-  "negotiation" = list(width = 1200),
-  "group_defended" = list(width = 1250), 
-  "group_defended_agg" = list(width = 1150), 
-  "foreign_aid_raise_support" = list(width = 1425),
-  "global_policies" = list(width = 1275),
-  "other_policies" = list(width = 1270),
-  "climate_policies" = list(width = 1221),
+  "understood_each" = list(vars = variables_understood[1:3], width = 850), # 1480 
+  "problem" = list(width = 850), # 1335
+  "support_binary" = list(width = 850), # 770
+  # "support_likert" = list(width = 850), # 1275
+  "negotiation" = list(width = 850), # TODO! 1200
+  # "group_defended" = list(width = 850), # 1250
+  # "group_defended_agg" = list(width = 850), # TODO! 1150
+  "foreign_aid_raise_support" = list(width = 850), # TODO! 1425
+  # "global_policies" = list(width = 850), # 1275
+  # "other_policies" = list(width = 850), # 1270
+  # "climate_policies" = list(width = 850), # 1221
   # "variables_list_exp" = list(width = 500),
-  "variables_petition" = list(vars = c("petition_gcs", "petition_nr"), width = 500),
-  "variables_donation" = list(vars = c("donation_africa_agg", "donation_nation_agg"), width = 835),
-  "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 1080),
-  "belief" = list(vars = variables_belief_agg, width = 750),
-  "points" = list(vars = variables_points_agg, width = 1080, sort = FALSE), # TODO! average
+  "variables_petition" = list(vars = c("petition_gcs", "petition_nr"), width = 850), # 500
+  "variables_donation" = list(vars = c("donation_africa_agg", "donation_nation_agg"), width = 850), # 835
+  "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 850), # 1080
+  "belief" = list(vars = variables_belief_agg, width = 850), # 750
+  "points" = list(vars = variables_points_agg, width = 850, sort = FALSE), # 750 TODO! average
   "points_us" = list(vars = variables_points_us_agg, width = 750, sort = FALSE), # 1080
-  "share_policies_supported" = list(vars = "share_policies_supported_agg", width = 950),
-  "understood_score" = list(vars = variables_understood[4], width = 650), 
+  "share_policies_supported" = list(vars = "share_policies_supported_agg", width = 850), # 950
+  "understood_score" = list(vars = variables_understood[4], width = 850), # 650
   # "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   # "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
   # "petition" = list(vars = variables_petition, conditions = ">= 1"),
-  "conjoint" = list(vars = variables_conjoint_binary, width = 900, sort = FALSE),
+  "conjoint" = list(vars = variables_conjoint_binary, width = 850, sort = FALSE), # 900
   # "conjoint_a" = list(vars = variables_conjoint_a_binary, conditions = ">= 1"),
   # "conjoint_b" = list(vars = variables_conjoint_b_binary, conditions = ">= 1"),
   # "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
@@ -461,9 +461,9 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "duration" = list(vars = variables_duration, conditions = ""),
   # "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   # "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
-  "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)], width = 1125),
-  "foreign_aid_condition" = list(vars = variables_foreign_aid_condition[!grepl("other", variables_foreign_aid_condition)], width = 955),
-  "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 950)
+  "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)], width = 850), # 1125
+  "foreign_aid_condition" = list(vars = variables_foreign_aid_condition[!grepl("other", variables_foreign_aid_condition)], width = 850), # 955
+  "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 850) # 950
 )
 
 # TODO! "duration", socio-demos, politics, survey_biased, individual variables
@@ -476,9 +476,9 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 
 ##### Run #####
 # Bars
-barres_multiple(barres = barres_defs[c("points_us")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs, df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
-barres_multiple(barres = barres_defs[c("foreign_aid_amount")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("understood_each")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
