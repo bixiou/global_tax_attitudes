@@ -1069,10 +1069,10 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
   if (title!="") { margin_t <- 100 }
   if (grepl("<br>", title)) { margin_t <- 150 }
   legendSize <- 15+2 # 10, 13
-  legendY <- 1.1  + 0.3*thin/(ncol(data)-1) # last term may be problematic
+  legendY <- 1 #1.1  + 0.3*thin/(ncol(data)-1) # last term may be problematic
   legendX <- 0.2
   legendFont = font #'Open Sans'
-  if (is.null(margin_l)) { margin_l <- 4.7*max(nchar(labels)/(1 + str_count(labels, '<br>'))) }
+  if (is.null(margin_l)) margin_l <- 0 # 4.7*max(nchar(labels)/(1 + str_count(labels, '<br>')))
   if (is.null(share_labels)) share_labels <- 0.01 + 0.49*(!(" " %in% labels)) # 0.14
   if (max(nchar(labels)) > 25) { legendSize <- 15 } # 9, 13
   # if (max(nchar(labels)) > 50) { legendSize <- 8 }
@@ -1083,14 +1083,16 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     legendX= -0.2 # 1
     # if (ncol(data)>1) margin_t = 170
   }
+  legendX <- .98 # overwrites the previous legendX that was defined with xanchor = 'left'
   if (!is.na(legend_x)) legendX <- legend_x
   if (!showLegend) { margin_t <- max(0, margin_t - 70) }
-  if (ncol(data)==1) legendY <- 1.5 + 0.3*thin
+  if (ncol(data)==1) legendY <- 1 # 1.5 + 0.3*thin
   if (sort) {
     order <- order_agree(data = data, miss = miss, rev = rev, n = length(labels))
     labels <- labels[order]
     data <- matrix(data[, order], nrow=nrow(data))
   }
+  if (is.na(xrange)) xrange <- c(0, max(colSums(data))*1.099)
   if (nrow(data)==1 & (sort | !showLegend)) {  # new: add !showLegend to manage responsable_CC i.e. comparisons of a multiple answer question
     if (!sort) order <- 1:length(labels)
     hover <- hover[order]
@@ -1169,7 +1171,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     # paper_bgcolor = 'rgb(248, 248, 255)', plot_bgcolor = 'rgb(248, 248, 255)',
     margin = list(l = margin_l, r = margin_r, t = margin_t, b = 24, autoexpand = thin), # 21, autoexpand=FALSE removes useless margin at bottom but creates bug with legend
     # margin = list(b = 20, t = margin_t),
-    legend = list(orientation='h', y=legendY, x=legendX, traceorder='normal', font=list(size=legendSize+2, color='black', family = font)), # family='Balto',  , family=legendFont
+    legend = list(orientation='h', y=legendY, x=legendX, xanchor = 'right', yanchor = 'bottom', traceorder='normal', font=list(size=legendSize+2, color='black', family = font)), # family='Balto',  , family=legendFont
     # showlegend = (showLegend & !((("Yes" %in% legend) | ("Oui" %in% legend)) & (length(legend)<4)))) %>%
     showlegend = showLegend # (showLegend & !(setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP')) | setequal(legend, c('Yes', 'No')) | setequal(legend, c('Oui', 'Non'))))
     ) %>%

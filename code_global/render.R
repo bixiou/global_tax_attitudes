@@ -159,6 +159,7 @@ labels_vars <- c(
   "points_tax1_nr" = "tax1: National redistribution scheme",
   "points_tax2_wealth_tax" = "tax2: Wealth tax",
   "points_tax3" = "Increase corporate income tax<br>rate from 21% to 28%",
+  "points_tax3_corporate_tax_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
   "points_foreign1_gcs" = "foreign1: Global climate scheme",
   "points_foreign2_tax_rich" = "foreign2: Global tax on millionaires",
   "points_foreign3_assembly" = "foreign3: Global democratic assembly on climate change",
@@ -262,6 +263,7 @@ labels_vars_us <- c(
   "points_tax1_nr_agg" = "National redistribution scheme",
   "points_tax2_wealth_tax_agg" = "Wealth tax",
   "points_tax3_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
+  "points_tax3_corporate_tax_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
   "points_foreign1_gcs_agg" = "Global climate scheme",
   "points_foreign2_tax_rich_agg" = "Global tax on millionaires",
   "points_foreign3_assembly_agg" = "Global democratic assembly on climate change",
@@ -354,16 +356,18 @@ heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, w
 ##### Barres #####
 data_list_exp <- function(data) return(cbind(t(t(c(0, 0, dataN("list_exp_l", data, miss = F)))), t(t(c(0, dataN("list_exp_gl", data, miss = F)))), t(t(c(0, dataN("list_exp_rl", data, miss = F)))), dataN("list_exp_rgl", data, miss = F)))
 
-barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print = T, export_xls = FALSE, trim = FALSE, method = 'orca', format = 'pdf', weights = T) {
+barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print = T, export_xls = FALSE, trim = T, method = 'orca', format = 'pdf', weights = T) {
   if (missing(folder)) folder <- automatic_folder(along = "country", data = df, several = "all")
   for (def in barres) {
     tryCatch({
       vars_present <- def$vars %in% names(df)
-      plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, magin_l = def$margin_l, miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, weights = weights)
+      plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, margin_l = def$margin_l, 
+                     miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, weights = weights)
       if (print) print(plot)
       save_plotly(plot, filename = def$name, folder = folder, width = def$width, height = def$height, method = method, trim = trim, format = format)
       print(paste0(def$name, ": success"))
-    }, error = function(cond) { print(paste0(def$name, ": failed.")) } )
+    }
+  , error = function(cond) { print(paste0(def$name, ": failed.")) } )
   }
 }
 
@@ -429,7 +433,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "understood_each" = list(vars = variables_understood[1:3], width = 1480),
   "problem" = list(width = 1335),
   "support_binary" = list(width = 770),
-  "support_likert" = list(width = 1275),
+  "support_likert" = list(width = 850), # 1275
   "negotiation" = list(width = 1200),
   "group_defended" = list(width = 1250), 
   "group_defended_agg" = list(width = 1150), 
@@ -443,7 +447,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 1080),
   "belief" = list(vars = variables_belief_agg, width = 750),
   "points" = list(vars = variables_points_agg, width = 1080, sort = FALSE), # TODO! average
-  "points_us" = list(vars = variables_points_us_agg, width = 1080, sort = FALSE),
+  "points_us" = list(vars = variables_points_us_agg, width = 750, sort = FALSE), # 1080
   "share_policies_supported" = list(vars = "share_policies_supported_agg", width = 950),
   "understood_score" = list(vars = variables_understood[4], width = 650), 
   # "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
@@ -472,7 +476,7 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 
 ##### Run #####
 # Bars
-barres_multiple(barres = barres_defs[c("understood_each")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("points_us")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
 barres_multiple(barres = barres_defs[c("foreign_aid_amount")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
