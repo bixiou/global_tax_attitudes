@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.12.6)  30 JAN 2023 19:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.12.6)  30 JAN 2023 19:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -986,25 +986,22 @@ File: ../figures/US1/understood_each.pdf Graphic file (type pdf)
 <use ../figures/US1/understood_each.pdf>
 Package pdftex.def Info: ../figures/US1/understood_each.pdf  used on input line 6.
 (pdftex.def)             Requested size: 469.75502pt x 159.25468pt.
-<../figures/US1/understood_score.pdf, id=264, 380.42125pt x 94.3525pt>
+<../figures/US1/understood_score.pdf, id=264, 454.69875pt x 94.3525pt>
 File: ../figures/US1/understood_score.pdf Graphic file (type pdf)
 <use ../figures/US1/understood_score.pdf>
 Package pdftex.def Info: ../figures/US1/understood_score.pdf  used on input line 11.
-(pdftex.def)             Requested size: 469.75502pt x 116.51212pt.
-<../figures/US1/support_binary.pdf, id=271, 469.755pt x 188.705pt>
+(pdftex.def)             Requested size: 375.80544pt x 77.98283pt.
+<../figures/US1/support_binary.pdf, id=271, 498.86375pt x 188.705pt>
 File: ../figures/US1/support_binary.pdf Graphic file (type pdf)
 <use ../figures/US1/support_binary.pdf>
 Package pdftex.def Info: ../figures/US1/support_binary.pdf  used on input line 16.
-(pdftex.def)             Requested size: 469.75502pt x 188.70453pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<../figures/US1/belief.pdf, id=276, 390.45876pt x 140.525pt>
+(pdftex.def)             Requested size: 422.77664pt x 159.92776pt.
+<../figures/US1/belief.pdf, id=276, 402.50375pt x 140.525pt>
 File: ../figures/US1/belief.pdf Graphic file (type pdf)
 <use ../figures/US1/belief.pdf>
 Package pdftex.def Info: ../figures/US1/belief.pdf  used on input line 21.
-(pdftex.def)             Requested size: 469.75502pt x 169.07085pt.
+(pdftex.def)             Requested size: 375.80544pt x 131.20364pt.
+
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1016,11 +1013,11 @@ Package pdftex.def Info: ../figures/US1/list_exp.pdf  used on input line 26.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/conjoint.pdf, id=284, 495.8525pt x 311.1625pt>
+<../figures/US1/conjoint.pdf, id=284, 477.785pt x 311.1625pt>
 File: ../figures/US1/conjoint.pdf Graphic file (type pdf)
 <use ../figures/US1/conjoint.pdf>
 Package pdftex.def Info: ../figures/US1/conjoint.pdf  used on input line 31.
-(pdftex.def)             Requested size: 469.75502pt x 294.78606pt.
+(pdftex.def)             Requested size: 469.75502pt x 305.93423pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1031,19 +1028,19 @@ Package pdftex.def Info: ../figures/US1/ca_r.png  used on input line 36.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/variables_donation.pdf, id=289, 433.62pt x 140.525pt>
+<../figures/US1/variables_donation.pdf, id=289, 438.63875pt x 140.525pt>
 File: ../figures/US1/variables_donation.pdf Graphic file (type pdf)
 <use ../figures/US1/variables_donation.pdf>
 Package pdftex.def Info: ../figures/US1/variables_donation.pdf  used on input line 41.
-(pdftex.def)             Requested size: 469.75502pt x 152.24289pt.
+(pdftex.def)             Requested size: 375.80544pt x 120.3967pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/variables_petition.pdf, id=292, 263.98625pt x 142.5325pt>
+<../figures/US1/variables_petition.pdf, id=292, 395.4775pt x 140.525pt>
 File: ../figures/US1/variables_petition.pdf Graphic file (type pdf)
 <use ../figures/US1/variables_petition.pdf>
 Package pdftex.def Info: ../figures/US1/variables_petition.pdf  used on input line 46.
-(pdftex.def)             Requested size: 328.82707pt x 177.55185pt.
+(pdftex.def)             Requested size: 328.82707pt x 116.84369pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1086,11 +1083,11 @@ Package pdftex.def Info: ../figures/US1/negotiation.pdf  used on input line 81.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/problem.pdf, id=311, 670.505pt x 166.6225pt>
+<../figures/US1/problem.pdf, id=311, 492.84125pt x 166.6225pt>
 File: ../figures/US1/problem.pdf Graphic file (type pdf)
 <use ../figures/US1/problem.pdf>
 Package pdftex.def Info: ../figures/US1/problem.pdf  used on input line 91.
-(pdftex.def)             Requested size: 469.75502pt x 116.7341pt.
+(pdftex.def)             Requested size: 469.75502pt x 158.82439pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1111,11 +1108,11 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [15
 
- <../figures/US1/understood_each.pdf> <../figures/US1/understood_score.pdf>] [16 <../figures/US1/support_binary.pdf> <../figures/US1/belief.pdf>] [17 <../figures/US1/list_exp.pdf
+ <../figures/US1/understood_each.pdf> <../figures/US1/understood_score.pdf> <../figures/US1/support_binary.pdf>] [16 <../figures/US1/belief.pdf> <../figures/US1/list_exp.pdf
 
 pdfTeX warning: pdflatex.exe (file ../figures/US1/list_exp.pdf): PDF inclusion: invalid other resource which is no dict (key 'ProcSets', type <array>); ignored.
-> <../figures/US1/conjoint.pdf>] [18 <../figures/US1/variables_donation.pdf>] [19 <../figures/US1/variables_petition.pdf>] [20 <../figures/US1/foreign_aid_raise_support.pdf> <../figures/US1/foreign_aid_condition.pdf>] [21 <../figures/US1/foreign_aid_no.pdf> <../figures/US1/negotiation.pdf> <../figures/US1/problem.pdf>] [22 <../figures/US1/group_defended_agg.pdf>] [23]
-<../questionnaire/survey_flow_US1.pdf, id=611, 819.06pt x 491.8375pt>
+>] [17 <../figures/US1/conjoint.pdf>] [18 <../figures/US1/variables_donation.pdf>] [19 <../figures/US1/variables_petition.pdf> <../figures/US1/foreign_aid_raise_support.pdf>] [20 <../figures/US1/foreign_aid_condition.pdf> <../figures/US1/foreign_aid_no.pdf>] [21 <../figures/US1/negotiation.pdf> <../figures/US1/problem.pdf> <../figures/US1/group_defended_agg.pdf>] [22]
+<../questionnaire/survey_flow_US1.pdf, id=607, 819.06pt x 491.8375pt>
 File: ../questionnaire/survey_flow_US1.pdf Graphic file (type pdf)
 <use ../questionnaire/survey_flow_US1.pdf>
 Package pdftex.def Info: ../questionnaire/survey_flow_US1.pdf  used on input line 125.
@@ -1140,7 +1137,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 130--142
 
  []
 
-[24
+[23
 
  <../questionnaire/survey_flow_US1.pdf>]
 LaTeX Font Info:    Trying to load font information for OMS+ppl on input line 152.
@@ -1149,7 +1146,7 @@ File: omsppl.fd
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/it' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 152.
- [25]
+ [24]
 Underfull \hbox (badness 10000) in paragraph at lines 161--167
 
  []
@@ -1179,7 +1176,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 167--173
 
  []
 
-[26]
+[25]
 Underfull \hbox (badness 10000) in paragraph at lines 183--187
 
  []
@@ -1189,7 +1186,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 187--190
 
  []
 
-[27]
+[26]
 Underfull \hbox (badness 10000) in paragraph at lines 190--194
 
  []
@@ -1209,7 +1206,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 194--205
 
  []
 
-[28]
+[27]
 Underfull \hbox (badness 10000) in paragraph at lines 208--217
 
  []
@@ -1229,7 +1226,7 @@ Overfull \hbox (6.36208pt too wide) in paragraph at lines 208--217
 []$ \OT1/ppl/m/n/12 [\OT1/ppl/m/it/12 Click-ing dis-plays the pre-vi-ous sum-
  []
 
-[29]
+[28]
 Underfull \hbox (badness 10000) in paragraph at lines 255--257
 
  []
@@ -1269,27 +1266,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 291--302
 
  []
 
+[29]
+Underfull \hbox (badness 10000) in paragraph at lines 345--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 345--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 345--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 345--384
+
+ []
+
 [30]
-Underfull \hbox (badness 10000) in paragraph at lines 345--384
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 345--384
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 345--384
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 345--384
-
- []
-
-[31]
 Underfull \hbox (badness 10000) in paragraph at lines 384--400
 
  []
@@ -1304,7 +1301,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 400--414
 
  []
 
-[32]
+[31]
 Underfull \hbox (badness 10000) in paragraph at lines 414--428
 
  []
@@ -1319,7 +1316,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 433--439
 
  []
 
-[33]
+[32]
 Underfull \hbox (badness 10000) in paragraph at lines 450--462
 
  []
@@ -1334,7 +1331,7 @@ Overfull \hbox (4.25092pt too wide) in paragraph at lines 473--474
 \OT1/ppl/m/it/12 Strongly op-pose; Some-what op-pose; Nei-ther sup-port nor op-pose; Some-what sup-port; Strongly
  []
 
-[34]
+[33]
 Overfull \hbox (4.25092pt too wide) in paragraph at lines 483--484
 \OT1/ppl/m/it/12 Strongly op-pose; Some-what op-pose; Nei-ther sup-port nor op-pose; Some-what sup-port; Strongly
  []
@@ -1344,7 +1341,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 484--488
 
  []
 
-[35] [36]
+[34] [35]
 Underfull \hbox (badness 10000) in paragraph at lines 523--529
 
  []
@@ -1354,12 +1351,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 523--529
 
  []
 
-[37]
+[36]
 Underfull \hbox (badness 10000) in paragraph at lines 556--560
 
  []
 
-[38] (../tables/sample_composition/US1.tex)) [39
+[37] (../tables/sample_composition/US1.tex)) [38
 
 ] (build/US1.aux)
 
@@ -1371,8 +1368,8 @@ Package rerunfilecheck Info: File `US1.brf' has not changed.
 (rerunfilecheck)             Checksum: 92B47176E3C84C89DD14A1A89424DC19;374.
  ) 
 Here is how much of TeX's memory you used:
- 28095 strings out of 474968
- 517713 string characters out of 5780081
+ 28094 strings out of 474968
+ 517706 string characters out of 5780081
  839632 words of memory out of 5000000
  48841 multiletter control sequences out of 15000+600000
  524796 words of font info for 170 fonts, out of 8000000 for 9000
@@ -1382,10 +1379,10 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on build/US1.pdf (39 pages, 1545281 bytes).
+Output written on build/US1.pdf (38 pages, 1544628 bytes).
 PDF statistics:
- 832 PDF objects out of 1000 (max. 8388607)
- 639 compressed objects within 7 object streams
- 153 named destinations out of 1000 (max. 500000)
+ 828 PDF objects out of 1000 (max. 8388607)
+ 636 compressed objects within 7 object streams
+ 152 named destinations out of 1000 (max. 500000)
  260 words of extra memory for PDF output out of 10000 (max. 10000000)
 
