@@ -221,6 +221,26 @@ Label <- function(var) {
   if (length(annotation(var))==1) { annotation(var)[1] }
   else { label(var)  }
 }
+break_string <- function(string, max_length = 60, soft_max_length = T, sep = "<br>", max_lines = 3) {
+  n <- nchar(string)
+  nb_pieces <- min(ceiling(n/max_length), max_lines)
+  max <- floor(n/nb_pieces)
+  broken_string <- strwrap(string, max)
+  if (soft_max_length) { # Ensures that there are nb_pieces lines, but a line can be longer than max_length
+    while (length(broken_string) > nb_pieces) {
+      max <- max + 1
+      broken_string <- strwrap(string, max)
+    }
+  } # else no line is longer than max_length-1 but there might be more than nb_pieces lines.
+  return(paste(broken_string, collapse = sep))
+}
+
+break_strings <- function(strings, max_length = 60, soft_max_length = T, sep = "<br>", max_lines = 3) {
+  broken_strings <- strings
+  for (s in seq_along(strings)) if (!grepl(sep, strings[s])) {
+    broken_strings[s] <- break_string(strings[s], max_length = max_length, soft_max_length = soft_max_length, sep = sep, max_lines = max_lines) }
+  return(broken_strings)
+}
 is.pnr <- function(variable, empty_as_pnr = T) {
   if (empty_as_pnr) {
     if (is.null(annotation(variable))) return(is.na(variable)|variable=="")
@@ -1031,7 +1051,7 @@ order_agree <- function(data, miss, rev = T, n = ncol(data)) {
     else if (nrow(data)==7) { for (i in 1:n) { agree <- c(agree, data[6, i] + data[7, i]) } }
     else { for (i in 1:n) { agree <- c(agree, data[1, i]) } } }
   return(order(agree, decreasing = rev)) }
-barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, margin_r=0, margin_l=NA, online=FALSE, export_xls = F, digits = 0,
+barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, margin_r=0, margin_l=NULL, share_labels = NULL, online=FALSE, export_xls = F, digits = 0,
                    display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
@@ -1052,7 +1072,8 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
   legendY <- 1.1  + 0.3*thin/(ncol(data)-1) # last term may be problematic
   legendX <- 0.2
   legendFont = font #'Open Sans'
-  if (is.na(margin_l)) { margin_l <- 4.7*max(nchar(labels)/(1 + str_count(labels, '<br>'))) }
+  if (is.null(margin_l)) { margin_l <- 4.7*max(nchar(labels)/(1 + str_count(labels, '<br>'))) }
+  if (is.null(share_labels)) share_labels <- 0.01 + 0.49*(!(" " %in% labels)) # 0.14
   if (max(nchar(labels)) > 25) { legendSize <- 15 } # 9, 13
   # if (max(nchar(labels)) > 50) { legendSize <- 8 }
   # if (max(nchar(labels)) > 60) { legendSize <- 7 }
@@ -1130,7 +1151,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
                                 tickcolor = toRGB("gray70"),
                                 zeroline = T,
                                 range = xrange,
-                                domain = c(0.01 + 0.14*(!(" " %in% labels)), 1)
+                                domain = c(share_labels, 1)
     ),
     yaxis = list(title = "",
                  showgrid = FALSE,
@@ -1154,7 +1175,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     ) %>%
 
     # labeling the y-axis
-    add_annotations(xref = 'paper', yref = 'y', x = 0.14, y = labels,
+    add_annotations(xref = 'paper', yref = 'y', x = share_labels - 0.01, y = labels,
                     xanchor = 'right',
                     text = labels,
                     font = list(family = font, size = 14+2, color = 'black'),

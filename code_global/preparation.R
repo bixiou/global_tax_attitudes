@@ -703,7 +703,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                                              ), annotation = "group_defended_agg: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; and where 'Humans or sentient beings' gathers Humans and Sentient beings (humans or animals)")
     }
     
-    if ("vote_participation" %in% names(e)) { 
+    if ("vote_participation" %in% names(e)) {
       e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
 
       major_threshold <- 5 # 5% is the treshold to be considered a major candidate
@@ -712,7 +712,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
           e$vote[!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"] <- e[[paste0("vote_", c, "_voters")]][!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"]
           e$vote[!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"] <- e[[paste0("vote_", c, "_non_voters")]][!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"]
           major_candidates[[c]] <<- setdiff(names(table(e$vote[e$country == toupper(c)]))[table(e$vote[e$country == toupper(c)]) > major_threshold * sum(e$country == toupper(c)) / 100], text_pnr)
-          minor_candidates[[c]] <<- setdiff(names(table(e$vote[e$country == toupper(c)]))[table(e$vote[e$country == toupper(c)]) <= .05 * sum(e$country == toupper(c))], text_pnr) 
+          minor_candidates[[c]] <<- setdiff(names(table(e$vote[e$country == toupper(c)]))[table(e$vote[e$country == toupper(c)]) <= .05 * sum(e$country == toupper(c))], text_pnr)
           e$vote_agg[e$country == toupper(c) & e$vote %in% c(major_candidates[[c]], text_pnr)] <- e$vote[e$country == toupper(c) & e$vote %in% c(major_candidates[[c]], text_pnr)]
           e$vote_agg[e$country == toupper(c) & e$vote %in% minor_candidates[[c]]] <- "Other"
         }
@@ -725,9 +725,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       major_candidates <<- major_candidates
       minor_candidates <<- minor_candidates
     }
-    
+
     if ("vote_us_voters" %in% names(e)) {
-      e$vote_us <- "Other/Non-voter" # What respondent voted in 2020. 
+      e$vote_us <- "Other/Non-voter" # What respondent voted in 2020.
       e$vote_us[e$vote_participation %in% c("No right to vote", "Prefer not to say") | e$vote_us_voters %in% c("PNR", "Prefer not to say")] <- "PNR/no right"
       e$vote_us[e$vote_us_voters == "Biden"] <- "Biden"
       e$vote_us[e$vote_us_voters == "Trump"] <- "Trump"
@@ -760,8 +760,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     
     if ("conjoint_a" %in% names(e)) {
       e$conjoint_a_matches_support <- e$conjoint_a == e$gcs_support
-      e$conjoint_a_irg_support_no <- e$conjoint_a == T & e$gcs_support == "No"
-      e$conjoint_a_ir_support_yes <- e$conjoint_a == F & e$gcs_support == "Yes"
+      e$conjoint_a_rcg_support_no <- e$conjoint_a == T & e$gcs_support == "No"
+      e$conjoint_a_rc_support_yes <- e$conjoint_a == F & e$gcs_support == "Yes"
       label(e$conjoint_a_matches_support) <- "conjoint_a_matches_support: T/F The answer to conjoint analysis (a) (irg vs. ir) corresponds to the answer to the support of GCS."
       label(e$conjoint_a_rcg_support_no) <- "conjoint_a_rcg_support_no: T/F Prefers rcg to rc in conjoint analysis (a) but does not support GCS."
       label(e$conjoint_a_rc_support_yes) <- "conjoint_a_rc_support_yes: T/F Prefers rc to rcg in conjoint analysis (a) but supports GCS."

@@ -359,7 +359,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
   for (def in barres) {
     tryCatch({
       vars_present <- def$vars %in% names(df)
-      plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, weights = weights)
+      plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, magin_l = def$margin_l, miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, weights = weights)
       if (print) print(plot)
       save_plotly(plot, filename = def$name, folder = folder, width = def$width, height = def$height, method = method, trim = trim, format = format)
       print(paste0(def$name, ": success"))
@@ -368,7 +368,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
 }
 
 fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, rev_legend = FALSE,
-                        short_labels = T, width = dev.size('px')[1]) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2]
+                        short_labels = T, width = dev.size('px')[1], labels_max_length = 60) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2]
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type plots_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # If df$var and variables_var both exist, giving 'var' (resp. 'variables_var') will yield var (resp. variables_var)
   # /!\ Bug if an object named 'plots' exists in the environment.
@@ -400,8 +400,10 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
     if (!"name" %in% names(plots[[name]])) plots[[name]]$name <- name
     if (!"labels" %in% names(plots[[name]])) {
       plots[[name]]$labels <- c()
-      for (var in plots[[name]]$vars) plots[[name]]$labels <- c(plots[[name]]$labels, ifelse(var %in% names(labels), labels[var], var))
+      for (var in plots[[name]]$vars) plots[[name]]$labels <- c(plots[[name]]$labels, break_strings(ifelse(var %in% names(labels), labels[var], var), max_length = labels_max_length))
     }
+    # if (!"share_labels" %in% names(plots[[name]])) plots[[name]]$share_labels <- NA
+    # if (!"margin_l" %in% names(plots[[name]])) plots[[name]]$margin_l <- NA
     if (!"miss" %in% names(plots[[name]])) plots[[name]]$miss <- miss
     if (!"sort" %in% names(plots[[name]])) plots[[name]]$sort <- sort
     if (!"rev" %in% names(plots[[name]])) plots[[name]]$rev <- rev
@@ -493,9 +495,9 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
-# TODO trim, break labels automatically
-# TODO refresh Viewer with laptop
-# TODO choose separately the width of the bars
+# TODO trim
+# TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
+# TODO automatically set share_labels and margin_l
 # TODO? Arial or Computer modern (Times)?
 
 # x: done; v: done for US1, waiting for EU; ~: needs to be improved; -: needs to be done
@@ -511,3 +513,25 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
 # v negotiation (ctry + heterog)
 # v group defended (ctry + heterog)
 # v problem (ctry + heat)
+
+temp <- c("Aid is a pressure tactic for high-income countries that prevents low-income countries from developing freely")
+(bars <- plot_ly(x = c(1), y = break_string(temp), 
+                type = 'bar', orientation = 'h', textposition = 'auto',
+                name=c("red")) %>%   
+    add_annotations(xref = 'paper', yref = 'y', x = 0.5-0.01, y = break_string(temp),
+             xanchor = 'right',
+             text = break_string(temp),
+             font = list(family = "Arial", size = 14+2, color = 'black'),
+             showarrow = FALSE, align = 'right')  %>%
+    plotly::layout(font = list(size = 16),
+                          margin = list(
+                            # l = 0, r = 0, t = 0, b = 0, 
+                                        autoexpand = T),
+                          yaxis = list(automargin = T, showticklabels = FALSE),
+                          xaxis = list(
+                            automargin = T,
+                                       domain = c(0.5, 1)) 
+  ))
+strwrap(temp, 20)
+
+plot_ly(x = c(1), y = "Test", type = 'bar')

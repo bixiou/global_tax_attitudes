@@ -3,6 +3,7 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
+# TODO! repräsentative*r Deutsche*r
 # TODO US2/EU interests, even if it goes against global justice; U.S. interests, to the extent it respects global justice; Indifferent or don't know; Global justice, to the extent it respects U.S. interests, Global justice, even if it goes against U.S. interests
 # TODO ETS2
 # TODO US/EU: put back email?, welcome: amount incentives
