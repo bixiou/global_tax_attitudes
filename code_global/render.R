@@ -431,13 +431,13 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
 ##### barres_defs #####
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
   "understood_each" = list(vars = variables_understood[1:3], width = 850), # 1480 
-  "problem" = list(width = 850), # 1335
-  "support_binary" = list(width = 850), # 770
+  # "problem" = list(width = 850), # 1335
+  # "support_binary" = list(width = 850), # 770
   # "support_likert" = list(width = 850), # 1275
-  "negotiation" = list(width = 850), # TODO! 1200
+  "negotiation" = list(width = 940), # TODO! 1200
   # "group_defended" = list(width = 850), # 1250
   # "group_defended_agg" = list(width = 850), # TODO! 1150
-  "foreign_aid_raise_support" = list(width = 850), # TODO! 1425
+  "foreign_aid_raise_support" = list(width = 940), # TODO! 1425
   # "global_policies" = list(width = 850), # 1275
   # "other_policies" = list(width = 850), # 1270
   # "climate_policies" = list(width = 850), # 1221
@@ -467,8 +467,10 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
 )
 
 # TODO! "duration", socio-demos, politics, survey_biased, individual variables
+# TODO double text for the first
+# TODO % list_exp, group_defended_agg2
 vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
-                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "group_defended") 
+                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "group_defended", "group_defended_agg") 
 
 barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 # barres_defs$foreign_aid_no
@@ -476,7 +478,7 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 
 ##### Run #####
 # Bars
-barres_multiple(barres = barres_defs, df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c('support_match', "share_policies_supported")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
 barres_multiple(barres = barres_defs[c("understood_each")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
@@ -484,7 +486,7 @@ save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", w
 
 # list_exp
 (temp <- barres(data = data_list_exp(us1), rev = F, rev_color = T, export_xls = F, sort = F, thin = T, miss=F, showLegend = T, legend = c(0:4), labels=labels_vars[variables_list_exp]))
-save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 700, height = fig_height(4), trim = FALSE)
+save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 850, height = fig_height(4), trim = T)
 
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
