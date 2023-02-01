@@ -260,7 +260,7 @@ positive <- function(vec) {
   if (is.binary(vec)) return(100*mean(vec, na.rm = T))
   else return(100 * sum(!is.na(vec) & vec > 0) / sum(!is.na(vec)))
 }
-agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T # min = 0, max = Inf, 
+agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T, return = "vec" # min = 0, max = Inf, 
 ) {
   # strict_ineq_lower == T means intervals 50,60 are of type ];] while == F means [;[.
   # shift = 1 (with strict_ineq_lower == T) means levels ]50;60] will be displayed as "[begin]51[sep]60[end]".
@@ -283,12 +283,15 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
     if (strict_ineq_lower) vec_agg[(vec <= thresholds[i] & vec < max_i & vec > thresholds[i-1]) | (vec == max_i & i == length(thresholds)) | (vec == thresholds[i] & i < length(thresholds) & vec < max_i) | (i == 2 & vec == min)] <- (thresholds[i] + thresholds[i-1])/2 
     else vec_agg[(vec < thresholds[i] & vec >= thresholds[i-1] & vec > min_i) | (vec == min_i & i == 2) | (vec == thresholds[i-1] & i > 2 & vec > min_i) | (i == length(thresholds) & vec == max)] <- (thresholds[i] + thresholds[i-1])/2 
   }
-  if (min == -Inf & strict_ineq_lower) levels[1] <- sub("-Inf - ", "≤ ", levels[1])
-  if (min == -Inf & !strict_ineq_lower) levels[1] <- sub("-Inf - ", "< ", levels[1])
-  if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub("(.*)- Inf", "> \\1", levels[length(levels)])
-  if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub("(.*)- Inf", "≥ \\1", levels[length(levels)])
+  if (min == -Inf & strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "≤ ", levels[1])
+  if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
+  if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sub(" ", "", sep), "Inf"), "> \\1", levels[length(levels)])
+  if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sub(" ", "", sep), "Inf"), "≥ \\1", levels[length(levels)])
   vec_agg[is.na(vec)] <- NA
   vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
+  if (return == "vec") return(vec_agg)
+  else if (return == "levels") return(levels)
+  else if (return == "values") return(values)
 }
 decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights
   # if (!missing(data)) variable <- data[[variable]]
@@ -1233,6 +1236,9 @@ save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = 
       if (format == 'png') {
         dev.copy(png, filename = file, width = width, height = height) # save plot from R (not plotly)
         dev.off() }
+      else if (format == 'svg') {
+        dev.copy(svg, filename = file, width = width/100, height = height/100) # save plot from R (not plotly)
+        dev.off() }
       else if (format == 'pdf') dev.print(pdf, file = file) # because dev.size('px')[1]/dev.size('in')[1] = 105 , width = width/105, height = height/105
     }
     else {
@@ -1240,7 +1246,7 @@ save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = 
       server$export(plot, file = file, width = width, height = height)
       server$close()
     }
-    if (trim & format == 'png') image_write(image_trim(image_read(file)), file)
+    if (trim & format %in% c('png', 'svg')) image_write(image_trim(image_read(file)), file)
     if (trim & format == 'pdf') plot_crop(file) } # to crop pdf, see also code_oecd/crop_pdf.sh and run it in the desired folder
 }
 save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', format = 'pdf', trim = T) { # in case connection refused, turn off Windows Defender on private networks
@@ -1848,45 +1854,49 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
 # 
-# plot_world_map <- function(var, condition = "> 0", df = all, on_control = T, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2]) {
-#   table <- heatmap_table(vars = var, data = df, along = "country", conditions = c(condition), on_control = T)
-#   df_countries <- c(Country_Names[colnames(table)], "Wallis and Futuna", "Vatican", "Tobago", "Trinidad", "Sint Maarten", "Liechtenstein", "Saint Kitts", "Nevis", "Monaco", "Jersey", "Barbuda", "Antigua", "Saint Barthelemy", "Reunion", "Grenadines", "Virgin Islands", "Turks and Caicos Islands", "Saint Pierre and Miquelon", "Saint Helena", "Ascension Island", "Niue", "Palau", "Pitcairn Islands", "South Sandwich Islands")
-#   df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2)))
-# 
-#   if (condition != "") {
-#     breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
-#     labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
-#     legend <- paste("Share", condition)
-#     limits <- c(0, 1)
-#   } else {
-#     breaks <- c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf) # c(-Inf, -1, -.5, -.25, 0, .25, .5, 1, Inf)
-#     labels <- c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2")
-#     legend <- "Mean"
-#     limits <- c(-2, 2)
-#   }
-# 
-#   world_map <- map_data(map = "world")
-#   world_map <- world_map[world_map$region != "Antarctica",]
-#   # world_map$region <- iso.alpha(world_map$region)
-# 
-#   df_na <- data.frame(country = setdiff(world_map$region, df_countries), mean = NA)
-#   df <- merge(df, df_na, all = T)
-# 
-#   df$group <- cut(df$mean, breaks = breaks, labels = labels)
-# 
-#   if (!continuous) {
-#     (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
-#        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
-#        scale_fill_manual(name = legend, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 +proj=wintri
-#   } else {
-#     (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = mean), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
-#        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
-#        scale_fill_distiller(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
-#   }
-# 
-#   if (save) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height)
-#   # return(plot)
-# }
+plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2],
+                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T) {
+  table <- heatmap_table(vars = var, data = df, along = "country", conditions = c(condition), on_control = on_control)
+  # df_countries <- c(Country_Names[colnames(table)], "Wallis and Futuna", "Vatican", "Tobago", "Trinidad", "Sint Maarten", "Liechtenstein", "Saint Kitts", "Nevis", "Monaco", "Jersey", "Barbuda", "Antigua", "Saint Barthelemy", "Reunion", "Grenadines", "Virgin Islands", "Turks and Caicos Islands", "Saint Pierre and Miquelon", "Saint Helena", "Ascension Island", "Niue", "Palau", "Pitcairn Islands", "South Sandwich Islands")
+  # df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2))) # For oecd_climate
+  df_countries <- df$country
+  df <- data.frame(country = df_countries, mean = as.vector(table))
+
+  if (condition != "") {
+    if (is.null(breaks)) breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
+    if (is.null(labels)) labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
+    if (is.null(legend)) legend <- paste("Share", condition)
+    if (is.null(limits)) limits <- c(0, 1)
+  } else {
+    if (is.null(breaks)) breaks <- c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf) # c(-Inf, -1, -.5, -.25, 0, .25, .5, 1, Inf)
+    if (is.null(labels)) labels <- c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2")
+    if (is.null(legend)) legend <- "Mean"
+    if (is.null(limits)) limits <- c(-2, 2)
+  }
+  if (continuous) df$mean <- pmax(pmin(df$mean, limits[2]), limits[1])
+
+  world_map <- map_data(map = "world")
+  world_map <- world_map[world_map$region != "Antarctica",]
+  # world_map$region <- iso.alpha(world_map$region)
+
+  df_na <- data.frame(country = setdiff(world_map$region, df_countries), mean = if (fill_na) breaks[2] else NA)
+  df <- merge(df, df_na, all = T)
+
+  df$group <- cut(df$mean, breaks = breaks, labels = labels)
+
+  if (!continuous) {
+    (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+       geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
+       scale_fill_manual(name = legend, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 +proj=wintri
+  } else {
+    (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = mean), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+       geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
+       scale_fill_distiller(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
+  }
+
+  if (save) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height, format = format, trim = trim)
+  return(plot)
+}
 
 #' ##### Plot along #####
 #' # gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
