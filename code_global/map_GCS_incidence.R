@@ -173,6 +173,8 @@ plot_world_map("median_gain_2015", breaks = thresholds_map, format = 'png', trim
                labels = sub("≤", "<", agg_thresholds(c(0), thresholds_map, sep = " to ", return = "levels")), 
                legend = "Average net gain\nper capita\nfrom the GCS\n(in $/month)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) limits = c(-30, 30), 
+# Then run  cd .\Documents\www\global_tax_attitudes\figures\maps\
+#      and  pdfcrop --margins '-20 0 65 -7' mean_gain_2030
 
 # Also
 plot_world_map("mean_gain_2023", breaks = thresholds_map, format = 'png', trim = T, # svg, pdf
