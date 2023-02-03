@@ -1,6 +1,6 @@
 #!/bin/bash
 for FILE in ./*.pdf; do
-  pdfcrop "${FILE}"
+  pdfcrop --margins '0 0 0 0' "${FILE}"
   rm "${FILE}"
 done
 

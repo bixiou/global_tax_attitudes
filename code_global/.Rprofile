@@ -31,6 +31,7 @@ if (!is.element("iatgen", installed.packages()[,1])) {
   # devtools::install_github("iatgen/iatgen")
 } else library(iatgen)
 package("ggplot2")
+package("ggalt") # maps
 package("janitor") # heatmaps
   
 # package("qualtRics") # https://cran.r-project.org/web/packages/qualtRics/vignettes/qualtRics.html
@@ -287,6 +288,7 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
   if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
   if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sub(" ", "", sep), "Inf"), "> \\1", levels[length(levels)])
   if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sub(" ", "", sep), "Inf"), "≥ \\1", levels[length(levels)])
+  levels <- gsub("-", "–", levels)
   vec_agg[is.na(vec)] <- NA
   vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
   if (return == "vec") return(vec_agg)
@@ -1238,7 +1240,7 @@ save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = 
         dev.off() }
       else if (format == 'svg') {
         dev.copy(svg, filename = file, width = width/100, height = height/100) # save plot from R (not plotly)
-        dev.off() }
+        dev.off() } # TODO choose width height with PDF
       else if (format == 'pdf') dev.print(pdf, file = file) # because dev.size('px')[1]/dev.size('in')[1] = 105 , width = width/105, height = height/105
     }
     else {
@@ -1246,7 +1248,7 @@ save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = 
       server$export(plot, file = file, width = width, height = height)
       server$close()
     }
-    if (trim & format %in% c('png', 'svg')) image_write(image_trim(image_read(file)), file)
+    if (trim & format %in% c('png')) image_write(image_trim(image_read(file)), file) # , 'svg'
     if (trim & format == 'pdf') plot_crop(file) } # to crop pdf, see also code_oecd/crop_pdf.sh and run it in the desired folder
 }
 save_plotly <- function(plot, filename = deparse(substitute(plot)), folder = '../figures/', width = dev.size('px')[1], height = dev.size('px')[2], method='orca', format = 'pdf', trim = T) { # in case connection refused, turn off Windows Defender on private networks
@@ -1876,7 +1878,8 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   if (continuous) df$mean <- pmax(pmin(df$mean, limits[2]), limits[1])
 
   world_map <- map_data(map = "world")
-  world_map <- world_map[world_map$region != "Antarctica",]
+  world_map <- world_map[world_map$region != "Antarctica",] # 
+  world_map <- world_map[!world_map$region %in% c("Antarctica", "American Samoa", "Micronesia", "Guam", "Niue", "Pitcairn Islands", "Cook Islands", "Tonga", "Kiribati", "Marshall Islands", "French Polynesia", "Fiji", "Samoa", "Wallis and Futuna", "Vanuatu"),]
   # world_map$region <- iso.alpha(world_map$region)
 
   df_na <- data.frame(country = setdiff(world_map$region, df_countries), mean = if (fill_na) breaks[2] else NA)
@@ -1885,17 +1888,18 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   df$group <- cut(df$mean, breaks = breaks, labels = labels)
 
   if (!continuous) {
-    (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
-       geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
-       scale_fill_manual(name = legend, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 +proj=wintri
+    (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = fct_rev(group)), map = world_map) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj") update ggplot2 xlim = c(162, 178.5) for mercator
+       geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(.05, .29)) + # coord_fixed() +
+       scale_fill_manual(name = legend, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
   } else {
-    (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = mean), map = world_map) + #geom_sf() + # coord_proj("+proj=eck4") + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+    (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = mean), map = world_map) + coord_proj("+proj=robin") + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
        scale_fill_distiller(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
   }
 
-  if (save) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height, format = format, trim = trim)
-  return(plot)
+  print(plot)
+  if (save) for (f in format) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height, format = f, trim = trim)
+  # return(plot)
 }
 
 #' ##### Plot along #####

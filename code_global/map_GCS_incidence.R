@@ -140,7 +140,7 @@ setNames(co2_pop$revenues_pc_2030_alt[sapply(countries_survey_oecd, function(c) 
 (mean_loss_1 <- LCU_per_dollar*(30 - co2_pop$revenues_pc_2030_wrong_adjusted[sapply(countries_names, function(c) which(co2_pop$country == c))]))
 median_loss_true <- c(5, 20, 5, 15, 75) # LCU/month FR (7) can be 10
 mean_loss_true <- c(10, 25, 5, 15, 85) # LCU/month UK (17) can be 20
-# Used: 15, 25, 5, 20, 85
+# Used: 15 => 10, 25, 5, 20, 85
 mean_loss_4/LCU_per_dollar
 mean_loss_1/LCU_per_dollar
 
@@ -162,37 +162,39 @@ co2_pop$country[co2_pop$country == "Congo"] <- "Republic of Congo"
 co2_pop$country[co2_pop$country == "Cote d'Ivoire"] <- "Ivory Coast"
 co2_pop$country[co2_pop$country == "Czechia"] <- "Czech Republic"
 wtd.quantile(co2_pop$mean_gain_2030, weights = co2_pop$adult_2019, probs = seq(0, 1, 1/6)) # c(-Inf, -40, -20, -10, 0, 10, 20, Inf)
-thresholds_map <- c(-Inf, -80, -40, -20, -10, 0, 10, 15, 20, 25, Inf)
+thresholds_map <- c(-Inf, -70, -30, -20, -10, 0, 10, 15, 20, 25, Inf)
 # thresholds_map <- c(-Inf, -100, -70, -40, -20, -10, 0, 5, 10, 15, 20, 25, Inf)
-plot_world_map("mean_gain_2030", breaks = thresholds_map, format = 'pdf', trim = F, # svg, pdf
+plot_world_map("mean_gain_2030", breaks = thresholds_map, format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), thresholds_map, sep = " to ", return = "levels")), 
-               legend = "Average net gain\nper capita\nfrom the GCS\n(in $/month)", fill_na = T,
+               legend = "Average net\ngain per capita\nfrom the GCS\n(in $/month)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+# If bug, first use save = F then again save = T
+# Looks nice with width: 1160, height: 560 (one needs to adjust manually for PDF)
 
-plot_world_map("median_gain_2015", breaks = thresholds_map, format = 'png', trim = T, # svg, pdf
+plot_world_map("median_gain_2015", breaks = thresholds_map, format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), thresholds_map, sep = " to ", return = "levels")), 
-               legend = "Average net gain\nper capita\nfrom the GCS\n(in $/month)", fill_na = T,
-               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) limits = c(-30, 30), 
-# Then run  cd .\Documents\www\global_tax_attitudes\figures\maps\
-#      and  pdfcrop --margins '-20 0 65 -7' mean_gain_2030
+               legend = "Median net\ngain per capita\nfrom the GCS\n(in $/month)", fill_na = T,
+               save = T, width = 1160, height = 560) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) limits = c(-30, 30), 
+# If needed run  cd .\Documents\www\global_tax_attitudes\figures\maps\
+#      and  pdfcrop --margins '-20 0 70 -7' mean_gain_2030 (or simply sh crop_pdf.sh to treat all PDFs)
 
 # Also
-plot_world_map("mean_gain_2023", breaks = thresholds_map, format = 'png', trim = T, # svg, pdf
+plot_world_map("mean_gain_2023", breaks = thresholds_map, format = c('pdf'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), thresholds_map, sep = " to ", return = "levels")), 
-               legend = "Average net gain\nper capita\nfrom the GCS\n(in $/month)", fill_na = T,
+               legend = "Average net\ngain per capita\nfrom the GCS\n(in $/month)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030))
 
-plot_world_map("median_gain_2023", breaks = thresholds_map, format = 'png', trim = T, # svg, pdf
+plot_world_map("median_gain_2023", breaks = thresholds_map, format = c('pdf', 'png', 'svg'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), thresholds_map, sep = " to ", return = "levels")), 
-               legend = "Average net gain\nper capita\nfrom the GCS\n(in $/month)", fill_na = T,
+               legend = "Median net\ngain per capita\nfrom the GCS\n(in $/month)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030))
 
-plot_world_map("mean_gain_2015", breaks = thresholds_map, format = 'png', trim = T, # svg, pdf
+plot_world_map("mean_gain_2015", breaks = thresholds_map, format = c('pdf', 'png', 'svg'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), thresholds_map, sep = " to ", return = "levels")), 
-               legend = "Average net gain\nper capita\nfrom the GCS\n(in $/month)", fill_na = T,
+               legend = "Average net\ngain per capita\nfrom the GCS\n(in $/month)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030))
 
-plot_world_map("median_gain_2030", breaks = thresholds_map, format = 'png', trim = T, # svg, pdf
+plot_world_map("median_gain_2030", breaks = thresholds_map, format = c('pdf', 'png', 'svg'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), thresholds_map, sep = " to ", return = "levels")), 
-               legend = "Average net gain\nper capita\nfrom the GCS\n(in $/month)", fill_na = T,
+               legend = "Median net\ngain per capita\nfrom the GCS\n(in $/month)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030))
