@@ -1,3 +1,5 @@
+rm(pop_iso2, pop_location, pop_freq, world_map, zipcodes_FDEU, base_year, mean_gain_oecd, mean_gain_used, mean_loss_1, mean_loss_4, mean_loss_true, median_gain_2015, median_gain_used, median_loss, median_loss_true, median_loss_used, midlands, northern.england, revenues_pc, revenues_pc_oecd, utomatic_folder)
+
 ##### labels_vars #####
 labels_vars <- c(
   "finished" = "Finished",

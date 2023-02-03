@@ -5,6 +5,7 @@ e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
 # TODO! repräsentative*r Deutsche*r
 # TODO US2/EU interests, even if it goes against global justice; U.S. interests, to the extent it respects global justice; Indifferent or don't know; Global justice, to the extent it respects U.S. interests, Global justice, even if it goes against U.S. interests
+# TODO 274 Europeans
 # TODO ETS2
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
@@ -158,7 +159,7 @@ summary(lm(gcs_support ~ gcs_understood + nr_understood + both_understood, data 
 
 e$post_secondary_25_64 <- replace_na(e$diploma_25_64 == 'Post secondary', F)
 e$upper_secondary_25_64 <- replace_na(e$diploma_25_64 == 'Upper secondary', F)
-socio_demos_basics <- c("woman", "as.factor(age)", "as.factor(income_quartile)", "upper_secondary_25_64", "post_secondary_25_64", "as.factor(urbanity)") # TODO change gender into woman
+socio_demos_basics <- c("woman", "as.factor(age)", "as.factor(income_quartile)", "upper_secondary_25_64", "post_secondary_25_64", "as.factor(urbanity)") 
 summary(lm(reg_formula("gcs_support", c(socio_demos_basics, "race", "region")), data = us1)) # ***: age, urbanity, diploma, urban
 summary(lm(reg_formula("gcs_support", c("as.factor(age)")), data = us1))
 datasummary(gcs_support  ~ Mean*as.factor(age), data = us1, output = 'markdown')
