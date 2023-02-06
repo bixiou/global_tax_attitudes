@@ -3,13 +3,12 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO! repräsentative*r Deutsche*r
+# TODO! repräsentative*r Deutsche*r, translation ETS2 & Europaër, check EU
 # TODO US2/EU interests, even if it goes against global justice; U.S. interests, to the extent it respects global justice; Indifferent or don't know; Global justice, to the extent it respects U.S. interests, Global justice, even if it goes against U.S. interests
-# TODO 274 Europeans
-# TODO ETS2
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
+# TODO read about Norway
 
 ##### Duration #####
 print(paste0(round(100*sum(us1a$finished == 1 & is.na(us1a$excluded), na.rm = T)/sum(us1a$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1")) # 92% % incidence rate
@@ -130,6 +129,12 @@ for (v in variables_other_policies) relative_majority_support[v] <- mean(e[[v]][
 
 ##### GCS #####
 decrit("gcs_support", data = e)
+decrit("gcs_support", data = e, which = e$diploma_25_64 == "Below upper secondary", weight = F)
+decrit("gcs_support", data = e, which = e$income_quartile == 4, weight = F)
+decrit("gcs_support", data = e, which = e$race_hispanic == T, weight = F)
+decrit("gcs_support", data = e, which = e$region == "West", weight = F)
+decrit("gcs_support", data = e, which = e$man == T, weight = F)
+decrit("weight", data = e, which = e$diploma_25_64 == "Below upper secondary", weight = F)
 decrit("gcs_belief", data = e) 
 decrit("petition_gcs", data = e)
 decrit("points_foreign1_gcs", data = e)
@@ -356,3 +361,9 @@ decrit("problem_poverty", data = e)
 means_variables_problem <- c()
 for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]], na.rm = T)
 -sort(-means_variables_problem)
+
+
+##### Swing States #####
+decrit(e$swing_state)
+summary(lm(gcs_support == 'Yes' ~ swing_state + swing_state_5pp, data = e, weights = e$weight)) # .56 - 0.018 - 0.008
+summary(lm(conjoint_c ~ branch_c_gcs * swing_state, data = e, weights = e$weight))

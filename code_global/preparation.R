@@ -689,17 +689,18 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-2:2),  names = c(text_intensity)), annotation=Label(e$interest_politics))
     
     if ("group_defended" %in% names(e)) {
-      e$group_defended_original <- e$group_defended
-      temp <- 0*grepl("myself", e$group_defended) + 1*grepl("relatives", e$group_defended) + 2*grepl("town", e$group_defended) + 3*grepl("State", e$group_defended) + 4*grepl("religion", e$group_defended) + 5*grepl("Americans", e$group_defended) + 6*grepl("Humans", e$group_defended) + 7*grepl("animals", e$group_defended)
-      e$group_defended <- as.item(temp, labels = structure(0:7, names = c("Family and self", "Relatives", "Town", "State or region", "Culture or religion", "Fellow citizens", "Humans", "Sentient beings")), annotation = Label(e$group_defended))
-      e$nationalist <- e$group_defended == 5
+      e$group_defended_original <- e$group_defended # TODO! assign all but one "My town" to "My State" in US.
+      temp <- 0*grepl("myself", e$group_defended) + 1*grepl("relatives", e$group_defended) + 2*grepl("town|State", e$group_defended) + 3*grepl("religion", e$group_defended) + 4*grepl("Americans", e$group_defended) + 5*grepl("European", e$group_defended) + 6*grepl("Humans", e$group_defended) + 7*grepl("animals", e$group_defended)
+      e$group_defended <- as.item(temp, labels = structure(0:7, names = c("Family and self", "Relatives", "Region, U.S. State or town", "Culture or religion", "Fellow citizens", "Europeans", "Humans", "Sentient beings")), annotation = Label(e$group_defended))
+      e$nationalist <- e$group_defended == 4
       e$universalist <- e$group_defended > 5
       label(e$nationalist) <- "nationalist: T/F Defends one's nation / fellow citizens when one votes (cf. group_defended)."
       label(e$universalist) <- "universalist: T/F Defends humans or sentient beings (humans and animals) when one votes (cf. group_defended)."
-      e$group_defended_agg <- sign(e$group_defended - 5)
+      e$group_defended_agg <- sign(e$group_defended - 4)
       e$group_defended_agg[e$group_defended == 0] <- -2
-      e$group_defended_agg <- as.item(e$group_defended_agg, labels = structure(-2:1, names = c("Family and self", "Group of related people", "Fellow citizens", "Humans or sentient beings") #c("Egoistic", "Tribalist", "Nationalist", "Universalist")
-                                                                             ), annotation = "group_defended_agg: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; and where 'Humans or sentient beings' gathers Humans and Sentient beings (humans or animals)")
+      e$group_defended_agg[e$group_defended == 5] <- 1
+      e$group_defended_agg <- as.item(e$group_defended_agg, labels = structure(-2:1, names = c("Family and self", "Group of related people", "Fellow citizens or Europeans", "Humans or sentient beings") #c("Egoistic", "Tribalist", "Nationalist", "Universalist")
+                                                                             ), annotation = "group_defended_agg: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; where 'Fellow citizens or Europeans' gathers [Country] and Europeans; and where 'Humans or sentient beings' gathers Humans and Sentient beings (humans or animals)")
     }
     
     if ("vote_participation" %in% names(e)) {
@@ -732,6 +733,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$vote_us[e$vote_us_voters == "Trump"] <- "Trump"
       e$vote_us <- as.item(e$vote_us, annotation = "vote_us: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
       missing.values(e$vote_us) <- "PNR/no right"
+      
+      e$swing_state <- n(e$zipcode/1000) %between% c(48, 50) | n(e$zipcode/1000) %between% c(88.9, 90.0) | n(e$zipcode/1000) %between% c(15.0, 19.7) | n(e$zipcode/1000) %between% c(53, 55) | n(e$zipcode/1000) %between% c(85, 87) | n(e$zipcode/1000) %between% c(30, 32) | n(e$zipcode/1000) %between% c(39.8, 40.0) | n(e$zipcode/1000) %between% c(27, 29) 
+      e$swing_state_5pp <- e$swing_state | n(e$zipcode/1000) %between% c(32, 35)
+      label(e$swing_state) <- "swing_state: T/F Lives in one of the 7 States with less than 3 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC)."
+      label(e$swing_state_5pp) <- "swing_state_5pp: T/F Lives in one of the 7 States with less than 5 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC, FL)."
+        # 7 States with less than 3pp margin from tipping-point (or from 50%, both yield the same) in 2020:
+        # Michigan MI (zipcodes: 48-49, 2.8%D margin, 15 electoral votes), Nevada NV (889-899, 2.4%D, 6), Pennsylvania PA (150-196, 1.2%D, 19), Wisconsin WI (53-54, .6%D, 10, tipping-point state), Arizona AZ (85-86, .3%D, 11), Georgia GA (30-31/398-399, .2%D, 16), North Carolina NC (27-28, 1.4%R, 16). [If instead we use 5pp, it adds Florida FL (32-34, 3.4%R, 30)] Apart from these, Dems should secure 228 electoral votes, i.e. need 42 more to win (out of 538 electoral votes or 83 swing ones).
+        # sources: https://en.wikipedia.org/wiki/Swing_state#Swing_states_by_results, https://www.270towin.com/, consistent with analyses from https://www.businessinsider.com/battleground-states-2024-presidential-election-road-white-house-2022-12?r=US&IR=T, https://edition.cnn.com/2022/11/22/politics/2022-preview-2024-presidential-election/index.html
     }
     
     e$survey_biased[e$survey_biased %in% c("Yes, left-wing biased")] <- "Yes, left"

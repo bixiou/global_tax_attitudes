@@ -522,24 +522,24 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
 # v group defended (ctry + heterog)
 # v problem (ctry + heat)
 
-temp <- c("Aid is a pressure tactic for high-income countries that prevents low-income countries from developing freely")
-(bars <- plot_ly(x = c(1), y = break_string(temp), 
-                type = 'bar', orientation = 'h', textposition = 'auto',
-                name=c("red")) %>%   
-    add_annotations(xref = 'paper', yref = 'y', x = 0.5-0.01, y = break_string(temp),
-             xanchor = 'right',
-             text = break_string(temp),
-             font = list(family = "Arial", size = 14+2, color = 'black'),
-             showarrow = FALSE, align = 'right')  %>%
-    plotly::layout(font = list(size = 16),
-                          margin = list(
-                            # l = 0, r = 0, t = 0, b = 0, 
-                                        autoexpand = T),
-                          yaxis = list(automargin = T, showticklabels = FALSE),
-                          xaxis = list(
-                            automargin = T,
-                                       domain = c(0.5, 1)) 
-  ))
-strwrap(temp, 20)
-
-plot_ly(x = c(1), y = "Test", type = 'bar')
+# temp <- c("Aid is a pressure tactic for high-income countries that prevents low-income countries from developing freely")
+# (bars <- plot_ly(x = c(1), y = break_string(temp), 
+#                 type = 'bar', orientation = 'h', textposition = 'auto',
+#                 name=c("red")) %>%   
+#     add_annotations(xref = 'paper', yref = 'y', x = 0.5-0.01, y = break_string(temp),
+#              xanchor = 'right',
+#              text = break_string(temp),
+#              font = list(family = "Arial", size = 14+2, color = 'black'),
+#              showarrow = FALSE, align = 'right')  %>%
+#     plotly::layout(font = list(size = 16),
+#                           margin = list(
+#                             # l = 0, r = 0, t = 0, b = 0, 
+#                                         autoexpand = T),
+#                           yaxis = list(automargin = T, showticklabels = FALSE),
+#                           xaxis = list(
+#                             automargin = T,
+#                                        domain = c(0.5, 1)) 
+#   ))
+# strwrap(temp, 20)
+# 
+# plot_ly(x = c(1), y = "Test", type = 'bar')
