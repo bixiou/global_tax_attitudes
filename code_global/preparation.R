@@ -1,6 +1,7 @@
 # Consistency: increase/reduce aid for those with the info + later question; petition_yes_support_no; duplicate_ip
 # TODO order_
 # TODO sources quotas
+# TODO check vote
 
 source(".Rprofile")
 source("relabel_rename.R")
@@ -88,7 +89,7 @@ major_candidates <- minor_candidates <- list()
       "urbanity" = unlist(qs["EU", c("Cities", "Towns.and.suburbs", "Rural")]/1000),
       "diploma_25_64" = unlist(c(qs["EU", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs["EU", c("18-24", ">65")]/1000)))), 
       "employment_18_64" = unlist(c(c("Inactive" = qs["EU", "Inactivity"], "Unemployed" = qs["EU", "Unemployment"]*(1000-qs["EU", "Inactivity"])/1000, "Employed" =  1000-qs["EU", "Inactivity"]-qs["EU", "Unemployment"]*(1000-qs["EU", "Inactivity"])/1000)*(1000-qs["EU", c(">65")])/1000, "65+" = qs["EU", c(">65")])/1000), 
-      "vote" = unlist(c(c(qs["EU", "Left"], qs["EU", "Center-right.or.Right"], qs["EU", "Far.right"])*(1-qs["EU", "Abstention"]/1000), qs["EU", "Abstention"])/1000),
+      "vote" = unlist(c(c(qs["EU", "Left"], qs["EU", "Center-right.or.Right"], qs["EU", "Far.right"])*(1000-qs["EU", "Abstention"])/sum(qs["EU", c("Left", "Center-right.or.Right", "Far.right")]), qs["EU", "Abstention"])/1000),
       "EU_country" = unlist(qs["EU", c("FR", "DE", "ES", "UK")]/1000)
     ),
     "US" = list(
@@ -98,7 +99,7 @@ major_candidates <- minor_candidates <- list()
       "urbanity" = c(qs["US", "Cities"], 0.001, qs["US","Rural"])/1000,
       "diploma_25_64" = unlist(c(qs["US", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs["US", c("18-24", ">65")]/1000)))), 
       "employment_18_64" = unlist(c(c("Inactive" = qs["US", "Inactivity"], "Unemployed" = qs["US", "Unemployment"]*(1000-qs["US", "Inactivity"])/1000, "Employed" = 1000-qs["US", "Inactivity"]-qs["US", "Unemployment"]*(1000-qs["US", "Inactivity"])/1000)*(1000-qs["US", c(">65")])/1000, "65+" = qs["US", c(">65")])/1000),
-      "vote" = unlist(c(c(qs["US", "Left"], qs["US", "Center-right.or.Right"], qs["US", "Far.right"])*(1-qs["US", "Abstention"]/1000), qs["US", "Abstention"])/1000),
+      "vote" = unlist(c(c(qs["US", "Left"], qs["US", "Center-right.or.Right"], qs["US", "Far.right"])*(1000-qs["US", "Abstention"])/sum(qs["US", c("Left", "Center-right.or.Right", "Far.right")]), qs["US", "Abstention"])/1000),
       "US_region" = unlist(qs["US", c("Region.1", "Region.2", "Region.3", "Region.4")]/1000),
       "US_race" = unlist(qs["US", c("White.non.Hispanic", "Hispanic", "Black", "Other")]/1000),
       "US_vote_us" = c(0.342171, 0.312823, 0.345006, 0.000001)
