@@ -1,5 +1,6 @@
 # Consistency: increase/reduce aid for those with the info + later question; petition_yes_support_no; duplicate_ip
 # TODO order_
+# TODO sources quotas
 
 source(".Rprofile")
 source("relabel_rename.R")
@@ -44,6 +45,8 @@ major_candidates <- minor_candidates <- list()
   "age" = c("18-24", "25-34", "35-49", "50-64", "65+"),
   "urbanity" = c("Cities", "Towns and suburbs", "Rural"),
   "diploma_25_64" = c("Below upper secondary", "Upper secondary", "Post secondary", "Not 25-64"), # "Not 25-64"
+  "employment_18_64" = c("Inactive", "Unemployed", "Employed", "65+"),
+  "vote" = c("Left", "Center-right or Right", 'Far right', "PNR/Non-voter"),
   "EU_country" = c("FR", "DE", "ES", "UK"),
   "US_region" = c("Northeast", "Midwest", "West","South"),
   "US_race" = c("White only", "Hispanic", "Black", "Other"),
@@ -65,23 +68,27 @@ major_candidates <- minor_candidates <- list()
 )
   
   quotas <- list("EU" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "country"),
+                 "EU_all" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "country", "employment_18_64", "vote"), # TODO! vote_eu
                  "US" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "region", "race"), 
                  "US_vote" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "region", "race", "vote_us"),
+                 "US_all" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "region", "race", "employment_18_64", "vote"),
                  "FR" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"), #, "urban_category") From oecd_climate: Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
                  # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
                  "DE" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"),
                  "ES" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"),
                  "UK" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64")
   )
-  
-  qs <- read.xlsx("../questionnaire/specificities.xlsx", sheet = "Quotas", rowNames = T, rows = c(1, 6, 8), cols = 1:34)
+
+  qs <- read.xlsx("../questionnaire/specificities.xlsx", sheet = "Quotas", rowNames = T, rows = c(1, 6, 8), cols = 1:43)
   pop_freq <- list(
-    "EU" = list(
+    "EU" = list( # TODO each EU country
       "gender" = c(qs["EU","women"], 0.001, qs["EU","men"])/1000,
       "income_quartile" = rep(.25, 4),
       "age" = unlist(qs["EU", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000),
       "urbanity" = unlist(qs["EU", c("Cities", "Towns.and.suburbs", "Rural")]/1000),
-      "diploma_25_64" = unlist(c(qs["EU", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(pop_freq$EU$age[c(1,5)]))), 
+      "diploma_25_64" = unlist(c(qs["EU", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs["EU", c("18-24", ">65")]/1000)))), 
+      "employment_18_64" = unlist(c(c("Inactive" = qs["EU", "Inactivity"], "Unemployed" = qs["EU", "Unemployment"]*(1000-qs["EU", "Inactivity"])/1000, "Employed" =  1000-qs["EU", "Inactivity"]-qs["EU", "Unemployment"]*(1000-qs["EU", "Inactivity"])/1000)*(1000-qs["EU", c(">65")])/1000, "65+" = qs["EU", c(">65")])/1000), 
+      "vote" = unlist(c(c(qs["EU", "Left"], qs["EU", "Center-right.or.Right"], qs["EU", "Far.right"])*(1-qs["EU", "Abstention"]/1000), qs["EU", "Abstention"])/1000),
       "EU_country" = unlist(qs["EU", c("FR", "DE", "ES", "UK")]/1000)
     ),
     "US" = list(
@@ -89,7 +96,9 @@ major_candidates <- minor_candidates <- list()
       "income_quartile" = rep(.25, 4),
       "age" = unlist(qs["US", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000),
       "urbanity" = c(qs["US", "Cities"], 0.001, qs["US","Rural"])/1000,
-      "diploma_25_64" = unlist(c(qs["US", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(pop_freq$US$age[c(1,5)]))), 
+      "diploma_25_64" = unlist(c(qs["US", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs["US", c("18-24", ">65")]/1000)))), 
+      "employment_18_64" = unlist(c(c("Inactive" = qs["US", "Inactivity"], "Unemployed" = qs["US", "Unemployment"]*(1000-qs["US", "Inactivity"])/1000, "Employed" = 1000-qs["US", "Inactivity"]-qs["US", "Unemployment"]*(1000-qs["US", "Inactivity"])/1000)*(1000-qs["US", c(">65")])/1000, "65+" = qs["US", c(">65")])/1000),
+      "vote" = unlist(c(c(qs["US", "Left"], qs["US", "Center-right.or.Right"], qs["US", "Far.right"])*(1-qs["US", "Abstention"]/1000), qs["US", "Abstention"])/1000),
       "US_region" = unlist(qs["US", c("Region.1", "Region.2", "Region.3", "Region.4")]/1000),
       "US_race" = unlist(qs["US", c("White.non.Hispanic", "Hispanic", "Black", "Other")]/1000),
       "US_vote_us" = c(0.342171, 0.312823, 0.345006, 0.000001)
@@ -462,11 +471,18 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$employment_agg[e$employment_status == "Retired"] <- "Retired"
   e$employment_agg[e$employment_status == "Self-employed" | e$employment_status == "Full-time employed" | e$employment_status == "Part-time employed"] <- "Working"
   e$employment_agg <- as.factor(e$employment_agg)
+  label(e$employment_agg) <- "employment_agg: Not working (Inactive or Unemployed) / Student / Retired / Employed (full-time, part-time, or self-employed). Built from employment_status."
   
   e$inactive <- e$employment_agg %in% c("Retired", "Not working")
   e$employment <- e$employment_agg == "Working"
   e$employment[e$age == "65+"] <- NA
   label(e$employment) <- "employment: T/F/NA indicator that the respondent is employed (employment_agg == Working), NA if s-he is above 65."
+
+  e$employment_18_64 <- "Employed"
+  e$employment_18_64[e$employment_status %in% c("Unemployed")] <- "Unemployed"
+  e$employment_18_64[e$employment_status %in% c("Inactive", "Student", "Retired")] <- "Inactive"
+  e$employment_18_64[e$age > 64] <- "65+"
+  label(e$employment_18_64) <- "employment_18_64: 65+ / Inactive (Inactive, Student or Retired) / Unemployed / Employed (full-time, part-time, or self-employed). Built from employment_status."
   
   if ("wealth_couple" %in% names(e)) {
     e$wealth[!is.na(e$wealth_couple)] <- e$wealth_couple[!is.na(e$wealth_couple)]
@@ -709,16 +725,24 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       major_threshold <- 5 # 5% is the treshold to be considered a major candidate
       for (c in tolower(countries)) {
         if (paste0("vote_", c, "_voters") %in% names(e)) {
-          e$vote[!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"] <- e[[paste0("vote_", c, "_voters")]][!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"]
-          e$vote[!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"] <- e[[paste0("vote_", c, "_non_voters")]][!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"]
-          major_candidates[[c]] <<- setdiff(names(table(e$vote[e$country == toupper(c)]))[table(e$vote[e$country == toupper(c)]) > major_threshold * sum(e$country == toupper(c)) / 100], text_pnr)
-          minor_candidates[[c]] <<- setdiff(names(table(e$vote[e$country == toupper(c)]))[table(e$vote[e$country == toupper(c)]) <= .05 * sum(e$country == toupper(c))], text_pnr)
-          e$vote_agg[e$country == toupper(c) & e$vote %in% c(major_candidates[[c]], text_pnr)] <- e$vote[e$country == toupper(c) & e$vote %in% c(major_candidates[[c]], text_pnr)]
-          e$vote_agg[e$country == toupper(c) & e$vote %in% minor_candidates[[c]]] <- "Other"
+          e$vote_all[!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"] <- e[[paste0("vote_", c, "_voters")]][!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"]
+          e$vote_all[!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"] <- e[[paste0("vote_", c, "_non_voters")]][!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"]
+          major_candidates[[c]] <<- setdiff(names(table(e$vote_all[e$country == toupper(c)]))[table(e$vote_all[e$country == toupper(c)]) > major_threshold * sum(e$country == toupper(c)) / 100], text_pnr)
+          minor_candidates[[c]] <<- setdiff(names(table(e$vote_all[e$country == toupper(c)]))[table(e$vote_all[e$country == toupper(c)]) <= .05 * sum(e$country == toupper(c))], text_pnr)
+          e$vote_agg[e$country == toupper(c) & e$vote_all %in% c(major_candidates[[c]], text_pnr)] <- e$vote_all[e$country == toupper(c) & e$vote_all %in% c(major_candidates[[c]], text_pnr)]
+          e$vote_agg[e$country == toupper(c) & e$vote_all %in% minor_candidates[[c]]] <- "Other"
+          e$vote <- "PNR/Non-voter"
+          e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Biden", "Hawkins", "Jean-Luc Mélenchon", "Yannick Jadot", "Fabien Roussel", "Anne Hidalgo", "Philippe Poutou", "Nathalie Arthaud", 
+                                                           "PSOE", "Unidas Podemos", "Esquerra Republicana", "Más País", "JxCat–Junts", "Euskal Herria Bildu (EHB)", "Candidatura d'Unitat Popular-Per la Ruptura (CUP–PR)", "Partido Animalista (PACMA)", 
+                                                           "SPD", "Grüne", "Die Linke", "Tierschutzpartei", "dieBasis", "Die PARTEI", "Labour", "SNP", "Green", "Sinn Féin")] <- "Left"
+          e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Trump", "Jorgensen", "Emmanuel Macron", "Valérie Pécresse", "Jean Lassalle", "CDU/CSU", "Freie Wähler", "FDP", 
+                                                           "PP", "Ciudadanos", "Partido Nacionalista Vasco (EAJ-PNV)", "Conservative", "Liberal Democrats", "DUP")] <- "Center-right or Right"
+          e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Marine Le Pen", "Éric Zemmour", "Nicolas Dupont-Aignan", "AfD", "Vox", "Brexit Party")] <- "Far right"
+          label(e$vote) <- "vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs."
         }
       }
       e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
-      e$vote <- as.item(as.character(e$vote), missing.values = 'PNR', annotation="vote: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.")
+      e$vote_all <- as.item(as.character(e$vote_all), missing.values = 'PNR', annotation="vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.")
       e$vote_agg <- as.item(as.character(e$vote_agg), missing.values = 'PNR', annotation=paste0("vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than ", major_threshold, "% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters."))
       e$voted <- e$vote_participation == 'Yes'
       label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."

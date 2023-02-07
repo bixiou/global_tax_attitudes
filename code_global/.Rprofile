@@ -555,7 +555,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   if (!nolabel) table <- table_mean_lines_save(table, mean_above = mean_above, only_mean = only_mean, indep_labels = indep_labels, indep_vars = indep_vars, add_lines = add_lines, file_path = file_path, oecd_latex = oecd_latex, nb_columns = length(indep_vars_included), omit = omit)
   return(table)
 }
-multi_grepl <- function(patterns, vec) return(sort(unlist(lapply(patterns, function(x) which(grepl(x, vec))))))
+multi_grepl <- function(patterns, vec) return(1:length(vec) %in% sort(unlist(lapply(patterns, function(x) which(grepl(x, vec))))))
 table_mean_lines_save <- function(table, mean_above = T, only_mean = FALSE, indep_vars = NULL, indep_labels = indep_vars, add_lines = NULL, file_path = NULL, oecd_latex = FALSE, nb_columns = 2, omit = c("Constant", "Gender: Other", "econ_leaningPNR")) {
   if (mean_above) {
     mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
@@ -2223,7 +2223,7 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
 #'   return(final)
 #' }
 
-representativeness_table <- function(country_list, weighted = T, non_weighted = T, label_operator = union,
+representativeness_table <- function(country_list, weighted = T, non_weighted = T, label_operator = union, all = FALSE, omit = c("Other", "Not 25-64", "Employment_18_64: Employed", "Employment_18_64: 65+", "PNR"),
                                      filename = NULL, folder = "../tables/sample_composition/", return_table = FALSE, threshold_skip = 0.01) {
   rows <- c()
   pop <- sample <- sample_weighted <- labels <- list()
@@ -2235,7 +2235,8 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     labels[[k]] <- "Sample size"
     pop[[k]] <- ""
     sample[[k]] <- sample_weighted[[k]] <- prettyNum(nrow(df), big.mark = ",")
-    for (q in quotas[[c]]) {
+    quota_variables <- if (all & paste0(c, "_all") %in% names(quotas)) quotas[[paste0(c, "_all")]] else quotas[[c]]
+    for (q in quota_variables) {
       q_name <- ifelse(q %in% names(levels_quotas), q, paste0(c, "_", q))
       for (j in seq_along(levels_quotas[[q_name]])) {
         # print(paste(c, q, j))
@@ -2259,8 +2260,9 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     if (weighted) table[[paste0(k, "_sample_weighted")]] <- sample_weighted[[k]][rows]
   }
   
+  table <- table[!multi_grepl(omit, row.names(table)),]
   if (return_table) return(table)
-  else export_representativeness_table(table = table, country_list = country_list, weighted = weighted, non_weighted = non_weighted, filename = filename, folder = folder)
+  else export_representativeness_table(table = table, country_list = country_list, weighted = weighted, non_weighted = non_weighted, filename = if (all) paste0(filename, "_all") else filename, folder = folder)
 }
 # representativeness_table(c("US1"), return_table = T)
 export_representativeness_table <- function(table, country_list, weighted = T, non_weighted = T, filename = NULL, folder = "../tables/sample_composition") {
@@ -2279,6 +2281,7 @@ export_representativeness_table <- function(table, country_list, weighted = T, n
                       linesep = line_sep) %>% add_header_above(header)
   
   if (is.null(filename)) filename <- paste(country_list, collapse = "_")
+  if (filename == "_all") filename <- paste0(paste(country_list, collapse = "_"), "_all")
   cat(paste(latex_output, collapse="\n"), file = paste0(folder, filename, ".tex")) 
 }
 # representativeness_table(c("US1"), return_table = F)

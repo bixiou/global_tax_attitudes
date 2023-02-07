@@ -1,4 +1,4 @@
-# TODO! representativeness table: vote, employment status, custom rows/style + explanatory note
+# TODO! representativeness table: vote, custom rows/style + explanatory note
 # TODO: check litterature List experiment
 
 # H0 stated support: OECD (heatmap), G, other_policies (plot), foreign aid evolution, why (plot)
@@ -87,3 +87,4 @@ barres_multiple(barres = barres_defs[c("negotiation", "group_defended_agg", "pro
 
 ##### Appendices #####
 representativeness_table(c("US1"), return_table = F) # TODO! vote, employment status, custom rows/style
+representativeness_table(c("US1"), return_table = T, all = T) #, extra = c("Biden" = "vote_us", "Trump" = "vote_us", "Unemployed" = "employment_status", "Inactive" = "employment_status"))
