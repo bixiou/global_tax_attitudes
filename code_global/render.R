@@ -1,3 +1,12 @@
+# TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
+# TODO! "duration", socio-demos, politics, survey_biased, individual variables
+# TODO double text for the first
+# TODO list_exp, group_defended_agg2
+# TODO trim
+# TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
+# TODO automatically set share_labels and margin_l
+# TODO? Arial or Computer modern (Times)?
+# TODO automatize miss, width, thin params
 rm(pop_iso2, pop_location, pop_freq, world_map, zipcodes_FDEU, base_year, mean_gain_oecd, mean_gain_used, mean_loss_1, mean_loss_4, mean_loss_true, median_gain_2015, median_gain_used, median_loss, median_loss_true, median_loss_used, midlands, northern.england, revenues_pc, revenues_pc_oecd, utomatic_folder)
 
 ##### labels_vars #####
@@ -428,7 +437,6 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
   }
   return(plots)
 }
-# TODO automatize miss, width, thin params
 
 ##### barres_defs #####
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
@@ -468,9 +476,6 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 850) # 950
 )
 
-# TODO! "duration", socio-demos, politics, survey_biased, individual variables
-# TODO double text for the first
-# TODO % list_exp, group_defended_agg2
 vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
                   "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "group_defended", "group_defended_agg") 
 
@@ -503,10 +508,6 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
-# TODO trim
-# TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
-# TODO automatically set share_labels and margin_l
-# TODO? Arial or Computer modern (Times)?
 
 # x: done; v: done for US1, waiting for EU; ~: needs to be improved; -: needs to be done
 # x heatmap OECD

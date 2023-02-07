@@ -36,7 +36,7 @@ euro_per_dollar <- 0.94
 pound_per_dollar <- .82
 LCU_per_dollar <- c(rep(euro_per_dollar, 3), pound_per_dollar, 1)
 co2_emissions_2030 <- 26.3e9
-(R <- carbon_tax_revenues_2030 <- 2367e9) # in $, Based on $90/tCO2 TODO: global emissions in 2030
+(R <- carbon_tax_revenues_2030 <- 2367e9) # in $, Based on $90/tCO2 
 (A <- adult_pop_2015 <- sum(co2_pop$adult_2015)) # 5.45G (entire pop (not just 15+) 7.42G)
 (adult_pop_2019 <- sum(co2_pop$adult_2019)) # 5.75G (entire pop (not just 15+) 7.76G)
 (F_ <- adult_pop_2030 <- sum(co2_pop$adult_2030)) # 6.57G (entire pop (not just 15+) 8.54G)

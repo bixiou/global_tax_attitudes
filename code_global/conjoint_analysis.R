@@ -1,3 +1,7 @@
+# TODO merge D and F (by defining GCS/- as the levels of foreign).
+# TODO? put in preparation
+# TODO! graph PDF
+
 # Design of the programs:
 # Policies are specific to each country. Here is the number of policies in US/EU (to which one should add "-" to each set except for tax_system in D which is {nR; nR + Wealth tax}): 
 # nb policies US/EU: econ_issues 4/4, society_issues 3/2, climate_pol 3/3, tax_system 3/2 (except for D), foreign_policy 5/5 (0 for D)
@@ -81,8 +85,6 @@ for (c in countries[-5]) {
   for (i in names(amce[[c]]$user.levels)) if (amce[[c]]$user.levels[[i]] %in% row.names(policies.names)) amce[[c]]$user.levels[[i]] <- policies.names[amce[[c]]$user.levels[[i]], c]
   for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], c]
 }
-# TODO merge D and F (by defining GCS/- as the levels of foreign).
-# TODO? put in preparation
 
 
 ##### Analysis #####

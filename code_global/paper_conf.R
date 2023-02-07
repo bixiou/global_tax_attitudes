@@ -1,3 +1,6 @@
+# TODO! representativeness table: vote, employment status, custom rows/style + explanatory note
+# TODO: check litterature List experiment
+
 # H0 stated support: OECD (heatmap), G, other_policies (plot), foreign aid evolution, why (plot)
 # H1, H2 sincerity: list exp (table), petition (plot + table), conjoint analysis (plot), prioritization (plot)
 # H3 pluralistic ignorance: belief (plot)
@@ -34,7 +37,7 @@ barres_multiple(barres = barres_defs[c("support_likert", "support_binary", "fore
 
 
 ##### H1, H2 #####
-# List experiment TODO: check litterature
+# List experiment 
 # There seems to be a 8pp social norm (differential of 3pp with NR). No effect of the number of options.
 summary(lm(list_exp ~ branch_list_exp_g * branch_list_exp_r, data = e, weights = e$weight))
 mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) # 54%
