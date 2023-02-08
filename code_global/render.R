@@ -1,11 +1,10 @@
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO! "duration", socio-demos, politics compare
 # TODO list_exp, group_defended_agg2
-# TODO trim
+
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
-# TODO automatically set share_labels and margin_l
+# TODO automatically set share_labels/margin_l/width, miss, thin 
 # TODO? Arial or Computer modern (Times)?
-# TODO automatize miss, width, thin params
 
 ##### labels_vars #####
 labels_vars <- c(

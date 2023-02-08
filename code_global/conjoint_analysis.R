@@ -1,4 +1,4 @@
-# TODO merge D and F (by defining GCS/- as the levels of foreign).
+# TODO! merge D and F (by defining GCS/- as the levels of foreign).
 # TODO? put in preparation
 # TODO! graph PDF
 

@@ -3,8 +3,11 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO! repräsentative*r Deutsche*r, translation ETS2 & Europaër, check EU
-# TODO US2/EU interests, even if it goes against global justice; U.S. interests, to the extent it respects global justice; Indifferent or don't know; Global justice, to the extent it respects U.S. interests, Global justice, even if it goes against U.S. interests
+# TODO! repräsentative*r Deutsche*r, translation ETS2, check EU
+# TODO! slides
+# TODO! literature review
+# TODO! attrition analysis
+# TODO! appendix sources
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
