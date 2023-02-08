@@ -1,13 +1,11 @@
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
-# TODO! "duration", socio-demos, politics, survey_biased, individual variables
-# TODO double text for the first
+# TODO! "duration", socio-demos, politics compare
 # TODO list_exp, group_defended_agg2
 # TODO trim
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
 # TODO automatically set share_labels and margin_l
 # TODO? Arial or Computer modern (Times)?
 # TODO automatize miss, width, thin params
-rm(pop_iso2, pop_location, pop_freq, world_map, zipcodes_FDEU, base_year, mean_gain_oecd, mean_gain_used, mean_loss_1, mean_loss_4, mean_loss_true, median_gain_2015, median_gain_used, median_loss, median_loss_true, median_loss_used, midlands, northern.england, revenues_pc, revenues_pc_oecd, utomatic_folder)
 
 ##### labels_vars #####
 labels_vars <- c(
@@ -23,10 +21,18 @@ labels_vars <- c(
   "couple" = "Lives with partner",
   "hh_size" = "Household size",
   "zipcode" = "Zipcode",
+  "urbanity" = "Degree of urbanization",
+  "age" = "Age",
   "Nb_children__14" = "Number of children below 14",
   "income" = "Income",
-  "education" = "Education",
+  "education" = "Highest diploma",
+  "diploma" = "Highest diploma",
+  "diploma_25_64" = "Highest diploma among 25-64",
+  "education" = "Highest diploma (ISCED class)",
+  "education_original" = "Highest diploma",
+  "employment_agg" = "Employment status",
   "employment_status" = "Employment status",
+  "employment_18_64" = "Employment among 18-64",
   "race" = "Race",
   "race_white" = "Race: White",
   "race_black" = "Race: Black",
@@ -36,6 +42,16 @@ labels_vars <- c(
   "home_owner" = "Home: owner",
   "home_landlord" = "Home: landlord",
   "home_hosted" = "Home: hosted",
+  "income_decile" = "Income decile",
+  "income_quartile" = "Income quartile",
+  "owner" = "Owner",
+  "wealth" = "Wealth quintile",
+  "vote" = "Vote",
+  "vote_all" = "Vote (actual and hypothetical)",
+  "vote_us" = "Vote",
+  "vote_agg" = "Vote (actual and hypothetical)",
+  "vote_us_voters" = "Vote (voters)",
+  "vote_us_non_voters" = "Vote intention (non voters)",
   "wealth_couple" = "Wealth quintile (couple)",
   "wealth_single" = "Wealth quintile (single)", 
   "gcs_win_lose" = "Win/lose to GCS",
@@ -138,13 +154,13 @@ labels_vars <- c(
   "petition_nr" = "Petition for NR",
   "petition" = "Petition (any)",
   "donation_charities" = "Donation to charities",
-  "interested_politics" = "Interest in politics",
+  "interested_politics" = "Interested in politics",
   "group_defended" = "Group defended when voting",
   "group_defended_agg" = "Group defended when voting",
-  "involvement_govt" = "Govt involvement",
+  "involvement_govt" = "Desired level of involvement of government",
   "political_affiliation" = "Political affiliation",
   "left_right" = "Left - right on economics",
-  "vote_participation" = "Vote participation",
+  "vote_participation" = "Voted at last election",
   "voted" = "Voted at last election",
   "vote_fr_voters" = "Vote (voters)",
   "vote_fr_non_voters" = "Vote (non voters)",
@@ -373,7 +389,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
     tryCatch({
       vars_present <- def$vars %in% names(df)
       plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, margin_l = def$margin_l, 
-                     miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, weights = weights)
+                     miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, title = def$title, weights = weights)
       if (print) print(plot)
       save_plotly(plot, filename = def$name, folder = folder, width = def$width, height = def$height, method = method, trim = trim, format = format)
       print(paste0(def$name, ": success"))
@@ -382,7 +398,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
   }
 }
 
-fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, rev_legend = FALSE,
+fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, 
                         short_labels = T, width = 850, labels_max_length = 57) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2], width = dev.size('px')[1]
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type plots_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # If df$var and variables_var both exist, giving 'var' (resp. 'variables_var') will yield var (resp. variables_var)
@@ -423,10 +439,11 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
     if (!"sort" %in% names(plots[[name]])) plots[[name]]$sort <- sort
     if (!"rev" %in% names(plots[[name]])) plots[[name]]$rev <- rev
     if (!"rev_color" %in% names(plots[[name]])) plots[[name]]$rev_color <- rev_color
-    if (!"rev_legend" %in% names(plots[[name]])) plots[[name]]$rev_legend <- rev_legend
+    if (!"fr" %in% names(plots[[name]])) plots[[name]]$fr <- FALSE
+    if (!"title" %in% names(plots[[name]])) plots[[name]]$title <- ""
     vars_in <- plots[[name]]$vars[plots[[name]]$vars %in% names(df)]
     var_example <- vars_in[1]
-    if (!"legend" %in% names(plots[[name]]) & !is.na(var_example)) plots[[name]]$legend <- dataN(var_example, data=df, miss=plots[[name]]$miss, return = "legend", fr=F, rev_legend = plots[[name]]$rev_legend)
+    if (!"legend" %in% names(plots[[name]]) & !is.na(var_example)) plots[[name]]$legend <- dataN(var_example, data=df, miss=plots[[name]]$miss, return = "legend", fr = plots[[name]]$fr, rev = plots[[name]]$rev, rev_legend = plots[[name]]$rev)
     # yes_no <- setequal(plots[[name]]$legend, c('Yes', 'No', 'PNR')) | setequal(plots[[name]]$legend, c('Oui', 'Non', 'NSP')) | setequal(plots[[name]]$legend, c('Yes', 'No')) | setequal(plots[[name]]$legend, c('Oui', 'Non'))
     # if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- if (is.na(var_example))  T else (!is.binary(df[[var_example]]) | yes_no)
     if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- if (is.na(var_example))  T else (!is.logical(df[[var_example]]))
@@ -471,13 +488,23 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "duration" = list(vars = variables_duration, conditions = ""),
   # "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   # "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
+  "vote"= list(rev = T, miss = T, fr = "PNR/Non-voter"), # non_voters as such, aggregating candidates into 3 categories
+  "vote_all"= list(rev = T), # hypothetical votes for non_voters
+  "vote_agg"= list(rev = T), # hypothetical votes for non_voters, aggregating small candidates
+  "vote_us"= list(rev = T), # non_voters as such
+  "vote_us_voters"= list(rev = T),
+  "vote_us_non_voters"= list(rev = T),
+  "political_affiliation"= list(rev = T),
+  "survey_biased"= list(rev = T),
   "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)], width = 850), # 1125
   "foreign_aid_condition" = list(vars = variables_foreign_aid_condition[!grepl("other", variables_foreign_aid_condition)], width = 850), # 955
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 850) # 950
 )
 
 vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
-                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "group_defended", "group_defended_agg") 
+                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "group_defended", "group_defended_agg",
+                 "country", "urbanity", "region", "gender", "age", "age_exact", "couple", "hh_size", "income_decile", "income_quartile", "education", "diploma", "diploma_15_64", "employment_agg", "employment_status", "employment_18_64", "race", "owner", "wealth", "survey_biased", 
+                 "interested_politics", "donation_charities", "involvement_govt", "left_right") 
 
 barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 # barres_defs$foreign_aid_no
@@ -485,8 +512,9 @@ barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
 
 ##### Run #####
 # Bars
-barres_multiple(barres = barres_defs[c('support_match', "share_policies_supported")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("survey_biased")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
+# country, urban_cateogry, region, gender, age, couple, hh_size, income, education, employment, race, owner, wealth, survey_biased, interested_politics, donation_charities, political_affiliation, involvement_govt, left_right, vote_participation, vote, duration
 barres_multiple(barres = barres_defs[c("understood_each")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
@@ -523,24 +551,25 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
 # v group defended (ctry + heterog)
 # v problem (ctry + heat)
 
-# temp <- c("Aid is a pressure tactic for high-income countries that prevents low-income countries from developing freely")
-# (bars <- plot_ly(x = c(1), y = break_string(temp), 
-#                 type = 'bar', orientation = 'h', textposition = 'auto',
-#                 name=c("red")) %>%   
-#     add_annotations(xref = 'paper', yref = 'y', x = 0.5-0.01, y = break_string(temp),
-#              xanchor = 'right',
-#              text = break_string(temp),
-#              font = list(family = "Arial", size = 14+2, color = 'black'),
-#              showarrow = FALSE, align = 'right')  %>%
-#     plotly::layout(font = list(size = 16),
-#                           margin = list(
-#                             # l = 0, r = 0, t = 0, b = 0, 
-#                                         autoexpand = T),
-#                           yaxis = list(automargin = T, showticklabels = FALSE),
-#                           xaxis = list(
-#                             automargin = T,
-#                                        domain = c(0.5, 1)) 
-#   ))
-# strwrap(temp, 20)
-# 
-# plot_ly(x = c(1), y = "Test", type = 'bar')
+temp <- c("Aid is a pressure tactic", " for high-income countries", "Aid is xa tactic for high-income countries", " is a pressure tactic for high-inc")
+(bars <- plot_ly(x = c(1,1,1,1), y = break_strings(temp),
+                type = 'bar', orientation = 'h', textposition = 'auto',
+                name=c("red")) %>%
+    add_annotations(xref = 'paper', yref = 'y', x = c(0.5, 0.5,.5,.5)-0.01, y = break_strings(temp),
+             xanchor = 'right',
+             text = break_strings(temp),
+             font = list(family = "Arial", size = 14+2, color = 'black', type = if (length(labels) == 2) 'bold' else ''), 
+             showarrow = FALSE, align = 'right'
+             )  %>%
+    plotly::layout(font = list(size = 16),
+                          margin = list(
+                            # l = 0, r = 0, t = 0, b = 0,
+                                        autoexpand = T),
+                          yaxis = list(automargin = T, showticklabels = FALSE),
+                          xaxis = list(
+                            automargin = T,
+                                       domain = c(0.5, 1)))
+  )
+strwrap(temp, 20)
+
+plot_ly(x = c(1), y = "Test", type = 'bar')

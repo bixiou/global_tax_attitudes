@@ -1,4 +1,4 @@
-# TODO: share of winners per country
+# TODO? share of winners per country: Ivanova & Wood (20) show that 2020 World average of 6t pc is at ~50 percentile in FR, ~65 in ES, ~50 in UK, ~20 in DE; Fremstad & Paul (19) show it's at ~20p in the U.S.
 # TODO: more accurate assumption/computations (e.g. based on NDCs)
 
 ##### Population data #####

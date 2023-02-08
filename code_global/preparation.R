@@ -268,7 +268,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   text_yes <<- c("US" = "Yes", 
                 "FR" = "Oui")
   text_no <<- c("No")
-  text_intensity <<- c("Not at all", "A little", "Moderately", "A little", "A great deal")
+  text_intensity <<- c("Not at all", "A little", "Moderately", "A lot", "A great deal")
   text_support <<- c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support")
   text_importance <<- c("Not at all important", "Not so important", "Quite important", "Very important")
   text_problem <<- c("Not an important issue for me", "An issue but there are other priorities", "An issue but we already do what we can", "An important issue, we should do more", "One of the most pressing issue of our time")
@@ -454,7 +454,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   # ISCED_EU <- c("0-1", "2", "3 pro basic", "3 pro advanced", "3 general", "4-5", "6", "7-8")
   ISCED <- c("0-1", "2", "3.1", "3.2", "3.3", "4-5", "6", "7-8")
   names(ISCED) <- c("Primary school or less", "Eigth grade", "Some high school", "Regular high school diploma/GED or alternative credential", "Some college, no degree", "2-year college degree or associates degree (for example: AA, AS)", "Bachelor's degree (for example: BA, BS)", "Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD)")
-  e$education <- ISCED[e$education_original]
+  e$education <- ISCED[e$education_original] # TODO create variable with shorter names and plot it
   label(e$education) <- "education: What is the highest level of education you have completed? /!\ For EU, the values don't correspond to the responses. To see the correspondence between values and responses in each country, cf. specificities.xlsx$Education"
   e$diploma[e$education %in% c("0-1", "2")] <- 1 
   e$diploma[grepl("3", e$education)] <- 2 
@@ -702,8 +702,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$branch_gcs) <- "branch_gcs: info/nothing/field/important Whether gcs/nr_support is preceded by the info on the actual support, nothing, gcs_field or variables_gcs_important."
     }
     
-    if ("interest_politics" %in% names(e)) temp <- 2 * (e[[v]] %in% text_intensity[5]) + (e[[v]] %in% text_intensity[4]) - (e[[v]] %in% text_intensity[2]) - 2 * (e[[v]] %in% text_intensity[1])
-    if ("interest_politics" %in% names(e)) e$interest_politics <- as.item(temp, labels = structure(c(-2:2),  names = c(text_intensity)), annotation=Label(e$interest_politics))
+    if ("interested_politics" %in% names(e)) temp <- 2 * (e$interested_politics %in% text_intensity[5]) + (e$interested_politics %in% text_intensity[4]) - (e$interested_politics %in% text_intensity[2]) - 2 * (e$interested_politics %in% text_intensity[1])
+    if ("interested_politics" %in% names(e)) e$interested_politics <- as.item(temp, labels = structure(c(-2:2),  names = c(text_intensity)), annotation=Label(e$interested_politics))
     
     if ("group_defended" %in% names(e)) {
       e$group_defended_original <- e$group_defended # TODO! assign all but one "My town" to "My State" in US.
@@ -720,6 +720,12 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                                              ), annotation = "group_defended_agg: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; where 'Fellow citizens or Europeans' gathers [Country] and Europeans; and where 'Humans or sentient beings' gathers Humans and Sentient beings (humans or animals)")
     }
     
+    if ("donation_charities" %in% names(e)) {
+      e$donation_charities_original <- e$donation_charities
+      temp <- 50*grepl("100", e$donation_charities) + 300*grepl("101", e$donation_charities) + 750*grepl("501", e$donation_charities) + 3000*grepl("001", e$donation_charities) + 7000*grepl("More", e$donation_charities) + 0*grepl("did not", e$donation_charities)
+      e$donation_charities <- as.item(temp, structure(c(0, 50, 300, 750, 3000, 7000), names = agg_thresholds(c(1), thresholds = c(0, 0, 100, 500, 1000, 5000, Inf), return = "levels", shift = 1)), annotation = Label(e$donation_charities))
+    }
+    
     if ("vote_participation" %in% names(e)) {
       e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
 
@@ -732,14 +738,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
           minor_candidates[[c]] <<- setdiff(names(table(e$vote_all[e$country == toupper(c)]))[table(e$vote_all[e$country == toupper(c)]) <= .05 * sum(e$country == toupper(c))], text_pnr)
           e$vote_agg[e$country == toupper(c) & e$vote_all %in% c(major_candidates[[c]], text_pnr)] <- e$vote_all[e$country == toupper(c) & e$vote_all %in% c(major_candidates[[c]], text_pnr)]
           e$vote_agg[e$country == toupper(c) & e$vote_all %in% minor_candidates[[c]]] <- "Other"
-          e$vote <- "PNR/Non-voter"
+          e$vote <- -0.1 # "PNR/Non-voter"
           e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Biden", "Hawkins", "Jean-Luc Mélenchon", "Yannick Jadot", "Fabien Roussel", "Anne Hidalgo", "Philippe Poutou", "Nathalie Arthaud", 
                                                            "PSOE", "Unidas Podemos", "Esquerra Republicana", "Más País", "JxCat–Junts", "Euskal Herria Bildu (EHB)", "Candidatura d'Unitat Popular-Per la Ruptura (CUP–PR)", "Partido Animalista (PACMA)", 
-                                                           "SPD", "Grüne", "Die Linke", "Tierschutzpartei", "dieBasis", "Die PARTEI", "Labour", "SNP", "Green", "Sinn Féin")] <- "Left"
+                                                           "SPD", "Grüne", "Die Linke", "Tierschutzpartei", "dieBasis", "Die PARTEI", "Labour", "SNP", "Green", "Sinn Féin")] <- -1 # "Left"
           e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Trump", "Jorgensen", "Emmanuel Macron", "Valérie Pécresse", "Jean Lassalle", "CDU/CSU", "Freie Wähler", "FDP", 
-                                                           "PP", "Ciudadanos", "Partido Nacionalista Vasco (EAJ-PNV)", "Conservative", "Liberal Democrats", "DUP")] <- "Center-right or Right"
-          e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Marine Le Pen", "Éric Zemmour", "Nicolas Dupont-Aignan", "AfD", "Vox", "Brexit Party")] <- "Far right"
-          label(e$vote) <- "vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs."
+                                                           "PP", "Ciudadanos", "Partido Nacionalista Vasco (EAJ-PNV)", "Conservative", "Liberal Democrats", "DUP")] <- 0 #"Center-right or Right"
+          e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Marine Le Pen", "Éric Zemmour", "Nicolas Dupont-Aignan", "AfD", "Vox", "Brexit Party")] <- 1 #"Far right"
+          e$vote <- as.item(e$vote, labels = structure(c(-1:1, -0.1), names = c("Left", "Center-right or Right", "Far right", "PNR/Non-voter")), missing.values = c(-0.1, NA), annotation = "vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs.")
         }
       }
       e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
@@ -771,7 +777,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$survey_biased[e$survey_biased %in% c("Yes, left-wing biased")] <- "Yes, left"
     e$survey_biased[e$survey_biased %in% c("Yes, right-wing biased")] <- "Yes, right"
     e$survey_biased[e$survey_biased %in% c("No, I do not feel it was biased")] <- "No"
-    if ("Yes, right" %in% levels(as.factor(e$survey_biased))) e$survey_biased <- relevel(relevel(as.factor(e$survey_biased), "Yes, left"), "No")
+    if ("Yes, right" %in% levels(as.factor(e$survey_biased))) e$survey_biased <- relevel(relevel(as.factor(e$survey_biased), "Yes, right"), "No")
     e$survey_biased_yes <- e$survey_biased != 'No'
     e$survey_biased_left <- e$survey_biased == "Yes, left"
     e$survey_biased_right <- e$survey_biased == "Yes, right"

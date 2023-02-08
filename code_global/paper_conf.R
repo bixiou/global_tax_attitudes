@@ -1,4 +1,3 @@
-# TODO! representativeness table: region, regroup urba/vote, custom rows/style + explanatory note
 # TODO: check litterature List experiment
 
 # H0 stated support: OECD (heatmap), G, other_policies (plot), foreign aid evolution, why (plot)
@@ -88,4 +87,4 @@ barres_multiple(barres = barres_defs[c("negotiation", "group_defended_agg", "pro
 ##### Appendices #####
 representativeness_table(c("US1"), return_table = F) # TODO custom rows/style
 representativeness_table(c("US1"), return_table = T, all = T) 
-representativeness_table(c("US1", "US2", "EU"), return_table = T, all = T) 
+representativeness_table(c("US1", "US2", "EU"), return_table = F, all = T) 

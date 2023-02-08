@@ -71,7 +71,7 @@ package("modelsummary")
 Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/Users/fabre/.conda/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep)) # to correct bug orca, add folder of orca.exe
 Sys.setenv("PATH" = paste(Sys.getenv("PATH"), "C:/ProgramData/Anaconda3/pkgs/plotly-orca-1.3.1-1/orca_app", sep = .Platform$path.sep))
 #' # /!\ To install plotly, you first need to install kaleido and orca. Run Anaconda in administrator mode and run: pip install kaleido; conda install -c plotly plotly-orca; then set orca path as above
-# if (!is.element("plotly", installed.packages()[,1])) install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) else library(plotly) # If bug change .libPaths() (to /Program Files instead of Users/.../AppData)
+if (!is.element("plotly", installed.packages()[,1])) install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) else library(plotly) # If bug change .libPaths() (to /Program Files instead of Users/.../AppData)
 # package("plotly") # in case of bug due to kaleido: "pip install kaleido" in the python console. À PA, version 4.10.0
 #' # package("plotly", version = "4.9.4.1") # If bug, do instead: install.packages("https://github.com/plotly/plotly.R/archive/refs/tags/v4.9.4.1.tar.gz", repos=NULL) The last version of Plotly changes the place of Legend and makes it over several lines unless one increases width. If the install bugs as admin, try as simple user. If it still bugs, make sure Rtools is installed and found by R. If already installed (to check: package("installr"); install.Rtools()), try: write('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', file = "~/.Renviron", append = TRUE) then check that Sys.which("make") returns "C:\\rtools40\\usr\\bin\\make.exe". (cf. https://cran.r-project.org/bin/windows/Rtools/rtools40.html)
 #' # On ARM Mac, if this doesn't work (runs infinitely). Download the archive and from the Terminal run `R CMD INSTALL plotly.R-4.9.4.1.tar.gz'
@@ -877,18 +877,21 @@ data1 <- function(vars, data=e, weights=T) {
   return( matrix(res, ncol=length(vars)) )
 }
 dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE) {
-  missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "Don't know", "PNR or other", "NSP ou autre", "PNR ou autre") # TODO: allow for non-standard PNR in a more straightforward way than adding the argument "fr" and putting its value below
+  missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "Don't know", "PNR or other", "NSP ou autre", "PNR ou autre", "PNR/Non-voter") # TODO: allow for non-standard PNR in a more straightforward way than adding the argument "fr" and putting its value below
   if (is.null(data[['weight']])) weights <- F # TODO? warning
   mat <- c()
   if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !any(grepl("item", class(data[[var]])))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
   else v <- data[[var]]
   if (setequal(levels(v), c(T, F))) levels <- c(T) # before: not this line
   else if (is.null(annotation(v))) levels <- levels(v)
-  else levels <- labels(v)@.Data
+  else {
+    levels <- labels(v)@.Data
+    levels <- levels[levels %in% as.character(v)] # new, removes empty levels
+  }
   levels <- levels[!(levels %in% missing_labels)]
   if (rev_legend) levels <- rev(levels) # new (05/20)
-  if (weights) N <- sum(data[['weight']][!is.missing(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
-  else N <- length(which(!is.missing(v) & (!(v %in% missing_labels)))) # c("NSP", "Non concerné·e")
+  if (weights) N <- sum(data[['weight']][!is.pnr(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
+  else N <- length(which(!is.pnr(v) & (!(v %in% missing_labels)))) # c("NSP", "Non concerné·e")
   for (val in levels) { # before: no %in% nowhere below
     if (weights) mat <- c(mat, sum(data[['weight']][which(v==val)])/N)
     else mat <- c(mat, length(which(v==val))/N) }
@@ -898,8 +901,8 @@ dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE
       if (weights) mat <- c(mat, sum(data[['weight']][which(is.na(v) | v %in% missing_labels)])/N) # c("NSP", "Non concerné·e")
       else mat <- c(mat, length(which(is.na(v) | v %in% missing_labels))/N) # c("NSP", "Non concerné·e")
     } else  {
-      if (weights) mat <- c(mat, sum(data[['weight']][which(is.missing(v) & !is.na(v))])/N) # was defined without " & (!(v %in% c("NSP", "Non concerné·e")))" here and line below
-      else mat <- c(mat, length(which(is.missing(v) & !is.na(v)))/N) } } # mais ça semble équivalent pck les NSP sont missing dans ces cas-là
+      if (weights) mat <- c(mat, sum(data[['weight']][which(is.pnr(v) & !is.na(v))])/N) # was defined without " & (!(v %in% c("NSP", "Non concerné·e")))" here and line below
+      else mat <- c(mat, length(which(is.pnr(v) & !is.na(v)))/N) } } # mais ça semble équivalent pck les NSP sont missing dans ces cas-là
   if (max(nchar(levels))==3 & 'Oui' %in% levels & 'Non' %in% levels) { if (which(levels=='Non') < which(levels=='Oui')) mat[2:1] <- mat[1:2]; levels[c(which(levels=='Oui'),which(levels=='Non'))] <- c('Non', 'Oui') }
   if ((return %in% c("levels", "legend")) & miss & fr==TRUE) return(c(levels, 'NSP'))
   else if ((return %in% c("levels", "legend")) & miss & (fr==FALSE)) return(c(levels, 'PNR'))
@@ -1185,7 +1188,9 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     add_annotations(xref = 'paper', yref = 'y', x = share_labels - 0.01, y = labels,
                     xanchor = 'right',
                     text = labels,
-                    font = list(family = font, size = 14+2, color = 'black'),
+                    font = list(family = font, size = 14+2, color = 'black',
+                                type = if (length(labels) == 2) 'bold' else '' # to avoid the last item being more black (for real bold, use 'Arial Black')
+                                  ),
                     showarrow = FALSE, align = 'right') # %>%
   # Legend in the Yes/No case
   if (showLegend == FALSE) {
@@ -2253,6 +2258,10 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     rows <- label_operator(rows, labels[[k]])
   }
   
+  variables <- unique(gsub("(.*):.*", "\\1", rows))
+  order_rows <- c()
+  for (v in variables) for (i in 1:length(rows)) order_rows <- c(order_rows, if (v == sub("(.*):.*", "\\1", rows[i])) i else NULL)
+  rows <- rows[order_rows]
   table <- data.frame(row.names = rows)
   for (k in country_list) {
     table[[paste0(k, "_pop")]] <- pop[[k]][rows]
@@ -2276,8 +2285,9 @@ export_representativeness_table <- function(table, country_list, weighted = T, n
     line_sep <- c(line_sep, if (previous == current) "" else "\\addlinespace")
   }
   
-  latex_output <- kbl(table, "latex", caption = NULL, position = "b",
-                      col.names = rep(c("Population", if (non_weighted) "Sample", if (weighted) "Weighted sample"), length(country_list)), booktabs = TRUE,
+  row.names(table) <- gsub("_", "\\_", row.names(table), fixed = T)
+  latex_output <- kbl(table, "latex", caption = NULL, position = "b", escape = F, booktabs = T,
+                      col.names = rep(c("Pop.", if (non_weighted) "Sample", if (weighted) "\\makecell{Weighted\\\\sample}"), length(country_list)), 
                       linesep = line_sep) %>% add_header_above(header)
   
   if (is.null(filename)) filename <- paste(country_list, collapse = "_")
@@ -2285,3 +2295,4 @@ export_representativeness_table <- function(table, country_list, weighted = T, n
   cat(paste(latex_output, collapse="\n"), file = paste0(folder, filename, ".tex")) 
 }
 # representativeness_table(c("US1"), return_table = F)
+representativeness_table(c("US1", "US2", "EU"), return_table = T, all = T) 
