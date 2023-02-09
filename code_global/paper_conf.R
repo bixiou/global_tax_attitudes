@@ -84,7 +84,43 @@ for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]], na.rm = 
 barres_multiple(barres = barres_defs[c("negotiation", "group_defended_agg", "problem")], df = us1, folder = "../figures/US1/")
 
 
-##### Appendices #####
+##### App Representativeness #####
 representativeness_table(c("US1"), return_table = F) # TODO custom rows/style
 representativeness_table(c("US1"), return_table = T, all = T) 
 representativeness_table(c("US1", "US2", "EU"), return_table = F, all = T) 
+
+
+##### App Attrition analysis #####
+print(paste(nrow(us1a), "start"))
+print(paste(sum(no.na(us1a$excluded)=="QuotaMet"), "are excluded for their quota is met"))
+print(paste(sum(us1a$dropout), "dropout"))
+# print(us1a[us1a$dropout==T, c("progress", "employment_status", "political_affiliation", "gcs_support")], n = 20)
+print(paste(sum(us1a$dropout & us1a$progress == 19), "drop out at GCS description"))
+print(paste(sum(us1a$dropout_late), "drop out after socio-demos"))
+print(paste(sum(us1a$stayed), "are allowed and do not drop out"))
+print(paste(sum(us1a$failed_test & us1a$stayed), "fail the attention test"))
+print(paste(sum(us1a$duration < 240/60 & us1a$failed_test & us1a$stayed), "complete in less than 4 min"))
+# print(paste(sum((us1a$failed_test | us1a$duration < 240/60) & !us1a$dropout & no.na(us1a$excluded)!="QuotaMet"), "are excluded"))
+print(paste(sum(no.na(us1a$excluded) == "Screened" & !us1a$dropout & no.na(us1a$excluded)!="QuotaMet"), "are excluded"))
+print(paste(nrow(us1), "in final sample"))
+print(paste0(round(100*sum(us1a$dropout)/sum(no.na(us1a$excluded) != "QuotaMet")), "% dropout"))
+print(paste0(round(100*sum(us1a$dropout_late)/sum(no.na(us1a$excluded) != "QuotaMet")), "% dropout excluding sociodemos"))
+# summary(lm(dropout ~ treatment, data = us1a, weights = us1a$weight))
+# summary(lm(dropout ~ country, data = us1a, weights = us1a$weight))
+summary(lm(as.formula(paste("dropout ~ ", paste(quotas_us, collapse = ' + '))), data = us1a, weights = us1a$weight))
+summary(lm(as.formula(paste("(dropout & as.numeric(alla$progress >= 19)) ~ ", paste(quotas_us, collapse = ' + '))), data = us1a, weights = us1a$weight))
+
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"),
+           dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\4 min}"),
+           filename = "attrition_analysis", save_folder = "../tables/US1/", data = c(list(us1a), list(us1a), list(us1a[us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,])), 
+           indep_vars = quotas_us) 
+
+decrit(us1a$gcs_support)
+decrit(us1$gcs_support)
+
+
+##### App Determinants of GCS support #####
+desc_table(dep_vars = c("gcs_support"),
+           dep.var.labels = c("\\makecell{Supports the\\\\Global\\\\Climate Scheme}"),
+           filename = "gcs_support", save_folder = "../tables/US1/", data = us1, 
+           indep_vars = socio_demos_us) # omit: Race: Other

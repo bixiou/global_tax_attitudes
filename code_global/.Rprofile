@@ -480,7 +480,7 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
 #' }
 reg_formula <- function(dep_var, indep_vars) return(as.formula(paste(dep_var, "~", paste(indep_vars, collapse = '+'))))
 desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = NULL, weights = data$weight, add_lines = NULL, model.numbers = T, #!mean_above,
-                       save_folder = "../tables/", dep.var.labels = NULL, dep.var.caption = c(""), digits= 3, mean_control = FALSE, logit = FALSE, atmean = T, robust_SE = T, omit = c("Constant", "Gender: Other", "econ_leaningPNR"),
+                       save_folder = "../tables/", dep.var.labels = NULL, dep.var.caption = c(""), digits= 3, mean_control = FALSE, logit = FALSE, atmean = T, robust_SE = T, omit = c("Constant", "Race: Other"),
                        mean_above = T, only_mean = F, keep = indep_vars, nolabel = F, indep_vars_included = T, no.space = T, print_regs = FALSE, replace_endAB = NULL, oecd_latex = FALSE) {
   # Wrapper for stargazer
   # /!\ always run first with nolabel = T to check that the order of indep_labels correspond to the one displayed
@@ -530,16 +530,16 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   if (missing(filename)) file_path <- NULL
   else file_path <- paste0(save_folder, filename, ".tex")
   keep <- gsub("(.*)", "\\\\\\Q\\1\\\\\\E", sub("^\\(", "", sub("\\)$", "", keep)))
-  if (exists("regressors_names") & missing(indep_labels)) {
+  if (exists("labels_vars") & missing(indep_labels)) {
     if (!is.data.frame(data)) data <- data[[1]]
     model_total <- lm(as.formula(paste(dep_vars[1], "~", paste("(", indep_vars[covariates_with_several_values(data = data, covariates = indep_vars)], ")", collapse = ' + '))), data = data)
-    indep_labels <- create_covariate_labels(names(model_total$coefficients)[-1], regressors_names = regressors_names, keep = keep, omit = "Constant")
+    indep_labels <- create_covariate_labels(names(model_total$coefficients)[-1], regressors_names = labels_vars, keep = keep, omit = "Constant")
     # i_max <- max_i <- 0
     # for (i in seq_along(models)) {
     #   if (length(models[[i]]$coefficients) > max_i) {
     #     max_i <- length(models[[i]]$coefficients) # TODO!: /!\ pb: won't display the appropriate labels if some coefficients are missing in the regression with most covariates (e.g. due to keep or omit)
     #     i_max <- i } }
-    # indep_labels <- regressors_names[names(models[[i_max]]$coefficients)[-1]]
+    # indep_labels <- labels_vars[names(models[[i_max]]$coefficients)[-1]]
     # names(indep_labels) <- names(models[[i_max]]$coefficients)[-1]
     # # if (!missing(keep)) indep_labels <- indep_labels[grepl(keep, indep_vars)]
   }
@@ -556,7 +556,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   return(table)
 }
 multi_grepl <- function(patterns, vec) return(1:length(vec) %in% sort(unlist(lapply(patterns, function(x) which(grepl(x, vec))))))
-table_mean_lines_save <- function(table, mean_above = T, only_mean = FALSE, indep_vars = NULL, indep_labels = indep_vars, add_lines = NULL, file_path = NULL, oecd_latex = FALSE, nb_columns = 2, omit = c("Constant", "Gender: Other", "econ_leaningPNR")) {
+table_mean_lines_save <- function(table, mean_above = T, only_mean = FALSE, indep_vars = NULL, indep_labels = indep_vars, add_lines = NULL, file_path = NULL, oecd_latex = FALSE, nb_columns = 2, omit = c("Constant", "Gender: Other", "econ_leaningPNR", "Race: Other")) {
   if (mean_above) {
     mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
     first_lab <- ifelse(missing(indep_labels), latexify(indep_vars[1]), paste0(latexify(indep_labels[1]), " &")) # was: latexify(ifelse(missing(indep_labels), indep_vars[1], indep_labels[1]))
@@ -569,8 +569,9 @@ table_mean_lines_save <- function(table, mean_above = T, only_mean = FALSE, inde
   }
   for (l in add_lines) table <- c(table[1:(as.numeric(l[1])+0*mean_above-1)], if (grepl("\\hline", table[as.numeric(l[1])+0*mean_above-1])) "\\\\[1ex]" else " \\\\[1ex] \\hline \\\\[1ex]", paste("\\multicolumn{", nb_columns + 1, "}{l}{\\textbf{", l[2], "}} \\\\"), table[(as.numeric(l[1])+0*mean_above):length(table)])
   if (length(omit) > 0) {
-    omitted_vars <- c(multi_grepl(omit, table), multi_grepl(indep_labels[omit], table))
+    omitted_vars <- which(c(multi_grepl(omit, table), multi_grepl(indep_labels[omit], table)))
     if (length(omitted_vars) > 0) table <- table[-c(omitted_vars, omitted_vars + 1)] }
+  print(table)
   cat(paste(table, collapse="\n"), file = file_path)
   if (oecd_latex) cat(paste(table, collapse="\n"), file = sub("../", "../../oecd_latex/", file_path, fixed = T))
   return(table)
@@ -617,11 +618,11 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
 #'                                                         round(wtd.mean(eval(parse(text = paste( "data_i$", parse(text = dep.var), sep=""))), weights = data_i$weight, na.rm = T), d = digits)))
 #'   }
 #'   mean_text <- ifelse(mean_control, "Control group mean", "Mean")
-#'   if (exists("regressors_names")) omit <- c(omit, regressors_names[omit], names(regressors_names)[which(regressors_names %in% omit)])
-#'   if (exists("regressors_names")) omit <- omit[!is.na(omit)]
-#'   if (exists("regressors_names") & missing(covariate.labels)) covariate_labels <- create_covariate_labels(names(models[[1]]$coefficients)[-1], regressors_names = regressors_names, keep = keep, omit = omit)
+#'   if (exists("labels_vars")) omit <- c(omit, labels_vars[omit], names(labels_vars)[which(labels_vars %in% omit)])
+#'   if (exists("labels_vars")) omit <- omit[!is.na(omit)]
+#'   if (exists("labels_vars") & missing(covariate.labels)) covariate_labels <- create_covariate_labels(names(models[[1]]$coefficients)[-1], regressors_names = labels_vars, keep = keep, omit = omit)
 #'   if (nolabel) covariate_labels <- NULL
-#'   dep.var.caption <- ifelse(missing(dep.var.caption), ifelse(exists("regressors_names") && dep.var %in% names(regressors_names), regressors_names[dep.var], gsub("_", "\\_", dep.var, fixed = T)), dep.var.caption)
+#'   dep.var.caption <- ifelse(missing(dep.var.caption), ifelse(exists("labels_vars") && dep.var %in% names(labels_vars), labels_vars[dep.var], gsub("_", "\\_", dep.var, fixed = T)), dep.var.caption)
 #'   
 #'   table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers, covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], add.lines =list(c(mean_text, means)), 
 #'                                                                                 dep.var.labels = if (include.total) c("All", along.levels) else along.levels, dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), omit.table.layout = "n", keep=keep, omit = omit, no.space = no.space)))
@@ -631,19 +632,19 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
 #'   table <- table_mean_lines_save(table, mean_above = mean_above, only_mean = only_mean, indep_labels = covariate_labels, indep_vars = covariates, add_lines = add_lines, file_path = file_path, oecd_latex = T, nb_columns = length(along.levels) + include.total)
 #'   return(table)
 #' }
-#' create_covariate_labels <- function(coefs_names, regressors_names = regressors_names, keep = NULL, omit = "Constant") {
-#'   missing_names <- setdiff(coefs_names, names(regressors_names))
-#'   names(missing_names) <- missing_names
-#'   if (length(missing_names) > 0) warning(paste("The following variables are missing from regressors_names (so their name will appear instead of their label):", paste(missing_names, collapse = ", ")))
-#'   covariate.labels <- c(regressors_names, missing_names)[coefs_names]
-#'   names(covariate.labels) <- coefs_names
-#'   if (is.null(keep)) covariate_labels <- covariate.labels
-#'   else covariate_labels <- c()
-#'   for (k in keep) covariate_labels <- c(covariate_labels, covariate.labels[(grepl(k, covariate.labels) | grepl(k, names(covariate.labels)))])
-#'   for (k in omit) covariate_labels <- covariate_labels[!grepl(k, covariate_labels) & !grepl(k, names(covariate_labels))] 
-#'   covariate_labels <- unique(covariate_labels[c(which(!grepl("[:*]", names(covariate_labels))), which(grepl("[:*]", names(covariate_labels))))]) # unique is not necessary, it unnames the vector
-#'   return(covariate_labels)
-#' }
+create_covariate_labels <- function(coefs_names, regressors_names = labels_vars, keep = NULL, omit = "Constant") {
+  missing_names <- setdiff(coefs_names, names(labels_vars))
+  names(missing_names) <- missing_names
+  if (length(missing_names) > 0) warning(paste("The following variables are missing from labels_vars (so their name will appear instead of their label):", paste(missing_names, collapse = ", ")))
+  covariate.labels <- c(labels_vars, missing_names)[coefs_names]
+  names(covariate.labels) <- coefs_names
+  if (is.null(keep)) covariate_labels <- covariate.labels
+  else covariate_labels <- c()
+  for (k in keep) covariate_labels <- c(covariate_labels, covariate.labels[(grepl(k, covariate.labels) | grepl(k, names(covariate.labels)))])
+  for (k in omit) covariate_labels <- covariate_labels[!grepl(k, covariate_labels) & !grepl(k, names(covariate_labels))]
+  covariate_labels <- unique(covariate_labels[c(which(!grepl("[:*]", names(covariate_labels))), which(grepl("[:*]", names(covariate_labels))))]) # unique is not necessary, it unnames the vector
+  return(covariate_labels)
+}
 #' CImedian <- function(vec) { # 95% confidence interval
 #'   res <- tryCatch(unlist(ci.median(vec[!is.na(vec) & vec!=-1])), error=function(e) {print('NA')})
 #'   return(paste(res[paste('ci.lower')], res[paste('ci.median')], res[paste('ci.upper')], length(which(!is.na(vec) & vec!=-1))))
@@ -1956,7 +1957,7 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
 #'     for (v in covariates) {
 #'       mean_ci_v <- mean_ci_along_regressions(regs = regs, along = v, labels = levels_along, subsamples = subsamples, df = df, covariates = NULL, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, factor_along = factor_along, weight = weight)
 #'       mean_ci_v$along <- paste0(v, mean_ci_v$along)
-#'       if (exists("regressors_names")) mean_ci_v$along <- regressors_names[mean_ci_v$along]
+#'       if (exists("labels_vars")) mean_ci_v$along <- labels_vars[mean_ci_v$along]
 #'       names(mean_ci_v) <- c("along", "mean", "CI_low", "CI_high", "y")
 #'       mean_ci <- rbind(mean_ci, mean_ci_v)
 #'       mean_ci <- mean_ci[mean_ci$y != "<NA>",]

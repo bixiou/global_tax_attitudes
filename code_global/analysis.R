@@ -6,7 +6,6 @@ e <- ep
 # TODO! repräsentative*r Deutsche*r, translation ETS2, check EU
 # TODO! slides
 # TODO! literature review
-# TODO! attrition analysis
 # TODO! appendix sources
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi

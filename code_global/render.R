@@ -21,11 +21,15 @@ labels_vars <- c(
   "hh_size" = "Household size",
   "zipcode" = "Zipcode",
   "urbanity" = "Degree of urbanization",
+  "urban" = "Urban",
   "age" = "Age",
+  "age_factor" = "Age",
   "Nb_children__14" = "Number of children below 14",
   "income" = "Income",
+  "income_factor" = "Income quartile",
   "education" = "Highest diploma",
   "diploma" = "Highest diploma",
+  "post_secondary" = "Diploma: Post secondary",
   "diploma_25_64" = "Highest diploma among 25-64",
   "education" = "Highest diploma (ISCED class)",
   "education_original" = "Highest diploma",
@@ -45,9 +49,13 @@ labels_vars <- c(
   "income_quartile" = "Income quartile",
   "owner" = "Owner",
   "wealth" = "Wealth quintile",
+  "wealth_factor" = "Wealth quintile",
+  "swing_state" = "Swing State",
   "vote" = "Vote",
+  "vote3" = "Vote",
   "vote_all" = "Vote (actual and hypothetical)",
   "vote_us" = "Vote",
+  "vote3" = "Vote",
   "vote_agg" = "Vote (actual and hypothetical)",
   "vote_us_voters" = "Vote (voters)",
   "vote_us_non_voters" = "Vote intention (non voters)",
@@ -224,7 +232,14 @@ labels_vars <- c(
   "man" = "Gender: Man"
 )
 for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
+for (v in intersect(intersect(c(socio_demos, socio_demos_us), names(e)), names(labels_vars))) {
+  if (grepl("TRUE / FALSE", Levels(e[[v]])[1])) labels_vars[paste0(v, "TRUE")] <- labels_vars[v]
+  else for (l in setdiff(Levels(e[[v]]), NA)) {
+    if (!paste0(v, l) %in% names(labels_vars)) labels_vars[paste0(v, l)] <- paste0(labels_vars[v], ": ", l)
+  }
+}
 
+  
 ##### labels_vars_short_html #####
 labels_vars_short_html <- c(
   "list_exp_gl" = "GCS/C/O",
@@ -490,6 +505,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "vote"= list(rev = T, miss = T, fr = "PNR/Non-voter"), # non_voters as such, aggregating candidates into 3 categories
   "vote_all"= list(rev = T), # hypothetical votes for non_voters
   "vote_agg"= list(rev = T), # hypothetical votes for non_voters, aggregating small candidates
+  "vote3"= list(rev = T), # non_voters as such, pooled with PNR and those voting for small candidates
   "vote_us"= list(rev = T), # non_voters as such
   "vote_us_voters"= list(rev = T),
   "vote_us_non_voters"= list(rev = T),

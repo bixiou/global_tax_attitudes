@@ -1,8 +1,44 @@
-# e <- read_csv("../data/US1.csv")
+# e <- read_csv("../data/MEP.csv")
 # for (i in 1:length(e)) {
 #   label(e[[i]]) <- paste(names(e)[i], ": ", label(e[[i]]), e[[i]][1], sep="") #
 #   print(paste(i, label(e[[i]])))
 # }
+
+relabel_and_rename_MEP <- function(e) {
+  names(e) <- c(
+    "date",
+    "date_end",
+    "status_response",
+    "ip",
+    "progress",
+    "time",
+    "terminated",
+    "date_recored",
+    "ID_qualtrics",
+    "name",
+    "firstname",
+    "mmail",
+    "ref",
+    "lat",
+    "long",
+    "distr",
+    "lang",
+    "gcs_support",
+    "belief_eu",
+    "belief_confidence",
+    "belief_us",
+    "belief_vote",
+    "position",
+    "country",
+    "group",
+    "comment_field",
+    "email",
+    "finished",
+    "excluded",
+    "duration"
+  )
+  return(e)  
+}
 
 relabel_and_rename_US1 <- function(e) {
   names(e) <- c(

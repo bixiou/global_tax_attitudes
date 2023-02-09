@@ -2,6 +2,7 @@
 # TODO order_
 # TODO sources quotas
 # TODO check vote
+# TODO! integrate the 11 white below 25 into final sample
 
 source(".Rprofile")
 source("relabel_rename.R")
@@ -227,7 +228,7 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   
   print(paste(length(which(e$excluded=="QuotaMet")), "QuotaMet"))
   e$finished[e$excluded=="QuotaMet"] <- "False" # To check the number of QuotaMet that shouldn't have incremented the quota, comment this line and: decrit(e$each_strate[e$exclu=="QuotaMet" & e$csp=="Employé" & !grepl("2019-03-04 07", e$date)])
-  if (incl_quality_fail) e <- e[replace_na(e$excluded, "na") != "QuotaMet" & !is.na(e$attention_test) & !(replace_na(e$excluded, "na") == "Screened" & replace_na(e$attention_test) == "A little"),] # allqa: e[e$finished == 1
+  if (incl_quality_fail & "attention_test" %in% names(e)) e <- e[replace_na(e$excluded, "na") != "QuotaMet" & !is.na(e$attention_test) & !(replace_na(e$excluded, "na") == "Screened" & replace_na(e$attention_test) == "A little"),] # allqa: e[e$finished == 1
   if (exclude_screened & !incl_quality_fail) { e <- e[is.na(e$excluded),] }
   if (exclude_speeder) e <- e[as.numeric(as.vector(e$duration)) > duration_min,] # & !incl_quality_fail
   if (only_finished & !incl_quality_fail) e <- e[e$finished==1,] 
@@ -244,14 +245,21 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)
   # } else e <- create_education(e, country, only = TRUE)
   
-  
-  e$valid <- (as.numeric(e$progress) > 1) & (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded)
-  label(e$valid) <- "valid: Respondents that has not been screened out due to speed or failure to the attention test."
-  e$dropout <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1"
-  label(e$dropout) <- "dropout: Respondent who did not complete the survey though was not excluded."
-  e$finished_attentive <- (e$valid | (e$duration <= duration_min & e$attention_test=="A little")) & e$finished==1
-  label(e$finished_attentive) <- "finished_attentive: Respondent completed the survey and did not fail the attention test."
-  
+  if ("attention_test" %in% names(e)) {
+    e$failed_test <- no.na(e$attention_test) != "A little"
+    label(e$failed_test) <- "failed_test: Failed the attention_test"
+    e$valid <- (as.numeric(e$progress) > 1) & (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded)
+    label(e$valid) <- "valid: Respondents that has not been screened out due to speed or failure to the attention test."
+    e$dropout <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1"
+    label(e$dropout) <- "dropout: Respondent who did not complete the survey though was not excluded."
+    if (country == "US1") {
+      e$dropout_late <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1" & n(e$progress) >= 19
+      label(e$dropout_late) <- "dropout: Respondent who did not complete the survey though was not excluded, and who dropped out after the socio-demographic questions." }
+    e$finished_attentive <- (e$valid | (e$duration <= duration_min & e$attention_test=="A little")) & e$finished==1
+    label(e$finished_attentive) <- "finished_attentive: Respondent completed the survey and did not fail the attention test."
+    e$stayed <- !e$dropout & no.na(e$excluded) != "QuotaMet"
+    label(e$stayed) <- "stayed: T/F quotas are allowed and do not drop out"
+  }
   # e$sample <- "a"
   # e$sample[e$finished=="True"] <- "e"
   # e$sample[e$finished=="True" & n(e$duration) > duration_min] <- "p"
@@ -362,8 +370,13 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   }
   if (country %in% c("US1", "US1p")) variables_points <- variables_points_us <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
   if (country %in% c("US1", "US1p")) variables_points_us_agg <<- paste0(variables_points_us, "_agg")
+  if (country == "MEP") {
+    variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
+    variables_belief_mep <<- c("belief_eu", "belief_us")
+    variables_belief_mep_agg <<- paste0(variables_belief_mep, "_agg")
+  }
   
-  for (i in intersect(c(variables_duration, "hh_size", "Nb_children__14", "zipcode", variables_donation, variables_belief, variables_list_exp, variables_points, "global_tax_global_share" #, "age"
+  for (i in intersect(c(variables_duration, "hh_size", "Nb_children__14", "zipcode", variables_donation, variables_belief, variables_belief_mep, variables_list_exp, variables_points, "global_tax_global_share" #, "age"
   ), names(e))) {
     lab <- label(e[[i]])
     e[[i]] <- as.numeric(as.vector( gsub("[^0-9\\.]", "", e[[i]]))) # /!\ this may create an issue with UK zipcodes as it removes letters
@@ -396,6 +409,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   if ("attention_test" %in% names(e)) e$attentive <- e$attention_test %in% c("A little")
   
+  if (country != "MEP") {
   e$wave <- paste0(country, ifelse(wave == "pilot", "p", ""))
   e$country_name <- e$country
   if (grepl("US", country)) e$country_name <- "United States"
@@ -412,12 +426,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$age_exact <- as.item(temp, labels = structure(c(16.5, 19.5, 23, seq(27.5, 87.5, 5), 95, 101), names = c("< 18", "18-20", "21-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89", "90-99", "100+")), missing.values=c(NA), annotation=Label(e$age_exact))
   temp <- 21.5*(e$age_exact < 25) + 30*(e$age_exact < 35 & e$age_exact > 25) + 42.5*(e$age_exact < 50 & e$age_exact > 35) + 57.5*(e$age_exact < 65 & e$age_exact > 50) + 71*(e$age_exact > 65)
   e$age <- as.item(temp, labels = structure(c(21.5, 30, 42.5, 57.5, 71), names = c("18-24", "25-34", "35-49", "50-64", "65+")), missing.values=c(NA), annotation=Label(e$age_exact))
+  e$age_factor <- as.factor(e$age) 
   
   if ("race_black" %in% names(e)) {
     e$race <- "Other"
     e$race[e$race_white==T & e$race_asian == FALSE & e$race_native == FALSE] <- "White only"
     e$race[e$race_hispanic==T] <- "Hispanic"
     e$race[e$race_black==T] <- "Black"
+    e$race <- relevel(as.factor(e$race), "White only")
     label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
   }
 
@@ -441,6 +457,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   label(e$income_quartile) <- "income_quartile: [1-4] Quartile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
   label(e$income_factor) <- "income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
   
+  if ("Nb_children__14" %in% names(e)) {
+    e$children <- e$Nb_children__14 > 0
+    label(e$children) <- "children: Lives with child(ren) below 14." }
+  
   e$urban_category <- as.numeric(e$urban_category)
   e$urban_category[e$urban_category == 0] <- NA
   label(e$urban_category) <- "urban_category: [1-4] Computed from the zipcode. NA indicates an unrecognized zipcode. For FR/DE/ES, Eurostat's degree of urbanization (1: Cities, 2: Towns and suburbs, 3: Rural). For the UK we use another classification that tends to classify zipcodes as more rural than Eurostat (cf. zipcodes.R). For the US, recoded from RUCA codes (1: Metropolitan core (RUCA 1, 73% pop), 2: Metro non-core (2-3), 3: Micropolitan or Small town (< 50k, 4-9), 4: Rural (10))."
@@ -460,6 +480,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$diploma[grepl("3", e$education)] <- 2 
   e$diploma[e$education %in% c("4-5", "6", "7-8")] <- 3 
   e$diploma <- as.item(e$diploma, labels = structure(1:3, names = c("Below upper secondary", "Upper secondary", "Post secondary")), missing.values=c(NA, "Not 25-64"), annotation="diploma: 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.")
+  e$post_secondary <- e$diploma > 2
+  label(e$post_secondary) <- "post_secondary: Has a post-secondary degree (at least two years after highschool, i.e. Associate degree, BA, BS, etc.)."
   e$diploma_25_64 <- e$diploma
   e$diploma_25_64[e$age < 25 | e$age > 65] <- 0 # "Not 25-64"
   e$diploma_25_64 <- as.item(as.numeric(as.vector(e$diploma_25_64)), labels = structure(c(1:3, 0), names = c("Below upper secondary", "Upper secondary", "Post secondary", "Not 25-64")), missing.values=c(NA, 0), 
@@ -490,6 +512,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$wealth[!is.na(e$wealth_single)] <- e$wealth_single[!is.na(e$wealth_single)]
     temp <-  grepl("Less than \\$0", e$wealth) + 2 * grepl("Close to \\$0", e$wealth) + 3 * grepl("Between \\$4,000", e$wealth) + 4 * (e$wealth %in% c("Between $120,000 and $380,000", "Between $60,000 and $190,000")) + 5 * grepl("More than", e$wealth)
     e$wealth <- as.item(temp, labels = structure(c(1:5, 0), names = c("Q1","Q2","Q3","Q4","Q5", "PNR")), missing.values = c(NA, 0), annotation="wealth: Quintile of wealth (from wealth_couple and wealth_single).")
+    e$wealth_factor <- as.factor(e$wealth)
   }
   
   e$owner <- e$home_owner == T | e$home_landlord == T
@@ -764,6 +787,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$vote_us[e$vote_us_voters == "Trump"] <- "Trump"
       e$vote_us <- as.item(e$vote_us, annotation = "vote_us: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
       missing.values(e$vote_us) <- "PNR/no right"
+      e$vote3 <- as.character(e$vote_us)
+      e$vote3[e$vote3 %in% c("PNR/no right", "Other/Non-voter")] <- "Abstention/PNR/Other"
+      label(e$vote3) <- "vote3: Abstention/PNR/Other / Biden / Trump Vote at 2020 presidential election"
       
       e$swing_state <- n(e$zipcode/1000) %between% c(48, 50) | n(e$zipcode/1000) %between% c(88.9, 90.0) | n(e$zipcode/1000) %between% c(15.0, 19.7) | n(e$zipcode/1000) %between% c(53, 55) | n(e$zipcode/1000) %between% c(85, 87) | n(e$zipcode/1000) %between% c(30, 32) | n(e$zipcode/1000) %between% c(39.8, 40.0) | n(e$zipcode/1000) %between% c(27, 29) 
       e$swing_state_5pp <- e$swing_state | n(e$zipcode/1000) %between% c(32, 35)
@@ -832,6 +858,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   
   e$wrong_language <- (e$country == "US" & e$language != "EN") | (e$country == "DE" & e$language != "DE") | (e$country == "FR" & e$language != "FR") | (e$country == "ES" & e$language != "ES-ES") | (e$country == "UK" & e$language != "EN-GB")
   label(e$wrong_language) <- "wrong_language: T/F The language does not correspond to the respondent's country (including Spanish in the U.S.)."
+  }
   
   count_IP <- rle(as.vector(sort(e$ip)))
   e$number_same_ip <- count_IP[[1]][match(e$ip, count_IP[[2]])]
@@ -848,6 +875,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 ##### Run #####
 
 e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
+
+e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)
 
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
 us2p <- prepare(country = "US2", wave = "pilot", weighting = FALSE)
@@ -869,3 +898,7 @@ export_codebook(eup, "../data/codebook_eup.csv", stata = FALSE)
 export_codebook(eup, "../data/codebook_ep.csv", stata = FALSE)
 
 variables_list_exp <- c("list_exp_l", "list_exp_gl", "list_exp_rl", "list_exp_rgl")
+quotas_us <- c("income_factor", "post_secondary", "age_factor", "race", "man", "region", "urban")
+socio_demos_us <- c(quotas_us, "swing_state", "couple", "employment_agg", "wealth_factor", "vote3")
+quotas_eu <- c("country", "income_factor", "post_secondary", "age_factor", "man", "urban") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
+socio_demos <- c(quotas_eu, "couple", "employment_agg", "wealth_factor", "vote")
