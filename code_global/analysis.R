@@ -3,7 +3,6 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO! repräsentative*r Deutsche*r, translation ETS2, check EU
 # TODO! slides
 # TODO! literature review
 # TODO! appendix sources
@@ -11,6 +10,8 @@ e <- ep
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 # TODO read about Norway and foreign aid
+
+
 
 ##### Duration #####
 print(paste0(round(100*sum(us1a$finished == 1 & is.na(us1a$excluded), na.rm = T)/sum(us1a$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1")) # 92% % incidence rate
