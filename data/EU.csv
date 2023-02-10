@@ -1,0 +1,715 @@
+StartDate,EndDate,Status,IPAddress,Progress,Duration (in seconds),Finished,RecordedDate,ResponseId,RecipientLastName,RecipientFirstName,RecipientEmail,ExternalReference,LocationLatitude,LocationLongitude,DistributionChannel,UserLanguage,Q1.1,Q2.1,Q2.2,Q2.6,Q228,Q93,Q258,Q2.4,Q2.14,Q2.8,Q2.9,Q2.15_1,Q2.15_2,Q2.15_3,Q2.15_4,Q50,Q2.16,Q116_First Click,Q116_Last Click,Q116_Page Submit,Q116_Click Count,Q259,Q115_First Click,Q115_Last Click,Q115_Page Submit,Q115_Click Count,Q261,Q114_First Click,Q114_Last Click,Q114_Page Submit,Q114_Click Count,Q90,Q100_First Click,Q100_Last Click,Q100_Page Submit,Q100_Click Count,Q262,Q264_1,Q263,Q265_1,Q266,Q267,Q268,Q269,Q107_First Click,Q107_Last Click,Q107_Page Submit,Q107_Click Count,Q277,Q47,Q106_First Click,Q106_Last Click,Q106_Page Submit,Q106_Click Count,Q280,Q281,Q282,Q283,Q105_First Click,Q105_Last Click,Q105_Page Submit,Q105_Click Count,Q284,Q285,Q270,Q271,Q101_First Click,Q101_Last Click,Q101_Page Submit,Q101_Click Count,Q273_1,Q273_2,Q273_3,Q273_4,Q273_5,Q273_6,Q273_7,Q273_8,Q273_9,Q273_10,Q273_11,Q272,Q108,Q275_1,Q276_1,Q276,Q277,Q278_1,Q279,Q1,Q2,Q3,Q1_1,Q1_2,Q1_3,Q1_4,Q1_10,Q1_5,Q1_6,Q1_7,Q1_8,Q1_9,Q2_1,Q2_2,Q2_3,Q2_4,Q2_10,Q2_5,Q2_6,Q2_7,Q2_8,Q2_9,Q102_First Click,Q102_Last Click,Q102_Page Submit,Q102_Click Count,Q92,Q42_1,Q42_2,Q42_3,Q42_DO_1,Q42_DO_2,Q42_DO_3,Q83_1,Q83_2,Q83_3,Q83_4,Q83_5,Q83_6,Q83_DO_1,Q83_DO_2,Q83_DO_3,Q83_DO_4,Q83_DO_5,Q83_DO_6,Q47,Q48_1,Q48_6,Q48_2,Q48_3,Q48_4,Q48_5,Q48_5_TEXT,Q49_1,Q49_2,Q49_3,Q49_4,Q49_5,Q49_6,Q49_6_TEXT,Q272,Q23.1,Q78_1,Q80_1,Q23.4,Q24.1,Q24.2,Q94,Q97,Q95,Q98,Q96,Q99,Q273_1,Q273_2,Q273_3,Q274,Q104_First Click,Q104_Last Click,Q104_Page Submit,Q104_Click Count,Q30,Q48,Q64_First Click,Q64_Last Click,Q64_Page Submit,Q64_Click Count,Q63_1,Q63_2,Q63_3,Q63_4,Q63_5,Q63_6,Q63_8,Q63_9,Q63_10,Q63_11,Q63_12,Q63_14,Q63_15,Q63_16,Q63_17,Q63_DO_1,Q63_DO_2,Q63_DO_3,Q63_DO_4,Q63_DO_5,Q63_DO_6,Q63_DO_8,Q63_DO_9,Q63_DO_10,Q63_DO_11,Q63_DO_12,Q63_DO_14,Q63_DO_15,Q63_DO_16,Q63_DO_17,Q123_1,Q123_2,Q123_3,Q123_4,Q124_1,Q124_2,Q124_3,Q124_4,Q124_5,Q124_6,Q103_First Click,Q103_Last Click,Q103_Page Submit,Q103_Click Count,Q25.1,Q25.2,Q51,Finished,Q_TerminateFlag,Q_TotalDuration,click_reminder,Country,urban_category,region,D-1-1,D-1-2,D-1-3,D-1-4,D-1-1-1,D-1-1-2,D-1-1-3,D-1-1-4,D-1-2-1,D-1-2-2,D-1-2-3,D-1-2-4,F-1-1,F-1-2,F-1-3,F-1-4,F-1-5,F-1-1-1,F-1-1-2,F-1-1-3,F-1-1-4,F-1-1-5,F-1-2-1,F-1-2-2,F-1-2-3,F-1-2-4,F-1-2-5,click_details,Q_Language,qvc,qvq,qvq1,qvq2,qvs,m,FL_12_DO_Wealthtax(separate),FL_12_DO_Wealthtax(pooled),GlobalClimateScheme(incl.listexperiment)_DO_Q100,GlobalClimateScheme(incl.listexperiment)_DO_Q268,GlobalClimateScheme(incl.listexperiment)_DO_Q269,GlobalClimateScheme(incl.listexperiment)_DO_Q264,GlobalClimateScheme(incl.listexperiment)_DO_Q265,GlobalClimateScheme(incl.listexperiment)_DO_Q266,GlobalClimateScheme(incl.listexperiment)_DO_Q267,GlobalClimateScheme(incl.listexperiment)_DO_Q121,GlobalClimateScheme(incl.listexperiment)_DO_Q262,GlobalClimateScheme(incl.listexperiment)_DO_Q263,"Conjointanalysis(a,b)_DO_Q280","Conjointanalysis(a,b)_DO_Q281","Conjointanalysis(a,b)_DO_Q106","Conjointanalysis(a,b)_DO_Q107","Conjointanalysis(a,b)_DO_Q47","Conjointanalysis(a,b)_DO_Q277","Conjointanalysis(a,b)_DO_Q282","Conjointanalysis(a,b)_DO_Q283",Conjointanalysis(c)_DO_Q105,Conjointanalysis(c)_DO_Q284,Conjointanalysis(c)_DO_Q285,Petition_DO_Q270,Petition_DO_Q271,Perceptionsclimatescheme_DO_Q273,Perceptionsclimatescheme_DO_Q272,Perceptionsclimatescheme_DO_Q101,Donationlottery_DO_Q108,Donationlottery_DO_Q275,Donationlottery_DO_Q276,Wealthtax(separate)_DO_Q276,Wealthtax(separate)_DO_Q277,Wealthtax(pooled)_DO_Q278,Wealthtax(pooled)_DO_Q279,Foreignaid(randomized)_DO_Q3,Foreignaid(randomized)_DO_Q2
+Start Date,End Date,Response Type,IP Address,Progress,Duration (in seconds),Finished,Recorded Date,Response ID,Recipient Last Name,Recipient First Name,Recipient Email,External Data Reference,Location Latitude,Location Longitude,Distribution Channel,User Language,"Welcome to this survey!
+
+
+
+This survey is anonymous and is conducted for research purposes on a representative sample of 1000 British people.
+
+ 
+It takes around 20 min to complete.
+
+ 
+
+The survey contains lotteries and awards for those who get the correct answer to some understanding questions.
+
+If you are attentive and lucky, you can win up to £350 in Amazon vouchers. (See terms and conditions).
+ 
+
+Please answer every question carefully.
+
+ 
+
+Do you agree to participate in the survey?",What is your gender?,How old are you?,In which country do you live?,Do you live with your partner (if you have one)?,"How many people are in your household? 
+The household includes: you, the members of your family who live with you, and your dependents.",How many children below 14 live with you?,What is your Outcode (the left part of your postcode)?,"What is the monthly income of your household after taxes and transfers?
+
+This includes all income: salaries, pensions, allowances, property income, etc.",What is the highest level of education you have completed?,What is your employment status?,Are you a homeowner or a tenant? (Multiple answers are possible) - Tenant,Are you a homeowner or a tenant? (Multiple answers are possible) - Owner,Are you a homeowner or a tenant? (Multiple answers are possible) - Landlord renting out property,Are you a homeowner or a tenant? (Multiple answers are possible) - Hosted free of charge,"What is the estimated value of your household's assets (in £)?
+
+ 
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth £300,000 and you have £100,000 left to repay on your mortgage, your assets are £200,000.
+
+ 
+I estimate my household's assets net of debt to be:","What
+is the estimated value of your assets (in £)? 
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth £300,000 and you have £100,000 left to repay on your mortgage, your assets are £200,000.
+I estimate my assets net of debt to be:",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,Who would win or lose financially in the Global climate scheme?Three respondents with the expected answer will get £50 in Amazon vouchers.,Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,Who would win or lose financially in the National redistribution scheme?Three respondents with the expected answer will get £50 in Amazon vouchers.,Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical British person be financially affected?
+Three respondents with the expected answer will get £50 in Amazon vouchers.",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,Do you support the Global climate scheme?,"According to you, what percentage of British people answer Yes to the previous question?
+
+You can win up to £50 if you are close enough to the truth. - Percentage of Americans in favor of Global climate scheme",Do you support the National redistribution scheme?,"According to you, what percentage of British people answer Yes to the previous question?
+
+You can win up to £50 if you are close enough to the truth. - Percentage of Americans in favor of National redistribution","Beware, this question is quite unusual.
+
+Among the policies below, how many do you support?
+
+	Global climate scheme
+	Thermal insulation plan
+	Death penalty for major crimes","Beware, this question is quite unusual.
+
+Among the policies below, how many do you support?
+
+	National redistribution scheme
+	Global climate scheme
+	Thermal insulation plan
+	Death penalty for major crimes","Beware, this question is quite unusual.
+
+Among the policies below, how many do you support?
+
+	Thermal insulation plan
+	Death penalty for major crimes","Beware, this question is quite unusual.
+
+Among the policies below, how many do you support?
+
+	National redistribution scheme
+	Thermal insulation plan
+	Death penalty for major crimes",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   Thermal insulation plan
+   Thermal insulation plan
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Global climate scheme","Do you support Bundle A (combining the Thermal insulation plan, the National redistribution scheme, and the Global climate scheme)?",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   Thermal insulation plan
+   Global climate scheme
+  
+  
+   National redistribution scheme
+   National redistribution scheme","Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   
+   Thermal insulation plan
+  
+  
+   
+   Global climate scheme","Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Global climate scheme","Among the two following bundles of policies, which one would you prefer? 
+
+Note that for each bundle, all policies of the bundle would be implemented at the same time.
+ 
+
+ 
+  
+   Bundle A
+   Bundle B
+  
+  
+   National redistribution scheme
+   National redistribution scheme
+  
+  
+   Thermal insulation plan",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Imagine if the two favorite candidates in your constituency in the next general election campaigned with the following policies in their party's platforms.
+
+
+
+Which of these candidates would you vote for? 
+
+ 
+  
+   Candidate A
+   Candidate B
+  
+  
+   Increase taxes on capital income (rents and dividends)
+   Cut the burden of tax on business
+  
+  
+   Ban the sale of new combustion-engine cars by 2030
+   £100 billion for infrastructures like road and rail
+  
+  
+   £150 billion to upgrade schools, hospitals, care homes and council houses
+   Tougher sentencing for the worst offenders and 10,000 more prison places
+  
+  
+   National redistribution scheme
+   Strict enforcement of immigration and border legislation","Imagine if the two favorite candidates in your constituency in the next general election campaigned with the following policies in their party's platforms.
+
+
+
+Which of these candidates would you vote for? 
+
+ 
+  
+   Candidate A
+   Candidate B
+  
+  
+   Increase taxes on capital income (rents and dividends)
+   Cut the burden of tax on business
+  
+  
+   Ban the sale of new combustion-engine cars by 2030
+   £100 billion for infrastructures like road and rail
+  
+  
+   £150 billion to upgrade schools, hospitals, care homes and council houses
+   Tougher sentencing for the worst offenders and 10,000 more prison places
+  
+  
+   National redistribution scheme
+   Strict enforcement of immigration and border legislation
+  
+  
+   Global climate scheme","Would you be willing to sign a petition for the Global climate scheme?
+
+ 
+
+As soon as the survey is complete, we will send the results to the Prime Minister's office, informing him what share of British people are willing to endorse the Global climate scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)","Would you be willing to sign a petition for the National redistribution scheme?
+ 
+
+As soon as the survey is complete, we will send the results to the Prime Minister's office, informing him what share of British people are willing to endorse the National redistribution scheme scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"When determining your support or opposition to the Global climate scheme, which points are important to you? - It would succeed in limiting climate change.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It would hurt the U.S. economy.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It would penalize my household.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It would make people change their lifestyle.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It would reduce poverty in low-income countries.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It might be detrimental to some poor countries.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It could foster global cooperation.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It could fuel corruption in low-income countries.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It could be subject to fraud.","When determining your support or opposition to the Global climate scheme, which points are important to you? - It would be technically difficult to put in place.","When determining your support or opposition to the Global climate scheme, which points are important to you? - I don't have enough information on this scheme and its consequences.","When thinking about the Global climate scheme, what comes to your mind?
+
+Please list pros and cons of the Global climate scheme.","To show that you are attentive, please select ""A little"" in the following list:","By taking this survey, you are automatically entered into a lottery to win £100 in Amazon vouchers. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery.
+
+ 
+
+Should you be selected in the lottery, you can donate a part of this additional compensation to British people living in poverty through a charity. We would channel this donation to a charity that provides small amounts of cash to people in need in the UK.
+
+ 
+In case you are winner of the lottery, what share of the £100 would you donate to British people living in poverty? - Amount donated to American people in need (in $)","By taking this survey, you are automatically entered into a lottery to win £100 in Amazon vouchers. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery.
+
+
+ 
+
+Should you be selected in the lottery, you can donate a part of this additional compensation to African people living in poverty through a charity. We would channel this donation to a charity that provides small amounts of cash to people in need in Africa.
+
+ 
+In case you are winner of the lottery, what share of the £100 would you donate to African people living in poverty? - Amount donated to African people in need (in $)","Do you support or oppose a tax on millionaires of all countries to finance low-income countries?
+
+This would finance infrastructure and public services such as access to drinking water, healthcare, and education.",Do you support or oppose a tax on millionaires in the UK to increase the budget of the National Health Service and state-funded schools?,"Imagine a wealth tax applying on households with net worth above £5 million, enacted in all countries around the world.
+
+In the UK, the tax revenues collected would be £20 billion per year (that is, 0.7% of UK GDP), while it would be $1 billion in all low-income countries taken together (700 million people live in a low-income country, most of them in Africa).
+
+Each country would retain part of the revenues it collects, and the remaining part would be pooled at the global level to finance infrastructure and public services in low-income countries.
+
+ 
+
+What percentage should be pooled to finance low-income countries (instead of retained in the country's national budget)? - Percent of wealth tax that should go to low-income countries","Imagine a wealth tax applying on households with net worth above £5 million, enacted in all countries around the world.
+
+In the UK, the tax revenues collected would be £20 billion per year (that is, 0.7% of UK GDP), while it would be $1 billion in all low-income countries taken together (700 million people live in a low-income country, most of them in Africa).
+
+ 
+
+Which of the following options would you prefer?","To the best of your guess, what percentage of the British government's spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?
+
+
+
+For information, government spending totals 41% of UK GDP, it includes national and local government spending, and apart from foreign aid, it covers the following items: defense, social security (retirement pensions), health (the NHS), welfare benefits, education, roads, justice, and other programs.","If you could choose the government spending, what percentage would you allocate to foreign aid?","Actually, 1.7% of the UK government spending is allocated to foreign aid.
+
+
+
+If you could choose the government spending, what percentage would you allocate to foreign aid?","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on defense","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on retirement pensions","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on healthcare (Medicare and Medicaid)","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on welfare benefits (like EITC or food stamps)","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on education","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on other programs and federal agencies","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher taxes on the wealthiest","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher corporate income tax rate","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher personal income tax rates","Your previous answer shows that you would like to increase UK foreign aid.
+
+
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher public deficit","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on defense","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on retirement pensions","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on healthcare (Medicare and Medicaid)","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on welfare benefits (like EITC or food stamps)","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on education","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on other programs and federal agencies","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower taxes on the wealthiest","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower corporate income tax rate","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower personal income tax rates","Your previous answer shows that you would like to reduce UK foreign aid.
+
+
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower public deficit",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"In international climate negotiations, would you prefer British diplomats to defend British  interests or global justice?","The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - Payments from high-income countries to compensate low-income countries for climate damages","The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - High-income countries funding renewable energy in low-income countries","The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - High-income countries contributing $100 billion per year to help low-income countries adapt to climate change","The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - Display Order - Payments from high-income countries to compensate low-income countries for climate damages","The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - Display Order - High-income countries funding renewable energy in low-income countries","The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - Display Order - High-income countries contributing $100 billion per year to help low-income countries adapt to climate change",Do you support or oppose the following global policies? - Cancellation of low-income countries' public debt,"Do you support or oppose the following global policies? - Democratise international institutions (UN, IMF) by making a country's voting right proportional to its population",Do you support or oppose the following global policies? - Removing tariffs on imports from low-income countries,Do you support or oppose the following global policies? - A minimum wage in all countries at 50% of local median wage,Do you support or oppose the following global policies? - Fight tax evasion by creating a global financial register to record ownership of all assets,Do you support or oppose the following global policies? - A maximum wealth limit of $100 million for each human,Do you support or oppose the following global policies? - Display Order - Cancellation of low-income countries' public debt,"Do you support or oppose the following global policies? - Display Order - Democratise international institutions (UN, IMF) by making a country's voting right proportional to its population",Do you support or oppose the following global policies? - Display Order - Removing tariffs on imports from low-income countries,Do you support or oppose the following global policies? - Display Order - A minimum wage in all countries at 50% of local median wage,Do you support or oppose the following global policies? - Display Order - Fight tax evasion by creating a global financial register to record ownership of all assets,Do you support or oppose the following global policies? - Display Order - A maximum wealth limit of $100 million for each human,"Currently, 1.7% of UK government spending (that is, 0.7% of UK GDP) is spent on foreign aid to reduce poverty in low-income countries.
+
+
+
+Do you support the UK transferring more money to low-income countries?",What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That recipient countries comply with climate targets and human rights.,What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That recipient countries cooperate to fight illegal migrations.,What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That other high-income countries also increase their foreign aid.,What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That this is financed by increased taxes on millionaires.,What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - That we can be sure the aid reaches people in need and money is not diverted.,What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Selected Choice - Other:,What conditions should be required for the UK to increase its foreign aid? (Multiple answers possible) - Other: - Text,Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid perpetuates poverty as it makes people feel less responsible for themselves.,Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid is not effective as most of it is diverted.,Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid is a pressure tactic for high-income countries that prevents low-income countries from developing freely.,Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - The U.S. is not responsible for what happens in other countries.,Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Charity begins at home: there is already a lot to do to support the American people in need.,Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Selected Choice - Other:,Why do you oppose the UK increasing its foreign aid? (Multiple answers possible) - Other: - Text,How much did you give to charities in 2022?,To what extent are you interested in politics?,"Where would you rate yourself on a scale of 1 to 5, where 1 means you think the government should do only those things necessary to provide the most basic government functions, and 5 means you think the government should take active steps in every area it can to try and improve the lives of its citizens? - Desired involvement of government","On economic policy matters, where do you see yourself on a scale from 1 to 5, where 1 is Left (favoring equality and government interventions) and 5 is Right (favoring free competition and little government intervention)? - Left (1) to Right (5) on economic issues",Did you vote in the 2019 UK general election?,Which candidate did you vote for in the 2022 French presidential election election?,"Even if you did not vote in the 2022 French presidential election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.",Which candidate did you vote for in the 2021 German federal election election?,"Even if you did not vote in the 2021 German federal election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.",Which candidate did you vote for in the last Spanish general election of November 2019?,"Even if you did not vote in the last Spanish general election of November 2019, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.",Which candidate did you vote for in the 2019 UK general election election?,"Even if you did not vote in the 2019 UK general election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.",To what extent do you think the following issues are a problem? - Income inequality in the U.S.,To what extent do you think the following issues are a problem? - Climate change,To what extent do you think the following issues are a problem? - Global poverty,What group do you defend when you vote?,Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Imagine that a Left or Center-left coalition wins the next elections. Here are two possible platforms on which the coalition may campaign (the policies in each platform are randomly drawn from a pool of credible Left/Center-left policies).
+
+ Even if you do not support the Left, which of these platforms do you prefer?
+
+
+
+
+
+
+
+
+ 
+
+    Candidate A
+    
+    Candidate B
+
+
+[Field-F-1-1]
+[Field-F-1-1-1]
+[Field-F-1-2-1]
+
+[Field-F-1-2]
+[Field-F-1-1-2]
+[Field-F-1-2-2]
+
+[Field-F-1-3]
+[Field-F-1-1-3]
+[Field-F-1-2-3]
+
+[Field-F-1-4]
+[Field-F-1-1-4]
+[Field-F-1-2-4]
+
+[Field-F-1-5]
+[Field-F-1-1-5]
+[Field-F-1-2-5]","Imagine that a Left or Center-left coalition wins the next elections. Here are two possible platforms on which the coalition may campaign (the policies in each platform are randomly drawn from a pool of credible Left/Center-left policies).
+
+ Even if you do not support the Left, which of these platforms do you prefer?
+
+
+
+
+
+
+
+
+ 
+
+Candidate A
+
+Candidate B
+
+
+[Field-D-1-1]
+[Field-D-1-1-1]
+[Field-D-1-2-1]
+
+[Field-D-1-2]
+[Field-D-1-1-2]
+[Field-D-1-2-2]
+
+[Field-D-1-3]
+[Field-D-1-1-3]
+[Field-D-1-2-3]
+
+[Field-D-1-4]
+[Field-D-1-1-4]
+[Field-D-1-2-4]
+
+    Foreign policy
+    Global climate scheme
+    -",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - econ1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - econ2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - econ3","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - econ4","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - soc1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - soc2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - climate1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - climate2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - climate3","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - tax1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - tax2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - foreign1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - foreign2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - foreign3","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - foreign4","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - econ1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - econ2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - econ3","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - econ4","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - soc1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - soc2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - climate1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - climate2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - climate3","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - tax1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - tax2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - foreign1","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - foreign2","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - foreign3","Imagine you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
+
+ 
+
+How do you allocate the points among the following policies?
+
+ 
+
+You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. The sum of points must equal exactly 100. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice. - Display Order - foreign4","Similar to the Global Climate Scheme, the European Climate Scheme would impose a maximum amount of greenhouse gases we can emit across the EU in the buildings and transport sectors. It would make polluters pay for their emissions, which in turn would increase fossil fuel prices and discourage polluting activities. Several options are possible regarding the use of the scheme’s revenues:
+
+	Provide an equal cash transfer of €105 per year to each European.
+	Provide a country-specific cash transfer to each European, proportional to their country’s emissions: people in countries with higher emissions per person (like Germany) would receive more than people in countries with lower emissions (like Romania). For information, people in [Country] would receive [country gain]€/year.
+	Finance low-carbon investments: the thermal insulation of buildings, the switch to clean sources of heating, public transportation, and charging stations for electric vehicles.
+	Provide cash transfers to the most vulnerable half of Europeans and finance low-carbon investments.
+
+
+
+Do you support or oppose the European Climate Scheme in case the revenue is used to… ? - Provide an equal cash transfer to each European","Similar to the Global Climate Scheme, the European Climate Scheme would impose a maximum amount of greenhouse gases we can emit across the EU in the buildings and transport sectors. It would make polluters pay for their emissions, which in turn would increase fossil fuel prices and discourage polluting activities. Several options are possible regarding the use of the scheme’s revenues:
+
+	Provide an equal cash transfer of €105 per year to each European.
+	Provide a country-specific cash transfer to each European, proportional to their country’s emissions: people in countries with higher emissions per person (like Germany) would receive more than people in countries with lower emissions (like Romania). For information, people in [Country] would receive [country gain]€/year.
+	Finance low-carbon investments: the thermal insulation of buildings, the switch to clean sources of heating, public transportation, and charging stations for electric vehicles.
+	Provide cash transfers to the most vulnerable half of Europeans and finance low-carbon investments.
+
+
+
+Do you support or oppose the European Climate Scheme in case the revenue is used to… ? - Provide a country-specific cash transfer to each European","Similar to the Global Climate Scheme, the European Climate Scheme would impose a maximum amount of greenhouse gases we can emit across the EU in the buildings and transport sectors. It would make polluters pay for their emissions, which in turn would increase fossil fuel prices and discourage polluting activities. Several options are possible regarding the use of the scheme’s revenues:
+
+	Provide an equal cash transfer of €105 per year to each European.
+	Provide a country-specific cash transfer to each European, proportional to their country’s emissions: people in countries with higher emissions per person (like Germany) would receive more than people in countries with lower emissions (like Romania). For information, people in [Country] would receive [country gain]€/year.
+	Finance low-carbon investments: the thermal insulation of buildings, the switch to clean sources of heating, public transportation, and charging stations for electric vehicles.
+	Provide cash transfers to the most vulnerable half of Europeans and finance low-carbon investments.
+
+
+
+Do you support or oppose the European Climate Scheme in case the revenue is used to… ? - Finance low-carbon investments","Similar to the Global Climate Scheme, the European Climate Scheme would impose a maximum amount of greenhouse gases we can emit across the EU in the buildings and transport sectors. It would make polluters pay for their emissions, which in turn would increase fossil fuel prices and discourage polluting activities. Several options are possible regarding the use of the scheme’s revenues:
+
+	Provide an equal cash transfer of €105 per year to each European.
+	Provide a country-specific cash transfer to each European, proportional to their country’s emissions: people in countries with higher emissions per person (like Germany) would receive more than people in countries with lower emissions (like Romania). For information, people in [Country] would receive [country gain]€/year.
+	Finance low-carbon investments: the thermal insulation of buildings, the switch to clean sources of heating, public transportation, and charging stations for electric vehicles.
+	Provide cash transfers to the most vulnerable half of Europeans and finance low-carbon investments.
+
+
+
+Do you support or oppose the European Climate Scheme in case the revenue is used to… ? - Provide cash transfers for the most vulnerable Europeans and low-carbon investments","Why do you not support a European Climate Scheme? (Multiple answers possible) - I am opposed to climate policy being decided at the EU level, it should be decided at the national level",Why do you not support a European Climate Scheme? (Multiple answers possible) - I would prefer if the revenues were used in a different way (beyond the four suggestions above)than previously suggested,Why do you not support a European Climate Scheme? (Multiple answers possible) - I  would prefer if decreasing carbon emissions were regulated by other climate policies,"Why do you not support a European Climate Scheme? (Multiple answers possible) - I am generally opposed to additional, or more ambitious, climate policies",Why do you not support a European Climate Scheme? (Multiple answers possible) - I do not fully understand how the European Climate Scheme is supposed to work,Why do you not support a European Climate Scheme? (Multiple answers possible) - I don't know,Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,Do you feel that this survey was politically biased?,"The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below.","Lastly, are you interested to be interviewed by a researcher (through videoconferencing) for 30 min? 
+This is totally optional and will not be rewarded.",Finished,Q_TerminateFlag,Q_TotalDuration,click_reminder,Country,urban_category,region,D-1-1,D-1-2,D-1-3,D-1-4,D-1-1-1,D-1-1-2,D-1-1-3,D-1-1-4,D-1-2-1,D-1-2-2,D-1-2-3,D-1-2-4,F-1-1,F-1-2,F-1-3,F-1-4,F-1-5,F-1-1-1,F-1-1-2,F-1-1-3,F-1-1-4,F-1-1-5,F-1-2-1,F-1-2-2,F-1-2-3,F-1-2-4,F-1-2-5,click_details,Q_Language,qvc,qvq,qvq1,qvq2,qvs,m,FL_12 - Block Randomizer - Display Order - Wealthtax(separate),FL_12 - Block Randomizer - Display Order - Wealthtax(pooled),Global Climate Scheme (incl. list experiment) - Display Order - Q100,Global Climate Scheme (incl. list experiment) - Display Order - Q268,Global Climate Scheme (incl. list experiment) - Display Order - Q269,Global Climate Scheme (incl. list experiment) - Display Order - Q264,Global Climate Scheme (incl. list experiment) - Display Order - Q265,Global Climate Scheme (incl. list experiment) - Display Order - Q266,Global Climate Scheme (incl. list experiment) - Display Order - Q267,Global Climate Scheme (incl. list experiment) - Display Order - Q121,Global Climate Scheme (incl. list experiment) - Display Order - Q262,Global Climate Scheme (incl. list experiment) - Display Order - Q263,"Conjoint analysis (a, b) - Display Order - Q280","Conjoint analysis (a, b) - Display Order - Q281","Conjoint analysis (a, b) - Display Order - Q106","Conjoint analysis (a, b) - Display Order - Q107","Conjoint analysis (a, b) - Display Order - Q47","Conjoint analysis (a, b) - Display Order - Q277","Conjoint analysis (a, b) - Display Order - Q282","Conjoint analysis (a, b) - Display Order - Q283",Conjoint analysis (c) - Display Order - Q105,Conjoint analysis (c) - Display Order - Q284,Conjoint analysis (c) - Display Order - Q285,Petition - Display Order - Q270,Petition - Display Order - Q271,Perceptions climate scheme - Display Order - Q273,Perceptions climate scheme - Display Order - Q272,Perceptions climate scheme - Display Order - Q101,Donation lottery - Display Order - Q108,Donation lottery - Display Order - Q275,Donation lottery - Display Order - Q276,Wealth tax (separate) - Display Order - Q276,Wealth tax (separate) - Display Order - Q277,Wealth tax (pooled) - Display Order - Q278,Wealth tax (pooled) - Display Order - Q279,Foreign aid (randomized) - Display Order - Q3,Foreign aid (randomized) - Display Order - Q2
+"{""ImportId"":""startDate"",""timeZone"":""Europe/Berlin""}","{""ImportId"":""endDate"",""timeZone"":""Europe/Berlin""}","{""ImportId"":""status""}","{""ImportId"":""ipAddress""}","{""ImportId"":""progress""}","{""ImportId"":""duration""}","{""ImportId"":""finished""}","{""ImportId"":""recordedDate"",""timeZone"":""Europe/Berlin""}","{""ImportId"":""_recordId""}","{""ImportId"":""recipientLastName""}","{""ImportId"":""recipientFirstName""}","{""ImportId"":""recipientEmail""}","{""ImportId"":""externalDataReference""}","{""ImportId"":""locationLatitude""}","{""ImportId"":""locationLongitude""}","{""ImportId"":""distributionChannel""}","{""ImportId"":""userLanguage""}","{""ImportId"":""QID361""}","{""ImportId"":""QID1""}","{""ImportId"":""QID2""}","{""ImportId"":""QID130""}","{""ImportId"":""QID228""}","{""ImportId"":""QID332""}","{""ImportId"":""QID257""}","{""ImportId"":""QID8_TEXT""}","{""ImportId"":""QID4""}","{""ImportId"":""QID3""}","{""ImportId"":""QID9""}","{""ImportId"":""QID5"",""choiceId"":""1""}","{""ImportId"":""QID5"",""choiceId"":""2""}","{""ImportId"":""QID5"",""choiceId"":""3""}","{""ImportId"":""QID5"",""choiceId"":""4""}","{""ImportId"":""QID289""}","{""ImportId"":""QID6""}","{""ImportId"":""QID351_FIRST_CLICK""}","{""ImportId"":""QID351_LAST_CLICK""}","{""ImportId"":""QID351_PAGE_SUBMIT""}","{""ImportId"":""QID351_CLICK_COUNT""}","{""ImportId"":""QID353""}","{""ImportId"":""QID354_FIRST_CLICK""}","{""ImportId"":""QID354_LAST_CLICK""}","{""ImportId"":""QID354_PAGE_SUBMIT""}","{""ImportId"":""QID354_CLICK_COUNT""}","{""ImportId"":""QID356""}","{""ImportId"":""QID357_FIRST_CLICK""}","{""ImportId"":""QID357_LAST_CLICK""}","{""ImportId"":""QID357_PAGE_SUBMIT""}","{""ImportId"":""QID357_CLICK_COUNT""}","{""ImportId"":""QID359""}","{""ImportId"":""QID339_FIRST_CLICK""}","{""ImportId"":""QID339_LAST_CLICK""}","{""ImportId"":""QID339_PAGE_SUBMIT""}","{""ImportId"":""QID339_CLICK_COUNT""}","{""ImportId"":""QID262""}","{""ImportId"":""QID264_1""}","{""ImportId"":""QID263""}","{""ImportId"":""QID265_1""}","{""ImportId"":""QID266""}","{""ImportId"":""QID267""}","{""ImportId"":""QID268""}","{""ImportId"":""QID269""}","{""ImportId"":""QID346_FIRST_CLICK""}","{""ImportId"":""QID346_LAST_CLICK""}","{""ImportId"":""QID346_PAGE_SUBMIT""}","{""ImportId"":""QID346_CLICK_COUNT""}","{""ImportId"":""QID277""}","{""ImportId"":""QID286""}","{""ImportId"":""QID345_FIRST_CLICK""}","{""ImportId"":""QID345_LAST_CLICK""}","{""ImportId"":""QID345_PAGE_SUBMIT""}","{""ImportId"":""QID345_CLICK_COUNT""}","{""ImportId"":""QID280""}","{""ImportId"":""QID281""}","{""ImportId"":""QID282""}","{""ImportId"":""QID283""}","{""ImportId"":""QID344_FIRST_CLICK""}","{""ImportId"":""QID344_LAST_CLICK""}","{""ImportId"":""QID344_PAGE_SUBMIT""}","{""ImportId"":""QID344_CLICK_COUNT""}","{""ImportId"":""QID284""}","{""ImportId"":""QID285""}","{""ImportId"":""QID270""}","{""ImportId"":""QID271""}","{""ImportId"":""QID340_FIRST_CLICK""}","{""ImportId"":""QID340_LAST_CLICK""}","{""ImportId"":""QID340_PAGE_SUBMIT""}","{""ImportId"":""QID340_CLICK_COUNT""}","{""ImportId"":""QID310_1""}","{""ImportId"":""QID310_2""}","{""ImportId"":""QID310_3""}","{""ImportId"":""QID310_4""}","{""ImportId"":""QID310_5""}","{""ImportId"":""QID310_9""}","{""ImportId"":""QID310_6""}","{""ImportId"":""QID310_7""}","{""ImportId"":""QID310_8""}","{""ImportId"":""QID310_11""}","{""ImportId"":""QID310_10""}","{""ImportId"":""QID311_TEXT""}","{""ImportId"":""QID347""}","{""ImportId"":""QID275_1""}","{""ImportId"":""QID276_1""}","{""ImportId"":""QID291""}","{""ImportId"":""QID292""}","{""ImportId"":""QID295_1""}","{""ImportId"":""QID296""}","{""ImportId"":""QID1211053631""}","{""ImportId"":""QID1211053632""}","{""ImportId"":""QID1211053633""}","{""ImportId"":""QID1211053648"",""choiceId"":""1""}","{""ImportId"":""QID1211053648"",""choiceId"":""2""}","{""ImportId"":""QID1211053648"",""choiceId"":""3""}","{""ImportId"":""QID1211053648"",""choiceId"":""4""}","{""ImportId"":""QID1211053648"",""choiceId"":""10""}","{""ImportId"":""QID1211053648"",""choiceId"":""5""}","{""ImportId"":""QID1211053648"",""choiceId"":""6""}","{""ImportId"":""QID1211053648"",""choiceId"":""7""}","{""ImportId"":""QID1211053648"",""choiceId"":""8""}","{""ImportId"":""QID1211053648"",""choiceId"":""9""}","{""ImportId"":""QID1211053649"",""choiceId"":""1""}","{""ImportId"":""QID1211053649"",""choiceId"":""2""}","{""ImportId"":""QID1211053649"",""choiceId"":""3""}","{""ImportId"":""QID1211053649"",""choiceId"":""4""}","{""ImportId"":""QID1211053649"",""choiceId"":""10""}","{""ImportId"":""QID1211053649"",""choiceId"":""5""}","{""ImportId"":""QID1211053649"",""choiceId"":""6""}","{""ImportId"":""QID1211053649"",""choiceId"":""7""}","{""ImportId"":""QID1211053649"",""choiceId"":""8""}","{""ImportId"":""QID1211053649"",""choiceId"":""9""}","{""ImportId"":""QID341_FIRST_CLICK""}","{""ImportId"":""QID341_LAST_CLICK""}","{""ImportId"":""QID341_PAGE_SUBMIT""}","{""ImportId"":""QID341_CLICK_COUNT""}","{""ImportId"":""QID331""}","{""ImportId"":""QID302_1""}","{""ImportId"":""QID302_2""}","{""ImportId"":""QID302_3""}","{""ImportId"":""QID302_DO"",""choiceId"":""1""}","{""ImportId"":""QID302_DO"",""choiceId"":""2""}","{""ImportId"":""QID302_DO"",""choiceId"":""3""}","{""ImportId"":""QID320_5""}","{""ImportId"":""QID320_6""}","{""ImportId"":""QID320_7""}","{""ImportId"":""QID320_8""}","{""ImportId"":""QID320_9""}","{""ImportId"":""QID320_10""}","{""ImportId"":""QID320_DO"",""choiceId"":""1""}","{""ImportId"":""QID320_DO"",""choiceId"":""2""}","{""ImportId"":""QID320_DO"",""choiceId"":""3""}","{""ImportId"":""QID320_DO"",""choiceId"":""4""}","{""ImportId"":""QID320_DO"",""choiceId"":""5""}","{""ImportId"":""QID320_DO"",""choiceId"":""6""}","{""ImportId"":""QID303""}","{""ImportId"":""QID304"",""choiceId"":""1""}","{""ImportId"":""QID304"",""choiceId"":""6""}","{""ImportId"":""QID304"",""choiceId"":""2""}","{""ImportId"":""QID304"",""choiceId"":""3""}","{""ImportId"":""QID304"",""choiceId"":""4""}","{""ImportId"":""QID304"",""choiceId"":""5""}","{""ImportId"":""QID304_5_TEXT""}","{""ImportId"":""QID305"",""choiceId"":""1""}","{""ImportId"":""QID305"",""choiceId"":""2""}","{""ImportId"":""QID305"",""choiceId"":""3""}","{""ImportId"":""QID305"",""choiceId"":""4""}","{""ImportId"":""QID305"",""choiceId"":""5""}","{""ImportId"":""QID305"",""choiceId"":""6""}","{""ImportId"":""QID305_6_TEXT""}","{""ImportId"":""QID272""}","{""ImportId"":""QID52""}","{""ImportId"":""QID317_1""}","{""ImportId"":""QID318_1""}","{""ImportId"":""QID55""}","{""ImportId"":""QID56""}","{""ImportId"":""QID151""}","{""ImportId"":""QID333""}","{""ImportId"":""QID336""}","{""ImportId"":""QID334""}","{""ImportId"":""QID337""}","{""ImportId"":""QID335""}","{""ImportId"":""QID338""}","{""ImportId"":""QID273_1""}","{""ImportId"":""QID273_2""}","{""ImportId"":""QID273_3""}","{""ImportId"":""QID274""}","{""ImportId"":""QID343_FIRST_CLICK""}","{""ImportId"":""QID343_LAST_CLICK""}","{""ImportId"":""QID343_PAGE_SUBMIT""}","{""ImportId"":""QID343_CLICK_COUNT""}","{""ImportId"":""QID279""}","{""ImportId"":""QID287""}","{""ImportId"":""QID348_FIRST_CLICK""}","{""ImportId"":""QID348_LAST_CLICK""}","{""ImportId"":""QID348_PAGE_SUBMIT""}","{""ImportId"":""QID348_CLICK_COUNT""}","{""ImportId"":""QID349_1""}","{""ImportId"":""QID349_2""}","{""ImportId"":""QID349_3""}","{""ImportId"":""QID349_4""}","{""ImportId"":""QID349_5""}","{""ImportId"":""QID349_6""}","{""ImportId"":""QID349_8""}","{""ImportId"":""QID349_9""}","{""ImportId"":""QID349_10""}","{""ImportId"":""QID349_11""}","{""ImportId"":""QID349_12""}","{""ImportId"":""QID349_14""}","{""ImportId"":""QID349_15""}","{""ImportId"":""QID349_16""}","{""ImportId"":""QID349_17""}","{""ImportId"":""QID349_DO"",""choiceId"":""1""}","{""ImportId"":""QID349_DO"",""choiceId"":""2""}","{""ImportId"":""QID349_DO"",""choiceId"":""3""}","{""ImportId"":""QID349_DO"",""choiceId"":""4""}","{""ImportId"":""QID349_DO"",""choiceId"":""5""}","{""ImportId"":""QID349_DO"",""choiceId"":""6""}","{""ImportId"":""QID349_DO"",""choiceId"":""8""}","{""ImportId"":""QID349_DO"",""choiceId"":""9""}","{""ImportId"":""QID349_DO"",""choiceId"":""10""}","{""ImportId"":""QID349_DO"",""choiceId"":""11""}","{""ImportId"":""QID349_DO"",""choiceId"":""12""}","{""ImportId"":""QID349_DO"",""choiceId"":""14""}","{""ImportId"":""QID349_DO"",""choiceId"":""15""}","{""ImportId"":""QID349_DO"",""choiceId"":""16""}","{""ImportId"":""QID349_DO"",""choiceId"":""17""}","{""ImportId"":""QID362_1""}","{""ImportId"":""QID362_2""}","{""ImportId"":""QID362_3""}","{""ImportId"":""QID362_4""}","{""ImportId"":""QID363"",""choiceId"":""1""}","{""ImportId"":""QID363"",""choiceId"":""2""}","{""ImportId"":""QID363"",""choiceId"":""3""}","{""ImportId"":""QID363"",""choiceId"":""4""}","{""ImportId"":""QID363"",""choiceId"":""5""}","{""ImportId"":""QID363"",""choiceId"":""6""}","{""ImportId"":""QID342_FIRST_CLICK""}","{""ImportId"":""QID342_LAST_CLICK""}","{""ImportId"":""QID342_PAGE_SUBMIT""}","{""ImportId"":""QID342_CLICK_COUNT""}","{""ImportId"":""QID57""}","{""ImportId"":""QID58_TEXT""}","{""ImportId"":""QID290""}","{""ImportId"":""Finished""}","{""ImportId"":""Q_TerminateFlag""}","{""ImportId"":""Q_TotalDuration""}","{""ImportId"":""click_reminder""}","{""ImportId"":""Country""}","{""ImportId"":""urban_category""}","{""ImportId"":""region""}","{""ImportId"":""D-1-1""}","{""ImportId"":""D-1-2""}","{""ImportId"":""D-1-3""}","{""ImportId"":""D-1-4""}","{""ImportId"":""D-1-1-1""}","{""ImportId"":""D-1-1-2""}","{""ImportId"":""D-1-1-3""}","{""ImportId"":""D-1-1-4""}","{""ImportId"":""D-1-2-1""}","{""ImportId"":""D-1-2-2""}","{""ImportId"":""D-1-2-3""}","{""ImportId"":""D-1-2-4""}","{""ImportId"":""F-1-1""}","{""ImportId"":""F-1-2""}","{""ImportId"":""F-1-3""}","{""ImportId"":""F-1-4""}","{""ImportId"":""F-1-5""}","{""ImportId"":""F-1-1-1""}","{""ImportId"":""F-1-1-2""}","{""ImportId"":""F-1-1-3""}","{""ImportId"":""F-1-1-4""}","{""ImportId"":""F-1-1-5""}","{""ImportId"":""F-1-2-1""}","{""ImportId"":""F-1-2-2""}","{""ImportId"":""F-1-2-3""}","{""ImportId"":""F-1-2-4""}","{""ImportId"":""F-1-2-5""}","{""ImportId"":""click_details""}","{""ImportId"":""Q_Language""}","{""ImportId"":""qvc""}","{""ImportId"":""qvq""}","{""ImportId"":""qvq1""}","{""ImportId"":""qvq2""}","{""ImportId"":""qvs""}","{""ImportId"":""m""}","{""ImportId"":""FL_12_DO"",""choiceId"":""Wealthtax(separate)""}","{""ImportId"":""FL_12_DO"",""choiceId"":""Wealthtax(pooled)""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q100""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q268""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q269""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q264""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q265""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q266""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q267""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q121""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q262""}","{""ImportId"":""BL_9M6lIgBd6T9WlBc_DO"",""choiceId"":""Q263""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q280""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q281""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q106""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q107""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q47""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q277""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q282""}","{""ImportId"":""BL_3EmHjltM7aVpZky_DO"",""choiceId"":""Q283""}","{""ImportId"":""BL_8faNyywlojTnlFs_DO"",""choiceId"":""Q105""}","{""ImportId"":""BL_8faNyywlojTnlFs_DO"",""choiceId"":""Q284""}","{""ImportId"":""BL_8faNyywlojTnlFs_DO"",""choiceId"":""Q285""}","{""ImportId"":""BL_bdcGvXyd9QQO3hs_DO"",""choiceId"":""Q270""}","{""ImportId"":""BL_bdcGvXyd9QQO3hs_DO"",""choiceId"":""Q271""}","{""ImportId"":""BL_77HpNR4wZ2MIzt4_DO"",""choiceId"":""Q273""}","{""ImportId"":""BL_77HpNR4wZ2MIzt4_DO"",""choiceId"":""Q272""}","{""ImportId"":""BL_77HpNR4wZ2MIzt4_DO"",""choiceId"":""Q101""}","{""ImportId"":""BL_a9tLjZ3CfhLkCns_DO"",""choiceId"":""Q108""}","{""ImportId"":""BL_a9tLjZ3CfhLkCns_DO"",""choiceId"":""Q275""}","{""ImportId"":""BL_a9tLjZ3CfhLkCns_DO"",""choiceId"":""Q276""}","{""ImportId"":""BL_4YgIeirXTjEdgkC_DO"",""choiceId"":""Q276""}","{""ImportId"":""BL_4YgIeirXTjEdgkC_DO"",""choiceId"":""Q277""}","{""ImportId"":""BL_8xdAprjBfyDU4iq_DO"",""choiceId"":""Q278""}","{""ImportId"":""BL_8xdAprjBfyDU4iq_DO"",""choiceId"":""Q279""}","{""ImportId"":""BL_eRKiRe7vawqEjiK_DO"",""choiceId"":""Q3""}","{""ImportId"":""BL_eRKiRe7vawqEjiK_DO"",""choiceId"":""Q2""}"
+2023-02-10 15:03:50,2023-02-10 15:05:46,IP Address,91.15.229.64,100,115,True,2023-02-10 15:05:48,R_2E48aeawU5vmXPs,,,,,49.5985,10.9718,anonymous,DE,Yes,Man,60 to 64,Germany,No,1,0,91052,between £601 and £700,"Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD)",Full-time employed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,115,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,DE,97189_452d8f97,97189_23e146f0,97189,97189,97189_32538aa3,232520993421467,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2023-02-10 15:31:24,2023-02-10 15:32:27,IP Address,81.65.88.183,100,63,True,2023-02-10 15:32:27,R_1r1Wvv2h9tOuNcD,,,,,48.9484,2.2513,anonymous,FR,Yes,Woman,35 to 39,France,Yes,5 or more,2,44220,less than £100,Some high school,Unemployed (searching for a job),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,63,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,FR,97189_795e7b23,97189_a1aaeafd,97189,97189,97189_07a05d59,235619331869818,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2023-02-10 15:36:16,2023-02-10 15:37:28,IP Address,188.26.196.67,100,71,True,2023-02-10 15:37:28,R_2uEBoLLtXvNUyD5,,,,,40.4163,-3.6934,anonymous,ES-ES,Yes,Woman,25 to 29,Spain,Yes,2,0,28017,between £701 and £750,Some high school,Full-time employed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,71,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,ES-ES,97189_7787f61d,97189_109fdb7f,97189,97189,97189_ada13611,235619492261894,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2023-02-10 15:37:27,2023-02-10 15:38:56,IP Address,188.26.218.89,100,89,True,2023-02-10 15:38:57,R_2qn0smNlxI0g1MO,,,,,40.3192,-3.8661,anonymous,ES-ES,Yes,Man,35 to 39,Spain,Yes,5 or more,2,28935,between £251 and £300,Some high school,Full-time employed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,89,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,ES-ES,97189_7787f61d,97189_109fdb7f,97189,97189,97189_ada13611,235619492268087,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2023-02-10 15:41:16,2023-02-10 15:42:49,IP Address,84.141.210.151,100,93,True,2023-02-10 15:42:51,R_1pEfJypEMs5pQ4W,,,,,51.9456,7.5505,anonymous,DE,Yes,Man,25 to 29,Germany,Yes,2,0,48161,between £801 and £900,"2-year college degree or associates degree (for example: AA, AS)",Full-time employed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,93,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,DE,97189_452d8f97,97189_23e146f0,97189,97189,97189_32538aa3,232520993470689,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2023-02-10 15:34:27,2023-02-10 15:44:29,IP Address,84.168.159.252,100,601,True,2023-02-10 15:44:30,R_e2Nvp6lZSH5KpeV,,,,,50.9558,7.0093,anonymous,DE,Yes,Man,30 to 34,Germany,No,1,0,51067,less than £100,Primary school or less,Inactive (not searching for a job),Tenant,,,,,Less than $0 (I have a net debt),17.681,17.681,24.318,1,Typical Americans would win and the 700 million poorest humans would win.,5.509,5.509,6.886,1,Typical Americans would win and the richest Americans would win.,7.607,7.607,8.981,1,A typical American would gain financially.,5.132,41.744,42.941,5,No,40,No,4,,,2,,7.639,17.986,20.026,3,Bundle A,Yes,7.638,17.986,20.026,3,,,,Bundle A,10.309,10.309,12.884,1,Candidate A,,,Yes,3.565,3.565,28.542,1,,,,,,,,,,,,es kann nicht genug dafür unternommen werden,A little,20,,Strongly support,Strongly support,,,1.1% to 1.7%,More than 25%,,,,,,,,,,,,,,,,,,,,,,13.974,78.417,80.153,11,"Global justice, even if it goes against U.S. interests",Strongly support,Strongly support,Strongly support,1,2,3,Strongly oppose,Strongly support,Strongly support,Strongly support,Strongly support,Strongly support,2,3,6,4,1,5,"Yes, U.S. foreign aid should be increased.",,,,,,,,,,,,,,,I did not make donations to charities last year.,Moderately,3,5,No,,,,Ich möchte das nicht beantworten,,,,,One of the most pressing issue of our time,One of the most pressing issue of our time,One of the most pressing issue of our time,Humans,9.248,9.248,10.546,1,Candidate A,Candidate A,6.649,62.238,63.979,12,0,,0,30,,,40,,,,30,,,0,,5,,1,2,,,3,,,,4,,,6,,Strongly support,Strongly support,Strongly support,Strongly support,,,,,,,3.895,11.411,14.21,2,"No, I do not feel it was biased",,No,1,,601,,,"1",,Klimaschutz,Wirtschaftspolitik,Gesellschaft,Steuerpolitik,Plan zur Wärmedämmung,Erhöhung des Regelsatzes des Bürgergelds auf bis zu 600€ pro Monat,Volksentscheid auf Bundesebene,Die Vermögenssteuer wieder in Kraft setzen UND Nationales Umverteilungsprogramm,Plan zur Wärmedämmung,Erhöhung des Regelsatzes des Bürgergelds auf bis zu 600€ pro Monat,-,Nationales Umverteilungsprogramm,Wirtschaftspolitik,Steuerpolitik,Gesellschaft,Außenpolitik,Klimaschutz,Erhöhung des Regelsatzes des Bürgergelds auf bis zu 600€ pro Monat,Die Vermögenssteuer wieder in Kraft setzen,Cannabis-Legalisierung,Globale demokratische Versammlung zum Klimawandel,Verpflichtende Solaranlagen auf allen geeigneten Dächern,Staatsschuldenquote auf unter 60% reduzieren,Nationales Umverteilungsprogramm,Cannabis-Legalisierung,-,Verpflichtende Solaranlagen auf allen geeigneten Dächern,0,DE,97189_452d8f97,97189_23e146f0,97189,97189,97189_32538aa3,235619419119860,1,,1,7,,4,6,,,2,3,5,,,1,5,3,2,,4,1,2,,,1,,2,1,1,2,,1,2,,,,1
+2023-02-10 15:37:10,2023-02-10 15:45:02,IP Address,2.216.213.82,100,471,True,2023-02-10 15:45:03,R_3rSN6et7qtxOK66,,,,,52.5062,-1.9425,anonymous,EN-GB,Yes,Woman,55 to 59,United Kingdom,Yes,3,0,B6,between £101 and £200,Eigth grade,Part-time employed,,Owner,,,Less than $0 (I have a net debt),,1.813,67.78,69.347,11,Typical Americans would win and the 700 million poorest humans would lose.,2.286,37.967,39.284,10,Typical Americans would win and the richest Americans would lose.,1.267,25.335,27.563,4,A typical American would neither gain nor lose.,2.446,73.334,74.328,21,Yes,97,Yes,82,,3,,,2.048,23.335,24.818,10,Bundle A,Yes,2.048,23.335,24.817,10,,Bundle A,,,1.03,11.335,11.699,5,Candidate B,,,Yes,2.609,41.078,42.455,34,Quite important,Not so important,Quite important,Quite important,Quite important,Quite important,Quite important,Quite important,Very important,Very important,Quite important,,A lot,,55,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,Screened,471,,,"1",,Climate policy,Societal issues,Tax system,Economic issues,Ban of most polluting vehicles in city centers (low-emission zones),Strict enforcement of immigration and border legislation,Wealth tax AND National redistribution scheme,"£150 billion to upgrade schools, hospitals, care homes and council houses",Ban the sale of new combustion-engine cars by 2030,Legalization of cannabis,National redistribution scheme,"Re-establish neighbourhood policing and recruit 2,000 more frontline officers",Foreign policy,Tax system,Societal issues,Economic issues,Climate policy,Global tax on millionaires,-,-,-,Ban of most polluting vehicles in city centers (low-emission zones),Global climate scheme,National redistribution scheme,Strict enforcement of immigration and border legislation,"£150 billion to upgrade schools, hospitals, care homes and council houses",Thermal insulation plan,0,EN-GB,97189_95512806,97189_1fb19d3b,97189,97189,97189_4201aa2d,235619621759079,,,1,,,4,6,,7,2,3,5,,4,1,5,3,2,,,1,2,,,1,2,,1,1,,2,,,,,,
+2023-02-10 15:46:20,2023-02-10 15:47:09,IP Address,81.223.138.114,100,49,True,2023-02-10 15:47:10,R_1FJ1obnLdxG78c2,,,,,47.0833,15.5667,anonymous,DE,Yes,Man,35 to 39,Germany,Yes,2,0,81372,between £801 and £900,"Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD)",Full-time employed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,49,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,DE,97189_452d8f97,97189_23e146f0,97189,97189,97189_32538aa3,232520993605772,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2023-02-10 15:40:07,2023-02-10 15:48:56,IP Address,37.201.241.58,100,529,True,2023-02-10 15:48:57,R_1Zy9W7sxqngkGqd,,,,,49.9,8.6797,anonymous,DE,Yes,Man,55 to 59,Germany,Yes,3,0,64293,between £101 and £200,Primary school or less,Full-time employed,Tenant,,,,Close to $0,,8.308,38.234,38.704,4,Typical Americans would win and the 700 million poorest humans would lose.,8.559,18.261,18.958,4,Typical Americans would lose and the richest Americans would lose.,0.554,2.393,2.996,2,A typical American would lose out financially.,3.557,42.748,44.292,16,No,50,No,30,0,,,,1.321,32.296,33.388,26,Bundle A,Yes,1.321,32.296,33.388,26,Bundle A,,,,1.141,5.057,5.561,7,None of them,,,No,0,0,5.084,0,,,,,,,,,,,,,A little,,100,,,,"The whole wealth tax financing national budgets in each country. For example, in the U.S., it could finance affordable housing and universal childcare/pre-K.",4.1% to 6%,6.1% to 9%,,,,,,,,,,,,,,,,,,,,,,3.36,34.715,34.874,21,"U.S.  interests, even if it goes against global justice",Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,3,2,1,Indifferent or don't know,Indifferent or don't know,Strongly support,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,1,2,4,3,6,5,"Yes, but only if some conditions are met.",That recipient countries comply with climate targets and human rights.,,,,,,,,,,,,,,I did not make donations to charities last year.,Moderately,3,1,Prefer not to say,,,,CDU/CSU,,,,,An issue but there are other priorities,Not an important issue for me,An issue but we already do what we can,Humans,0.966,4.074,4.378,7,Candidate A,Candidate A,1.613,12.986,13.607,16,,,80,0,0,,,,20,,0,,0,,,,,1,6,3,,,,2,,5,,4,,,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,,,,"I am generally opposed to additional, or more ambitious, climate policies",,,6.458,15.749,17.575,3,"No, I do not feel it was biased",,No,1,,529,,,"1",,Klimaschutz,Gesellschaft,Steuerpolitik,Wirtschaftspolitik,Plan zur Wärmedämmung,Cannabis-Legalisierung,Die Vermögenssteuer wieder in Kraft setzen UND Nationales Umverteilungsprogramm,Erhöhung des Regelsatzes des Bürgergelds auf bis zu 600€ pro Monat,-,Volksentscheid auf Bundesebene,Die Vermögenssteuer wieder in Kraft setzen UND Nationales Umverteilungsprogramm,-,Gesellschaft,Klimaschutz,Steuerpolitik,Wirtschaftspolitik,Außenpolitik,Volksentscheid auf Bundesebene,Plan zur Wärmedämmung,Nationales Umverteilungsprogramm,Investitionen für Gigabit-Netzwerke bereitstellen,-,Volksentscheid auf Bundesebene,-,Nationales Umverteilungsprogramm,Erhöhung des Regelsatzes des Bürgergelds auf bis zu 600€ pro Monat,Globales Klimaprogramm,0,DE,97189_452d8f97,97189_23e146f0,97189,97189,97189_32538aa3,235619419139177,,1,1,,,4,6,7,,2,3,5,4,,1,5,3,2,,,1,2,,,1,,2,1,1,,2,,,,1,,1
+2023-02-10 15:44:09,2023-02-10 15:48:59,IP Address,90.215.242.5,100,289,True,2023-02-10 15:48:59,R_V4nkc3rDnGziLK1,,,,,51.6235,-4.0344,anonymous,EN-GB,Yes,Woman,35 to 39,United Kingdom,Yes,5 or more,2,Cf38,less than £100,Eigth grade,Inactive (not searching for a job),Tenant,,,,Less than $0 (I have a net debt),,2.329,20.035,30.036,8,Typical Americans would win and the 700 million poorest humans would lose.,1.642,11.074,13.462,5,Typical Americans would lose and the richest Americans would win.,0.996,8.932,14.201,2,A typical American would neither gain nor lose.,1.208,27.096,28.035,20,Yes,40,Yes,50,,2,,,6.07,17.367,18.461,8,Bundle A,Yes,6.069,17.367,18.461,8,,,Bundle A,,2.309,14.626,15.774,8,Candidate A,,,Yes,3.66,58.504,59.542,30,Quite important,Not at all important,Quite important,Not at all important,Quite important,Quite important,Quite important,Quite important,Very important,Very important,Quite important,,A lot,35,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,Screened,289,,,"2",,Economic issues,Climate policy,Societal issues,Tax system,"Re-establish neighbourhood policing and recruit 2,000 more frontline officers",-,Legalization of cannabis,Wealth tax AND National redistribution scheme,Reduce the average full-time weekly working hours to 32,Ban of most polluting vehicles in city centers (low-emission zones),Legalization of cannabis,National redistribution scheme,Foreign policy,Economic issues,Tax system,Climate policy,Societal issues,Global tax on millionaires,Real Living Wage of £11 per hour for all workers aged 16 and over,-,Ban of most polluting vehicles in city centers (low-emission zones),Legalization of cannabis,Doubling foreign aid,-,National redistribution scheme,Ban the sale of new combustion-engine cars by 2030,Strict enforcement of immigration and border legislation,0,EN-GB,97189_95512806,97189_1fb19d3b,97189,97189,97189_4201aa2d,235619622136847,,,1,,,4,6,,7,2,3,5,,,1,5,3,2,4,,1,2,,,1,2,,1,1,2,,,,,,,
+2023-02-10 15:38:43,2023-02-10 15:50:35,IP Address,47.60.33.1,100,711,True,2023-02-10 15:50:35,R_1KrxpgejIOKRivP,,,,,40.4163,-3.6934,anonymous,ES-ES,Yes,Woman,50 to 54,Spain,Yes,3,0,28906,I prefer not to answer,Eigth grade,Inactive (not searching for a job),Tenant,,,,"Between $4,000 and $120,000",,2.203,236.092,237.101,70,Typical Americans would lose and the 700 million poorest humans would win.,9.193,100.8,103.365,22,Typical Americans would win and the richest Americans would lose.,5.409,123.241,127.304,42,A typical American would neither gain nor lose.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,Screened,711,,,"1",,Sistema fiscal,Asuntos sociales,Política climática,Asuntos económicos,Plan de redistribución nacional,-,100% de electricidad producida con energías renovables en 2040,Jornada laboral de 34 horas semanales,Aumentar los impuestos sobre las rentas superiores a 100.000 euros anuales Y Plan de redistribución nacional,Reformar la ley electoral para hacer el Senado más proporcional,Plan de aislamiento térmico,Ingreso Básico Garantizado de 600€ al mes,,,,,,,,,,,,,,,,0,ES-ES,97189_7787f61d,97189_109fdb7f,97189,97189,97189_ada13611,235619492264977,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2023-02-10 15:30:48,2023-02-10 15:51:52,IP Address,81.65.105.14,100,1264,True,2023-02-10 15:51:53,R_0IgGYmuiuqIt4OZ,,,,,50.482,2.5594,anonymous,FR,Yes,Woman,25 to 29,France,Yes,4,2,62131,between £301 and £400,Primary school or less,Part-time employed,,Owner,Landlord renting out property,,Close to $0,,2.282,93.991,95.246,11,Typical Americans would lose and the 700 million poorest humans would win.,5.552,40.867,41.977,6,Typical Americans would win and the richest Americans would lose.,6.156,93.646,94.801,19,A typical American would neither gain nor lose.,4.959,84.417,86.01,19,Yes,65,Yes,68,,4,,,17.358,35.599,37.773,9,Bundle A,Yes,17.357,35.598,37.773,9,,Bundle B,,,6.556,25.716,27.44,5,,Candidate A,Yes,,8.625,65.171,66.608,30,Very important,Quite important,Quite important,Very important,Very important,Very important,Very important,Quite important,Quite important,Not so important,Quite important,,A little,,15,,,,"Half of the wealth tax financing national budgets in each country, half of it financing low-income countries. For example, it could finance universal childcare/pre-K in the U.S. and access to drinking water, healthcare, and education in Africa.",1.1% to 1.7%,9.1% to 13%,,,,,,,,,,,,,,,,,,,,,,12.781,126.819,128.263,32,"U.S. interests, to the extent it respects global justice",Somewhat support,Somewhat support,Somewhat support,3,2,1,Strongly support,Somewhat support,Somewhat support,Somewhat support,Indifferent or don't know,Somewhat oppose,2,4,1,6,3,5,"Yes, but only if some conditions are met.",That recipient countries comply with climate targets and human rights.,,That other high-income countries also increase their foreign aid.,,That we can be sure the aid reaches people in need and money is not diverted.,,,,,,,,,,I did not make donations to charities last year.,A little,3,1,No,,Jean-Luc Mélenchon,,,,,,,"An important issue, we should do more",One of the most pressing issue of our time,One of the most pressing issue of our time,Sentient beings (humans and animals),12.549,34.23,35.519,11,Candidate A,Candidate A,12.771,77.345,78.601,18,12,,,,12,,15,28,,,,33,,,0,4,,,,1,,5,3,,,,6,,,2,Somewhat oppose,Somewhat support,Strongly support,Somewhat support,,,,,,,5.118,16.791,18.196,6,"Yes, left-wing biased",,No,1,,1264,,,"2",,Climat,Économie,Fiscalité,Démocratie,Interdiction de la vente de voitures thermiques neuves d'ici 2030,Versement du RSA aux 18-25 ans sans emploi,Plan de redistribution nationale,Référendum d'Initiative Citoyenne (RIC),Interdiction des véhicules les plus polluants dans les centres-villes (ZFE),Recul de l'âge légal de départ à la retraite à 65 ans,Rétablissement de l'impôt sur la fortune (ISF) ET Plan de redistribution nationale,Référendum d'Initiative Citoyenne (RIC),Fiscalité,Climat,Économie,Politique étrangère,Démocratie,-,Plan pour l'isolation thermique,SMIC à 1600€ net par mois,Doubler l'aide au développement des pays à faibles revenus,-,-,-,SMIC à 1600€ net par mois,-,Élection des députés à la proportionnelle,0,FR,97189_795e7b23,97189_a1aaeafd,97189,97189,97189_07a05d59,235619331869821,,1,1,,,4,6,,7,2,3,5,,4,1,5,3,2,,,1,,2,1,,2,,1,1,,2,,,,1,,1
+2023-02-10 15:49:07,2023-02-10 15:53:19,IP Address,90.222.47.179,100,251,True,2023-02-10 15:53:19,R_3lFFqO3PZnH0Lrb,,,,,51.9276,-0.4968,anonymous,EN-GB,Yes,Man,45 to 49,United Kingdom,Yes,4,2,Mk,between £601 and £700,Eigth grade,Full-time employed,Tenant,,,,Close to $0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,QuotaMet,251,,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0,EN-GB,97189_95512806,97189_1fb19d3b,97189,97189,97189_4201aa2d,235619622137911,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2023-02-10 15:32:31,2023-02-10 15:55:36,IP Address,88.174.164.77,100,1385,True,2023-02-10 15:55:37,R_vSsGEzGhz8XNjAl,,,,,45.2247,-0.5705,anonymous,FR,Yes,Woman,45 to 49,France,No,3,0,33820,less than £100,Eigth grade,Inactive (not searching for a job),Tenant,,,,,Less than $0 (I have a net debt),5.657,115.301,118.501,19,Typical Americans would lose and the 700 million poorest humans would win.,9.201,94.939,95.901,7,Typical Americans would win and the richest Americans would lose.,4.079,34.203,35,10,A typical American would lose out financially.,4.901,62.901,76.251,15,No,85,No,88,,,1,,13.121,43.848,44.5,8,Bundle A,No,13.122,43.849,44.501,8,,Bundle B,,,10.26,40.103,41.065,8,,None of them,Yes,,257.482,257.482,268.2,1,,,,,,,,,,,,Qu'il est trop tard,A little,10,,,,20,,4.1% to 6%,,4.1% to 6%,,,,,,,Higher taxes on the wealthiest,,,,,,,,,,,,,,19.138,74.399,74.905,23,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,2,1,3,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,4,1,5,2,6,3,"Yes, U.S. foreign aid should be increased.",,,,,,,,,,,,,,,I did not make donations to charities last year.,Not at all,5,3,Yes,Jean Lassalle,,,,,,,,One of the most pressing issue of our time,One of the most pressing issue of our time,One of the most pressing issue of our time,My family and myself,9.287,36.733,37.471,6,Candidate A,Candidate B,11.395,82.63,86.154,15,25,,,,25,0,,25,,,0,,,,25,6,,,,5,2,,3,,,1,,,,4,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,Indifferent or don't know,,,,,,I don't know,10.217,17.411,18.159,3,"No, I do not feel it was biased",,No,1,,1385,,,"3",,Climat,Économie,Fiscalité,Démocratie,-,Hausse de 20% du financement de l'hôpital public et de l'Éducation nationale,Rétablissement de l'impôt sur la fortune (ISF) ET Plan de redistribution nationale,Référendum d'Initiative Citoyenne (RIC),Plan pour l'isolation thermique,Recul de l'âge légal de départ à la retraite à 65 ans,Plan de redistribution nationale,-,Politique étrangère,Climat,Démocratie,Économie,Fiscalité,Doubler l'aide au développement des pays à faibles revenus,Plan pour l'isolation thermique,Élection des députés à la proportionnelle,-,Plan de redistribution nationale,Assemblée démocratique mondiale sur le changement climatique,Plan pour l'isolation thermique,Référendum d'Initiative Citoyenne (RIC),Recul de l'âge légal de départ à la retraite à 65 ans,Rétablissement de l'impôt sur la fortune (ISF),0,FR,97189_795e7b23,97189_a1aaeafd,97189,97189,97189_07a05d59,235619331935302,,1,1,7,,4,6,,,2,3,5,,4,1,5,3,2,,,1,,2,1,,,2,1,1,2,,,,1,,1,

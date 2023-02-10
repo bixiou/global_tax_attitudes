@@ -2295,5 +2295,4 @@ export_representativeness_table <- function(table, country_list, weighted = T, n
   if (filename == "_all") filename <- paste0(paste(country_list, collapse = "_"), "_all")
   cat(paste(latex_output, collapse="\n"), file = paste0(folder, filename, ".tex")) 
 }
-# representativeness_table(c("US1"), return_table = F)
-representativeness_table(c("US1", "US2", "EU"), return_table = T, all = T) 
+

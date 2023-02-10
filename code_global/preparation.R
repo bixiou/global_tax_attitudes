@@ -313,12 +313,14 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   }
 
   if (define_var_lists) {
-    variables_support <<- names(e)[grepl('support', names(e)) & !grepl("foreign_aid_raise_support", names(e))]
-    variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|cgr|foreign_aid|_tax_|order_", names(e))]
+    variables_support <<- names(e)[grepl('support', names(e)) & !grepl("foreign_aid_raise_support|order_", names(e))]
+    variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|cgr|foreign_aid|_tax_|order_|ets2", names(e))]
     variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
     variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
     variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
     variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
+    variables_support_ets2_support <<- names(e)[grepl('ets2', names(e)) & grepl('support', names(e))]
+    variables_support_ets2_no <<- names(e)[grepl('ets2_no', names(e))]
     variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition', names(e))]
     variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
     variables_problem <<- names(e)[grepl('problem_', names(e))]
@@ -370,11 +372,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   }
   if (country %in% c("US1", "US1p")) variables_points <- variables_points_us <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
   if (country %in% c("US1", "US1p")) variables_points_us_agg <<- paste0(variables_points_us, "_agg")
-  if (country == "MEP") {
-    variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
-    variables_belief_mep <<- c("belief_eu", "belief_us")
-    variables_belief_mep_agg <<- paste0(variables_belief_mep, "_agg")
-  }
+  variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
+  variables_belief_mep <<- c("belief_eu", "belief_us")
+  variables_belief_mep_agg <<- paste0(variables_belief_mep, "_agg")
   
   for (i in intersect(c(variables_duration, "hh_size", "Nb_children__14", "zipcode", variables_donation, variables_belief, variables_belief_mep, variables_list_exp, variables_points, "global_tax_global_share" #, "age"
   ), names(e))) {
@@ -399,7 +399,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   # }
   
   for (j in names(e)) {
-    if ((grepl('race_|home_|foreign_aid_raise_how|foreign_aid_reduce_how|foreign_aid_condition|foreign_aid_no_', j) & !(grepl('_other$|order_', j))) | grepl('how_other', j)) {
+    if ((grepl('race_|home_|foreign_aid_raise_how|foreign_aid_reduce_how|foreign_aid_condition|foreign_aid_no_|ets2_no_', j) & !(grepl('_other$|order_', j))) | grepl('how_other', j)) {
       temp <- label(e[[j]])
       e[[j]] <- e[[j]]!="" # e[[j]][e[[j]]!=""] <- TRUE
       e[[j]][is.na(e[[j]])] <- FALSE
@@ -536,7 +536,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$list_exp) <- "list_exp: [0-4] Number of supported policies in the list experiment (combining all branches, cf. branch_list_exp and variables_list_exp)."
     }
     
-    for (v in c(variables_support_likert)) {
+    for (v in c(variables_support_likert, variables_support_ets2_support)) {
       if (v %in% names(e)) {
         temp <-  temp <- 2 * (e[[v]] %in% text_support[5]) + (e[[v]] %in% text_support[4]) - (e[[v]] %in% text_support[2]) - 2 * (e[[v]] %in% text_support[1])
         temp[is.na(e[[v]])] <- NA
@@ -874,6 +874,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 
 ##### Run #####
 
+e <- eu <- prepare(country = "EU", weighting = FALSE)
 e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
 
 e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)
