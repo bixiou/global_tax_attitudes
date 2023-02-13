@@ -2,7 +2,6 @@
 # TODO order_
 # TODO sources quotas
 # TODO check vote
-# TODO! integrate the 11 white below 25 into final sample
 
 source(".Rprofile")
 source("relabel_rename.R")

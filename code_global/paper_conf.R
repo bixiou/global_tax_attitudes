@@ -1,4 +1,4 @@
-# TODO: check litterature List experiment
+# TODO: check literature List experiment
 
 # H0 stated support: OECD (heatmap), G, other_policies (plot), foreign aid evolution, why (plot)
 # H1, H2 sincerity: list exp (table), petition (plot + table), conjoint analysis (plot), prioritization (plot)
@@ -99,7 +99,7 @@ print(paste(sum(us1a$dropout & us1a$progress == 19), "drop out at GCS descriptio
 print(paste(sum(us1a$dropout_late), "drop out after socio-demos"))
 print(paste(sum(us1a$stayed), "are allowed and do not drop out"))
 print(paste(sum(us1a$failed_test & us1a$stayed), "fail the attention test"))
-print(paste(sum(us1a$duration < 240/60 & us1a$failed_test & us1a$stayed), "complete in less than 4 min"))
+print(paste(sum(us1a$duration < 240/60 & !us1a$failed_test & us1a$stayed), "complete in less than 4 min"))
 # print(paste(sum((us1a$failed_test | us1a$duration < 240/60) & !us1a$dropout & no.na(us1a$excluded)!="QuotaMet"), "are excluded"))
 print(paste(sum(no.na(us1a$excluded) == "Screened" & !us1a$dropout & no.na(us1a$excluded)!="QuotaMet"), "are excluded"))
 print(paste(nrow(us1), "in final sample"))
