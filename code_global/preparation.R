@@ -299,27 +299,33 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     
     if ("global_tax_sharing" %in% names(e)) {
       e$global_tax_sharing_original <- e$global_tax_sharing
-      e$global_tax_sharing[grepl("whole wealth tax financing national budgets", e$global_tax_sharing)] <- "No"
-      e$global_tax_sharing[grepl("half of it financing low-income countries", e$global_tax_sharing)] <- "Yes"
-      e$global_tax_sharing[is.na(e$global_tax_sharing_original)] <- NA
+      e$global_tax_sharing <- NA
+      e$global_tax_sharing[grepl("whole wealth tax financing national budgets", e$global_tax_sharing_original)] <- FALSE
+      e$global_tax_sharing[grepl("half of it financing low-income countries", e$global_tax_sharing_original)] <- T
       label(e$global_tax_sharing) <- "global_tax_sharing: T/F/NA Prefers to allocate half of global wealth tax to low-income countries rather than keeping all in collector country's national budgets. NA if the question is not asked (cf. branch_global_tax)."
       e$branch_global_tax[!is.na(e$global_tax_sharing)] <- "sharing"
       e$branch_global_tax[!is.na(e$global_tax_global_share)] <- "global_share"
       e$branch_global_tax[e$order_global_tax == 1] <- "global_first"
       e$branch_global_tax[e$order_national_tax == 1] <- "national_first"
       label(e$branch_global_tax) <- "branch_global_tax: global_first/national_first/sharing/global_share/NA Way to ask the preference for funding low-income countries through a global tax on the rich: either separately the support for a national and a global tax on millionaires (with either the global or national question asked first); whether to allocate half or none of the global tax to low-income countries; the 'global_share' in 0 to 100%."
+      e$global_tax_more_30p <- e$global_tax_global_share >= 30
+      label(e$global_tax_more_30p) <- "global_tax_more_30p: Wants at least 30% of global wealth tax revenues to fund low-income countries (defined from global_tax_global_share)."
+      e$global_tax_more_10p <- e$global_tax_global_share >= 10
+      label(e$global_tax_more_10p) <- "global_tax_more_10p: Wants at least 10% of global wealth tax revenues to fund low-income countries (defined from global_tax_global_share)."
+      e$global_tax_more_half <- e$global_tax_global_share >= 50
+      label(e$global_tax_more_half) <- "global_tax_more_half: Wants at least half of global wealth tax revenues to fund low-income countries (defined from global_tax_global_share)."
     }
   }
 
   if (define_var_lists) {
-    variables_support <<- names(e)[grepl('support', names(e)) & !grepl("foreign_aid_raise_support|order_", names(e))]
+    variables_support <<- names(e)[grepl('support', names(e)) & !grepl("foreign_aid_raise_support|order_|ets2", names(e))]
     variables_other_policies <<- names(e)[grepl('_support', names(e)) & !grepl("nr|gcs|cgr|foreign_aid|_tax_|order_|ets2", names(e))]
     variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
     variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
-    variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
+    variables_support_binary_all <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
     variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
     variables_support_ets2_support <<- names(e)[grepl('ets2', names(e)) & grepl('support', names(e))]
-    variables_support_ets2_no <<- names(e)[grepl('ets2_no', names(e))]
+    variables_support_ets2_no <<- names(e)[grepl('ets2_no_', names(e))]
     variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition', names(e))]
     variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
     variables_problem <<- names(e)[grepl('problem_', names(e))]
@@ -371,7 +377,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   }
   if (country %in% c("US1", "US1p")) variables_points <- variables_points_us <<- names(e)[grepl("points", names(e)) & !grepl("order|duration", names(e))]
   if (country %in% c("US1", "US1p")) variables_points_us_agg <<- paste0(variables_points_us, "_agg")
-  variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
+  if (country == "EU") variables_ets2_support <<- names(e)[grepl("ets2", names(e)) & grepl("support", names(e))]
+  if (country == "EU") variables_ets2_no <<- names(e)[grepl("ets2_no_", names(e))]
+  variables_support_binary <<- c("gcs_support", "nr_support", "cgr_support") #, "global_tax_sharing")
   variables_belief_mep <<- c("belief_eu", "belief_us")
   variables_belief_mep_agg <<- paste0(variables_belief_mep, "_agg")
   
@@ -545,7 +553,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     for (v in intersect(variables_gcs_important, names(e))) {
       temp <-  temp <- 2 * (e[[v]] %in% text_importance[4]) + (e[[v]] %in% text_importance[3]) - (e[[v]] %in% text_importance[2]) - 2 * (e[[v]] %in% text_importance[1])
       temp[is.na(e[[v]])] <- NA
-      e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2), names = sub(" important", "", text_importance)), missing.values=c(NA), annotation=Label(e[[v]]))    
+      e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2), names = text_importance), #sub(" important", "", text_importance)), 
+                        missing.values=c(NA), annotation=Label(e[[v]]))    
       e$branch_gcs_perception[!is.na(e$gcs_field)] <- "field"
       e$branch_gcs_perception[!is.na(e[[v]])] <- "gcs_important"
       label(e$branch_gcs_perception) <- "branch_gcs_perception: field/gcs_important/NA Whether the perception of the global climate scheme is asked as a matrix 'gcs_important' or an entry field 'field'"
@@ -709,6 +718,12 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$conjoint_r_number) <- "conjoint_r_number: 1/2/NA (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican. NA if question not asked or there is some unrecognized level (conjoint_r_wrong_level == T)."
     }
     
+    if ("ets2_no_revenue_use" %in% names(e)) {
+      e$ets2_oppose <- pmax(e$ets2_equal_cash_support, e$ets2_country_cash_support, e$ets2_investments_support, e$ets2_vulnerable_investments_support) <= 0
+      label(e$ets2_oppose) <- "ets2_oppose: T/F/NA Does not support (somewhat or strongly) any of the four ETS2 variants proposed. NA if ETS2 support is not asked (i.e. if country == UK)"
+      for (v in variables_ets2_no) e[[v]][e$ets2_oppose == F] <- NA
+    }
+    
     if ("iat_lp5" %in% names(e)) {
       e$branch_iat <- NA
       e$branch_iat[!is.na(e$iat_ln1)] <- "LN"
@@ -737,9 +752,21 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$universalist) <- "universalist: T/F Defends humans or sentient beings (humans and animals) when one votes (cf. group_defended)."
       e$group_defended_agg <- sign(e$group_defended - 4)
       e$group_defended_agg[e$group_defended == 0] <- -2
-      e$group_defended_agg[e$group_defended == 5] <- 1
+      e$group_defended_agg[e$group_defended == 5] <- 0
       e$group_defended_agg <- as.item(e$group_defended_agg, labels = structure(-2:1, names = c("Family and self", "Group of related people", "Fellow citizens or Europeans", "Humans or sentient beings") #c("Egoistic", "Tribalist", "Nationalist", "Universalist")
                                                                              ), annotation = "group_defended_agg: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; where 'Fellow citizens or Europeans' gathers [Country] and Europeans; and where 'Humans or sentient beings' gathers Humans and Sentient beings (humans or animals)")
+      e$group_defended_agg5 <- as.numeric(e$group_defended_agg)
+      e$group_defended_agg5[e$group_defended == 7] <- 2
+      e$group_defended_agg5 <- as.item(e$group_defended_agg5, labels = structure(-2:2, names = c("Family and self", "Group of related people", "Fellow citizens or Europeans", "Humans", "Sentient beings") #c("Egoistic", "Tribalist", "Nationalist", "Universalist")
+            ), annotation = "group_defended_agg5: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; where 'Fellow citizens or Europeans' gathers [Country] and Europeans")
+      e$group_defended_agg6 <- as.numeric(e$group_defended_agg5)
+      e$group_defended_agg6[e$group_defended == 5] <- 0.5
+      e$group_defended_agg6 <- as.item(e$group_defended_agg6, labels = structure(c(-2:0,0.5,1,2), names = c("Family and self", "Group of related people", "Fellow citizens", "Europeans", "Humans", "Sentient beings") #c("Egoistic", "Tribalist", "Nationalist", "Universalist")
+      ), annotation = "group_defended_agg6: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion.")
+      e$group_defended_agg2 <- as.numeric(e$group_defended_agg5)
+      e$group_defended_agg2[e$group_defended == 5] <- -1
+      e$group_defended_agg2 <- as.item(e$group_defended_agg2, labels = structure(-2:2, names = c("Family and self", "Group of related people", "Fellow citizens", "Humans", "Sentient beings") #c("Egoistic", "Tribalist", "Nationalist", "Universalist")
+      ), annotation = "group_defended_agg2: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion, and Europeans.")
     }
     
     if ("donation_charities" %in% names(e)) {
@@ -752,6 +779,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
 
       major_threshold <- 5 # 5% is the treshold to be considered a major candidate
+      e$vote <- -0.1 # "PNR/Non-voter"
       for (c in tolower(countries)) {
         if (paste0("vote_", c, "_voters") %in% names(e)) {
           e$vote_all[!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"] <- e[[paste0("vote_", c, "_voters")]][!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"]
@@ -760,7 +788,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
           minor_candidates[[c]] <<- setdiff(names(table(e$vote_all[e$country == toupper(c)]))[table(e$vote_all[e$country == toupper(c)]) <= .05 * sum(e$country == toupper(c))], text_pnr)
           e$vote_agg[e$country == toupper(c) & e$vote_all %in% c(major_candidates[[c]], text_pnr)] <- e$vote_all[e$country == toupper(c) & e$vote_all %in% c(major_candidates[[c]], text_pnr)]
           e$vote_agg[e$country == toupper(c) & e$vote_all %in% minor_candidates[[c]]] <- "Other"
-          e$vote <- -0.1 # "PNR/Non-voter"
           e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Biden", "Hawkins", "Jean-Luc Mélenchon", "Yannick Jadot", "Fabien Roussel", "Anne Hidalgo", "Philippe Poutou", "Nathalie Arthaud", 
                                                            "PSOE", "Unidas Podemos", "Esquerra Republicana", "Más País", "JxCat–Junts", "Euskal Herria Bildu (EHB)", "Candidatura d'Unitat Popular-Per la Ruptura (CUP–PR)", "Partido Animalista (PACMA)", 
                                                            "SPD", "Grüne", "Die Linke", "Tierschutzpartei", "dieBasis", "Die PARTEI", "Labour", "SNP", "Green", "Sinn Féin")] <- -1 # "Left"
@@ -771,8 +798,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
         }
       }
       e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
-      e$vote_all <- as.item(as.character(e$vote_all), missing.values = 'PNR', annotation="vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.")
-      e$vote_agg <- as.item(as.character(e$vote_agg), missing.values = 'PNR', annotation=paste0("vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than ", major_threshold, "% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters."))
+      label(e$vote_all) <- "vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters."
+      label(e$vote_agg) <- paste0("vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than ", major_threshold, "% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters.")
+      # e$vote_all <- as.item(as.character(e$vote_all), missing.values = 'PNR', annotation="vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.")
+      # e$vote_agg <- as.item(as.character(e$vote_agg), missing.values = 'PNR', annotation=paste0("vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than ", major_threshold, "% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters."))
       e$voted <- e$vote_participation == 'Yes'
       label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
       major_candidates <<- major_candidates
@@ -854,6 +883,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   for (v in intersect(c("share_policies_supported"), names(e))) e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]], c(0, 0, 0.25, 0.5, 0.75, 1, 1), shift = 0.01)
   for (v in intersect(variables_foreign_aid_amount, names(e))) e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]], c(-Inf, 0.2, 0.5, 1, 1.7, 2.6, 6, Inf), shift = 0.1)
   for (v in intersect(variables_belief, names(e))) e[[paste0(v, "_agg")]] <- agg_thresholds(e[[v]], c(0, 20, 40, 60, 80, 100), shift = 1) # TODO add actual value
+  
+  if (country == "EU") label(e$foreign_aid_no_nation_first) <- gsub("American", "[country]", Label(e$foreign_aid_no_nation_first))
   
   e$wrong_language <- (e$country == "US" & e$language != "EN") | (e$country == "DE" & e$language != "DE") | (e$country == "FR" & e$language != "FR") | (e$country == "ES" & e$language != "ES-ES") | (e$country == "UK" & e$language != "EN-GB")
   label(e$wrong_language) <- "wrong_language: T/F The language does not correspond to the respondent's country (including Spanish in the U.S.)."

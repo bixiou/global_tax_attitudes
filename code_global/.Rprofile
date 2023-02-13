@@ -45,7 +45,7 @@ package("janitor") # heatmaps
 #' 
 #' chooseCRANmirror(ind = 1)
 #' package("plyr")
-#' package("tm")
+package("tm") # wordcloud
 package('tidyverse')
 package("dplyr")
 package("tidyr")
@@ -139,7 +139,7 @@ package("corrplot") #, github = 'taiyun')#, version = "0.88") # 0.92 installed: 
 #' package("KSgeneral")
 #' package("dgof")
 #' package("SnowballC")
-#' package("wordcloud")
+package("wordcloud")
 #' package("RCurl")
 #' package("XML")
 #' package("equivalence")
@@ -154,7 +154,7 @@ package("corrplot") #, github = 'taiyun')#, version = "0.88") # 0.92 installed: 
 #' package("devtools")
 #' package("janitor")
 #' # LDA
-#' package("quanteda")
+package("quanteda") # stopwords
 #' package("topicmodels")
 #' package("broom")
 #' package("tidytext")
@@ -324,7 +324,16 @@ decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FA
       else describe(variable[variable!="" & !is.missing(variable)], weights = weights[variable!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
     } else describe(variable[variable!=""], weights = weights[variable!=""])  }
 }
-Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TRUE, concatenate = FALSE) {
+# Levels_data <- function(var) { # I replaced it by Levels, haven't checked if it may create bugs
+#   if (setequal(levels(var), c(T, F))) levels <- c(T) # before: not this line
+#   else if (is.null(annotation(var))) levels <- levels(var)
+#   else {
+#     levels <- labels(var)@.Data
+#     levels <- levels[levels %in% as.character(var)] # new, removes empty levels
+#   }
+#   return(levels)
+# }
+Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TRUE, concatenate = FALSE, max_values = 13, names = FALSE) {
   if (values) {
     if (length(variable)==1 & is.character(variable)) variable <- data[[variable]]
     if (length(annotation(variable))==1 & !is.null(labels(variable))) Levs <- as.character(labels(variable))
@@ -334,7 +343,7 @@ Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TR
         Levs <- round(c(min(variable, na.rm = T), max(variable, na.rm = T)), 3)
         names(Levs) <- c("min", "max")
       } else Levs <- round(sort(unique(variable)), 3) }
-    else if (is.character(variable)) Levs <- if (length(unique(variable)) > 13) "[string variable]" else as.character(unique(variable))
+    else if (is.character(variable)) Levs <- if (length(unique(variable)) > max_values) "[string variable]" else as.character(unique(variable))
     else if (is.logical(variable)) Levs <- if (any(is.pnr(variable))) "TRUE / FALSE / NA" else "TRUE / FALSE"
     if (concatenate) {
       if (is.null(names(Levs))) Levs <- paste(Levs, collapse = " / ")
@@ -346,6 +355,7 @@ Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TR
       if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
       Levs <- unique(variable)
       if (concatenate) Levs <- paste(Levs, collapse = " / ") } }
+  if (names & length(names(Levs)) == length(Levs)) Levs <- names(Levs)
   return(Levs)
   # if (is.character(var) & length(var)==1) var <- data[[var]]
   # if (length(annotation(var))>0) { # works but cubmbersome and doesn't allow to get rid of missings
@@ -877,18 +887,19 @@ data1 <- function(vars, data=e, weights=T) {
   }
   return( matrix(res, ncol=length(vars)) )
 }
-dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE) {
+dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE, levels = NULL) {
   missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "Don't know", "PNR or other", "NSP ou autre", "PNR ou autre", "PNR/Non-voter") # TODO: allow for non-standard PNR in a more straightforward way than adding the argument "fr" and putting its value below
   if (is.null(data[['weight']])) weights <- F # TODO? warning
   mat <- c()
   if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !any(grepl("item", class(data[[var]])))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
   else v <- data[[var]]
-  if (setequal(levels(v), c(T, F))) levels <- c(T) # before: not this line
-  else if (is.null(annotation(v))) levels <- levels(v)
-  else {
-    levels <- labels(v)@.Data
-    levels <- levels[levels %in% as.character(v)] # new, removes empty levels
-  }
+  # if (setequal(levels(v), c(T, F))) levels <- c(T) # before: not this line
+  # else if (is.null(annotation(v))) levels <- levels(v)
+  # else {
+  #   levels <- labels(v)@.Data
+  #   levels <- levels[levels %in% as.character(v)] # new, removes empty levels
+  # }
+  if (missing(levels)) levels <- Levels(v, max_values = Inf, names = T) # was Levels_data(v)
   levels <- levels[!(levels %in% missing_labels)]
   if (rev_legend) levels <- rev(levels) # new (05/20)
   if (weights) N <- sum(data[['weight']][!is.pnr(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
@@ -912,12 +923,32 @@ dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE
   else if (return == "N") return(N)
   else return(matrix(mat, ncol=1))
 }
-dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE) {
-  if (is.logical(data[[vars[1]]])) return(data1(vars, data, weights))
-  else {
-    res <- c()
-    for (var in vars) res <- c(res, dataN(var, data, miss, weights, return, fr, rev))
-    return(matrix(res, ncol=length(vars))) }
+dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE) {
+  if (!any(vars %in% names(data))) {
+    warning("Variable not found")
+    out <- c()
+  } else {
+    if (length(vars) == 1) out <- dataN(vars, data = data, miss = miss, weights = weights, return = return, fr = fr, rev = rev, rev_legend = rev_legend)
+    else if (is.logical(data[[vars[1]]])) {
+      mat <- data1(vars, data, weights)
+      levels <- dataN(vars[1], data = data, return = "legend") 
+      out <- if (return == "legend") levels else mat }
+    else {
+      values <- setNames(lapply(vars, function(v) dataN(v, data = data, miss = miss, weights = weights, return = "legend", fr = fr, rev = rev)), vars)
+      nb_values <- sapply(values, length)
+      levels <- values[[which(nb_values == max(nb_values))[1]]]
+      if (!all(sapply(values, function(var) all(var %in% levels)))) {
+        warning("No variable contains all possible values, this may create bugs")
+        for (v in vars) levels <- union(levels, values[[v]]) }
+      # The above code (after else) is new (and here to manage cases with different sets of levels for different variables)
+      res <- c()
+      for (var in vars) res <- c(res, dataN(var = var, data = data, miss = miss, weights = weights, return = "", fr = fr, rev = rev, levels = levels))
+      mat <- matrix(res, ncol=length(vars)) 
+      if (rev_legend) levels <- rev(levels)
+      out <- if (return == "legend") levels else mat
+    }
+  }
+  return(out)
 }
 #' dataN2 <- function(var, df = list(c, e), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
 #'   if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))

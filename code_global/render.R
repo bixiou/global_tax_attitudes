@@ -1,6 +1,6 @@
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO! EU, "duration", socio-demos, politics compare
-# TODO list_exp, group_defended_agg2
+# TODO list_exp, all_same heatmaps, 
 
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
 # TODO automatically set share_labels/margin_l/width, miss, thin 
@@ -17,6 +17,7 @@ labels_vars <- c(
   "gender" = "Gender",
   "age_exact" = "Age",
   "country" = "Country",
+  "country_name" = "Country",
   "couple" = "Lives with partner",
   "hh_size" = "Household size",
   "zipcode" = "Zipcode",
@@ -155,7 +156,7 @@ labels_vars <- c(
   "foreign_aid_no_diversion" = "Aid is not effective as most of it is diverted",
   "foreign_aid_no_pressure" = "Aid is a pressure tactic for high-income countries that prevents low-income countries from developing freely",
   "foreign_aid_no_not_our_role" = "[Country] is not responsible for what happens in other countries",
-  "foreign_aid_no_nation_first" = "Charity begins at home: there is already a lot to do to support the American people in need",
+  "foreign_aid_no_nation_first" = "Charity begins at home: there is already a lot to do to support the [country] people in need",
   "foreign_aid_no_other_choice" = "Other",
   "petition_gcs" = "Petition for GCS",
   "petition_nr" = "Petition for NR",
@@ -164,6 +165,9 @@ labels_vars <- c(
   "interested_politics" = "Interested in politics",
   "group_defended" = "Group defended when voting",
   "group_defended_agg" = "Group defended when voting",
+  "group_defended_agg2" = "Group defended when voting",
+  "group_defended_agg5" = "Group defended when voting",
+  "group_defended_agg6" = "Group defended when voting",
   "involvement_govt" = "Desired level of involvement of government",
   "political_affiliation" = "Political affiliation",
   "left_right" = "Left - right on economics",
@@ -229,7 +233,20 @@ labels_vars <- c(
   "universalist" = "Universalist",
   "conjoint_a_matches_support" = "Conjoint (a) and support answers match",
   "woman" = "Gender: Woman",
-  "man" = "Gender: Man"
+  "man" = "Gender: Man",
+  "ets2_equal_cash_support" = "Supports ETS2 with equal cash transfer<br>(105€/year for each European)",
+  "ets2_country_cash_support" = "Supports ETS2 with cash transfer<br>in proportion to country's emissions",
+  "ets2_investments_support" = "Supports ETS2 with low-carbon investments",
+  "ets2_vulnerable_investments_support" = "Supports ETS2 with transfers to vulnerable<br>and low-carbon investments",
+  "ets2_no_european" = "Does not support ETS2 because<br>Policies should be at national level",
+  "ets2_no_revenue_use" = "Does not support ETS2 because<br>Would prefer other revenue use",
+  "ets2_no_pricing" = "Does not support ETS2 because<br>Opposes carbon pricing",
+  "ets2_no_climate_action" = "Does not support ETS2 because<br>Opposes more climate action",
+  "ets2_no_understanding" = "Does not support ETS2 because<br>Does not understand",
+  "ets2_no_dont_know" = "Does not support ETS2 because<br>Does not know",
+  "global_tax_more_half" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 50%",
+  "global_tax_more_30p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 30%",
+  "global_tax_more_10p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 10%"
 )
 for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
 for (v in intersect(intersect(c(socio_demos, socio_demos_us), names(e)), names(labels_vars))) {
@@ -286,30 +303,56 @@ labels_vars_short_html <- c(
   "foreign_aid_no_diversion" = "Aid is not effective<br>as most of it is diverted",
   "foreign_aid_no_pressure" = "Aid is a pressure tactic for high-income countries that<br>prevents low-income countries from developing freely",
   "foreign_aid_no_not_our_role" = "[Country] is not responsible<br>for what happens in other countries",
-  "foreign_aid_no_nation_first" = "Charity begins at home: there is already<br>a lot to do to support the American people in need"
+  "foreign_aid_no_nation_first" = "Charity begins at home: there is already<br>a lot to do to support the [country] people in need",
+  "ets2_equal_cash_support" = "ETS2 with equal cash transfer<br>(105€/year for each European)",
+  "ets2_country_cash_support" = "ETS2 with cash transfer<br>in proportion to country's emissions",
+  "ets2_investments_support" = "ETS2 with low-carbon investments",
+  "ets2_vulnerable_investments_support" = "ETS2 with transfers to vulnerable<br>and low-carbon investments",
+  "ets2_no_european" = "Policies should be at national level",
+  "ets2_no_revenue_use" = "Would prefer other revenue use",
+  "ets2_no_pricing" = "Opposes carbon pricing",
+  "ets2_no_climate_action" = "Opposes more climate action",
+  "ets2_no_understanding" = "Does not understand",
+  "ets2_no_dont_know" = "Does not know"
 )
 
+##### labels_vars_country #####
+labels_vars_country <- list() #"US" = c(), "DE" = c(), "FR" = c(), "ES" = c(), "UK" = c())
+for (c in countries) {
+  names_policies_names <- paste0("points_", row.names(policies.names))
+  for (v in intersect(c(variables_points), names_policies_names)) {
+    labels_vars_country[[c]][v] <- policies.names[sub("points_", "", v), c]
+    labels_vars_country[[c]][paste0(v, "_agg")] <- policies.names[sub("points_", "", v), c] # common ones in English
+  }
+  for (v in setdiff(names_policies_names[grepl("[0-9]", names_policies_names)], variables_points)) { # common ones in local language
+    var <- variables_points[grepl(v, variables_points)]
+    if (length(var) == 1) labels_vars_country[[c]][paste0(var, "_agg")] <- policies.names[sub("points_", "", v), c]
+  }
+}
+
 ##### labels_vars_US #####
-labels_vars_us <- c(
-  "points_econ1_agg" = "Student loan forgiveness",
-  "points_econ2_agg" = "$15 minimum wage",
-  "points_econ3_agg" = "Universal childcare/pre-K",
-  "points_econ4_agg" = "Funding affordable housing",
-  "points_soc1_agg" = "Expanding the Supreme Court",
-  "points_soc2_agg" = "Handgun ban",
-  "points_soc3_agg" = "Making abortion a right at the federal level",
-  "points_climate1_agg" = "Coal exit",
-  "points_climate2_agg" = "Trillion dollar investment in clean transportation<br>infrastructure and building insulation",
-  "points_climate3_agg" = "Ban the sale of new<br>combustion-engine cars by 2030",
-  "points_tax1_nr_agg" = "National redistribution scheme",
-  "points_tax2_wealth_tax_agg" = "Wealth tax",
-  "points_tax3_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
-  "points_tax3_corporate_tax_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
-  "points_foreign1_gcs_agg" = "Global climate scheme",
-  "points_foreign2_tax_rich_agg" = "Global tax on millionaires",
-  "points_foreign3_assembly_agg" = "Global democratic assembly on climate change",
-  "points_foreign4_aid_agg" = "Doubling foreign aid"
-)
+# labels_vars_us <- c(
+#   "points_econ1_agg" = "Student loan forgiveness",
+#   "points_econ2_agg" = "$15 minimum wage",
+#   "points_econ3_agg" = "Universal childcare/pre-K",
+#   "points_econ4_agg" = "Funding affordable housing",
+#   "points_soc1_agg" = "Expanding the Supreme Court",
+#   "points_soc2_agg" = "Handgun ban",
+#   "points_soc3_agg" = "Making abortion a right at the federal level",
+#   "points_climate1_agg" = "Coal exit",
+#   "points_climate2_agg" = "Trillion dollar investment in clean transportation<br>infrastructure and building insulation",
+#   "points_climate3_agg" = "Ban the sale of new<br>combustion-engine cars by 2030",
+#   "points_tax1_nr_agg" = "National redistribution scheme",
+#   "points_tax2_wealth_tax_agg" = "Wealth tax",
+#   "points_tax3_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
+#   "points_tax3_corporate_tax_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
+#   "points_foreign1_gcs_agg" = "Global climate scheme",
+#   "points_foreign2_tax_rich_agg" = "Global tax on millionaires",
+#   "points_foreign3_assembly_agg" = "Global democratic assembly on climate change",
+#   "points_foreign4_aid_agg" = "Doubling foreign aid",
+#   "foreign_aid_no_nation_first" = "Charity begins at home: there is already a lot to do to support the American people in need"
+# )
+labels_vars_country$US["foreign_aid_no_nation_first"] <- "Charity begins at home: there is already a lot to do to support the American people in need"
 
 fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL) {
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type heatmaps_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
@@ -412,7 +455,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
   }
 }
 
-fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, 
+fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, country = NULL, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, 
                         short_labels = T, width = 850, labels_max_length = 57) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2], width = dev.size('px')[1]
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type plots_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # If df$var and variables_var both exist, giving 'var' (resp. 'variables_var') will yield var (resp. variables_var)
@@ -420,7 +463,10 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
   if (!exists("labels_vars")) warning("'labels_vars' should exist but does not.")
   labels <- labels_vars
   if (exists("labels_vars_short_html") & short_labels) labels[names(labels_vars_short_html)] <- labels_vars_short_html
-  if (grepl("us", deparse(substitute(df)))) labels[names(labels_vars_us)] <- labels_vars_us
+  # if (grepl("us", deparse(substitute(df)))) labels[names(labels_vars_us)] <- labels_vars_us
+  # c <- if (deparse(substitute(df)) != "e") gsub("[0-9p]*", "",  deparse(substitute(df))) else if (length(unique(df$country)) == 1) unique(df$country)[1] else NULL
+  c <- if (length(unique(df$country)) == 1) unique(df$country)[1] else NULL
+  if (!is.null(c)) labels[names(labels_vars_country[[c]])] <- labels_vars_country[[c]]
   if (missing(list_var_list)) list_var_list <- list()
   if (is.character(list_var_list)) {
     vec_vars <- list_var_list
@@ -441,7 +487,7 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
   }
   # We complete the missing fields of plots 
   for (name in names(plots)) {
-    if (!"vars" %in% names(plots[[name]])) plots[[name]]$vars <- if (name %in% names(df)) name else eval(str2expression(paste0("variables_", sub("variables_", "", name))))
+    if (!"vars" %in% names(plots[[name]])) plots[[name]]$vars <- if (name %in% names(df)) name else if (exists(paste0("variables_", sub("variables_", "", name)))) eval(str2expression(paste0("variables_", sub("variables_", "", name)))) else warning(paste(name, "not found"))
     if (!"name" %in% names(plots[[name]])) plots[[name]]$name <- name
     if (!"labels" %in% names(plots[[name]])) {
       plots[[name]]$labels <- c()
@@ -457,10 +503,10 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
     if (!"title" %in% names(plots[[name]])) plots[[name]]$title <- ""
     vars_in <- plots[[name]]$vars[plots[[name]]$vars %in% names(df)]
     var_example <- vars_in[1]
-    if (!"legend" %in% names(plots[[name]]) & !is.na(var_example)) plots[[name]]$legend <- dataN(var_example, data=df, miss=plots[[name]]$miss, return = "legend", fr = plots[[name]]$fr, rev = plots[[name]]$rev, rev_legend = plots[[name]]$rev)
+    if (!"legend" %in% names(plots[[name]]) & !is.na(var_example)) plots[[name]]$legend <- dataKN(vars = vars_in, data=df, miss=plots[[name]]$miss, return = "legend", fr = plots[[name]]$fr, rev = plots[[name]]$rev, rev_legend = plots[[name]]$rev)
     # yes_no <- setequal(plots[[name]]$legend, c('Yes', 'No', 'PNR')) | setequal(plots[[name]]$legend, c('Oui', 'Non', 'NSP')) | setequal(plots[[name]]$legend, c('Yes', 'No')) | setequal(plots[[name]]$legend, c('Oui', 'Non'))
     # if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- if (is.na(var_example))  T else (!is.binary(df[[var_example]]) | yes_no)
-    if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- if (is.na(var_example))  T else (!is.logical(df[[var_example]]))
+    if (!"showLegend" %in% names(plots[[name]])) plots[[name]]$showLegend <- if (is.na(var_example)) T else (!is.logical(df[[var_example]]))
     if (!"thin" %in% names(plots[[name]])) plots[[name]]$thin <- thin #& !yes_no
     if (!"width" %in% names(plots[[name]])) plots[[name]]$width <- width
     if (!"height" %in% names(plots[[name]]) & "heigth" %in% names(plots[[name]])) plots[[name]]$height <- plots[[name]]$heigth
@@ -470,6 +516,7 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, miss 
 }
 
 ##### barres_defs #####
+# define_barres_defs <- function(df = e) {
 barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain "var" = "var" but not simply "var")
   "understood_each" = list(vars = variables_understood[1:3], width = 850), # 1480 
   # "problem" = list(width = 850), # 1335
@@ -487,8 +534,8 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "variables_donation" = list(vars = c("donation_africa_agg", "donation_nation_agg"), width = 850), # 835
   "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 850), # 1080
   "belief" = list(vars = variables_belief_agg, width = 850), # 750
-  "points" = list(vars = variables_points_agg, width = 850, sort = FALSE), # 750 TODO! average
-  "points_us" = list(vars = variables_points_us_agg, width = 750, sort = FALSE), # 1080
+  # "points" = list(vars = variables_points_agg, width = 850, sort = FALSE), # 750 TODO! average
+  "points" = list(vars = variables_points_us_agg, width = 850, sort = FALSE), # 1080 points_us
   "share_policies_supported" = list(vars = "share_policies_supported_agg", width = 850), # 950
   "understood_score" = list(vars = variables_understood[4], width = 850), # 650
   # "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
@@ -502,7 +549,10 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "duration" = list(vars = variables_duration, conditions = ""),
   # "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   # "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
-  "vote"= list(rev = T, miss = T, fr = "PNR/Non-voter"), # non_voters as such, aggregating candidates into 3 categories
+  "support_binary_all" = list(showLegend = FALSE), 
+  "global_national_tax" = list(vars = c("national_tax_support", "global_tax_support"), sort = FALSE),
+  "global_tax_share" = list(vars = c("global_tax_sharing", "global_tax_more_half", "global_tax_more_30p", "global_tax_more_10p"), sort = FALSE),
+  "vote"= list(miss = T, fr = "PNR/Non-voter"), # non_voters as such, aggregating candidates into 3 categories
   "vote_all"= list(rev = T), # hypothetical votes for non_voters
   "vote_agg"= list(rev = T), # hypothetical votes for non_voters, aggregating small candidates
   "vote3"= list(rev = T), # non_voters as such, pooled with PNR and those voting for small candidates
@@ -516,18 +566,22 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), width = 850) # 950
 )
 
-vars_barres <- c("other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", "gcs_important", "problem", 
-                  "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", "global_tax_sharing", "conjoint", "group_defended", "group_defended_agg",
-                 "country", "urbanity", "region", "gender", "age", "age_exact", "couple", "hh_size", "income_decile", "income_quartile", "education", "diploma", "diploma_15_64", "employment_agg", "employment_status", "employment_18_64", "race", "owner", "wealth", "survey_biased", 
+vars_barres <- c("ets2_support", "ets2_no", "other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "variables_petition", 
+                 "gcs_important", "problem", "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", "global_tax_global_share", 
+                 "global_tax_sharing", "global_tax_support", "national_tax_support", "conjoint", "group_defended", "group_defended_agg", "group_defended_agg2", 
+                 "group_defended_agg5", "group_defended_agg6", "country_name", "urbanity", "region", "gender", "age", "age_exact", "couple", "hh_size", "income_decile", 
+                 "income_quartile", "education", "diploma", "diploma_25_64", "employment_agg", "employment_status", "employment_18_64", "race", "owner", "wealth", "survey_biased", 
                  "interested_politics", "donation_charities", "involvement_govt", "left_right") 
 
-barres_defs <- fill_barres(vars_barres, barres_defs, df = us1)
+barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
+# return(barres_defs) }
 # barres_defs$foreign_aid_no
 
 
 ##### Run #####
 # Bars
-barres_multiple(barres = barres_defs[c("survey_biased")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs["points"], df = e, folder = "../figures/FR/") 
+barres_multiple(barres = barres_defs[c("support_binary")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
 # country, urban_cateogry, region, gender, age, couple, hh_size, income, education, employment, race, owner, wealth, survey_biased, interested_politics, donation_charities, political_affiliation, involvement_govt, left_right, vote_participation, vote, duration
 barres_multiple(barres = barres_defs[c("understood_each")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
@@ -551,6 +605,33 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
+
+# Word clouds and vote
+stopwords <- unlist(sapply(c("french", "english", "german", "spanish"), function(v) stopwords(v)))
+
+for (country in c("US1", "US2", "EU", "FR", "DE", "ES", "UK")) {
+  if (exists(tolower(country)) & is.data.frame(d(tolower(country)))) e <- d(country) else e <- eu[eu$country == country,]
+  barres_defs <- define_barres_defs(e) # TODO update define_barres_defs, uncomment below, check it works for FR, etc.
+  if (country != "US2") barres_multiple(barres = barres_defs[c("points")], df = e, folder = paste0("../figures/", country, "/")) 
+  
+  if ("comment_field" %in% names(e)) {
+    rquery.wordcloud(paste(e$comment_field, collapse=" \n "), max.words = 70, colorPalette = "Blues", excludeWords = c(stopwords)) # , "climate", "change", "government"
+    save_plot(filename = paste0("../figures/", country, "/comment_field"), height = 400, width = 400)
+  }
+
+  if ("gcs_field" %in% names(e)) {
+    rquery.wordcloud(paste(e$gcs_field, collapse=" \n "), max.words = 70, colorPalette = "Blues", excludeWords = c(stopwords)) # , "climate", "change", "government"
+    save_plot(filename = paste0("../figures/", country, "/gcs_field"), height = 400, width = 400)
+  }
+
+  if ("poverty_field" %in% names(e)) {
+    rquery.wordcloud(paste(e$poverty_field, collapse=" \n "), max.words = 70, colorPalette = "Blues", excludeWords = c(stopwords)) # , "climate", "change", "government"
+    save_plot(filename = paste0("../figures/", country, "/poverty_field"), height = 400, width = 400)
+  }
+
+  barres_multiple(barres = barres_defs[c("points", "vote_agg", "vote3", "vote", "vote_all", "vote_agg", paste0("vote_", tolower(country)), paste0("vote_", tolower(country), "_non_voters"), paste0("vote_", tolower(country), "_voters"))], df = e, folder = paste0("../figures/", country, "/"))
+}
+
 
 # x: done; v: done for US1, waiting for EU; ~: needs to be improved; -: needs to be done
 # x heatmap OECD
