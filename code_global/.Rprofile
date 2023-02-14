@@ -292,7 +292,7 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
   vec_agg[is.na(vec)] <- NA
   vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
   if (return == "vec") return(vec_agg)
-  else if (return == "levels") return(levels)
+  else if (return %in% c("levels", "labels")) return(levels)
   else if (return == "values") return(values)
 }
 decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights

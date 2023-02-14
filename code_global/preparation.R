@@ -1,6 +1,6 @@
 # Consistency: increase/reduce aid for those with the info + later question; petition_yes_support_no; duplicate_ip
 # TODO order_
-# TODO sources quotas
+# TODO sources quotas, national quotas incl. vote
 # TODO check vote
 
 source(".Rprofile")
@@ -526,6 +526,16 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$owner <- e$home_owner == T | e$home_landlord == T
   label(e$owner) <- "owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?"
   
+  thresholds_duration <- c(0, if (country == "EU") 6 else 4, 10, 15, 20, 25, 30, Inf) 
+  labels_duration <- agg_thresholds(e$duration, thresholds_duration, return = "levels")
+  if (sum(e$duration < if (country == "EU") 6 else 4) > 0) {
+    labels_duration[c(1,2)] <- c("< min", "min - 10")
+    e$duration_agg <- agg_thresholds(e$duration, thresholds_duration, labels = labels_duration)
+  } else {
+    labels_duration[c(1,2)] <- c("< min", "< 10")
+    e$duration_agg <- agg_thresholds(e$duration, thresholds_duration[2:length(thresholds_duration)], labels = labels_duration[2:length(labels_duration)])
+  }
+  
   if (only_finished) {
     if ("list_exp_rgl" %in% names(e)) {
       e$branch_list_exp[!is.na(e$list_exp_l)] <- "l"
@@ -922,6 +932,7 @@ e <- ep <- merge(usp, eup, all = T)
 
 # variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
 us1a <- prepare(country = "US1", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+eua <- prepare(country = "EU", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 
 eupa <- prepare(country = "EU", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 us1pa <- prepare(country = "US1", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]

@@ -1,5 +1,5 @@
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
-# TODO! "duration", socio-demos, politics compare
+# TODO! mean points
 # TODO list_exp, all_same heatmaps, 
 
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
@@ -209,6 +209,7 @@ labels_vars <- c(
   "survey_biased_no" = "Survey is not biased", 
   "interview" = "Agrees for interview",
   "duration" = "Duration",
+  "duration_agg" = "Duration",
   "duration_gcs" = "Duration: GCS comprehension",
   "duration_nr" = "Duration: NR comprehension",
   "duration_both" = "Duration: GCS+NR comprehension",
@@ -548,7 +549,7 @@ vars_barres <- c("ets2_support", "ets2_no", "other_policies", "climate_policies"
                  "global_tax_sharing", "global_tax_support", "national_tax_support", "conjoint", "group_defended", "group_defended_agg", "group_defended_agg2", 
                  "group_defended_agg5", "group_defended_agg6", "country_name", "urbanity", "region", "gender", "age", "age_exact", "couple", "hh_size", "income_decile", 
                  "income_quartile", "education", "diploma", "diploma_25_64", "employment_agg", "employment_status", "employment_18_64", "race", "owner", "wealth", "survey_biased", 
-                 "interested_politics", "donation_charities", "involvement_govt", "left_right") 
+                 "interested_politics", "donation_charities", "involvement_govt", "left_right", "duration_agg") 
 
 barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 # return(barres_defs) }
@@ -557,7 +558,7 @@ barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 
 ##### Run #####
 # Bars
-barres_multiple(barres = barres_defs["points"], df = e, folder = "../figures/FR/") 
+barres_multiple(barres = barres_defs["duration_agg"], df = e, folder = "../figures/EU/") 
 barres_multiple(barres = barres_defs[c("support_binary")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
 # country, urban_cateogry, region, gender, age, couple, hh_size, income, education, employment, race, owner, wealth, survey_biased, interested_politics, donation_charities, political_affiliation, involvement_govt, left_right, vote_participation, vote, duration
