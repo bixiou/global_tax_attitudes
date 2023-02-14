@@ -889,6 +889,7 @@ data1 <- function(vars, data=e, weights=T) {
 }
 dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE, levels = NULL) {
   missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "Don't know", "PNR or other", "NSP ou autre", "PNR ou autre", "PNR/Non-voter") # TODO: allow for non-standard PNR in a more straightforward way than adding the argument "fr" and putting its value below
+  if (is.character(fr)) missing_labels <- c(missing_labels, fr)
   if (is.null(data[['weight']])) weights <- F # TODO? warning
   mat <- c()
   if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !any(grepl("item", class(data[[var]])))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
@@ -1091,8 +1092,10 @@ order_agree <- function(data, miss, rev = T, n = ncol(data)) {
     else if (nrow(data)==7) { for (i in 1:n) { agree <- c(agree, data[6, i] + data[7, i]) } }
     else { for (i in 1:n) { agree <- c(agree, data[1, i]) } } }
   return(order(agree, decreasing = rev)) }
-barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, margin_r=0, margin_l=NULL, share_labels = NULL, online=FALSE, export_xls = F, digits = 0,
-                   display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
+barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, 
+                   margin_r=0, margin_l=NULL, share_labels = NULL, online=FALSE, export_xls = F, digits = 0,
+                   display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, 
+                   weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
   labels <- rev(unname(labels))
@@ -1380,7 +1383,10 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
   if (export_xls) save_plot(table, filename = sub("figures", "xlsx", paste0(folder, filename)))
   return(table)
 }
-heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(), conditions = c("", ">= 1", "/"), data = e, width = NULL, height = NULL, alphabetical = T, on_control = FALSE, export_xls = T, format = 'pdf', sort = FALSE, proportion = NULL, percent = FALSE, nb_digits = NULL, trim = T, colors = 'RdYlBu', folder = NULL, weights = T) {
+heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(), 
+                            conditions = c("", ">= 1", "/"), data = e, width = NULL, height = NULL, alphabetical = T, on_control = FALSE, 
+                            export_xls = T, format = 'pdf', sort = FALSE, proportion = NULL, percent = FALSE, nb_digits = NULL, trim = T, 
+                            colors = 'RdYlBu', folder = NULL, weights = T) {
   # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
   # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
   # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few).

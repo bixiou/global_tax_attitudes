@@ -49,7 +49,7 @@ major_candidates <- minor_candidates <- list()
   "employment_18_64" = c("Inactive", "Unemployed", "Employed", "65+"),
   "vote" = c("Left", "Center-right or Right", 'Far right', "PNR/Non-voter"),
   "EU_country" = c("FR", "DE", "ES", "UK"),
-  "US_region" = c("Northeast", "Midwest", "West","South"),
+  "US_region" = c("Northeast", "Midwest", "South", "West"),
   "US_race" = c("White only", "Hispanic", "Black", "Other"),
   "US_vote_us" = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"),
   "EU_urbanity" = c("Cities", "Towns and suburbs", "Rural"),
@@ -70,9 +70,9 @@ major_candidates <- minor_candidates <- list()
   
   quotas <- list("EU" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "country"),
                  "EU_all" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "country", "employment_18_64", "vote"), # TODO! vote_eu
-                 "US" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "region", "race"), 
-                 "US_vote" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "region", "race", "vote_us"),
-                 "US_all" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "region", "race", "employment_18_64", "vote"),
+                 "US" = c("gender", "income_quartile", "age", "urban", "diploma_25_64", "region", "race"), 
+                 "US_vote" = c("gender", "income_quartile", "age", "urban", "diploma_25_64", "region", "race", "vote_us"),
+                 "US_all" = c("gender", "income_quartile", "age", "urban", "diploma_25_64", "region", "race", "employment_18_64", "vote"),
                  "FR" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"), #, "urban_category") From oecd_climate: Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
                  # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
                  "DE" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"),
@@ -97,6 +97,7 @@ major_candidates <- minor_candidates <- list()
       "income_quartile" = rep(.25, 4),
       "age" = unlist(qs["US", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000),
       "urbanity" = c(qs["US", "Cities"], 0.001, qs["US","Rural"])/1000,
+      "urban" = c(qs["US", "Cities"], qs["US","Rural"])/1000,
       "diploma_25_64" = unlist(c(qs["US", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs["US", c("18-24", ">65")]/1000)))), 
       "employment_18_64" = unlist(c(c("Inactive" = qs["US", "Inactivity"], "Unemployed" = qs["US", "Unemployment"]*(1000-qs["US", "Inactivity"])/1000, "Employed" = 1000-qs["US", "Inactivity"]-qs["US", "Unemployment"]*(1000-qs["US", "Inactivity"])/1000)*(1000-qs["US", c(">65")])/1000, "65+" = qs["US", c(">65")])/1000),
       "vote" = unlist(c(c(qs["US", "Left"], qs["US", "Center-right.or.Right"], qs["US", "Far.right"])*(1000-qs["US", "Abstention"])/sum(qs["US", c("Left", "Center-right.or.Right", "Far.right")]), qs["US", "Abstention"])/1000),
@@ -326,7 +327,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
     variables_support_ets2_support <<- names(e)[grepl('ets2', names(e)) & grepl('support', names(e))]
     variables_support_ets2_no <<- names(e)[grepl('ets2_no_', names(e))]
-    variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition', names(e))]
+    variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition|order_', names(e))]
     variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
     variables_problem <<- names(e)[grepl('problem_', names(e))]
     variables_win_lose <<- names(e)[grepl('win_lose', names(e))]
@@ -906,6 +907,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 
 e <- eu <- prepare(country = "EU", weighting = FALSE)
 e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
+
+if (!"weight" %in% names(eu)) eu$weight <- 1 # otherwise variables like conutry are not correctly merged, don't know why
+e <- all <- merge(us1, eu, all = T)
 
 e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)
 

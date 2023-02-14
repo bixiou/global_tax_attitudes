@@ -1,5 +1,5 @@
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
-# TODO! EU, "duration", socio-demos, politics compare
+# TODO! "duration", socio-demos, politics compare
 # TODO list_exp, all_same heatmaps, 
 
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
@@ -329,29 +329,6 @@ for (c in countries) {
     if (length(var) == 1) labels_vars_country[[c]][paste0(var, "_agg")] <- policies.names[sub("points_", "", v), c]
   }
 }
-
-##### labels_vars_US #####
-# labels_vars_us <- c(
-#   "points_econ1_agg" = "Student loan forgiveness",
-#   "points_econ2_agg" = "$15 minimum wage",
-#   "points_econ3_agg" = "Universal childcare/pre-K",
-#   "points_econ4_agg" = "Funding affordable housing",
-#   "points_soc1_agg" = "Expanding the Supreme Court",
-#   "points_soc2_agg" = "Handgun ban",
-#   "points_soc3_agg" = "Making abortion a right at the federal level",
-#   "points_climate1_agg" = "Coal exit",
-#   "points_climate2_agg" = "Trillion dollar investment in clean transportation<br>infrastructure and building insulation",
-#   "points_climate3_agg" = "Ban the sale of new<br>combustion-engine cars by 2030",
-#   "points_tax1_nr_agg" = "National redistribution scheme",
-#   "points_tax2_wealth_tax_agg" = "Wealth tax",
-#   "points_tax3_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
-#   "points_tax3_corporate_tax_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
-#   "points_foreign1_gcs_agg" = "Global climate scheme",
-#   "points_foreign2_tax_rich_agg" = "Global tax on millionaires",
-#   "points_foreign3_assembly_agg" = "Global democratic assembly on climate change",
-#   "points_foreign4_aid_agg" = "Doubling foreign aid",
-#   "foreign_aid_no_nation_first" = "Charity begins at home: there is already a lot to do to support the American people in need"
-# )
 labels_vars_country$US["foreign_aid_no_nation_first"] <- "Charity begins at home: there is already a lot to do to support the American people in need"
 
 fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL) {
@@ -595,16 +572,22 @@ save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 850
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
-heatmap_multiple(heatmaps_defs[c("points", "donation", "belief", "foreign_aid_amount")])
+heatmap_multiple(heatmaps_defs[c("points", "donation", "belief", "foreign_aid_amount")], weights = F)
 
 (nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name)))))
 # Regroup heatmaps by nb of variables to change the size of the Viewer before each run and have nice saved plots
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]])
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2]])
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4]])
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]])
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2][1]], weights = F)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]], weights = F)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2][1]], weights = F)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2]], weights = F)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4][1]], weights = F)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4]], weights = F)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9][1]], weights = F)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]], weights = F)
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
+
+heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_defs$donation$labels, name = "donation", conditions = "", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = F) 
 
 # Word clouds and vote
 stopwords <- unlist(sapply(c("french", "english", "german", "spanish"), function(v) stopwords(v)))
@@ -669,3 +652,68 @@ temp <- c("Aid is a pressure tactic", " for high-income countries", "Aid is xa t
 strwrap(temp, 20)
 
 plot_ly(x = c(1), y = "Test", type = 'bar')
+
+
+##### Comparison representativeness #####
+labels_comp <- c("Population", "Sample: weighted", "Sample: non-weighted")
+
+plot_comp <- function(var, df = e, country = "EU", miss = NULL, pop = NULL, export_xls = FALSE, trim = T, rev = T, rev_color = FALSE, width = 850, return = "plot") {
+  if (is.null(pop)) {
+    name_var <- if (paste0(country, "_", var) %in% names(levels_quotas)) paste0(country, "_", var) else var
+    pop <- if (name_var %in% names(pop_freq[[country]])) pop_freq[[country]][[name_var]] else pop_freq[[country]][[var]]
+    pop <- setNames(pop, gsub(".", " ", levels_quotas[[name_var]], fixed = T)) }
+
+  missing_values <- as.character(unique(df[[var]][is.pnr(df[[var]])]))
+  missing_values <- missing_values[!is.na(missing_values)]
+  fr <- if (length(missing_values) == 1 & is.null(miss)) missing_values else FALSE
+  miss <- if (length(missing_values) == 1 & is.null(miss)) T else FALSE
+  if (length(missing_values) > 1) warning("More than one missing value.")
+
+  if (abs(sum(pop) - 1) < 0.03 & fr != FALSE) pop <- pop / sum(pop[names(pop)!= fr])
+
+  data <- cbind(dataN(var, data = df, miss = miss, weights = F, fr = fr), dataN(var, data = df, miss = miss, weights = F, fr = fr))
+  row.names(data) <- dataN(var, data = df, miss = miss, fr = fr, return = "legend") 
+
+  pop <- pop[row.names(data)]
+  data <- cbind(data, pop)
+  data <- data[sapply(1:nrow(data), function(i) (!all(data[i,]) <= 0.00001)),]
+  if (return == "data") return(data)
+
+  plot <- barres(data = data, export_xls = export_xls, labels = labels_comp, legend = row.names(data), miss = miss, sort = FALSE, rev = rev, rev_color = rev_color, showLegend = T, thin = T, weights = F)
+  if (return == "plot") print(plot)
+  save_plotly(plot, filename = paste0(var, "_comp"), folder = paste0("../figures/", ifelse(grepl("[0-9]", deparse(substitute(df))), toupper(deparse(substitute(df))), country), "/"), width = width, height = fig_height(nb_bars = 3, large = any(grepl("<br>", row.names(data)))), method = 'orca', trim = trim, format = 'pdf')
+
+}
+
+plot_all_comp <- function(df = eu, country = "EU") {
+  for (v in names(pop_freq[[country]])) {
+    tryCatch({plot_comp(var = sub(paste0(country, "_"), "", v), df = df, country = country)  
+    print(paste0(v, ": success"))}, error = function(cond) { print(paste0(v, ": failed.")) } )
+  } 
+}
+
+plot_all_comp(df = eu, country = "EU")
+plot_all_comp(df = us1, country = "US")
+
+plot_all_comp(df = us2, country = "US")
+plot_all_comp(df = us, country = "US")
+
+# plot_comp("gender", df = eu, country = "EU")
+# plot_comp("income_quartile", df = e, country = "EU")
+# plot_comp("age", df = eu, country = "EU")
+# plot_comp("urbanity", df = eu, country = "EU")
+# plot_comp("diploma_25_64", df = e, country = "EU") 
+# plot_comp("employment_18_64", df = eu, country = "EU")
+# plot_comp("vote", df = eu, country = "EU")
+# plot_comp("country", df = eu, country = "EU")
+# 
+# plot_comp("gender", df = us1, country = "US")
+# plot_comp("income_quartile", df = us1, country = "US")
+# plot_comp("age", df = us1, country = "US")
+# plot_comp("urban", df = us1, country = "US")
+# plot_comp("diploma_25_64", df = us1, country = "US") 
+# plot_comp("employment_18_64", df = us1, country = "US")
+# plot_comp("region", df = us1, country = "US")
+# plot_comp("race", df = us1, country = "US")
+# plot_comp("vote", df = us1, country = "US") 
+# plot_comp("vote_us", df = us1, country = "US")
