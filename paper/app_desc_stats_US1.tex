@@ -565,7 +565,7 @@ This is totally optional and will not be rewarded.
 \begin{table}[h]\label{tab:representativeness_US1}
     \caption{Sample representativeness for the first U.S. complementary survey.} 
     \makebox[\textwidth][c]{
-        \resizebox*{!}{.7\textheight}{% 73 without notes cf. https://tex.stackexchange.com/questions/13809/resizing-a-table-by-textheight 
+        \resizebox*{!}{.65\textheight}{% 73 without notes cf. https://tex.stackexchange.com/questions/13809/resizing-a-table-by-textheight 
         \input{../tables/sample_composition/US1.tex}
         }
     }
@@ -573,5 +573,55 @@ This is totally optional and will not be rewarded.
     {\footnotesize \textit{Note}: This table displays summary statistics of the samples alongside actual population frequencies. %For \textit{Vote}, we regroup candidates or parties into three broad categories and we take abstention into account (but omit this category). 
     %For \textit{Inactivity rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being either ``\textit{Inactive (not searching for a job)},'' a ``\textit{Student},'' or ``\textit{Retired}.'' For \textit{Unemployment rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being ``\textit{Unemployed (searching for a job)}'', (`\textit{Unemployed (searching for a job)},'' ``\textit{Full-time employed},'' ``\textit{Part-time employed},'' or ``\textit{Self-employed}''). For	\textit{Employment rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being either ``\textit{Full-time employed},'' ``\textit{Part-time employed},'' or ``\textit{Self-employed}.'' 
     Detailed sources for each variable and country population frequencies, as well as the definitions of regions, diploma, urbanity, employment, and vote are available in % TODO Appendix \ref{app:sources}.
+    }
+\end{table}
+
+
+\clearpage
+\section{Net gains from the Global Climate Scheme}\label{app:gain_gcs}
+
+% \begin{table}[h]\label{tab:gain_gcs}
+%     \caption{Net gains from the Global Climate Scheme.} 
+%     \makebox[\textwidth][c]{
+        % \resizebox*{!}{.7\textheight}{
+\begin{multicols}{2}
+    \setbox\ltmcbox\vbox{
+    \makeatletter\col@number\@ne
+        \input{../tables/gain_gcs.tex}
+    \unskip
+    \unpenalty
+    \unpenalty}
+    \unvbox\ltmcbox
+\end{multicols}
+        % }
+%     }
+    {\footnotesize \textit{Note}: %Emission data is from \cite{peters_synthesis_2012}. 
+    Asterisks denote countries where footprint is missing and territorial emissions is used instead. %Estimation of net gains is described in the text. 
+    Values differ from Figure \ref{fig:median_gain_2015} as this table present estimates of \textit{mean} net gain per adult in \textit{2030}, not at the present. Only the countries with more than 20 million adults (covering 87\% of the global total) are shown. 
+    }
+% \end{table}
+
+\begin{figure}[h!]
+    \caption{Net gains from the Global Climate Scheme.}\label{fig:median_gain_2015}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/maps/median_gain_2015.pdf}} 
+\end{figure}
+
+
+\clearpage
+\section{Sources}\label{app:sources}
+
+
+
+\clearpage
+\section{Attrition analysis}\label{app:attrition}
+
+\begin{table}[h]\label{tab:attrition_US1}
+    \caption{Attrition analysis for the US1 survey.} 
+    \makebox[\textwidth][c]{
+\resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
+        \input{../tables/US1/attrition_analysis.tex}
+        }
+    }
+    {\footnotesize %\textit{Note}: 
     }
 \end{table}
