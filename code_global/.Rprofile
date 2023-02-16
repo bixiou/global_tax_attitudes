@@ -33,6 +33,7 @@ if (!is.element("iatgen", installed.packages()[,1])) {
 package("ggplot2")
 package("ggalt") # maps
 package("janitor") # heatmaps
+package("ggdist") # nice confidence intervals in regression plots
   
 # package("qualtRics") # https://cran.r-project.org/web/packages/qualtRics/vignettes/qualtRics.html
 # For Antoine's account, API is not enabled (cf. Account Settings > Qualtrics ID > API or https://lse.eu.qualtrics.com/Q/QualtricsIdsSection/IdsSection) so we cannot retrieve the data directly using qualtRics.
@@ -1095,7 +1096,7 @@ order_agree <- function(data, miss, rev = T, n = ncol(data)) {
     else { for (i in 1:n) { agree <- c(agree, data[1, i]) } } }
   return(order(agree, decreasing = rev)) }
 barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, 
-                   margin_r=0, margin_l=NULL, share_labels = NULL, online=FALSE, export_xls = F, digits = 0,
+                   margin_r=0, margin_l=NULL, share_labels = NULL, online=FALSE, export_xls = F, digits = 0, add_means = FALSE, show_legend_means = T, transform_mean = identity,
                    display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, 
                    weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
@@ -1132,10 +1133,12 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
   if (!is.na(legend_x)) legendX <- legend_x
   if (!showLegend) { margin_t <- max(0, margin_t - 70) }
   if (ncol(data)==1) legendY <- 1 # 1.5 + 0.3*thin
+  if (!is.null(add_means) && add_means) means <- sapply(vars, function(v) return(transform_mean(wtd.mean(df[[v]], weights = df[["weight"]]))))
   if (sort) {
     order <- order_agree(data = data, miss = miss, rev = rev, n = length(labels))
     labels <- labels[order]
     data <- matrix(data[, order], nrow=nrow(data))
+    if (!is.null(add_means) && add_means) means <- means[order]
   }
   if (is.na(xrange)) xrange <- c(0, max(colSums(data))*1.099)
   if (nrow(data)==1 & (sort | !showLegend)) {  # new: add !showLegend to manage responsable_CC i.e. comparisons of a multiple answer question
@@ -1255,6 +1258,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     bars <- add_trace(bars, x = data[i,], name=legend[i], text = values[,i], hoverinfo = 'text', hovertext = hovers[,i], marker = list(color = color[i]),
                       error_x = list(visible = error_margin, array=qnorm(1-0.05/2)*sqrt(data[i,]*(1-data[i,])/(N-1)), color = color_margin)) # width thickness (in px)
   } } # /!\ When data and vars are not provided, N cannot be computed, but error_margin=T still returns a (zero) confidence interval
+  if (!is.null(add_means) && add_means)  bars <- add_trace(bars, x = means, name = "mean", marker = list(color = 'black', size = 10, symbol = 'diamond'), showlegend = (!is.null(show_legend_means) && show_legend_means), type = 'scatter', mode = 'markers')
   if (online) { api_create(bars, filename=file, sharing="public") }
   if (!missing(file) & save) save_plotly(bars, filename = file) # new
   if (export_xls) {

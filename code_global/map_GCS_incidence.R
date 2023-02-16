@@ -69,18 +69,20 @@ co2_emissions_2030 <- 26.3e9
 # There are discrepancies between OECD data (used in OECD survey) and Global Carbon Project data (used here as it covers all countries, cf. Peters al. (2012)). Discrepancies are always within +/- 20%.
 # The results also slightly change if the baseline year 2019 is used instead of 2015, and if we compute the net gain for (i.e. divide by population of) 2030 vs. 2015, cf. deprecated/draft_map_GCS_incidence.R for an analysis
 # For consistency with the OECD survey, we use 2015 as a baseline.
-for (y in c(2015, 2019)) {
-  co2_pop[[paste0("demographic_evolution_", y)]] <- (co2_pop$adult_2030/co2_pop[[paste0("adult_", y)]]) * (sum(co2_pop[[paste0("adult_", y)]])/adult_pop_2030)
-  co2_pop[[paste0("emissions_pc_", y)]] <- co2_pop[[paste0("emissions_", y)]]/co2_pop[[paste0("adult_", y)]]
-  co2_pop[[paste0("share_emissions_", y)]] <- co2_pop[[paste0("emissions_", y)]]/sum(co2_pop[[paste0("emissions_", y)]])
-  co2_pop[[paste0("share_emissions_2030_base_", y)]] <- co2_pop[[paste0("share_emissions_", y)]] * co2_pop[[paste0("demographic_evolution_", y)]]
-  co2_pop[[paste0("share_emissions_2030_base_", y)]] <- co2_pop[[paste0("share_emissions_2030_base_", y)]]/sum(co2_pop[[paste0("share_emissions_2030_base_", y)]])
+compute_gain <- function(year = 2030, base_year = 2019, type = "mean", df = co2_pop, return_data = T) {
+  df[[paste0("demographic_evolution_", base_year)]] <- (df$adult_2030/df[[paste0("adult_", base_year)]]) * (sum(df[[paste0("adult_", base_year)]])/adult_pop_2030)
+  df[[paste0("emissions_pc_", base_year)]] <- df[[paste0("emissions_", base_year)]]/df[[paste0("adult_", base_year)]]
+  df[[paste0("share_emissions_", base_year)]] <- df[[paste0("emissions_", base_year)]]/sum(df[[paste0("emissions_", base_year)]])
+  df[[paste0("share_emissions_2030_base_", base_year)]] <- df[[paste0("share_emissions_", base_year)]] * df[[paste0("demographic_evolution_", base_year)]]
+  df[[paste0("share_emissions_2030_base_", base_year)]] <- df[[paste0("share_emissions_2030_base_", base_year)]]/sum(df[[paste0("share_emissions_2030_base_", base_year)]])
+  df$emissions_pc_2030 <- df[[paste0("emissions_pc_", base_year)]] * co2_emissions_2030 / df$adult_2030
+  df[[paste0("revenues_pc_", year)]] <- df[[paste0("share_emissions_2030_base_", base_year)]] * carbon_tax_revenues_2030 / df[[paste0("adult_", year)]]/12
+  df[[paste0(type, "_gain_", year)]] <- 30 - (1 - 0.1*(type == "median"))*df[[paste0("revenues_pc_", year)]]
+  if (return_data) return(df) else return(df[[paste0(type, "_gain_", year)]])
 }
-co2_pop$emissions_pc_2030 <- co2_pop$share_emissions_2030_base_2019 * co2_emissions_2030 / co2_pop$adult_2030
-co2_pop$revenues_pc_2015 <- co2_pop$share_emissions_2030_base_2015 * carbon_tax_revenues_2030 / co2_pop$adult_2015/12
-co2_pop$revenues_pc_2030 <- co2_pop$share_emissions_2030_base_2019 * carbon_tax_revenues_2030 / co2_pop$adult_2030/12
-co2_pop$mean_gain_2030 <- 30 - co2_pop$revenues_pc_2030
-co2_pop$median_gain_2015 <- 30 - 0.9*co2_pop$revenues_pc_2015
+co2_pop <- compute_gain(year = 2015, base_year = 2015, type = "median") # creates median_gain_2015
+co2_pop <- compute_gain(year = 2030, base_year = 2019, type = "mean") # creates mean_gain_2030
+
 
 # Net median gain in our 5 countries of interest
 (median_gain_2015_LCU <- LCU_per_dollar*co2_pop$median_gain_2015[sapply(c("FRA", "DEU", "ESP", "GBR", "USA"), function(c) which(co2_pop$code == c))])

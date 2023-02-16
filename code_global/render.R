@@ -422,7 +422,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
   for (def in barres) {
     tryCatch({
       vars_present <- def$vars %in% names(df)
-      plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, margin_l = def$margin_l, 
+      plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, margin_l = def$margin_l, add_means = def$add_means, show_legend_means = def$show_legend_means,
                      miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, title = def$title, weights = weights)
       if (print) print(plot)
       save_plotly(plot, filename = def$name, folder = folder, width = def$width, height = def$height, method = method, trim = trim, format = format)
@@ -512,6 +512,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 850), # 1080
   "belief" = list(vars = variables_belief_agg, width = 850), # 750
   # "points" = list(vars = variables_points_agg, width = 850, sort = FALSE), # 750 TODO! average
+  "points_mean" = list(vars = variables_points_us_agg, width = 850, sort = FALSE, add_means = T, show_legend_means = T, transform_mean = function(x) return(x/100)), # 1080 points_us
   "points" = list(vars = variables_points_us_agg, width = 850, sort = FALSE), # 1080 points_us
   "share_policies_supported" = list(vars = "share_policies_supported_agg", width = 850), # 950
   "understood_score" = list(vars = variables_understood[4], width = 850), # 650
@@ -557,23 +558,39 @@ barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 
 ##### Run #####
 # Bars
-barres_multiple(barres = barres_defs["duration_agg"], df = e, folder = "../figures/EU/") 
+barres_multiple(barres = barres_defs[c("points", "points_mean")], df = us1, folder = "../figures/US1/") 
 barres_multiple(barres = barres_defs[c("support_binary")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
-# country, urban_cateogry, region, gender, age, couple, hh_size, income, education, employment, race, owner, wealth, survey_biased, interested_politics, donation_charities, political_affiliation, involvement_govt, left_right, vote_participation, vote, duration
 barres_multiple(barres = barres_defs[c("understood_each")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
-# list_exp
-(temp <- barres(data = data_list_exp(us1), rev = F, rev_color = T, export_xls = F, sort = F, thin = T, miss=F, showLegend = T, legend = c(0:4), labels=labels_vars[variables_list_exp]))
-save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 850, height = fig_height(4), trim = T)
 
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
 heatmap_multiple(heatmaps_defs[c("points", "donation", "belief", "foreign_aid_amount")], weights = F)
 
+# points TODO: define e
+(plot_points <- barres(vars = variables_points_us_agg[variables_points_us_agg %in% names(e)], df = e, export_xls = F, labels = barres_defs[["points"]]$labels[variables_points_us_agg %in% names(e)], sort = FALSE, weights = T, miss = FALSE, rev_color = T, rev = FALSE, add_means = T, transform_mean = function(x) return(x/100)))
+plot_points %>% layout(shapes = list(x0 = 0.167, x1 = 0.167, line = list(color = "grey"), type = "line", y0 = 0, y1 = 1, yref = "paper"))
+save_plotly(plot_points, filename = "points_line", folder = automatic_folder(along = "country", data = e, several = "all"), width = 850, height = fig_height(length(which(variables_points_us_agg %in% names(e)),  any(grepl("<br>", barres_defs[["points"]]$labels)))), trim = T, format = 'pdf')
+
+
+##### Bars #####
+barres_multiple(barres = barres_defs, df = eu, folder = "../figures/EU/") 
+barres_multiple(barres = barres_defs, df = us1, folder = "../figures/US1/") 
+barres_multiple(barres = barres_defs, df = us2, folder = "../figures/US2/") 
+barres_multiple(barres = barres_defs, df = us, folder = "../figures/US/") 
+barres_multiple(barres = barres_defs, df = all, folder = "../figures/all/") 
+
+# list_exp
+(temp <- barres(data = data_list_exp(us1), rev = F, rev_color = T, export_xls = F, sort = F, thin = T, miss=F, showLegend = T, legend = c(0:4), labels=labels_vars[variables_list_exp]))
+save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 850, height = fig_height(4), trim = T)
+
+
+##### Heatmaps #####
+# TODO define e
 (nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name)))))
 # Regroup heatmaps by nb of variables to change the size of the Viewer before each run and have nice saved plots
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2][1]], weights = F)
@@ -589,7 +606,7 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]], 
 
 heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_defs$donation$labels, name = "donation", conditions = "", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = F) 
 
-# Word clouds and vote
+##### Word clouds and vote #####
 stopwords <- unlist(sapply(c("french", "english", "german", "spanish"), function(v) stopwords(v)))
 
 for (country in c("US1", "US2", "EU", "FR", "DE", "ES", "UK")) {
@@ -616,6 +633,7 @@ for (country in c("US1", "US2", "EU", "FR", "DE", "ES", "UK")) {
 }
 
 
+##### Sanbox #####
 # x: done; v: done for US1, waiting for EU; ~: needs to be improved; -: needs to be done
 # x heatmap OECD
 # v support (HEAT + ctry)
@@ -731,3 +749,10 @@ modelplot(lm(reg_formula("gcs_support", socio_demos), data = eu), coef_map = rev
 
 modelplot(lm(reg_formula("gcs_support", quotas_us), data = us1), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))
 modelplot(lm(reg_formula("gcs_support", socio_demos_us), data = us1), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))
+
+reg_gcs_support_eu <- lm(reg_formula("gcs_support", socio_demos), data = eu)
+dat <- map_dfr(c(.5, .9, .99), function(x) { modelplot(reg_gcs_support_eu, conf_level = x, draw = FALSE) %>% mutate(.width = x) })
+dat$term <- as.character(dat$term)
+dat$term[dat$term %in% names(labels_vars)] <-labels_vars[dat$term[dat$term %in% names(labels_vars)]]
+ggplot(dat, aes(y = term, x = estimate, xmin = conf.low, xmax = conf.high)) +# , color = model
+  ggdist::geom_pointinterval(position = "dodge", interval_size_range = c(1, 3), fatten_point = .1) + xlab("") + ylab("") + theme_bw() # theme_classic()
