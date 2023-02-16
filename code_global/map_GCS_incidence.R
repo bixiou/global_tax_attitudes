@@ -23,13 +23,17 @@ co2$year[co2$year == 2016] <- 2030 # Beware, before we estimate 2030 emissions, 
 co2_pop <- merge(pop_iso3[pop_iso3$code != "",], co2[co2$code != "",])
 co2_pop$adult <- 1000 * co2_pop$adult
 co2_pop$emissions <- co2_pop$footprint
-decrit(co2_pop$footprint_2015) # 98 out of 218 countries missing (while no missing for territorial)
-# co2_pop$country[is.na(co2_pop$footprint_2015)]
+co2_pop$missing_footprint <- is.na(co2_pop$footprint)
 (sum(co2_pop$adult_2019[is.na(co2_pop$footprint_2019)])/adult_pop_2019) # 7.4% of global footprint data missing 
 co2_pop$emissions[is.na(co2_pop$footprint)] <- co2_pop$territorial[is.na(co2_pop$footprint)] # imputing territorial emissions for those countries
 co2_pop <- co2_pop %>% group_by(code) %>% pivot_wider(id_cols = c("code", "country"),  names_from = year, 
-           values_from = c("territorial", "footprint", "emissions", "adult"), names_glue = "{.value}_{year}") %>% ungroup()
+           values_from = c("territorial", "footprint", "emissions", "adult", "missing_footprint"), names_glue = "{.value}_{year}") %>% ungroup()
+co2_pop$missing_footprint <- co2_pop$missing_footprint_2019
+co2_pop <- co2_pop[, !colnames(co2_pop) %in% paste0("missing_footprint_", c(2015, 2019, 2023, 2030))]
 rm(pop, co2)  
+decrit(co2_pop$missing_footprint) # 98 out of 218 countries missing (while no missing for territorial)
+# co2_pop$country[co2_pop$missing_footprint]
+
 
 ##### Constants #####
 euro_per_dollar <- 0.94
@@ -62,7 +66,7 @@ co2_emissions_2030 <- 26.3e9
 
 ##### Compute net gain per capita #####
 # Assumption: emissions per adult (>15) will evolve in the same way in all countries
-# There are discrepancies between OECD data (used in OECD survey) and Global Carbon Project data (used here as it covers all countries, cf. Peters al. (2012))
+# There are discrepancies between OECD data (used in OECD survey) and Global Carbon Project data (used here as it covers all countries, cf. Peters al. (2012)). Discrepancies are always within +/- 20%.
 # The results also slightly change if the baseline year 2019 is used instead of 2015, and if we compute the net gain for (i.e. divide by population of) 2030 vs. 2015, cf. deprecated/draft_map_GCS_incidence.R for an analysis
 # For consistency with the OECD survey, we use 2015 as a baseline.
 for (y in c(2015, 2019)) {
@@ -80,6 +84,17 @@ co2_pop$median_gain_2015 <- 30 - 0.9*co2_pop$revenues_pc_2015
 
 # Net median gain in our 5 countries of interest
 (median_gain_2015_LCU <- LCU_per_dollar*co2_pop$median_gain_2015[sapply(c("FRA", "DEU", "ESP", "GBR", "USA"), function(c) which(co2_pop$code == c))])
+# Appendix table
+min_pop_table_gain_gcs <- 20e6
+sum(co2_pop$adult_2019[co2_pop$adult_2019 > min_pop_table_gain_gcs])/adult_pop_2019 # 94% (89%) of global population lives in one of the 80 (57) countries > 10M
+# TODO? remove? change Mean to Median and mean_gain_2030 to median_gain_2015? With median_gain_2015, the ranking with emissions_pc_2015 is not preserved because we divide by adult_2015 instead of adult_2030
+table_gain_gcs <- sort(setNames(co2_pop$mean_gain_2030[co2_pop$adult_2019 > min_pop_table_gain_gcs], co2_pop$country[co2_pop$adult_2019 > min_pop_table_gain_gcs]))
+temp <- sort(setNames(co2_pop$emissions_pc_2019[co2_pop$adult_2019 > min_pop_table_gain_gcs], co2_pop$country[co2_pop$adult_2019 > min_pop_table_gain_gcs])) # China has larger footprint than France!
+table_gain_gcs <- cbind(table_gain_gcs, temp[names(table_gain_gcs)])
+row.names(table_gain_gcs)[row.names(table_gain_gcs) %in% co2_pop$country[co2_pop$missing_footprint]] <- paste0(row.names(table_gain_gcs)[row.names(table_gain_gcs) %in% co2_pop$country[co2_pop$missing_footprint]], "*")
+row.names(table_gain_gcs)[row.names(table_gain_gcs) %in% c("Democratic Republic of Congo*", "Democratic Republic of the Congo*")] <- "DRC*"
+cat(paste(kbl(table_gain_gcs, "latex", caption = "Estimated net gain from the GCS in 2030 and carbon footprint by country.", position = "b", escape = F, booktabs = T, digits = c(0, 1), linesep = rep("", nrow(table_gain_gcs)-1), longtable = T, label = "gain_gcs.tex",
+              col.names = c("\\makecell{Mean\\\\net gain\\\\from\\\\the GCS\\\\(\\$/month)}", "\\makecell{CO$_\\text{2}$\\\\footprint\\\\per adult\\\\in 2019\\\\(tCO$_\\text{2}$/y)}")), collapse="\n"), file = "../tables/gain_gcs.tex") 
 
 
 ##### Plot map #####

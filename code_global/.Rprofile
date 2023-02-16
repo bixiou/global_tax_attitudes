@@ -55,7 +55,7 @@ package("beepr") # beep() makes sound
 package("openxlsx")
 package("cjoint") # conjoint analysis /!\ I fixed a bug in the program => to install my version, package("devtools"), clone repo, setwd(/cjoint/R), build(), install()
 package("modelsummary")
-#' package("xtable")
+package("xtable") # export latex table
 #' package("rms")
 #' package('pwr')
 #' package("foreign")
