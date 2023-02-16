@@ -1096,7 +1096,7 @@ order_agree <- function(data, miss, rev = T, n = ncol(data)) {
     else { for (i in 1:n) { agree <- c(agree, data[1, i]) } } }
   return(order(agree, decreasing = rev)) }
 barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, 
-                   margin_r=0, margin_l=NULL, share_labels = NULL, online=FALSE, export_xls = F, digits = 0, add_means = FALSE, show_legend_means = T, transform_mean = identity,
+                   margin_r=0, margin_l=NULL, share_labels = NULL, online=FALSE, export_xls = F, digits = 0, add_means = FALSE, show_legend_means = T, transform_mean = NULL,
                    display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, 
                    weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
@@ -1133,6 +1133,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
   if (!is.na(legend_x)) legendX <- legend_x
   if (!showLegend) { margin_t <- max(0, margin_t - 70) }
   if (ncol(data)==1) legendY <- 1 # 1.5 + 0.3*thin
+  if (!is.null(add_means) && add_means && is.null(transform_mean)) transform_mean <- identity
   if (!is.null(add_means) && add_means) means <- sapply(vars, function(v) return(transform_mean(wtd.mean(df[[v]], weights = df[["weight"]]))))
   if (sort) {
     order <- order_agree(data = data, miss = miss, rev = rev, n = length(labels))
