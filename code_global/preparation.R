@@ -2,6 +2,7 @@
 # TODO order_
 # TODO sources quotas, national quotas incl. vote
 # TODO check vote
+# /!\ EU is not representative country by country, e.g. in the UK there are ~half of >65.
 
 source(".Rprofile")
 source("relabel_rename.R")
@@ -35,6 +36,7 @@ names(conjoint.attributes) <- conjoint_attributes # c("Economic.issues", "Societ
 countries_names <- c("France", "Germany", "Spain", "United Kingdom", "United States")
 names(countries_names) <- countries <- c("FR", "DE", "ES", "UK", "US")
 names(countries) <- countries_names
+countries_EU <- countries[1:4]
 major_candidates <- minor_candidates <- list()
 
 
@@ -80,32 +82,28 @@ major_candidates <- minor_candidates <- list()
                  "UK" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64")
   )
 
-  qs <- read.xlsx("../questionnaire/specificities.xlsx", sheet = "Quotas", rowNames = T, rows = c(1, 6, 8), cols = 1:43)
+  qs <- read.xlsx("../questionnaire/specificities.xlsx", sheet = "Quotas", rowNames = T, rows = c(1:6, 8), cols = 1:43)
+
   pop_freq <- list(
-    "EU" = list( # TODO each EU country
-      "gender" = c(qs["EU","women"], 0.001, qs["EU","men"])/1000,
-      "income_quartile" = rep(.25, 4),
-      "age" = unlist(qs["EU", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000),
-      "urbanity" = unlist(qs["EU", c("Cities", "Towns.and.suburbs", "Rural")]/1000),
-      "diploma_25_64" = unlist(c(qs["EU", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs["EU", c("18-24", ">65")]/1000)))), 
-      "employment_18_64" = unlist(c(c("Inactive" = qs["EU", "Inactivity"], "Unemployed" = qs["EU", "Unemployment"]*(1000-qs["EU", "Inactivity"])/1000, "Employed" =  1000-qs["EU", "Inactivity"]-qs["EU", "Unemployment"]*(1000-qs["EU", "Inactivity"])/1000)*(1000-qs["EU", c(">65")])/1000, "65+" = qs["EU", c(">65")])/1000), 
-      "vote" = unlist(c(c(qs["EU", "Left"], qs["EU", "Center-right.or.Right"], qs["EU", "Far.right"])*(1000-qs["EU", "Abstention"])/sum(qs["EU", c("Left", "Center-right.or.Right", "Far.right")]), qs["EU", "Abstention"])/1000),
+    "EU" = list( 
       "EU_country" = unlist(qs["EU", c("FR", "DE", "ES", "UK")]/1000)
     ),
     "US" = list(
-      "gender" = c(qs["US","women"], 0.001, qs["US","men"])/1000,
-      "income_quartile" = rep(.25, 4),
-      "age" = unlist(qs["US", c("18-24", "25-34", "35-49", "50-64", ">65")]/1000),
       "urbanity" = c(qs["US", "Cities"], 0.001, qs["US","Rural"])/1000,
       "urban" = c(qs["US", "Cities"], qs["US","Rural"])/1000,
-      "diploma_25_64" = unlist(c(qs["US", c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs["US", c("18-24", ">65")]/1000)))), 
-      "employment_18_64" = unlist(c(c("Inactive" = qs["US", "Inactivity"], "Unemployed" = qs["US", "Unemployment"]*(1000-qs["US", "Inactivity"])/1000, "Employed" = 1000-qs["US", "Inactivity"]-qs["US", "Unemployment"]*(1000-qs["US", "Inactivity"])/1000)*(1000-qs["US", c(">65")])/1000, "65+" = qs["US", c(">65")])/1000),
-      "vote" = unlist(c(c(qs["US", "Left"], qs["US", "Center-right.or.Right"], qs["US", "Far.right"])*(1000-qs["US", "Abstention"])/sum(qs["US", c("Left", "Center-right.or.Right", "Far.right")]), qs["US", "Abstention"])/1000),
       "US_region" = unlist(qs["US", c("Region.1", "Region.2", "Region.3", "Region.4")]/1000),
       "US_race" = unlist(qs["US", c("White.non.Hispanic", "Hispanic", "Black", "Other")]/1000),
       "US_vote_us" = c(0.342171, 0.312823, 0.345006, 0.000001)
     ))
-  for (c in c("EU", "US")) pop_freq[[c]]$diploma <- c(unlist(pop_freq[[c]]$diploma), "Not 25-64" = 1-sum(pop_freq[[c]]$diploma))
+  for (c in c("EU", countries)) {
+    pop_freq[[c]]$gender <- c(qs[c,"women"], 0.001, qs[c,"men"])/1000
+    pop_freq[[c]]$income_quartile <- rep(.25, 4)
+    pop_freq[[c]]$age <- unlist(qs[c, c("18-24", "25-34", "35-49", "50-64", ">65")]/1000)
+    pop_freq[[c]]$diploma_25_64 <- unlist(c(qs[c, c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs[c, c("18-24", ">65")]/1000))))
+    pop_freq[[c]]$employment_18_64 <- unlist(c(c("Inactive" = qs[c, "Inactivity"], "Unemployed" = qs[c, "Unemployment"]*(1000-qs[c, "Inactivity"])/1000, "Employed" =  1000-qs[c, "Inactivity"]-qs[c, "Unemployment"]*(1000-qs[c, "Inactivity"])/1000)*(1000-qs[c, c(">65")])/1000, "65+" = qs[c, c(">65")])/1000)
+    pop_freq[[c]]$vote <- unlist(c(c(qs[c, "Left"], qs[c, "Center-right.or.Right"], qs[c, "Far.right"])*(1000-qs[c, "Abstention"])/sum(qs[c, c("Left", "Center-right.or.Right", "Far.right")]), qs[c, "Abstention"])/1000)
+    if (c != "US") pop_freq[[c]]$urbanity <- unlist(qs[c, c("Cities", "Towns.and.suburbs", "Rural")]/1000)
+  }
 }
 
 
@@ -238,7 +236,9 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
     # if (!incl_quality_fail) e <- e[e$attention_test == T, ] # TODO!
     if (weighting) {
       e$weight <- weighting(e, sub("[0-9p]+", "", country))
+      e$weight_all <- weighting(e, sub("[0-9p]+", "", country), variant = "all")
       if ("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
+      if (country == "EU") for (c in countries_EU) e$weight_country[e$country == c] <- weighting(e[e$country == c,], c)
     }
     
   # e$left_right_na <- as.numeric(e$left_right)

@@ -1,5 +1,6 @@
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO! mean points
+# TODO fig regressions
 # TODO list_exp, all_same heatmaps, 
 
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
