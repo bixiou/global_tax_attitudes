@@ -336,10 +336,12 @@ decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FA
 Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TRUE, concatenate = FALSE, max_values = 13, names = FALSE) {
   if (values) {
     if (length(variable)==1 & is.character(variable)) variable <- data[[variable]]
-    if (length(annotation(variable))==1 & !is.null(labels(variable))) Levs <- as.character(labels(variable))
+    # if (length(annotation(variable))==1 & !is.null(labels(variable))) Levs <- as.character(labels(variable)) # old, gave numbers instead of labels for double.item
+    if ("double.item" %in% class(variable) & !is.null(labels(variable))) Levs <- names(as.character(labels(variable)))
+    else if (("character.item" %in% class(variable) | length(annotation(variable))==1) & !is.null(labels(variable))) Levs <- as.character(labels(variable))
     else if (is.factor(variable)) Levs <- levels(variable)
     else if (is.numeric(variable)) {
-      if (length(unique(variable)) > 13) {
+      if (length(unique(variable)) > max_values) {
         Levs <- round(c(min(variable, na.rm = T), max(variable, na.rm = T)), 3)
         names(Levs) <- c("min", "max")
       } else Levs <- round(sort(unique(variable)), 3) }
@@ -1945,326 +1947,327 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   # return(plot)
 }
 
-#' ##### Plot along #####
-#' # gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
-#' # outcomes, covariates: string vectors / subsamples: variable name
-#' # /!\ when logit_margin = T, we don't take weight into account (haven't found an R function that gives the marginal logit effects with weight)
-#' regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, summary = FALSE) {
-#'   # TODO! handle outcomes of type "future_richness" (so that they are understood as as.numeric(future_richness))
-#'   # TODO! handle along of type "income" (so that they are understood as as.factor(income)) => this can be done using , names_levels = paste0("as.factor(income)", c("Q1", "Q2", "Q3", "Q4"))
-#'   if (length(logit)==1) if (is.null(subsamples)) logit <- rep(logit, length(outcomes)) else logit <- logit <- rep(logit, length(outcomes)*max(1, length(Levels(df[[subsamples]]))))
-#'   regs <- list()
-#'   i <- 0
-#'   if (!is.null(subsamples)) {
-#'     if (subsamples %in% covariates) {
-#'       warning("subsamples should not be in covariates")
-#'       covariates <- covariates[covariates!=subsamples] }
-#'     for (s in Levels(df[[subsamples]])) {
-#'       regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, subsamples = NULL, df = df[df[[subsamples]]==s,], logit = logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
-#'       i <- i + 1   }
-#'   } else for (y in outcomes) {
-#'     several_values <- c()
-#'     for (c in seq_along(covariates)) several_values[c] <- length(unique(df[[covariates[c]]])) > 1
-#'     covariates <- covariates[several_values]
-#'     if ("double.item" %in% class(df[[y]])) dependent_var <- paste0("as.numeric(", y, ")") else dependent_var <- y
-#'     formula <- as.formula(paste(dependent_var, " ~ ", paste(covariates, collapse = ' + ')))
-#'     i <- i + 1
-#'     if (logit[i]) {
-#'       if (logit_margin) {
-#'         reg <- logitmfx(formula, data = df, atmean = atmean) #$mfxest
-#'         if (summary) reg <- reg$mfxest
-#'       } else reg <- glm(formula, family = binomial(link='logit'), data = df, weights = weight)
-#'     } else reg <- lm(formula, data = df, weights = weight)
-#'     if (summary) reg <- summary(reg)
-#'     regs <- c(regs, list(reg))
-#'   }
-#'   return(regs)
-#' }
-#' 
-#' # Given a set of regressions with one common variable (along), gives the coefs and CI of the levels of that variable.
-#' #   or, if subsamples == along & !missing(covariates), gives the coefs/CI of all covariates with one regression for each subsample
-#' mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'others_at_mean', logit = c(FALSE), logit_margin = T, confidence = 0.95, factor_along = FALSE, covariates = NULL,
-#'                                       subsamples = NULL, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), weight = 'weight', print_regs = FALSE) { # to handle numeric variables: levels_along = ifelse(is.numeric(df[[along]]), c(), Levels(df[[along]]))
-#'   # names_levels[1] should correspond to the control group (concatenation of along and the omitted level)
-#'   # origin can be 0, 'intercept': the intercept, the 'control_mean': true (or predicted) mean of the control group, or 'others_at_mean': all variables at their mean except along (at 0 i.e. the control group)
-#'   # TODO: logit, origin
-#'   # TODO! handle continuous covariates; covariates/regressions with only one level; solve glitch of displaying some omitted values (e.g. Vote: Left)
-#'   if (!is.null(subsamples) && subsamples == along && !is.null(covariates)) {
-#'     mean_ci <- data.frame()
-#'     for (v in covariates) {
-#'       mean_ci_v <- mean_ci_along_regressions(regs = regs, along = v, labels = levels_along, subsamples = subsamples, df = df, covariates = NULL, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, factor_along = factor_along, weight = weight)
-#'       mean_ci_v$along <- paste0(v, mean_ci_v$along)
-#'       if (exists("labels_vars")) mean_ci_v$along <- labels_vars[mean_ci_v$along]
-#'       names(mean_ci_v) <- c("along", "mean", "CI_low", "CI_high", "y")
-#'       mean_ci <- rbind(mean_ci, mean_ci_v)
-#'       mean_ci <- mean_ci[mean_ci$y != "<NA>",]
-#'       mean_ci <- mean_ci[!is.na(mean_ci$mean),]
-#'     }
-#'   } else {
-#'     if (length(names_levels) == 1 & grepl("(", names_levels, fixed = T)) {
-#'       lev <- sub("(", "", sub(")", "", names_levels, fixed=T), fixed=T)
-#'       levels_along <- c("FALSE", "TRUE")
-#'       names_levels <- paste0(lev, levels_along)
-#'     }
-#'     if (factor_along) names_levels <- paste0("as.factor(", along, ")", levels_along)
-#'     k <- length(names_levels)
-#'     if (k < 2) warning("along must have several levels.")
-#'     if (length(levels_along)!=length(names_levels)) warning("levels_along and names_levels must have same length.")
-#'     mean_ci <- data.frame()
-#'     i <- 0
-#'     if (class(regs) != "list") regs <- list(regs)
-#'     if (length(logit)==1) logit <- rep(logit, length(regs)) # TODO determine automatically whether logit through class(regs)
-#'     for (r in regs) {
-#'       if (print_regs) print(summary(r))
-#'       i <- i+1
-#'       label <- rep(labels[i], length(levels_along))
-#'       if (!is.null(subsamples)) data_s <- df[df[[subsamples]] == Levels(df[[subsamples]])[i],] else data_s <- df
-#'       if (!("weight" %in% names(data_s))) data_s$weight <- 1
-#'       if (logit[i] & logit_margin) {
-#'         regmxf <- r$mfxest
-#'         reg <- r$fit }
-#'       else reg <- r
-#'       if (origin == 'intercept') origin_value <- reg$coefficients[["(Intercept)"]]
-#'       else if (origin == 'others_at_mean') {
-#'         if (names(reg$coefficients)[1] == "(Intercept)") origin_value <- reg$coefficients[["(Intercept)"]]
-#'         else origin_value <- 0
-#'         variables <- names(reg$model)[2:length(names(reg$model))]
-#'         for (v in variables) {
-#'           if (v %in% names(reg$xlevels) & v != along) for (j in reg$xlevels[[v]][2:length(reg$xlevels[[v]])]) {
-#'             name_var <- sub("^as\\.factor\\((.*)\\)$", "\\1", "as.factor(income)")
-#'             if (!name_var %in% names(data_s)) warning(paste(name_var, "not in names(df): its coefficient set to 0 to compute the origin value."))
-#'             else origin_value <- origin_value + reg$coefficients[[paste0(v, j)]] * wtd.mean(data_s[[name_var]] == j, weights = data_s$weight, na.rm = T) }
-#'           else if (v %in% names(reg$coefficients) & !(v %in% c(along, "(weights)"))) origin_value <- origin_value + reg$coefficients[[v]] * wtd.mean(data_s[[v]], weights = data_s$weight, na.rm = T)
-#'         }
-#'         if (logit[i]) origin_value <- 1/(1+exp(-origin_value)) # cf. https://www.princeton.edu/~otorres/LogitR101.pdf for an alternative coding
-#'       } else if (origin == 'control_mean') {
-#'         dependent_var <- if (logit[i] & logit_margin) reg$y else reg$model[[1]]
-#'         origin_value <- wtd.mean(dependent_var[data_s[[along]] == levels_along[1]], weights = data_s$weight[data_s[[along]] == levels_along[1]])
-#'       } else origin_value <- 0
-#'       if (logit[i] & logit_margin) { # logit margins
-#'         # if ("lm" %in% class(reg)) warning("Logit margins should be provided: logitmfx(..)")
-#'         for (l in names_levels[2:k]) if (!l %in% row.names(regmxf)) {
-#'           warning(paste("Covariate", l, "is absent from regression, replaced by NA."))
-#'           regmxf <- rbind(regmxf, rep(NA, ncol(regmxf)))
-#'           row.names(regmxf)[length(row.names(regmxf))] <- l }
-#'         
-#'         coefs <- origin_value + c(0, regmxf[names_levels[2:k],1])
-#'         
-#'         # SEs <- c(0, regmxf[names_levels[2:k],2])
-#'         # z <- qnorm(1-(1-confidence)/2)
-#'         # CI <- cbind(coefs - z*SEs, coefs + z*SEs) # CIs approximated using Standard Errors of logitmargin(...)$mfxest. Pb: no CI for omitted variable.
-#'         
-#'         n <- length(reg$fitted.values)
-#'         t <- qt(1-(1-confidence)/2, n)
-#'         sigma <- sqrt(wtd.mean((reg$y - reg$fitted.values)^2)) #, weights = data_s$weight)) TODO: handle weight for logit_margin (uncommenting this would only work when there is no missing value so that length(data_s$weight)==length(reg$y))
-#'         SDs <- sapply(levels_along, function(i) return(sqrt(wtd.mean(((data_s[[along]] == i) - wtd.mean(data_s[[along]] == i, weights = data_s$weight, na.rm = T))^2, weights = data_s$weight, na.rm = T))))
-#'         CI <- cbind(coefs - t*sqrt(1/n)*sigma/SDs, coefs + t*sqrt(1/n)*sigma/SDs) # CIs approximated as if the results were that of a linear regression. Stata uses a more appropriate method: the Delta method (which also have some issues: CIs can be outside [0; 1]), not easily implementable in R (despite msm::deltamethod)
-#'       } else { # OLS
-#'         if (logit[i]) warning("Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
-#'         #   mean_ci_origin <- binconf(x = sum(data_s[[weight]][data_s[[along]] == levels_along[1]], na.rm=T), n = sum(data_s[[weight]], na.rm=T), alpha = 1-confidence) # WRONG! This is the CI for the group mean, not the CI for the regression coefficient!
-#'         #   CI_origin <- mean_ci_origin[2:3] - (origin_value == 0) * mean_ci_origin[1] # c(0, 0) # TODO! check that this confidence interval at the origin is correct (I doubt it)
-#'         n <- length(reg$fitted.values)
-#'         t <- qt(1-(1-confidence)/2, n)
-#'         if (!("weight" %in% names(data_s))) data_s$weight <- 1
-#'         if (!("weights" %in% names(reg))) reg$weights <- 1
-#'         sigma <- sqrt(wtd.mean((reg$model[[1]] - reg$fitted.values)^2, weights = reg$weights))
-#'         SD <- sqrt(wtd.mean(((data_s[[along]] == levels_along[1]) - wtd.mean(data_s[[along]] == levels_along[1], weights = data_s$weight, na.rm = T))^2, weights = data_s$weight, na.rm = T))
-#'         CI_origin <- c(-1, 1)*t*sqrt(1/n)*sigma/SD # This computation is very close to confint(...), which we can't use for the omitted variable.
-#'         coefs <- origin_value + c(0, reg$coefficients[names_levels[2:k]]) # what about emmeans(reg, ~ 1 | along) to compute e.g. CI_origin?
-#'         # CI <- origin_value + rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) # if simple OLS
-#'         robust_SEs <- coeftest(reg, vcov = vcovHC(reg, "HC1")) # another way to get (non-robust) SEs is summary(reg)$coefficients[,2]
-#'         # print(robust_SEs)
-#'         # print(names_levels)
-#'         for (l in names_levels[2:k]) if (!l %in% row.names(robust_SEs)) {
-#'           warning(paste("Covariate", l, "is absent from regression, replaced by NA."))
-#'           names(coefs) <- names_levels[1:k]
-#'           robust_SEs <- rbind(robust_SEs, rep(NA, ncol(robust_SEs)))
-#'           row.names(robust_SEs)[length(row.names(robust_SEs))] <- l }
-#'         CI <- origin_value + rbind(CI_origin, cbind(robust_SEs[names_levels[2:k], 1] - t*robust_SEs[names_levels[2:k], 2], robust_SEs[names_levels[2:k], 1] + t*robust_SEs[names_levels[2:k], 2]))
-#'       }
-#'       mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
-#'       mean_ci <- rbind(mean_ci, mean_ci_reg)
-#'     }
-#'     row.names(mean_ci) <- NULL
-#'   }
-#'   return(mean_ci)
-#' }
-#' 
-#' 
-#' # Two cases: with covariates (coefficients or marginal effects are shown, depending on origin = 0 or not) or without covariates (i.e. unconditional means of subgroups)
-#' # Four configurations: a. and b. one outcomes, two heterogeneities / c. and d. different outcomes, one heterogeneity (d. is invert_y_along = T)
-#' # a. one outcome, y: subsamples (e.g. countries), along: heterogeneity; b. one outcome, y: covariates, along = subsamples: heterogeneity (e.g. countries)
-#' # c. y: outcomes, along; d. y: heterogeneity, along: outcomes
-#' # For numerical outcomes (i.e. not dummies), set conditions to rep("", length(outcomes))
-#' mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste0(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c(" > 0"), invert_y_along = FALSE, df = e, labels = outcome_vars, factor_along = FALSE,
-#'                     origin = 'others_at_mean', logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95,
-#'                     labels_along = levels_along, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), heterogeneity_condition = "", order_y = NULL, order_along = NULL, print_regs = print_regs) {
-#'   z <- qnorm(1-(1-confidence)/2)
-#'   if ((labels_along == levels_along) & is.logical(df[[along]])) { labels_along <- paste0(along, ": ", levels_along) }
-#'   names(labels_along) <- as.character(levels_along) # setNames(levels_along, levels_along)
-#'   if (!is.null(covariates)) { # If conditional (regressions)
-#'     if (!(along %in% c(covariates, subsamples))) print("ERROR: along must be in covariates")
-#'     if (any(logit) & !logit_margin) print("Warning: Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
-#'     if (!is.null(subsamples) & (missing(labels) | labels == outcome_vars)) labels <- Levels(df[[subsamples]])
-#'     regs <- regressions_list(outcomes = outcomes, covariates = covariates, subsamples = subsamples, df = df, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, summary = FALSE)
-#'     mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, df = df, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, subsamples = subsamples, covariates = covariates, names_levels = names_levels, levels_along = levels_along, factor_along = factor_along, weight = weight, print_regs = print_regs)
-#'     mean_ci$along <- labels_along[as.character(mean_ci$along)]
-#'   } else { # If unconditional (subgroup means)
-#'     if (!is.null(subsamples)) { # Configuration a.
-#'       if (length(outcomes) > 1) warning("There cannot be several outcomes with subsamples, only the first outcome will be used.")
-#'       outcome <- outcomes[1]
-#'       y_loop <- Levels(df[[subsamples]])
-#'       if (missing(labels) | labels == outcome_vars) labels <- y_loop # TODO: replace by/use name_levels or levels_along
-#'       if (is.character(y_loop)) y_loop <- paste0("'", y_loop, "'")
-#'       cond <- paste0("[x$", subsamples, "==", y_loop, "]")
-#'       configurations <- paste0("(x$", outcome, ")", cond, ", w = x[[weight]]", cond)
-#'     } else { # Configuration c.
-#'       y_loop <- outcomes
-#'       configurations <- paste0("x$", y_loop, ", w = x[[weight]]")
-#'     }
-#'     i <- 0
-#'     mean_ci <- data.frame()
-#'     for (configuration in configurations) {
-#'       i <- i + 1
-#'       mean_ci_reg <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[along]]", heterogeneity_condition, sep = "")))),
-#'                                           function(x) c(eval(str2expression(paste("wtd.mean(", configuration, ", na.rm=T)"))),
-#'                                                         eval(str2expression(paste("sqrt(modi::weighted.var(", configuration,", na.rm=T))/sqrt(NROW(x))"))))))
-#'       mean_ci_reg <- as.data.frame(t(apply(mean_ci_reg, 2, function(x) c(x[1],x[1]-z*x[2], x[1]+z*x[2])))) # /!\ This is a CI for a normal distribution, only an approximation in cases of binomial distributions
-#'       mean_ci_reg <- tibble::rownames_to_column(mean_ci_reg, along)
-#'       mean_ci_reg$y <- labels[i]
-#'       names(mean_ci_reg) <- c("along", "mean", "CI_low", "CI_high", "y")
-#'       mean_ci_reg$along <- labels_along[as.character(mean_ci_reg$along)]
-#'       mean_ci <- rbind(mean_ci, mean_ci_reg)
-#'     }
-#'   }
-#'   if (invert_y_along) names(mean_ci) <- c("y", "mean", "CI_low", "CI_high", "along")
-#'   # if (invert_y_along) {
-#'   #   names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
-#'   #   names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
-#'   #   names(mean_ci)[which(names(mean_ci) == "temp")] <- "y"  }
-#'   
-#'   if (exists("countries_names")) {
-#'     if (Levels(mean_ci$along)==sort(countries_names)) mean_ci$along <- factor(mean_ci$along, levels = countries_names)
-#'     if (Levels(mean_ci$y)==sort(countries_names)) mean_ci$y <- factor(mean_ci$y, levels = rev(countries_names))
-#'   }
-#'   if (!is.null(order_y)) if (sort(Levels(mean_ci$y))==sort(order_y)) mean_ci$y <- factor(mean_ci$y, levels = order_y)
-#'   if (!is.null(order_along)) if (sort(Levels(mean_ci$along))==sort(order_along)) mean_ci$along <- factor(mean_ci$along, levels = order_along)
-#'   return(mean_ci)
-#' }
-#' 
-#' plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c(" > 0"), invert_y_along = FALSE, df = e, labels = vars, factor_along = FALSE,
-#'                        origin = 'others_at_mean', logit = c(FALSE), atmean = T, logit_margin = T, labels_along = levels_along, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]),  # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
-#'                        confidence = 0.95, weight = "weight", heterogeneity_condition = "", return_mean_ci = FALSE, print_name = FALSE, legend_top = FALSE, to_percent = FALSE, colors = NULL, color_RdBu = FALSE,
-#'                        legend_x = '', legend_y = '', plot_origin_line = FALSE, name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T, order_y = NULL, order_along = NULL) {
-#'   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables
-#'   # TODO: automatic values when missing(legend_x), legend_y
-#'   # TODO! make invert_y_along work for regressions/covariates
-#'   if (missing(name) & !missing(vars) & !missing(along)) {
-#'     if (grepl('["\']', deparse(substitute(vars)))) {
-#'       name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1]), paste0(vars[1], "_by_", along))
-#'       warning("The filename is formed with the first variable name, given that the argument 'name' is missing.")
-#'     } else name <- ifelse(invert_y_along, name <- paste0(along, "_by_", deparse(substitute(vars))), paste0(deparse(substitute(vars)), "_by_", along))
-#'   } else if (missing(name) & !missing(mean_ci)) {
-#'     potential_name <- deparse(substitute(mean_ci))
-#'     if (missing(along)) along <- ""
-#'     if (grepl('["\']', potential_name)) warning("(file)name should be provided, or mean_ci should have a name.")
-#'     name <- ifelse(invert_y_along, paste0(along, "_by_", mean_ci), paste0(mean_ci, "_by_", along))
-#'   } else if (missing(name)) name <- "temp"
-#'   name <- sub("rev(", "", sub(")", "", sub("country_name", "country", name, fixed = T), fixed = T), fixed = T)
-#'   if (print_name) print(name) # TODO: name with subsamples
-#'   
-#'   if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
-#'   
-#'   if (missing(mean_ci)) mean_ci <- mean_ci(along = along, outcome_vars = vars, outcomes = outcomes, covariates = covariates, subsamples = subsamples, conditions = conditions, invert_y_along = invert_y_along, df = df, labels = labels, factor_along = factor_along,
-#'                                            origin = origin, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, confidence = confidence, order_y = order_y, order_along = order_along,
-#'                                            names_levels = names_levels, labels_along = labels_along, levels_along = levels_along, heterogeneity_condition = heterogeneity_condition, print_regs = return_mean_ci)
-#'   
-#'   #  if (missing(mean_ci)) {
-#'   #    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weight = weight, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
-#'   #    mean_ci$y <- factor(mean_ci$y, levels = vars, labels = labels) }
-#'   #
-#'   #  if (invert_y_along & country_heterogeneity == F) {
-#'   #    names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
-#'   #    names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
-#'   #    names(mean_ci)[which(names(mean_ci) == "temp")] <- "y" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
-#'   #  } else if (country_heterogeneity) {
-#'   #    names(mean_ci)[which(names(mean_ci) == "variable")] <- "policy" # TODO: generalize this by rewriting heterogeneity_mean_CI
-#'   #    names(mean_ci)[which(names(mean_ci) == "country")] <- "y"
-#'   # }
-#'   
-#'   if (plot_origin_line) {
-#'     origins <- mean_ci$mean[mean_ci$along == levels_along[1]]
-#'     names(origins) <- mean_ci$y[mean_ci$along == names_levels[1]]
-#'   } else origins <- c()
-#'   if (to_percent) mean_ci[,c("mean", "CI_low", "CI_high")] <- 100*mean_ci[,c("mean", "CI_low", "CI_high")]
-#'   if (color_RdBu) colors <- sub("#F7F7F7", "#FFED6F", color(length(Levels(df[[along]])), rev_color = T)) # , grey_replaces_last = T, grey = T
-#'   
-#'   plot <- ggplot(mean_ci) + sapply(origins, function(xint) geom_vline(aes(xintercept = xint), linetype = "longdash", color = "grey")) + # For plot, we need mean_ci (cols: mean, CI_low,high, variable, along), legend_x, legend_y. For save, we need: name, folder, width, height.
-#'     geom_pointrange( aes(x = mean, y = y, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
-#'     labs(x = legend_x, y = legend_y, color="") + theme_minimal() + theme(legend.title = element_blank(), legend.position = ifelse(legend_top, "top", "right")) +
-#'     {if (!missing(colors)) scale_color_manual(values = colors)} # + scale_color_manual(values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
-#'   # scale_color_manual(labels = Levels(df[[along]]), values = color(length(Levels(df[[along]])), theme='rainbow'))# BUG when we specify labels: the legend does not correspond to the colors
-#'   plot
-#'   if (save) save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
-#'   if (return_mean_ci) return(mean_ci)
-#'   else return(plot)
-#' }
-#' 
-#' 
-#' # var_to_decompose and group_of_interest: you need to input only one variable as a character
-#' # controls and indices, can be a character vector
-#' # Factor variables from control need to be in controls_factor
-#' gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, df=e, weights = "weight") {
-#'   # We restrict the df to the variables we'll use, since there can be some incompatibilities
-#'   # in using R dataframes in Stata
-#'   df <- df %>%
-#'     select(c(var_to_decompose, group_of_interest, controls, controls_factor, indices, weights))
-#'   
-#'   # Rename var because problem with Stata for variables with names too long
-#'   indices_short <- c()
-#'   for (i in seq_along(indices)){
-#'     indices_short[i] <- paste("index_", i, sep = "")
-#'   }
-#'   df <- df %>%
-#'     rename_with(~ indices_short[which(indices == .x)], .cols = indices)
-#'   df <- df %>%
-#'     rename("var_to_decompose" = var_to_decompose)
-#'   
-#'   
-#'   # First, we prepare the options for the analysis
-#'   option_b1x2 <- ""
-#'   for (i in seq_along(indices)){
-#'     option_b1x2 <- paste(option_b1x2,"g", i, " = ", indices_short[i], " : ", sep = "")
-#'   }
-#'   option_b1x2 <- substr(option_b1x2, 1, nchar(option_b1x2)-3)
-#'   nbr_indices <- length(indices)
-#'   
-#'   # We stock the different lines of codes for Stata into a vector
-#'   # Each element corresponds to a different line of code to run in Stata
-#'   # We will then collapse those commands altogether to run them w/ RStata
-#'   stata_cmd <- c()
-#'   stata_cmd[1] <- "
-#'   set more off
-#'   //ssc install b1x2, replace"
-#'   stata_cmd[2] <- paste("global indices", paste('"', paste(indices_short, collapse = " "), '"', sep =""), sep = " ")
-#'   stata_cmd[3] <- paste("global controls", paste('"', paste(controls, collapse = " "), '"', sep = ""), sep = " ")
-#'   stata_cmd[4] <- paste("global controls_factor", paste('"', paste(controls_factor, collapse = " "), '"', sep = ""), sep = " ")
-#'   stata_cmd[5] <- paste("global option_b1x2", paste('"', option_b1x2, '"', sep = ""), sep = " ")
-#'   stata_cmd[6] <- paste("global nbr_indices", paste(nbr_indices), sep = " ")
-#'   stata_cmd[7] <- paste("global nbr_plus_one_indices", paste(nbr_indices+1), sep = " ")
-#'   stata_cmd[8] <- paste("global var_to_decompose", paste("var_to_decompose"), sep = " ")
-#'   stata_cmd[9] <- paste("local var_to_decompose", paste("var_to_decompose"), sep = " ")
-#'   stata_cmd[10] <- paste("global group_of_interest", paste(group_of_interest), sep = " ")
-#'   stata_cmd[11] <- paste("local group_of_interest", paste(group_of_interest), sep = " ")
-#'   stata_cmd[12] <- paste("global local_weight [aw=", paste(weights), paste("]"), sep = "")
-#'   stata_cmd[13] <- "do gelbach_stata.do"
-#'   
-#'   stata_cmd <- paste(stata_cmd, collapse = "\n")
-#'   # We input df, and obtain the data frame with the share explained by each indice
-#'   final <- stata(stata_cmd, data.in = df, data.out = T)
-#'   
-#'   return(final)
-#' }
+##### Plot along #####
+# gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
+# outcomes, covariates: string vectors / subsamples: variable name
+# /!\ when logit_margin = T, we don't take weight into account (haven't found an R function that gives the marginal logit effects with weight)
+regressions_list <- function(outcomes, covariates, subsamples = NULL, df = e, logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, summary = FALSE) {
+  # TODO! handle outcomes of type "future_richness" (so that they are understood as as.numeric(future_richness))
+  # TODO! handle along of type "income" (so that they are understood as as.factor(income)) => this can be done using , names_levels = paste0("as.factor(income)", c("Q1", "Q2", "Q3", "Q4"))
+  if (length(logit)==1) if (is.null(subsamples)) logit <- rep(logit, length(outcomes)) else logit <- logit <- rep(logit, length(outcomes)*max(1, length(Levels(df[[subsamples]]))))
+  regs <- list()
+  i <- 0
+  if (!is.null(subsamples)) {
+    if (subsamples %in% covariates) {
+      warning("subsamples should not be in covariates")
+      covariates <- covariates[covariates!=subsamples] }
+    for (s in Levels(df[[subsamples]])) {
+      regs <- c(regs, regressions_list(outcomes = outcomes, covariates = covariates, subsamples = NULL, df = df[df[[subsamples]]==s,], logit = logit[(i*length(outcomes)+1):((i+1)*length(outcomes))], weight = weight, atmean = atmean, logit_margin = logit_margin))
+      i <- i + 1   }
+  } else for (y in outcomes) {
+    several_values <- c()
+    for (c in seq_along(covariates)) several_values[c] <- length(unique(df[[covariates[c]]])) > 1
+    covariates <- covariates[several_values]
+    if ("double.item" %in% class(df[[y]])) dependent_var <- paste0("as.numeric(", y, ")") else dependent_var <- y
+    formula <- as.formula(paste(dependent_var, " ~ ", paste(covariates, collapse = ' + ')))
+    i <- i + 1
+    if (logit[i]) {
+      if (logit_margin) {
+        reg <- logitmfx(formula, data = df, atmean = atmean) #$mfxest
+        if (summary) reg <- reg$mfxest
+      } else reg <- glm(formula, family = binomial(link='logit'), data = df, weights = weight)
+    } else reg <- lm(formula, data = df, weights = weight)
+    if (summary) reg <- summary(reg)
+    regs <- c(regs, list(reg))
+  }
+  return(regs)
+}
+
+# Given a set of regressions with one common variable (along), gives the coefs and CI of the levels of that variable.
+#   or, if subsamples == along & !missing(covariates), gives the coefs/CI of all covariates with one regression for each subsample
+mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'others_at_mean', logit = c(FALSE), logit_margin = T, confidence = 0.95, factor_along = FALSE, covariates = NULL,
+                                      subsamples = NULL, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), weight = 'weight', print_regs = FALSE) { # to handle numeric variables: levels_along = ifelse(is.numeric(df[[along]]), c(), Levels(df[[along]]))
+  # names_levels[1] should correspond to the control group (concatenation of along and the omitted level)
+  # origin can be 0, 'intercept': the intercept, the 'control_mean': true (or predicted) mean of the control group, or 'others_at_mean': all variables at their mean except along (at 0 i.e. the control group)
+  # TODO: logit, origin
+  # TODO! handle continuous covariates; covariates/regressions with only one level; solve glitch of displaying some omitted values (e.g. Vote: Left)
+  if (!is.null(subsamples) && subsamples == along && !is.null(covariates)) {
+    mean_ci <- data.frame()
+    for (v in covariates) {
+      mean_ci_v <- mean_ci_along_regressions(regs = regs, along = v, labels = levels_along, subsamples = subsamples, df = df, covariates = NULL, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, factor_along = factor_along, weight = weight)
+      mean_ci_v$along <- paste0(v, mean_ci_v$along)
+      if (exists("labels_vars")) mean_ci_v$along <- labels_vars[mean_ci_v$along]
+      names(mean_ci_v) <- c("along", "mean", "CI_low", "CI_high", "y")
+      mean_ci <- rbind(mean_ci, mean_ci_v)
+      mean_ci <- mean_ci[mean_ci$y != "<NA>",]
+      mean_ci <- mean_ci[!is.na(mean_ci$mean),]
+    }
+  } else {
+    if (length(names_levels) == 1 & grepl("(", names_levels, fixed = T)) {
+      lev <- sub("(", "", sub(")", "", names_levels, fixed=T), fixed=T)
+      levels_along <- c("FALSE", "TRUE")
+      names_levels <- paste0(lev, levels_along)
+    }
+    if (factor_along) names_levels <- paste0("as.factor(", along, ")", levels_along)
+    k <- length(names_levels)
+    if (k < 2) warning("along must have several levels.")
+    if (length(levels_along)!=length(names_levels)) warning("levels_along and names_levels must have same length.")
+    mean_ci <- data.frame()
+    i <- 0
+    if (class(regs) != "list") regs <- list(regs)
+    if (length(logit)==1) logit <- rep(logit, length(regs)) # TODO determine automatically whether logit through class(regs)
+    for (r in regs) {
+      if (print_regs) print(summary(r))
+      i <- i+1
+      label <- rep(labels[i], length(levels_along))
+      if (!is.null(subsamples)) data_s <- df[df[[subsamples]] == Levels(df[[subsamples]])[i],] else data_s <- df
+      if (!("weight" %in% names(data_s))) data_s$weight <- 1
+      if (logit[i] & logit_margin) {
+        regmxf <- r$mfxest
+        reg <- r$fit }
+      else reg <- r
+      if (origin == 'intercept') origin_value <- reg$coefficients[["(Intercept)"]]
+      else if (origin == 'others_at_mean') {
+        if (names(reg$coefficients)[1] == "(Intercept)") origin_value <- reg$coefficients[["(Intercept)"]]
+        else origin_value <- 0
+        variables <- names(reg$model)[2:length(names(reg$model))]
+        for (v in variables) {
+          if (v %in% names(reg$xlevels) & v != along) for (j in reg$xlevels[[v]][2:length(reg$xlevels[[v]])]) {
+            name_var <- sub("^as\\.factor\\((.*)\\)$", "\\1", "as.factor(income)")
+            if (!name_var %in% names(data_s)) warning(paste(name_var, "not in names(df): its coefficient set to 0 to compute the origin value."))
+            else origin_value <- origin_value + reg$coefficients[[paste0(v, j)]] * wtd.mean(data_s[[name_var]] == j, weights = data_s$weight, na.rm = T) }
+          else if (v %in% names(reg$coefficients) & !(v %in% c(along, "(weights)"))) origin_value <- origin_value + reg$coefficients[[v]] * wtd.mean(data_s[[v]], weights = data_s$weight, na.rm = T)
+        }
+        if (logit[i]) origin_value <- 1/(1+exp(-origin_value)) # cf. https://www.princeton.edu/~otorres/LogitR101.pdf for an alternative coding
+      } else if (origin == 'control_mean') {
+        dependent_var <- if (logit[i] & logit_margin) reg$y else reg$model[[1]]
+        origin_value <- wtd.mean(dependent_var[data_s[[along]] == levels_along[1]], weights = data_s$weight[data_s[[along]] == levels_along[1]])
+      } else origin_value <- 0
+      if (logit[i] & logit_margin) { # logit margins
+        # if ("lm" %in% class(reg)) warning("Logit margins should be provided: logitmfx(..)")
+        for (l in names_levels[2:k]) if (!l %in% row.names(regmxf)) {
+          warning(paste("Covariate", l, "is absent from regression, replaced by NA."))
+          regmxf <- rbind(regmxf, rep(NA, ncol(regmxf)))
+          row.names(regmxf)[length(row.names(regmxf))] <- l }
+
+        coefs <- origin_value + c(0, regmxf[names_levels[2:k],1])
+
+        # SEs <- c(0, regmxf[names_levels[2:k],2])
+        # z <- qnorm(1-(1-confidence)/2)
+        # CI <- cbind(coefs - z*SEs, coefs + z*SEs) # CIs approximated using Standard Errors of logitmargin(...)$mfxest. Pb: no CI for omitted variable.
+
+        n <- length(reg$fitted.values)
+        t <- qt(1-(1-confidence)/2, n)
+        sigma <- sqrt(wtd.mean((reg$y - reg$fitted.values)^2)) #, weights = data_s$weight)) TODO: handle weight for logit_margin (uncommenting this would only work when there is no missing value so that length(data_s$weight)==length(reg$y))
+        SDs <- sapply(levels_along, function(i) return(sqrt(wtd.mean(((data_s[[along]] == i) - wtd.mean(data_s[[along]] == i, weights = data_s$weight, na.rm = T))^2, weights = data_s$weight, na.rm = T))))
+        CI <- cbind(coefs - t*sqrt(1/n)*sigma/SDs, coefs + t*sqrt(1/n)*sigma/SDs) # CIs approximated as if the results were that of a linear regression. Stata uses a more appropriate method: the Delta method (which also have some issues: CIs can be outside [0; 1]), not easily implementable in R (despite msm::deltamethod)
+      } else { # OLS
+        if (logit[i]) warning("Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
+        #   mean_ci_origin <- binconf(x = sum(data_s[[weight]][data_s[[along]] == levels_along[1]], na.rm=T), n = sum(data_s[[weight]], na.rm=T), alpha = 1-confidence) # WRONG! This is the CI for the group mean, not the CI for the regression coefficient!
+        #   CI_origin <- mean_ci_origin[2:3] - (origin_value == 0) * mean_ci_origin[1] # c(0, 0) # TODO! check that this confidence interval at the origin is correct (I doubt it)
+        n <- length(reg$fitted.values)
+        t <- qt(1-(1-confidence)/2, n)
+        if (!("weight" %in% names(data_s))) data_s$weight <- 1
+        if (!("weights" %in% names(reg))) reg$weights <- 1
+        sigma <- sqrt(wtd.mean((reg$model[[1]] - reg$fitted.values)^2, weights = reg$weights))
+        SD <- sqrt(wtd.mean(((data_s[[along]] == levels_along[1]) - wtd.mean(data_s[[along]] == levels_along[1], weights = data_s$weight, na.rm = T))^2, weights = data_s$weight, na.rm = T))
+        CI_origin <- c(-1, 1)*t*sqrt(1/n)*sigma/SD # This computation is very close to confint(...), which we can't use for the omitted variable.
+        coefs <- origin_value + c(0, reg$coefficients[names_levels[2:k]]) # what about emmeans(reg, ~ 1 | along) to compute e.g. CI_origin?
+        # CI <- origin_value + rbind(CI_origin, confint(reg, names_levels[2:k], confidence)) # if simple OLS
+        robust_SEs <- coeftest(reg, vcov = vcovHC(reg, "HC1")) # another way to get (non-robust) SEs is summary(reg)$coefficients[,2]
+        # print(robust_SEs)
+        # print(names_levels)
+        for (l in names_levels[2:k]) if (!l %in% row.names(robust_SEs)) {
+          warning(paste("Covariate", l, "is absent from regression, replaced by NA."))
+          names(coefs) <- names_levels[1:k]
+          robust_SEs <- rbind(robust_SEs, rep(NA, ncol(robust_SEs)))
+          row.names(robust_SEs)[length(row.names(robust_SEs))] <- l }
+        CI <- origin_value + rbind(CI_origin, cbind(robust_SEs[names_levels[2:k], 1] - t*robust_SEs[names_levels[2:k], 2], robust_SEs[names_levels[2:k], 1] + t*robust_SEs[names_levels[2:k], 2]))
+      }
+      mean_ci_reg <- data.frame(y = label, mean = coefs, CI_low = CI[,1], CI_high = CI[,2], along = levels_along)
+      mean_ci <- rbind(mean_ci, mean_ci_reg)
+    }
+    row.names(mean_ci) <- NULL
+  }
+  return(mean_ci)
+}
+
+
+# Two cases: with covariates (coefficients or marginal effects are shown, depending on origin = 0 or not) or without covariates (i.e. unconditional means of subgroups)
+# Four configurations: a. and b. one outcomes, two heterogeneities / c. and d. different outcomes, one heterogeneity (d. is invert_y_along = T)
+# a. one outcome, y: subsamples (e.g. countries), along: heterogeneity; b. one outcome, y: covariates, along = subsamples: heterogeneity (e.g. countries)
+# c. y: outcomes, along; d. y: heterogeneity, along: outcomes
+# For numerical outcomes (i.e. not dummies), set conditions to rep("", length(outcomes))
+mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste0(outcome_vars, conditions), covariates = NULL, subsamples = NULL, conditions = c(" > 0"), invert_y_along = FALSE, df = e, labels = outcome_vars, factor_along = FALSE,
+                    origin = 'others_at_mean', logit = c(FALSE), weight = 'weight', atmean = T, logit_margin = T, confidence = 0.95,
+                    labels_along = levels_along, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]), heterogeneity_condition = "", order_y = NULL, order_along = NULL, print_regs = print_regs) {
+  z <- qnorm(1-(1-confidence)/2)
+  if (all(labels_along == levels_along) & is.logical(df[[along]])) { labels_along <- paste0(along, ": ", levels_along) }
+  names(labels_along) <- as.character(levels_along) # setNames(levels_along, levels_along)
+  if (!is.null(covariates)) { # If conditional (regressions)
+    if (!(along %in% c(covariates, subsamples))) print("ERROR: along must be in covariates")
+    if (any(logit) & !logit_margin) print("Warning: Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
+    if (!is.null(subsamples) & (missing(labels) | labels == outcome_vars)) labels <- Levels(df[[subsamples]])
+    regs <- regressions_list(outcomes = outcomes, covariates = covariates, subsamples = subsamples, df = df, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, summary = FALSE)
+    mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, df = df, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, subsamples = subsamples, covariates = covariates, names_levels = names_levels, levels_along = levels_along, factor_along = factor_along, weight = weight, print_regs = print_regs)
+    mean_ci$along <- labels_along[as.character(mean_ci$along)]
+  } else { # If unconditional (subgroup means)
+    if (!is.null(subsamples)) { # Configuration a.
+      if (length(outcomes) > 1) warning("There cannot be several outcomes with subsamples, only the first outcome will be used.")
+      outcome <- outcomes[1]
+      y_loop <- Levels(df[[subsamples]])
+      if (missing(labels) | labels == outcome_vars) labels <- y_loop # TODO: replace by/use name_levels or levels_along
+      if (is.character(y_loop)) y_loop <- paste0("'", y_loop, "'")
+      cond <- paste0("[x$", subsamples, "==", y_loop, "]")
+      configurations <- paste0("(x$", outcome, ")", cond, ", w = x[[weight]]", cond)
+    } else { # Configuration c.
+      y_loop <- outcomes
+      configurations <- paste0("x$", y_loop, ", w = x[[weight]]")
+    }
+    i <- 0
+    mean_ci <- data.frame()
+    for (configuration in configurations) {
+      i <- i + 1
+      mean_ci_reg <- as.data.frame(sapply(split(df, eval(str2expression(paste("df[[along]]", heterogeneity_condition, sep = "")))),
+                                          function(x) c(eval(str2expression(paste("wtd.mean(", configuration, ", na.rm=T)"))),
+                                                        eval(str2expression(paste("sqrt(modi::weighted.var(", configuration,", na.rm=T))/sqrt(NROW(x))"))))))
+      mean_ci_reg <- as.data.frame(t(apply(mean_ci_reg, 2, function(x) c(x[1],x[1]-z*x[2], x[1]+z*x[2])))) # /!\ This is a CI for a normal distribution, only an approximation in cases of binomial distributions
+      mean_ci_reg <- tibble::rownames_to_column(mean_ci_reg, along)
+      mean_ci_reg$y <- labels[i]
+      names(mean_ci_reg) <- c("along", "mean", "CI_low", "CI_high", "y")
+      mean_ci_reg$along <- labels_along[as.character(mean_ci_reg$along)]
+      mean_ci <- rbind(mean_ci, mean_ci_reg)
+    }
+  }
+  if (invert_y_along) names(mean_ci) <- c("y", "mean", "CI_low", "CI_high", "along")
+  # if (invert_y_along) {
+  #   names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
+  #   names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
+  #   names(mean_ci)[which(names(mean_ci) == "temp")] <- "y"  }
+
+  if (exists("countries_names")) {
+    if (all(Levels(mean_ci$along)==sort(countries_names))) mean_ci$along <- factor(mean_ci$along, levels = countries_names)
+    if (all(Levels(mean_ci$y)==sort(countries_names))) mean_ci$y <- factor(mean_ci$y, levels = rev(countries_names))
+  }
+  if (!is.null(order_y)) if (sort(Levels(mean_ci$y))==sort(order_y)) mean_ci$y <- factor(mean_ci$y, levels = order_y)
+  if (!is.null(order_along)) if (sort(Levels(mean_ci$along))==sort(order_along)) mean_ci$along <- factor(mean_ci$along, levels = order_along)
+  return(mean_ci)
+}
+
+plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0(vars, conditions), covariates = NULL, subsamples = NULL, conditions = c(" > 0"), invert_y_along = FALSE, df = e, labels = vars, factor_along = FALSE,
+                       origin = 'others_at_mean', logit = c(FALSE), atmean = T, logit_margin = T, labels_along = levels_along, names_levels = paste0(along, levels_along), levels_along = Levels(df[[along]]),  # condition = "> 0", #country_heterogeneity = FALSE, along_labels,
+                       confidence = 0.95, weight = "weight", heterogeneity_condition = "", return_mean_ci = FALSE, print_name = FALSE, legend_top = FALSE, to_percent = FALSE, colors = NULL, color_RdBu = FALSE,
+                       legend_x = '', legend_y = '', plot_origin_line = FALSE, name = NULL, folder = '../figures/country_comparison/', width = dev.size('px')[1], height = dev.size('px')[2], save = T, order_y = NULL, order_along = NULL) {
+  # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables
+  # TODO: automatic values when missing(legend_x), legend_y
+  # TODO! make invert_y_along work for regressions/covariates
+  if (exists("labels_vars") & missing(labels)) labels[vars %in% names(labels_vars)] <- labels_vars[vars[vars %in% names(labels_vars)]] 
+  if (missing(name) & !missing(vars) & !missing(along)) {
+    if (any(grepl('["\']', deparse(substitute(vars))))) {
+      name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1]), paste0(vars[1], "_by_", along))
+      warning("The filename is formed with the first variable name, given that the argument 'name' is missing.")
+    } else name <- ifelse(invert_y_along, name <- paste0(along, "_by_", deparse(substitute(vars))), paste0(deparse(substitute(vars)), "_by_", along))
+  } else if (missing(name) & !missing(mean_ci)) {
+    potential_name <- deparse(substitute(mean_ci))
+    if (missing(along)) along <- ""
+    if (grepl('["\']', potential_name)) warning("(file)name should be provided, or mean_ci should have a name.")
+    name <- ifelse(invert_y_along, paste0(along, "_by_", mean_ci), paste0(mean_ci, "_by_", along))
+  } else if (missing(name)) name <- "temp"
+  name <- sub("rev(", "", sub(")", "", sub("country_name", "country", name, fixed = T), fixed = T), fixed = T)
+  if (print_name) print(name) # TODO: name with subsamples
+
+  if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
+
+  if (missing(mean_ci)) mean_ci <- mean_ci(along = along, outcome_vars = vars, outcomes = outcomes, covariates = covariates, subsamples = subsamples, conditions = conditions, invert_y_along = invert_y_along, df = df, labels = labels, factor_along = factor_along,
+                                           origin = origin, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, confidence = confidence, order_y = order_y, order_along = order_along,
+                                           names_levels = names_levels, labels_along = labels_along, levels_along = levels_along, heterogeneity_condition = heterogeneity_condition, print_regs = return_mean_ci)
+
+  #  if (missing(mean_ci)) {
+  #    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weight = weight, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
+  #    mean_ci$y <- factor(mean_ci$y, levels = vars, labels = labels) }
+  #
+  #  if (invert_y_along & country_heterogeneity == F) {
+  #    names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
+  #    names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
+  #    names(mean_ci)[which(names(mean_ci) == "temp")] <- "y" # or the les robust one-liner: names(mean_ci) <- c("variable", "mean", "CI_low", "CI_high", "along")
+  #  } else if (country_heterogeneity) {
+  #    names(mean_ci)[which(names(mean_ci) == "variable")] <- "policy" # TODO: generalize this by rewriting heterogeneity_mean_CI
+  #    names(mean_ci)[which(names(mean_ci) == "country")] <- "y"
+  # }
+
+  if (plot_origin_line) {
+    origins <- mean_ci$mean[mean_ci$along == levels_along[1]]
+    names(origins) <- mean_ci$y[mean_ci$along == names_levels[1]]
+  } else origins <- c()
+  if (to_percent) mean_ci[,c("mean", "CI_low", "CI_high")] <- 100*mean_ci[,c("mean", "CI_low", "CI_high")]
+  if (color_RdBu) colors <- sub("#F7F7F7", "#FFED6F", color(length(Levels(df[[along]])), rev_color = T)) # , grey_replaces_last = T, grey = T
+
+  plot <- ggplot(mean_ci) + sapply(origins, function(xint) geom_vline(aes(xintercept = xint), linetype = "longdash", color = "grey")) + # For plot, we need mean_ci (cols: mean, CI_low,high, variable, along), legend_x, legend_y. For save, we need: name, folder, width, height.
+    geom_pointrange( aes(x = mean, y = y, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
+    labs(x = legend_x, y = legend_y, color="") + theme_minimal() + theme(legend.title = element_blank(), legend.position = ifelse(legend_top, "top", "right")) +
+    {if (!missing(colors)) scale_color_manual(values = colors)} # + scale_color_manual(values = color(length(levels_along), theme='rainbow')) # can be theme = 'rainbow', 'RdBu', 'default' or any brewer theme, but the issue with RdBu/default is that the middle one is white for odd number of categories
+  # scale_color_manual(labels = Levels(df[[along]]), values = color(length(Levels(df[[along]])), theme='rainbow'))# BUG when we specify labels: the legend does not correspond to the colors
+  plot
+  if (save) save_plotly(plot, filename = name, folder = folder, width = width, height = height, trim = T)
+  if (return_mean_ci) return(mean_ci)
+  else return(plot)
+}
+
+
+# # var_to_decompose and group_of_interest: you need to input only one variable as a character
+# # controls and indices, can be a character vector
+# # Factor variables from control need to be in controls_factor
+# gelbach_decomposition <- function(var_to_decompose, group_of_interest, controls, controls_factor, indices, df=e, weights = "weight") {
+#   # We restrict the df to the variables we'll use, since there can be some incompatibilities
+#   # in using R dataframes in Stata
+#   df <- df %>%
+#     select(c(var_to_decompose, group_of_interest, controls, controls_factor, indices, weights))
+# 
+#   # Rename var because problem with Stata for variables with names too long
+#   indices_short <- c()
+#   for (i in seq_along(indices)){
+#     indices_short[i] <- paste("index_", i, sep = "")
+#   }
+#   df <- df %>%
+#     rename_with(~ indices_short[which(indices == .x)], .cols = indices)
+#   df <- df %>%
+#     rename("var_to_decompose" = var_to_decompose)
+# 
+# 
+#   # First, we prepare the options for the analysis
+#   option_b1x2 <- ""
+#   for (i in seq_along(indices)){
+#     option_b1x2 <- paste(option_b1x2,"g", i, " = ", indices_short[i], " : ", sep = "")
+#   }
+#   option_b1x2 <- substr(option_b1x2, 1, nchar(option_b1x2)-3)
+#   nbr_indices <- length(indices)
+# 
+#   # We stock the different lines of codes for Stata into a vector
+#   # Each element corresponds to a different line of code to run in Stata
+#   # We will then collapse those commands altogether to run them w/ RStata
+#   stata_cmd <- c()
+#   stata_cmd[1] <- "
+#   set more off
+#   //ssc install b1x2, replace"
+#   stata_cmd[2] <- paste("global indices", paste('"', paste(indices_short, collapse = " "), '"', sep =""), sep = " ")
+#   stata_cmd[3] <- paste("global controls", paste('"', paste(controls, collapse = " "), '"', sep = ""), sep = " ")
+#   stata_cmd[4] <- paste("global controls_factor", paste('"', paste(controls_factor, collapse = " "), '"', sep = ""), sep = " ")
+#   stata_cmd[5] <- paste("global option_b1x2", paste('"', option_b1x2, '"', sep = ""), sep = " ")
+#   stata_cmd[6] <- paste("global nbr_indices", paste(nbr_indices), sep = " ")
+#   stata_cmd[7] <- paste("global nbr_plus_one_indices", paste(nbr_indices+1), sep = " ")
+#   stata_cmd[8] <- paste("global var_to_decompose", paste("var_to_decompose"), sep = " ")
+#   stata_cmd[9] <- paste("local var_to_decompose", paste("var_to_decompose"), sep = " ")
+#   stata_cmd[10] <- paste("global group_of_interest", paste(group_of_interest), sep = " ")
+#   stata_cmd[11] <- paste("local group_of_interest", paste(group_of_interest), sep = " ")
+#   stata_cmd[12] <- paste("global local_weight [aw=", paste(weights), paste("]"), sep = "")
+#   stata_cmd[13] <- "do gelbach_stata.do"
+# 
+#   stata_cmd <- paste(stata_cmd, collapse = "\n")
+#   # We input df, and obtain the data frame with the share explained by each indice
+#   final <- stata(stata_cmd, data.in = df, data.out = T)
+# 
+#   return(final)
+# }
 
 representativeness_table <- function(country_list, weighted = T, non_weighted = T, label_operator = union, all = FALSE, omit = c("Other", "Not 25-64", "Employment_18_64: Employed", "Employment_18_64: 65+", "PNR"),
                                      filename = NULL, folder = "../tables/sample_composition/", return_table = FALSE, threshold_skip = 0.01) {

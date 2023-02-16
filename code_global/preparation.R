@@ -806,6 +806,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                            "PP", "Ciudadanos", "Partido Nacionalista Vasco (EAJ-PNV)", "Conservative", "Liberal Democrats", "DUP")] <- 0 #"Center-right or Right"
           e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Marine Le Pen", "Éric Zemmour", "Nicolas Dupont-Aignan", "AfD", "Vox", "Brexit Party")] <- 1 #"Far right"
           e$vote <- as.item(e$vote, labels = structure(c(-1:1, -0.1), names = c("Left", "Center-right or Right", "Far right", "PNR/Non-voter")), missing.values = c(-0.1, NA), annotation = "vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs.")
+          e$vote_factor <- as.factor(e$vote)
+          label(e$vote_factor) <- Label(e$vote)
         }
       }
       e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
@@ -947,4 +949,6 @@ variables_list_exp <- c("list_exp_l", "list_exp_gl", "list_exp_rl", "list_exp_rg
 quotas_us <- c("income_factor", "post_secondary", "age_factor", "race", "man", "region", "urban")
 socio_demos_us <- c(quotas_us, "swing_state", "couple", "employment_agg", "wealth_factor", "vote3")
 quotas_eu <- c("country", "income_factor", "post_secondary", "age_factor", "man", "urban") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
-socio_demos <- c(quotas_eu, "couple", "employment_agg", "wealth_factor", "vote")
+socio_demos <- c(quotas_eu, "couple", "employment_agg", "wealth_factor", "vote_factor") # add "hh_size", "owner", "wealth", "donation_charities"?
+politics <- c("political_affiliation", "interested_politics", "involvement_govt", "left_right", "vote_participation", "vote_us", "group_defended")
+

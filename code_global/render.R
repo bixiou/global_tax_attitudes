@@ -17,7 +17,6 @@ labels_vars <- c(
   "region" = "Region",
   "gender" = "Gender",
   "age_exact" = "Age",
-  "country" = "Country",
   "country_name" = "Country",
   "couple" = "Lives with partner",
   "hh_size" = "Household size",
@@ -29,7 +28,7 @@ labels_vars <- c(
   "Nb_children__14" = "Number of children below 14",
   "income" = "Income",
   "income_factor" = "Income quartile",
-  "education" = "Highest diploma",
+  # "education" = "Highest diploma",
   "diploma" = "Highest diploma",
   "post_secondary" = "Diploma: Post secondary",
   "diploma_25_64" = "Highest diploma among 25-64",
@@ -54,10 +53,10 @@ labels_vars <- c(
   "wealth_factor" = "Wealth quintile",
   "swing_state" = "Swing State",
   "vote" = "Vote",
+  "vote_factor" = "Vote",
   "vote3" = "Vote",
   "vote_all" = "Vote (actual and hypothetical)",
   "vote_us" = "Vote",
-  "vote3" = "Vote",
   "vote_agg" = "Vote (actual and hypothetical)",
   "vote_us_voters" = "Vote (voters)",
   "vote_us_non_voters" = "Vote intention (non voters)",
@@ -214,7 +213,7 @@ labels_vars <- c(
   "duration_gcs" = "Duration: GCS comprehension",
   "duration_nr" = "Duration: NR comprehension",
   "duration_both" = "Duration: GCS+NR comprehension",
-  "duration_gcs" = "Duration: GCS questions",
+  # "duration_gcs" = "Duration: GCS questions",
   "duration_conjoint_a" = "Duration: conjoint (a)",
   "duration_conjoint_b" = "Duration: conjoint (b)",
   "duration_conjoint_c" = "Duration: conjoint (c)",
@@ -233,7 +232,6 @@ labels_vars <- c(
   "conjoint_a_matches_support" = "Conjoint (a) and support answers match",
   "nationalist" = "Nationalist",
   "universalist" = "Universalist",
-  "conjoint_a_matches_support" = "Conjoint (a) and support answers match",
   "woman" = "Gender: Woman",
   "man" = "Gender: Man",
   "ets2_equal_cash_support" = "Supports ETS2 with equal cash transfer<br>(105€/year for each European)",
@@ -251,9 +249,9 @@ labels_vars <- c(
   "global_tax_more_10p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 10%"
 )
 for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
-for (v in intersect(intersect(c(socio_demos, socio_demos_us), names(e)), names(labels_vars))) {
-  if (grepl("TRUE / FALSE", Levels(e[[v]])[1])) labels_vars[paste0(v, "TRUE")] <- labels_vars[v]
-  else for (l in setdiff(Levels(e[[v]]), NA)) {
+for (v in intersect(intersect(c(socio_demos, socio_demos_us), names(all)), names(labels_vars))) {
+  if (grepl("TRUE / FALSE", Levels(all[[v]])[1])) labels_vars[paste0(v, "TRUE")] <- labels_vars[v]
+  else for (l in setdiff(Levels(all[[v]]), NA)) {
     if (!paste0(v, l) %in% names(labels_vars)) labels_vars[paste0(v, l)] <- paste0(labels_vars[v], ": ", l)
   }
 }
@@ -719,3 +717,17 @@ plot_all_comp(df = us, country = "US")
 # plot_comp("race", df = us1, country = "US")
 # plot_comp("vote", df = us1, country = "US") 
 # plot_comp("vote_us", df = us1, country = "US")
+
+
+##### Heterogeneity #####
+plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global_tax_more_half", "share_policies_supported", "points_foreign1_gcs"), 
+           along = "age", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = eu, save = FALSE)
+
+plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global_tax_more_half", "share_policies_supported", "points_foreign1_gcs"), 
+           along = "country", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = eu, save = FALSE)
+
+modelplot(lm(reg_formula("gcs_support", quotas_eu), data = eu), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))
+modelplot(lm(reg_formula("gcs_support", socio_demos), data = eu), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))
+
+modelplot(lm(reg_formula("gcs_support", quotas_us), data = us1), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))
+modelplot(lm(reg_formula("gcs_support", socio_demos_us), data = us1), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))

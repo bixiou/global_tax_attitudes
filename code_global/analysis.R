@@ -10,7 +10,7 @@ e <- ep
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 # TODO read about Norway and foreign aid
-
+# TODO? Ask 200 more respondents to rebalance for age-UK
 
 
 ##### Duration #####
@@ -167,18 +167,13 @@ summary(lm(gcs_support ~ gcs_understood + nr_understood + both_understood, data 
 
 e$post_secondary_25_64 <- replace_na(e$diploma_25_64 == 'Post secondary', F)
 e$upper_secondary_25_64 <- replace_na(e$diploma_25_64 == 'Upper secondary', F)
-socio_demos_basics <- c("woman", "as.factor(age)", "as.factor(income_quartile)", "upper_secondary_25_64", "post_secondary_25_64", "as.factor(urbanity)") 
-summary(lm(reg_formula("gcs_support", c(socio_demos_basics, "race", "region")), data = us1)) # ***: age, urbanity, diploma, urban
+summary(lm(reg_formula("gcs_support", socio_demos_us), data = us1)) # ***: age, urbanity, diploma, urban
 summary(lm(reg_formula("gcs_support", c("as.factor(age)")), data = us1))
 datasummary(gcs_support  ~ Mean*as.factor(age), data = us1, output = 'markdown')
 datasummary(gcs_support  ~ Mean*(woman + upper_secondary_25_64 + post_secondary_25_64), data = us1, output = 'markdown')
 datasummary(gcs_support  ~ Mean*(race + region), data = us1, output = 'markdown')
 datasummary(gcs_support  ~ Mean*as.factor(urbanity), data = us1, output = 'markdown')
 datasummary(gcs_support  ~ Mean*as.factor(income_quartile), data = us1, output = 'markdown')
-socio_demos_extended <- c("couple", "hh_size", "employment_agg", "owner", "wealth", "donation_charities")
-politics <- c("political_affiliation", "interested_politics", "involvement_govt", "left_right", "vote_participation", "vote_us", "group_defended")
-covariates_eu <- c(quotas$EU, socio_demos_extended)
-covariates_us <- c(quotas$US, socio_demos_extended)
 
 
 ##### NR ######
