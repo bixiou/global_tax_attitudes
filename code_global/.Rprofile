@@ -2366,6 +2366,7 @@ reweighted_estimate <- function(predicted_var = NULL, country = "EU", weights = 
     if (weights) reg <- lm(formula_reg, data = e, weights = e$weight)
     else reg <- lm(formula_reg, data = e)
     if (verbose) {
+      print(paste("Share of observations in regression:", length(reg$fitted.values)/nrow(e)))
       print("Levels without a coefficient:")
       print(setdiff(names(freq_vec), names(reg$coefficients)))    
     }
