@@ -34,16 +34,12 @@ package("ggplot2")
 package("ggalt") # maps
 package("janitor") # heatmaps
 package("ggdist") # nice confidence intervals in regression plots
-  
+
 # package("qualtRics") # https://cran.r-project.org/web/packages/qualtRics/vignettes/qualtRics.html
 # For Antoine's account, API is not enabled (cf. Account Settings > Qualtrics ID > API or https://lse.eu.qualtrics.com/Q/QualtricsIdsSection/IdsSection) so we cannot retrieve the data directly using qualtRics.
 # qualtrics_api_credentials(api_key = "<YOUR-QUALTRICS_API_KEY>", base_url = "https://lse.eu.qualtrics.com/", install = TRUE)
 
-#' Paths = c("/Users/b.planterose/Library/Mobile Documents/com~apple~CloudDocs/TRAVAIL/Jobs/Stantcheva_2020:21/OECD/oecd_climate/code_oecd", "C:/Users/afabre/Documents/www/oecd_climate/code_oecd", "C:/Users/fabre/Documents/www/oecd_climate/code_oecd", "C:/Users/ans7406/Documents/GitHub/oecd_climate/code_oecd", "C:/Users/afabre/Documents/www/oecd_climate/code_oecd")
-#' names(Paths) = c("b.planterose", "afabre", "fabre", "ans7406", "SpAdmin")
-#' if (Sys.info()[7]=="afabre") setwd(Paths["fabre"]) else setwd(Paths[Sys.info()[7]])
-#' if (file.exists(Paths["afabre"])) .libPaths(c("C:/Users/afabre/R-4.1.1/library", "C:/Users/afabre/R-4.1.2/library", "\\\\nash/mtec-home/afabre/My Documents/R/win-library/4.0", "C:/Users/afabre/AppData/Local/Programs/MiKTeX"))  # R-4.0.3/
-#' 
+#'
 #' chooseCRANmirror(ind = 1)
 #' package("plyr")
 package("tm") # wordcloud
@@ -52,7 +48,7 @@ package("dplyr")
 package("tidyr")
 package("expss") # fre (for weighted frequency table)
 package("GDAtools") # wtable (for weighted frequency crosstable)
-package("beepr") # beep() makes sound 
+package("beepr") # beep() makes sound
 package("openxlsx")
 package("cjoint") # conjoint analysis /!\ I fixed a bug in the program => to install my version, package("devtools"), clone repo, setwd(/cjoint/R), build(), install()
 package("modelsummary")
@@ -183,7 +179,7 @@ if (!is.element("memisc", installed.packages()[,1])) {
 #' # If this doesn't work (runs infinitely). Download the archive and from the Terminal run `R CMD INSTALL memisc_0.99.22.tar.gz  '
 #' # The following will not work: package("memisc", version = "0.99.22") # in case of bug (endless loop), copy/paste folder /memisc in library and: install.packages("memisc", method = "win.binary") OR install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL). If it still doesn't work, run library(utils); install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL) from R (not RStudio)
 #' # package("estimatr")
-#' 
+#'
 #' # package("quanteda")
 #' # package("haven")
 #' # package("dplyr")
@@ -200,7 +196,7 @@ if (!is.element("memisc", installed.packages()[,1])) {
 library(magick) # image_write
 #' # install_github(repo = "MatthieuStigler/RCompAngrist", subdir = "RCompAngrist")
 #' # package("RCompAngrist")
-#' 
+#'
 #' # package("psych") # library(psych, exclude = "describe")
 #' # package("semTools")
 #' # package("interplot")
@@ -208,7 +204,7 @@ library(magick) # image_write
 #' # package("effects")
 #' # package("sjplot")
 #' # package("doMC") # for parallel computing, does not work on Windows
-#' 
+#'
 #' # eval(parse(along)) !!along as.name(along) substitute(eval(along)) eval(along) substitute(temp) deparse(substitute(temp)) eval(as.symbol()) eval(str2expression(along))
 #' # Fs <- function(QID) { s[QID][[1]] }
 #' # Vs <- function(QID) { as.vector(Fs(QID))  }
@@ -262,7 +258,7 @@ positive <- function(vec) {
   if (is.binary(vec)) return(100*mean(vec, na.rm = T))
   else return(100 * sum(!is.na(vec) & vec > 0) / sum(!is.na(vec)))
 }
-agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T, return = "vec" # min = 0, max = Inf, 
+agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T, return = "vec" # min = 0, max = Inf,
 ) {
   # strict_ineq_lower == T means intervals 50,60 are of type ];] while == F means [;[.
   # shift = 1 (with strict_ineq_lower == T) means levels ]50;60] will be displayed as "[begin]51[sep]60[end]".
@@ -280,10 +276,10 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
     min_i <- ifelse(i > 2, thresholds[i-2], min)
     max_i <- ifelse(i <= length(thresholds) - 2, thresholds[i+2], max)
     next_i <- ifelse(i <= length(thresholds) - 1, thresholds[i+1], max)
-    if (missing(labels)) levels <- c(levels, if (thresholds[i-1]==thresholds[i]) paste0(begin, thresholds[i], end) else paste0(begin, thresholds[i-1] + (shift_left*(i < length(thresholds)) + shift_right*(thresholds[i-1] == min_i))*(i > 2), sep, 
+    if (missing(labels)) levels <- c(levels, if (thresholds[i-1]==thresholds[i]) paste0(begin, thresholds[i], end) else paste0(begin, thresholds[i-1] + (shift_left*(i < length(thresholds)) + shift_right*(thresholds[i-1] == min_i))*(i > 2), sep,
                                                                                                                                thresholds[i] - (shift_right*(i > 2) + shift_left*(thresholds[i] == next_i))*(i < length(thresholds)), end))
-    if (strict_ineq_lower) vec_agg[(vec <= thresholds[i] & vec < max_i & vec > thresholds[i-1]) | (vec == max_i & i == length(thresholds)) | (vec == thresholds[i] & i < length(thresholds) & vec < max_i) | (i == 2 & vec == min)] <- (thresholds[i] + thresholds[i-1])/2 
-    else vec_agg[(vec < thresholds[i] & vec >= thresholds[i-1] & vec > min_i) | (vec == min_i & i == 2) | (vec == thresholds[i-1] & i > 2 & vec > min_i) | (i == length(thresholds) & vec == max)] <- (thresholds[i] + thresholds[i-1])/2 
+    if (strict_ineq_lower) vec_agg[(vec <= thresholds[i] & vec < max_i & vec > thresholds[i-1]) | (vec == max_i & i == length(thresholds)) | (vec == thresholds[i] & i < length(thresholds) & vec < max_i) | (i == 2 & vec == min)] <- (thresholds[i] + thresholds[i-1])/2
+    else vec_agg[(vec < thresholds[i] & vec >= thresholds[i-1] & vec > min_i) | (vec == min_i & i == 2) | (vec == thresholds[i-1] & i > 2 & vec > min_i) | (i == length(thresholds) & vec == max)] <- (thresholds[i] + thresholds[i-1])/2
   }
   if (min == -Inf & strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "≤ ", levels[1])
   if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
@@ -452,7 +448,7 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
 
     codebook <- data.frame(names(data), names_stata, sapply(names(data), function(n) return(Label(data[[n]]))), sapply(names(data), function(n) { Levels(data[[n]], concatenate = T) } ))
     names(codebook) <- c("Variable", "Variable Stata", "Label", "Levels")
-  } else { 
+  } else {
     data <- data[, keep]
     codebook <- data.frame(names(data), sapply(names(data), function(n) return(Label(data[[n]]))), sapply(names(data), function(n) { Levels(data[[n]], concatenate = T) } ))
     names(codebook) <- c("Variable", "Label", "Levels")
@@ -478,7 +474,7 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
 #'     else label_i <- paste(colnames(data)[i], sub('[^:]*:', '', Label(data[[i]])), sep=':')
 #'     labels <- c(labels, label_i)
 #'   }
-#'   
+#'
 #'   if (miss=='both') output <- matrix(c(names(data), labels, des, des_miss), ncol=4)
 #'   if (miss=='nb') output <- matrix(c(names(data), labels, nb_miss), ncol=3)
 #'   else if (sorted_by_n) output <- matrix(c(names(data), labels, des_miss), ncol=3)[order(-n),]
@@ -598,8 +594,8 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
     several_values[c] <- nb_values_c > 1 }
   return(several_values)
 }
-#' same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, along = "country3", along.levels = Levels(along, data), covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, mean_control = T, 
-#'                                 dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, folder = "../tables/regs_countries/", digits= 3, model.numbers = T, replace_endAB = NULL) {  
+#' same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, along = "country3", along.levels = Levels(along, data), covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, mean_control = T,
+#'                                 dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, folder = "../tables/regs_countries/", digits= 3, model.numbers = T, replace_endAB = NULL) {
 #'   file_path <- paste(folder, filename, ".tex", sep="")
 #'   # keep <- gsub("(.*)", "\\\\\\Q\\1\\\\\\E", sub("^\\(", "", sub("\\)$", "", keep)))
 #'   # formula <- as.formula(paste(dep.var, "~", paste("(", covariates, ")", collapse = ' + ')))
@@ -636,10 +632,10 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
 #'   if (exists("labels_vars") & missing(covariate.labels)) covariate_labels <- create_covariate_labels(names(models[[1]]$coefficients)[-1], regressors_names = labels_vars, keep = keep, omit = omit)
 #'   if (nolabel) covariate_labels <- NULL
 #'   dep.var.caption <- ifelse(missing(dep.var.caption), ifelse(exists("labels_vars") && dep.var %in% names(labels_vars), labels_vars[dep.var], gsub("_", "\\_", dep.var, fixed = T)), dep.var.caption)
-#'   
-#'   table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers, covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], add.lines =list(c(mean_text, means)), 
+#'
+#'   table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers, covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], add.lines =list(c(mean_text, means)),
 #'                                                                                 dep.var.labels = if (include.total) c("All", along.levels) else along.levels, dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), omit.table.layout = "n", keep=keep, omit = omit, no.space = no.space)))
-#'   
+#'
 #'   if (!missing(replace_endAB) & length(table) != 50) warning(paste0("Wrong specification for replacement of the last lines: table of length ", length(table)))
 #'   if (!missing(replace_endAB) & length(table) == 50) table <- c(table[1:43], replace_endAB)
 #'   table <- table_mean_lines_save(table, mean_above = mean_above, only_mean = only_mean, indep_labels = covariate_labels, indep_vars = covariates, add_lines = add_lines, file_path = file_path, oecd_latex = T, nb_columns = length(along.levels) + include.total)
@@ -689,7 +685,7 @@ create_covariate_labels <- function(coefs_names, regressors_names = labels_vars,
 #'   ir <- ir + (pmin(income, 12676*12) - 6051.42*12) * 0.41  * (income > 6051.42*12)
 #'   ir <- ir + (pmin(income, 6051.42*12) - 2257.17*12) * 0.3  * (income > 2257.17*12)
 #'   ir <- ir + (pmin(income, 2257.17*12) - 817.25*12) * 0.14  * (income > 817.25*12)
-#'   
+#'
 #'   ir <- quotient(nb_pers, nb_adultes) * ir
 #'   seuil_decote <- (nb_adultes>1)*2585/12 + (nb_adultes<=1)*1569/12
 #'   # decote <- (1920 - 0.75 * ir) * (marie & ir<2560) + (1165 - 0.75 * ir) * (!(marie) & ir<1553)
@@ -697,8 +693,8 @@ create_covariate_labels <- function(coefs_names, regressors_names = labels_vars,
 #'   return(pmax((ir-decote),0)) # vrai calcul
 #' }
 representativity_index <- function(weights, digits = 3) { return(round(sum(weights)^2/(length(weights)*sum(weights^2)), 3)) }
-#' 
-#' 
+#'
+#'
 #' ##### Graphiques #####
 #' stack_bars <- function(vars, data=s, miss=T, labels=NA, title=NA, accord=FALSE, en = FALSE, margin=c(2.5,17,0,3), cex=1, width=0.77/length(vars), weights=FALSE) {
 #'   matrice <- c()
@@ -773,7 +769,7 @@ representativity_index <- function(weights, digits = 3) { return(round(sum(weigh
 #'   if (sort) oui <- sort(oui)
 #'   o <- round(100 * oui / (oui + non))
 #'   n <- round(100 * non / (oui + non))
-#'   
+#'
 #'   if (en==T) {
 #'     hover_oui <- paste('Yes<br>', oui, '% of answers<br>', o, '% of expressed answers')
 #'     hover_non <- paste('No<br>', non, '% of answers<br>',n, '% of expressed answers')
@@ -935,7 +931,7 @@ dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FAL
     if (length(vars) == 1) out <- dataN(vars, data = data, miss = miss, weights = weights, return = return, fr = fr, rev = rev, rev_legend = rev_legend)
     else if (is.logical(data[[vars[1]]])) {
       mat <- data1(vars, data, weights)
-      levels <- dataN(vars[1], data = data, return = "legend") 
+      levels <- dataN(vars[1], data = data, return = "legend")
       out <- if (return == "legend") levels else mat }
     else {
       values <- setNames(lapply(vars, function(v) dataN(v, data = data, miss = miss, weights = weights, return = "legend", fr = fr, rev = rev)), vars)
@@ -947,7 +943,7 @@ dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FAL
       # The above code (after else) is new (and here to manage cases with different sets of levels for different variables)
       res <- c()
       for (var in vars) res <- c(res, dataN(var = var, data = data, miss = miss, weights = weights, return = "", fr = fr, rev = rev, levels = levels))
-      mat <- matrix(res, ncol=length(vars)) 
+      mat <- matrix(res, ncol=length(vars))
       if (rev_legend) levels <- rev(levels)
       out <- if (return == "legend") levels else mat
     }
@@ -993,7 +989,7 @@ dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FAL
 #'                      labels=labels12(labels[agree], en = !fr, comp = comp, orig = orig), legend=legend,
 #'                      miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls))
 #' }
-#' 
+#'
 #' labels12 <- function(labels, en=F, comp = "V2", orig = NULL) {
 #'   new_labels <- c()
 #'   lab2 <- ifelse(comp=="V2", ifelse(en, " Wave 2 (W2)", " Vague 2 (V2)"), comp)
@@ -1095,9 +1091,9 @@ order_agree <- function(data, miss, rev = T, n = ncol(data)) {
     else if (nrow(data)==7) { for (i in 1:n) { agree <- c(agree, data[6, i] + data[7, i]) } }
     else { for (i in 1:n) { agree <- c(agree, data[1, i]) } } }
   return(order(agree, decreasing = rev)) }
-barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T, 
+barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FALSE, hover=legend, nsp=TRUE, sort=TRUE, legend=hover, showLegend=T,
                    margin_r=0, margin_l=NULL, share_labels = NULL, online=FALSE, export_xls = F, digits = 0, add_means = FALSE, show_legend_means = T, transform_mean = NULL,
-                   display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T, 
+                   display_values=T, thin=T, legend_x=NA, show_ticks=T, xrange=NA, save = FALSE, df=e, miss=T,
                    weights = T, fr=F, rev=T, grouped = F, error_margin = F, color_margin = '#00000033', N = NA, font = 'Arial') { # default: Arial (also: Times, Latin Modern Sans, Computer Modern) # OECD: Computer Modern
   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
   if (!missing(miss)) nsp <- miss
@@ -1248,7 +1244,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
                                        y = 1.5,
                                        text = legend,
                                        font = list(family = font, size = 16, color = 'black'),
-                                       showarrow = FALSE) } # %>%    
+                                       showarrow = FALSE) } # %>%
   }
 
   # print(nrow(data))
@@ -1390,9 +1386,9 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
   if (export_xls) save_plot(table, filename = sub("figures", "xlsx", paste0(folder, filename)))
   return(table)
 }
-heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(), 
-                            conditions = c("", ">= 1", "/"), data = e, width = NULL, height = NULL, alphabetical = T, on_control = FALSE, 
-                            export_xls = T, format = 'pdf', sort = FALSE, proportion = NULL, percent = FALSE, nb_digits = NULL, trim = T, 
+heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)), along = "country_name", labels_along = NULL, special = c(),
+                            conditions = c("", ">= 1", "/"), data = e, width = NULL, height = NULL, alphabetical = T, on_control = FALSE,
+                            export_xls = T, format = 'pdf', sort = FALSE, proportion = NULL, percent = FALSE, nb_digits = NULL, trim = T,
                             colors = 'RdYlBu', folder = NULL, weights = T) {
   # width: 1770 to see Ukraine (for 20 countries), 1460 to see longest label (for 20 countries), 800 for four countries.
   # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
@@ -1437,7 +1433,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
 #' CImedian <- function(vec) { # 95% confidence interval
 #'   res <- tryCatch(unlist(ci.median(vec[!is.na(vec) & vec!=-1])), error=function(e) {print('NA')})
 #'   return(paste(res[paste('ci.lower')], res[paste('ci.median')], res[paste('ci.upper')], length(which(!is.na(vec) & vec!=-1)))) }
-#' 
+#'
 #' # from http://pcwww.liv.ac.uk/~william/R/crosstab.r http://rstudio-pubs-static.s3.amazonaws.com/6975_c4943349b6174f448104a5513fed59a9.html
 Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.vars = NULL, col.vars = NULL, percentages = TRUE,  addmargins = TRUE, subtotals=TRUE) {
   #Declare function used to convert frequency counts into relevant type of proportion or percentage
@@ -1848,9 +1844,9 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 }
 
 # inflate_for_miss <- function(v) return(c(v[1:(length(v)-1)]/(1-v[length(v)]), v[length(v)]))
-# 
+#
 # close <- function(x, y, prec = 0.0001) return(all(abs(x - y) < prec))
-# 
+#
 # cor.mtest <- function(mat, ...) {
 #   mat <- as.matrix(mat)
 #   n <- ncol(mat)
@@ -1871,7 +1867,7 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   if(type[1]=="file") text <- readLines(x)
 #   else if(type[1]=="url") text <- html_to_text(x)
 #   else if(type[1]=="text") text <- x
-# 
+#
 #   # Load the text as a corpus
 #   docs <- Corpus(VectorSource(text))
 #   # Convert the text to lower case
@@ -1902,10 +1898,10 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   wordcloud(d$word,d$freq, min.freq=min.freq, max.words=max.words,
 #             random.order=FALSE, rot.per=0, #0.35,
 #             use.r.layout=FALSE, colors=colors)
-# 
+#
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
-# 
+#
 plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2],
                            breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T) {
   table <- heatmap_table(vars = var, data = df, along = "country", conditions = c(condition), on_control = on_control)
@@ -1928,7 +1924,7 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   if (continuous) df$mean <- pmax(pmin(df$mean, limits[2]), limits[1])
 
   world_map <- map_data(map = "world")
-  world_map <- world_map[world_map$region != "Antarctica",] # 
+  world_map <- world_map[world_map$region != "Antarctica",] #
   world_map <- world_map[!world_map$region %in% c("Antarctica", "American Samoa", "Micronesia", "Guam", "Niue", "Pitcairn Islands", "Cook Islands", "Tonga", "Kiribati", "Marshall Islands", "French Polynesia", "Fiji", "Samoa", "Wallis and Futuna", "Vanuatu"),]
   # world_map$region <- iso.alpha(world_map$region)
 
@@ -2166,7 +2162,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
   # TODO multiple conditions, show legend for 20 countries (display UA!) even if there is less than 4 variables
   # TODO: automatic values when missing(legend_x), legend_y
   # TODO! make invert_y_along work for regressions/covariates
-  if (exists("labels_vars") & missing(labels)) labels[vars %in% names(labels_vars)] <- labels_vars[vars[vars %in% names(labels_vars)]] 
+  if (exists("labels_vars") & missing(labels)) labels[vars %in% names(labels_vars)] <- labels_vars[vars[vars %in% names(labels_vars)]]
   if (missing(name) & !missing(vars) & !missing(along)) {
     if (any(grepl('["\']', deparse(substitute(vars))))) {
       name <- ifelse(invert_y_along, paste0(along, "_by_", vars[1]), paste0(vars[1], "_by_", along))
@@ -2227,7 +2223,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
 #   # in using R dataframes in Stata
 #   df <- df %>%
 #     select(c(var_to_decompose, group_of_interest, controls, controls_factor, indices, weights))
-# 
+#
 #   # Rename var because problem with Stata for variables with names too long
 #   indices_short <- c()
 #   for (i in seq_along(indices)){
@@ -2237,8 +2233,8 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
 #     rename_with(~ indices_short[which(indices == .x)], .cols = indices)
 #   df <- df %>%
 #     rename("var_to_decompose" = var_to_decompose)
-# 
-# 
+#
+#
 #   # First, we prepare the options for the analysis
 #   option_b1x2 <- ""
 #   for (i in seq_along(indices)){
@@ -2246,7 +2242,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
 #   }
 #   option_b1x2 <- substr(option_b1x2, 1, nchar(option_b1x2)-3)
 #   nbr_indices <- length(indices)
-# 
+#
 #   # We stock the different lines of codes for Stata into a vector
 #   # Each element corresponds to a different line of code to run in Stata
 #   # We will then collapse those commands altogether to run them w/ RStata
@@ -2266,11 +2262,11 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
 #   stata_cmd[11] <- paste("local group_of_interest", paste(group_of_interest), sep = " ")
 #   stata_cmd[12] <- paste("global local_weight [aw=", paste(weights), paste("]"), sep = "")
 #   stata_cmd[13] <- "do gelbach_stata.do"
-# 
+#
 #   stata_cmd <- paste(stata_cmd, collapse = "\n")
 #   # We input df, and obtain the data frame with the share explained by each indice
 #   final <- stata(stata_cmd, data.in = df, data.out = T)
-# 
+#
 #   return(final)
 # }
 
@@ -2282,7 +2278,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     df <- d(country_list[i])
     k <- country_list[i]
     c <- sub("[0-9p]+", "", k)
-    
+
     labels[[k]] <- "Sample size"
     pop[[k]] <- ""
     sample[[k]] <- sample_weighted[[k]] <- prettyNum(nrow(df), big.mark = ",")
@@ -2303,7 +2299,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     if (weighted) names(sample_weighted[[k]]) <- labels[[k]]
     rows <- label_operator(rows, labels[[k]])
   }
-  
+
   variables <- unique(gsub("(.*):.*", "\\1", rows))
   order_rows <- c()
   for (v in variables) for (i in 1:length(rows)) order_rows <- c(order_rows, if (v == sub("(.*):.*", "\\1", rows[i])) i else NULL)
@@ -2314,7 +2310,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     if (non_weighted) table[[paste0(k, "_sample")]] <- sample[[k]][rows]
     if (weighted) table[[paste0(k, "_sample_weighted")]] <- sample_weighted[[k]][rows]
   }
-  
+
   table <- table[!multi_grepl(omit, row.names(table)),]
   if (return_table) return(table)
   else export_representativeness_table(table = table, country_list = country_list, weighted = weighted, non_weighted = non_weighted, filename = if (all) paste0(filename, "_all") else filename, folder = folder)
@@ -2323,21 +2319,60 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
 export_representativeness_table <- function(table, country_list, weighted = T, non_weighted = T, filename = NULL, folder = "../tables/sample_composition") {
   header <- c("", rep((1 + weighted + non_weighted), length(country_list)))
   names(header) <- c("", country_list)
-  
+
   line_sep <- c()
   for (i in 2:nrow(table)) {
     previous <- substr(row.names(table)[i-1], 1, 5)
     current <- substr(row.names(table)[i], 1, 5)
     line_sep <- c(line_sep, if (previous == current) "" else "\\addlinespace")
   }
-  
+
   row.names(table) <- gsub("_", "\\_", row.names(table), fixed = T)
   latex_output <- kbl(table, "latex", caption = NULL, position = "b", escape = F, booktabs = T,
-                      col.names = rep(c("Pop.", if (non_weighted) "Sample", if (weighted) "\\makecell{Weighted\\\\sample}"), length(country_list)), 
+                      col.names = rep(c("Pop.", if (non_weighted) "Sample", if (weighted) "\\makecell{Weighted\\\\sample}"), length(country_list)),
                       linesep = line_sep) %>% add_header_above(header)
-  
+
   if (is.null(filename)) filename <- paste(country_list, collapse = "_")
   if (filename == "_all") filename <- paste0(paste(country_list, collapse = "_"), "_all")
-  cat(paste(latex_output, collapse="\n"), file = paste0(folder, filename, ".tex")) 
+  cat(paste(latex_output, collapse="\n"), file = paste0(folder, filename, ".tex"))
 }
 
+reweighted_estimate <- function(predicted_var = NULL, country = "EU", weights = FALSE, verbose = FALSE, omit = c()) { 
+  # Regresses predicted_var on 'levels_quotas[[country]]' and predicts the value based on population frequencies in 'pop_freq'.
+  # If is.null(predicted_var), returns instead the vector of population frequencies with which to multiply the vector of coefficients of the regression.
+  e <- d(country)
+  freq_pop <- pop_freq[[sub("[0-9p]+", "", country)]]
+  for (i in names(freq_pop)) names(freq_pop[[i]]) <- levels_quotas[[i]]
+  vars_pop <-  names(freq_pop)
+  covariates <- vars_pop
+  freq_vec <- c("(Intercept)" = 1)
+  for (c in vars_pop) {
+    c_name <- sub(paste0("^", sub("[0-9p]+", "", country), "_"), "", c)
+    # print("character.item" %in% class(e[[c_name]]))
+    # if (c %in% names(e) && !(is.factor(e[[c]]) | is.character(e[[c]])) & paste0(c, "_factor") %in% names(e)) new_c <- paste0(c, "_factor")
+    # else if (c %in% names(e) && !(is.factor(e[[c]]) | is.character(e[[c]])) & paste0(sub("_.*", "", c), "_factor") %in% names(e)) new_c <- paste0(sub("_.*", "", c), "_factor")
+    if ("character.item" %in% class(e[[c_name]])) new_c <- paste0("as.character(as.factor(", c_name, "))")
+    else if (!(is.factor(e[[c_name]]) | is.character(e[[c_name]]) | is.logical(e[[c_name]]))) new_c <- paste0("as.character(", c_name, ")")
+    else new_c <- c_name
+    # print(c)
+    covariates[covariates == c] <- new_c
+    if (Levels(e[[c_name]])[1] %in% c("TRUE / FALSE / NA", "TRUE / FALSE")) freq_vec[paste0(new_c, "TRUE")] <- freq_pop[[c]][[1]]
+    else for (i in intersect(Levels(e[[c_name]]), levels_quotas[[c]])) freq_vec[paste0(new_c, i)] <- freq_pop[[c]][[i]]
+  }
+  
+  if (is.null(predicted_var)) return(freq_vec)
+  else {
+    formula_reg <- reg_formula(predicted_var, covariates[!multi_grepl(omit, covariates)])
+    if (weights) reg <- lm(formula_reg, data = e, weights = e$weight)
+    else reg <- lm(formula_reg, data = e)
+    if (verbose) {
+      print("Levels without a coefficient:")
+      print(setdiff(names(freq_vec), names(reg$coefficients)))    
+    }
+    if (length(setdiff(names(reg$coefficients), names(freq_vec))) > 0) {
+      warning(paste("Coefficients not taken into account:", paste(setdiff(names(reg$coefficients), names(freq_vec)), collapse = "; ")))
+    }
+    estimate <- sum(reg$coefficients[intersect(names(reg$coefficients), names(freq_vec))] * freq_vec[intersect(names(reg$coefficients), names(freq_vec))], na.rm = T)
+    return(estimate)
+  }
+}

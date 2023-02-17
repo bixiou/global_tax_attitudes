@@ -6,6 +6,7 @@ e <- ep
 # TODO! slides
 # TODO! literature review
 # TODO! appendix sources, calcul net gain
+# TODO! reweighted estimate
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
@@ -363,5 +364,22 @@ for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]], na.rm = 
 
 ##### Swing States #####
 decrit(e$swing_state)
-summary(lm(gcs_support == 'Yes' ~ swing_state + swing_state_5pp, data = e, weights = e$weight)) # .56 - 0.018 - 0.008
+summary(lm(gcs_support == 'Yes' ~ swing_state + swing_state_5pp, data = e, weights = e$weight)) # .ht - 0.018 - 0.008
 summary(lm(conjoint_c ~ branch_c_gcs * swing_state, data = e, weights = e$weight))
+
+
+##### Reweighted estimate #####
+reweighted_estimate("gcs_support", "EU")
+reweighted_estimate("gcs_support", "US1") # Assigns a weight 0 to vote_us = PNR/No right
+reweighted_estimate("gcs_support", "US1", omit = "vote_us") 
+reweighted_estimate("gcs_support", "EU", weights = T)
+reweighted_estimate("gcs_support", "US1", weights = T) 
+reweighted_estimate("gcs_support", "US2", verbose = T)
+decrit("gcs_support", us1, weights = us1$weight_vote)
+reweighted_estimate(NULL, "EU")
+reweighted_estimate(NULL, "US1")
+decrit("gcs_support", eu)
+decrit("gcs_support", eu, weights = eu$weight_vote)
+decrit("gcs_support", us1)
+decrit("gcs_support", us1, weights = us1$weight_vote)
+

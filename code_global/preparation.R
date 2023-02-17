@@ -55,6 +55,7 @@ major_candidates <- minor_candidates <- list()
   "US_race" = c("White only", "Hispanic", "Black", "Other"),
   "US_vote_us" = c("Biden", "Trump", "Other/Non-voter", "PNR/no right"),
   "EU_urbanity" = c("Cities", "Towns and suburbs", "Rural"),
+  "wealth" = paste0("Q", 1:5),
   "US_urban" = c(TRUE, FALSE)#,
   # "college_OECD" = c("College Degree", "No college"),
   # "employment" = c(TRUE, FALSE),
@@ -102,6 +103,7 @@ major_candidates <- minor_candidates <- list()
     pop_freq[[c]]$diploma_25_64 <- unlist(c(qs[c, c("Below.upper.secondary.25-64.0-2", "Upper.secondary.25-64.3", "Above.Upper.secondary.25-64.4-8")]/1000, "Not 25-64" = sum(unlist(qs[c, c("18-24", ">65")]/1000))))
     pop_freq[[c]]$employment_18_64 <- unlist(c(c("Inactive" = qs[c, "Inactivity"], "Unemployed" = qs[c, "Unemployment"]*(1000-qs[c, "Inactivity"])/1000, "Employed" =  1000-qs[c, "Inactivity"]-qs[c, "Unemployment"]*(1000-qs[c, "Inactivity"])/1000)*(1000-qs[c, c(">65")])/1000, "65+" = qs[c, c(">65")])/1000)
     pop_freq[[c]]$vote <- unlist(c(c(qs[c, "Left"], qs[c, "Center-right.or.Right"], qs[c, "Far.right"])*(1000-qs[c, "Abstention"])/sum(qs[c, c("Left", "Center-right.or.Right", "Far.right")]), qs[c, "Abstention"])/1000)
+    pop_freq[[c]]$wealth <- rep(.2, 5)
     if (c != "US") pop_freq[[c]]$urbanity <- unlist(qs[c, c("Cities", "Towns.and.suburbs", "Rural")]/1000)
   }
 }
@@ -134,7 +136,7 @@ relabel_and_rename <- function(e, country, wave = NULL) {
   #   print(paste(i, label(e[[i]])))
   # }
   # 
-  if (missing(wave) | wave == "full") {
+  if (missing(wave) || wave == "full") {
     e <- match.fun(paste0("relabel_and_rename_", country))(e)
     # e <- e[,-c((which(names(e) %in% c("clicked_petition", "positive_treatment"))+1):length(names(e)))]
   }  else e <- match.fun(paste0("relabel_and_rename_", country, wave))(e)
@@ -948,7 +950,7 @@ export_codebook(eup, "../data/codebook_ep.csv", stata = FALSE)
 variables_list_exp <- c("list_exp_l", "list_exp_gl", "list_exp_rl", "list_exp_rgl")
 quotas_us <- c("income_factor", "post_secondary", "age_factor", "race", "man", "region", "urban")
 socio_demos_us <- c(quotas_us, "swing_state", "couple", "employment_agg", "wealth_factor", "vote3")
-quotas_eu <- c("country", "income_factor", "post_secondary", "age_factor", "man", "urban") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
+quotas_eu <- c("country", "income_factor", "post_secondary", "age_factor", "man", "urbanity") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
 socio_demos <- c(quotas_eu, "couple", "employment_agg", "wealth_factor", "vote_factor") # add "hh_size", "owner", "wealth", "donation_charities"?
 politics <- c("political_affiliation", "interested_politics", "involvement_govt", "left_right", "vote_participation", "vote_us", "group_defended")
 
