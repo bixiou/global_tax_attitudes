@@ -6,7 +6,7 @@ e <- ep
 # TODO! slides
 # TODO! literature review
 # TODO! appendix sources, calcul net gain
-# TODO! reweighted estimate
+# TODO! reweighted estimate dans papier
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)

@@ -740,6 +740,9 @@ plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global
            along = "age", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = eu, save = FALSE)
 
 plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global_tax_more_half", "share_policies_supported", "points_foreign1_gcs"), 
+           along = "income_factor", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = eu, save = FALSE)
+
+plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global_tax_more_half", "share_policies_supported", "points_foreign1_gcs"), 
            along = "country", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = eu, save = FALSE)
 
 modelplot(lm(reg_formula("gcs_support", quotas_eu), data = eu), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))
