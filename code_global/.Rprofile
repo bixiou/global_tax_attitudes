@@ -209,8 +209,8 @@ library(magick) # image_write
 #' # Fs <- function(QID) { s[QID][[1]] }
 #' # Vs <- function(QID) { as.vector(Fs(QID))  }
 d <- function(str, alt_data = eu, alt_var = "country") {
-  if (exists(tolower(str))) return(eval(str2expression(tolower(str)))) # data from name
-  else return(alt_data[alt_data[[alt_var]] == tolower(str),])
+  if (exists(tolower(str)) && is.data.frame(exists(tolower(str)))) return(eval(str2expression(tolower(str)))) # data from name
+  else return(alt_data[alt_data[[alt_var]] == toupper(str),])
 }
 n <- function(var) { as.numeric(as.vector(var)) }
 #' NSPs <- function(QID) { length(V(QID)[V(QID) == "NSP (Je ne veux pas répondre)"])/length(V(QID)) }
@@ -2270,7 +2270,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
 #   return(final)
 # }
 
-representativeness_table <- function(country_list, weighted = T, non_weighted = T, label_operator = union, all = FALSE, omit = c("Other", "Not 25-64", "Employment_18_64: Employed", "Employment_18_64: 65+", "PNR"),
+representativeness_table <- function(country_list, weighted = T, non_weighted = T, label_operator = union, all = FALSE, omit = c("Other", "Not 25-64", "Employment_18_64: Employed", "Employment_18_64: 65+", "PNR", "Urban: FALSE"),
                                      filename = NULL, folder = "../tables/sample_composition/", return_table = FALSE, threshold_skip = 0.01) {
   rows <- c()
   pop <- sample <- sample_weighted <- labels <- list()
@@ -2286,7 +2286,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     for (q in quota_variables) {
       q_name <- ifelse(q %in% names(levels_quotas), q, paste0(c, "_", q))
       for (j in seq_along(levels_quotas[[q_name]])) {
-        # print(paste(c, q, j))
+        # print(paste(c, q_name, j))
         if (pop_freq[[c]][[q_name]][j] > threshold_skip) {
           labels[[k]] <- c(labels[[k]], paste0(capitalize(q), ": ", levels_quotas[[q_name]][j]))
           pop[[k]] <- c(pop[[k]], sprintf("%.2f", round(pop_freq[[c]][[q_name]][j], digits = 2)))

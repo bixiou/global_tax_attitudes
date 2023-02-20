@@ -3,6 +3,7 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
+# FR lack income Q4, 65+; DE lack income Q4, 50-64, 65+, Upper secondary; ES lack income Q4, 65+, rural; UK lack women, 18-24
 # TODO! slides
 # TODO! literature review
 # TODO! appendix sources, calcul net gain
@@ -16,14 +17,14 @@ e <- ep
 
 ##### Duration #####
 print(paste0(round(100*sum(us1a$finished == 1 & is.na(us1a$excluded), na.rm = T)/sum(us1a$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1")) # 92% % incidence rate
-print(paste0(round(100*sum(us1a$dropout)/sum(is.na(us1a$excluded))), "% dropout in US1")) # 11% US1
+print(paste0(round(100*sum(us1a$dropout)/sum(is.na(us1a$excluded))), "% dropout in US1")) # 17% US1
+print(paste0(round(100*sum(eua$dropout)/sum(is.na(eua$excluded))), "% dropout in EU")) # 2% EU
 print(paste0(round(100*sum(eupa$finished == 1 & is.na(eupa$excluded), na.rm = T)/sum(eupa$finished == 1 | eupa$excluded=="Screened", na.rm = T)), "% IR in EUp")) # 86%
 print(paste0(round(100*sum(us1pa$excluded=="QuotaMet", na.rm = T)/nrow(us1pa)), "% QuotaMet")) # 4%
 print(paste0(round(100*sum(us1pa$excluded=="Screened", na.rm = T)/nrow(us1pa)), "% Screened")) # 0%
 print(paste0(round(100*sum(us1pa$dropout)/sum(is.na(us1pa$excluded))), "% dropout in US1p")) # 1%
 print(paste0(round(100*sum(eupa$excluded=="QuotaMet", na.rm = T)/nrow(eupa)), "% QuotaMet")) # 7%
 print(paste0(round(100*sum(eupa$excluded=="Screened", na.rm = T)/nrow(eupa)), "% Screened")) # 11%
-print(paste0(round(100*sum(eupa$dropout)/sum(is.na(eupa$excluded))), "% dropout in EUp")) # 17% EU
 print(paste0(round(100*sum(us1p$dropout)/sum(is.na(us1p$excluded))), "% dropout in US1p")) # 17% EU
 print(paste0(round(100*sum(us2p$dropout)/sum(is.na(us2p$excluded))), "% dropout in US2p")) # 17% EU
 print(paste0(round(100*sum(eupa$dropout & as.numeric(eupa$progress > 15))/sum(is.na(eupa$excluded))), "% dropout excluding sociodemos")) # 13% 

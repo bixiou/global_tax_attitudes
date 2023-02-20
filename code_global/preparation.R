@@ -82,6 +82,7 @@ major_candidates <- minor_candidates <- list()
                  "ES" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"),
                  "UK" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64")
   )
+  for (c in countries_EU) quotas[[paste0(c, "_all")]] <- c(quotas[[c]], "employment_18_64", "vote")
 
   qs <- read.xlsx("../questionnaire/specificities.xlsx", sheet = "Quotas", rowNames = T, rows = c(1:6, 8), cols = 1:43)
 
@@ -91,7 +92,7 @@ major_candidates <- minor_candidates <- list()
     ),
     "US" = list(
       "urbanity" = c(qs["US", "Cities"], 0.001, qs["US","Rural"])/1000,
-      "urban" = c(qs["US", "Cities"], qs["US","Rural"])/1000,
+      "US_urban" = c(qs["US", "Cities"], qs["US","Rural"])/1000,
       "US_region" = unlist(qs["US", c("Region.1", "Region.2", "Region.3", "Region.4")]/1000),
       "US_race" = unlist(qs["US", c("White.non.Hispanic", "Hispanic", "Black", "Other")]/1000),
       "US_vote_us" = c(0.342171, 0.312823, 0.345006, 0.000001)
@@ -919,7 +920,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 
 ##### Run #####
 
-e <- eu <- prepare(country = "EU", weighting = FALSE)
+e <- eu <- prepare(country = "EU", weighting = T)
 e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
 
 if (!"weight" %in% names(eu)) eu$weight <- 1 # otherwise variables like conutry are not correctly merged, don't know why
