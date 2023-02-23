@@ -585,6 +585,8 @@ barres_multiple(barres = barres_defs, df = all, folder = "../figures/all/")
 # list_exp
 (temp <- barres(data = data_list_exp(us1), rev = F, rev_color = T, export_xls = F, sort = F, thin = T, miss=F, showLegend = T, legend = c(0:4), labels=labels_vars[variables_list_exp]))
 save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 850, height = fig_height(4), trim = T)
+(temp <- barres(data = data_list_exp(eu), rev = F, rev_color = T, export_xls = F, sort = F, thin = T, miss=F, showLegend = T, legend = c(0:4), labels=labels_vars[variables_list_exp]))
+save_plotly(temp, filename = "list_exp", folder = "../figures/EU/", width = 850, height = fig_height(4), trim = T)
 
 
 ##### Heatmaps #####

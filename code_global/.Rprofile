@@ -2271,7 +2271,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
 # }
 
 representativeness_table <- function(country_list, weighted = T, non_weighted = T, label_operator = union, all = FALSE, omit = c("Other", "Not 25-64", "Employment_18_64: Employed", "Employment_18_64: 65+", "PNR", "Urban: FALSE"),
-                                     filename = NULL, folder = "../tables/sample_composition/", return_table = FALSE, threshold_skip = 0.01) {
+                                     filename = NULL, folder = "../tables/sample_composition/", return_table = FALSE, threshold_skip = 0.01, weight_var = "weight") {
   rows <- c()
   pop <- sample <- sample_weighted <- labels <- list()
   for (i in seq_along(country_list)) {
@@ -2291,7 +2291,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
           labels[[k]] <- c(labels[[k]], paste0(capitalize(q), ": ", levels_quotas[[q_name]][j]))
           pop[[k]] <- c(pop[[k]], sprintf("%.2f", round(pop_freq[[c]][[q_name]][j], digits = 2)))
           sample[[k]] <- c(sample[[k]], sprintf("%.2f", round(mean(as.character(df[[q]]) == levels_quotas[[q_name]][j], na.rm = T), digits = 2)))
-          if (weighted) sample_weighted[[k]] <- c(sample_weighted[[k]], sprintf("%.2f", round(wtd.mean(as.character(df[[q]]) == levels_quotas[[q_name]][j], na.rm = T, weights = df$weight), digits = 2)))
+          if (weighted) sample_weighted[[k]] <- c(sample_weighted[[k]], sprintf("%.2f", round(wtd.mean(as.character(df[[q]]) == levels_quotas[[q_name]][j], na.rm = T, weights = df[[weight_var]]), digits = 2)))
         }
       }
     }

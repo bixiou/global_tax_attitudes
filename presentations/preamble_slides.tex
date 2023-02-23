@@ -1,0 +1,268 @@
+\documentclass[aspectratio=169,xcolor=dvipsnames, 11pt]{beamer} 
+
+%\documentclass[xcolor=dvipsnames,mathserif]{beamer} % this option has curvier math
+%\documentclass[xcolor=dvipsnames,11pt]{beamer}
+% Note: the color structure needs to be added here in the title. Now it recognizes all beamer % colors.
+
+%%%%%%%%  PRESENTATION LAYOUT:
+\usepackage{appendixnumberbeamer} % this package does not count the appendix pages. /!\ Inconstant behavior, sometimes bug.
+\mode<presentation>
+{
+  \usetheme{Boadilla}
+  \usecolortheme{lily} % lily is nice or orchid but not for definition
+  \setbeamercovered{invisible}
+  \setbeamertemplate{footline}{\raggedleft\insertframenumber~/~\inserttotalframenumber\hspace*{3pt}\vskip3pt} %this command shows frame number, not page number at bottom (means if using overlays, % frame number does not change)
+%\setbeamertemplate{footline}[page number]  % this puts only page number on bottom
+ \setbeamertemplate{navigation symbols}{}  % this erases navigation symbols.
+ \setbeamersize{text margin left=0.2cm, text margin right=0.1cm}
+ \setbeamertemplate{frametitle}[default][center]
+ \setbeamercolor{frametitle}{fg=black}
+ \setbeamerfont{frametitle}{size=\large, series=\bfseries} % Modifies frame title font.
+ \setbeamercolor{button}{fg=blue, bg=white}
+ \setbeamertemplate{itemize item}[circle]
+ \setbeamercolor{itemize item}{fg=black}
+ \setbeamercolor{itemize/enumerate body}{fg=black}
+ \setbeamerfont{framesubtitle}{series=\mdseries}
+
+}
+
+\renewcommand{\familydefault}{\rmdefault} %Options here are \ttdefault \ssdefault or \rmdefault.
+
+% This defines actual color palette; 
+\definecolor{blue}{RGB}{0,114,178}
+\definecolor{red}{RGB}{213,94,0}
+\definecolor{yellow}{RGB}{240,228,66}
+\definecolor{green}{RGB}{0,158,115}
+\definecolor{orange}{RGB}{230,159,0}
+
+\hypersetup{
+  colorlinks = false,
+  linkbordercolor = {white},
+  linkcolor = {blue}
+}
+
+%%% Color customization: where these colors are used. 
+\colorlet{cwords}{blue} %this defines a color, stored under the name cwords that will be used and recognized in document.
+\colorlet{cwordsc}{red} %color for contrast with some other word.
+\colorlet{cwords2}{green} %2nd color for contrast with some other word.
+\colorlet{cmath}{blue} %color for math in text.
+%\everymath{\color{blue}} % This in conjunction with the everysel package sets color of math
+\everydisplay{\color{blue}}
+
+
+%%%%%%%%  PACKAGES USED:
+\usepackage{amsmath}
+\usepackage{setspace} % Only needed for spacing
+\usepackage{changepage} % Only needed for local margin setting
+\usepackage{mathpazo}% font, is overwritten by times
+%\usepackage[hypertexnames=false]{hyperref} %This makes hyperref ``dumber'', and, hence, more robust! (otherwise sometimes the appendix links don't work).
+\usepackage{hyperref}
+\usepackage{multimedia}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{subfig}
+\usepackage{subfloat}
+\usepackage[en-US]{datetime2}
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{array,booktabs} % Needed for esttab tables according to the "inequality survey."
+\newcommand{\sym}[1]{{#1}} % for symbols in Table
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{times} % This is a different font.
+\usepackage[overlay,absolute]{textpos}
+%%%\usepackage{animate} % Animate graphs BUG
+\setlength{\TPHorizModule}{1cm}
+\setlength{\TPVertModule}{1cm}
+\captionsetup[figure]{labelformat=empty} % removes caption prefix figure
+\setlength{\itemsep}{\fill} % this is supposed to stretch items across full frame.
+%\setlength{\parskip}{0.8\baselineskip} % This affects spacing between normal lines (not itemized).
+\usepackage{colortbl} % For cell colors
+\usepackage[final]{pdfpages}
+\usepackage{caption}
+\usepackage{subcaption}
+%\captionsetup{justification   = raggedright,
+%              singlelinecheck = false}
+%\usepackage{adjustbox} % to use resizebox for tables size.
+\usepackage[export]{adjustbox} % to use resizebox for tables size.
+\usepackage{eurosym}
+\usepackage{gensymb}
+
+%% TIKZ
+\usepackage{tikz}
+\usetikzlibrary{er, positioning,decorations.pathmorphing,calc}
+\usepackage{tikzscale}
+
+\tikzset{every entity/.style={draw=black, fill=white}}
+\tikzset{comment/.style={draw=white, fill=white}}
+\tikzset{
+	invisible/.style={opacity=0},
+	visible on/.style={alt=#1{}{invisible}},
+	alt/.code args={<#1>#2#3}{%
+		\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+	},
+}
+
+% Commands from template
+\newcommand{\alrt}[1]{{\color{alert} #1}}
+\newcommand{\alrtl}[1]{{\color{alert}\large #1}}
+\newcommand{\alrtL}[1]{{\color{alert}\Large #1}}
+\newcommand{\struc}[1]{{\color{structure} #1}}
+\newcommand{\strucL}[1]{{\color{structure}\Large #1}}
+\newcommand{\strucl}[1]{{\color{structure}\large #1}}
+\newcommand{\dred}[1]{{\color{darkred} #1}}
+\newcommand{\dredl}[1]{{\color{darkred}\large #1}}
+\newcommand{\dredL}[1]{{\color{darkred}\Large #1}}
+\newcommand{\altc}[1]{{\color{darkgreen}\textbf{#1}}}
+\newcommand{\altcl}[1]{{\color{darkgreen}\textbf{\large #1}}}
+\newcommand{\altcL}[1]{{\color{darkgreen}\textbf{\Large #1}}}
+\newcommand{\hush}{\hushit}
+\newcommand{\hushalrt}[1]{\hushit{{\color{alert} #1}}}
+\newcommand{\hushalrtl}[1]{\hushit{{\large\color{alert} #1}}}
+\newcommand{\hushalrtL}[1]{\hushit{{\Large\color{alert} #1}}}
+\newcommand{\hushstruc}[1]{\hushit{{\color{structure} #1}}}
+\newcommand{\hushstrucl}[1]{\hushit{{\large\color{structure} #1}}}
+\newcommand{\hushstrucL}[1]{\hushit{{\Large\color{structure} #1}}}
+
+
+\setbeamertemplate{caption}[numbered]
+
+%%%%%%%%%SECTION TITLES DISPLAYED ON FULL PAGE %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}{\huge \color{red} \insertsectionhead} \par
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+\AtBeginSubsection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}{\huge \color{blue} \insertsubsectionhead} \par
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+%
+% Custom font for a frame.
+%
+\usepackage{environ}
+\newcommand{\customframefont}[1]{
+\setbeamertemplate{itemize/enumerate body begin}{#1}
+\setbeamertemplate{itemize/enumerate subbody begin}{#1}
+}
+
+\NewEnviron{framefont}[1]{
+\customframefont{#1} % for itemize/enumerate
+{#1 % For the text outside itemize/enumerate
+\BODY
+}
+\customframefont{\normalsize}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% OTHER PIECES OF TEMPLATE FILE
+%%%%%% DELETE ONCE CLEAR THAT NOTHING IS MISSING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\documentclass[aspectratio=169]{beamer} % wide
+%\usepackage{amsmath,amsthm,fancyhdr,setspace,graphicx,booktabs,pdflscape}
+%\usepackage{geometry}
+%\usepackage{etex}
+%\usepackage{xcolor,colortbl}
+%\usepackage{beamerprosper}
+%\usepackage{url}
+%\usepackage{enumerate}
+%\usepackage{graphicx}
+%\usepackage{hyperref}
+%\usepackage{multicol}
+%\usepackage{caption}
+%\usepackage{beamerprosper}
+%\usepackage{pgfpages, pdfpages}
+%\usepackage{tikz-cd}
+%
+%\usepackage{tabularx}
+%\usepackage{anyfontsize}
+%\usepackage{multicol,tabto}
+%
+%\usepackage{float}
+%\usepackage{soul}
+%\usepackage{grffile}
+%\usepackage{changepage}
+%\usepackage{sansmathaccent}
+%\pdfmapfile{+sansmathaccent.map}
+%
+%
+%\usetikzlibrary{er,positioning,calc,decorations.pathreplacing}
+%
+%\mode<presentation>
+%\usefonttheme{structuresmallcapsserif}
+%\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{navigation symbols}{}
+%
+%%change font
+%\usefonttheme{default}
+%\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{navigation symbols}{}
+%
+%\newcommand{\fig}[3]{\begin{frame}\frametitle{#2}\centerline{\includegraphics[width=#3in]{#1}}\end{frame}}
+%
+%\newcommand{\blackslide}[1]{\beamersetaveragebackground{black}\begin{frame}\frametitle{}\end{frame}\beamersetaveragebackground{white}}
+%
+%% pause commands
+%\newcommand{\m}[2]{\begin{frame}\frametitle{#1}{ #2}\end{frame}}
+%\newcommand{\mm}[3]{\begin{frame}\frametitle{#1}\uncover<1->{ #2}\uncover<2->{ #3 }\end{frame}}
+%\newcommand{\mmm}[4]{\begin{frame}\frametitle{#1}\uncover<1->{ #2}\uncover<2->{ #3 }\uncover<3->{ #4 }\end{frame}}
+%\newcommand{\mmmm}[5]{\begin{frame}\frametitle{#1}\uncover<1->{ #2}\uncover<2->{ #3 }\uncover<3->{ #4 }\uncover<4->{ #5 }\end{frame}}
+%
+%\setlength{\footskip}{24pt}
+%
+%\newcommand{\ex}{\mathbf{E}}
+%\newcommand{\cov}{\mathbb{C}}
+%\newcommand{\var}{\mathbb{V}}
+%\newcommand{\tu}{\overline{\theta}}
+%\newcommand{\vu}{\overline{v}}
+%\newcommand{\tl}{\underline{\theta}}
+%\newcommand{\ab}{\bar{a}}
+%\newcommand{\lb}{\bar{L}}
+%\newcommand{\hb}{\bar{H}}
+%
+%% New colors.
+%\definecolor{darkred}{rgb}{0.6,0,0}
+%\definecolor{darkblue}{rgb}{.15,.25,.55}
+%\definecolor{darkgreen}{rgb}{0,.35,.05}
+%\definecolor{ltgreen}{rgb}{0,.05,.8}
+%\definecolor{bred}{rgb}{1,0,.05}
+%\definecolor{navy}{rgb}{.1,.1,.5}
+%
+%% from beamer lecture 
+%
+%\newtheorem{proposition}{Proposition}
+%%\newtheorem{theorem}{Theorem}
+%
+%\newenvironment{changemargin}[2]{%
+%    \begin{list}{}{ %
+%%        \setlength{\topmargin}{#3}%
+%            \setlength{\topsep}{0pt}%
+%            \setlength{\leftmargin}{#1}%
+%            \setlength{\rightmargin}{#2}%
+%            \setlength{\listparindent}{\parindent}%
+%            \setlength{\itemindent}{\parindent}%
+%            \setlength{\parsep}{\parskip}%
+%        }%
+%\item[]}{\end{list}}
+%
+%%Allows us to force a column width in array environment
+%\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+%\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+%\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}

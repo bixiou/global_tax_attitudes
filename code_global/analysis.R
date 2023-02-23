@@ -29,7 +29,7 @@ print(paste0(round(100*sum(us1p$dropout)/sum(is.na(us1p$excluded))), "% dropout 
 print(paste0(round(100*sum(us2p$dropout)/sum(is.na(us2p$excluded))), "% dropout in US2p")) # 17% EU
 print(paste0(round(100*sum(eupa$dropout & as.numeric(eupa$progress > 15))/sum(is.na(eupa$excluded))), "% dropout excluding sociodemos")) # 13% 
 print(paste0(round(100*sum(eupa$dropout & as.numeric(eupa$progress == 16))/sum(is.na(eupa$excluded))), "% dropout at policy description")) # 7% (progress = 16 at policy description *for EUp*)
-decrit("duration", data = us1p) # US1p: 8.44 / US2p: 16.5 / EUp: 15.75
+decrit("duration", data = us1) # US1p: 8.44 / US2p: 16.5 / EUp: 15.75
 decrit("duration", data = us2p) 
 decrit("duration", data = us2p, which = is.na(us2p$branch_iat)) # 12.8
 decrit("duration", data = us2p, which = !is.na(us2p$branch_iat)) # 18.5 => duration IAT: 5.6

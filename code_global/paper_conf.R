@@ -88,7 +88,8 @@ barres_multiple(barres = barres_defs[c("negotiation", "group_defended_agg", "pro
 representativeness_table(c("US1"), return_table = F) # TODO custom rows/style
 representativeness_table(c("US1"), return_table = F, all = T) 
 representativeness_table(c("US1", "US2", "EU"), return_table = F, all = T) 
-representativeness_table(countries_EU, return_table = T, all = T) 
+representativeness_table(countries_EU, return_table = T, all = T, weight_var = "weight_country") 
+representativeness_table(countries_EU, return_table = T, all = T, weight_var = "weight", filename = "FR_DE_ES_UK_all_EU_weight") 
 
 
 ##### App Attrition analysis #####
