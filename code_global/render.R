@@ -594,6 +594,7 @@ save_plotly(temp, filename = "list_exp", folder = "../figures/EU/", width = 850,
 (nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name)))))
 # Regroup heatmaps by nb of variables to change the size of the Viewer before each run and have nice saved plots
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2][1]], weights = F, trim = T)
+heatmap_multiple(heatmaps_defs["belief"], weights = F)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]], weights = F)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2][1]], weights = F)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2]], weights = F)
@@ -603,6 +604,17 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9][1]
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]], weights = F)
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
+
+temp <- read.xlsx("../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_positive.xlsx")
+temp2 <- read.xlsx("../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_share.xlsx")
+temp[13,6] <- temp2[13,6] <- wtd.mean(eu$gcs_support[eu$country == "FR"] == "Yes", weights = eu$weight_country[eu$country == "FR"])
+temp[13,7] <- temp2[13,7] <- wtd.mean(eu$gcs_support[eu$country == "DE"] == "Yes", weights = eu$weight_country[eu$country == "DE"])
+temp[13,12] <- temp2[13,12] <- wtd.mean(eu$gcs_support[eu$country == "ES"] == "Yes", weights = eu$weight_country[eu$country == "ES"])
+temp[13,13] <- temp2[13,13] <- wtd.mean(eu$gcs_support[eu$country == "UK"] == "Yes", weights = eu$weight_country[eu$country == "UK"])
+temp[13,14] <- temp2[13,14] <- wtd.mean(us1$gcs_support == "Yes", weights = us1$weight)
+temp[13,2] <- temp2[13,2] <- mean(as.numeric(temp[13,]), na.rm = T)
+write.xlsx(temp, "../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_positive.xlsx")
+write.xlsx(temp2, "../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_share.xlsx")
 
 heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_defs$donation$labels, name = "donation", conditions = "", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = F) 
 

@@ -14,6 +14,11 @@ e <- ep
 # TODO read about Norway and foreign aid
 # TODO? Ask 200 more respondents to rebalance for age-UK
 
+# ES: remove 50 18-25 to add rural and below upper secondary; UK: remove 150 >65 men to add women below 50 (and especially below 25); DE, FR let only upper secondary among 25-64; DE do not allow <25
+removed_IDs <- eu$ID[eu$country == "UK" & eu$man & eu$age > 65 & eu$income_quartile < 3 & !is.missing(eu$vote)] # 147 UK
+removed_IDs <- c(removed_IDs, eu$ID[eu$country == "ES" & eu$age < 25 & eu$urbanity == "Cities" & eu$income_quartile < 3])
+write.csv(removed_IDs, "../Adrien's/removed_IDs.csv", quote = F, row.names = F)
+
 
 ##### Duration #####
 print(paste0(round(100*sum(us1a$finished == 1 & is.na(us1a$excluded), na.rm = T)/sum(us1a$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1")) # 92% % incidence rate
