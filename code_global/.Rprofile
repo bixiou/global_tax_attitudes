@@ -889,7 +889,8 @@ data1 <- function(vars, data=e, weights=T) {
 dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE, rev_legend = FALSE, levels = NULL) {
   missing_labels <- c("NSP", "PNR", "Non concerné·e", "Included", "Don't know", "PNR or other", "NSP ou autre", "PNR ou autre", "PNR/Non-voter") # TODO: allow for non-standard PNR in a more straightforward way than adding the argument "fr" and putting its value below
   if (is.character(fr)) missing_labels <- c(missing_labels, fr)
-  if (is.null(data[['weight']])) weights <- F # TODO? warning
+  weight_var <- if (sum(!is.na(data$weight_country)) == nrow(data) && length(unique(data$country)) == 1) "weight_country" else "weight"
+  if (is.null(data[[weight_var]])) weights <- F # TODO? warning
   mat <- c()
   if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !any(grepl("item", class(data[[var]])))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
   else v <- data[[var]]
@@ -902,18 +903,18 @@ dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE
   if (missing(levels)) levels <- Levels(v, max_values = Inf, names = T) # was Levels_data(v)
   levels <- levels[!(levels %in% missing_labels)]
   if (rev_legend) levels <- rev(levels) # new (05/20)
-  if (weights) N <- sum(data[['weight']][!is.pnr(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
+  if (weights) N <- sum(data[[weight_var]][!is.pnr(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
   else N <- length(which(!is.pnr(v) & (!(v %in% missing_labels)))) # c("NSP", "Non concerné·e")
   for (val in levels) { # before: no %in% nowhere below
-    if (weights) mat <- c(mat, sum(data[['weight']][which(v==val)])/N)
+    if (weights) mat <- c(mat, sum(data[[weight_var]][which(v==val)])/N)
     else mat <- c(mat, length(which(v==val))/N) }
   if (rev) mat <- rev(mat)
   if (miss) {
     if (is.null(annotation(v))) {
-      if (weights) mat <- c(mat, sum(data[['weight']][which(is.na(v) | v %in% missing_labels)])/N) # c("NSP", "Non concerné·e")
+      if (weights) mat <- c(mat, sum(data[[weight_var]][which(is.na(v) | v %in% missing_labels)])/N) # c("NSP", "Non concerné·e")
       else mat <- c(mat, length(which(is.na(v) | v %in% missing_labels))/N) # c("NSP", "Non concerné·e")
     } else  {
-      if (weights) mat <- c(mat, sum(data[['weight']][which(is.pnr(v) & !is.na(v))])/N) # was defined without " & (!(v %in% c("NSP", "Non concerné·e")))" here and line below
+      if (weights) mat <- c(mat, sum(data[[weight_var]][which(is.pnr(v) & !is.na(v))])/N) # was defined without " & (!(v %in% c("NSP", "Non concerné·e")))" here and line below
       else mat <- c(mat, length(which(is.pnr(v) & !is.na(v)))/N) } } # mais ça semble équivalent pck les NSP sont missing dans ces cas-là
   if (max(nchar(levels))==3 & 'Oui' %in% levels & 'Non' %in% levels) { if (which(levels=='Non') < which(levels=='Oui')) mat[2:1] <- mat[1:2]; levels[c(which(levels=='Oui'),which(levels=='Non'))] <- c('Non', 'Oui') }
   if ((return %in% c("levels", "legend")) & miss & fr==TRUE) return(c(levels, 'NSP'))
@@ -1381,7 +1382,7 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     for (v in 1:nb_vars) {
       var_c <- df_c[[vars[v]]][!is.na(df_c[[vars[v]]])]
       if (weights & length(var_c) > 0 & c %in% c(countries_EU, names(countries_EU))) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight_country[!is.na(df_c[[vars[v]]])])")))
-      if (weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])")))
+      if (weights & length(var_c) > 0 & !(c %in% c(countries_EU, names(countries_EU)))) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])")))
       if (!weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("mean(var_c", conditions[v], ", na.rm = T)")))
     }
   }

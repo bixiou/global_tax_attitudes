@@ -1,11 +1,12 @@
-# TODO! Eu average in heatmaps
-# TODO! heatmap, barresN weight_country
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO list_exp, all_same heatmaps, 
 
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
 # TODO automatically set share_labels/margin_l/width, miss, thin 
 # TODO? Arial or Computer modern (Times)?
+# TODO? barresN with also Eu
+
+# We use weight_country for country average and weight for EU/US average.
 
 ##### labels_vars #####
 labels_vars <- c(
@@ -570,13 +571,16 @@ barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 # return(barres_defs) }
 # barres_defs$foreign_aid_no
 
+barresN_defs <- fill_barres(c("group_defended_agg2"), list("negotiation" = list(width = 940)), along = "country_name")
+barresN_continent_defs <- fill_barres(c("group_defended_agg2"), list("negotiation" = list(width = 940)), along = "continent")
+
 
 ##### Run #####
 # Bars
 barres_multiple(barres = barres_defs[c("points_mean", "points")], df = us1, folder = "../figures/US1/") 
 barres_multiple(barres = barres_defs[c("support_binary")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
-barres_multiple(barres = barres_defs[c("income_quartile")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("income_quartile")], df = eu, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
@@ -615,15 +619,18 @@ save_plotly(temp, filename = "list_exp", folder = "../figures/EU/", width = 850,
 # TODO define e
 (nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name)))))
 # Regroup heatmaps by nb of variables to change the size of the Viewer before each run and have nice saved plots
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2][1]], weights = T, trim = T)
 heatmap_multiple(heatmaps_defs["belief"], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]], weights = T)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2][1]], weights = T)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2]], weights = T)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4][1]], weights = T)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4]], weights = T)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9][1]], weights = T)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 2][1]], weights = T, trim = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 2]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 3][1]], weights = T, trim = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 3]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb_vars_heatmaps >= 4][1]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb_vars_heatmaps >= 4]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 8 & nb_vars_heatmaps >= 5][1]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 8 & nb_vars_heatmaps >= 5]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 8][1]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 8]], weights = T)
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
 
@@ -639,6 +646,13 @@ write.xlsx(temp, "../../oecd_climate/tables/country_comparison/global_tax_attitu
 write.xlsx(temp2, "../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_share.xlsx")
 
 heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_defs$donation$labels, name = "donation", conditions = "", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = F) 
+
+
+##### Heterogeneity #####
+barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
+
+barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continent_comparison/") 
+
 
 ##### Word clouds and vote #####
 stopwords <- unlist(sapply(c("french", "english", "german", "spanish"), function(v) stopwords(v)))
