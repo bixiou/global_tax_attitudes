@@ -123,7 +123,7 @@ labels_vars <- c(
   "national_tax_support" = "National tax on millionaires",
   "global_tax_global_share" = "Preferred share of global tax for low-income",
   "global_tax_sharing" = "Sharing half of global tax with low-income",
-  "foreign_aid_belief" = "Belief about foreign aid / public spending",
+  "foreign_aid_belief" = "Belief about foreign aid", # / public spending",
   "foreign_aid_actual" = "Actual foreign aid (in % of public spending)",
   "foreign_aid_preferred_no_info" = "Preferred foreign aid (no info)",
   "foreign_aid_preferred_info" = "Preferred foreign aid (with info)",
@@ -399,7 +399,7 @@ heatmaps_defs <- list(
   "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), nb_digits = 0), # removes 'donation'
   "belief" = list(vars = variables_belief, conditions = "", nb_digits = 0), 
   "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0),
-  "foreign_aid_amount" = list(vars = c("foreign_aid_belief", "foreign_aid_actual", "foreign_aid_preferred_no_info", "foreign_aid_preferred_info"), conditions = c(""), nb_digits = 1),
+  "foreign_aid_amount" = list(vars = c("foreign_aid_actual", "foreign_aid_belief", "foreign_aid_preferred_no_info", "foreign_aid_preferred_info"), conditions = c(""), nb_digits = 1),
   "foreign_aid_more" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_more_less_no_info", "foreign_aid_raise_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is higher than perceived", "Supports increasing foreign aid (incl. with conditions)")),
   "foreign_aid_more_all" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_less_more_info", "foreign_aid_more_less_no_info", "foreign_aid_less_more_no_info", "foreign_aid_raise_support", "foreign_aid_reduce_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is lower than current", "Preferred foreign aid is higher than perceived", "Preferred foreign aid is lower than perceived", "Supports increased foreign aid (incl. with conditions)", "Supports reduced foreign aid")),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
@@ -591,7 +591,7 @@ barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_co
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
 heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint")], weights = T)
-heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")], weights = T)
+heatmap_multiple(heatmaps_defs[c("foreign_aid_amount")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_only", "petition_gcs", "petition_nr", "global_tax_global_share")], weights = T)
 
