@@ -1,3 +1,11 @@
+# TODO! foreign_aid_amount replace "any branch" by true value; foreign_aid_raise_support foreign_aid_more_less
+# TODO! conjoint: add support GCS
+# TODO! remove "any" from petition and add normal support
+# TODO! negotation, group_defended by country
+# TODO! Eu average in heatmaps
+# TODO re-order support_likert_share
+# TODO! round global_tax_global_share_mean 
+# TODO! heatmap weight_country
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO list_exp, all_same heatmaps, 
 
@@ -65,7 +73,7 @@ labels_vars <- c(
   "both_win_lose" = "Win/lose to GCS+NR",
   "gcs_support" = "Global climate scheme (GCS)",
   "nr_support" = "National redistribution scheme (NR)",
-  "cgr_support" = "Coal exit + GCS + NR", # "Support for C+G+R",
+  "cgr_support" = "National climate policy + GCS + NR", # "Support for C+G+R",
   "gcs_belief" = "Belief about GCS",
   "nr_belief" = "Belief about NR",
   "list_exp_gl" = "List exp.: GCS/C/O",
@@ -81,15 +89,16 @@ labels_vars <- c(
   "conjoint_leftg_right" = "Conjoint: Left+GCS vs. Right",
   "conjoint_left_a_b" = "Conjoint: random programs A vs. B",
   "conjoint_left_ag_b" = "Conjoint: random programs A+GCS vs. B",
-  "conjoint_crg_cr_binary" = "Conjoint: >>C+NR+GCS<< vs. C+NR",
-  "conjoint_cr_gr_binary" = "Conjoint: C+NR vs. >>GCS+NR<<",
-  "conjoint_r_rcg_binary" = "Conjoint: NR vs. >>NR+C+GCS<<",
-  "conjoint_rg_r_binary" = "Conjoint: >>NR+GCS<< vs. NR",
-  "conjoint_rc_r_binary" = "Conjoint: >>NR+C<< vs. NR",
-  "conjoint_left_right_binary" = "Conjoint: >>Left<< vs. Right",
-  "conjoint_leftg_right_binary" = "Conjoint: >>Left+GCS<< vs. Right",
-  "conjoint_left_a_b_binary" = "Conjoint: random programs >>A<< vs. B",
-  "conjoint_left_ag_b_binary" = "Conjoint: random programs >>A+GCS<< vs. B",
+  "conjoint_crg_cr_binary" = "C+NR+GCS preferred to C+NR", # "Conjoint: >>C+NR+GCS<< vs. C+NR",
+  "conjoint_cr_gr_binary" = "GCS+NR preferred to C+NR", # "Conjoint: C+NR vs. >>GCS+NR<<",
+  "conjoint_r_rcg_binary" = "NR+C+GCS preferred to NR", # "Conjoint: NR vs. >>NR+C+GCS<<",
+  "conjoint_rg_r_binary" = "NR+GCS preferred to NR", # "Conjoint: >>NR+GCS<< vs. NR",
+  "conjoint_rc_r_binary" = "NR+C preferred to NR", # "Conjoint: >>NR+C<< vs. NR",
+  "conjoint_left_right_binary" = "Left preferred to Right", # "Conjoint: >>Left<< vs. Right",
+  "conjoint_leftg_right_binary" = "Left+GCS preferred to Right", # "Conjoint: >>Left+GCS<< vs. Right",
+  "conjoint_left_a_b_binary" = "Random programs: A preferred to B", # "Conjoint: random programs >>A<< vs. B",
+  "conjoint_left_ag_b_binary" = "Random programs: A+GCS preferred to B", # "Conjoint: random programs >>A+GCS<< vs. B",
+  "conjoint_r" = "Random programs: with GCS preferred to without",
   "gcs_important_limit_CC" = "It would succeed in limiting climate change",
   "gcs_important_hurt_economy" = "It would hurt the [Country] economy",
   "gcs_important_hurt_me" = "It would penalize my household",
@@ -110,7 +119,7 @@ labels_vars <- c(
   "remove_tariffs_support" = "Removing tariffs on imports from low-income countries",
   "global_min_wage_support" = "A minimum wage in all countries at 50% of local median wage",
   "global_register_support" = "Fight tax evasion by creating a global financial register to record ownership of all assets",
-  "cap_wealth_support" = "A maximum wealth limit of $10 billion for each human", #(US) / €100 million (EU)",
+  "cap_wealth_support" = "A maximum wealth limit of $10 billion (US) / €100 million (EU) for each human", # TODO! run
   "attention_test" = "Attention test",
   "donation_nation" = "Donation to own country",
   "donation_africa" = "Donation to Africa",
@@ -120,6 +129,7 @@ labels_vars <- c(
   "global_tax_global_share" = "Preferred share of global tax for low-income",
   "global_tax_sharing" = "Sharing half of global tax with low-income",
   "foreign_aid_belief" = "Belief about foreign aid / public spending",
+  "foreign_aid_actual" = "Actual foreign aid (in % of public spending)",
   "foreign_aid_preferred_no_info" = "Preferred foreign aid (no info)",
   "foreign_aid_preferred_info" = "Preferred foreign aid (with info)",
   "foreign_aid_preferred" = "Preferred foreign aid (any branch)",
@@ -183,17 +193,17 @@ labels_vars <- c(
   "problem_climate" = "Climate change",
   "problem_poverty" = "Global poverty",
   "points_econ1" = "econ1",
-  "points_econ2" = "econ2",
+  "points_econ2" = "econ2: [Higher minimum wage] (DE: Bürgerversicherung)",
   "points_econ3" = "econ3",
   "points_econ4" = "econ4",
   "points_soc1" = "soc1",
   "points_soc2" = "soc2",
   "points_soc3" = "Making abortion a right at the federal level",
   "points_climate1" = "climate1",
-  "points_climate2" = "climate2",
-  "points_climate3" = "climate3",
+  "points_climate2" = "climate2: Thermal insulation plan (US: also transport)",
+  "points_climate3" = "climate3: Ban the sale of new combustion-engine cars by 2030",
   "points_tax1_nr" = "tax1: National redistribution scheme",
-  "points_tax2_wealth_tax" = "tax2: Wealth tax",
+  "points_tax2_wealth_tax" = "tax2: Wealth tax (ES: raise tax on top incomes)",
   "points_tax3" = "Increase corporate income tax<br>rate from 21% to 28%",
   "points_tax3_corporate_tax_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
   "points_foreign1_gcs" = "foreign1: Global climate scheme",
@@ -270,6 +280,7 @@ labels_vars_short_html <- c(
   "conjoint_leftg_right_binary" = "<b>Left+GCS</b> vs. Right",
   "conjoint_left_a_b_binary" = "Random program <b>A</b> vs. B",
   "conjoint_left_ag_b_binary" = "Random program <b>A+GCS</b> vs. B",
+  "conjoint_r" = "Random program <b>with GCS</b> vs. without",
   "gcs_important_limit_CC" = "It would succeed in limiting climate change",
   "gcs_important_hurt_economy" = "It would hurt the [Country] economy",
   "gcs_important_hurt_me" = "It would penalize my household",
@@ -369,7 +380,7 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
 
 ##### heatmaps_defs #####
 heatmaps_defs <- list(
-  "global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1")),
+  "global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1"), nb_digits = 0),
   "global_tax_sharing" = list(vars = c("global_tax_sharing"), conditions = c(">= 1")),
   "list_exp" = list(vars = variables_list_exp, conditions = c("")),
   "understood_all" = list(vars = variables_understood, conditions = c("")),
@@ -377,8 +388,14 @@ heatmaps_defs <- list(
   "understood_score" = list(vars = variables_understood[4], conditions = c("")),
   "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
-  "petition" = list(vars = variables_petition, conditions = ">= 1"),
-  "conjoint" = list(vars = variables_conjoint_binary, conditions = ">= 1"),
+  "petition_only" = list(vars = variables_petition[1:2], conditions = ">= 1"),
+  "petition" = list(vars = c("petition_gcs", "gcs_support", "petition_nr", "nr_support"), conditions = ">= 1"),
+  "petition_gcs" = list(vars = c("petition_gcs", "gcs_support"), conditions = ">= 1"),
+  "petition_nr" = list(vars = c("petition_nr", "nr_support"), conditions = ">= 1"),
+  "petition" = list(vars = c("petition_gcs", "gcs_support", "petition_nr", "nr_support"), conditions = ">= 1"),
+  "conjoint_all" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary, variables_conjoint_c_binary, "conjoint_left_ag_b_binary", "conjoint_r"), conditions = ">= 1"),
+  "conjoint" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary, "conjoint_left_ag_b_binary", "conjoint_r"), conditions = ">= 1"), 
+  "conjoint_ab" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary), conditions = ">= 1"), 
   "conjoint_a" = list(vars = variables_conjoint_a_binary, conditions = ">= 1"),
   "conjoint_b" = list(vars = variables_conjoint_b_binary, conditions = ">= 1"),
   "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
@@ -387,7 +404,9 @@ heatmaps_defs <- list(
   "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), nb_digits = 0), # removes 'donation'
   "belief" = list(vars = variables_belief, conditions = "", nb_digits = 0), 
   "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0),
-  "foreign_aid_amount" = list(vars = variables_foreign_aid_amount, conditions = c(""), nb_digits = 1),
+  "foreign_aid_amount" = list(vars = c("foreign_aid_belief", "foreign_aid_actual", "foreign_aid_preferred_no_info", "foreign_aid_preferred_info"), conditions = c(""), nb_digits = 1),
+  "foreign_aid_more" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_more_less_no_info", "foreign_aid_raise_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is higher than perceived", "Supports increasing foreign aid (incl. with conditions)")),
+  "foreign_aid_more_all" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_less_more_info", "foreign_aid_more_less_no_info", "foreign_aid_less_more_no_info", "foreign_aid_raise_support", "foreign_aid_reduce_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is lower than current", "Preferred foreign aid is higher than perceived", "Preferred foreign aid is lower than perceived", "Supports increased foreign aid (incl. with conditions)", "Supports reduced foreign aid")),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
   "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)]),
@@ -399,7 +418,7 @@ heatmaps_defs <- list(
 ##### vars_heatmaps #####
 vars_heatmaps <- c("support", "other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "petition", "gcs_important", "problem", 
                         "foreign_aid_amount", "duration", "donation", "belief", "points", "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", 
-                        "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "list_exp", "understood") # misses socio-demos, politics
+                        "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "conjoint_r", "conjoint_d", "list_exp", "understood") # misses socio-demos, politics
 
 heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 # heatmaps_defs$foreign_aid_no
@@ -567,7 +586,10 @@ save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", w
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
-heatmap_multiple(heatmaps_defs[c("points", "donation", "belief", "foreign_aid_amount")], weights = F)
+heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint")], weights = T)
+heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")], weights = T)
+heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
+heatmap_multiple(heatmaps_defs[c("petition_only", "petition_gcs", "petition_nr", "global_tax_global_share")], weights = T)
 
 # points TODO: define e
 (plot_points <- barres(vars = variables_points_us_agg[variables_points_us_agg %in% names(e)], df = e, export_xls = F, labels = barres_defs[["points"]]$labels[variables_points_us_agg %in% names(e)], sort = FALSE, weights = T, miss = FALSE, rev_color = T, rev = FALSE, add_means = T, transform_mean = function(x) return(x/100)))
@@ -593,15 +615,15 @@ save_plotly(temp, filename = "list_exp", folder = "../figures/EU/", width = 850,
 # TODO define e
 (nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name)))))
 # Regroup heatmaps by nb of variables to change the size of the Viewer before each run and have nice saved plots
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2][1]], weights = F, trim = T)
-heatmap_multiple(heatmaps_defs["belief"], weights = F)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]], weights = F)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2][1]], weights = F)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2]], weights = F)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4][1]], weights = F)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4]], weights = F)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9][1]], weights = F)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]], weights = F)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2][1]], weights = T, trim = T)
+heatmap_multiple(heatmaps_defs["belief"], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2][1]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 4 & nb_vars_heatmaps >= 2]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4][1]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 9 & nb_vars_heatmaps >= 4]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9][1]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 9]], weights = T)
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
 
@@ -758,6 +780,9 @@ plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global
 
 plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global_tax_more_half", "share_policies_supported", "points_foreign1_gcs"), 
            along = "country", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = eu, save = FALSE)
+
+plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global_tax_more_half", "share_policies_supported", "points_foreign1_gcs"), 
+           along = "country", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = all, save = FALSE)
 
 modelplot(lm(reg_formula("gcs_support", quotas_eu), data = eu), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))
 modelplot(lm(reg_formula("gcs_support", socio_demos), data = eu), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))

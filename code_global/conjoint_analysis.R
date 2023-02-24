@@ -52,7 +52,7 @@ design_cjoint_US <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # giv
 design_cjoint_EU <- makeDesign(filename = "../conjoint_analysis/9d_F_EU.dat") 
 design_cjoint_both <- makeDesign(filename = "../conjoint_analysis/9d_F_both.dat") # The weighted are the average of the US and EU weights
 amce <- ca <- list() # We should have "Old qualtrics format detected." (otherwise it would assume new format and delete the first observation).
-for (n in c("us1", "usp", "eup", "ep")) {
+for (n in c("us1", "eu", "all")) { # "usp", "eup", "ep"
   print(n)
   csv.path <- paste0("../conjoint_analysis/ca_", n, ".csv")
   write.csv(d(n)[!is.na(d(n)$conjoint_r_number), c(variables_conjoint_r, 'conjoint_r_number', 'n')], csv.path, row.names = FALSE)
@@ -74,16 +74,23 @@ for (n in c("us1", "usp", "eup", "ep")) {
     ca[[n]][[paste0(conjoint.attributes[i], ".rowpos")]] <- ca[[n]][[paste0(conjoint_attributes[i], ".rowpos")]]
   }
   formula_cjoint <- if (grepl("us", n)) formula_cjoint_specific else formula_cjoint_generic
-  design_cjoint <- if (grepl("us", n)) design_cjoint_US else { if (n %in% c("e", "ep")) design_cjoint_both else design_cjoint_EU }
+  design_cjoint <- if (grepl("us", n)) design_cjoint_US else { if (n %in% c("e", "ep", "all")) design_cjoint_both else design_cjoint_EU }
   # amce[[n]] <- amce(formula_cjoint, ca[[n]], cluster = FALSE, weights= NULL)
   amce[[n]] <- amce(formula_cjoint, ca[[n]], design = design_cjoint, cluster = FALSE, weights= NULL)
 }
 # ca_e <- read.qualtrics("../data/EUn.csv", responses = "Q30", covariates = variables_conjoint_r_levels, ranks = NULL, new.format = T) 
-for (c in countries[-5]) {
+for (c in countries_EU) {
   print(c)  # TODO break long string
-  amce[[c]] <- amce(formula_cjoint_generic, ca$eup[ca$eup$country == c,], design = design_cjoint_EU, cluster = FALSE, weights= NULL)
+  amce[[c]] <- amce(formula_cjoint_generic, ca$eu[ca$eu$country == c,], design = design_cjoint_EU, cluster = FALSE, weights= NULL)
   for (i in names(amce[[c]]$user.levels)) if (amce[[c]]$user.levels[[i]] %in% row.names(policies.names)) amce[[c]]$user.levels[[i]] <- policies.names[amce[[c]]$user.levels[[i]], c]
   for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], c]
+}
+for (c in c("all", "eu")) {
+  for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], "US"]
+  for (i in c("climatepolclimate3", "taxsystemtax1", "foreignpolicyforeign1", "foreignpolicyforeign2", "foreignpolicyforeign3", "foreignpolicyforeign4")) amce[[c]]$user.levels[[i]] <- policies.names[amce[[c]]$user.levels[[i]], "US"]
+  amce[[c]]$user.levels[["econissuesecon2"]] <- "[Higher minimum wage] (DE: Bürgerversicherung)" # TODO! switch econ 1 with 4 in UK, ES and 3 with 4 in US and write "[Higher spending on public services like health]"
+  amce[[c]]$user.levels[["climatepolclimate2"]] <- if (c == "eu") "Thermal insulation plan" else "Thermal insulation plan (except US: trillion investment in transport and insulation)"
+  amce[[c]]$user.levels[["taxsystemtax2"]] <- "[Wealth tax] (ES: raise income tax above 100k€/year)"
 }
 
 
@@ -94,11 +101,23 @@ for (c in countries[-5]) {
 # Amce <- amce(formula_cjoint_generic, ca[["eup"]], cluster = FALSE, weights= NULL, design = design_cjoint_EU)
 # Amce <- amce(formula_cjoint, ca[[n]], cluster = FALSE, weights= NULL)
 # # Amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected),], cluster = FALSE, weights= NULL)
-# summary(Amce)
-plot(Amce)
+# summary(Amce)http://127.0.0.1:11371/graphics/09d65b49-3a15-4047-bd65-2542b724f185.png
+# plot(Amce)
 
+plot(amce$all, xlab = "Average Marginal Component Effect", text.size = 12) # TODO! good labels
+save_plot (filename = "ca_r", folder = '../figures/all/', width = 500, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
 plot(amce$us1, xlab = "Average Marginal Component Effect", text.size = 12)
 save_plot (filename = "ca_r", folder = '../figures/US1/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$eu, xlab = "Average Marginal Component Effect", text.size = 12)# TODO! good labels
+save_plot (filename = "ca_r", folder = '../figures/EU/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$FR, xlab = "Average Marginal Component Effect", text.size = 12)
+save_plot (filename = "ca_r", folder = '../figures/FR/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$DE, xlab = "Average Marginal Component Effect", text.size = 12)
+save_plot (filename = "ca_r", folder = '../figures/DE/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$ES, xlab = "Average Marginal Component Effect", text.size = 12)
+save_plot (filename = "ca_r", folder = '../figures/ES/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$UK, xlab = "Average Marginal Component Effect", text.size = 12)
+save_plot (filename = "ca_r", folder = '../figures/UK/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
 plot(amce$usp) # GCS is foreign1
 plot(amce$eup)
 plot(amce$ep)

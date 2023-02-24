@@ -1,4 +1,5 @@
 # TODO: check literature List experiment
+# TODO! table list_exp in each country
 
 # H0 stated support: OECD (heatmap), G, other_policies (plot), foreign aid evolution, why (plot)
 # H1, H2 sincerity: list exp (table), petition (plot + table), conjoint analysis (plot), prioritization (plot)
@@ -43,9 +44,10 @@ mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) # 54%
 mean(e$gcs_support[e$branch_list_exp == "rgl"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "rgl"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "rl"], na.rm = T) # 55%
 mean(e$gcs_support[e$branch_list_exp == "gl"], na.rm = T) # 52%
 mean(e$gcs_support[e$branch_list_exp == "gl"], na.rm = T) + mean(e$nr_support[e$branch_list_exp == "gl"], na.rm = T) - mean(e$nr_support[e$branch_list_exp == "l"], na.rm = T) # 56%
-desc_table(dep_vars = "list_exp", filename = "US1/reg_list_exp", dep.var.labels = "Number of supported policies", weights = NULL, omit = c(), 
+desc_table(dep_vars = "list_exp", filename = "all/reg_list_exp", dep.var.labels = "Number of supported policies", weights = e$weight, omit = c(), 
            indep_vars = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), nolabel = F,
-           indep_labels = c("List contains: G", "List contains: R", "List contains: G \\times R"))
+           indep_labels = c("List contains: GCS", "List contains: NR", "List contains: GCS $\\times$ NR"))
+
 # Petition
 # Small effect against GCS: -4pp
 decrit("petition_gcs", data = e) # 49%
@@ -53,11 +55,13 @@ decrit("gcs_support", data = e, which = e$branch_petition == "gcs") # 53%
 decrit("petition_nr", data = e) # 57%
 decrit("nr_support", data = e, which = e$branch_petition == "nr") # 56%
 summary(lm(petition_matches_support ~ branch_petition, data = e))
+
 # Conjoint analysis: G|C+R 56%, G|R 59%, G 48% ~ C (|R), G+C|R 56%, C|R 64%, Left+G - Left = -3pp, A+G vs. B 59%
 # => G is supported for itself, rather independently from R or C, with similar support to both, and it doesn't significantly penalize the Left, and would help a Democratic candidate
 decrit("cgr_support", data = e) # 53%
 barres_multiple(barres = barres_defs[c("conjoint", "points")], df = us1, folder = "../figures/US1/")
 summary(lm(conjoint_c ~ branch_c_gcs, data = e, weights = e$weight)) # TODO! share of None increases, explaining decline in Left/conjoint_c
+summary(lm(conjoint_r ~ conjoint_r_type, data = e, weights = e$weight)) # conjoint_left_ag_b == conjoint_d
 # Prioritization: G has mean only slightly lower than average, makes better than ban of cars and coal exit; global tax on millionaires does as well as wealth tax and almost as good as $15 minimum wage
 (mean_points <- sort(setNames(sapply(variables_points_us, function(v) round(wtd.mean(e[[v]], na.rm = T, weights = NULL), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"]))))
 decrit("points_foreign1_gcs", data = e) # mean: 15.4

@@ -34,7 +34,8 @@ names(conjoint.attributes) <- conjoint_attributes # c("Economic.issues", "Societ
 # row.names(policies.names)[unique(which(policies.names %in% conjoint_attributes) %% 20)] <- conjoint_attributes
 
 countries_names <- c("France", "Germany", "Spain", "United Kingdom", "United States")
-names(countries_names) <- countries <- c("FR", "DE", "ES", "UK", "US")
+foreign_aid_actual <- c(.8, 1.3, .5, 1.7, .4)
+names(countries_names) <- names(foreign_aid_actual) <- countries <- c("FR", "DE", "ES", "UK", "US")
 names(countries) <- countries_names
 countries_EU <- countries[1:4]
 major_candidates <- minor_candidates <- list()
@@ -613,17 +614,26 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$foreign_aid_more_less[e$info_foreign_aid == T] <- ((e$foreign_aid_preferred > foreign_aid_actual_amounts_max[e$country]) - (e$foreign_aid_preferred < foreign_aid_actual_amounts_min[e$country]))[e$info_foreign_aid == T]
       e$foreign_aid_more_less[e$info_foreign_aid == FALSE] <- ((e$foreign_aid_preferred > e$foreign_aid_belief) - (e$foreign_aid_preferred < e$foreign_aid_belief))[e$info_foreign_aid == FALSE]
       e$foreign_aid_more_less <- as.item(e$foreign_aid_more_less, labels = structure(-1:1, names = c("Less", "Same", "More")), missing.values = NA, annotation = "foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
+      e$foreign_aid_more_less_info <- e$foreign_aid_more_less_no_info <- e$foreign_aid_more_less
+      e$foreign_aid_more_less_info[e$info_foreign_aid == FALSE] <- NA
+      e$foreign_aid_more_less_no_info[e$info_foreign_aid == T] <- NA
+      e$foreign_aid_less_more_info <- !e$foreign_aid_more_less_info
+      e$foreign_aid_less_more_no_info <- !e$foreign_aid_more_less_no_info
     }
     for (v in intersect(names(e), variables_foreign_aid_reduce)) e[[v]][e$info_foreign_aid == FALSE | e$foreign_aid_more_less >= 0] <- NA
     for (v in intersect(names(e), variables_foreign_aid_raise)) e[[v]][e$info_foreign_aid == FALSE | e$foreign_aid_more_less <= 0] <- NA
     
+    e$foreign_aid_actual <- foreign_aid_actual[e$country]
+    label(e$foreign_aid_actual) <- "foreign_aid_actual: [Constant] Actual amount of foreign aid in the country, in proportion of public spending."
+    
     if ("foreign_aid_raise_support" %in% names(e)) {
       e$foreign_aid_raise_support_original <- e$foreign_aid_raise_support
-      temp <- -2 * grepl("reduce", e$foreign_aid_raise_support) -1*grepl("remain stable", e$foreign_aid_raise_support) + 1*grepl("increase", e$foreign_aid_raise_support)
-      e$foreign_aid_raise_support <- as.item(temp, labels = structure(-2:1, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))     
+      temp <- -1 * grepl("reduce", e$foreign_aid_raise_support) + 1*grepl("condition", e$foreign_aid_raise_support) + 2*grepl("increase", e$foreign_aid_raise_support)
+      e$foreign_aid_raise_support <- as.item(temp, labels = structure(-1:2, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))     
+      e$foreign_aid_reduce_support <- as.item(-temp, labels = structure(-2:1, names = rev(c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased"))), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))
     }
-    for (v in intersect(names(e), variables_foreign_aid_no)) e[[v]][e$foreign_aid_raise_support >= 0] <- NA
-    for (v in intersect(names(e), variables_foreign_aid_condition)) e[[v]][e$foreign_aid_raise_support != 0] <- NA
+    for (v in intersect(names(e), variables_foreign_aid_no)) e[[v]][e$foreign_aid_raise_support > 0] <- NA
+    for (v in intersect(names(e), variables_foreign_aid_condition)) e[[v]][e$foreign_aid_raise_support != 1] <- NA
     
     for (v in intersect(variables_win_lose, names(e))) e[[paste0(v, "_original")]] <- e[[v]]
     if ("nr_win_lose" %in% names(e)) {
@@ -923,7 +933,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 e <- eu <- prepare(country = "EU", weighting = T)
 e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
 
-if (!"weight" %in% names(eu)) eu$weight <- 1 # otherwise variables like conutry are not correctly merged, don't know why
 e <- all <- merge(us1, eu, all = T)
 
 e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)

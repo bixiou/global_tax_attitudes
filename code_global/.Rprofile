@@ -209,7 +209,7 @@ library(magick) # image_write
 #' # Fs <- function(QID) { s[QID][[1]] }
 #' # Vs <- function(QID) { as.vector(Fs(QID))  }
 d <- function(str, alt_data = eu, alt_var = "country") {
-  if (exists(tolower(str)) && is.data.frame(exists(tolower(str)))) return(eval(str2expression(tolower(str)))) # data from name
+  if (exists(tolower(str)) && is.data.frame(eval(str2expression(tolower(str))))) return(eval(str2expression(tolower(str)))) # data from name
   else return(alt_data[alt_data[[alt_var]] == toupper(str),])
 }
 n <- function(var) { as.numeric(as.vector(var)) }
