@@ -956,9 +956,9 @@ dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FAL
 #' dataN3 <- function(var, df = list(e2, e, c), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
 #'   if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))
 #'   else return(cbind(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[2]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[3]], miss = miss, weights = weights, fr = fr, rev = rev))) }
-#' dataNK <- function(var, df = list(e2, e, c), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
-#'   if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))
-#'   else return(do.call(cbind, lapply(df, function (d) {dataN(var, d, miss = miss, weights = weights, fr = fr, rev = rev)}))) }
+dataNK <- function(var, df = list(e2, e, c), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
+  if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))
+  else return(do.call(cbind, lapply(rev(df), function (d) {dataN(var, d, miss = miss, weights = weights, fr = fr, rev = rev)}))) }
 #' data12 <- function(vars, df = list(e, e2), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
 #'   if (length(vars)==1) return(dataN2(var=vars, df=list(df[[2]], df[[1]]), miss=miss, weights=weights, fr=fr, rev=rev, return=return))
 #'   else {
@@ -999,56 +999,55 @@ dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FAL
 #'     lab2 <- paste("", lab2) }
 #'   return(new_labels)
 #' }
-#' labelsN <- function(labels, levels, parentheses = T) {
-#'   new_labels <- c()
-#'   if (parentheses) {
-#'     labs_other <- paste0("(", levels[1:(length(levels)-1)], ")")
-#'     labs_main <- paste0(labels, " (", levels[length(levels)], ")")
-#'   } else {
-#'     double_dot <- ifelse(max(length(labels))>1, ": ", "")
-#'     labs_other <- levels[1:(length(levels)-1)]
-#'     labs_main <- paste0(labels, double_dot, levels[length(levels)])  }
-#'   for (l in seq_along(labels)) new_labels <- c(new_labels, labs_other, labs_main[l])
-#'   return(new_labels) # version var (lev1) / (lev2) / ...
-#'   # return(sapply(labels, function(l) {return(paste(l, levels, sep=": "))})) # version var: lev1 / var: lev2 / ...
-#' }
-# barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(),
-#                     rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = T, nolabel = F, error_margin = F, alphabetical = FALSE) {
-#   if (nolabel & length(labels)==1) labels <- ""
-#   if (is.data.frame(df)) df <- list(df)
-#   if (!missing(along)) {
-#     if (along == "country_name" & !alphabetical & exists("countries_names_hm")) {
-#       levels <- c()
-#       for (l in countries_names_hm) if (l %in% Levels(df[[1]][[along]])) levels <- c(levels, l)
-#     } else levels <- Levels(df[[1]][[along]])
-#     levels <- sub("^\\*", "", rev(levels))
-#   }
-#   if (!missing(along)) data <- lapply(seq_along(levels), function(l) return(df[[1]][df[[1]][[along]]==levels[l],]))
-#   else data <- df
-#   if (!missing(along) & missing(labels)) labels <- paste(along, levels, sep=": ")
-#   if (!missing(along) & length(labels) < length(df)*length(levels)*length(vars)) labels <- labelsN(labels, levels, parentheses = parentheses)
-#   if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
-#   if (!missing(miss)) nsp <- miss
-#   data1 <- dataKN(vars, data=df[[1]], miss=miss, weights = weights, return = "", fr=fr, rev=rev)
-#   if (missing(legend) & missing(hover)) {
-#     if (is.logical(df[[1]][[vars[1]]])) { showLegend = F; legend <- "True"; hover <- labels; } # data1(var = vars[1], data=df, weights = weights) # before: uncommented and "else" next line
-#     else hover <- legend <- dataN(var = vars[1], data=df[[1]], miss=miss, weights = weights, return = "legend", fr=fr, rev_legend = rev) }
-#   agree <- order_agree(data = data1, miss = miss)
-#   if (is.logical(df[[1]][[vars[1]]])) agree <- rev(agree)
-#   if (return=="levels") {if (is.null(levels)) {return(labels)} else {return(levels)}}
-#   else if (return=="labels") return(labels) # labels12(labels[agree], en = !fr, comp = comp, orig = orig)
-#   else if (return=="legend") return(legend)
-#   else {
-#     plotted_data <- dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = "")
-#     if (return=="data") { return(plotted_data)
-#     } else {
-#       not_nan <- sapply(c(1:ncol(plotted_data)), function(j) any(!is.nan(plotted_data[,j])))
-#       plotted_data <- plotted_data[, not_nan, drop=FALSE]
-#       return(barres(data = plotted_data, labels=labels[not_nan], legend=legend, # labels12(labels[agree], en = !fr, comp = comp, orig = orig) # /!\ doesn't currently support multiple vars
-#                     miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls, error_margin = error_margin))
-#     } }
-# }
-# color5 <- c(rainbow(4, end=4/15)[1:3], "#00FF00", "#228B22") # the last two are: green, forestgreen
+labelsN <- function(labels, levels, parentheses = T) {
+  new_labels <- c()
+  if (parentheses) {
+    labs_other <- paste0("(", levels[1:(length(levels)-1)], ")")
+    labs_main <- paste0("<b>", labels, "</b><br>(", levels[length(levels)], ")")
+  } else {
+    double_dot <- ifelse(max(length(labels))>1, ": ", "")
+    labs_other <- levels[1:(length(levels)-1)]
+    labs_main <- paste0("<b>", labels, double_dot, "</b><br>", levels[length(levels)])  }
+  for (l in seq_along(labels)) new_labels <- c(new_labels, labs_other, labs_main[l])
+  return(rev(new_labels)) # version var (lev1) / (lev2) / ...
+  # return(sapply(labels, function(l) {return(paste(l, levels, sep=": "))})) # version var: lev1 / var: lev2 / ...
+}
+barresN <- function(vars, along = NULL, df=list(e), labels = NULL, legend=hover, miss=T, weights = T, fr=F, rev=T, color=c(), share_labels = NULL, margin_l = NULL, sort = F,
+                    rev_color = FALSE, hover=legend, thin=T, return="", showLegend=T, export_xls = F, parentheses = F, nolabel = F, error_margin = F, alphabetical = F) {
+  if (nolabel & length(labels)==1) labels <- ""
+  if (is.data.frame(df)) df <- list(df)
+  if (!missing(along)) {
+    if (along == "country_name" & !alphabetical & exists("countries_names")) {
+      levels <- c()
+      for (l in countries_names) if (l %in% Levels(df[[1]][[along]])) levels <- c(levels, l)
+    } else levels <- Levels(df[[1]][[along]])
+    levels <- sub("^\\*", "", rev(levels))
+  }
+  if (!missing(along)) data <- lapply(seq_along(levels), function(l) return(df[[1]][df[[1]][[along]]==levels[l],]))
+  else data <- df
+  if (!missing(along) & missing(labels)) labels <- paste(along, levels, sep=": ")
+  if (!missing(along) & length(labels) < length(df)*length(levels)*length(vars)) labels <- labelsN(labels, levels, parentheses = parentheses)
+  if (missing(vars) & missing(legend) & missing(hover)) warning('hover or legend must be given')
+  if (!missing(miss)) nsp <- miss
+  data1 <- dataKN(vars, data=df[[1]], miss=miss, weights = weights, return = "", fr=fr, rev=rev)
+  if (missing(legend) & missing(hover)) {
+    if (is.logical(df[[1]][[vars[1]]])) { showLegend = F; legend <- "True"; hover <- labels; } # data1(var = vars[1], data=df, weights = weights) # before: uncommented and "else" next line
+    else hover <- legend <- dataN(var = vars[1], data=df[[1]], miss=miss, weights = weights, return = "legend", fr=fr, rev_legend = rev) }
+  agree <- order_agree(data = data1, miss = miss)
+  if (is.logical(df[[1]][[vars[1]]])) agree <- rev(agree)
+  if (return=="levels") {if (is.null(levels)) {return(labels)} else {return(levels)}}
+  else if (return=="labels") return(labels) # labels12(labels[agree], en = !fr, comp = comp, orig = orig)
+  else if (return=="legend") return(legend)
+  else {
+    plotted_data <- dataNK(vars[agree], df = data, miss=miss, weights = weights, fr=fr, rev=rev, return = "")
+    if (return=="data") { return(plotted_data)
+    } else {
+      not_nan <- sapply(c(1:ncol(plotted_data)), function(j) any(!is.nan(plotted_data[,j])))
+      plotted_data <- plotted_data[, not_nan, drop=FALSE]
+      return(barres(data = plotted_data, labels=labels[not_nan], legend=legend, share_labels= share_labels, margin_l = margin_l, # labels12(labels[agree], en = !fr, comp = comp, orig = orig) # /!\ doesn't currently support multiple vars
+                    miss=miss, weights = weights, fr=fr, rev=rev, color=color, rev_color = rev_color, hover=hover, sort=F, thin=thin, showLegend=showLegend, export_xls = export_xls, error_margin = error_margin))
+    } }
+}
 color <- function(v, grey=FALSE, grey_replaces_last = T, rev_color = FALSE, theme='RdBu') { # TODO! whitout white
   if (is.matrix(v)) n <- nrow(v)
   else if (length(v) > 1) n <- length(v)
@@ -1365,6 +1364,8 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     else if (levels[13]=="Brazil") up_labels <- c(special[!special %in% c('middle-income', 'Middle-income', 'Middle income')], levels[high_income[names(names)]], "Middle-income", levels[!high_income[names(names)]])
     else warning("Unkown number of levels") }
   if (any(c('middle-income', 'Middle-income', 'Middle income') %in% special) & length(levels) == 8)  up_labels <- c("Middle-income", levels)
+  if (any(c("Eu", "Eu4", "EU4", "EU", "Europe") %in% special) & all(levels == countries_names)) up_labels <- c(levels[5], "Europe", levels[1:4])
+  if (any(c("Eu", "Eu4", "EU4", "EU", "Europe") %in% special) & all(levels == countries_names[1:4])) up_labels <- c("Europe", levels[1:4])
   table <- array(NA, dim = c(nb_vars, length(c(special, levels))), dimnames = list(vars, up_labels))
   for (c in up_labels) {
     if (c %in% levels) { df_c <- e[e[[along]]==c,]
@@ -1373,10 +1374,13 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     } else if (c %in% c('non-OECD', 'Non-OECD', 'non-oecd')) { df_c <- e[which(!oecd[e$country]),]
     } else if (c %in% c('high-income', 'High-income', 'High income')) { df_c <- e[which(high_income[e$country]),]
     } else if (c %in% c('middle-income', 'Middle-income', 'Middle income')) { df_c <- e[which(!high_income[e$country]),]
+    } else if (c %in% c('Europe', 'Europe4')) { df_c <- e[e$continent != "US",]
     } else if (c %in% countries) { df_c <- e[e$country == c,]
+    } else if (c %in% c("Eu", "Eu4", "EU4", "EU")) { df_c <- e[e$continent == "Eu4",] 
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
     for (v in 1:nb_vars) {
       var_c <- df_c[[vars[v]]][!is.na(df_c[[vars[v]]])]
+      if (weights & length(var_c) > 0 & c %in% c(countries_EU, names(countries_EU))) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight_country[!is.na(df_c[[vars[v]]])])")))
       if (weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])")))
       if (!weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("mean(var_c", conditions[v], ", na.rm = T)")))
     }

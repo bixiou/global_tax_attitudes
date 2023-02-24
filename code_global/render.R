@@ -1,11 +1,5 @@
-# TODO! foreign_aid_amount replace "any branch" by true value; foreign_aid_raise_support foreign_aid_more_less
-# TODO! conjoint: add support GCS
-# TODO! remove "any" from petition and add normal support
-# TODO! negotation, group_defended by country
 # TODO! Eu average in heatmaps
-# TODO re-order support_likert_share
-# TODO! round global_tax_global_share_mean 
-# TODO! heatmap weight_country
+# TODO! heatmap, barresN weight_country
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO list_exp, all_same heatmaps, 
 
@@ -426,7 +420,7 @@ heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T) {
   for (heatmap in heatmaps) {
     vars_present <- heatmap$vars %in% names(data)
-    heatmap_wrapper(vars = heatmap$vars[vars_present], data = data, labels = heatmap$labels[vars_present], name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights) 
+    heatmap_wrapper(vars = heatmap$vars[vars_present], special = "Europe", data = data, labels = heatmap$labels[vars_present], name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights) 
   }
 }
 
@@ -439,8 +433,10 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
   for (def in barres) {
     tryCatch({
       vars_present <- def$vars %in% names(df)
-      plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, margin_l = def$margin_l, add_means = def$add_means, show_legend_means = def$show_legend_means, transform_mean = def$transform_mean,
-                     miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, title = def$title, weights = weights)
+      if (!"along" %in% names(def)) plot <- barres(vars = def$vars[vars_present], df = df, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, margin_l = def$margin_l, add_means = def$add_means, show_legend_means = def$show_legend_means, transform_mean = def$transform_mean,
+                                                 miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, title = def$title, weights = weights)
+      else plot <- barresN(vars = def$vars[vars_present], df = df, along = def$along, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, margin_l = def$margin_l,
+                           miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, weights = weights)
       if (print) print(plot)
       save_plotly(plot, filename = def$name, folder = folder, width = def$width, height = def$height, method = method, trim = trim, format = format)
       print(paste0(def$name, ": success"))
@@ -449,7 +445,7 @@ barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print =
   }
 }
 
-fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, country = NULL, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, 
+fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, country = NULL, miss = FALSE, sort = T, thin = T, rev = FALSE, rev_color = T, along = NULL,
                         short_labels = T, width = 850, labels_max_length = 57) { # width/height could be NULL by default as well, so plotly decides the size , height = dev.size('px')[2], width = dev.size('px')[1]
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type plots_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # If df$var and variables_var both exist, giving 'var' (resp. 'variables_var') will yield var (resp. variables_var)
@@ -491,6 +487,7 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, count
     # if (!"margin_l" %in% names(plots[[name]])) plots[[name]]$margin_l <- NA
     if (!"miss" %in% names(plots[[name]])) plots[[name]]$miss <- miss
     if (!"sort" %in% names(plots[[name]])) plots[[name]]$sort <- sort
+    if (!"along" %in% names(plots[[name]])) plots[[name]]$along <- along
     if (!"rev" %in% names(plots[[name]])) plots[[name]]$rev <- rev
     if (!"rev_color" %in% names(plots[[name]])) plots[[name]]$rev_color <- rev_color
     if (!"fr" %in% names(plots[[name]])) plots[[name]]$fr <- FALSE
@@ -504,10 +501,11 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, count
     if (!"thin" %in% names(plots[[name]])) plots[[name]]$thin <- thin #& !yes_no
     if (!"width" %in% names(plots[[name]])) plots[[name]]$width <- width
     if (!"height" %in% names(plots[[name]]) & "heigth" %in% names(plots[[name]])) plots[[name]]$height <- plots[[name]]$heigth
-    if (!"height" %in% names(plots[[name]])) plots[[name]]$height <- fig_height(nb_bars = length(plots[[name]]$labels), large = any(grepl("<br>", plots[[name]]$labels))) # height
+    if (!"height" %in% names(plots[[name]])) plots[[name]]$height <- fig_height(nb_bars = if (!is.null(along)) length(Levels(df[[along]])) else length(plots[[name]]$labels), large = any(grepl("<br>", plots[[name]]$labels))) # height
   }
   return(plots)
 }
+
 
 ##### barres_defs #####
 # define_barres_defs <- function(df = e) {
@@ -578,10 +576,12 @@ barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 barres_multiple(barres = barres_defs[c("points_mean", "points")], df = us1, folder = "../figures/US1/") 
 barres_multiple(barres = barres_defs[c("support_binary")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
-barres_multiple(barres = barres_defs[c("understood_each")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("income_quartile")], df = usp, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
+barresN_defs <- fill_barres(c("group_defended_agg2"), list("negotiation" = list(width = 940)), along = "country_name")
+barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
 
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
@@ -771,6 +771,8 @@ plot_all_comp(df = us, country = "US")
 # plot_comp("vote_us", df = us1, country = "US")
 
 
+
+
 ##### Heterogeneity #####
 plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global_tax_more_half", "share_policies_supported", "points_foreign1_gcs"), 
            along = "age", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = eu, save = FALSE)
@@ -783,6 +785,15 @@ plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global
 
 plot_along(vars = c("gcs_support", "petition_gcs", "cap_wealth_support", "global_tax_more_half", "share_policies_supported", "points_foreign1_gcs"), 
            along = "country", conditions = c("", "", "> 0", "", "", "> 16.67"), covariates = c(), df = all, save = FALSE)
+
+barresN(vars = def$vars[vars_present], df = df, along = along, export_xls = export_xls, labels = def$labels[vars_present], share_labels = def$share_labels, margin_l = def$margin_l,
+        miss = def$miss, sort = def$sort, rev = def$rev, rev_color = def$rev_color, legend = def$legend, showLegend = def$showLegend, thin = def$thin, weights = weights)
+
+(temp <- barresN(vars = "negotiation", rev = F, rev_color = T,  export_xls = F, df = all, along = "country_name", miss=F, labels = paste0(labels_vars[vars], "<br>")))
+save_plotly(temp, folder = "../figures/country_comparison/", filename = "negotiation", width= 850, height=fig_height(5), format = "pdf", trim = T)
+  
+(temp <- barresN(vars = "group_defended_agg2", rev = F, rev_color = T,  export_xls = F, df = all, along = "country_name", miss=F, labels = paste0("brl", "<br>")))
+save_plotly(temp, folder = "../figures/country_comparison/", filename = "group_defended_agg2", width= 850, height=fig_height(5), format = "pdf", trim = T)
 
 modelplot(lm(reg_formula("gcs_support", quotas_eu), data = eu), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))
 modelplot(lm(reg_formula("gcs_support", socio_demos), data = eu), coef_map = rev(labels_vars), coef_omit = "Intercept", background = list(geom_vline(xintercept = 0, color = 'black')))

@@ -5,7 +5,7 @@
 # H1, H2 sincerity: list exp (table), petition (plot + table), conjoint analysis (plot), prioritization (plot)
 # H3 pluralistic ignorance: belief (plot)
 # H4 weak opinion: universalistic values (plot nego, group defended, problem)
-# In US2/EU: foreign aid in public spending, how (plot + table), perceptions G (plot), field on poverty reduction, global tax share/ing (plot), bandwagon effect (table)
+# In US2/EU: donation, foreign aid in public spending, how (plot + table), perceptions G (plot), field on poverty reduction, global tax share/ing (plot), bandwagon effect (table)
 
 # 4 most important figures: heatmap OECD, heatmap support, prioritization or conjoint (r), list exp (table)
 # 2 essential figures: heatmap OECD, heatmap support

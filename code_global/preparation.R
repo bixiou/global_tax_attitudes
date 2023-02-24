@@ -328,7 +328,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     variables_climate_policies <<- variables_other_policies[grepl('climate', variables_other_policies)]
     variables_global_policies <<- variables_other_policies[!grepl('climate', variables_other_policies)]
     variables_support_binary_all <<- c("gcs_support", "nr_support", "cgr_support", "global_tax_sharing")
-    variables_support_likert <<- c("global_tax_support", "national_tax_support", variables_other_policies)
+    variables_support_likert <<- c(variables_other_policies, "national_tax_support", "global_tax_support")
     variables_support_ets2_support <<- names(e)[grepl('ets2', names(e)) & grepl('support', names(e))]
     variables_support_ets2_no <<- names(e)[grepl('ets2_no_', names(e))]
     variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition|order_', names(e))]
@@ -426,6 +426,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   e$country_name <- e$country
   if (grepl("US", country)) e$country_name <- "United States"
   e$country <- countries[e$country_name]
+  # e$continent <- sub("[0-9p]+", "", e$wave)
+  e$continent <- if (country == "EU") "Eu" else "US"
   
   e$woman <- e$gender == "Woman"
   e$man <- e$gender == "Man"
