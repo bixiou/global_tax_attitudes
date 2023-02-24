@@ -1,3 +1,4 @@
+# TODO! petition comparable sample
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO list_exp, all_same heatmaps, 
 
@@ -375,6 +376,8 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
 
 ##### heatmaps_defs #####
 heatmaps_defs <- list(
+  "conjoint_r" = list(vars = "conjoint_r"), 
+  "conjoint_left_ag_b_binary" = list(vars = "conjoint_left_ag_b_binary", conditions = c(">= 1")), 
   "global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1"), nb_digits = 0),
   "global_tax_sharing" = list(vars = c("global_tax_sharing"), conditions = c(">= 1")),
   "list_exp" = list(vars = variables_list_exp, conditions = c("")),
@@ -413,7 +416,7 @@ heatmaps_defs <- list(
 ##### vars_heatmaps #####
 vars_heatmaps <- c("support", "other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "petition", "gcs_important", "problem", 
                         "foreign_aid_amount", "duration", "donation", "belief", "points", "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", 
-                        "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "conjoint_r", "conjoint_d", "list_exp", "understood") # misses socio-demos, politics
+                        "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "conjoint_d", "list_exp", "understood") # misses socio-demos, politics
 
 heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 # heatmaps_defs$foreign_aid_no
@@ -591,7 +594,7 @@ barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_co
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
 heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint")], weights = T)
-heatmap_multiple(heatmaps_defs[c("foreign_aid_amount")], weights = T)
+heatmap_multiple(heatmaps_defs[c("conjoint_left_ag_b_binary")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_only", "petition_gcs", "petition_nr", "global_tax_global_share")], weights = T)
 

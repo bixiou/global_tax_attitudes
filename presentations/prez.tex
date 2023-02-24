@@ -108,7 +108,7 @@ In accordance with the principle that each human has an equal right to pollute, 
 \bbvs \ip To offset the losses of the median emitter, we design a \rose{National Redistribution Scheme} (NR) funded by increased income taxes on the top 5\% (US) / 1\% (Eu).
 \ip We test understanding of the distributive effects of the GCS, NR, and both combined (and then give the expected answer) in an incentivized way after each policy description.%  TODO see more
 \ip We also describe a national climate policy. US: Coal exit / Eu: Thermal insulation plan (mandatory, subsidised).
-\ee
+\ee \vspace{-.3cm}
     \begin{figure}
         \centering % TODO perceptions G
         \caption{Do you support...? \textit{Yes/No} (Percentage of \textit{Yes})}
@@ -122,40 +122,80 @@ In accordance with the principle that each human has an equal right to pollute, 
         \centering 
         \caption{Do you support or oppose...? \textit{5-Likert scake} (Percentage of \textit{Support} among non-\textit{Indifferent})}
         \vspace{-.2cm}
-        \includegraphics[height=.9\textheight]{../figures/country_comparison/support_likert_share.pdf} 
+        \includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_share.pdf} 
     \end{figure}
 \end{frame}
 
 \begin{frame}{Support for a global wealth tax\label{}}
 \bbvs \ip We describe a global tax on wealth in excess of \$/\euro{}/£ 5 million and either ask:
 \ee
-\vspace{-.1cm}
+\vspace{-.4cm}
 \begin{figure}
     \centering 
-    \caption{Percent of wealth tax that should go to low-income countries (\textit{mean}):}% 90% give a positive amount
+    \caption{Percent of wealth tax that should go to low-income countries (\textit{mean}):}\vspace{-.2cm}% 90% give a positive amount
     \includegraphics[height=.3\textheight]{../figures/country_comparison/global_tax_global_share_mean.pdf} 
 \end{figure}
     \begin{figure}
         \centering 
-        \caption{Whether half of the tax revenues should go to low-income countries}
+        \caption{Whether half of the tax revenues should go to low-income countries (vs. none).}\vspace{-.2cm}
         \includegraphics[height=.3\textheight]{../figures/country_comparison/global_tax_sharing_positive.pdf} 
     \end{figure}
+$\Rightarrow$ \rose{Median preference is 30\% of global wealth tax for low-income countries}.
 \end{frame}
 
 \begin{frame}{Support for increased foreign aid\label{}}
-	\bbvs \ip Actual foreign aid is overestimated.
-	\ip People support more foreign aid.
-	\ee 
-    \begin{figure} % TODO!: how, condition
-        \centering 
-        \caption{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Mean})}
-        \includegraphics[height=.4\textheight]{../figures/country_comparison/foreign_aid_amount_mean.pdf} 
-    \end{figure}
+	\quad \quad \quad \quad \quad \quad \blue{Actual foreign aid is overestimated.} \quad \quad \quad \rose{A majority support more foreign aid.}\vspace{-.2cm}
     \begin{figure} 
         \centering 
-        \caption{Do you support or oppose...? \textit{5-Likert scake} (Percentage of \textit{Support} among non-\textit{Indifferent})}
-        \includegraphics[height=.4\textheight]{../figures/country_comparison/foreign_aid_more_positive.pdf} 
+        \caption{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Mean})}\vspace{-.2cm}
+        \includegraphics[height=.4\textheight]{../figures/country_comparison/foreign_aid_amount_mean.pdf} 
+    \end{figure}\vspace{-.2cm}
+    \begin{figure} 
+        \centering 
+        \caption{Support for increased foreign aid (vs. reduced or stable): from previous question, and directly asked (with info).}\vspace{-.2cm}
+        \includegraphics[height=.32\textheight]{../figures/country_comparison/foreign_aid_more_positive.pdf} 
     \end{figure}
+\end{frame}
+
+\begin{frame}{Conditions for increased foreign aid\label{}}
+	\bbvs \ip \blue{People want to help people (not oligarchs) and to foster climate action and human rights.}% sustainability.
+	\ip National preference is the main reason behind not wanting increased foreign aid.
+	\ee \vspace{-.5cm}
+    \begin{figure} 
+        \centering 
+        \caption{[Info on actual amount]. Do you support [the U.S.] transferring more money to low-income countries?}\vspace{-.2cm}
+        \includegraphics[width=.7\textwidth]{../figures/all/foreign_aid_raise_support.pdf} 
+    \end{figure}\vspace{-.2cm}
+    \begin{figure} 
+        \centering 
+        \caption{[If \textit{at some conditions}] What conditions should be required for [the U.S.] to increase its foreign aid?}\vspace{-.2cm}
+        \includegraphics[height=.48\textheight]{../figures/all/foreign_aid_condition.pdf} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Preferences over public spending%How to fund increased foreign aid
+	\label{}}
+	\bbvs \ip \rose{People want better public services and higher taxes on the wealthiest.}
+	\ee 
+	\begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+				\vspace{-.2cm}
+                \centering 
+                \caption{Your previous answer shows that you would like to increase [UK] foreign aid.\\How would you like to finance such increase in foreign aid? (Multiple answers possible)}
+                \vspace{-.2cm}
+                \includegraphics[width=\columnwidth]{../figures/all/foreign_aid_raise.pdf} 
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}			
+            \begin{figure}\vspace{-.2cm}
+                \centering 
+                \caption{Your previous answer shows that you would like to reduce [UK] foreign aid.\\How would you like to use the freed budget? (Multiple answers possible)}
+                \vspace{-.2cm}
+                \includegraphics[width=\columnwidth]{../figures/all/foreign_aid_reduce.pdf} 
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \section{Sincerity of the support for the GCS}
@@ -181,22 +221,91 @@ In accordance with the principle that each human has an equal right to pollute, 
       \end{table}
 \end{frame}
 
+\begin{frame}{Conjoint analyses: interaction with other policies\label{}} 
+    \bbvs \ip National climate policy (C) is as supported as the GCS, but no substitute for it.
+	\ip Support for the GCS does not increase when complemented by National Redistribution.
+	\ip $\Rightarrow$ Confirms that the \rose{monetary loss is not a primary concern} for one's attitude toward the GCS.
+    \ee
+    \begin{figure} \vspace*{-.5cm}
+        \centering 
+        \caption{Among the two following bundles of policies, which one would you prefer?}
+        \vspace{-.2cm}
+        \includegraphics[height=.66\textheight]{../figures/country_comparison/conjoint_ab_positive.pdf} 
+    \end{figure}
+\end{frame}
 
-\begin{frame}{Conjoint analyses\label{}} % TODO!
-    \bbvs \ip To  between two options, with and without GCS.
-    \ip The difference in mean number of supported policies for lists with and without the GCS should equal the support for GCS (63.2\%). \\ \blue{If} the \rose{tacit support} is \blue{lower}, it may indicate a \blue{social desirability bias}.
-    \ip Tacit support is 1\% lower for the GCS and for NR $\Rightarrow$ no (or small) social desirability bias. % TODO! significance?
+\begin{frame}{Conjoint analyses: influence on electoral prospects\label{}} 
+    \bbvs \ip \rose{A left-wing candidate would not lose voting shares by endorsing the GCS.}
     \ee
     \begin{figure}
         \centering 
-        \caption{When determining your support or opposition to the Global climate scheme, which points are important to you?}
-        \vspace{-.2cm}
-        \includegraphics[height=.9\textheight]{../figures/country_comparison/conjoint_positive.pdf} % /all/ca_r.png + in US: only on non-Republican
+        \caption{Imagine if the [Democratic and Republican presidential candidates in 2024] campaigned with the following policies in their platforms. \\
+		Which of these candidates would you vote for? \\
+		~[FR: second round of presidential; DE, ES, UK: two favorite candidates in one's constituency]}
+        \vspace{-.2cm} % TODO! regression, abstention
+        \includegraphics[height=.5\textheight]{../figures/country_comparison/conjoint_c_positive.pdf} % /all/ca_r.png + in US: only on non-Republican
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform\label{}} 
+    \bbvs \ip We ask the preference between two progressive platforms, where each measure is taken at random. \\ The GCS is included in one of the platforms.
+	\ip \rose{Majorities prefer platforms that include the GCS.}
+    \ee
+    \begin{figure} \vspace*{-.3cm}
+        \centering 
+        \caption{Imagine that a [Left or Center-left coalition wins the next elections]. Here are two possible platforms on which [the coalition] may campaign (the policies in each platform are randomly drawn from a pool of credible [Left/Center-left] policies).
+		\\ Even if you do not support the Left, which of these platforms do you prefer? 
+		\\ ~[FR: Left or center-left; DE: rot-rot-grüne; ES: PSOE; UK: Labour; US: Democratic primary (\textit{not asked to Republican})]
+		}
+        \vspace{-.2cm} 
+        \includegraphics[height=.4\textheight]{../figures/country_comparison/conjoint_left_ag_b_binary_positive.pdf} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform (Eu)\label{}} 
+    \bbvs \ip \rose{Europeans prefer platforms that include the GCS} and without the ban on thermal cars (a planned policy)
+	\ip The effect of GCS is among the highest (wealth tax, better public services, higher minimum wage).
+    \ee
+    \begin{figure}\vspace{-.4cm}
+        \centering 
+        \caption{%Imagine that a [Left or Center-left coalition wins the next elections]. Here are two possible platforms on which [the coalition] may campaign (the policies in each platform are randomly drawn from a pool of credible [Left/Center-left] policies).\\
+		(...) Even if you do not support the Left, which of these platforms do you prefer? 
+		%\\ ~[FR: Left or center-left; DE: rot-rot-grüne; ES: PSOE; UK: Labour]
+		}
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/EU/ca_r.png} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform (France)\label{}} 
+	\vspace{-.2cm}
+    \bbvs \ip France shows that there can be a \rose{mismatch between preferred} policies (insulation plan, public services, global tax, GCS) \rose{and enacted policies} (higher retirement age and ban on thermal cars: the least preferred).
+    \ee
+    \begin{figure}\vspace{-.4cm}
+        \centering 
+        \caption{Imaginez que la gauche ou le centre gauche gagne les prochaines élections en 2027. Voici deux programmes possibles sur lesquels elle pourrait faire campagne (...)%(les mesures de ces programmes sont tirés aléatoirement depuis un ensemble de mesures de gauche ou centre gauche).
+		%\\ Même si vous n'êtes pas de gauche ou centre gauche
+		, lequel de ces programmes préférez-vous ?}
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/FR/ca_r.png} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform (US)\label{}} 
+    \bbvs \ip \rose{Endorsing the GCS is not determinant to gain the Democratic primary.}
+    \ee
+    \begin{figure}\vspace{-.4cm}
+        \centering 
+        \caption{[Only on non-Republican] Imagine that at the 2024 Democratic party presidential primaries, the two main candidates campaign with the following key policies in their platforms.\\
+		Which of these candidates do you prefer?}
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/US1/ca_r.png} 
     \end{figure}
 \end{frame}
 
 \begin{frame}{Petition\label{}}
-	\bbvs \ip Support as strong as... % TODO!
+	\bbvs \ip Willingness to sign a real-stake petition is generally (-2 to 5 p.p.) lower than stated support.
+	\ip But this is not specific to GCS, and majorities are still willing to sign the petition.
     \ee
     \begin{figure}
         \centering 
@@ -209,15 +318,16 @@ In accordance with the principle that each human has an equal right to pollute, 
 
 \begin{frame}{Prioritization\label{}}
     \begin{columns}
-        \begin{column}{0.45\textwidth}
-            \bbvs \ip ``In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.\\ % TODO: highlight synchronously
-            How do you allocate the points among the following policies?'' [6 policies taken at random]
-            \ip The GCS is as prioritized as the average policy, or even more in France and Germany. \\ It is more prioritized than other climate policies that will be enacted, like the ban on thermal cars.
+        \begin{column}{0.35\textwidth}\vspace{-1cm}
+            \bbvs \ip %``In this question, 
+			``you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.\\ % TODO: highlight synchronously
+            How do you allocate the points among the following policies?'' \\~[6 policies taken at random]
+            \ip GCS is as prioritized as the average policy, or even more in France and Germany. \\ It is more prioritized than some planned climate policies, like the ban on thermal cars.
             \ip The global tax on millionaires is among the most prioritized measures.\\ It as prioritzed as a national wealth tax, if not more.
-            \ip Most prioritized measures are investments in public services and a higher minimum wage.
+            \ip Most prioritized are better public services and a higher minimum wage.
             \ee        
         \end{column}
-        \begin{column}{0.55\textwidth}\vspace{-.2cm}
+        \begin{column}{0.65\textwidth}\vspace{-.2cm}
             \begin{figure}
                 \centering 
                 \caption{Mean number of points}
