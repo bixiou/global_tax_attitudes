@@ -399,7 +399,7 @@ heatmaps_defs <- list(
   "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), nb_digits = 0), # removes 'donation'
   "belief" = list(vars = variables_belief, conditions = "", nb_digits = 0), 
   "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0),
-  "foreign_aid_amount" = list(vars = c("foreign_aid_actual", "foreign_aid_belief", "foreign_aid_preferred_no_info", "foreign_aid_preferred_info"), conditions = c(""), nb_digits = 1),
+  "foreign_aid_amount" = list(vars = c("foreign_aid_actual", "foreign_aid_belief", "foreign_aid_preferred_info", "foreign_aid_preferred_no_info"), conditions = c(""), nb_digits = 1),
   "foreign_aid_more" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_more_less_no_info", "foreign_aid_raise_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is higher than perceived", "Supports increasing foreign aid (incl. with conditions)")),
   "foreign_aid_more_all" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_less_more_info", "foreign_aid_more_less_no_info", "foreign_aid_less_more_no_info", "foreign_aid_raise_support", "foreign_aid_reduce_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is lower than current", "Preferred foreign aid is higher than perceived", "Preferred foreign aid is lower than perceived", "Supports increased foreign aid (incl. with conditions)", "Supports reduced foreign aid")),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
