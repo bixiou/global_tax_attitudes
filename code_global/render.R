@@ -68,14 +68,17 @@ labels_vars <- c(
   "nr_win_lose" = "Win/lose to NR",
   "both_win_lose" = "Win/lose to GCS+NR",
   "gcs_support" = "Global climate scheme (GCS)",
+  "gcs_support_100" = "Support for the GCS",
   "nr_support" = "National redistribution scheme (NR)",
+  "nr_support_100" = "Support for NR",
   "cgr_support" = "National climate policy + GCS + NR", # "Support for C+G+R",
   "gcs_belief" = "Belief about GCS",
   "nr_belief" = "Belief about NR",
   "list_exp_gl" = "List exp.: GCS/C/O",
   "list_exp_rgl" = "List exp.: NR/GCS/C/O", 
   "list_exp_l" = "List exp.: C/O",
-  "list_exp_rl" = "List exp.: NR/C/O",   
+  "list_exp_rl" = "List exp.: NR/C/O",  
+  "list_exp" = "Number of supported policies", 
   "conjoint_crg_cr" = "Conjoint: C+NR+GCS vs. C+NR",
   "conjoint_cr_gr" = "Conjoint: C+NR vs. GCS+NR",
   "conjoint_r_rcg" = "Conjoint: NR vs. NR+C+GCS",
@@ -250,10 +253,15 @@ labels_vars <- c(
   "ets2_no_dont_know" = "Does not support ETS2 because<br>Does not know",
   "global_tax_more_half" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 50%",
   "global_tax_more_30p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 30%",
-  "global_tax_more_10p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 10%"
+  "global_tax_more_10p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 10%",
+  "branch_list_exp_g" = "List contains: GCS",
+  "branch_list_exp_r" = "List contains: NR",
+  "branch_list_exp_g:branch_list_exp_r" = "List contains: GCS $\\times$ NR",
+  "branch_list_exp_gTRUE:branch_list_exp_rTRUE" = "List contains: GCS $\\times$ NR",
+  "branch_c_gcs" = "GCS in Progressive platform"
 )
 for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
-for (v in intersect(intersect(c(socio_demos, socio_demos_us), names(all)), names(labels_vars))) {
+for (v in intersect(names(all), names(labels_vars))) { # intersect(c(socio_demos, socio_demos_us), names(all)), 
   if (grepl("TRUE / FALSE", Levels(all[[v]])[1])) labels_vars[paste0(v, "TRUE")] <- labels_vars[v]
   else for (l in setdiff(Levels(all[[v]]), NA)) {
     if (!paste0(v, l) %in% names(labels_vars)) labels_vars[paste0(v, l)] <- paste0(labels_vars[v], ": ", l)
@@ -401,6 +409,7 @@ heatmaps_defs <- list(
   "duration" = list(vars = variables_duration, conditions = ""),
   "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), nb_digits = 0), # removes 'donation'
   "belief" = list(vars = variables_belief, conditions = "", nb_digits = 0), 
+  "belief_all" = list(vars = c("gcs_belief", "gcs_support_100", "nr_belief", "nr_support_100"), conditions = "", nb_digits = 0), 
   "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0),
   "foreign_aid_amount" = list(vars = c("foreign_aid_actual", "foreign_aid_belief", "foreign_aid_preferred_info", "foreign_aid_preferred_no_info"), conditions = c(""), nb_digits = 1),
   "foreign_aid_more" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_more_less_no_info", "foreign_aid_raise_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is higher than perceived", "Supports increasing foreign aid (incl. with conditions)")),
@@ -594,7 +603,7 @@ barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_co
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
 heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint")], weights = T)
-heatmap_multiple(heatmaps_defs[c("conjoint_left_ag_b_binary")], weights = T)
+heatmap_multiple(heatmaps_defs[c("belief_all")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_only", "petition_gcs", "petition_nr", "global_tax_global_share")], weights = T)
 
@@ -654,7 +663,7 @@ heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_
 ##### Heterogeneity #####
 barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
 
-barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continent_comparison/") 
+barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continents/") 
 
 
 ##### Word clouds and vote #####

@@ -678,6 +678,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$donation) <- "donation: [0-100] Percentage of potential lottery gain donated to poor people in Africa or in one's nation (depending on branch_donation)."
     }
     
+    for (v in intersect(c("gcs_support", "nr_support"), names(e))) e[[paste0(v, "_100")]] <- 100 * e[[v]]
+    
     for (v in intersect(names(e), c(variables_conjoint))) {
       e[[v]] <- sub(".* (.*)", "\\1", e[[v]])
       e[[v]][e[[v]] == "them"] <- "None"
@@ -687,6 +689,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       if (v %in% variables_conjoint_b) e$conjoint_b[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == conjoint_position_g[v]
       if (v %in% variables_conjoint_b) e$branch_conjoint_b[!is.na(e[[v]])] <- sub("conjoint_", "", v)
       if (v %in% variables_conjoint_c) e$conjoint_c[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "Left" #conjoint_position_g[v]
+      if (v %in% variables_conjoint_c) e$conjoint_c_right[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "Right"
+      if (v %in% variables_conjoint_c) e$conjoint_c_none[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "None"
       if (v %in% variables_conjoint_c) e$branch_conjoint_c[!is.na(e[[v]])] <- sub("conjoint_", "", v)
       if (v %in% "conjoint_left_ag_b") e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == conjoint_position_g[v]
       if (v == "conjoint_rc_r") e$conjoint_b[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
@@ -699,6 +703,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$conjoint_a) <- "conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. rcg > cr."
       label(e$conjoint_b) <- "conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or cr > r in case GCS is in no bundle."
       label(e$conjoint_c) <- "conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
+      label(e$conjoint_c_right) <- "conjoint_c: T/F Right-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
+      label(e$conjoint_c_none) <- "conjoint_c: T/F None candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform)."
       e$conjoint_d[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "A"
       label(e$conjoint_d) <- "conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican."
       e$branch_b_gcs <- grepl("g", e$branch_conjoint_b)

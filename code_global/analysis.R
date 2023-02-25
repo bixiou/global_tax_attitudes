@@ -4,7 +4,7 @@ e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
 # TODO! slides
-# TODO! literature review
+# TODO! literature review, incl. French Preferences for Foreign Aid
 # TODO! appendix sources, calcul net gain
 # TODO! reweighted estimate dans papier
 # TODO US/EU: put back email?, welcome: amount incentives
