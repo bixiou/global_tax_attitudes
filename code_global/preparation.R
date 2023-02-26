@@ -676,6 +676,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$donation[replace_na(e$branch_donation, "na") == "Own nation"] <- e$donation_nation[replace_na(e$branch_donation, "na") == "Own nation"]
       label(e$branch_donation) <- "branch_donation: Africa/Own nation Whether the donation is for poor people in Africa or in one's nation."
       label(e$donation) <- "donation: [0-100] Percentage of potential lottery gain donated to poor people in Africa or in one's nation (depending on branch_donation)."
+      e$donation_above_25 <- e$donation > 25
+      label(e$donation_above_25) <- "donation_above_25: T/F Percentage of potential lottery gain donated to poor people in Africa or in one's nation is above 25% (depending on branch_donation)."
     }
     
     for (v in intersect(c("gcs_support", "nr_support"), names(e))) e[[paste0(v, "_100")]] <- 100 * e[[v]]
@@ -827,7 +829,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                            "PP", "Ciudadanos", "Partido Nacionalista Vasco (EAJ-PNV)", "Conservative", "Liberal Democrats", "DUP")] <- 0 #"Center-right or Right"
           e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Marine Le Pen", "Éric Zemmour", "Nicolas Dupont-Aignan", "AfD", "Vox", "Brexit Party")] <- 1 #"Far right"
           e$vote <- as.item(e$vote, labels = structure(c(-1:1, -0.1), names = c("Left", "Center-right or Right", "Far right", "PNR/Non-voter")), missing.values = c(-0.1, NA), annotation = "vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs.")
-          e$vote_factor <- as.factor(e$vote)
+          e$vote_factor <- as.factor(as.character(e$vote))
+          e$vote_factor <- relevel(e$vote_factor, "Left")
+          # e$vote_factor <- relevel(e$vote_factor, "PNR/Non-voter")
           label(e$vote_factor) <- Label(e$vote)
         }
       }

@@ -258,7 +258,13 @@ labels_vars <- c(
   "branch_list_exp_r" = "List contains: NR",
   "branch_list_exp_g:branch_list_exp_r" = "List contains: GCS $\\times$ NR",
   "branch_list_exp_gTRUE:branch_list_exp_rTRUE" = "List contains: GCS $\\times$ NR",
-  "branch_c_gcs" = "GCS in Progressive platform"
+  "branch_c_gcs" = "GCS in Progressive platform",
+  "branch_donationOwn nation" = "Poor is in own country",
+  "vote_factorPNR/Non-voter" = "Vote: PNR/Non-voter",
+  "branch_donationOwn nation:vote_factorCenter-right or Right" = "Poor in own country $\\times$ Vote: Center-right or Right",
+  "branch_donationOwn nation:vote_factorLeft" = "Poor in own country $\\times$ Vote: Left",
+  "branch_donationOwn nation:vote_factorPNR/Non-voter" = "Poor in own country $\\times$ Vote: PNR/Non-voter",
+  "branch_donationOwn nation:vote_factorFar right" = "Poor in own country $\\times$ Vote: Far right"
 )
 for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
 for (v in intersect(names(all), names(labels_vars))) { # intersect(c(socio_demos, socio_demos_us), names(all)), 
@@ -401,7 +407,8 @@ heatmaps_defs <- list(
   "petition" = list(vars = c("petition_gcs", "gcs_support", "petition_nr", "nr_support"), conditions = ">= 1"),
   "conjoint_all" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary, variables_conjoint_c_binary, "conjoint_left_ag_b_binary", "conjoint_r"), conditions = ">= 1"),
   "conjoint" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary, "conjoint_left_ag_b_binary", "conjoint_r"), conditions = ">= 1"), 
-  "conjoint_ab" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary), conditions = ">= 1"), 
+  "conjoint_ab" = list(vars = c("gcs_support", "conjoint_rg_r_binary", "conjoint_crg_cr_binary", "conjoint_rc_r_binary", "conjoint_cr_gr_binary"), conditions = ">= 1"),
+  "conjoint_ab_all" = list(vars = c("gcs_support", "conjoint_rg_r_binary", "conjoint_crg_cr_binary", "conjoint_rc_r_binary", "conjoint_cr_gr_binary", "conjoint_r_rcg_binary"), conditions = ">= 1"), 
   "conjoint_a" = list(vars = variables_conjoint_a_binary, conditions = ">= 1"),
   "conjoint_b" = list(vars = variables_conjoint_b_binary, conditions = ">= 1"),
   "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
@@ -411,7 +418,7 @@ heatmaps_defs <- list(
   "belief" = list(vars = variables_belief, conditions = "", nb_digits = 0), 
   "belief_all" = list(vars = c("gcs_belief", "gcs_support_100", "nr_belief", "nr_support_100"), conditions = "", nb_digits = 0), 
   "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0),
-  "foreign_aid_amount" = list(vars = c("foreign_aid_actual", "foreign_aid_belief", "foreign_aid_preferred_info", "foreign_aid_preferred_no_info"), conditions = c(""), nb_digits = 1),
+  "foreign_aid_amount" = list(vars = c("foreign_aid_actual", "foreign_aid_belief", "foreign_aid_preferred_info", "foreign_aid_preferred_no_info"), conditions = c("", "median"), nb_digits = 1),
   "foreign_aid_more" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_more_less_no_info", "foreign_aid_raise_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is higher than perceived", "Supports increasing foreign aid (incl. with conditions)")),
   "foreign_aid_more_all" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_less_more_info", "foreign_aid_more_less_no_info", "foreign_aid_less_more_no_info", "foreign_aid_raise_support", "foreign_aid_reduce_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is lower than current", "Preferred foreign aid is higher than perceived", "Preferred foreign aid is lower than perceived", "Supports increased foreign aid (incl. with conditions)", "Supports reduced foreign aid")),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
@@ -602,8 +609,8 @@ barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_co
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
-heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint")], weights = T)
-heatmap_multiple(heatmaps_defs[c("belief_all")], weights = T)
+heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint_ab_all")], weights = T)
+heatmap_multiple(heatmaps_defs[c("foreign_aid_amount")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_only", "petition_gcs", "petition_nr", "global_tax_global_share")], weights = T)
 

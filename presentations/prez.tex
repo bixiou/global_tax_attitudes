@@ -83,7 +83,6 @@
 		\includegraphics[height=.9\textheight]{../figures/OECD/Heatplot_global_tax_attitudes_share.pdf} % burden_share_all_share_countries
 		\end{figure}
 \end{frame}
-% TODO! donation, progressive
 
 \begin{frame}{The \textit{Global Climate Scheme} (GCS)\label{GCS_def}}
 \bbvs \ip Our main policy of interest is the GCS, a \rose{global cap-and-trade funding a global basic income}:
@@ -105,14 +104,15 @@ In accordance with the principle that each human has an equal right to pollute, 
 \end{frame}
 
 \begin{frame}{Support for the Global Climate Scheme\label{}}
-\bbvs \ip To offset the losses of the median emitter, we design a \rose{National Redistribution Scheme} (NR) funded by increased income taxes on the top 5\% (US) / 1\% (Eu).
+\bbvsp \ip To offset the losses of the median emitter, we design a \rose{National Redistribution Scheme} (NR) funded by increased income taxes on the top 5\% (US) / 1\% (Eu).
 \ip We test understanding of the distributive effects of the GCS, NR, and both combined (and then give the expected answer) in an incentivized way after each policy description.%  TODO see more
 \ip We also describe a national climate policy. US: Coal exit / Eu: Insulation plan (mandatory, subsidised).
 \ee \vspace{-.3cm}
     \begin{figure}
         \centering % TODO perceptions G
-        \caption{Do you support...? \textit{Yes/No} (Percentage of \textit{Yes})}
-        \includegraphics[height=.45\textheight]{../figures/country_comparison/support_binary_positive.pdf} 
+        \only<1-3>{\includegraphics[height=.55\textheight]{../figures/blank}}
+        \only<4>{\caption{Do you support...? \textit{Yes/No} (Percentage of \textit{Yes})}
+        \includegraphics[height=.45\textheight]{../figures/country_comparison/support_binary_positive.pdf} }
     \end{figure}
 \end{frame}
 
@@ -127,14 +127,14 @@ In accordance with the principle that each human has an equal right to pollute, 
 \end{frame}
 
 \begin{frame}{Support for a global wealth tax\label{}}
-\bbvs \ip We describe a global tax on wealth in excess of \$/\euro{}/£ 5 million and either ask:
+\bbvs \ip We describe a global tax on wealth in excess of \$/\euro{}/£ 5 million and either ask:\pause
 \ee
 \vspace{-.4cm}
 \begin{figure}
     \centering 
     \caption{Percent of wealth tax that should go to low-income countries (\textit{mean}):}\vspace{-.2cm}% 90% give a positive amount
     \includegraphics[height=.3\textheight]{../figures/country_comparison/global_tax_global_share_mean.pdf} 
-\end{figure}
+\end{figure}\pause
     \begin{figure}
         \centering 
         \caption{Whether half of the tax revenues should go to low-income countries (vs. none).}\vspace{-.2cm}
@@ -143,40 +143,38 @@ In accordance with the principle that each human has an equal right to pollute, 
 $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-income countries}.
 \end{frame}
 
-\begin{frame}{Support for increased foreign aid\label{}}
-	\quad \quad \quad \quad \quad \quad \blue{Actual foreign aid is overestimated.} \quad \quad \quad \rose{Majorities support more foreign aid.}\vspace{-.2cm} % TODO! median instead of mean
+\begin{frame}{Support for increased foreign aid\label{}}\vspace{-.2cm} 
     \begin{figure} 
         \centering 
         \caption{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Mean})}\vspace{-.2cm}
-        \includegraphics[height=.4\textheight]{../figures/country_comparison/foreign_aid_amount_mean.pdf} 
-    \end{figure}\vspace{-.2cm}
+        \includegraphics[height=.4\textheight]{../figures/country_comparison/foreign_aid_amount_mean.pdf} % TODO: see median
+    \end{figure}\vspace{-.2cm}\pause
     \begin{figure} 
         \centering 
         \caption{Support for increased foreign aid (vs. reduced or stable): from previous question, and directly asked (with info).}\vspace{-.2cm}
         \includegraphics[height=.32\textheight]{../figures/country_comparison/foreign_aid_more_positive.pdf} 
-    \end{figure}
+    \end{figure} \vspace{-.1cm}
+	\quad \quad \quad \quad \quad \quad \blue{Actual foreign aid is overestimated.} \quad \quad \quad \rose{Majorities support more foreign aid.}
 \end{frame}
 
 \begin{frame}{Conditions for increased foreign aid\label{}}
-	\bbvs \ip \blue{People want to help people (not oligarchs) and to foster climate action and human rights.}% sustainability.
-	\ip National preference is the main reason behind not wanting increased foreign aid.
-	\ee \vspace{-.5cm}
-    \begin{figure} 
+    \begin{figure} \vspace{-.2cm}
         \centering 
         \caption{[Info on actual amount]. Do you support [the U.S.] transferring more money to low-income countries?}\vspace{-.2cm}
         \includegraphics[width=.7\textwidth]{../figures/all/foreign_aid_raise_support.pdf} 
-    \end{figure}\vspace{-.2cm}
+    \end{figure}\vspace{-.2cm} \pause
     \begin{figure} 
         \centering 
         \caption{[If \textit{at some conditions}] What conditions should be required for [the U.S.] to increase its foreign aid?}\vspace{-.2cm}
         \includegraphics[height=.48\textheight]{../figures/all/foreign_aid_condition.pdf} 
-    \end{figure}
+    \end{figure} \pause \vspace{-.3cm}
+	\bbvs \ip \blue{People want to help people (not oligarchs) and to foster climate action and human rights.}% sustainability.
+	\ip National preference is the main reason behind not wanting increased foreign aid.
+	\ee 
 \end{frame}
 
 \begin{frame}{Preferences over public spending%How to fund increased foreign aid
 	\label{}}
-	\bbvs \ip \rose{People want better public services and higher taxes on the wealthiest.}
-	\ee 
 	\begin{columns}
         \begin{column}{0.5\textwidth}
             \begin{figure}
@@ -196,6 +194,8 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
             \end{figure}
         \end{column}
     \end{columns}
+	\bbvs \ip \rose{People want better public services and higher taxes on the wealthiest.}
+	\ee 
 \end{frame}
 
 \section{Sincerity of the support for the GCS}
@@ -211,9 +211,6 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
 \end{frame}
 
 \begin{frame}{Petition\label{}}
-	\bbvs \ip Willingness to sign a real-stake petition is generally (-2 to 5 p.p.) lower than stated support.
-	\ip But this is not specific to GCS, and majorities are still willing to sign the petition.
-    \ee
     \begin{figure}
         \centering 
         \caption{Would you be willing to sign a petition for the [GCS / NR]? \\As soon as the survey is complete, we will send the results to the [head of state] (...) \textit{Yes/No} % U.S. President's office %, informing him what share of American people are willing to endorse the Global climate scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)
@@ -221,13 +218,15 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
         \vspace{-.2cm}
         \includegraphics[height=.5\textheight]{../figures/country_comparison/petition_positive.pdf} 
     \end{figure}
+	\bbvs \ip Willingness to sign a real-stake petition is generally (-2 to 5 p.p.) lower than stated support.
+	\ip But this is not specific to GCS, and majorities are still willing to sign the petition.
+    \ee
 \end{frame}
 
 \begin{frame}{List experiment\label{}}
     \vspace*{-.1cm}
 \bbvs \ip We ask \textit{Among the policies below, how many do you support?}, randomly varying the list of policies.
-\ip The difference in mean number of supported policies for lists with and without the GCS should equal the support for GCS. \blue{If} the \rose{tacit support} \blue{is lower}, it may indicate a \blue{social desirability bias}.
-\ip $\Rightarrow$ \blue{Small social desirability bias for GCS and NR in the U.S.} (tacit support is 5 p.p.*** lower), \blue{none in Europe}. % TODO! better test
+\ip The difference in mean number of supported policies for lists with and without the GCS should equal the support for GCS. \blue{If} the \rose{tacit support} \blue{is lower}, it may indicate a \blue{social desirability bias}. \pause
 \ee
 {\footnotesize
     \begin{table}[h]\label{tab:list_exp}\vspace*{-.35cm}
@@ -235,6 +234,7 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
         \makebox[\textwidth][c]{\input{../tables/continents/reg_list_exp.tex}}
       \end{table}
 }
+$\Rightarrow$ \blue{Small social desirability bias for GCS and NR in the U.S.} (tacit support is 5 p.p.*** lower), \blue{none in Europe}. % TODO! better test
 \end{frame}
 
 \begin{frame}{Conjoint analyses: interaction with other policies\label{}} 
@@ -245,8 +245,8 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
     \begin{figure} \vspace*{-.5cm}
         \centering 
         \caption{Among the two following bundles of policies, which one would you prefer?}
-        \vspace{-.2cm} % TODO! change order
-        \includegraphics[height=.66\textheight]{../figures/country_comparison/conjoint_ab_positive.pdf} 
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/country_comparison/conjoint_ab_positive.pdf} 
     \end{figure}
 \end{frame}
 
@@ -297,7 +297,7 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
 		(...) Even if you do not support the Left, which of these platforms do you prefer? 
 		%\\ ~[FR: Left or center-left; DE: rot-rot-grüne; ES: PSOE; UK: Labour]
 		}
-        \vspace{-.2cm} % TODO! larger font
+        \vspace{-.2cm} 
         \includegraphics[height=.7\textheight]{../figures/EU/ca_r.png} 
     \end{figure}
 \end{frame}
@@ -366,10 +366,17 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
 
 \section{Universalist values}
 
-\begin{frame}{International climate negotiations\label{}}
-	\bbvs \ip The typical answer is to defend one's country's ``interests, to the extent it respects global justice.''
-    \ip Only one eigth wants to defend one's country's ``interests, even if it goes against global justice.''
+\begin{frame}{Donation to Africans vs. fellow citizens\label{}}
+	\bbvs \ip Respondents might win a \$/\euro{}/£ lottery prize, they have to decide which share to donate if they win. \\ Donation is to people in need, either in Africa or in their own country (random treatment).
+    \ip $\Rightarrow$ \blue{U.S. non-voters and Trump voters donate 5 to 6 p.p. more to fellow citizens, others give the same amount.}
     \ee
+    \begin{table}[h]\label{tab:donation}\vspace*{-.35cm}
+        \caption{(...) In case you are winner of the lottery, what share of the [\$]100 would you donate to [African / [own country]] people living in poverty through GiveDirectly?} 
+        \makebox[\textwidth][c]{\input{../tables/continents/donation.tex}}
+      \end{table}
+\end{frame}
+
+\begin{frame}{International climate negotiations\label{}}
     \begin{figure}
         \centering 
         \caption{In international climate negotiations, would you prefer [U.S.] diplomats to defend [U.S.] interests or global justice?
@@ -377,12 +384,12 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
         \vspace{-.2cm}
         \includegraphics[width=\textwidth]{../figures/all/negotiation.pdf} 
     \end{figure}
+	\bbvs \ip The typical answer is to defend one's country's ``interests, to the extent it respects global justice.''
+    \ip Only one eigth wants to defend one's country's ``interests, even if it goes against global justice.''
+    \ee
 \end{frame}
 
 \begin{frame}{Group defended\label{}}
-	\bbvs \ip The most defended group is one's fellow citizens.
-    \ip \blue{$~$40\% are universalist}, i.e. defend all humans or sentient beings.
-    \ee
     \begin{figure}
         \centering 
         \caption{What group do you defend when you vote?
@@ -390,11 +397,12 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
         \vspace{-.2cm}
         \includegraphics[width=\textwidth]{../figures/all/group_defended_agg2.pdf} 
     \end{figure}
+	\bbvs \ip The most defended group is one's fellow citizens.
+    \ip \blue{$~$40\% are universalist}, i.e. defend all humans or sentient beings.
+    \ee
 \end{frame}
 
 \begin{frame}{Biggest issues\label{}}
-	\bbvs \ip People rank these the importance of these 3 issures as follows: \\ 1. Climate change \\ 2. Global poverty \\ 3. Income inequality in their country
-    \ee
     \begin{figure}
         \centering 
         \caption{To what extent do you think the following issues are a problem? \textit{5-Likert scale} \\(Mean of answers recoded in [-2, +2])
@@ -402,6 +410,8 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
         \vspace{-.2cm}
         \includegraphics[width=.7\textwidth]{../figures/country_comparison/problem_mean.pdf} 
     \end{figure}
+	\bbvs \ip People rank these the importance of these 3 issures as follows: \\ 1. Climate change \\ 2. Global poverty \\ 3. Income inequality in their country
+    \ee
 \end{frame}
 
 \section{Conclusion} 
@@ -429,11 +439,12 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
 		\item Most people show some adherence to universalism
 		\item No evidence of pluralistic ignorance: most people correctly guess others' support for the GCS
 	\end{itemize}
-\ip \blue{Alternative explanations are needed to explain the mismatch}
+\ip \blue{Alternative explanations for the mismatch are needed}
     \begin{itemize}
+        \item National bias in power structures (elections, media) and mental structures (hymns)? %national framing by elections, media, or even sport? 
+        %$\Rightarrow$ How to test that?
         \item Pluralistic ignorance of the elites? $\Rightarrow$ Ongoing survey on Members of the European Parliament 
-        \item National bias due to national framing by elections, media, or even sport? $\Rightarrow$ How to test that?
-        \item Ideas whose time has come, and just lacked some advocacy? $\Rightarrow$ Stay tune for the petition!
+        \item Ideas whose time has come, and just lack some advocacy? $\Rightarrow$ Stay tune for the petition! % Ideas largely accepted but rarely supported?
     \end{itemize}
 \end{itemize}
 \end{frame}

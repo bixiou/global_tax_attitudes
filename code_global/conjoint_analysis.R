@@ -104,20 +104,20 @@ for (c in c("all", "eu")) {
 # summary(Amce)http://127.0.0.1:11371/graphics/09d65b49-3a15-4047-bd65-2542b724f185.png
 # plot(Amce)
 
-plot(amce$all, xlab = "Average Marginal Component Effect", text.size = 12) # TODO! good labels
-save_plot (filename = "ca_r", folder = '../figures/all/', width = 500, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
-plot(amce$us1, xlab = "Average Marginal Component Effect", text.size = 12)
-save_plot (filename = "ca_r", folder = '../figures/US1/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
-plot(amce$eu, xlab = "Average Marginal Component Effect", text.size = 12)# TODO! good labels
-save_plot (filename = "ca_r", folder = '../figures/EU/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
-plot(amce$FR, xlab = "Average Marginal Component Effect", text.size = 12)
-save_plot (filename = "ca_r", folder = '../figures/FR/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
-plot(amce$DE, xlab = "Average Marginal Component Effect", text.size = 12)
-save_plot (filename = "ca_r", folder = '../figures/DE/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
-plot(amce$ES, xlab = "Average Marginal Component Effect", text.size = 12)
-save_plot (filename = "ca_r", folder = '../figures/ES/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
-plot(amce$UK, xlab = "Average Marginal Component Effect", text.size = 12)
-save_plot (filename = "ca_r", folder = '../figures/UK/', width = 800, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$all, xlab = "Average Marginal Component Effect", text.size = 18) # TODO! good labels
+save_plot (filename = "ca_r", folder = '../figures/all/', width = 700, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$us1, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/US1/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$eu, xlab = "Average Marginal Component Effect", text.size = 18)# TODO! good labels
+save_plot (filename = "ca_r", folder = '../figures/EU/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$FR, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$DE, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/DE/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$ES, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/ES/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+plot(amce$UK, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/UK/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
 plot(amce$usp) # GCS is foreign1
 plot(amce$eup)
 plot(amce$ep)

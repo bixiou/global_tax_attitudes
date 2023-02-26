@@ -109,7 +109,7 @@ package("stargazer") # To fix the bug with is.na() on R 4.2, run the code below 
 # install.packages("stargazer", repos = NULL, type="source")
 # setwd(temp)
 #' package("clipr")
-#' package("ergm") # wtd.median
+package("ergm") # wtd.median
 #' package("mfx")
 #' package("margins")
 #' package("plotrix")
@@ -1392,9 +1392,15 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
     for (v in 1:nb_vars) {
       var_c <- df_c[[vars[v]]][!is.na(df_c[[vars[v]]])]
-      if (weights & length(var_c) > 0 & c %in% c(countries_EU, names(countries_EU))) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight_country[!is.na(df_c[[vars[v]]])])")))
-      if (weights & length(var_c) > 0 & !(c %in% c(countries_EU, names(countries_EU)))) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])")))
-      if (!weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("mean(var_c", conditions[v], ", na.rm = T)")))
+      if (conditions[v] == "median") {
+        if (weights & length(var_c) > 0 & c %in% c(countries_EU, names(countries_EU))) table[v,c] <- eval(str2expression(paste("wtd.median(var_c, na.rm = T, weight = df_c$weight_country[!is.na(df_c[[vars[v]]])])")))
+        if (weights & length(var_c) > 0 & !(c %in% c(countries_EU, names(countries_EU)))) table[v,c] <- eval(str2expression(paste("wtd.median(var_c, na.rm = T, weight = df_c$weight[!is.na(df_c[[vars[v]]])])")))
+        if (!weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("median(var_c, na.rm = T)")))
+      } else {
+        if (weights & length(var_c) > 0 & c %in% c(countries_EU, names(countries_EU))) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight_country[!is.na(df_c[[vars[v]]])])")))
+        if (weights & length(var_c) > 0 & !(c %in% c(countries_EU, names(countries_EU)))) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])")))
+        if (!weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("mean(var_c", conditions[v], ", na.rm = T)")))
+      }
     }
   }
   row.names(table) <- labels
@@ -1417,6 +1423,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
   for (cond in conditions) {
     filename <- paste(sub("variables_", "", name),
                       case_when(cond == "" ~ "mean",
+                                cond == "median" ~ "median",
                                 cond == "> 0" ~ "positive",
                                 cond == ">= 1" ~ "positive",
                                 cond == "< 0" ~ "negative",
@@ -1438,7 +1445,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
       if (!missing(labels_along) & length(labels_along) == ncol(temp)) colnames(temp) <- labels_along
       if (sort) temp <- temp[order(-temp[,1]),]
       if (export_xls) save_plot(as.data.frame(temp), filename = sub("figures", "xlsx", paste0(folder, filename)))
-      heatmap_plot(temp, proportion = ifelse(is.null(proportion), cond != "", proportion), percent = percent, nb_digits = nb_digits, colors = colors)
+      heatmap_plot(temp, proportion = ifelse(is.null(proportion), !cond %in% c("median", ""), proportion), percent = percent, nb_digits = nb_digits, colors = colors)
       save_plot(filename = paste0(folder, filename), width = width, height = height, format = format, trim = trim)
       print(paste0(filename, ": success"))
     }, error = function(cond) { print(paste0(filename, ": fail.")) } )
