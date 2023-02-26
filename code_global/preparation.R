@@ -929,7 +929,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   }
   
   count_IP <- rle(as.vector(sort(e$ip)))
-  e$number_same_ip <- count_IP[[1]][match(e$ip, count_IP[[2]])]
+  e$number_same_ip <- count_IP$lengths[match(e$ip, count_IP$values)]
   e$duplicate_ip <- e$number_same_ip > 1
   label(e$number_same_ip) <- "number_same_ip: Number of respondents with the same IP."
   label(e$duplicate_ip) <- "duplicate_ip: T/F The respondent's IP is used by other respondents."
