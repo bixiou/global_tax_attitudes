@@ -11,6 +11,7 @@
 
 ##### labels_vars #####
 labels_vars <- c(
+  "(Intercept)" = "Constant",
   "finished" = "Finished",
   "excluded" = "Excluded",
   "click_reminder" = "Clicked on reminder", 

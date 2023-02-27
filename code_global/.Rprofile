@@ -581,10 +581,13 @@ table_mean_lines_save <- function(table, mean_above = T, only_mean = FALSE, inde
   for (l in add_lines) {
     line <- if (length(gregexpr("&", l[2])[[1]]) == nb_columns) l[2] else { if (grepl("\\hline", table[as.numeric(l[1])+0*mean_above-1])) c("\\\\[1ex]", l[2]) else c(" \\\\[1ex] \\hline \\\\[1ex]",  paste("\\multicolumn{", nb_columns + 1, "}{l}{\\textbf{", l[2], "}} \\\\")) }
     table <- c(table[1:(as.numeric(l[1])+0*mean_above-1)], line, table[(as.numeric(l[1])+0*mean_above):length(table)]) }
-  if (length(omit) > 0) {
-    omitted_vars <- which(c(multi_grepl(omit, table), multi_grepl(indep_labels[omit], table)))
-    if (length(omitted_vars) > 0) table <- table[-c(omitted_vars, omitted_vars + 1)] }
   print(table)
+  if (length(omit) > 0) {
+    omit_constant <- any(c("Constant", "(Intercept)") %in% omit)
+    omit <- omit[!omit %in% c("Constant", "(Intercept)")]
+    omitted_vars <- which(c(multi_grepl(omit, table), multi_grepl(indep_labels[omit], table)))
+    if (omit_constant) for (i in 1:length(table)) if (multi_grepl(c("Constant", "(Intercept)"), table[i]) & grepl("^  \\& \\(", table[i+1])) omitted_vars <- c(omitted_vars, i)
+    if (length(omitted_vars) > 0) table <- table[-c(omitted_vars, omitted_vars + 1)] }
   cat(paste(table, collapse="\n"), file = file_path)
   if (oecd_latex) cat(paste(table, collapse="\n"), file = sub("../", "../../oecd_latex/", file_path, fixed = T))
   return(table)
@@ -599,11 +602,12 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
   return(several_values)
 }
 same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, along = "country3", along.levels = Levels(along, data), 
-                                covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, 
-                                mean_control = T, dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, 
+                                covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, constant_instead_mean = T,
+                                mean_control = T, dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, display_mean = FALSE,
                                 omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, 
                                 folder = "../tables/regs_countries/", digits= 3, model.numbers = T, replace_endAB = NULL) {
   file_path <- paste(folder, filename, ".tex", sep="")
+  if (constant_instead_mean) display_mean <- T
   # keep <- gsub("(.*)", "\\\\\\Q\\1\\\\\\E", sub("^\\(", "", sub("\\)$", "", keep)))
   # formula <- as.formula(paste(dep.var, "~", paste("(", covariates, ")", collapse = ' + ')))
   if (along == "country3") {
@@ -630,29 +634,31 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
       else SEs[[i]] <- summary(models[[i]])$coefficients[,2]
     }
     if (print_regs) print(summary(models[[i]]))
-    if (include.total | j > 0) means <- c(means, ifelse(mean_control, round(wtd.mean(eval(parse(text = paste( "(data_i$", parse(text = dep.var), ")[data_i$treatment=='None']", sep=""))), weights = data_i$weight[data_i$treatment=='None'], na.rm = T), d = digits),
+    if (constant_instead_mean & (include.total | j > 0)) means <- c(means, round(coefs[[i]][["(Intercept)"]], digits))
+    else if (include.total | j > 0) means <- c(means, ifelse(mean_control, round(wtd.mean(eval(parse(text = paste( "(data_i$", parse(text = dep.var), ")[data_i$treatment=='None']", sep=""))), weights = data_i$weight[data_i$treatment=='None'], na.rm = T), d = digits),
                                                         round(wtd.mean(eval(parse(text = paste( "data_i$", parse(text = dep.var), sep=""))), weights = data_i$weight, na.rm = T), d = digits)))
   }
-  mean_text <- ifelse(mean_control, "Control group mean", "Mean")
+  mean_text <- ifelse(mean_control, "Control group mean", ifelse(constant_instead_mean, "Constant", "Mean"))
   if (exists("labels_vars")) omit <- c(omit, labels_vars[omit], names(labels_vars)[which(labels_vars %in% omit)])
   if (exists("labels_vars")) omit <- omit[!is.na(omit)]
-  if (exists("labels_vars") & missing(covariate.labels)) covariate_labels <- create_covariate_labels(names(models[[1]]$coefficients)[-1], regressors_names = labels_vars, keep = keep, omit = omit)
+  if (exists("labels_vars") & missing(covariate.labels)) covariate_labels <- create_covariate_labels(names(models[[1]]$coefficients), regressors_names = labels_vars, keep = keep, omit = omit)
   if (nolabel) covariate_labels <- NULL
   if (!nolabel & !missing(covariate.labels)) covariate_labels <- covariate.labels
-  if (is.null(keep)) keep <- covariates[!covariates %in% omit]
+  if (is.null(keep)) keep <- c(c(covariates)[!covariates %in% omit], if (any(c("(Intercept)", "Intercept", "Constant") %in% omit)) NULL else "Constant")
   dep.var.caption <- ifelse(missing(dep.var.caption), ifelse(exists("labels_vars") && dep.var %in% names(labels_vars), labels_vars[dep.var], gsub("_", "\\_", dep.var, fixed = T)), dep.var.caption)
-
+  
   table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers, 
-                covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], add.lines =list(c(mean_text, means)),
+                covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], add.lines = if (display_mean) list(c(mean_text, means)) else NULL,
                 dep.var.labels = if (include.total) c("All", along.levels) else along.levels, dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), 
                 omit.table.layout = "n", keep=keep, omit = omit, no.space = no.space)))
 
   if (!missing(replace_endAB) & length(table) != 50) warning(paste0("Wrong specification for replacement of the last lines: table of length ", length(table)))
   if (!missing(replace_endAB) & length(table) == 50) table <- c(table[1:43], replace_endAB)
-  table <- table_mean_lines_save(table, mean_above = mean_above, only_mean = only_mean, indep_labels = covariate_labels, indep_vars = covariates, add_lines = add_lines, file_path = file_path, oecd_latex = FALSE, nb_columns = length(along.levels) + include.total)
+  table <- table_mean_lines_save(table, omit = omit, mean_above = mean_above, only_mean = only_mean, indep_labels = covariate_labels, indep_vars = covariates, add_lines = add_lines, file_path = file_path, oecd_latex = FALSE, nb_columns = length(along.levels) + include.total)
   return(table)
 }
 create_covariate_labels <- function(coefs_names, regressors_names = labels_vars, keep = NULL, omit = "Constant") {
+  if (any(c("Constant", "Intercept", "(Intercept)") %in% omit)) coefs_names <- coefs_names[-1]
   missing_names <- setdiff(coefs_names, names(labels_vars))
   names(missing_names) <- missing_names
   if (length(missing_names) > 0) warning(paste("The following variables are missing from labels_vars (so their name will appear instead of their label):", paste(missing_names, collapse = ", ")))
@@ -663,6 +669,7 @@ create_covariate_labels <- function(coefs_names, regressors_names = labels_vars,
   for (k in keep) covariate_labels <- c(covariate_labels, covariate.labels[(grepl(k, covariate.labels) | grepl(k, names(covariate.labels)))])
   for (k in omit) covariate_labels <- covariate_labels[!grepl(k, covariate_labels) & !grepl(k, names(covariate_labels))]
   covariate_labels <- unique(covariate_labels[c(which(!grepl("[:*]", names(covariate_labels))), which(grepl("[:*]", names(covariate_labels))))]) # unique is not necessary, it unnames the vector
+  if (covariate_labels[1] %in% c("Constant", "Intercept", "(Intercept)")) covariate_labels <- c(covariate_labels[-1], covariate_labels[1])
   return(covariate_labels)
 }
 #' CImedian <- function(vec) { # 95% confidence interval

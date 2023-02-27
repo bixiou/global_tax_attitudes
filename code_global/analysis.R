@@ -4,6 +4,7 @@ e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
 # TODO! slides
+# TODO? Tell explicitly that NR would offset GCS in US2?
 # TODO! literature review, incl. French Preferences for Foreign Aid
 # TODO! appendix sources, calcul net gain
 # TODO! reweighted estimate dans papier
