@@ -1,3 +1,9 @@
+##### Global millionaire tax #####
+same_reg_subsamples(dep.var = "global_tax_sharing", dep.var.caption = "Prefers to share half of global tax with low-income countries", covariates = c("vote_factor"), 
+                    data = all[all$country != "US",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "global_tax_sharing_vote", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+
 ##### Donation #####
 same_reg_subsamples(dep.var = "donation", dep.var.caption = "Donation to poor people (in \\%)", covariates = c("branch_donation"), 
                     data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
