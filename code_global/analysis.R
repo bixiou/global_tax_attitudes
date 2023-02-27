@@ -12,7 +12,6 @@ e <- ep
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 # TODO read about Norway and foreign aid
-# TODO? Ask 200 more respondents to rebalance for age-UK
 
 # FR lack income Q4, 65+; DE lack income Q4, 50-64, 65+, Upper secondary; ES lack income Q4, 65+, rural; UK lack women, 18-24
 # ES: remove 50 18-25 to add rural and below upper secondary; UK: remove 150 >65 men to add women below 50 (and especially below 25); DE, FR let only upper secondary among 25-64; DE do not allow <25
