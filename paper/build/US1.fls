@@ -1681,10 +1681,13 @@ INPUT c:/texlive/2022/texmf-dist/tex/latex/psnfss/omsppl.fd
 INPUT c:/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT c:/texlive/2022/texmf-dist/fonts/tfm/adobe/palatino/pplri8c.tfm
 INPUT c:/texlive/2022/texmf-dist/fonts/vf/adobe/palatino/pplri8c.vf
-INPUT ../tables/sample_composition/US1.tex
-INPUT ../tables/sample_composition/US1.tex
-INPUT ../tables/sample_composition/US1.tex
-INPUT ../tables/sample_composition/US1.tex
+INPUT ../tables/sample_composition/FR_DE_ES_UK_all.tex
+INPUT ../tables/sample_composition/FR_DE_ES_UK_all.tex
+INPUT ../tables/sample_composition/FR_DE_ES_UK_all.tex
+INPUT ../tables/sample_composition/FR_DE_ES_UK_all.tex
+INPUT ../tables/sample_composition/FR_DE_ES_UK_all.tex
+INPUT ../tables/sample_composition/FR_DE_ES_UK_all.tex
+INPUT ../tables/sample_composition/FR_DE_ES_UK_all.tex
 INPUT c:/texlive/2022/texmf-dist/fonts/tfm/adobe/palatino/pplri7t.tfm
 INPUT c:/texlive/2022/texmf-dist/fonts/vf/adobe/palatino/pplri7t.vf
 INPUT c:/texlive/2022/texmf-dist/fonts/tfm/adobe/palatino/pplri8r.tfm

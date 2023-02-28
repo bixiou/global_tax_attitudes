@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.19)  27 FEB 2023 18:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.19)  28 FEB 2023 17:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -994,43 +994,43 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 
 {c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 12.50409pt on input line 260.
+(Font)              scaled to size 12.50409pt on input line 261.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 260.
+(Font)              scaled to size 9.37807pt on input line 261.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 260.
+(Font)              scaled to size 7.29405pt on input line 261.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 12.50409pt on input line 260.
+(Font)              scaled to size 12.50409pt on input line 261.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 260.
+(Font)              scaled to size 9.37807pt on input line 261.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 260.
+(Font)              scaled to size 7.29405pt on input line 261.
  [2]
 <../figures/OECD/Heatplot_burden_share_all_share_countries.pdf, id=114, 422.57875pt x 234.8775pt>
 File: ../figures/OECD/Heatplot_burden_share_all_share_countries.pdf Graphic file (type pdf)
 <use ../figures/OECD/Heatplot_burden_share_all_share_countries.pdf>
-Package pdftex.def Info: ../figures/OECD/Heatplot_burden_share_all_share_countries.pdf  used on input line 267.
+Package pdftex.def Info: ../figures/OECD/Heatplot_burden_share_all_share_countries.pdf  used on input line 268.
 (pdftex.def)             Requested size: 469.75502pt x 261.10776pt.
  [3 <../figures/OECD/Heatplot_burden_share_all_share_countries.pdf>] [4]
 <../figures/US1/support_likert.pdf, id=157, 610.28pt x 432.61626pt>
 File: ../figures/US1/support_likert.pdf Graphic file (type pdf)
 <use ../figures/US1/support_likert.pdf>
-Package pdftex.def Info: ../figures/US1/support_likert.pdf  used on input line 293.
+Package pdftex.def Info: ../figures/US1/support_likert.pdf  used on input line 294.
 (pdftex.def)             Requested size: 469.75502pt x 333.00993pt.
  [5] (../tables/US1/reg_list_exp.tex) [6 <../figures/US1/support_likert.pdf>] [7]
 <../figures/US1/ca_r.png, id=192, 1068.99374pt x 485.815pt>
 File: ../figures/US1/ca_r.png Graphic file (type png)
 <use ../figures/US1/ca_r.png>
-Package pdftex.def Info: ../figures/US1/ca_r.png  used on input line 336.
+Package pdftex.def Info: ../figures/US1/ca_r.png  used on input line 337.
 (pdftex.def)             Requested size: 469.75502pt x 213.48497pt.
  [8]
 <../figures/US1/points_us.pdf, id=200, 531.9875pt x 613.29124pt>
 File: ../figures/US1/points_us.pdf Graphic file (type pdf)
 <use ../figures/US1/points_us.pdf>
-Package pdftex.def Info: ../figures/US1/points_us.pdf  used on input line 346.
+Package pdftex.def Info: ../figures/US1/points_us.pdf  used on input line 347.
 (pdftex.def)             Requested size: 469.75502pt x 541.56021pt.
 
-Overfull \hbox (0.25505pt too wide) in paragraph at lines 352--353
+Overfull \hbox (0.25505pt too wide) in paragraph at lines 353--354
 \OT1/ppl/m/n/12 sup-port for such glob-ally re-dis-tribu-tive poli-cies, know-ing that ad-vo-cat-ing for them would
  []
 
@@ -1416,7 +1416,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 556--560
 
  []
 
-[37] (../tables/sample_composition/US1.tex) [38
+[37] (../tables/sample_composition/FR_DE_ES_UK_all.tex) [38
 
 ] (../tables/gain_gcs.tex
 Overfull \hbox (1.34453pt too wide) in alignment at lines 2--56
@@ -1454,10 +1454,10 @@ Package rerunfilecheck Info: File `US1.brf' has not changed.
 (rerunfilecheck)             Checksum: E0674E11D735C7951ADCCB51467BA6ED;374.
  ) 
 Here is how much of TeX's memory you used:
- 28235 strings out of 475075
- 519730 string characters out of 5783001
- 853748 words of memory out of 5000000
- 48855 multiletter control sequences out of 15000+600000
+ 28237 strings out of 475075
+ 519849 string characters out of 5783001
+ 860748 words of memory out of 5000000
+ 48856 multiletter control sequences out of 15000+600000
  525861 words of font info for 172 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,17n,89p,1812b,687s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1465,7 +1465,7 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on build/US1.pdf (42 pages, 2494706 bytes).
+Output written on build/US1.pdf (42 pages, 2495200 bytes).
 PDF statistics:
  867 PDF objects out of 1000 (max. 8388607)
  667 compressed objects within 7 object streams
