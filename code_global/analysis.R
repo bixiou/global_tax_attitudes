@@ -7,6 +7,7 @@ e <- ep
 # TODO? US2: Tell explicitly that NR would offset GCS? Include question on willingness to adopt sustainable behavior under conditions? Multiply by 3 the amounts?
 # TODO! literature review, incl. French Preferences for Foreign Aid
 # TODO! map: in % of GDP, with NDCs => Gore (21) (I sent an email)
+# TODO calculer ce que représente 30% de global wealth tax en terme de PIB, comparé à loss due au GCS
 # TODO! appendix sources, calcul net gain
 # TODO! reweighted estimate dans papier
 # TODO US/EU: put back email?, welcome: amount incentives
