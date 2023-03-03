@@ -6,7 +6,7 @@ e <- ep
 # TODO! slides
 # TODO? US2: Tell explicitly that NR would offset GCS? Include question on willingness to adopt sustainable behavior under conditions? Multiply by 3 the amounts?
 # TODO! literature review, incl. French Preferences for Foreign Aid
-# TODO! map: in % of GDP, with NDCs => Gore (21) (I sent an email)
+# TODO! map: in % of GDP, with NDCs, at each date with 2°C + SDG trajectories => Gore (21) (I sent an email)
 # TODO calculer ce que représente 30% de global wealth tax en terme de PIB, comparé à loss due au GCS
 # TODO! appendix sources, calcul net gain
 # TODO! reweighted estimate dans papier
@@ -14,6 +14,7 @@ e <- ep
 # TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 # TODO read about Norway and foreign aid
+# TODO? Use donation to measure altruism?
 
 # FR lack income Q4, 65+; DE lack income Q4, 50-64, 65+, Upper secondary; ES lack income Q4, 65+, rural; UK lack women, 18-24
 # ES: remove 50 18-25 to add rural and below upper secondary; UK: remove 150 >65 men to add women below 50 (and especially below 25); DE, FR let only upper secondary among 25-64; DE do not allow <25
@@ -316,6 +317,7 @@ for (v in variables_foreign_aid_reduce) means_variables_foreign_aid_reduce[v] <-
 -sort(-means_variables_foreign_aid_no_)
 -sort(-means_variables_foreign_aid_raise)
 -sort(-means_variables_foreign_aid_reduce)
+summary(lm(foreign_aid_preferred ~ income_factor + country + foreign_aid_belief, all))
 
 
 ##### 100 points #####
