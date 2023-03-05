@@ -15,6 +15,8 @@ e <- ep
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 # TODO read about Norway and foreign aid
 # TODO? Use donation to measure altruism?
+# TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues, find C&C proposed by FR/EU
+# TODO! find SDG/equality/2°C compatible trajectories
 
 # FR lack income Q4, 65+; DE lack income Q4, 50-64, 65+, Upper secondary; ES lack income Q4, 65+, rural; UK lack women, 18-24
 # ES: remove 50 18-25 to add rural and below upper secondary; UK: remove 150 >65 men to add women below 50 (and especially below 25); DE, FR let only upper secondary among 25-64; DE do not allow <25
