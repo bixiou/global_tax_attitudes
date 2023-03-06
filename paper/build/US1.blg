@@ -3,44 +3,46 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: US1.aux
 The style file: plainnaturl_clean.bst
 Database file #1: global_tax_attitudes.bib
-You've used 4 entries,
+Warning--empty institution in global_challenges_foundation_attitudes_2018
+You've used 8 entries,
             2497 wiz_defined-function locations,
-            588 strings with 5739 characters,
-and the built_in function-call counts, 1849 in all, are:
-= -- 160
-> -- 154
-< -- 2
-+ -- 52
-- -- 48
-* -- 155
-:= -- 327
-add.period$ -- 16
-call.type$ -- 4
-change.case$ -- 27
-chr.to.int$ -- 4
-cite$ -- 8
-duplicate$ -- 68
-empty$ -- 101
-format.name$ -- 54
-if$ -- 360
+            620 strings with 6683 characters,
+and the built_in function-call counts, 3301 in all, are:
+= -- 295
+> -- 245
+< -- 4
++ -- 83
+- -- 75
+* -- 264
+:= -- 577
+add.period$ -- 31
+call.type$ -- 8
+change.case$ -- 49
+chr.to.int$ -- 8
+cite$ -- 17
+duplicate$ -- 135
+empty$ -- 202
+format.name$ -- 87
+if$ -- 653
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 3
-newline$ -- 32
-num.names$ -- 16
-pop$ -- 43
+missing$ -- 6
+newline$ -- 55
+num.names$ -- 32
+pop$ -- 74
 preamble$ -- 1
-purify$ -- 24
+purify$ -- 41
 quote$ -- 0
-skip$ -- 56
+skip$ -- 103
 stack$ -- 0
-substring$ -- 8
-swap$ -- 4
+substring$ -- 16
+swap$ -- 7
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 44
-warning$ -- 0
-while$ -- 12
+type$ -- 88
+warning$ -- 1
+while$ -- 24
 width$ -- 0
-write$ -- 64
+write$ -- 118
+(There was 1 warning)

@@ -1,9 +1,23 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{8}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Beiser-McGrath} \& Bernauer(2019)]{beiser-mcgrath_could_2019}
+L.~F. {Beiser-McGrath} \& T.~Bernauer.
+\newblock Could revenue recycling make effective carbon taxation politically
+  feasible?
+\newblock \emph{Science Advances}, 2019.
+\newblock \url{https://advances.sciencemag.org/content/5/9/eaax3323}.
+
+\bibitem[Carattini et~al.(2019)Carattini, Kallbekken, \&
+  Orlov]{carattini_how_2019}
+S.~Carattini, S.~Kallbekken, \& A.~Orlov.
+\newblock How to win public support for a global carbon tax.
+\newblock \emph{Nature}, 2019.
+\newblock \url{http://www.nature.com/articles/d41586-019-00124-x}.
 
 \bibitem[Dechezlepr{\^e}tre et~al.(2022)Dechezlepr{\^e}tre, Fabre, Kruse,
   Planterose, Sanchez~Chico, \& Stantcheva]{dechezlepretre_fighting_2022}
@@ -22,6 +36,11 @@ T.~Douenne \& A.~Fabre.
 \newblock \emph{American Economic Journal: Economic Policy}, 2022.
 \newblock \url{https://halshs.archives-ouvertes.fr/halshs-02482639}.
 
+\bibitem[Foundation(2018)]{global_challenges_foundation_attitudes_2018}
+G.~C. Foundation.
+\newblock Attitudes to global risk and governance survey 2018.
+\newblock Technical report, 2018.
+
 \bibitem[Ghassim(2020)]{ghassim_who_2020}
 F.~Ghassim.
 \newblock \emph{Who on Earth Wants Global Democracy \textendash{} and Why
@@ -30,6 +49,15 @@ F.~Ghassim.
 \newblock PhD thesis, University of Oxford, 2020.
 \newblock
   \url{https://ora.ox.ac.uk/objects/uuid:5d63ad08-7e5d-4287-8d0f-9f5eab58d38d}.
+
+\bibitem[Ghassim et~al.(2022)Ghassim, {Koenig-Archibugi}, \&
+  Cabrera]{ghassim_public_2022}
+F.~Ghassim, M.~{Koenig-Archibugi}, \& L.~Cabrera.
+\newblock Public {{Opinion}} on {{Institutional Designs}} for the {{United
+  Nations}}: {{An International Survey Experiment}}.
+\newblock \emph{International Studies Quarterly}, 2022.
+\newblock
+  \url{https://academic.oup.com/isq/article/doi/10.1093/isq/sqac027/6649353}.
 
 \bibitem[Klenert et~al.(2018)Klenert, Mattauch, Combet, Edenhofer, Hepburn,
   Rafaty, \& Stern]{klenert_making_2018}
