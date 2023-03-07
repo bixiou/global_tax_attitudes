@@ -3,44 +3,46 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: US1.aux
 The style file: plainnaturl_clean.bst
 Database file #1: global_tax_attitudes.bib
-You've used 4 entries,
+Warning--empty journal in meilland_is_2020
+You've used 13 entries,
             2497 wiz_defined-function locations,
-            588 strings with 5739 characters,
-and the built_in function-call counts, 1849 in all, are:
-= -- 160
-> -- 154
-< -- 2
-+ -- 52
-- -- 48
-* -- 155
-:= -- 327
-add.period$ -- 16
-call.type$ -- 4
-change.case$ -- 27
-chr.to.int$ -- 4
-cite$ -- 8
-duplicate$ -- 68
-empty$ -- 101
-format.name$ -- 54
-if$ -- 360
+            671 strings with 8505 characters,
+and the built_in function-call counts, 5868 in all, are:
+= -- 510
+> -- 485
+< -- 5
++ -- 163
+- -- 150
+* -- 493
+:= -- 1016
+add.period$ -- 51
+call.type$ -- 13
+change.case$ -- 88
+chr.to.int$ -- 13
+cite$ -- 27
+duplicate$ -- 227
+empty$ -- 341
+format.name$ -- 169
+if$ -- 1164
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 3
-newline$ -- 32
-num.names$ -- 16
-pop$ -- 43
+missing$ -- 12
+newline$ -- 85
+num.names$ -- 52
+pop$ -- 142
 preamble$ -- 1
-purify$ -- 24
+purify$ -- 76
 quote$ -- 0
-skip$ -- 56
+skip$ -- 175
 stack$ -- 0
-substring$ -- 8
-swap$ -- 4
+substring$ -- 26
+swap$ -- 12
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 44
-warning$ -- 0
-while$ -- 12
+type$ -- 143
+warning$ -- 1
+while$ -- 39
 width$ -- 0
-write$ -- 64
+write$ -- 187
+(There was 1 warning)

@@ -1578,12 +1578,12 @@ INPUT build/US1.brf
 INPUT build/US1.brf
 INPUT build/US1.brf
 OUTPUT build/US1.brf
-INPUT ./literature_review.tex
-INPUT literature_review.tex
-INPUT ./literature_review.tex
-INPUT literature_review.tex
 INPUT c:/texlive/2022/texmf-dist/fonts/vf/adobe/palatino/pplr8c.vf
 INPUT c:/texlive/2022/texmf-dist/fonts/tfm/public/mathpazo/fplmr.tfm
+INPUT ./literature_review.tex
+INPUT literature_review.tex
+INPUT ./literature_review.tex
+INPUT literature_review.tex
 INPUT ./app_desc_stats_US1.tex
 INPUT app_desc_stats_US1.tex
 INPUT ./app_desc_stats_US1.tex

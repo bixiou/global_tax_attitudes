@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.19)  5 MAR 2023 15:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.19)  7 MAR 2023 12:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1045,29 +1045,34 @@ Overfull \hbox (0.25505pt too wide) in paragraph at lines 353--354
 \openout7 = `US1.brf'.
 
 
-Underfull \hbox (badness 2556) in paragraph at lines 17--17
+Underfull \hbox (badness 1910) in paragraph at lines 67--67
 []\OT1/ppl/m/n/12 A. Deche-zlepr[]etre, A. Fabre, T. Kruse, B. Planterose, A. Sanchez Chico, &
  []
 
-) (./literature_review.tex [14]) (./app_desc_stats_US1.tex [15
+[14]) (./literature_review.tex [15]
+Overfull \hbox (10.06805pt too wide) in paragraph at lines 27--30
+[]\OT1/ppl/m/n/12 Despite their dif-fer-ences in the de-scrip-tion of the fair-ness prin-ci-ples, the sur-veys burden-
+ []
 
-]
-<../figures/US1/understood_each.pdf, id=334, 589.20125pt x 199.74625pt>
+[16
+
+] [17]) (./app_desc_stats_US1.tex [18] [19]
+<../figures/US1/understood_each.pdf, id=390, 589.20125pt x 199.74625pt>
 File: ../figures/US1/understood_each.pdf Graphic file (type pdf)
 <use ../figures/US1/understood_each.pdf>
 Package pdftex.def Info: ../figures/US1/understood_each.pdf  used on input line 6.
 (pdftex.def)             Requested size: 469.75502pt x 159.25468pt.
-<../figures/US1/understood_score.pdf, id=339, 444.66125pt x 94.3525pt>
+<../figures/US1/understood_score.pdf, id=395, 444.66125pt x 94.3525pt>
 File: ../figures/US1/understood_score.pdf Graphic file (type pdf)
 <use ../figures/US1/understood_score.pdf>
 Package pdftex.def Info: ../figures/US1/understood_score.pdf  used on input line 11.
 (pdftex.def)             Requested size: 375.80544pt x 79.74216pt.
-<../figures/US1/support_binary.pdf, id=346, 490.83376pt x 165.61874pt>
+<../figures/US1/support_binary.pdf, id=402, 490.83376pt x 165.61874pt>
 File: ../figures/US1/support_binary.pdf Graphic file (type pdf)
 <use ../figures/US1/support_binary.pdf>
 Package pdftex.def Info: ../figures/US1/support_binary.pdf  used on input line 16.
 (pdftex.def)             Requested size: 422.77664pt x 142.6593pt.
-<../figures/US1/belief.pdf, id=351, 399.4925pt x 140.525pt>
+<../figures/US1/belief.pdf, id=407, 399.4925pt x 140.525pt>
 File: ../figures/US1/belief.pdf Graphic file (type pdf)
 <use ../figures/US1/belief.pdf>
 Package pdftex.def Info: ../figures/US1/belief.pdf  used on input line 21.
@@ -1076,7 +1081,7 @@ Package pdftex.def Info: ../figures/US1/belief.pdf  used on input line 21.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/list_exp.pdf, id=354, 449.68pt x 185.69376pt>
+<../figures/US1/list_exp.pdf, id=410, 449.68pt x 185.69376pt>
 File: ../figures/US1/list_exp.pdf Graphic file (type pdf)
 <use ../figures/US1/list_exp.pdf>
 Package pdftex.def Info: ../figures/US1/list_exp.pdf  used on input line 26.
@@ -1084,7 +1089,7 @@ Package pdftex.def Info: ../figures/US1/list_exp.pdf  used on input line 26.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/conjoint.pdf, id=359, 482.80376pt x 310.15875pt>
+<../figures/US1/conjoint.pdf, id=415, 482.80376pt x 310.15875pt>
 File: ../figures/US1/conjoint.pdf Graphic file (type pdf)
 <use ../figures/US1/conjoint.pdf>
 Package pdftex.def Info: ../figures/US1/conjoint.pdf  used on input line 31.
@@ -1099,7 +1104,7 @@ Package pdftex.def Info: ../figures/US1/ca_r.png  used on input line 36.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/variables_donation.pdf, id=364, 430.60875pt x 140.525pt>
+<../figures/US1/variables_donation.pdf, id=420, 430.60875pt x 140.525pt>
 File: ../figures/US1/variables_donation.pdf Graphic file (type pdf)
 <use ../figures/US1/variables_donation.pdf>
 Package pdftex.def Info: ../figures/US1/variables_donation.pdf  used on input line 41.
@@ -1107,7 +1112,7 @@ Package pdftex.def Info: ../figures/US1/variables_donation.pdf  used on input li
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/variables_petition.pdf, id=367, 387.4475pt x 140.525pt>
+<../figures/US1/variables_petition.pdf, id=423, 387.4475pt x 140.525pt>
 File: ../figures/US1/variables_petition.pdf Graphic file (type pdf)
 <use ../figures/US1/variables_petition.pdf>
 Package pdftex.def Info: ../figures/US1/variables_petition.pdf  used on input line 46.
@@ -1122,7 +1127,7 @@ Package pdftex.def Info: ../figures/US1/support_likert.pdf  used on input line 5
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/foreign_aid_raise_support.pdf, id=374, 691.58376pt x 83.31125pt>
+<../figures/US1/foreign_aid_raise_support.pdf, id=430, 691.58376pt x 83.31125pt>
 File: ../figures/US1/foreign_aid_raise_support.pdf Graphic file (type pdf)
 <use ../figures/US1/foreign_aid_raise_support.pdf>
 Package pdftex.def Info: ../figures/US1/foreign_aid_raise_support.pdf  used on input line 66.
@@ -1130,7 +1135,7 @@ Package pdftex.def Info: ../figures/US1/foreign_aid_raise_support.pdf  used on i
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/foreign_aid_condition.pdf, id=377, 527.9725pt x 259.97125pt>
+<../figures/US1/foreign_aid_condition.pdf, id=433, 527.9725pt x 259.97125pt>
 File: ../figures/US1/foreign_aid_condition.pdf Graphic file (type pdf)
 <use ../figures/US1/foreign_aid_condition.pdf>
 Package pdftex.def Info: ../figures/US1/foreign_aid_condition.pdf  used on input line 71.
@@ -1138,7 +1143,7 @@ Package pdftex.def Info: ../figures/US1/foreign_aid_condition.pdf  used on input
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/foreign_aid_no.pdf, id=380, 611.28375pt x 259.97125pt>
+<../figures/US1/foreign_aid_no.pdf, id=436, 611.28375pt x 259.97125pt>
 File: ../figures/US1/foreign_aid_no.pdf Graphic file (type pdf)
 <use ../figures/US1/foreign_aid_no.pdf>
 Package pdftex.def Info: ../figures/US1/foreign_aid_no.pdf  used on input line 76.
@@ -1146,7 +1151,7 @@ Package pdftex.def Info: ../figures/US1/foreign_aid_no.pdf  used on input line 7
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/negotiation.pdf, id=383, 692.5875pt x 86.3225pt>
+<../figures/US1/negotiation.pdf, id=439, 692.5875pt x 86.3225pt>
 File: ../figures/US1/negotiation.pdf Graphic file (type pdf)
 <use ../figures/US1/negotiation.pdf>
 Package pdftex.def Info: ../figures/US1/negotiation.pdf  used on input line 81.
@@ -1154,7 +1159,7 @@ Package pdftex.def Info: ../figures/US1/negotiation.pdf  used on input line 81.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/problem.pdf, id=386, 498.86375pt x 165.61874pt>
+<../figures/US1/problem.pdf, id=442, 498.86375pt x 165.61874pt>
 File: ../figures/US1/problem.pdf Graphic file (type pdf)
 <use ../figures/US1/problem.pdf>
 Package pdftex.def Info: ../figures/US1/problem.pdf  used on input line 91.
@@ -1162,7 +1167,7 @@ Package pdftex.def Info: ../figures/US1/problem.pdf  used on input line 91.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figures/US1/group_defended_agg.pdf, id=389, 584.1825pt x 83.31125pt>
+<../figures/US1/group_defended_agg.pdf, id=445, 584.1825pt x 83.31125pt>
 File: ../figures/US1/group_defended_agg.pdf Graphic file (type pdf)
 <use ../figures/US1/group_defended_agg.pdf>
 Package pdftex.def Info: ../figures/US1/group_defended_agg.pdf  used on input line 96.
@@ -1177,10 +1182,10 @@ Package pdftex.def Info: ../figures/US1/points_us.pdf  used on input line 106.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[16
+[20
 
- <../figures/US1/understood_each.pdf> <../figures/US1/understood_score.pdf> <../figures/US1/support_binary.pdf>] [17 <../figures/US1/belief.pdf> <../figures/US1/list_exp.pdf>] [18 <../figures/US1/conjoint.pdf>] [19 <../figures/US1/variables_donation.pdf> <../figures/US1/variables_petition.pdf>] [20 <../figures/US1/foreign_aid_raise_support.pdf>] [21 <../figures/US1/foreign_aid_condition.pdf> <../figures/US1/foreign_aid_no.pdf>] [22 <../figures/US1/negotiation.pdf> <../figures/US1/problem.pdf> <../figures/US1/group_defended_agg.pdf>] [23]
-<../questionnaire/survey_flow_US1.pdf, id=680, 819.06pt x 491.8375pt>
+ <../figures/US1/understood_each.pdf> <../figures/US1/understood_score.pdf> <../figures/US1/support_binary.pdf>] [21 <../figures/US1/belief.pdf> <../figures/US1/list_exp.pdf>] [22 <../figures/US1/conjoint.pdf>] [23 <../figures/US1/variables_donation.pdf> <../figures/US1/variables_petition.pdf>] [24 <../figures/US1/foreign_aid_raise_support.pdf>] [25 <../figures/US1/foreign_aid_condition.pdf> <../figures/US1/foreign_aid_no.pdf>] [26 <../figures/US1/negotiation.pdf> <../figures/US1/problem.pdf> <../figures/US1/group_defended_agg.pdf>] [27]
+<../questionnaire/survey_flow_US1.pdf, id=736, 819.06pt x 491.8375pt>
 File: ../questionnaire/survey_flow_US1.pdf Graphic file (type pdf)
 <use ../questionnaire/survey_flow_US1.pdf>
 Package pdftex.def Info: ../questionnaire/survey_flow_US1.pdf  used on input line 125.
@@ -1205,7 +1210,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 130--142
 
  []
 
-[24
+[28
 
  <../questionnaire/survey_flow_US1.pdf>]
 LaTeX Font Info:    Trying to load font information for OMS+ppl on input line 152.
@@ -1214,7 +1219,7 @@ File: omsppl.fd
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/it' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 152.
- [25]
+ [29]
 Underfull \hbox (badness 10000) in paragraph at lines 161--167
 
  []
@@ -1244,7 +1249,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 167--173
 
  []
 
-[26]
+[30]
 Underfull \hbox (badness 10000) in paragraph at lines 183--187
 
  []
@@ -1254,7 +1259,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 187--190
 
  []
 
-[27]
+[31]
 Underfull \hbox (badness 10000) in paragraph at lines 190--194
 
  []
@@ -1274,7 +1279,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 194--205
 
  []
 
-[28]
+[32]
 Underfull \hbox (badness 10000) in paragraph at lines 208--217
 
  []
@@ -1294,7 +1299,7 @@ Overfull \hbox (6.36208pt too wide) in paragraph at lines 208--217
 []$ \OT1/ppl/m/n/12 [\OT1/ppl/m/it/12 Click-ing dis-plays the pre-vi-ous sum-
  []
 
-[29]
+[33]
 Underfull \hbox (badness 10000) in paragraph at lines 255--257
 
  []
@@ -1334,7 +1339,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 291--302
 
  []
 
-[30]
+[34]
 Underfull \hbox (badness 10000) in paragraph at lines 345--384
 
  []
@@ -1354,7 +1359,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 345--384
 
  []
 
-[31]
+[35]
 Underfull \hbox (badness 10000) in paragraph at lines 384--400
 
  []
@@ -1369,7 +1374,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 400--414
 
  []
 
-[32]
+[36]
 Underfull \hbox (badness 10000) in paragraph at lines 414--428
 
  []
@@ -1384,7 +1389,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 433--439
 
  []
 
-[33]
+[37]
 Underfull \hbox (badness 10000) in paragraph at lines 450--462
 
  []
@@ -1399,7 +1404,7 @@ Overfull \hbox (4.25092pt too wide) in paragraph at lines 473--474
 \OT1/ppl/m/it/12 Strongly op-pose; Some-what op-pose; Nei-ther sup-port nor op-pose; Some-what sup-port; Strongly
  []
 
-[34]
+[38]
 Overfull \hbox (4.25092pt too wide) in paragraph at lines 483--484
 \OT1/ppl/m/it/12 Strongly op-pose; Some-what op-pose; Nei-ther sup-port nor op-pose; Some-what sup-port; Strongly
  []
@@ -1409,7 +1414,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 484--488
 
  []
 
-[35] [36]
+[39] [40]
 Underfull \hbox (badness 10000) in paragraph at lines 523--529
 
  []
@@ -1419,12 +1424,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 523--529
 
  []
 
-[37]
+[41]
 Underfull \hbox (badness 10000) in paragraph at lines 556--560
 
  []
 
-[38] (../tables/sample_composition/FR_DE_ES_UK_all.tex) [39
+[42] (../tables/sample_composition/FR_DE_ES_UK_all.tex) [43
 
 ] (../tables/gain_gcs.tex
 Overfull \hbox (1.34453pt too wide) in alignment at lines 2--56
@@ -1432,7 +1437,7 @@ Overfull \hbox (1.34453pt too wide) in alignment at lines 2--56
  []
 
 )
-<../figures/maps/median_gain_2015.pdf, id=845, 837.1275pt x 419.5675pt>
+<../figures/maps/median_gain_2015.pdf, id=901, 837.1275pt x 419.5675pt>
 File: ../figures/maps/median_gain_2015.pdf Graphic file (type pdf)
 <use ../figures/maps/median_gain_2015.pdf>
 Package pdftex.def Info: ../figures/maps/median_gain_2015.pdf  used on input line 606.
@@ -1441,16 +1446,16 @@ Package pdftex.def Info: ../figures/maps/median_gain_2015.pdf  used on input lin
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[40
+[44
 
-] [41 <../figures/maps/median_gain_2015.pdf>] [42
+] [45 <../figures/maps/median_gain_2015.pdf>] [46
 
 ] (../tables/US1/attrition_analysis.tex)
 Underfull \hbox (badness 10000) in paragraph at lines 620--627
 
  []
 
-) [43
+) [47
 
 ] (build/US1.aux)
 
@@ -1459,13 +1464,13 @@ LaTeX Warning: There were multiply-defined labels.
 Package rerunfilecheck Info: File `US1.out' has not changed.
 (rerunfilecheck)             Checksum: 76F7E3D3050CF7D73373E2D42513923F;6455.
 Package rerunfilecheck Info: File `US1.brf' has not changed.
-(rerunfilecheck)             Checksum: E0674E11D735C7951ADCCB51467BA6ED;374.
+(rerunfilecheck)             Checksum: 27D3B14539175DF5582A5BFCCD67467D;1098.
  ) 
 Here is how much of TeX's memory you used:
- 28285 strings out of 475075
- 520909 string characters out of 5783001
- 861526 words of memory out of 5000000
- 48884 multiletter control sequences out of 15000+600000
+ 28352 strings out of 475075
+ 522531 string characters out of 5783001
+ 862144 words of memory out of 5000000
+ 48938 multiletter control sequences out of 15000+600000
  525861 words of font info for 172 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,17n,89p,3905b,687s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1473,10 +1478,10 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on build/US1.pdf (43 pages, 2498079 bytes).
+Output written on build/US1.pdf (47 pages, 2508844 bytes).
 PDF statistics:
- 934 PDF objects out of 1000 (max. 8388607)
- 732 compressed objects within 8 object streams
- 179 named destinations out of 1000 (max. 500000)
+ 992 PDF objects out of 1000 (max. 8388607)
+ 786 compressed objects within 8 object streams
+ 192 named destinations out of 1000 (max. 500000)
  401 words of extra memory for PDF output out of 10000 (max. 10000000)
 

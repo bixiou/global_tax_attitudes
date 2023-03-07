@@ -1,9 +1,59 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{13}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bechtel \& Scheve(2013)]{bechtel_mass_2013}
+M.~M. Bechtel \& K.~F. Scheve.
+\newblock Mass support for global climate agreements depends on institutional
+  design.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 2013.
+\newblock \url{https://www.pnas.org/doi/abs/10.1073/pnas.1306374110}.
+
+\bibitem[{Beiser-McGrath} \& Bernauer(2019)]{beiser-mcgrath_could_2019}
+L.~F. {Beiser-McGrath} \& T.~Bernauer.
+\newblock Could revenue recycling make effective carbon taxation politically
+  feasible?
+\newblock \emph{Science Advances}, 2019.
+\newblock \url{https://advances.sciencemag.org/content/5/9/eaax3323}.
+
+\bibitem[Carattini et~al.(2019)Carattini, Kallbekken, \&
+  Orlov]{carattini_how_2019}
+S.~Carattini, S.~Kallbekken, \& A.~Orlov.
+\newblock How to win public support for a global carbon tax.
+\newblock \emph{Nature}, 2019.
+\newblock \url{http://www.nature.com/articles/d41586-019-00124-x}.
+
+\bibitem[Carlsson et~al.(2011)Carlsson, Kataria, Lampi, L{\"o}fgren, \&
+  Sterner]{carlsson_is_2011}
+F.~Carlsson, M.~Kataria, E.~Lampi, {\AA}.~L{\"o}fgren, \& T.~Sterner.
+\newblock Is fairness blind?\textemdash{{The}} effect of framing on preferences
+  for effort-sharing rules.
+\newblock \emph{Ecological Economics}, 2011.
+\newblock
+  \url{https://www.sciencedirect.com/science/article/pii/S0921800911001042}.
+
+\bibitem[Carlsson et~al.(2013)Carlsson, Kataria, Krupnick, Lampi, L{\"o}fgren,
+  Qin, \& Sterner]{carlsson_fair_2013}
+F.~Carlsson, M.~Kataria, A.~Krupnick, E.~Lampi, {\AA}.~L{\"o}fgren, P.~Qin, \&
+  T.~Sterner.
+\newblock A fair share: {{Burden-sharing}} preferences in the {{United States}}
+  and {{China}}.
+\newblock \emph{Resource and Energy Economics}, 2013.
+\newblock
+  \url{https://www.sciencedirect.com/science/article/pii/S0928765512000644}.
+
+\bibitem[{Dabla-Norris} et~al.(2023){Dabla-Norris}, Helbling, Khalid, Khan,
+  Magistretti, Sollaci, \& Srinivasan]{dabla-norris_public_2023}
+E.~{Dabla-Norris}, T.~Helbling, S.~Khalid, H.~Khan, G.~Magistretti, A.~Sollaci,
+  \& K.~Srinivasan.
+\newblock Public {{Perceptions}} of {{Climate Mitigation Policies}}:
+  {{Evidence}} from {{Cross-Country Surveys}}.
+\newblock \emph{Staff Discussion Notes}, 2023.
+\newblock
+  \url{https://www.elibrary.imf.org/view/journals/006/2023/002/article-A001-en.xml}.
 
 \bibitem[Dechezlepr{\^e}tre et~al.(2022)Dechezlepr{\^e}tre, Fabre, Kruse,
   Planterose, Sanchez~Chico, \& Stantcheva]{dechezlepretre_fighting_2022}
@@ -31,6 +81,15 @@ F.~Ghassim.
 \newblock
   \url{https://ora.ox.ac.uk/objects/uuid:5d63ad08-7e5d-4287-8d0f-9f5eab58d38d}.
 
+\bibitem[Ghassim et~al.(2022)Ghassim, {Koenig-Archibugi}, \&
+  Cabrera]{ghassim_public_2022}
+F.~Ghassim, M.~{Koenig-Archibugi}, \& L.~Cabrera.
+\newblock Public {{Opinion}} on {{Institutional Designs}} for the {{United
+  Nations}}: {{An International Survey Experiment}}.
+\newblock \emph{International Studies Quarterly}, 2022.
+\newblock
+  \url{https://academic.oup.com/isq/article/doi/10.1093/isq/sqac027/6649353}.
+
 \bibitem[Klenert et~al.(2018)Klenert, Mattauch, Combet, Edenhofer, Hepburn,
   Rafaty, \& Stern]{klenert_making_2018}
 D.~Klenert, L.~Mattauch, E.~Combet, O.~Edenhofer, C.~Hepburn, R.~Rafaty, \&
@@ -38,5 +97,19 @@ D.~Klenert, L.~Mattauch, E.~Combet, O.~Edenhofer, C.~Hepburn, R.~Rafaty, \&
 \newblock Making carbon pricing work for citizens.
 \newblock \emph{Nature Climate Change}, 2018.
 \newblock \url{https://www.nature.com/articles/s41558-018-0201-2}.
+
+\bibitem[Meilland(2020)]{meilland_is_2020}
+A.~Meilland.
+\newblock Is every country taking its fair share? {{A}} survey on international
+  climate justice.
+\newblock 2020.
+
+\bibitem[Schleich et~al.(2016)Schleich, D{\"u}tschke, Schwirplies, \&
+  Ziegler]{schleich_citizens_2016}
+J.~Schleich, E.~D{\"u}tschke, C.~Schwirplies, \& A.~Ziegler.
+\newblock Citizens' perceptions of justice in international climate policy: An
+  empirical analysis.
+\newblock \emph{Climate Policy}, 2016.
+\newblock \url{https://doi.org/10.1080/14693062.2014.979129}.
 
 \end{thebibliography}
