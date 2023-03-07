@@ -1,15 +1,10 @@
-<<<<<<< HEAD
-\begin{thebibliography}{13}
-=======
-\begin{thebibliography}{8}
->>>>>>> main
+\begin{thebibliography}{17}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-<<<<<<< HEAD
 \bibitem[Bechtel \& Scheve(2013)]{bechtel_mass_2013}
 M.~M. Bechtel \& K.~F. Scheve.
 \newblock Mass support for global climate agreements depends on institutional
@@ -17,8 +12,6 @@ M.~M. Bechtel \& K.~F. Scheve.
 \newblock \emph{Proceedings of the National Academy of Sciences}, 2013.
 \newblock \url{https://www.pnas.org/doi/abs/10.1073/pnas.1306374110}.
 
-=======
->>>>>>> main
 \bibitem[{Beiser-McGrath} \& Bernauer(2019)]{beiser-mcgrath_could_2019}
 L.~F. {Beiser-McGrath} \& T.~Bernauer.
 \newblock Could revenue recycling make effective carbon taxation politically
@@ -33,7 +26,6 @@ S.~Carattini, S.~Kallbekken, \& A.~Orlov.
 \newblock \emph{Nature}, 2019.
 \newblock \url{http://www.nature.com/articles/d41586-019-00124-x}.
 
-<<<<<<< HEAD
 \bibitem[Carlsson et~al.(2011)Carlsson, Kataria, Lampi, L{\"o}fgren, \&
   Sterner]{carlsson_is_2011}
 F.~Carlsson, M.~Kataria, E.~Lampi, {\AA}.~L{\"o}fgren, \& T.~Sterner.
@@ -63,8 +55,6 @@ E.~{Dabla-Norris}, T.~Helbling, S.~Khalid, H.~Khan, G.~Magistretti, A.~Sollaci,
 \newblock
   \url{https://www.elibrary.imf.org/view/journals/006/2023/002/article-A001-en.xml}.
 
-=======
->>>>>>> main
 \bibitem[Dechezlepr{\^e}tre et~al.(2022)Dechezlepr{\^e}tre, Fabre, Kruse,
   Planterose, Sanchez~Chico, \& Stantcheva]{dechezlepretre_fighting_2022}
 A.~Dechezlepr{\^e}tre, A.~Fabre, T.~Kruse, B.~Planterose, A.~Sanchez~Chico, \&
@@ -87,6 +77,13 @@ G.~C. Foundation.
 \newblock Attitudes to global risk and governance survey 2018.
 \newblock Technical report, 2018.
 
+\bibitem[Gallup(1946)]{gallup_seventy_1946}
+I.~Gallup.
+\newblock Seventy {{Years}} of {{U}}.{{S}}. {{Public Opinion}} on the {{United
+  Nations}}, 1946.
+\newblock
+  \url{https://www.huffpost.com/entry/seventy-years-of-us-publi_b_7639210}.
+
 \bibitem[Ghassim(2020)]{ghassim_who_2020}
 F.~Ghassim.
 \newblock \emph{Who on Earth Wants Global Democracy \textendash{} and Why
@@ -105,6 +102,18 @@ F.~Ghassim, M.~{Koenig-Archibugi}, \& L.~Cabrera.
 \newblock
   \url{https://academic.oup.com/isq/article/doi/10.1093/isq/sqac027/6649353}.
 
+\bibitem[Group(2010)]{issp_research_group_international_2010}
+I.~R. Group.
+\newblock International {{Social Survey Programme}}: {{Environment III}}, 2010.
+\newblock
+  \url{https://search.gesis.org/research_data/ZA5500?doi=10.4232/1.13271}.
+
+\bibitem[ISSP(2019)]{issp_international_2019}
+ISSP.
+\newblock International {{Social Survey Programme ISSP}} 2019 - {{Social
+  Inequality V}}.
+\newblock 2019.
+
 \bibitem[Klenert et~al.(2018)Klenert, Mattauch, Combet, Edenhofer, Hepburn,
   Rafaty, \& Stern]{klenert_making_2018}
 D.~Klenert, L.~Mattauch, E.~Combet, O.~Edenhofer, C.~Hepburn, R.~Rafaty, \&
@@ -113,11 +122,11 @@ D.~Klenert, L.~Mattauch, E.~Combet, O.~Edenhofer, C.~Hepburn, R.~Rafaty, \&
 \newblock \emph{Nature Climate Change}, 2018.
 \newblock \url{https://www.nature.com/articles/s41558-018-0201-2}.
 
-\bibitem[Meilland(2020)]{meilland_is_2020}
-A.~Meilland.
-\newblock Is every country taking its fair share? {{A}} survey on international
-  climate justice.
-\newblock 2020.
+\bibitem[Meilland et~al.(2023)Meilland, Kervinio, \&
+  M{\'e}jean]{meilland_international_2023}
+A.~Meilland, Y.~Kervinio, \& A.~M{\'e}jean.
+\newblock International climate justice: What the people think.
+\newblock 2023.
 
 \bibitem[Schleich et~al.(2016)Schleich, D{\"u}tschke, Schwirplies, \&
   Ziegler]{schleich_citizens_2016}

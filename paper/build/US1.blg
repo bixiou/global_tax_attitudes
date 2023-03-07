@@ -3,91 +3,95 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: US1.aux
 The style file: plainnaturl_clean.bst
 Database file #1: global_tax_attitudes.bib
-<<<<<<< HEAD
-Warning--empty journal in meilland_is_2020
-You've used 13 entries,
-            2497 wiz_defined-function locations,
-            671 strings with 8505 characters,
-and the built_in function-call counts, 5868 in all, are:
-= -- 510
-> -- 485
-< -- 5
-+ -- 163
-- -- 150
-* -- 493
-:= -- 1016
-add.period$ -- 51
-call.type$ -- 13
-change.case$ -- 88
-chr.to.int$ -- 13
-cite$ -- 27
-duplicate$ -- 227
-empty$ -- 341
-format.name$ -- 169
-if$ -- 1164
-int.to.chr$ -- 1
-int.to.str$ -- 1
-missing$ -- 12
-newline$ -- 85
-num.names$ -- 52
-pop$ -- 142
-preamble$ -- 1
-purify$ -- 76
-quote$ -- 0
-skip$ -- 175
-stack$ -- 0
-substring$ -- 26
-swap$ -- 12
-text.length$ -- 0
-text.prefix$ -- 0
-top$ -- 0
-type$ -- 143
-warning$ -- 1
-while$ -- 39
-width$ -- 0
-write$ -- 187
-=======
+I was expecting an "="---line 343 of file global_tax_attitudes.bib
+ : <<<<<<< 
+ :         HEAD
+I'm skipping whatever remains of this entry
+I was expecting an "="---line 479 of file global_tax_attitudes.bib
+ : <<<<<<< 
+ :         HEAD
+I'm skipping whatever remains of this entry
+I was expecting an "="---line 1801 of file global_tax_attitudes.bib
+ : <<<<<<< 
+ :         HEAD
+I'm skipping whatever remains of this entry
+You're missing a field name---line 1815 of file global_tax_attitudes.bib
+ : 
+ : =======
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting an "="---line 1825 of file global_tax_attitudes.bib
+ : >>>>>>> 
+ :         main
+I'm skipping whatever remains of this entry
+I was expecting an "="---line 1959 of file global_tax_attitudes.bib
+ : <<<<<<< 
+ :         HEAD
+I'm skipping whatever remains of this entry
+I was expecting an "="---line 1989 of file global_tax_attitudes.bib
+ : <<<<<<< 
+ :         HEAD
+I'm skipping whatever remains of this entry
+Repeated entry---line 2181 of file global_tax_attitudes.bib
+ : @techreport{global_challenges_foundation_attitudes_2018
+ :                                                        ,
+I'm skipping whatever remains of this entry
+I was expecting an "="---line 3293 of file global_tax_attitudes.bib
+ : <<<<<<< 
+ :         HEAD
+I'm skipping whatever remains of this entry
+You're missing a field name---line 3305 of file global_tax_attitudes.bib
+ : 
+ : =======
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting an "="---line 3315 of file global_tax_attitudes.bib
+ : >>>>>>> 
+ :         main
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "f"
 Warning--empty institution in global_challenges_foundation_attitudes_2018
-You've used 8 entries,
+Warning--empty journal in issp_international_2019
+Warning--empty journal in meilland_international_2023
+You've used 17 entries,
             2497 wiz_defined-function locations,
-            620 strings with 6683 characters,
-and the built_in function-call counts, 3301 in all, are:
-= -- 295
-> -- 245
-< -- 4
-+ -- 83
-- -- 75
-* -- 264
-:= -- 577
-add.period$ -- 31
-call.type$ -- 8
-change.case$ -- 49
-chr.to.int$ -- 8
-cite$ -- 17
-duplicate$ -- 135
-empty$ -- 202
-format.name$ -- 87
-if$ -- 653
+            691 strings with 9166 characters,
+and the built_in function-call counts, 7099 in all, are:
+= -- 621
+> -- 545
+< -- 8
++ -- 185
+- -- 168
+* -- 569
+:= -- 1221
+add.period$ -- 63
+call.type$ -- 17
+change.case$ -- 107
+chr.to.int$ -- 17
+cite$ -- 37
+duplicate$ -- 287
+empty$ -- 445
+format.name$ -- 191
+if$ -- 1415
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 6
-newline$ -- 55
-num.names$ -- 32
-pop$ -- 74
+missing$ -- 13
+newline$ -- 105
+num.names$ -- 68
+pop$ -- 180
 preamble$ -- 1
-purify$ -- 41
+purify$ -- 90
 quote$ -- 0
-skip$ -- 103
+skip$ -- 221
 stack$ -- 0
-substring$ -- 16
-swap$ -- 7
+substring$ -- 34
+swap$ -- 14
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 88
-warning$ -- 1
-while$ -- 24
+type$ -- 187
+warning$ -- 3
+while$ -- 51
 width$ -- 0
-write$ -- 118
->>>>>>> main
-(There was 1 warning)
+write$ -- 234
+(There were 11 error messages)
