@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 \begin{thebibliography}{13}
+=======
+\begin{thebibliography}{8}
+>>>>>>> main
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
+<<<<<<< HEAD
 \bibitem[Bechtel \& Scheve(2013)]{bechtel_mass_2013}
 M.~M. Bechtel \& K.~F. Scheve.
 \newblock Mass support for global climate agreements depends on institutional
@@ -12,6 +17,8 @@ M.~M. Bechtel \& K.~F. Scheve.
 \newblock \emph{Proceedings of the National Academy of Sciences}, 2013.
 \newblock \url{https://www.pnas.org/doi/abs/10.1073/pnas.1306374110}.
 
+=======
+>>>>>>> main
 \bibitem[{Beiser-McGrath} \& Bernauer(2019)]{beiser-mcgrath_could_2019}
 L.~F. {Beiser-McGrath} \& T.~Bernauer.
 \newblock Could revenue recycling make effective carbon taxation politically
@@ -26,6 +33,7 @@ S.~Carattini, S.~Kallbekken, \& A.~Orlov.
 \newblock \emph{Nature}, 2019.
 \newblock \url{http://www.nature.com/articles/d41586-019-00124-x}.
 
+<<<<<<< HEAD
 \bibitem[Carlsson et~al.(2011)Carlsson, Kataria, Lampi, L{\"o}fgren, \&
   Sterner]{carlsson_is_2011}
 F.~Carlsson, M.~Kataria, E.~Lampi, {\AA}.~L{\"o}fgren, \& T.~Sterner.
@@ -55,6 +63,8 @@ E.~{Dabla-Norris}, T.~Helbling, S.~Khalid, H.~Khan, G.~Magistretti, A.~Sollaci,
 \newblock
   \url{https://www.elibrary.imf.org/view/journals/006/2023/002/article-A001-en.xml}.
 
+=======
+>>>>>>> main
 \bibitem[Dechezlepr{\^e}tre et~al.(2022)Dechezlepr{\^e}tre, Fabre, Kruse,
   Planterose, Sanchez~Chico, \& Stantcheva]{dechezlepretre_fighting_2022}
 A.~Dechezlepr{\^e}tre, A.~Fabre, T.~Kruse, B.~Planterose, A.~Sanchez~Chico, \&
@@ -71,6 +81,11 @@ T.~Douenne \& A.~Fabre.
   Aversion}}.
 \newblock \emph{American Economic Journal: Economic Policy}, 2022.
 \newblock \url{https://halshs.archives-ouvertes.fr/halshs-02482639}.
+
+\bibitem[Foundation(2018)]{global_challenges_foundation_attitudes_2018}
+G.~C. Foundation.
+\newblock Attitudes to global risk and governance survey 2018.
+\newblock Technical report, 2018.
 
 \bibitem[Ghassim(2020)]{ghassim_who_2020}
 F.~Ghassim.
