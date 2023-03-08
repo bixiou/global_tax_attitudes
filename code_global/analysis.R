@@ -4,7 +4,6 @@ e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
 # TODO! slides
-# TODO? US2: Tell explicitly that NR would offset GCS? Include question on willingness to adopt sustainable behavior under conditions? Multiply by 3 the amounts?
 # TODO! literature review, incl. French Preferences for Foreign Aid
 # TODO! map: in % of GDP, with NDCs, at each date with 2°C + SDG trajectories => Gore (21) (I sent an email)
 # TODO calculer ce que représente 30% de global wealth tax en terme de PIB, comparé à loss due au GCS
@@ -17,12 +16,6 @@ e <- ep
 # TODO? Use donation to measure altruism?
 # TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues, find C&C proposed by FR/EU
 # TODO! find SDG/equality/2°C compatible trajectories
-
-# FR lack income Q4, 65+; DE lack income Q4, 50-64, 65+, Upper secondary; ES lack income Q4, 65+, rural; UK lack women, 18-24
-# ES: remove 50 18-25 to add rural and below upper secondary; UK: remove 150 >65 men to add women below 50 (and especially below 25); DE, FR let only upper secondary among 25-64; DE do not allow <25
-removed_IDs <- eu$ID[eu$country == "UK" & eu$man & eu$age > 65 & eu$income_quartile < 3 & !is.missing(eu$vote)] # 147 UK
-removed_IDs <- c(removed_IDs, eu$ID[eu$country == "ES" & eu$age < 25 & eu$urbanity == "Cities" & eu$income_quartile < 3])
-write.csv(removed_IDs, "../Adrien's/removed_IDs.csv", quote = F, row.names = F)
 
 
 ##### Duration #####

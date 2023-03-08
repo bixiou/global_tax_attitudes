@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex build/US1"] 1678194883 "build/US1.aux" "build/US1.bbl" "build/US1" 1678194883
+["bibtex build/US1"] 1678278512 "build/US1.aux" "build/US1.bbl" "build/US1" 1678278517
   "./plainnaturl_clean.bst" 1586094986 24654 4b2b0914a35465b0a6a8366fb04efb16 ""
-  "build/US1.aux" 1678194881 21761 46ffd45bea3c5f88367bad60b2506e8b "pdflatex"
-  "global_tax_attitudes.bib" 1678194076 75207 a0f0d9f7c44ec503b62620ba7ab02322 ""
+  "build/US1.aux" 1678278516 33626 ca0d55e7c265fbc4ceaeb4b0f82b83a3 "pdflatex"
+  "global_tax_attitudes.bib" 1678276711 84796 4a7b90f13ee5e7941592f9796c98ae49 ""
   (generated)
   "build/US1.bbl"
   "build/US1.blg"
-["pdflatex"] 1678194879 "c:/Users/fabre/Documents/www/global_tax_attitudes/paper/US1.tex" "build/US1.pdf" "US1" 1678194879
+["pdflatex"] 1678278513 "c:/Users/fabre/Documents/www/global_tax_attitudes/paper/US1.tex" "build/US1.pdf" "US1" 1678278517
   "../figures/OECD/Heatplot_burden_share_all_share_countries.pdf" 1674079808 87167 734b815394069dfec053dc95b6ddcbe1 ""
   "../figures/US1/belief.pdf" 1677153141 45376 1a149cb74f03bc20b7b86cf9e232e7f1 ""
   "../figures/US1/ca_r.png" 1677419045 20240 c1b93a80bfb031a993b7278cd4e73b04 ""
@@ -31,12 +31,13 @@
   "../tables/US1/reg_list_exp.tex" 1674079808 475 20856a823d5c7e631bb80dceeca44970 ""
   "../tables/gain_gcs.tex" 1676548351 1432 fad246c2b47df9cde3867764e37269b9 ""
   "../tables/sample_composition/FR_DE_ES_UK_all.tex" 1677150387 3050 6225bb2834df90373da2024c65aa8a70 ""
-  "US1.tex" 1678194835 55483 792a6aa5c8bf971ee2d58feaf76a16f7 ""
+  "US1.tex" 1678213573 55483 792a6aa5c8bf971ee2d58feaf76a16f7 ""
   "app_desc_stats_US1.tex" 1677603245 43815 078c763ddc29173a6de933135519fbd3 ""
-  "build/US1.aux" 1678194879 34 3985256e7290058c681f74d7a3565a19 "pdflatex"
-  "build/US1.bbl" 0 -1 0 "bibtex build/US1"
-  "build/US1.out" 0 -1 0 "pdflatex"
-  "c:/Users/fabre/Documents/www/global_tax_attitudes/paper/US1.tex" 1678194835 55483 792a6aa5c8bf971ee2d58feaf76a16f7 ""
+  "build/US1.aux" 1678278516 33626 ca0d55e7c265fbc4ceaeb4b0f82b83a3 "pdflatex"
+  "build/US1.bbl" 1678278513 18432 63b9067408ddf148f01fe626a0ac723f "bibtex build/US1"
+  "build/US1.brf" 1678278516 4528 1a0b0a09fbcee61acb88185b7c6cf483 "pdflatex"
+  "build/US1.out" 1678278516 6445 fd968cbaea96847884a19a9bc3d81b77 "pdflatex"
+  "c:/Users/fabre/Documents/www/global_tax_attitudes/paper/US1.tex" 1678213573 55483 792a6aa5c8bf971ee2d58feaf76a16f7 ""
   "c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc" 1663542048 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "c:/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1663542332 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/adobe/palatino/pplb7t.tfm" 1663543501 1616 371d1ee60c04b008c8fd760060cd34f1 ""
@@ -262,9 +263,10 @@
   "c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1663544966 4635069 7677ee69604aae14ed48b153c111a7f7 ""
   "c:/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1663545077 3059215 8f99df6ed72caaaf55d8f9d041927bea ""
   "c:/texlive/2022/texmf.cnf" 1663544940 713 e69b156964470283e0530f5060668171 ""
-  "literature_review.tex" 1678194882 59910 6e243f57166490dff6b289fe53eb187e ""
+  "literature_review.tex" 1678278486 78369 ba955db046487f9f93f7449d2d28c927 ""
   (generated)
   "build/US1.aux"
+  "build/US1.brf"
   "build/US1.log"
   "build/US1.out"
   "build/US1.pdf"

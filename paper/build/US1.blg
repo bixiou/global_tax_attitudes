@@ -3,95 +3,53 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: US1.aux
 The style file: plainnaturl_clean.bst
 Database file #1: global_tax_attitudes.bib
-I was expecting an "="---line 343 of file global_tax_attitudes.bib
- : <<<<<<< 
- :         HEAD
-I'm skipping whatever remains of this entry
-I was expecting an "="---line 479 of file global_tax_attitudes.bib
- : <<<<<<< 
- :         HEAD
-I'm skipping whatever remains of this entry
-I was expecting an "="---line 1801 of file global_tax_attitudes.bib
- : <<<<<<< 
- :         HEAD
-I'm skipping whatever remains of this entry
-You're missing a field name---line 1815 of file global_tax_attitudes.bib
- : 
- : =======
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
-I was expecting an "="---line 1825 of file global_tax_attitudes.bib
- : >>>>>>> 
- :         main
-I'm skipping whatever remains of this entry
-I was expecting an "="---line 1959 of file global_tax_attitudes.bib
- : <<<<<<< 
- :         HEAD
-I'm skipping whatever remains of this entry
-I was expecting an "="---line 1989 of file global_tax_attitudes.bib
- : <<<<<<< 
- :         HEAD
-I'm skipping whatever remains of this entry
-Repeated entry---line 2181 of file global_tax_attitudes.bib
- : @techreport{global_challenges_foundation_attitudes_2018
- :                                                        ,
-I'm skipping whatever remains of this entry
-I was expecting an "="---line 3293 of file global_tax_attitudes.bib
- : <<<<<<< 
- :         HEAD
-I'm skipping whatever remains of this entry
-You're missing a field name---line 3305 of file global_tax_attitudes.bib
- : 
- : =======
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
-I was expecting an "="---line 3315 of file global_tax_attitudes.bib
- : >>>>>>> 
- :         main
-I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "f"
+Warning--empty institution in americans_for_tax_fairness_support_2021
+Warning--empty journal in andre_fighting_2021
 Warning--empty institution in global_challenges_foundation_attitudes_2018
 Warning--empty journal in issp_international_2019
+Warning--empty journal in kaufmann_foreign_2012
 Warning--empty journal in meilland_international_2023
-You've used 17 entries,
+Warning--empty institution in patriotic_millionaires_patriotic_2022
+Warning--empty institution in pipa_publics_2008
+You've used 55 entries,
             2497 wiz_defined-function locations,
-            691 strings with 9166 characters,
-and the built_in function-call counts, 7099 in all, are:
-= -- 621
-> -- 545
-< -- 8
-+ -- 185
-- -- 168
-* -- 569
-:= -- 1221
-add.period$ -- 63
-call.type$ -- 17
-change.case$ -- 107
-chr.to.int$ -- 17
-cite$ -- 37
-duplicate$ -- 287
-empty$ -- 445
-format.name$ -- 191
-if$ -- 1415
-int.to.chr$ -- 1
+            972 strings with 19130 characters,
+and the built_in function-call counts, 21035 in all, are:
+= -- 1906
+> -- 1418
+< -- 31
++ -- 486
+- -- 429
+* -- 1601
+:= -- 3617
+add.period$ -- 210
+call.type$ -- 55
+change.case$ -- 310
+chr.to.int$ -- 53
+cite$ -- 118
+duplicate$ -- 932
+empty$ -- 1427
+format.name$ -- 510
+if$ -- 4238
+int.to.chr$ -- 3
 int.to.str$ -- 1
-missing$ -- 13
-newline$ -- 105
-num.names$ -- 68
-pop$ -- 180
+missing$ -- 47
+newline$ -- 328
+num.names$ -- 220
+pop$ -- 492
 preamble$ -- 1
-purify$ -- 90
+purify$ -- 253
 quote$ -- 0
-skip$ -- 221
+skip$ -- 669
 stack$ -- 0
-substring$ -- 34
-swap$ -- 14
-text.length$ -- 0
+substring$ -- 110
+swap$ -- 49
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 187
-warning$ -- 3
-while$ -- 51
+type$ -- 590
+warning$ -- 8
+while$ -- 165
 width$ -- 0
-write$ -- 234
-(There were 11 error messages)
+write$ -- 757
+(There were 8 warnings)

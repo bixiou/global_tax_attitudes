@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.19)  7 MAR 2023 14:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.19)  8 MAR 2023 13:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -842,7 +842,17 @@ File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 File: l3backend-pdftex.def 2022-08-30 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count348
 \l__pdf_internal_box=\box126
-) (build/US1.aux)
+) (build/US1.aux
+
+LaTeX Warning: Label `subsubsec:literature_wealth_tax' multiply defined.
+
+
+LaTeX Warning: Label `subsubsec:literature_beliefs' multiply defined.
+
+
+LaTeX Warning: Label `fig:ca_r' multiply defined.
+
+)
 \openout1 = `US1.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 187.
@@ -900,13 +910,14 @@ LaTeX Font Info:    ... okay on input line 187.
 
 Package backref Info: ** backref set up for natbib ** on input line 187.
 Package hyperref Info: Link coloring ON on input line 187.
+(build/US1.out) (build/US1.out)
 \@outlinefile=\write6
 \openout6 = `US1.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: longtable package is loaded.
-(c:/texlive/2022/texmf-dist/tex/latex/caption/ltcaption.sty
+ (c:/texlive/2022/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: rotating package is loaded.
@@ -1000,54 +1011,26 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 9.37807pt on input line 261.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 7.29405pt on input line 261.
-
-
-Package natbib Warning: Citation `dechezlepretre_fighting_2022' on page 2 undefined on input line 261.
-
-
-LaTeX Warning: Reference `fig:oecd' on page 2 undefined on input line 264.
-
-
-Package natbib Warning: Citation `klenert_making_2018' on page 2 undefined on input line 264.
-
-
-Package natbib Warning: Citation `douenne_yellow_2022' on page 2 undefined on input line 264.
-
-
-Package natbib Warning: Citation `dechezlepretre_fighting_2022' on page 2 undefined on input line 264.
-
-[2]
-<../figures/OECD/Heatplot_burden_share_all_share_countries.pdf, id=23, 422.57875pt x 234.8775pt>
+ [2]
+<../figures/OECD/Heatplot_burden_share_all_share_countries.pdf, id=170, 422.57875pt x 234.8775pt>
 File: ../figures/OECD/Heatplot_burden_share_all_share_countries.pdf Graphic file (type pdf)
 <use ../figures/OECD/Heatplot_burden_share_all_share_countries.pdf>
 Package pdftex.def Info: ../figures/OECD/Heatplot_burden_share_all_share_countries.pdf  used on input line 268.
 (pdftex.def)             Requested size: 469.75502pt x 261.10776pt.
  [3 <../figures/OECD/Heatplot_burden_share_all_share_countries.pdf>] [4]
-
-LaTeX Warning: Reference `fig:support' on page 5 undefined on input line 290.
-
-<../figures/US1/support_likert.pdf, id=66, 610.28pt x 432.61626pt>
+<../figures/US1/support_likert.pdf, id=214, 610.28pt x 432.61626pt>
 File: ../figures/US1/support_likert.pdf Graphic file (type pdf)
 <use ../figures/US1/support_likert.pdf>
 Package pdftex.def Info: ../figures/US1/support_likert.pdf  used on input line 294.
 (pdftex.def)             Requested size: 469.75502pt x 333.00993pt.
-[5] (../tables/US1/reg_list_exp.tex) [6 <../figures/US1/support_likert.pdf>] [7]
-
-LaTeX Warning: Reference `fig:ca_r' on page 8 undefined on input line 329.
-
-
-Package natbib Warning: Citation `ghassim_who_2020' on page 8 undefined on input line 331.
-
-<../figures/US1/ca_r.png, id=104, 1068.99374pt x 485.815pt>
+ [5] (../tables/US1/reg_list_exp.tex) [6 <../figures/US1/support_likert.pdf>] [7]
+<../figures/US1/ca_r.png, id=248, 1068.99374pt x 485.815pt>
 File: ../figures/US1/ca_r.png Graphic file (type png)
 <use ../figures/US1/ca_r.png>
 Package pdftex.def Info: ../figures/US1/ca_r.png  used on input line 337.
 (pdftex.def)             Requested size: 469.75502pt x 213.48497pt.
-
-LaTeX Warning: Reference `fig:points' on page 8 undefined on input line 342.
-
-[8]
-<../figures/US1/points_us.pdf, id=109, 531.9875pt x 613.29124pt>
+ [8]
+<../figures/US1/points_us.pdf, id=256, 531.9875pt x 613.29124pt>
 File: ../figures/US1/points_us.pdf Graphic file (type pdf)
 <use ../figures/US1/points_us.pdf>
 Package pdftex.def Info: ../figures/US1/points_us.pdf  used on input line 347.
@@ -1057,176 +1040,43 @@ Overfull \hbox (0.25505pt too wide) in paragraph at lines 353--354
 \OT1/ppl/m/n/12 sup-port for such glob-ally re-dis-tribu-tive poli-cies, know-ing that ad-vo-cat-ing for them would
  []
 
-[9 <../figures/US1/ca_r.png>] [10 <../figures/US1/points_us.pdf>] [11] [12]
+[9 <../figures/US1/ca_r.png>] [10 <../figures/US1/points_us.pdf>] [11] [12] [13] (build/US1.bbl (build/US1.brf)
+\tf@brf=\write7
+\openout7 = `US1.brf'.
 
-LaTeX Warning: Reference `app:representativeness' on page 13 undefined on input line 388.
-
-
-Package natbib Warning: Citation `dechezlepretre_fighting_2022' on page 13 undefined on input line 398.
-
-
-LaTeX Warning: Reference `app:raw_results_US1' on page 13 undefined on input line 398.
-
-
-LaTeX Warning: Reference `app:questionnaire_US1' on page 13 undefined on input line 398.
-
-[13]
-No file US1.bbl.
-(./literature_review.tex [14]
-
-Package natbib Warning: Citation `carattini_how_2019' on page 15 undefined on input line 9.
-
-
-LaTeX Warning: Reference `fig:oecd' on page 15 undefined on input line 9.
-
-
-Package natbib Warning: Citation `beiser-mcgrath_could_2019' on page 15 undefined on input line 10.
-
-
-Package natbib Warning: Citation `ghassim_who_2020' on page 15 undefined on input line 13.
-
-
-Package natbib Warning: Citation `ghassim_who_2020' on page 15 undefined on input line 15.
-
-
-Package natbib Warning: Citation `global_challenges_foundation_attitudes_2018' on page 15 undefined on input line 16.
-
-
-Package natbib Warning: Citation `gallup_seventy_1946' on page 15 undefined on input line 16.
-
-
-Package natbib Warning: Citation `ghassim_public_2022' on page 15 undefined on input line 17.
-
-
-Package natbib Warning: Citation `meilland_international_2023' on page 15 undefined on input line 20.
-
-
-Package natbib Warning: Citation `schleich_citizens_2016' on page 15 undefined on input line 20.
-
-[15
-
-]
-
-Package natbib Warning: Citation `issp_research_group_international_2010' on page 16 undefined on input line 22.
-
-
-Package natbib Warning: Citation `issp_international_2019' on page 16 undefined on input line 23.
-
-
-Overfull \hbox (10.06805pt too wide) in paragraph at lines 35--38
-[]\OT1/ppl/m/n/12 Despite their dif-fer-ences in the de-scrip-tion of the fair-ness prin-ci-ples, the sur-veys burden-
+ [14]
+Underfull \hbox (badness 1910) in paragraph at lines 154--154
+[]\OT1/ppl/m/n/12 A. Deche-zlepr[]etre, A. Fabre, T. Kruse, B. Planterose, A. Sanchez Chico, &
  []
 
+[15] [16] [17]) (./literature_review.tex [18] [19
 
-Package natbib Warning: Citation `schleich_citizens_2016' on page 16 undefined on input line 43.
-
-
-Package natbib Warning: Citation `carlsson_is_2011' on page 16 undefined on input line 50.
-
-
-Package natbib Warning: Citation `bechtel_mass_2013' on page 16 undefined on input line 51.
-
-
-Package natbib Warning: Citation `carlsson_fair_2013' on page 16 undefined on input line 52.
-
-
-Package natbib Warning: Citation `meilland_international_2023' on page 16 undefined on input line 58.
-
-
-Package natbib Warning: Citation `meilland_international_2023' on page 16 undefined on input line 58.
-
-
-Package natbib Warning: Citation `dabla-norris_public_2023' on page 16 undefined on input line 66.
-
-[16]
-
-Package natbib Warning: Citation `f' on page 17 undefined on input line 74.
-
-[17]) (./app_desc_stats_US1.tex [18]
-
-LaTeX Warning: Reference `q:understood_gcs' on page 19 undefined on input line 5.
-
-
-LaTeX Warning: Reference `q:understood_both' on page 19 undefined on input line 5.
-
-
-LaTeX Warning: Reference `q:understood_gcs' on page 19 undefined on input line 5.
-
-
-LaTeX Warning: Reference `q:understood_both' on page 19 undefined on input line 5.
-
-<../figures/US1/understood_each.pdf, id=200, 589.20125pt x 199.74625pt>
+] [20] [21] [22] [23] [24]) (./app_desc_stats_US1.tex [25]
+<../figures/US1/understood_each.pdf, id=593, 589.20125pt x 199.74625pt>
 File: ../figures/US1/understood_each.pdf Graphic file (type pdf)
 <use ../figures/US1/understood_each.pdf>
 Package pdftex.def Info: ../figures/US1/understood_each.pdf  used on input line 6.
 (pdftex.def)             Requested size: 469.75502pt x 159.25468pt.
-
-LaTeX Warning: Reference `q:understood_gcs' on page 19 undefined on input line 10.
-
-
-LaTeX Warning: Reference `q:understood_both' on page 19 undefined on input line 10.
-
-
-LaTeX Warning: Reference `q:understood_gcs' on page 19 undefined on input line 10.
-
-
-LaTeX Warning: Reference `q:understood_both' on page 19 undefined on input line 10.
-
-<../figures/US1/understood_score.pdf, id=201, 444.66125pt x 94.3525pt>
+<../figures/US1/understood_score.pdf, id=598, 444.66125pt x 94.3525pt>
 File: ../figures/US1/understood_score.pdf Graphic file (type pdf)
 <use ../figures/US1/understood_score.pdf>
 Package pdftex.def Info: ../figures/US1/understood_score.pdf  used on input line 11.
 (pdftex.def)             Requested size: 375.80544pt x 79.74216pt.
-
-LaTeX Warning: Reference `q:gcs_support' on page 19 undefined on input line 15.
-
-
-LaTeX Warning: Reference `q:nr_support' on page 19 undefined on input line 15.
-
-
-LaTeX Warning: Reference `q:crg_support' on page 19 undefined on input line 15.
-
-
-LaTeX Warning: Reference `q:gcs_support' on page 19 undefined on input line 15.
-
-
-LaTeX Warning: Reference `q:nr_support' on page 19 undefined on input line 15.
-
-
-LaTeX Warning: Reference `q:crg_support' on page 19 undefined on input line 15.
-
-<../figures/US1/support_binary.pdf, id=202, 490.83376pt x 165.61874pt>
+<../figures/US1/support_binary.pdf, id=605, 490.83376pt x 165.61874pt>
 File: ../figures/US1/support_binary.pdf Graphic file (type pdf)
 <use ../figures/US1/support_binary.pdf>
 Package pdftex.def Info: ../figures/US1/support_binary.pdf  used on input line 16.
 (pdftex.def)             Requested size: 422.77664pt x 142.6593pt.
-
-LaTeX Warning: Reference `q:gcs_belief' on page 19 undefined on input line 20.
-
-
-LaTeX Warning: Reference `q:nr_belief' on page 19 undefined on input line 20.
-
-
-LaTeX Warning: Reference `q:gcs_belief' on page 19 undefined on input line 20.
-
-
-LaTeX Warning: Reference `q:nr_belief' on page 19 undefined on input line 20.
-
-<../figures/US1/belief.pdf, id=203, 399.4925pt x 140.525pt>
+<../figures/US1/belief.pdf, id=610, 399.4925pt x 140.525pt>
 File: ../figures/US1/belief.pdf Graphic file (type pdf)
 <use ../figures/US1/belief.pdf>
 Package pdftex.def Info: ../figures/US1/belief.pdf  used on input line 21.
 (pdftex.def)             Requested size: 375.80544pt x 132.19856pt.
 
+
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:list_exp' on page 19 undefined on input line 25.
-
-
-LaTeX Warning: Reference `q:list_exp' on page 19 undefined on input line 25.
-
-<../figures/US1/list_exp.pdf, id=204, 449.68pt x 185.69376pt>
+<../figures/US1/list_exp.pdf, id=613, 449.68pt x 185.69376pt>
 File: ../figures/US1/list_exp.pdf Graphic file (type pdf)
 <use ../figures/US1/list_exp.pdf>
 Package pdftex.def Info: ../figures/US1/list_exp.pdf  used on input line 26.
@@ -1234,31 +1084,13 @@ Package pdftex.def Info: ../figures/US1/list_exp.pdf  used on input line 26.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:conjoint_a' on page 19 undefined on input line 30.
-
-
-LaTeX Warning: Reference `q:conjoint_d' on page 19 undefined on input line 30.
-
-
-LaTeX Warning: Reference `q:conjoint_a' on page 19 undefined on input line 30.
-
-
-LaTeX Warning: Reference `q:conjoint_d' on page 19 undefined on input line 30.
-
-<../figures/US1/conjoint.pdf, id=205, 482.80376pt x 310.15875pt>
+<../figures/US1/conjoint.pdf, id=618, 482.80376pt x 310.15875pt>
 File: ../figures/US1/conjoint.pdf Graphic file (type pdf)
 <use ../figures/US1/conjoint.pdf>
 Package pdftex.def Info: ../figures/US1/conjoint.pdf  used on input line 31.
 (pdftex.def)             Requested size: 469.75502pt x 301.78595pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: Reference `q:conjoint_r' on page 19 undefined on input line 35.
-
-
-LaTeX Warning: Reference `q:conjoint_r' on page 19 undefined on input line 35.
 
 File: ../figures/US1/ca_r.png Graphic file (type png)
 <use ../figures/US1/ca_r.png>
@@ -1267,13 +1099,7 @@ Package pdftex.def Info: ../figures/US1/ca_r.png  used on input line 36.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:donation' on page 19 undefined on input line 40.
-
-
-LaTeX Warning: Reference `q:donation' on page 19 undefined on input line 40.
-
-<../figures/US1/variables_donation.pdf, id=206, 430.60875pt x 140.525pt>
+<../figures/US1/variables_donation.pdf, id=623, 430.60875pt x 140.525pt>
 File: ../figures/US1/variables_donation.pdf Graphic file (type pdf)
 <use ../figures/US1/variables_donation.pdf>
 Package pdftex.def Info: ../figures/US1/variables_donation.pdf  used on input line 41.
@@ -1281,31 +1107,13 @@ Package pdftex.def Info: ../figures/US1/variables_donation.pdf  used on input li
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:petition' on page 19 undefined on input line 45.
-
-
-LaTeX Warning: Reference `q:petition' on page 19 undefined on input line 45.
-
-<../figures/US1/variables_petition.pdf, id=207, 387.4475pt x 140.525pt>
+<../figures/US1/variables_petition.pdf, id=626, 387.4475pt x 140.525pt>
 File: ../figures/US1/variables_petition.pdf Graphic file (type pdf)
 <use ../figures/US1/variables_petition.pdf>
 Package pdftex.def Info: ../figures/US1/variables_petition.pdf  used on input line 46.
 (pdftex.def)             Requested size: 328.82707pt x 119.26454pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: Reference `q:climate_policies' on page 19 undefined on input line 50.
-
-
-LaTeX Warning: Reference `q:other_policies' on page 19 undefined on input line 50.
-
-
-LaTeX Warning: Reference `q:climate_policies' on page 19 undefined on input line 50.
-
-
-LaTeX Warning: Reference `q:other_policies' on page 19 undefined on input line 50.
 
 File: ../figures/US1/support_likert.pdf Graphic file (type pdf)
 <use ../figures/US1/support_likert.pdf>
@@ -1314,13 +1122,7 @@ Package pdftex.def Info: ../figures/US1/support_likert.pdf  used on input line 5
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:foreign_aid_raise_support' on page 19 undefined on input line 65.
-
-
-LaTeX Warning: Reference `q:foreign_aid_raise_support' on page 19 undefined on input line 65.
-
-<../figures/US1/foreign_aid_raise_support.pdf, id=208, 691.58376pt x 83.31125pt>
+<../figures/US1/foreign_aid_raise_support.pdf, id=633, 691.58376pt x 83.31125pt>
 File: ../figures/US1/foreign_aid_raise_support.pdf Graphic file (type pdf)
 <use ../figures/US1/foreign_aid_raise_support.pdf>
 Package pdftex.def Info: ../figures/US1/foreign_aid_raise_support.pdf  used on input line 66.
@@ -1328,13 +1130,7 @@ Package pdftex.def Info: ../figures/US1/foreign_aid_raise_support.pdf  used on i
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:foreign_aid_condition' on page 19 undefined on input line 70.
-
-
-LaTeX Warning: Reference `q:foreign_aid_condition' on page 19 undefined on input line 70.
-
-<../figures/US1/foreign_aid_condition.pdf, id=209, 527.9725pt x 259.97125pt>
+<../figures/US1/foreign_aid_condition.pdf, id=636, 527.9725pt x 259.97125pt>
 File: ../figures/US1/foreign_aid_condition.pdf Graphic file (type pdf)
 <use ../figures/US1/foreign_aid_condition.pdf>
 Package pdftex.def Info: ../figures/US1/foreign_aid_condition.pdf  used on input line 71.
@@ -1342,13 +1138,7 @@ Package pdftex.def Info: ../figures/US1/foreign_aid_condition.pdf  used on input
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:foreign_aid_no' on page 19 undefined on input line 75.
-
-
-LaTeX Warning: Reference `q:foreign_aid_no' on page 19 undefined on input line 75.
-
-<../figures/US1/foreign_aid_no.pdf, id=210, 611.28375pt x 259.97125pt>
+<../figures/US1/foreign_aid_no.pdf, id=639, 611.28375pt x 259.97125pt>
 File: ../figures/US1/foreign_aid_no.pdf Graphic file (type pdf)
 <use ../figures/US1/foreign_aid_no.pdf>
 Package pdftex.def Info: ../figures/US1/foreign_aid_no.pdf  used on input line 76.
@@ -1356,13 +1146,7 @@ Package pdftex.def Info: ../figures/US1/foreign_aid_no.pdf  used on input line 7
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:negotiation' on page 19 undefined on input line 80.
-
-
-LaTeX Warning: Reference `q:negotiation' on page 19 undefined on input line 80.
-
-<../figures/US1/negotiation.pdf, id=211, 692.5875pt x 86.3225pt>
+<../figures/US1/negotiation.pdf, id=642, 692.5875pt x 86.3225pt>
 File: ../figures/US1/negotiation.pdf Graphic file (type pdf)
 <use ../figures/US1/negotiation.pdf>
 Package pdftex.def Info: ../figures/US1/negotiation.pdf  used on input line 81.
@@ -1370,13 +1154,7 @@ Package pdftex.def Info: ../figures/US1/negotiation.pdf  used on input line 81.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:problem' on page 19 undefined on input line 90.
-
-
-LaTeX Warning: Reference `q:problem' on page 19 undefined on input line 90.
-
-<../figures/US1/problem.pdf, id=212, 498.86375pt x 165.61874pt>
+<../figures/US1/problem.pdf, id=645, 498.86375pt x 165.61874pt>
 File: ../figures/US1/problem.pdf Graphic file (type pdf)
 <use ../figures/US1/problem.pdf>
 Package pdftex.def Info: ../figures/US1/problem.pdf  used on input line 91.
@@ -1384,25 +1162,13 @@ Package pdftex.def Info: ../figures/US1/problem.pdf  used on input line 91.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `q:group_defended_agg' on page 19 undefined on input line 95.
-
-
-LaTeX Warning: Reference `q:group_defended_agg' on page 19 undefined on input line 95.
-
-<../figures/US1/group_defended_agg.pdf, id=213, 584.1825pt x 83.31125pt>
+<../figures/US1/group_defended_agg.pdf, id=648, 584.1825pt x 83.31125pt>
 File: ../figures/US1/group_defended_agg.pdf Graphic file (type pdf)
 <use ../figures/US1/group_defended_agg.pdf>
 Package pdftex.def Info: ../figures/US1/group_defended_agg.pdf  used on input line 96.
 (pdftex.def)             Requested size: 469.75502pt x 66.99484pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-LaTeX Warning: Reference `q:points_us' on page 19 undefined on input line 105.
-
-
-LaTeX Warning: Reference `q:points_us' on page 19 undefined on input line 105.
 
 File: ../figures/US1/points_us.pdf Graphic file (type pdf)
 <use ../figures/US1/points_us.pdf>
@@ -1411,10 +1177,10 @@ Package pdftex.def Info: ../figures/US1/points_us.pdf  used on input line 106.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[19
+[26
 
- <../figures/US1/understood_each.pdf> <../figures/US1/understood_score.pdf> <../figures/US1/support_binary.pdf>] [20 <../figures/US1/belief.pdf> <../figures/US1/list_exp.pdf>] [21 <../figures/US1/conjoint.pdf>] [22 <../figures/US1/variables_donation.pdf> <../figures/US1/variables_petition.pdf>] [23 <../figures/US1/foreign_aid_raise_support.pdf>] [24 <../figures/US1/foreign_aid_condition.pdf> <../figures/US1/foreign_aid_no.pdf>] [25 <../figures/US1/negotiation.pdf> <../figures/US1/problem.pdf> <../figures/US1/group_defended_agg.pdf>] [26]
-<../questionnaire/survey_flow_US1.pdf, id=483, 819.06pt x 491.8375pt>
+ <../figures/US1/understood_each.pdf> <../figures/US1/understood_score.pdf> <../figures/US1/support_binary.pdf>] [27 <../figures/US1/belief.pdf> <../figures/US1/list_exp.pdf>] [28 <../figures/US1/conjoint.pdf>] [29 <../figures/US1/variables_donation.pdf> <../figures/US1/variables_petition.pdf>] [30 <../figures/US1/foreign_aid_raise_support.pdf>] [31 <../figures/US1/foreign_aid_condition.pdf> <../figures/US1/foreign_aid_no.pdf>] [32 <../figures/US1/negotiation.pdf> <../figures/US1/problem.pdf> <../figures/US1/group_defended_agg.pdf>] [33]
+<../questionnaire/survey_flow_US1.pdf, id=939, 819.06pt x 491.8375pt>
 File: ../questionnaire/survey_flow_US1.pdf Graphic file (type pdf)
 <use ../questionnaire/survey_flow_US1.pdf>
 Package pdftex.def Info: ../questionnaire/survey_flow_US1.pdf  used on input line 125.
@@ -1439,7 +1205,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 130--142
 
  []
 
-[27
+[34
 
  <../questionnaire/survey_flow_US1.pdf>]
 LaTeX Font Info:    Trying to load font information for OMS+ppl on input line 152.
@@ -1448,7 +1214,7 @@ File: omsppl.fd
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/it' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 152.
- [28]
+ [35]
 Underfull \hbox (badness 10000) in paragraph at lines 161--167
 
  []
@@ -1478,11 +1244,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 167--173
 
  []
 
-[29]
-
-LaTeX Warning: Reference `fig:understood_each' on page 30 undefined on input line 183.
-
-
+[36]
 Underfull \hbox (badness 10000) in paragraph at lines 183--187
 
  []
@@ -1492,11 +1254,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 187--190
 
  []
 
-[30]
-
-LaTeX Warning: Reference `fig:understood_each' on page 31 undefined on input line 190.
-
-
+[37]
 Underfull \hbox (badness 10000) in paragraph at lines 190--194
 
  []
@@ -1516,11 +1274,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 194--205
 
  []
 
-[31]
-
-LaTeX Warning: Reference `fig:understood_each' on page 32 undefined on input line 205.
-
-
+[38]
 Underfull \hbox (badness 10000) in paragraph at lines 208--217
 
  []
@@ -1540,23 +1294,7 @@ Overfull \hbox (6.36208pt too wide) in paragraph at lines 208--217
 []$ \OT1/ppl/m/n/12 [\OT1/ppl/m/it/12 Click-ing dis-plays the pre-vi-ous sum-
  []
 
-
-LaTeX Warning: Reference `fig:support_binary' on page 32 undefined on input line 217.
-
-
-LaTeX Warning: Reference `fig:belief' on page 32 undefined on input line 219.
-
-
-LaTeX Warning: Reference `fig:support_binary' on page 32 undefined on input line 222.
-
-
-LaTeX Warning: Reference `fig:belief' on page 32 undefined on input line 224.
-
-[32]
-
-LaTeX Warning: Reference `fig:list_exp' on page 33 undefined on input line 255.
-
-
+[39]
 Underfull \hbox (badness 10000) in paragraph at lines 255--257
 
  []
@@ -1592,21 +1330,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 278--281
  []
 
 
-LaTeX Warning: Reference `fig:conjoint' on page 33 undefined on input line 291.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 291--302
 
  []
 
-[33]
-
-LaTeX Warning: Reference `fig:support_binary' on page 34 undefined on input line 302.
-
-
-LaTeX Warning: Reference `fig:conjoint' on page 34 undefined on input line 345.
-
-
+[40]
 Underfull \hbox (badness 10000) in paragraph at lines 345--384
 
  []
@@ -1626,11 +1354,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 345--384
 
  []
 
-[34]
-
-LaTeX Warning: Reference `fig:conjoint' on page 35 undefined on input line 386.
-
-
+[41]
 Underfull \hbox (badness 10000) in paragraph at lines 384--400
 
  []
@@ -1639,31 +1363,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 384--400
 Underfull \hbox (badness 10000) in paragraph at lines 384--400
 
  []
-
-
-LaTeX Warning: Reference `fig:conjoint' on page 35 undefined on input line 402.
-
-
-LaTeX Warning: Reference `fig:ca_r' on page 35 undefined on input line 402.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 400--414
 
  []
 
-[35]
-
-LaTeX Warning: Reference `fig:conjoint' on page 36 undefined on input line 416.
-
-
+[42]
 Underfull \hbox (badness 10000) in paragraph at lines 414--428
 
  []
 
 
-LaTeX Warning: Reference `fig:donation' on page 36 undefined on input line 437.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 433--439
 
  []
@@ -1673,17 +1384,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 433--439
 
  []
 
-[36]
-
-LaTeX Warning: Reference `fig:petition' on page 37 undefined on input line 450.
-
-
+[43]
 Underfull \hbox (badness 10000) in paragraph at lines 450--462
 
  []
-
-
-LaTeX Warning: Reference `fig:support_likert' on page 37 undefined on input line 465.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 465--469
@@ -1695,44 +1399,17 @@ Overfull \hbox (4.25092pt too wide) in paragraph at lines 473--474
 \OT1/ppl/m/it/12 Strongly op-pose; Some-what op-pose; Nei-ther sup-port nor op-pose; Some-what sup-port; Strongly
  []
 
-[37]
-
-LaTeX Warning: Reference `fig:support_likert' on page 38 undefined on input line 474.
-
-
+[44]
 Overfull \hbox (4.25092pt too wide) in paragraph at lines 483--484
 \OT1/ppl/m/it/12 Strongly op-pose; Some-what op-pose; Nei-ther sup-port nor op-pose; Some-what sup-port; Strongly
  []
-
-
-LaTeX Warning: Reference `fig:foreign_aid_raise_support' on page 38 undefined on input line 484.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 484--488
 
  []
 
-
-LaTeX Warning: Reference `fig:foreign_aid_condition' on page 38 undefined on input line 488.
-
-
-LaTeX Warning: Reference `fig:foreign_aid_no' on page 38 undefined on input line 490.
-
-[38]
-
-LaTeX Warning: Reference `fig:negotiation' on page 39 undefined on input line 495.
-
-[39]
-
-LaTeX Warning: Reference `fig:problem' on page 40 undefined on input line 511.
-
-
-LaTeX Warning: Reference `fig:group_defended_agg' on page 40 undefined on input line 518.
-
-
-LaTeX Warning: Reference `fig:points_us' on page 40 undefined on input line 525.
-
-
+[45] [46]
 Underfull \hbox (badness 10000) in paragraph at lines 523--529
 
  []
@@ -1742,12 +1419,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 523--529
 
  []
 
-[40]
+[47]
 Underfull \hbox (badness 10000) in paragraph at lines 556--560
 
  []
 
-[41] (../tables/sample_composition/FR_DE_ES_UK_all.tex) [42
+[48] (../tables/sample_composition/FR_DE_ES_UK_all.tex) [49
 
 ] (../tables/gain_gcs.tex
 Overfull \hbox (1.34453pt too wide) in alignment at lines 2--56
@@ -1755,56 +1432,46 @@ Overfull \hbox (1.34453pt too wide) in alignment at lines 2--56
  []
 
 )
-
-LaTeX Warning: Reference `fig:median_gain_2015' on page 43 undefined on input line 600.
-
-<../figures/maps/median_gain_2015.pdf, id=643, 837.1275pt x 419.5675pt>
+<../figures/maps/median_gain_2015.pdf, id=1104, 837.1275pt x 419.5675pt>
 File: ../figures/maps/median_gain_2015.pdf Graphic file (type pdf)
 <use ../figures/maps/median_gain_2015.pdf>
 Package pdftex.def Info: ../figures/maps/median_gain_2015.pdf  used on input line 606.
 (pdftex.def)             Requested size: 469.75502pt x 235.43634pt.
 
+
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[43
+[50
 
-] [44 <../figures/maps/median_gain_2015.pdf>] [45
+] [51 <../figures/maps/median_gain_2015.pdf>] [52
 
 ] (../tables/US1/attrition_analysis.tex)
 Underfull \hbox (badness 10000) in paragraph at lines 620--627
 
  []
 
-)
-
-Package natbib Warning: There were undefined citations.
-
-[46
+) [53
 
 ] (build/US1.aux)
 
-LaTeX Warning: There were undefined references.
+LaTeX Warning: There were multiply-defined labels.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `US1.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `US1.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  07A7ADA0B3D907E39805AB247B767955;6349.
+Package rerunfilecheck Info: File `US1.out' has not changed.
+(rerunfilecheck)             Checksum: FD968CBAEA96847884A19A9BC3D81B77;6445.
+Package rerunfilecheck Info: File `US1.brf' has not changed.
+(rerunfilecheck)             Checksum: 1A0B0A09FBCEE61ACB88185B7C6CF483;4528.
  ) 
 Here is how much of TeX's memory you used:
- 28213 strings out of 475075
- 519448 string characters out of 5783001
- 855744 words of memory out of 5000000
- 48819 multiletter control sequences out of 15000+600000
- 527688 words of font info for 175 fonts, out of 8000000 for 9000
+ 28655 strings out of 475075
+ 530835 string characters out of 5783001
+ 864076 words of memory out of 5000000
+ 49191 multiletter control sequences out of 15000+600000
+ 525861 words of font info for 172 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,17n,89p,3905b,687s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist, replaced by a fixed one
+
 
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist, replaced by a fixed one
 
@@ -1812,10 +1479,10 @@ pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist,
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist, replaced by a fixed one
 
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on build/US1.pdf (46 pages, 2498427 bytes).
+Output written on build/US1.pdf (53 pages, 2534338 bytes).
 PDF statistics:
- 734 PDF objects out of 1000 (max. 8388607)
- 555 compressed objects within 6 object streams
- 178 named destinations out of 1000 (max. 500000)
- 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1207 PDF objects out of 1440 (max. 8388607)
+ 993 compressed objects within 10 object streams
+ 242 named destinations out of 1000 (max. 500000)
+ 401 words of extra memory for PDF output out of 10000 (max. 10000000)
 
