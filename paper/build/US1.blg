@@ -5,51 +5,55 @@ The style file: plainnaturl_clean.bst
 Database file #1: global_tax_attitudes.bib
 Warning--empty institution in americans_for_tax_fairness_support_2021
 Warning--empty journal in andre_fighting_2021
+Warning--empty journal in blanchard_major_2021
+Warning--empty journal in chancel_carbon_2015
 Warning--empty institution in global_challenges_foundation_attitudes_2018
+Warning--empty publisher in imf_how_2019
 Warning--empty journal in issp_international_2019
+Warning--empty journal in jamieson_climate_2001
 Warning--empty journal in kaufmann_foreign_2012
 Warning--empty journal in meilland_international_2023
 Warning--empty institution in patriotic_millionaires_patriotic_2022
 Warning--empty institution in pipa_publics_2008
-You've used 55 entries,
+You've used 66 entries,
             2497 wiz_defined-function locations,
-            972 strings with 19130 characters,
-and the built_in function-call counts, 21035 in all, are:
-= -- 1906
-> -- 1418
-< -- 31
-+ -- 486
-- -- 429
-* -- 1601
-:= -- 3617
-add.period$ -- 210
-call.type$ -- 55
-change.case$ -- 310
-chr.to.int$ -- 53
-cite$ -- 118
-duplicate$ -- 932
-empty$ -- 1427
-format.name$ -- 510
-if$ -- 4238
+            1042 strings with 21013 characters,
+and the built_in function-call counts, 25029 in all, are:
+= -- 2262
+> -- 1670
+< -- 43
++ -- 575
+- -- 507
+* -- 1862
+:= -- 4306
+add.period$ -- 250
+call.type$ -- 66
+change.case$ -- 369
+chr.to.int$ -- 64
+cite$ -- 144
+duplicate$ -- 1115
+empty$ -- 1716
+format.name$ -- 607
+if$ -- 5046
 int.to.chr$ -- 3
 int.to.str$ -- 1
-missing$ -- 47
-newline$ -- 328
-num.names$ -- 220
-pop$ -- 492
+missing$ -- 56
+newline$ -- 390
+num.names$ -- 265
+pop$ -- 599
 preamble$ -- 1
-purify$ -- 253
+purify$ -- 301
 quote$ -- 0
-skip$ -- 669
+skip$ -- 805
 stack$ -- 0
-substring$ -- 110
-swap$ -- 49
+substring$ -- 132
+swap$ -- 56
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 590
-warning$ -- 8
-while$ -- 165
+type$ -- 706
+warning$ -- 12
+while$ -- 198
 width$ -- 0
-write$ -- 757
-(There were 8 warnings)
+write$ -- 901
+(There were 12 warnings)

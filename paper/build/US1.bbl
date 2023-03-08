@@ -1,9 +1,16 @@
-\begin{thebibliography}{55}
+\begin{thebibliography}{66}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Agarwal \& Narain(1991)]{agarwal_global_1991}
+A.~Agarwal \& S.~Narain.
+\newblock Global {{Warming}} in an {{Unequal World}}: {{A Case}} of
+  {{Environmental Colonialism}}.
+\newblock Technical report, {India Centre for Science and Environment}, 1991.
+\newblock \url{https://doi.org/10.1093/oso/9780199498734.003.0005}.
 
 \bibitem[Aklin \& Mildenberger(2020)]{aklin_prisoners_2020}
 M.~Aklin \& M.~Mildenberger.
@@ -31,6 +38,14 @@ P.~Andre, T.~Boneva, F.~Chopra, \& A.~Falk.
 \newblock Fighting {{Climate Change}}: {{The Role}} of {{Norms}},
   {{Preferences}}, and {{Moral Values}}.
 \newblock 2021.
+
+\bibitem[Baer et~al.(2000)Baer, Harte, Haya, Herzog, Holdren, Hultman, Kammen,
+  Norgaard, \& Raymond]{baer_equity_2000}
+P.~Baer, J.~Harte, B.~Haya, A.~V. Herzog, J.~Holdren, N.~E. Hultman, D.~M.
+  Kammen, R.~B. Norgaard, \& L.~Raymond.
+\newblock Equity and {{Greenhouse Gas Responsibility}}.
+\newblock \emph{Science}, 2000.
+\newblock \url{https://www.science.org/doi/10.1126/science.289.5488.2287}.
 
 \bibitem[Bauhr et~al.(2013)Bauhr, Charron, \& Nasiritousi]{bauhr_does_2013}
 M.~Bauhr, N.~Charron, \& N.~Nasiritousi.
@@ -76,6 +91,17 @@ T.~Bernauer \& R.~Gampfer.
 \newblock
   \url{https://www.sciencedirect.com/science/article/pii/S1462901115300368}.
 
+\bibitem[Bertram(1992)]{bertram_tradeable_1992}
+G.~Bertram.
+\newblock Tradeable emission permits and the control of greenhouse gases.
+\newblock \emph{The Journal of Development Studies}, 1992.
+\newblock \url{https://doi.org/10.1080/00220389208422240}.
+
+\bibitem[Blanchard \& Tirole(2021)]{blanchard_major_2021}
+O.~Blanchard \& J.~Tirole.
+\newblock Major {{Future Economic Challenges}}.
+\newblock 2021.
+
 \bibitem[Bodenstein \& Faust(2017)]{bodenstein_who_2017}
 T.~Bodenstein \& J.~Faust.
 \newblock Who {{Cares}}? {{European Public Opinion}} on {{Foreign Aid}} and
@@ -115,6 +141,11 @@ F.~Carlsson, M.~Kataria, A.~Krupnick, E.~Lampi, {\AA}.~L{\"o}fgren, P.~Qin, \&
 \newblock
   \url{https://www.sciencedirect.com/science/article/pii/S0928765512000644}.
 
+\bibitem[Chancel \& Piketty(2015)]{chancel_carbon_2015}
+L.~Chancel \& T.~Piketty.
+\newblock Carbon and inequality: From {{Kyoto}} to {{Paris}}.
+\newblock 2015.
+
 \bibitem[Cherry et~al.(2017)Cherry, Kallbekken, \&
   Kroll]{cherry_accepting_2017}
 T.~L. Cherry, S.~Kallbekken, \& S.~Kroll.
@@ -123,6 +154,13 @@ T.~L. Cherry, S.~Kallbekken, \& S.~Kroll.
 \newblock \emph{Journal of Environmental Economics and Management}, 2017.
 \newblock
   \url{http://www.sciencedirect.com/science/article/pii/S0095069617303121}.
+
+\bibitem[Cramton et~al.(2015)Cramton, Ockenfels, \&
+  Stoft]{cramton_international_2015}
+P.~Cramton, A.~Ockenfels, \& S.~Stoft.
+\newblock An {{International Carbon-Price Commitment Promotes Cooperation}}.
+\newblock \emph{Economics of Energy \& Environmental Policy}, 2015.
+\newblock \url{https://www.jstor.org/stable/26189380}.
 
 \bibitem[{Dabla-Norris} et~al.(2023){Dabla-Norris}, Helbling, Khalid, Khan,
   Magistretti, Sollaci, \& Srinivasan]{dabla-norris_public_2023}
@@ -133,14 +171,6 @@ E.~{Dabla-Norris}, T.~Helbling, S.~Khalid, H.~Khan, G.~Magistretti, A.~Sollaci,
 \newblock \emph{Staff Discussion Notes}, 2023.
 \newblock
   \url{https://www.elibrary.imf.org/view/journals/006/2023/002/article-A001-en.xml}.
-
-\bibitem[Dannenberg et~al.(2010)Dannenberg, Sturm, \&
-  Vogt]{dannenberg_equity_2010}
-A.~Dannenberg, B.~Sturm, \& C.~Vogt.
-\newblock Do {{Equity Preferences Matter}} for {{Climate Negotiators}}? {{An
-  Experimental Investigation}}.
-\newblock \emph{Environmental and Resource Economics}, 2010.
-\newblock \url{https://doi.org/10.1007/s10640-010-9366-5}.
 
 \bibitem[Dechezlepr{\^e}tre et~al.(2022)Dechezlepr{\^e}tre, Fabre, Kruse,
   Planterose, Sanchez~Chico, \& Stantcheva]{dechezlepretre_fighting_2022}
@@ -187,6 +217,13 @@ R.~Fisman, K.~Gladstone, I.~Kuziemko, \& S.~Naidu.
   2017.
 \newblock \url{http://www.nber.org/papers/w23907}.
 
+\bibitem[Fleurbaey \& Zuber(2013)]{fleurbaey_climate_2013}
+M.~Fleurbaey \& S.~Zuber.
+\newblock Climate {{Policies Deserve}} a {{Negative Discount Rate}}.
+\newblock \emph{Chicago Journal of International Law}, 2013.
+\newblock
+  \url{https://chicagounbound.uchicago.edu/cgi/viewcontent.cgi?referer=\&httpsredir=1\&article=1381\&context=cjil}.
+
 \bibitem[Foundation(2018)]{global_challenges_foundation_attitudes_2018}
 G.~C. Foundation.
 \newblock Attitudes to global risk and governance survey 2018.
@@ -231,11 +268,24 @@ M.~Gilens.
 \newblock \emph{American Political Science Review}, 2001.
 \newblock \url{http://www.journals.cambridge.org/abstract_S0003055401002222}.
 
+\bibitem[Gollier \& Tirole(2015)]{gollier_negotiating_2015}
+C.~Gollier \& J.~Tirole.
+\newblock Negotiating {{Effective Institutions Against Climate Change}}.
+\newblock \emph{Economics of Energy \& Environmental Policy}, 2015.
+\newblock \url{https://www.jstor.org/stable/26189377}.
+
 \bibitem[Group(2010)]{issp_research_group_international_2010}
 I.~R. Group.
 \newblock International {{Social Survey Programme}}: {{Environment III}}, 2010.
 \newblock
   \url{https://search.gesis.org/research_data/ZA5500?doi=10.4232/1.13271}.
+
+\bibitem[Grubb(1990)]{grubb_greenhouse_1990}
+M.~Grubb.
+\newblock The {{Greenhouse Effect}}: {{Negotiating Targets}}.
+\newblock \emph{International Affairs (Royal Institute of International Affairs
+  1944-)}, 1990.
+\newblock \url{https://www.jstor.org/stable/2622190}.
 
 \bibitem[Henson et~al.(2010)Henson, Lindstrom, Haddad, \&
   Mulmi]{henson_public_2010}
@@ -247,14 +297,12 @@ S.~Henson, J.~Lindstrom, L.~Haddad, \& R.~Mulmi.
 \newblock
   \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.2040-0209.2010.00353_2.x}.
 
-\bibitem[Hjerpe et~al.(2011)Hjerpe, L{\"o}fgren, Linn{\'e}r, Hennlock, Sterner,
-  \& Jagers]{hjerpe_common_2011}
-M.~Hjerpe, {\AA}.~L{\"o}fgren, B.-O. Linn{\'e}r, M.~Hennlock, T.~Sterner, \&
-  S.~C. Jagers.
-\newblock Common ground for effort sharing? {{Preferred}} principles for
-  distributing climate mitigation efforts.
-\newblock \emph{University of Gothenburg Working Papers}, 2011.
-\newblock \url{https://gupea.ub.gu.se/handle/2077/24706}.
+\bibitem[Hoel(1991)]{hoel_carbon_1991}
+M.~Hoel.
+\newblock Carbon taxes: {{An}} international tax or harmonized domestic taxes.
+\newblock \emph{CICERO Working Paper}, 1991.
+\newblock
+  \url{https://pub.cicero.oslo.no/cicero-xmlui/bitstream/handle/11250/192280/CICERO_Working_Paper_1991-01.pdf?sequence=1}.
 
 \bibitem[Hudson \& {van Heerde}(2012)]{hudson_mile_2012}
 D.~Hudson \& J.~{van Heerde}.
@@ -264,6 +312,12 @@ D.~Hudson \& J.~{van Heerde}.
   Learning}, 2012.
 \newblock
   \url{http://www.ingentaconnect.com/content/ioep/ijdegl/2012/00000004/00000001/art00002}.
+
+\bibitem[IMF(2019)]{imf_how_2019}
+IMF, editor.
+\newblock \emph{How to Mitigate Climate Change}.
+\newblock {Washington, DC}, 2019.
+\newblock ISBN 978-1-4983-2122-8.
 
 \bibitem[Isbell(2022)]{isbell_footing_2022}
 T.~Isbell.
@@ -278,20 +332,19 @@ ISSP.
   Inequality V}}.
 \newblock 2019.
 
+\bibitem[Jamieson(2001)]{jamieson_climate_2001}
+D.~Jamieson.
+\newblock Climate {{Change}} and {{Global Environmental Justice}}.
+\newblock 2001.
+\newblock
+  \url{https://direct.mit.edu/books/book/2661/chapter/72114/Climate-Change-and-Global-Environmental-Justice}.
+
 \bibitem[Kaufmann et~al.(2012)Kaufmann, McGuirk, \&
   Vicente]{kaufmann_foreign_2012}
 D.~Kaufmann, E.~F. McGuirk, \& P.~C. Vicente.
 \newblock Foreign {{Aid Preferences}} and {{Perceptions}} in {{Donor
   Countries}}.
 \newblock 2012.
-
-\bibitem[Kesternich et~al.(2021)Kesternich, L{\"o}schel, \&
-  Ziegler]{kesternich_negotiating_2021}
-M.~Kesternich, A.~L{\"o}schel, \& A.~Ziegler.
-\newblock Negotiating weights for burden sharing rules in international climate
-  negotiations: An empirical analysis.
-\newblock \emph{Environmental Economics and Policy Studies}, 2021.
-\newblock \url{https://doi.org/10.1007/s10018-020-00289-0}.
 
 \bibitem[Klenert et~al.(2018)Klenert, Mattauch, Combet, Edenhofer, Hepburn,
   Rafaty, \& Stern]{klenert_making_2018}
@@ -301,22 +354,11 @@ D.~Klenert, L.~Mattauch, E.~Combet, O.~Edenhofer, C.~Hepburn, R.~Rafaty, \&
 \newblock \emph{Nature Climate Change}, 2018.
 \newblock \url{https://www.nature.com/articles/s41558-018-0201-2}.
 
-\bibitem[Lange et~al.(2007)Lange, Vogt, \& Ziegler]{lange_importance_2007}
-A.~Lange, C.~Vogt, \& A.~Ziegler.
-\newblock On the importance of equity in international climate policy: {{An}}
-  empirical analysis.
-\newblock \emph{Energy Economics}, 2007.
-\newblock
-  \url{https://www.sciencedirect.com/science/article/pii/S0140988306001137}.
-
-\bibitem[Lange et~al.(2010)Lange, L{\"o}schel, Vogt, \&
-  Ziegler]{lange_self-interested_2010}
-A.~Lange, A.~L{\"o}schel, C.~Vogt, \& A.~Ziegler.
-\newblock On the self-interested use of equity in international climate
-  negotiations.
-\newblock \emph{European Economic Review}, 2010.
-\newblock
-  \url{https://www.sciencedirect.com/science/article/pii/S0014292109000944}.
+\bibitem[MacKay et~al.(2015)MacKay, Cramton, Ockenfels, \&
+  Stoft]{mackay_price_2015}
+D.~J.~C. MacKay, P.~Cramton, A.~Ockenfels, \& S.~Stoft.
+\newblock Price carbon - {{I}} will if you will.
+\newblock \emph{Nature}, 2015.
 
 \bibitem[McEvoy \& Cherry(2016)]{mcevoy_prospects_2016}
 D.~M. McEvoy \& T.~L. Cherry.
@@ -337,14 +379,6 @@ L.~F. McGrath \& T.~Bernauer.
 A.~Meilland, Y.~Kervinio, \& A.~M{\'e}jean.
 \newblock International climate justice: What the people think.
 \newblock 2023.
-
-\bibitem[Mildenberger \& Tingley(2019)]{mildenberger_beliefs_2019}
-M.~Mildenberger \& D.~Tingley.
-\newblock Beliefs about {{Climate Beliefs}}: {{The Importance}} of
-  {{Second-Order Opinions}} for {{Climate Politics}}.
-\newblock \emph{British Journal of Political Science}, 2019.
-\newblock
-  \url{https://www.cambridge.org/core/journals/british-journal-of-political-science/article/beliefs-about-climate-beliefs-the-importance-of-secondorder-opinions-for-climate-politics/E35B49C0DD4A9F814B4281A00CC42450}.
 
 \bibitem[Millionaires(2022)]{patriotic_millionaires_patriotic_2022}
 P.~Millionaires.
@@ -407,6 +441,12 @@ P.~o. I. P.~A. PIPA.
 \newblock
   \url{https://drum.lib.umd.edu/bitstream/handle/1903/10581/Developed\%20Countries\%20Ready\%20to\%20Fight\%20Hunger.pdf?sequence=3\&isAllowed=y}.
 
+\bibitem[Rajan(2021)]{rajan_global_2021}
+R.~G. Rajan.
+\newblock A {{Global Incentive}} to {{Reduce Emissions}}, 2021.
+\newblock
+  \url{https://www.project-syndicate.org/commentary/global-carbon-incentive-for-reducing-emissions-by-raghuram-rajan-2021-05}.
+
 \bibitem[Schleich et~al.(2016)Schleich, D{\"u}tschke, Schwirplies, \&
   Ziegler]{schleich_citizens_2016}
 J.~Schleich, E.~D{\"u}tschke, C.~Schwirplies, \& A.~Ziegler.
@@ -422,5 +462,29 @@ G.~Sparkman, N.~Geiger, \& E.~U. Weber.
   popular climate policy support by nearly half.
 \newblock \emph{Nature Communications}, 2022.
 \newblock \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9399177/}.
+
+\bibitem[Stanton(2011)]{stanton_negishi_2011}
+E.~A. Stanton.
+\newblock Negishi welfare weights in integrated assessment models: The
+  mathematics of global inequality.
+\newblock \emph{Climatic Change}, 2011.
+\newblock \url{https://link.springer.com/article/10.1007/s10584-010-9967-6}.
+
+\bibitem[van~den Bergh et~al.(2020)van~den Bergh, Angelsen, Baranzini, Botzen,
+  Carattini, Drews, Dunlop, Galbraith, Gsottbauer, Howarth, Padilla, Roca, \&
+  Schmidt]{bergh_dual-track_2020}
+J.~C. J.~M. van~den Bergh, A.~Angelsen, A.~Baranzini, W.~J.~W. Botzen,
+  S.~Carattini, S.~Drews, T.~Dunlop, E.~Galbraith, E.~Gsottbauer, R.~B.
+  Howarth, E.~Padilla, J.~Roca, \& R.~C. Schmidt.
+\newblock A dual-track transition to global carbon pricing.
+\newblock \emph{Climate Policy}, 2020.
+\newblock \url{https://doi.org/10.1080/14693062.2020.1797618}.
+
+\bibitem[Weitzman(2017)]{weitzman_world_2017}
+M.~L. Weitzman.
+\newblock On a {{World Climate Assembly}} and the {{Social Cost}} of
+  {{Carbon}}.
+\newblock \emph{Economica}, 2017.
+\newblock \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/ecca.12248}.
 
 \end{thebibliography}
