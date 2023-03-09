@@ -14,7 +14,7 @@ e <- ep
 # TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 # TODO read about Norway and foreign aid
 # TODO? Use donation to measure altruism?
-# TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues, find C&C proposed by FR/EU
+# TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
 # TODO! find SDG/equality/2°C compatible trajectories
 
 
@@ -369,6 +369,7 @@ for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]], na.rm = 
 
 ##### Swing States #####
 decrit(e$swing_state)
+summary(lm(gcs_support == 'Yes' ~ swing_state, data = e, weights = e$weight)) # .ht - 0.018 - 0.008
 summary(lm(gcs_support == 'Yes' ~ swing_state + swing_state_5pp, data = e, weights = e$weight)) # .ht - 0.018 - 0.008
 summary(lm(conjoint_c ~ branch_c_gcs * swing_state, data = e, weights = e$weight))
 

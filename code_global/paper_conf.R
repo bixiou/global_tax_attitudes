@@ -90,6 +90,7 @@ barres_multiple(barres = barres_defs[c("negotiation", "group_defended_agg", "pro
 
 ##### App Representativeness #####
 representativeness_table(c("US1"), return_table = F) # TODO custom rows/style
+representativeness_table(c("EU"), return_table = T, all = T) # too many Q1 (+4) and cities (+7)
 representativeness_table(c("US1"), return_table = T, all = T) 
 representativeness_table(c("US1"), return_table = F, all = T) 
 representativeness_table(c("US1", "US2", "EU"), return_table = F, all = T) 
