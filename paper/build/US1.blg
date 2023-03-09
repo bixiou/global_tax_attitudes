@@ -3,46 +3,57 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: US1.aux
 The style file: plainnaturl_clean.bst
 Database file #1: global_tax_attitudes.bib
+Warning--empty institution in americans_for_tax_fairness_support_2021
+Warning--empty journal in andre_fighting_2021
+Warning--empty journal in blanchard_major_2021
+Warning--empty journal in chancel_carbon_2015
 Warning--empty institution in global_challenges_foundation_attitudes_2018
-You've used 8 entries,
+Warning--empty publisher in imf_how_2019
+Warning--empty journal in issp_international_2019
+Warning--empty journal in jamieson_climate_2001
+Warning--empty journal in kaufmann_foreign_2012
+Warning--empty journal in meilland_international_2023
+Warning--empty institution in patriotic_millionaires_patriotic_2022
+Warning--empty institution in pipa_publics_2008
+You've used 66 entries,
             2497 wiz_defined-function locations,
-            620 strings with 6683 characters,
-and the built_in function-call counts, 3301 in all, are:
-= -- 295
-> -- 245
-< -- 4
-+ -- 83
-- -- 75
-* -- 264
-:= -- 577
-add.period$ -- 31
-call.type$ -- 8
-change.case$ -- 49
-chr.to.int$ -- 8
-cite$ -- 17
-duplicate$ -- 135
-empty$ -- 202
-format.name$ -- 87
-if$ -- 653
-int.to.chr$ -- 1
+            1042 strings with 21013 characters,
+and the built_in function-call counts, 25029 in all, are:
+= -- 2262
+> -- 1670
+< -- 43
++ -- 575
+- -- 507
+* -- 1862
+:= -- 4306
+add.period$ -- 250
+call.type$ -- 66
+change.case$ -- 369
+chr.to.int$ -- 64
+cite$ -- 144
+duplicate$ -- 1115
+empty$ -- 1716
+format.name$ -- 607
+if$ -- 5046
+int.to.chr$ -- 3
 int.to.str$ -- 1
-missing$ -- 6
-newline$ -- 55
-num.names$ -- 32
-pop$ -- 74
+missing$ -- 56
+newline$ -- 390
+num.names$ -- 265
+pop$ -- 599
 preamble$ -- 1
-purify$ -- 41
+purify$ -- 301
 quote$ -- 0
-skip$ -- 103
+skip$ -- 805
 stack$ -- 0
-substring$ -- 16
-swap$ -- 7
-text.length$ -- 0
+substring$ -- 132
+swap$ -- 56
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 88
-warning$ -- 1
-while$ -- 24
+type$ -- 706
+warning$ -- 12
+while$ -- 198
 width$ -- 0
-write$ -- 118
-(There was 1 warning)
+write$ -- 901
+(There were 12 warnings)
