@@ -1,4 +1,4 @@
-\begin{thebibliography}{66}
+\begin{thebibliography}{85}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -25,6 +25,13 @@ F.~H. Allport.
 \newblock \emph{Social {{Psychology}}}.
 \newblock {Journal of Philosophy Inc}, 1924.
 
+\bibitem[Alsamawi et~al.(2014)Alsamawi, Murray, \&
+  Lenzen]{alsamawi_employment_2014}
+A.~Alsamawi, J.~Murray, \& M.~Lenzen.
+\newblock The {{Employment Footprints}} of {{Nations}}.
+\newblock \emph{Journal of Industrial Ecology}, 2014.
+\newblock \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/jiec.12104}.
+
 \bibitem[{Americans for Tax
   Fairness}(2021)]{americans_for_tax_fairness_support_2021}
 {Americans for Tax Fairness}.
@@ -39,6 +46,20 @@ P.~Andre, T.~Boneva, F.~Chopra, \& A.~Falk.
   {{Preferences}}, and {{Moral Values}}.
 \newblock 2021.
 
+\bibitem[Arghiri(1972)]{arghiri_unequal_1972}
+E.~Arghiri.
+\newblock \emph{Unequal {{Exchange}}: {{A Study}} of the {{Imperialism}} in
+  {{Trade}}}.
+\newblock 1972.
+
+\bibitem[Assembly(2022)]{global_assembly_report_2022}
+G.~Assembly.
+\newblock Report of the 2021 {{Global Assembly}} on the {{Climate}} and
+  {{Ecological Crisis}}.
+\newblock Technical report, 2022.
+\newblock
+  \url{https://globalassembly.org/resources/downloads/GlobalAssembly2021-ExecutiveSummary.pdf}.
+
 \bibitem[Baer et~al.(2000)Baer, Harte, Haya, Herzog, Holdren, Hultman, Kammen,
   Norgaard, \& Raymond]{baer_equity_2000}
 P.~Baer, J.~Harte, B.~Haya, A.~V. Herzog, J.~Holdren, N.~E. Hultman, D.~M.
@@ -46,6 +67,12 @@ P.~Baer, J.~Harte, B.~Haya, A.~V. Herzog, J.~Holdren, N.~E. Hultman, D.~M.
 \newblock Equity and {{Greenhouse Gas Responsibility}}.
 \newblock \emph{Science}, 2000.
 \newblock \url{https://www.science.org/doi/10.1126/science.289.5488.2287}.
+
+\bibitem[Bastagli et~al.(2016)Bastagli, {Hagen-Zanker}, Harman, Barca, Sturge,
+  \& Schmidt]{bastagli_cash_2016}
+F.~Bastagli, J.~{Hagen-Zanker}, L.~Harman, V.~Barca, G.~Sturge, \& T.~Schmidt.
+\newblock Cash transfers: What does the evidence say?
+\newblock Technical report, {ODI}, 2016.
 
 \bibitem[Bauhr et~al.(2013)Bauhr, Charron, \& Nasiritousi]{bauhr_does_2013}
 M.~Bauhr, N.~Charron, \& N.~Nasiritousi.
@@ -108,6 +135,15 @@ T.~Bodenstein \& J.~Faust.
   {{Political Conditionality}}.
 \newblock \emph{JCMS: Journal of Common Market Studies}, 2017.
 \newblock \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/jcms.12556}.
+
+\bibitem[Bolch et~al.(2022)Bolch, Ceriani, \&
+  {L{\'o}pez-Calva}]{bolch_arithmetics_2022}
+K.~B. Bolch, L.~Ceriani, \& L.~F. {L{\'o}pez-Calva}.
+\newblock The arithmetics and politics of domestic resource mobilization for
+  poverty eradication.
+\newblock \emph{World Development}, 2022.
+\newblock
+  \url{https://www.sciencedirect.com/science/article/pii/S0305750X21003065}.
 
 \bibitem[Cappelen et~al.(2022)Cappelen, Enke, \&
   Tungodden]{cappelen_universalism_2022}
@@ -196,6 +232,10 @@ S.~Drews, I.~Savin, \& J.~C. J.~M. {van den Bergh}.
 \newblock
   \url{https://www.sciencedirect.com/science/article/pii/S0301421522002762}.
 
+\bibitem[Einstein(1947)]{einstein_general_1947}
+A.~Einstein.
+\newblock To the {{General Assembly}} of the {{United Nations}}, 1947.
+
 \bibitem[Enke et~al.(2023{\natexlab{a}})Enke, {Rodr{\'i}guez-Padilla}, \&
   Zimmermann]{enke_moral_2023}
 B.~Enke, R.~{Rodr{\'i}guez-Padilla}, \& F.~Zimmermann.
@@ -235,6 +275,14 @@ I.~Gallup.
   Nations}}, 1946.
 \newblock
   \url{https://www.huffpost.com/entry/seventy-years-of-us-publi_b_7639210}.
+
+\bibitem[Gangopadhyay et~al.(2015)Gangopadhyay, Lensink, \&
+  Yadav]{gangopadhyay_cash_2015}
+S.~Gangopadhyay, R.~Lensink, \& B.~Yadav.
+\newblock Cash or {{In-kind Transfers}}? {{Evidence}} from a {{Randomised
+  Controlled Trial}} in {{Delhi}}, {{India}}.
+\newblock \emph{The Journal of Development Studies}, 2015.
+\newblock \url{https://doi.org/10.1080/00220388.2014.997219}.
 
 \bibitem[Geiger \& Swim(2016)]{geiger_climate_2016}
 N.~Geiger \& J.~K. Swim.
@@ -287,6 +335,27 @@ M.~Grubb.
   1944-)}, 1990.
 \newblock \url{https://www.jstor.org/stable/2622190}.
 
+\bibitem[Hanson(2016)]{hanson_satellite_2016}
+W.~A. Hanson.
+\newblock Satellite {{Internet}} in the {{Mobile Age}}.
+\newblock \emph{New Space}, 2016.
+\newblock \url{https://www.liebertpub.com/doi/abs/10.1089/space.2016.0019}.
+
+\bibitem[Harnett(2017)]{harnett_taking_2017}
+P.~Harnett.
+\newblock Taking {{Tax}} to the {{Global Level Combining Southern Initiatives}}
+  to {{Create}} a {{World Basic Income}}.
+\newblock Technical report, {World Basic Income}, 2017.
+\newblock \url{http://www.tandfonline.com/doi/abs/10.1080/13623690801957356}.
+
+\bibitem[Haushofer \& Shapiro(2016)]{haushofer_short-term_2016}
+J.~Haushofer \& J.~Shapiro.
+\newblock The {{Short-term Impact}} of {{Unconditional Cash Transfers}} to the
+  {{Poor}}: {{Experimental Evidence}} from {{Kenya}}.
+\newblock \emph{The Quarterly Journal of Economics}, 2016.
+\newblock
+  \url{https://econpapers.repec.org/article/oupqjecon/v_3a131_3ay_3a2016_3ai_3a4_3ap_3a1973-2042..htm}.
+
 \bibitem[Henson et~al.(2010)Henson, Lindstrom, Haddad, \&
   Mulmi]{henson_public_2010}
 S.~Henson, J.~Lindstrom, L.~Haddad, \& R.~Mulmi.
@@ -296,6 +365,15 @@ S.~Henson, J.~Lindstrom, L.~Haddad, \& R.~Mulmi.
 \newblock \emph{IDS Working Papers}, 2010.
 \newblock
   \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.2040-0209.2010.00353_2.x}.
+
+\bibitem[Hickel(2017)]{hickel_divide_2017}
+J.~Hickel.
+\newblock \emph{The {{Divide}}: {{A Brief Guide}} to {{Global Inequality}} and
+  Its {{Solutions}}}.
+\newblock {Heinemann}, 2017.
+\newblock ISBN 978-1-78515-112-5.
+\newblock
+  \url{http://gen.lib.rus.ec/book/index.php?md5=f8b948356e52c3a7a963c6aeb92077ee}.
 
 \bibitem[Hoel(1991)]{hoel_carbon_1991}
 M.~Hoel.
@@ -339,6 +417,12 @@ D.~Jamieson.
 \newblock
   \url{https://direct.mit.edu/books/book/2661/chapter/72114/Climate-Change-and-Global-Environmental-Justice}.
 
+\bibitem[Kant(1795)]{kant_zum_1795}
+I.~Kant.
+\newblock \emph{{Zum ewigen Frieden: Ein philosophischer Entwurf}}.
+\newblock 1795.
+\newblock ISBN 978-1-4840-4926-6.
+
 \bibitem[Kaufmann et~al.(2012)Kaufmann, McGuirk, \&
   Vicente]{kaufmann_foreign_2012}
 D.~Kaufmann, E.~F. McGuirk, \& P.~C. Vicente.
@@ -353,6 +437,22 @@ D.~Klenert, L.~Mattauch, E.~Combet, O.~Edenhofer, C.~Hepburn, R.~Rafaty, \&
 \newblock Making carbon pricing work for citizens.
 \newblock \emph{Nature Climate Change}, 2018.
 \newblock \url{https://www.nature.com/articles/s41558-018-0201-2}.
+
+\bibitem[Kopczuk et~al.(2005)Kopczuk, Slemrod, \&
+  Yitzhaki]{kopczuk_limitations_2005}
+W.~Kopczuk, J.~Slemrod, \& S.~Yitzhaki.
+\newblock The limitations of decentralized world redistribution: {{An}} optimal
+  taxation approach.
+\newblock \emph{European Economic Review}, 2005.
+\newblock
+  \url{http://www.sciencedirect.com/science/article/pii/S001429210300093X}.
+
+\bibitem[Leinen \& Bummel(2018)]{leinen_world_2018}
+J.~Leinen \& A.~Bummel.
+\newblock \emph{{A World Parliament: Governance and Democracy in the 21st
+  Century}}.
+\newblock {Democracy Without Borders}, {Berlin}, 2018.
+\newblock ISBN 978-3-942282-13-0.
 
 \bibitem[MacKay et~al.(2015)MacKay, Cramton, Ockenfels, \&
   Stoft]{mackay_price_2015}
@@ -386,6 +486,19 @@ P.~Millionaires.
 \newblock Technical report, 2022.
 \newblock
   \url{https://static1.squarespace.com/static/621f82f3eac1ec38c4568743/t/6328836f94210c5910cfd601/1663599471244/Summary+Patriotic+Millionaires_wealth+\%26+taxes+09_2022.pdf}.
+
+\bibitem[Myrdal(1960)]{myrdal_beyond_1960}
+G.~Myrdal.
+\newblock \emph{{Beyond the Welfare State: Economic Planning and its
+  International Implications}}.
+\newblock {Praeger}, yale university press edition, 1960.
+\newblock ISBN 978-0-313-23697-6.
+
+\bibitem[Myrdal(1975)]{myrdal_equality_1975}
+G.~Myrdal.
+\newblock The {{Equality Issue}} in {{World Development}}.
+\newblock \emph{The Swedish Journal of Economics}, 1975.
+\newblock \url{https://www.jstor.org/stable/3439336}.
 
 \bibitem[Nair(2018)]{nair_misperceptions_2018}
 G.~Nair.
@@ -425,6 +538,12 @@ P.~Paxton \& S.~Knack.
 \newblock \emph{International Political Science Review}, 2012.
 \newblock \url{https://doi.org/10.1177/0192512111406095}.
 
+\bibitem[Piketty(2014)]{piketty_capital_2014}
+T.~Piketty.
+\newblock \emph{{Capital in the Twenty\textendash First Century}}.
+\newblock {Harvard University Press}, {Cambridge}, 2014.
+\newblock ISBN 978-0-674-43000-6.
+
 \bibitem[PIPA(2001)]{pipa_americans_2001}
 P.~o. I. P.~A. PIPA.
 \newblock Americans on {{Foreign Aid}} and {{World Hunger A Study}} of
@@ -447,6 +566,13 @@ R.~G. Rajan.
 \newblock
   \url{https://www.project-syndicate.org/commentary/global-carbon-incentive-for-reducing-emissions-by-raghuram-rajan-2021-05}.
 
+\bibitem[Reyes et~al.(2017)Reyes, Lenzen, \& Murray]{reyes_better_2017}
+R.~Reyes, M.~Lenzen, \& J.~Murray.
+\newblock Better {{Global Assessment}} of {{Worker Inequality}}: {{Comment}} on
+  ``{{The Employment Footprints}} of {{Nations}}''.
+\newblock \emph{Journal of Industrial Ecology}, 2017.
+\newblock \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/jiec.12489}.
+
 \bibitem[Schleich et~al.(2016)Schleich, D{\"u}tschke, Schwirplies, \&
   Ziegler]{schleich_citizens_2016}
 J.~Schleich, E.~D{\"u}tschke, C.~Schwirplies, \& A.~Ziegler.
@@ -462,6 +588,14 @@ G.~Sparkman, N.~Geiger, \& E.~U. Weber.
   popular climate policy support by nearly half.
 \newblock \emph{Nature Communications}, 2022.
 \newblock \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9399177/}.
+
+\bibitem[Standing(2014)]{standing_little_2014}
+G.~Standing.
+\newblock A little more, how much it is...: {{Piloting}} basic income transfers
+  in madhya pradesh, india. {{Technical}} report.
+\newblock Technical report, {UNICEF}, 2014.
+\newblock
+  \url{http://sewabharat.org/wp-content/uploads/2015/07/Report-on-Unconditional-Cash-Transfer-Pilot-Project-in-Madhya-Pradesh.pdf}.
 
 \bibitem[Stanton(2011)]{stanton_negishi_2011}
 E.~A. Stanton.

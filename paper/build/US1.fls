@@ -1588,6 +1588,8 @@ INPUT ./app_desc_stats_US1.tex
 INPUT app_desc_stats_US1.tex
 INPUT ./app_desc_stats_US1.tex
 INPUT app_desc_stats_US1.tex
+INPUT c:/texlive/2022/texmf-dist/fonts/vf/adobe/palatino/pplb7t.vf
+INPUT c:/texlive/2022/texmf-dist/fonts/tfm/adobe/palatino/pplb8r.tfm
 INPUT ../figures/US1/understood_each.pdf
 INPUT ../figures/US1/understood_each.pdf
 INPUT ../figures/US1/understood_each.pdf
