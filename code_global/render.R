@@ -205,7 +205,7 @@ labels_vars <- c(
   "points_tax1_nr" = "tax1: National redistribution scheme",
   "points_tax2_wealth_tax" = "tax2: Wealth tax (ES: raise tax on top incomes)",
   "points_tax3" = "Increase corporate income tax<br>rate from 21% to 28%",
-  "points_tax3_corporate_tax_agg" = "Increase corporate income tax<br>rate from 21% to 28%",
+  "points_tax3_corporate_tax" = "Increase corporate income tax<br>rate from 21% to 28%",
   "points_foreign1_gcs" = "foreign1: Global climate scheme",
   "points_foreign2_tax_rich" = "foreign2: Global tax on millionaires",
   "points_foreign3_assembly" = "foreign3: Global democratic assembly on climate change",
@@ -536,8 +536,8 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "support_binary" = list(width = 850), # 770
   # "support_likert" = list(width = 850), # 1275
   "negotiation" = list(width = 940), # TODO! 1200
-  # "group_defended" = list(width = 850), # 1250
-  # "group_defended_agg" = list(width = 850), # TODO! 1150
+  "group_defended" = list(width = 1000), # 1250
+  "group_defended_agg" = list(width = 900), # TODO! 1150
   "foreign_aid_raise_support" = list(width = 940), # TODO! 1425
   # "global_policies" = list(width = 850), # 1275
   # "other_policies" = list(width = 850), # 1270
@@ -598,7 +598,7 @@ barresN_continent_defs <- fill_barres(c("group_defended_agg2"), list("negotiatio
 ##### Run #####
 # Bars
 barres_multiple(barres = barres_defs[c("points_mean", "points")], df = us1, folder = "../figures/US1/") 
-barres_multiple(barres = barres_defs[c("support_binary")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
+barres_multiple(barres = barres_defs[c("group_defended")], df = us1, folder = "../figures/US1/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 
 barres_multiple(barres = barres_defs[c("income_quartile")], df = eu, folder = "../figures/USp/") # , folder = NULL, export_xls = T, trim = FALSE, method = 'orca', format = 'pdf'
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))

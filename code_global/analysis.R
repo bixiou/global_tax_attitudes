@@ -3,15 +3,12 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO! slides
-# TODO! literature review, incl. French Preferences for Foreign Aid
+# TODO! regress poverty gap on GDPpc and find a formula to allocate wealth tax revenues based on GDPpc (to not incentivize having large poverty gaps). Then estimate valuation of carbon date it approximates in $/tCO2.
 # TODO! map: in % of GDP, with NDCs, at each date with 2°C + SDG trajectories => Gore (21) (I sent an email)
-# TODO calculer ce que représente 30% de global wealth tax en terme de PIB, comparé à loss due au GCS
+# TODO calculer ce que représente 30% de global wealth tax en terme de PIB, comparé à net gain due au GCS
 # TODO! appendix sources, calcul net gain
 # TODO! reweighted estimate dans papier
 # TODO US/EU: put back email?, welcome: amount incentives
-# TODO? mettre soutien/Croyances GCS+NR dans le bloc d'avant? bof, faudrait refaire des blocs pck on donne la réponse aux questions aussi
-# TODO? US/EU: correct => expected for DE/ES questions? (already in answers)
 # TODO read about Norway and foreign aid
 # TODO? Use donation to measure altruism?
 # TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
@@ -369,6 +366,9 @@ for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]], na.rm = 
 
 ##### Swing States #####
 decrit(e$swing_state)
+decrit("gcs_support", data = e, weights = e$weight, which = e$swing_state)
+decrit("gcs_support", data = e, weights = e$weight, which = e$swing_state_5pp)
+summary(lm(gcs_support == 'Yes' ~ swing_state_5pp, data = e, weights = e$weight)) 
 summary(lm(gcs_support == 'Yes' ~ swing_state, data = e, weights = e$weight)) # .ht - 0.018 - 0.008
 summary(lm(gcs_support == 'Yes' ~ swing_state + swing_state_5pp, data = e, weights = e$weight)) # .ht - 0.018 - 0.008
 summary(lm(conjoint_c ~ branch_c_gcs * swing_state, data = e, weights = e$weight))

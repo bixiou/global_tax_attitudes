@@ -2,7 +2,6 @@
 # TODO order_
 # TODO sources quotas, national quotas incl. vote
 # TODO check vote
-# /!\ EU is not representative country by country, e.g. in the UK there are ~half of >65.
 
 source(".Rprofile")
 source("relabel_rename.R")
