@@ -611,7 +611,7 @@ barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_co
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
 heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint_ab_all")], weights = T)
-heatmap_multiple(heatmaps_defs[c("foreign_aid_amount")], weights = T)
+heatmap_multiple(heatmaps_defs[c("support_likert")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_only", "petition_gcs", "petition_nr", "global_tax_global_share")], weights = T)
 

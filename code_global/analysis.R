@@ -13,11 +13,12 @@ e <- ep
 # TODO? Use donation to measure altruism?
 # TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
 # TODO! find SDG/equality/2°C compatible trajectories
-
+# TODO! why support lower than each country for global wealth tax in EU?
 
 ##### Duration #####
 print(paste0(round(100*sum(us1a$finished == 1 & is.na(us1a$excluded), na.rm = T)/sum(us1a$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1")) # 92% % incidence rate
 print(paste0(round(100*sum(us1a$dropout)/sum(is.na(us1a$excluded))), "% dropout in US1")) # 17% US1
+print(paste0(round(100*sum(us2a$dropout)/sum(is.na(us2a$excluded))), "% dropout in US2")) # 2% EU
 print(paste0(round(100*sum(eua$dropout)/sum(is.na(eua$excluded))), "% dropout in EU")) # 2% EU
 print(paste0(round(100*sum(eupa$finished == 1 & is.na(eupa$excluded), na.rm = T)/sum(eupa$finished == 1 | eupa$excluded=="Screened", na.rm = T)), "% IR in EUp")) # 86%
 print(paste0(round(100*sum(us1pa$excluded=="QuotaMet", na.rm = T)/nrow(us1pa)), "% QuotaMet")) # 4%
@@ -273,6 +274,13 @@ summary(lm(donation ~ branch_donation, data = e))
 decrit(!(e$donation %in% c(0, 100))) # 88%
 decrit("negotiation", data = e)
 CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
+
+
+##### GCS ~ info / pros_cons #####
+decrit("nr_support", data = e)
+decrit("gcs_support", data = e)
+summary(lm(gcs_support ~ branch_gcs, data = e))
+summary(lm(nr_support ~ branch_gcs, data = e))
 
 
 ##### Wealth tax #####

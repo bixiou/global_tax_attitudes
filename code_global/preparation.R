@@ -943,8 +943,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 
 e <- eu <- prepare(country = "EU", weighting = T)
 e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
+e <- us2 <- prepare(country = "US2", weighting = FALSE, define_var_lists = FALSE)
 
-e <- all <- merge(us1, eu, all = T)
+us <- merge(us1, us2, all = T)
+e <- all <- merge(us, eu, all = T)
 
 e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)
 
@@ -957,6 +959,7 @@ e <- ep <- merge(usp, eup, all = T)
 
 # variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
 us1a <- prepare(country = "US1", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+us2a <- prepare(country = "US2", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 eua <- prepare(country = "EU", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 
 eupa <- prepare(country = "EU", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
