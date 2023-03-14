@@ -5,7 +5,7 @@ e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
 # TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
 # TODO! find SDG/equality/2°C compatible trajectories
-# TODO! regress poverty gap on GDPpc and find a formula to allocate wealth tax revenues based on GDPpc (to not incentivize having large poverty gaps). Then estimate valuation of carbon date it approximates in $/tCO2.
+# TODO regress poverty gap on GDPpc and find a formula to allocate wealth tax revenues based on GDPpc (to not incentivize having large poverty gaps). Then estimate valuation of carbon date it approximates in $/tCO2 from historical respo.
 # TODO! map: in % of GDP, with NDCs, at each date with 2°C + SDG trajectories => Gore (21) (I sent an email)
 # TODO calculer ce que représente 30% de global wealth tax en terme de PIB, comparé à net gain due au GCS
 # TODO! appendix sources, calcul net gain

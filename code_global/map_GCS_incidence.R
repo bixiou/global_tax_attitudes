@@ -121,3 +121,94 @@ plot_world_map("median_gain_2015", breaks = thresholds_map, format = c('png', 's
                save = T, width = 1160, height = 560) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) limits = c(-30, 30), 
 # If needed run  cd .\Documents\www\global_tax_attitudes\figures\maps\
 #      and  pdfcrop --margins '-20 0 70 -7' mean_gain_2030 (or simply sh crop_pdf.sh to treat all PDFs)
+
+
+##### Poverty gaps #####
+extract_last_year <- function(df = pg, cols = names(df), var_name = NULL, pattern_gsub = "[^0-9]", keep = names(df)) {
+  df$last_year <- NA
+  for (j in cols) df$last_year <- ifelse(is.na(df[[j]]), df$last_year, rep(j, nrow(df))) 
+  if (!is.null(var_name)) df[[var_name]] <- NA
+  if (!is.null(var_name)) df[[var_name]][!is.na(df$last_year)] <- sapply(which(!is.na(df$last_year)), function(i) df[[df$last_year[i]]][i])
+  df$last_year <- as.numeric(gsub(pattern_gsub, "", df$last_year))
+  if (!is.null(var_name)) return(df[, unique(c(keep, "last_year", var_name))])
+  else return(df$last_year)
+}
+
+# Problem: U.S. have a poverty gap at $2 of 0.8%, not much lower than India's 1.8%
+pg2 <- read.csv("../data/poverty_gap_2-15.csv") # Poverty gap at $2.15 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.GAPS March 1, 2023 
+pg2$code <- pg2$Country.Code
+pg2 <- extract_last_year(df = pg2, cols = paste0("X", 1960:2021), var_name = "pg2", keep = c("Country.Name", "code"))
+pg2$Country.Name[pg2$code %in% co2_pop$code][is.na(pg2$pg2[pg2$code %in% co2_pop$code])] # No data (for any year) for Afghanistan, Cambodia, Cuba, Dominica, Eritrea, Equatorial Guinea, Libya, North Korea. 
+
+pg4 <- read.csv("../data/poverty_gap_3-65.csv") # Poverty gap at $3.65 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.LMIC.GP March 1, 2023 
+pg4$code <- pg4$Country.Code
+pg4 <- extract_last_year(df = pg4, cols = paste0("X", 1960:2021), var_name = "pg4", keep = c("Country.Name", "code"))
+
+pg7 <- read.csv("../data/poverty_gap_6-85.csv") # Poverty gap at $6.85 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.UMIC.GP March 1, 2023 
+pg7$code <- pg7$Country.Code
+pg7 <- extract_last_year(df = pg7, cols = paste0("X", 1960:2021), var_name = "pg7", keep = c("Country.Name", "code"))
+
+GDPpcPPP <- read.csv("../data/GDPpc_2017$_PPP.csv") # GDP per capita, PPP (constant 2017 international $) https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD March 1, 2023 
+GDPpcPPP$code <- GDPpcPPP$Country.Code
+# all(GDPpcPPP$country == pg$country)
+GDPpcPPP$GDPpcPPP[!is.na(pg7$last_year)] <- sapply(which(!is.na(pg7$last_year)), function(i) GDPpcPPP[[paste0("X", pg7$last_year[i])]][i])
+# We don't replace missing values for GDPpc in gap's last year (while other years are available for GDPpc) as they always coincide with missing values for poverty gaps
+# GDPpcPPP <- extract_last_year(df = GDPpcPPP, cols = paste0("X", 1960:2021), var_name = "gdp_last_year")
+# sum(is.na(GDPpcPPP$GDPpcPPP[GDPpcPPP$code %in% co2_pop$code])) # 41 missing values for GDP pc for the year at which we have the last poverty gap estimate, we use instead the last available data for GDP (in 2017 constant $)
+# GDPpcPPP$GDPpcPPP[is.na(GDPpcPPP$GDPpcPPP)] <- GDPpcPPP$gdp_last_year[is.na(GDPpcPPP$GDPpcPPP)]
+# GDPpcPPP$Country.Name[GDPpcPPP$code %in% co2_pop$code][is.na(GDPpcPPP$GDPpcPPP[GDPpcPPP$code %in% co2_pop$code])] # No data (for any year) for Cuba, Eritrea, North Korea, South Sudan, Syria, Venezuela, Yemen. TODO: complete from other sources
+
+pg <- merge(merge(pg2, merge(pg4, pg7)), GDPpcPPP[, c("Country.Name", "code", "GDPpcPPP")])
+
+# co2_pop$country[co2_pop$code %in% setdiff(co2_pop$code, pg$code)]
+# pg$Country.Name[pg$code %in% setdiff(pg$code, co2_pop$code)]
+pg <- merge(pg, co2_pop)
+
+# reg_pg_gdp <- lm(gap ~ log10(GDPpcPPP), data = pg, weights = adult_2023) 
+# summary(reg_pg_gdp)
+
+# We exclude countries without extreme poor people and weight by adult population. R^2 = .50
+reg_pg7_gdp_log <- lm(log10(pg7) ~ log10(GDPpcPPP), data = pg, weights = adult_2023, subset = pg7 > 0)
+summary(reg_pg7_gdp_log) # 7.36 - 1.6 gdp, R^2: .78
+pg$predicted_gap7[as.numeric(names(reg_pg7_gdp_log$fitted.values))] <- 10^reg_pg7_gdp_log$fitted.values
+reg_pg4_gdp_log <- lm(log10(pg4) ~ log10(GDPpcPPP), data = pg, weights = adult_2023, subset = pg4 > 0)
+summary(reg_pg4_gdp_log) # 6.6 - 1.52 gdp, R^2: .66
+pg$predicted_gap4[as.numeric(names(reg_pg4_gdp_log$fitted.values))] <- 10^reg_pg4_gdp_log$fitted.values
+reg_pg2_gdp_log <- lm(log10(pg2) ~ log10(GDPpcPPP), data = pg, weights = adult_2023, subset = pg2 > 0)
+summary(reg_pg2_gdp_log) # 3.96 - .97, R^2: .50
+pg$predicted_gap2[as.numeric(names(reg_pg2_gdp_log$fitted.values))] <- 10^reg_pg2_gdp_log$fitted.values
+# pg$predicted_gap_simplfied <- 10^(4 - log10(pg7$GDPpcPPP))
+# reg_pg_gdp_predicted <- predict(reg_pg_gdp, type = "response")
+
+qplot(log10(GDPpcPPP), log10(pg7), data = pg, size = adult_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $6.85 a day (2017 PPP) (%)", show.legend = FALSE) + 
+  geom_smooth(method = "lm",  mapping = aes(weight = adult_2023), color = "black", show.legend = FALSE, se = F) + theme_bw() 
+qplot(log10(GDPpcPPP), log10(pg4), data = pg, size = adult_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE) + 
+  geom_smooth(method = "lm",  mapping = aes(weight = adult_2023), color = "black", show.legend = FALSE, se = F) + theme_bw() 
+qplot(log10(GDPpcPPP), log10(pg2), data = pg, size = adult_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $2.15 a day (2017 PPP) (%)", show.legend = FALSE) + 
+  geom_smooth(method = "lm",  mapping = aes(weight = adult_2023), color = "black", show.legend = FALSE, se = F) + theme_bw() 
+
+# qplot(log10(GDPpcPPP), log10(gap), data = pg, size = adult_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $2.15 a day (2017 PPP) (%)", show.legend = FALSE) + 
+#   geom_smooth(method = "lm",  mapping = aes(weight = adult_2023), color = "black", show.legend = FALSE) + theme_bw() +
+#   geom_line(aes(y = log10(predicted_gap_simplfied)), color = "red", show.legend = FALSE) + labs(fill = "Adult population (2023)")
+# with(pg, symbols(x=GDPpcPPP, y=gap, circles=adult_2023, inches=1/3,  ann=F, bg="steelblue2", fg=NULL))
+# qplot(GDPpcPPP, gap, data = pg, size = adult_2023) + geom_smooth(method = "lm",  mapping = aes(weight = adult_2023), color = "black", show.legend = FALSE) + theme_bw() + coord_trans(x="log10")
+# qplot(log10(GDPpcPPP), gap, data = pg, size = adult_2023) + geom_smooth(method = "lm",  mapping = aes(weight = adult_2023), color = "black", show.legend = FALSE) + theme_bw()
+# qplot(GDPpcPPP, gap, data = pg, size = adult_2023) + geom_line(aes(y = predicted_gap), color = "red", show.legend = FALSE) + theme_bw() + coord_trans(x="log10")
+
+# TODO: set it to 0 for high-income countries
+pg$share_revenues7 <- pg$predicted_gap7 * pg$adult_2023 * pg$GDPpcPPP # TODO fill missing values and use full pop instead of adults (also below)
+pg$share_revenues7 <- pg$share_revenues7/sum(pg$share_revenues7, na.rm = T)
+pg$share_revenues4 <- pg$predicted_gap4 * pg$adult_2023 * pg$GDPpcPPP 
+pg$share_revenues4 <- pg$share_revenues4/sum(pg$share_revenues4, na.rm = T)
+pg$share_revenues2 <- pg$predicted_gap2 * pg$adult_2023 * pg$GDPpcPPP 
+pg$share_revenues2 <- pg$share_revenues2/sum(pg$share_revenues2, na.rm = T)
+sort(setNames(pg$share_revenues7, pg$country))
+sort(setNames(pg$share_revenues4, pg$country))
+sort(setNames(pg$share_revenues2, pg$country))
+cor(pg$share_revenues7, pg$share_revenues4, use = "complete.obs") # .9996
+cor(pg$share_revenues7, pg$share_revenues2, use = "complete.obs") # .959
+
+wealth_tax_revenues <- 0.0085*96e12 # From a 2% tax above $5 million, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/
+pooled_revenues <- 0.33
+pg$wealth_tax_rev_pc <- pooled_revenues * wealth_tax_revenues * pg$share_revenues7 / pg$adult_2023 # per year
+sort(setNames(pg$wealth_tax_rev_pc/12, pg$country)) # per month: $4.6 in India, 2.8 in China, 14.6 in RDC, 1.3 in U.S.
