@@ -3,6 +3,8 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
+# TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
+# TODO! find SDG/equality/2°C compatible trajectories
 # TODO! regress poverty gap on GDPpc and find a formula to allocate wealth tax revenues based on GDPpc (to not incentivize having large poverty gaps). Then estimate valuation of carbon date it approximates in $/tCO2.
 # TODO! map: in % of GDP, with NDCs, at each date with 2°C + SDG trajectories => Gore (21) (I sent an email)
 # TODO calculer ce que représente 30% de global wealth tax en terme de PIB, comparé à net gain due au GCS
@@ -11,9 +13,6 @@ e <- ep
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO read about Norway and foreign aid
 # TODO? Use donation to measure altruism?
-# TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
-# TODO! find SDG/equality/2°C compatible trajectories
-# TODO! why support lower than each country for global wealth tax in EU?
 
 ##### Duration #####
 print(paste0(round(100*sum(us1a$finished == 1 & is.na(us1a$excluded), na.rm = T)/sum(us1a$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1")) # 92% % incidence rate
