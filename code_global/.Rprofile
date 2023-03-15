@@ -216,6 +216,8 @@ d <- function(str, alt_data = eu, alt_var = "country") {
 n <- function(var) { as.numeric(as.vector(var)) }
 #' NSPs <- function(QID) { length(V(QID)[V(QID) == "NSP (Je ne veux pas répondre)"])/length(V(QID)) }
 #' nsps <- function(id) { length(v(id)[v(id) == "NSP (Je ne veux pas répondre)"])/length(v(id)) }
+match.nona <- function(v, t) return(as.vector(na.omit(match(v, t)))) # returns match(v, t) purged from NAs, i.e. the (first) position of v elements (that are in t) in t, cf. below
+# so df$foo[match.nona(db$bar, df$bar)] <- db$foo[db$bar %in% df$bar] replaces elements of df$foo such that df$bar is in db$bar by corresponding db$foo
 Label <- function(var) {
   if (length(annotation(var))==1) { annotation(var)[1] }
   else { label(var)  }
@@ -250,6 +252,7 @@ is.pnr <- function(variable, empty_as_pnr = T) {
   }
 }
 no.na <- function(vec) return(replace_na(as.vector(vec), "na"))
+gap <- function(vec) return(if (max(vec, na.rm = T) == 0) 0 else abs((max(vec, na.rm = T) - min(vec, na.rm = T))/max(vec, na.rm = T)))
 is.binary <- function(vec) { return((is.logical(vec) | all(unique(as.numeric(vec)) %in% c(0, 1, NA)))) }
 majority <- function(vec) {
   if (is.binary(vec)) return(100*mean(vec, na.rm = T))
