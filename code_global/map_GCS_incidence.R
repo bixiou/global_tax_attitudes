@@ -158,7 +158,7 @@ GDPpcPPP$GDPpcPPP[!is.na(pg7$last_year)] <- sapply(which(!is.na(pg7$last_year)),
 # GDPpcPPP$GDPpcPPP[is.na(GDPpcPPP$GDPpcPPP)] <- GDPpcPPP$gdp_last_year[is.na(GDPpcPPP$GDPpcPPP)]
 # GDPpcPPP$Country.Name[GDPpcPPP$code %in% co2_pop$code][is.na(GDPpcPPP$GDPpcPPP[GDPpcPPP$code %in% co2_pop$code])] # No data (for any year) for Cuba, Eritrea, North Korea, South Sudan, Syria, Venezuela, Yemen. TODO: complete from other sources
 
-pg <- merge(merge(pg2, merge(pg4, pg7)), GDPpcPPP[, c("Country.Name", "code", "GDPpcPPP")])
+pg <- merge(merge(pg2, merge(pg4, pg7)), GDPpcPPP[, c("Country.Name", "code", "GDPpcPPP")]) # TODO: do not remove region groupings (or recreate them, once we've done the share computations)
 
 # co2_pop$country[co2_pop$code %in% setdiff(co2_pop$code, pg$code)]
 # pg$Country.Name[pg$code %in% setdiff(pg$code, co2_pop$code)]
@@ -212,3 +212,102 @@ wealth_tax_revenues <- 0.0085*96e12 # From a 2% tax above $5 million, cf. Chance
 pooled_revenues <- 0.33
 pg$wealth_tax_rev_pc <- pooled_revenues * wealth_tax_revenues * pg$share_revenues7 / pg$adult_2023 # per year
 sort(setNames(pg$wealth_tax_rev_pc/12, pg$country)) # per month: $4.6 in India, 2.8 in China, 14.6 in RDC, 1.3 in U.S.
+
+
+##### SSPs #####
+SSPs <- read.csv("../data/SSPs.csv") # https://secure.iiasa.ac.at/web-apps/ene/SspDb/download/iam_v2/SSP_IAM_V2_201811.csv.zip
+SSPs_countries <- read.csv("../data/SSP_CMIP6.csv") # https://secure.iiasa.ac.at/web-apps/ene/SspDb/download/cmip6/SSP_CMIP6_201811.csv.zip
+# poverty, Gini: https://secure.iiasa.ac.at/web-apps/ene/SspDb/download/additional/NRao_et_al_GiniProjections_2018.zip
+# region mapping: https://secure.iiasa.ac.at/web-apps/ene/SspDb/download/cmip6/cmip6_iam_model_region_mapping.xlsx
+# In SSPs_countries, IMAGE has only SCENARIO: SSP1-19, SSP1-26; MESSAGE-GLOBIOM: SSP2-45; AIM/CGE: SSP3-70 (Baseline), SSP3-LowNTCF; GCAM4: SSP4-34, SSP4-60; REMIND-MAGPIE: SSP5-34-OS, SSP5-85 (Baseline); WITCH-GLOBIOM is absent
+#   while in SSPs, each MODEL has many SCENARIOs
+# I think that emissions of SSPs are first defined in CMIP6 (i.e. SSPs_countries) and then passed as inputs to IAMs, which yield consistent bud modified emissions, in SSPs
+# /!\ World emissions are not equal to the sum of the 5 R5.2 regions TODO: why? check regions definition
+# Nb regions (excluding the 5 R5.2 ones): AIM/CGE: 18 (3 letters), IMAGE: 27, GCAM4: 33, MESSAGE-GLOBIOM: 12, REMIND-MAGPIE: 12 (different), WITCH-GLOBIOM: absent from SSPs_countries
+
+vars_SSPs <- c("emissions" = "Emissions|CO2", "fossil_emissions" = "Emissions|CO2|Fossil Fuels and Industry", # Mt CO2/yr
+               "energy" = "Final Energy", # EJ/yr
+               "gdp" = "GDP|PPP", # billion US$2005/yr , "conso" = "Consumption"
+               "pop" = "Population", # million
+               "carbon_price" = "Price|Carbon") # US$2005/t CO2
+ssp <- list() # 2 min
+for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
+  ssp[[i]] <- list()
+  for (j in c("IMAGE", "MESSAGE-GLOBIOM")) {
+    ssp[[i]][[j]] <- data.frame(region = c(paste0("iam_", unique(SSPs$REGION)), unique(SSPs_countries$REGION[SSPs_countries$SCENARIO %in% c("SSP1-19", "SSP2-45")]))) # unique(SSPs_countries$REGION)
+    for (y in c(2005, seq(2010, 2100, 10))) {
+      for (v in names(vars_SSPs)) {
+        # print(paste(i, j, v, y))
+        if (sum(SSPs$MODEL == j & SSPs$SCENARIO == i & SSPs$VARIABLE == vars_SSPs[v]) > 0 && all(SSPs$REGION[SSPs$MODEL == j & SSPs$SCENARIO == i & SSPs$VARIABLE == vars_SSPs[v]] == unique(SSPs$REGION))) {
+          ssp[[i]][[j]][[paste0(v, "_", y)]] <- c(SSPs[SSPs$MODEL == j & SSPs$SCENARIO == i & SSPs$VARIABLE == vars_SSPs[v], paste0("X", y)], rep(NA, 42))
+        }
+      }
+      # print(paste(i, j, v, y))
+      if (sum(SSPs_countries$VARIABLE == "CMIP6 Emissions|CO2" & SSPs_countries$MODEL == j & SSPs_countries$SCENARIO == i & !is.na(SSPs_countries[[paste0("X", y)]])) > 0) {
+        temp <- SSPs_countries[SSPs_countries$MODEL == j & SSPs_countries$SCENARIO == i & SSPs_countries$VARIABLE == "CMIP6 Emissions|CO2", paste0("X", y)]
+        names(temp) <- SSPs_countries$REGION[SSPs_countries$MODEL == j & SSPs_countries$SCENARIO == i & SSPs_countries$VARIABLE == "CMIP6 Emissions|CO2"]
+        ssp[[i]][[j]][[paste0("emissions_", y)]][7:48] <- temp[ssp[[i]][[j]]$region][7:48]
+      }
+    }
+    ssp[[i]][[j]]$region[1:6] <- c("asia", "lam", "maf", "oecd", "ref", "world")
+  }
+}
+ssp1_19 <- ssp$`SSP1-19`$IMAGE
+ssp1_26 <- ssp$`SSP1-26`$IMAGE
+ssp2_19 <- ssp$`SSP2-19`$IMAGE
+ssp2_26 <- ssp$`SSP2-26`$IMAGE
+ssp2_45 <- ssp$`SSP2-45`$IMAGE
+ssp2 <- ssp$`SSP2-45`$`MESSAGE-GLOBIOM`
+ssp5_19 <- ssp$`SSP5-19`$IMAGE
+ssp5_26 <- ssp$`SSP5-26`$IMAGE
+# TODO: SSP5-Baseline is SSP5-8.5 but what is SSP1-Baseline? SSP2-Baseline? 
+rm(SSPs, SSPs_countries)
+
+
+##### Sandbox #####
+beep()
+View(ssp)
+SSPs_countries[SSPs_countries$MODEL == "MESSAGE-GLOBIOM" & SSPs_countries$SCENARIO == "SSP1-19" & SSPs_countries$VARIABLE == "CMIP6 Emissions|CO2", c("REGION", "X2020")]
+SSPs_countries[SSPs_countries$MODEL == "MESSAGE-GLOBIOM" & SSPs_countries$SCENARIO == "SSP2-45" & SSPs_countries$VARIABLE == "CMIP6 Emissions|CO2", c("REGION", "X2020")]
+setNames(ssp$`SSP2-45`$`MESSAGE-GLOBIOM`$emissions_2020, ssp$`SSP2-45`$`MESSAGE-GLOBIOM`$region)
+
+unique(SSPs_countries$REGION[SSPs_countries$SCENARIO %in% c("SSP1-19", "SSP2-45")])
+SSPs_countries$REGION[SSPs_countries$VARIABLE == "CMIP6 Emissions|CO2" & SSPs_countries$MODEL == "IMAGE" & !is.na(SSPs_countries$X2020)]
+
+unique(SSPs_countries$SCENARIO[SSPs_countries$MODEL == "MESSAGE-GLOBIOM"])
+unique(SSPs$MODEL)
+unique(SSPs_countries$SCENARIO)
+
+SSP1/2/5-2.6 (or -1.9)
+SSP2-45
+
+
+
+SSPs_countries[SSPs_countries$MODEL == "MESSAGE-GLOBIOM" & SSPs_countries$SCENARIO == "SSP2-45" & SSPs_countries$VARIABLE == "CMIP6 Emissions|CO2", c("REGION", "X2020")]
+setNames(ssp$`SSP2-45`$`MESSAGE-GLOBIOM`$emissions_2020, ssp$`SSP2-45`$`MESSAGE-GLOBIOM`$region)
+
+
+SSPs[SSPs$MODEL == "MESSAGE-GLOBIOM" & SSPs$SCENARIO == "SSP2-45" & SSPs$VARIABLE == "GDP|PPP", c("REGION", "X2050")]
+SSPs[SSPs$MODEL == "IMAGE" & SSPs$SCENARIO == "SSP2-45" & SSPs$VARIABLE == "GDP|PPP", c("REGION", "X2050")]
+SSPs[SSPs$MODEL == "GCAM4" & SSPs$SCENARIO == "SSP2-45" & SSPs$VARIABLE == "GDP|PPP", c("REGION", "X2050")]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
