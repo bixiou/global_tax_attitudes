@@ -290,12 +290,16 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
       if (paste0("emissions_pc_", y) %in% names(ssp[[i]][[j]])) {
         ssp[[i]][[j]][[paste0("emissions_", y)]] <- ssp[[i]][[j]][[paste0("emissions_pc_", y)]]
         ssp[[i]][[j]][[paste0("pop_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("pop_", y)]]
-        ssp[[i]][[j]][[paste0("pop_", y)]][match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]][[paste0("pop_", y)]][pop_un[[j]]$region %in% ssp[[i]][[j]]$region]
+        ssp[[i]][[j]][[paste0("pop_", y)]][match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]][[paste0("pop_", y)]][pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
         ssp[[i]][[j]][[paste0("adult_", y)]] <- NA
         ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)] <- (pop_un[[j]][[paste0("adult_", y)]]/pop_un[[j]][[paste0("pop_", y)]])[match(unique(SSPs$REGION)[-6], pop_un[[j]]$region)] * ssp[[i]][[j]][[paste0("pop_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)]
         ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == "iam_World"] <- sum(ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)])
         ssp[[i]][[j]][[paste0("adult_", y)]][match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]][[paste0("adult_", y)]][pop_un[[j]]$region %in% ssp[[i]][[j]]$region]
         # TODO? Adjust pop_ and adult_ of CMIP6 to match the sum of IAM?
+        if (i %in% c("SSP1-19", "SSP1-26")) {
+          for (v in c("emissions_", "pop_", "adult_")) ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region == "AFR"] <- sum(ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region %in% c("WAF", "EAF", "SAF", "RSAF")])
+          for (v in c("emissions_", "pop_", "adult_")) ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region == "LAM"] <- sum(ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region %in% c("MEX", "RCAM", "RSAM")])
+        }
         ssp[[i]][[j]][[paste0("emissions_pc_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("emissions_", y)]]/ssp[[i]][[j]][[paste0("pop_", y)]]
         ssp[[i]][[j]][[paste0("emissions_pa_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("emissions_", y)]]/ssp[[i]][[j]][[paste0("adult_", y)]]
         for (var in c("energy", "gdp")) ssp[[i]][[j]][[paste0(var, "_pc_", y)]] <- 1e3 * ssp[[i]][[j]][[paste0(var, "_pc_", y)]]
@@ -310,12 +314,10 @@ ssp1_26 <- ssp$`SSP1-26`$IMAGE
 ssp2_26 <- ssp$`SSP2-26`$IMAGE
 ssp2_45 <- ssp$`SSP2-45`$IMAGE
 ssp2 <- ssp$`SSP2-45`$`MESSAGE-GLOBIOM`
-# TODO: SSP5-Baseline is SSP5-8.5 but what is SSP1-Baseline? SSP2-Baseline? 
+# TODO: SSP5-Baseline is SSP5-8.5 but what is SSP1-Baseline? SSP2-Baseline? SSP2-4.5 
 rm(SSPs, SSPs_countries)
 rm(ssp)
 
-# TODO! evolution of emissions_pc and gain for each finer region/SSP
-# TODO aggregate for regions my previous estimates for 2030
 # TODO use NDCs, Greenpeace, Global Energy Assessment
 
 ssps <- c("ssp1_19", "ssp1_26", "ssp2_26", "ssp2_45", "ssp2")
@@ -345,10 +347,12 @@ par(mar = c(2.1, 4.1, .1, .1))
 plot(years, sapply(years, function(y) ssp1_19[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "green", lwd = 2, type = 'l', xlab = "", ylab = "Carbon price (US$2005/tCO2)", xlim = c(2010, 2100), ylim = c(0, 900))
 lines(years, sapply(years, function(y) ssp1_26[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "blue", lwd = 2, type = 'l')
 lines(years, sapply(years, function(y) ssp2_26[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "purple", lwd = 2, type = 'l')
-lines(years, sapply(years, function(y) ssp2_45[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "orange", lwd = 2, type = 'l')
-lines(years, sapply(years, function(y) ssp2[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "red", lwd = 2, type = 'l')
+lines(years, sapply(years, function(y) ssp2_45[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "red", lwd = 2, type = 'l')
+# lines(years, sapply(years, function(y) ssp2_45[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "orange", lwd = 2, type = 'l')
+# lines(years, sapply(years, function(y) ssp2[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "red", lwd = 2, type = 'l')
 abline(h = seq(0, 900, 100), lty = 3, col = "gray") + abline(v = years, lty = 3, col = "gray")
-legend("topleft", legend = c("SSP1-1.9 (1.4 °C)", "SSP1-2.6 (1.8 °C)", "SSP2-2.6 (1.8 °C)", "SSP2-4.5 (2.7 °C)", "SSP2 (baseline)"), col = c("green", "blue", "purple", "orange", "red"), lwd = 2)
+# legend("topleft", legend = c("SSP1-1.9 (1.4 °C)", "SSP1-2.6 (1.8 °C)", "SSP2-2.6 (1.8 °C)", "SSP2-4.5 (2.7 °C)", "SSP2 (baseline)"), col = c("green", "blue", "purple", "orange", "red"), lwd = 2)
+legend("topleft", legend = c("SSP1-1.9 (1.4 °C)", "SSP1-2.6 (1.8 °C)", "SSP2-2.6 (1.8 °C)", "SSP2-4.5 (2.7 °C)"), col = c("green", "blue", "purple", "red"), lwd = 2)
 save_plot(filename = "SSP_carbon_price", folder = "../figures/policies/", format = "pdf", trim = FALSE)
 save_plot(filename = "SSP_carbon_price", folder = "../figures/policies/", format = "png")
 
@@ -365,7 +369,7 @@ plot_ssp <- function(ssp, var = "emissions", save = T, ylim = NULL, regions = c(
   lines(years, sapply(years, function(y) d(ssp)[[paste0(var, "_pc_", y)]][d(ssp)$region == "world"]), col = "black", lwd = if (var == "emissions") 4 else 2, type = 'l')
   if (is.null(ylim)) abline(h = seq(-5, 15, 2.5), lty = 3, col = "gray") + abline(v = years, lty = 3, col = "gray") else grid()
   legend(if (var == "emissions") { if (ssp == "ssp2") "bottomleft" else "topright" } else { if (ssp == "ssp2_45") "bottomleft" else "topleft"}, 
-         legend = c(names(regions), if (var == "emissions") "World" else NULL), col = c(colors[1:length(regions)], if (var == "emissions") "black" else NULL), lwd = c(rep(2, 5), if (var == "emissions") 4 else NULL))
+         legend = c(names(regions), if (var == "emissions") "World" else NULL), col = c(colors[1:length(regions)], if (var == "emissions") "black" else NULL), lwd = c(rep(2, length(regions)), if (var == "emissions") 4 else NULL))
   if (save) {
     save_plot(filename = paste0(var, "_pc_", toupper(ssp), if (!"maf" %in% regions) "_many" else ""), folder = "../figures/policies/", format = "png")
     save_plot(filename = paste0(var, "_pc_", toupper(ssp), if (!"maf" %in% regions) "_many" else ""), folder = "../figures/policies/", format = "pdf", trim = FALSE)
@@ -375,31 +379,31 @@ plot_ssp("ssp1_19") # OECD = Africa in 2038, OECD < Africa <= 0 from 2050 onward
 plot_ssp("ssp1_26") # OECD = Africa in 2060, OECD < 0 < Africa from 2070 onwards
 plot_ssp("ssp2_26") # OECD < 0 < Africa from 2065 onwards
 plot_ssp("ssp2_45") # OECD > Africa, with convergence between regions
-plot_ssp("ssp2") # OECD > Africa, with divergence between regions
+# plot_ssp("ssp2") # OECD > Africa, with divergence between regions
 
-# c("Brazil" = "BRA", "Canada" = "CAN", "Central Europe" = "CEU", "East Africa" = "EAF", "India" = "INDIA", "Indonesia" = "INDO", "Japan" = "JAP", "Korea" = "KOR",
+# regions_IMAGE <- c("Brazil" = "BRA", "Canada" = "CAN", "Central Europe" = "CEU", "East Africa" = "EAF", "India" = "INDIA", "Indonesia" = "INDO", "Japan" = "JAP", "Korea" = "KOR",
 #   "Middle East" = "ME", "Mexico" = "ME", "North Africa" = "NAF", "Oceania" = "OCE", "Rest Central America" = "RCAM", "Rest Southern Africa" = "RSAF", "Rest South America" = "RSAM", 
 #   "Rest South Asia" = "RSAS", "South Africa" = "SAF", "South East Asia" = "SEA", "Kazakhstan region" = "STAN", "Turkey" = "TUR", "Ukraine region" = "UKR", "USA" = "USA", 
 #   "West Africa" = "WAF", "Western Europe" = "WEU", "Russia" = "RUS")
-regions_many <- c("USA" = "USA", "West Africa" = "WAF", "India" = "INDIA", "Russia" = "RUS", "Brazil" = "BRA", "China" = "CHN", "Japan" = "JAP", "Middle East" = "ME")
-plot_ssp("ssp1_19", regions = regions_many) 
-plot_ssp("ssp1_26", regions = regions_many) 
-plot_ssp("ssp2_26", regions = regions_many) # TODO! pb for ssp2s
-plot_ssp("ssp2_45", regions = regions_many) 
-plot_ssp("ssp2", regions = regions_many) 
+# regions_MESSAGE <- c("Sub-saharan Africa" = "AFR", "China" = "CPA", "Eastern Europe" = "EEU", "Former Soviet Union" = "FSU", "Latin America" = "LAM",
+#                      "Middle East and North Africa" = "MEA", "North America" = "NAM", "Pacific OECD" = "PAO", "South East Asia" = "PAS", "South Asia" = "SAS", "Western Europe" = "WEU")
+regions_IMAGE <- c("USA" = "USA", "West Africa" = "WAF", "India" = "INDIA", "Western Europe" = "WEU", "Brazil" = "BRA", "China" = "CHN", "Middle East" = "ME")
+regions_IMAGE_modif <- c("USA" = "USA", "Sub-Saharan Africa" = "AFR", "India" = "INDIA", "Western Europe" = "WEU", "Latin America" = "LAM", "China" = "CHN", "Middle East" = "ME")
+regions_MESSAGE <- c("North America" = "NAM", "Sub-saharan Africa" = "AFR", "South Asia" = "SAS", "Western Europe" = "WEU", "Latin America" = "LAM", "China" = "CPA", "Middle East and North Africa" = "MEA")
+plot_ssp("ssp1_19", regions = regions_IMAGE_modif) 
+plot_ssp("ssp1_26", regions = regions_IMAGE_modif) # No data for ssp2_26, ssp2_45
+plot_ssp("ssp2", regions = regions_MESSAGE, ylim = c(-10, 15))
 
 # /!\ Huge variations in gains of Former Soviet Union, questioning the data quality
 plot_ssp("ssp1_19", var = "gain", ylim = c(-70, 160)) # from 2040 onwards, OECD wins and Africa, Asia lose
 plot_ssp("ssp1_26", var = "gain", ylim = c(-30, 50)) # from 2060 onwards, OECD wins and Africa, Asia lose
 plot_ssp("ssp2_26", var = "gain", ylim = c(-70, 360)) # from 2060 onwards, OECD wins and Africa, Asia lose
 plot_ssp("ssp2_45", var = "gain", ylim = c(-22, 6)) # OECD, lam, FSU always lose and Africa, Asia always win
-plot_ssp("ssp2", var = "gain", ylim = c(-20, 60)) # Very low amounts, lam wins and OECD, FSU lose
+# plot_ssp("ssp2", var = "gain", ylim = c(-20, 60)) # Very low amounts, lam wins and OECD, FSU lose
 
-plot_ssp("ssp1_19", var = "gain", ylim = c(-100, 190), regions = regions_many) # 
-plot_ssp("ssp1_26", var = "gain", ylim = c(-30, 80), regions = regions_many) # 
-plot_ssp("ssp2_26", var = "gain", ylim = c(-70, 360), regions = regions_many) # 
-plot_ssp("ssp2_45", var = "gain", ylim = c(-22, 6), regions = regions_many) # 
-plot_ssp("ssp2", var = "gain", ylim = c(-20, 60), regions = regions_many) # 
+plot_ssp("ssp1_19", var = "gain", ylim = c(-100, 190), regions = regions_IMAGE_modif) # 
+plot_ssp("ssp1_26", var = "gain", ylim = c(-30, 80), regions = regions_IMAGE_modif) # 
+plot_ssp("ssp2", var = "gain", ylim = c(-30, 40), regions = regions_MESSAGE) #
 
 # average world emissions by SSP throughout 21st century: 1 for 1.9; 2 for 2.6; 4 for 4.5.
 # mean(sapply(years, function(y) ssp1_19[[paste0("emissions_pc_", y)]][ssp1_19$region == "world"])) # 1.1
