@@ -941,9 +941,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 
 ##### Run #####
 
-e <- eu <- prepare(country = "EU", weighting = T)
 e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
 e <- us2 <- prepare(country = "US2", weighting = FALSE, define_var_lists = FALSE)
+e <- eu <- prepare(country = "EU", weighting = T)
 
 us <- merge(us1, us2, all = T)
 e <- all <- merge(us, eu, all = T)

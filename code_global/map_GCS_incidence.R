@@ -93,7 +93,8 @@ compute_gain <- function(year = 2030, base_year = 2019, type = "mean", df = co2_
   df[[paste0("share_emissions_", base_year)]] <- df[[paste0("emissions_", base_year)]]/sum(df[[paste0("emissions_", base_year)]])
   df[[paste0("share_emissions_2030_base_", base_year)]] <- df[[paste0("share_emissions_", base_year)]] * df[[paste0("demographic_evolution_", base_year)]]
   df[[paste0("share_emissions_2030_base_", base_year)]] <- df[[paste0("share_emissions_2030_base_", base_year)]]/sum(df[[paste0("share_emissions_2030_base_", base_year)]])
-  df$emissions_pa_2030 <- df[[paste0("emissions_pa_", base_year)]] * co2_emissions_2030 / df$adult_2030
+  df$emissions_2030 <- df[[paste0("share_emissions_2030_base_", base_year)]] * co2_emissions_2030
+  df$emissions_pa_2030 <- df$emissions_2030 / df$adult_2030
   df[[paste0("revenues_pa_", year)]] <- df[[paste0("share_emissions_2030_base_", base_year)]] * carbon_tax_revenues_2030 / df[[paste0("adult_", year)]]/12
   df[[paste0(type, "_gain_", year)]] <- 30 - (1 - 0.1*(type == "median"))*df[[paste0("revenues_pa_", year)]]
   if (return_data) return(df) else return(df[[paste0(type, "_gain_", year)]])
@@ -220,6 +221,7 @@ qplot(log10(GDPpcPPP), log10(pg2), data = pg, size = adult_2023, xlab = "log10 o
 # qplot(GDPpcPPP, gap, data = pg, size = adult_2023) + geom_line(aes(y = predicted_gap), color = "red", show.legend = FALSE) + theme_bw() + coord_trans(x="log10")
 
 # TODO: set it to 0 for high-income countries
+# TODO: different colors for different income categories. # Thresholds for lower/upper middle-income: $1085/4255/13205 in GDP pc (nominal)
 pg$share_revenues7 <- pg$predicted_gap7 * pg$adult_2023 * pg$GDPpcPPP # TODO fill missing values and use full pop instead of adults (also below)
 pg$share_revenues7 <- pg$share_revenues7/sum(pg$share_revenues7, na.rm = T)
 pg$share_revenues4 <- pg$predicted_gap4 * pg$adult_2023 * pg$GDPpcPPP 
@@ -411,6 +413,44 @@ plot_ssp("ssp2", var = "gain", ylim = c(-30, 40), regions = regions_MESSAGE) #
 # mean(sapply(years, function(y) ssp2_26[[paste0("emissions_pc_", y)]][ssp2_26$region == "world"])) # 1.9
 # mean(sapply(years, function(y) ssp2_45[[paste0("emissions_pc_", y)]][ssp2_45$region == "world"])) # 4.1
 # mean(sapply(years, function(y) ssp2[[paste0("emissions_pc_", y)]][ssp2$region == "world"])) # 4.1
+
+
+##### Global Energy Assessment #####
+gea_emissions <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_emissions_regions.xlsx")
+gea_pop <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_emissions_regions.xlsx")
+gea <- list() # GEA model is done with MESSAGE
+for (i in c("IMAGE", "GEA")) {
+  gea[[i]] <- data.frame(region = unique(gea_pop$Region))
+  for (y in years) {
+    gea[[i]][[paste0("emissions_", y)]] <- gea_emissions[[as.character(y)]][gea_emissions$Model == i]
+    gea[[i]][[paste0("pop_", y)]] <- gea_pop[[as.character(y)]][gea_emissions$Model == i]
+    gea[[i]][[paste0("emissions_pc_", y)]] <- gea[[i]][[paste0("emissions_", y)]]/gea[[i]][[paste0("pop_", y)]]
+  }
+}
+
+
+##### NDCs #####
+# Assuming 2030 emissions will be like NDCs and global carbon price of $90, emissions and basic income would be 54% higher than target.
+# China would lose: -25 $/month per person, India win +8, EU +4, US -52, Vietnam +28, Brazil +38, Australia -113
+ndc <- read.xlsx("../data/NDCs_Gao.xlsx")
+EU28_countries <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GBR", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
+temp <- rbind(co2_pop, c("EU28", "EU-28", colSums(co2_pop[co2_pop$code %in% EU28_countries, 3:ncol(co2_pop)])))
+for (v in setdiff(names(temp), c("country", "code"))) temp[[v]] <- as.numeric(temp[[v]])
+temp$mean_gain_2030[temp$country == "EU-28"] <- temp$mean_gain_2030[temp$code %in% EU28_countries] %*% temp$adult_2030[temp$code %in% EU28_countries] / sum(temp$adult_2030[temp$code %in% EU28_countries])
+temp$emissions_pa_2030 <- temp$emissions_2030/temp$adult_2030
+ndc <- merge(ndc, temp, by = "country")
+ndc <- ndc[, c("country", "emissions_2030", "adult_2030", "pop_2030", "mean_gain_2030", "emissions_pa_2030", "emissions_ndc_2030")]
+for (v in setdiff(names(ndc), c("country", "Abbreviation"))) ndc[[v]] <- as.numeric(ndc[[v]])
+ndc <- rbind(ndc, c("Total", "total", colSums(ndc[,3:ncol(ndc)])))
+for (v in setdiff(names(ndc), c("country", "Abbreviation"))) ndc[[v]] <- as.numeric(ndc[[v]])
+share_covered_gao <- sum(ndc$emissions_2030, na.rm = T)/co2_emissions_2030 # 85%
+excess_emissions_ndc <- ndc$emissions_ndc_2030[ndc$country == "Total"]/co2_emissions_2030/share_covered_gao # 1.54
+ndc$emissions_ndc_2030 <- 1e6 * ndc$emissions_ndc_2030
+ndc$emissions_pa_ndc_2030 <- ndc$emissions_ndc_2030/ndc$adult_2030
+ndc$mean_gain_ndc_2030 <- 30*excess_emissions_ndc - (90 * ndc$emissions_pa_ndc_2030) /12
+ndc$gain_ndc_over_estimate_2030 <- ndc$mean_gain_ndc_2030/ndc$mean_gain_2030
+ndc$emissions_ndc_over_estimate_2030 <- ndc$emissions_ndc_2030/ndc$emissions_2030
+View(ndc[, c("country", "mean_gain_2030", "mean_gain_ndc_2030", "gain_ndc_over_estimate_2030", "emissions_pa_2030", "emissions_pa_ndc_2030", "emissions_ndc_over_estimate_2030")])
 
 
 ##### Sandbox #####

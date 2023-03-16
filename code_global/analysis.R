@@ -292,6 +292,12 @@ CrossTable(e$global_tax_sharing, e$country, prop.t = F, prop.r = F, prop.chisq =
 summary(lm(global_tax_support > 0 ~ branch_global_tax, data = e))
 summary(lm(national_tax_support > 0 ~ branch_global_tax, data = e))
 summary(lm(global_tax_support - national_tax_support ~ branch_global_tax, data = e))
+decrit(c(us2$global_tax_sharing, us2p$global_tax_sharing))
+decrit(c(us2$global_tax_global_share, us2p$global_tax_global_share))
+decrit(c(us2$global_tax_support, us2p$global_tax_support) > 0)
+decrit(c(us2$global_tax_support, us2p$global_tax_support)[c(us2$global_tax_support, us2p$global_tax_support) != 0] > 0)
+decrit(us2$vote)
+decrit(us2p$vote)
 
 
 ##### Foreign aid #####
