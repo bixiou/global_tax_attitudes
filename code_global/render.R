@@ -1,6 +1,7 @@
 # TODO! petition comparable sample
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO list_exp, all_same heatmaps, 
+# TODO full results global_tax_global_share 
 
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
 # TODO automatically set share_labels/margin_l/width, miss, thin 
@@ -126,7 +127,7 @@ labels_vars <- c(
   "donation" = "Donation (any)",
   "global_tax_support" = "Global tax on millionaires",
   "national_tax_support" = "National tax on millionaires",
-  "global_tax_global_share" = "Preferred share of global tax for low-income",
+  "global_tax_global_share" = "Preferred share of global tax for low-income (in %)",
   "global_tax_sharing" = "Sharing half of global tax with low-income",
   "foreign_aid_belief" = "Belief about foreign aid", # / public spending",
   "foreign_aid_actual" = "Actual foreign aid (in % of public spending)",
@@ -650,7 +651,8 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 8 & nb_vars_heatmaps >= 5][1]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 8 & nb_vars_heatmaps >= 5]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 8][1]], weights = T)
-heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 8]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 8 & nb_vars_heatmaps < 14]], weights = T)
+heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 14]], weights = T)
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
 
