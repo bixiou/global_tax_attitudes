@@ -3,13 +3,11 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
+# TODO! appendix sources, calcul net gain
 # TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
 # TODO map % winners/losers
-# TODO! find SDG/equality/2°C compatible trajectories
 # TODO regress poverty gap on GDPpc and find a formula to allocate wealth tax revenues based on GDPpc (to not incentivize having large poverty gaps). Then estimate valuation of carbon date it approximates in $/tCO2 from historical respo.
 # TODO! map: in % of GDP, with NDCs, at each date with 2°C + SDG trajectories => Gore (21) (I sent an email)
-# TODO calculer ce que représente 30% de global wealth tax en terme de PIB, comparé à net gain due au GCS
-# TODO! appendix sources, calcul net gain
 # TODO! reweighted estimate dans papier
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO read about Norway and foreign aid
@@ -123,7 +121,7 @@ decrit("remove_tariffs_support", data = e)
 decrit("global_min_wage_support", data = e)
 decrit("global_register_support", data = e)
 decrit("cap_wealth_100m_support", data = e) 
-decrit("foreign_aid_raise_support", data = e) 
+decrit("foreign_aid_raise_support", data = e) # TODO! 
 means_support <- indiferrents_support <- relative_majority_support <- c()
 for (v in variables_support) means_support[v] <- mean(e[[v]] > 0, na.rm = T)
 for (v in variables_other_policies) indiferrents_support[v] <- mean(e[[v]] == 0, na.rm = T)
