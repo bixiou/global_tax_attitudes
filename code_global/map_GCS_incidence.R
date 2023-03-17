@@ -28,6 +28,14 @@ temp$Year <- 2023
 co2 <- rbind(co2, temp)
 names(co2) <- c("country", "code", "year", "territorial", "footprint")
 
+
+##### GDP pc data #####
+GDPpc <- read.csv("../data/GDPpc_2015$_nominal.csv") # GDP per capita (constant 2015 US$) https://data.worldbank.org/indicator/NY.GDP.PCAP.KD March 1, 2023 
+GDPpc$code <- GDPpc$Country.Code
+GDPpc <- rbind(data.frame("code" = GDPpc$code, "gdp_pc" = GDPpc$X2015, "year" = 2015), data.frame("code" = GDPpc$code, "gdp_pc" = GDPpc$X2019, "year" = 2019))
+co2 <- merge(co2, GDPpc)
+
+
 ##### Merge datasets #####
 # co2$year[co2$year == 2016] <- 2030 # Beware, before we estimate 2030 emissions, they will be equal to 2016 ones!
 for (y in years) {
@@ -44,7 +52,7 @@ co2_pop$missing_footprint <- is.na(co2_pop$footprint)
 (sum(co2_pop$adult_2019[is.na(co2_pop$footprint_2019)])/adult_pop_2019) # 7.4% of global footprint data missing 
 co2_pop$emissions[is.na(co2_pop$footprint)] <- co2_pop$territorial[is.na(co2_pop$footprint)] # imputing territorial emissions for those countries
 co2_pop <- co2_pop %>% group_by(code) %>% pivot_wider(id_cols = c("code", "country"),  names_from = year, 
-           values_from = c("territorial", "footprint", "emissions", "adult", "pop", "missing_footprint"), names_glue = "{.value}_{year}") %>% ungroup()
+           values_from = c("territorial", "footprint", "emissions", "adult", "pop", "gdp_pc", "missing_footprint"), names_glue = "{.value}_{year}") %>% ungroup()
 co2_pop$missing_footprint <- co2_pop$missing_footprint_2019
 co2_pop <- co2_pop[, !colnames(co2_pop) %in% paste0("missing_footprint_", c(2015, 2019, 2023, years))]
 co2_pop <- co2_pop[!co2_pop$country %in% c("World", "Kosovo", NA), sapply(names(co2_pop), function(v) any(!is.na(co2_pop[[v]])))]
@@ -100,6 +108,7 @@ compute_gain <- function(year = 2030, base_year = 2019, type = "mean", df = co2_
   if (return_data) return(df) else return(df[[paste0(type, "_gain_", year)]])
 }
 co2_pop <- compute_gain(year = 2015, base_year = 2015, type = "median") # creates median_gain_2015
+co2_pop <- compute_gain(year = 2019, base_year = 2019, type = "mean") 
 co2_pop <- compute_gain(year = 2030, base_year = 2019, type = "mean") # creates mean_gain_2030
 
 
@@ -140,6 +149,16 @@ plot_world_map("median_gain_2015", breaks = thresholds_map, format = c('png', 's
                save = T, width = 1160, height = 560) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) limits = c(-30, 30), 
 # If needed run  cd .\Documents\www\global_tax_attitudes\figures\maps\
 #      and  pdfcrop --margins '-20 0 70 -7' mean_gain_2030 (or simply sh crop_pdf.sh to treat all PDFs)
+
+co2_pop$mean_gain_over_gdp_2019 <- 100*12*co2_pop$mean_gain_2019/co2_pop$gdp_pc_2019 # TODO! mean_gain is computed per adult, not p.c. => abs gain/loss are lower than shown, especially in young countries
+sum((co2_pop$mean_gain_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_over_gdp_2019 > 0], na.rm = T)
+-sum((co2_pop$mean_gain_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_over_gdp_2019 < 0], na.rm = T)
+# /!\ Discrepancy between transfers given (.6T) and received (.9T), probably due to the adult vs. pop issue raised above
+sort(setNames(co2_pop$mean_gain_over_gdp_2019, co2_pop$country))
+plot_world_map("mean_gain_over_gdp_2019", breaks = c(-Inf, -5, -2, -1, 0, 1, 5, 20, 50, Inf), format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -5, -2, -1, 0, 1, 5, 20, 50, Inf), sep = " to ", return = "levels")), 
+               legend = "Average net\ngain per capita\nfrom the GCS\n(in % of GDP)", fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 co2_pop$country[co2_pop$country == "USA"] <- "United States"
 co2_pop$country[co2_pop$country == "UK"] <- "United Kingdom"
 co2_pop$country[co2_pop$country == "Democratic Republic of the Congo"] <- "Democratic Republic of Congo"
@@ -160,16 +179,16 @@ extract_last_year <- function(df = pg, cols = names(df), var_name = NULL, patter
 }
 
 # Problem: U.S. have a poverty gap at $2 of 0.8%, not much lower than India's 1.8%
-pg2 <- read.csv("../data/poverty_gap_2-15.csv") # Poverty gap at $2.15 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.GAPS March 1, 2023 
+pg2 <- read.csv("../data/poverty_gap_2-15.csv") # Poverty gap at $2.15 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.GAPS March 1, 2023. World average: 2.6% i.e. (less than - bc PPP) 163G$ = 2.15*365*8e9*.026
 pg2$code <- pg2$Country.Code
 pg2 <- extract_last_year(df = pg2, cols = paste0("X", 1960:2021), var_name = "pg2", keep = c("Country.Name", "code"))
 pg2$Country.Name[pg2$code %in% co2_pop$code][is.na(pg2$pg2[pg2$code %in% co2_pop$code])] # No data (for any year) for Afghanistan, Cambodia, Cuba, Dominica, Eritrea, Equatorial Guinea, Libya, North Korea. 
 
-pg4 <- read.csv("../data/poverty_gap_3-65.csv") # Poverty gap at $3.65 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.LMIC.GP March 1, 2023 
+pg4 <- read.csv("../data/poverty_gap_3-65.csv") # Poverty gap at $3.65 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.LMIC.GP March 1, 2023. World average: 8% i.e. (less than - bc PPP) .85T$ = 3.65*365*8e9*.08
 pg4$code <- pg4$Country.Code
 pg4 <- extract_last_year(df = pg4, cols = paste0("X", 1960:2021), var_name = "pg4", keep = c("Country.Name", "code"))
 
-pg7 <- read.csv("../data/poverty_gap_6-85.csv") # Poverty gap at $6.85 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.UMIC.GP March 1, 2023 
+pg7 <- read.csv("../data/poverty_gap_6-85.csv") # Poverty gap at $6.85 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.UMIC.GP March 1, 2023. World average: 21% i.e. (less than - bc PPP) 4T$ = 6.85*365*8e9*.21
 pg7$code <- pg7$Country.Code
 pg7 <- extract_last_year(df = pg7, cols = paste0("X", 1960:2021), var_name = "pg7", keep = c("Country.Name", "code"))
 
