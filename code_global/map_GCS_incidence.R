@@ -93,7 +93,7 @@ co2_emissions_2030 <- 26.3e9
 ##### Compute net gain per capita #####
 # Assumption: emissions per adult (>15) will evolve in the same way in all countries
 # There are discrepancies between OECD data (used in OECD survey) and Global Carbon Project data (used here as it covers all countries, cf. Peters al. (2012)). Discrepancies are always within +/- 20%.
-# The results also slightly change if the baseline year 2019 is used instead of 2015, and if we compute the net gain for (i.e. divide by population of) 2030 vs. 2015, cf. deprecated/draft_map_GCS_incidence.R for an analysis
+# The results also slightly change if the baseline year 2019 is used instead of 2015, and if we compute the net gain for (i.e. divide by population of) year = 2030 vs. 2015, cf. deprecated/draft_map_GCS_incidence.R for an analysis
 # For consistency with the OECD survey, we use 2015 as a baseline.
 compute_gain <- function(year = 2030, base_year = 2019, type = "mean", df = co2_pop, return_data = T) {
   df[[paste0("demographic_evolution_", base_year)]] <- (df$adult_2030/df[[paste0("adult_", base_year)]]) * (sum(df[[paste0("adult_", base_year)]])/adult_pop_2030)
@@ -111,6 +111,9 @@ co2_pop <- compute_gain(year = 2015, base_year = 2015, type = "median") # create
 co2_pop <- compute_gain(year = 2019, base_year = 2019, type = "mean") 
 co2_pop <- compute_gain(year = 2030, base_year = 2019, type = "mean") # creates mean_gain_2030
 
+# co2_pop <- compute_gain(year = 2019, base_year = 2019, type = "median") # creates median_gain_2015
+# setNames(c(10, 25, 5, 20, 85), c("FRA", "DEU", "ESP", "GBR", "USA"))
+# setNames(LCU_per_dollar*co2_pop$median_gain_2030[sapply(c("FRA", "DEU", "ESP", "GBR", "USA"), function(c) which(co2_pop$code == c))], c("FRA", "DEU", "ESP", "GBR", "USA"))
 
 # Net median gain in our 5 countries of interest
 (median_gain_2015_LCU <- LCU_per_dollar*co2_pop$median_gain_2015[sapply(c("FRA", "DEU", "ESP", "GBR", "USA"), function(c) which(co2_pop$code == c))])
