@@ -3,9 +3,6 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: US1.aux
 The style file: plainnaturl_clean.bst
 Database file #1: global_tax_attitudes.bib
-Warning--I didn't find a database entry for "egger_general_2022"
-Warning--I didn't find a database entry for "maverick_lloyd_chaos_1937"
-Warning--I didn't find a database entry for "archibugi_global_2011"
 Warning--empty institution in americans_for_tax_fairness_support_2021
 Warning--empty journal in andre_fighting_2021
 Warning--empty publisher in arghiri_unequal_1972
@@ -13,53 +10,55 @@ Warning--empty institution in global_assembly_report_2022
 Warning--empty journal in blanchard_major_2021
 Warning--empty journal in chancel_carbon_2015
 Warning--empty institution in global_challenges_foundation_attitudes_2018
+Warning--empty publisher in iea_energy_2017
 Warning--empty publisher in imf_how_2019
 Warning--empty journal in issp_international_2019
 Warning--empty journal in jamieson_climate_2001
 Warning--empty publisher in kant_zum_1795
 Warning--empty journal in kaufmann_foreign_2012
+Warning--empty institution in maverick_lloyd_chaos_1937
 Warning--empty journal in meilland_international_2023
 Warning--empty institution in patriotic_millionaires_patriotic_2022
 Warning--empty institution in pipa_publics_2008
-You've used 85 entries,
+You've used 101 entries,
             2497 wiz_defined-function locations,
-            1169 strings with 25131 characters,
-and the built_in function-call counts, 31516 in all, are:
-= -- 2854
-> -- 2029
-< -- 56
-+ -- 702
-- -- 615
-* -- 2309
-:= -- 5432
-add.period$ -- 323
-call.type$ -- 85
-change.case$ -- 461
-chr.to.int$ -- 83
-cite$ -- 185
-duplicate$ -- 1435
-empty$ -- 2210
-format.name$ -- 738
-if$ -- 6360
+            1267 strings with 31676 characters,
+and the built_in function-call counts, 42786 in all, are:
+= -- 3713
+> -- 3366
+< -- 64
++ -- 1150
+- -- 1047
+* -- 3396
+:= -- 7401
+add.period$ -- 385
+call.type$ -- 101
+change.case$ -- 652
+chr.to.int$ -- 99
+cite$ -- 219
+duplicate$ -- 1708
+empty$ -- 2639
+format.name$ -- 1194
+if$ -- 8529
 int.to.chr$ -- 3
 int.to.str$ -- 1
-missing$ -- 76
-newline$ -- 501
-num.names$ -- 341
-pop$ -- 755
+missing$ -- 90
+newline$ -- 595
+num.names$ -- 406
+pop$ -- 1109
 preamble$ -- 1
-purify$ -- 375
+purify$ -- 551
 quote$ -- 0
-skip$ -- 1024
+skip$ -- 1327
 stack$ -- 0
-substring$ -- 170
-swap$ -- 71
+substring$ -- 202
+swap$ -- 85
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 885
-warning$ -- 15
-while$ -- 255
+type$ -- 1046
+warning$ -- 17
+while$ -- 303
 width$ -- 0
-write$ -- 1165
-(There were 18 warnings)
+write$ -- 1386
+(There were 17 warnings)

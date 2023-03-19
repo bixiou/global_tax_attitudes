@@ -1,4 +1,4 @@
-\begin{thebibliography}{85}
+\begin{thebibliography}{101}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -46,6 +46,15 @@ P.~Andre, T.~Boneva, F.~Chopra, \& A.~Falk.
   {{Preferences}}, and {{Moral Values}}.
 \newblock 2021.
 
+\bibitem[Archibugi et~al.(2011)Archibugi, {Koenig-Archibugi}, \&
+  Marchetti]{archibugi_global_2011}
+D.~Archibugi, M.~{Koenig-Archibugi}, \& R.~Marchetti.
+\newblock \emph{Global {{Democracy}}: {{Normative}} and {{Empirical
+  Perspectives}}}.
+\newblock {Cambridge University Press}, 2011.
+\newblock
+  \url{https://libgen.unblockit.app/book/index.php?md5=D453BAC780AC14001975318E03B303DA}.
+
 \bibitem[Arghiri(1972)]{arghiri_unequal_1972}
 E.~Arghiri.
 \newblock \emph{Unequal {{Exchange}}: {{A Study}} of the {{Imperialism}} in
@@ -73,6 +82,22 @@ P.~Baer, J.~Harte, B.~Haya, A.~V. Herzog, J.~Holdren, N.~E. Hultman, D.~M.
 F.~Bastagli, J.~{Hagen-Zanker}, L.~Harman, V.~Barca, G.~Sturge, \& T.~Schmidt.
 \newblock Cash transfers: What does the evidence say?
 \newblock Technical report, {ODI}, 2016.
+
+\bibitem[Bauer et~al.(2017)Bauer, Calvin, Emmerling, Fricko, Fujimori, Hilaire,
+  Eom, Krey, Kriegler, Mouratiadou, {Sytze de Boer}, {van den Berg}, Carrara,
+  Daioglou, Drouet, Edmonds, Gernaat, Havlik, Johnson, Klein, Kyle, Marangoni,
+  Masui, Pietzcker, Strubegger, Wise, Riahi, \& {van
+  Vuuren}]{bauer_shared_2017}
+N.~Bauer, K.~Calvin, J.~Emmerling, O.~Fricko, S.~Fujimori, J.~Hilaire, J.~Eom,
+  V.~Krey, E.~Kriegler, I.~Mouratiadou, H.~{Sytze de Boer}, M.~{van den Berg},
+  S.~Carrara, V.~Daioglou, L.~Drouet, J.~E. Edmonds, D.~Gernaat, P.~Havlik,
+  N.~Johnson, D.~Klein, P.~Kyle, G.~Marangoni, T.~Masui, R.~C. Pietzcker,
+  M.~Strubegger, M.~Wise, K.~Riahi, \& D.~P. {van Vuuren}.
+\newblock Shared {{Socio-Economic Pathways}} of the {{Energy Sector}}
+  \textendash{} {{Quantifying}} the {{Narratives}}.
+\newblock \emph{Global Environmental Change}, 2017.
+\newblock
+  \url{http://www.sciencedirect.com/science/article/pii/S0959378016301224}.
 
 \bibitem[Bauhr et~al.(2013)Bauhr, Charron, \& Nasiritousi]{bauhr_does_2013}
 M.~Bauhr, N.~Charron, \& N.~Nasiritousi.
@@ -232,6 +257,14 @@ S.~Drews, I.~Savin, \& J.~C. J.~M. {van den Bergh}.
 \newblock
   \url{https://www.sciencedirect.com/science/article/pii/S0301421522002762}.
 
+\bibitem[Egger et~al.(2022)Egger, Haushofer, Miguel, Niehaus, \&
+  Walker]{egger_general_2022}
+D.~Egger, J.~Haushofer, E.~Miguel, P.~Niehaus, \& M.~Walker.
+\newblock General {{Equilibrium Effects}} of {{Cash Transfers}}: {{Experimental
+  Evidence From Kenya}}.
+\newblock \emph{Econometrica}, 2022.
+\newblock \url{https://onlinelibrary.wiley.com/doi/abs/10.3982/ECTA17945}.
+
 \bibitem[Einstein(1947)]{einstein_general_1947}
 A.~Einstein.
 \newblock To the {{General Assembly}} of the {{United Nations}}, 1947.
@@ -268,6 +301,27 @@ M.~Fleurbaey \& S.~Zuber.
 G.~C. Foundation.
 \newblock Attitudes to global risk and governance survey 2018.
 \newblock Technical report, 2018.
+
+\bibitem[Fremstad \& Paul(2019)]{fremstad_impact_2019}
+A.~Fremstad \& M.~Paul.
+\newblock The {{Impact}} of a {{Carbon Tax}} on {{Inequality}}.
+\newblock \emph{Ecological Economics}, 2019.
+\newblock
+  \url{https://www.sciencedirect.com/science/article/pii/S092180091831084X}.
+
+\bibitem[Fricko et~al.(2017)Fricko, Havlik, Rogelj, Klimont, Gusti, Johnson,
+  Kolp, Strubegger, Valin, Amann, Ermolieva, Forsell, Herrero, Heyes,
+  Kindermann, Krey, McCollum, Obersteiner, Pachauri, Rao, Schmid, Schoepp, \&
+  Riahi]{fricko_marker_2017}
+O.~Fricko, P.~Havlik, J.~Rogelj, Z.~Klimont, M.~Gusti, N.~Johnson, P.~Kolp,
+  M.~Strubegger, H.~Valin, M.~Amann, T.~Ermolieva, N.~Forsell, M.~Herrero,
+  C.~Heyes, G.~Kindermann, V.~Krey, D.~L. McCollum, M.~Obersteiner,
+  S.~Pachauri, S.~Rao, E.~Schmid, W.~Schoepp, \& K.~Riahi.
+\newblock The marker quantification of the {{Shared Socioeconomic Pathway}} 2:
+  {{A}} middle-of-the-road scenario for the 21st century.
+\newblock \emph{Global Environmental Change}, 2017.
+\newblock
+  \url{https://www.sciencedirect.com/science/article/pii/S0959378016300784}.
 
 \bibitem[Gallup(1946)]{gallup_seventy_1946}
 I.~Gallup.
@@ -321,6 +375,12 @@ C.~Gollier \& J.~Tirole.
 \newblock Negotiating {{Effective Institutions Against Climate Change}}.
 \newblock \emph{Economics of Energy \& Environmental Policy}, 2015.
 \newblock \url{https://www.jstor.org/stable/26189377}.
+
+\bibitem[Greenpeace(2015)]{greenpeace_energy_2015}
+Greenpeace.
+\newblock Energy [r]evolution - a sustainable world energy outlook 2015, 2015.
+\newblock
+  \url{https://www.greenpeace.org/archive-international/Global/international/publications/climate/2015/Energy-Revolution-2015-Full.pdf}.
 
 \bibitem[Group(2010)]{issp_research_group_international_2010}
 I.~R. Group.
@@ -382,6 +442,13 @@ M.~Hoel.
 \newblock
   \url{https://pub.cicero.oslo.no/cicero-xmlui/bitstream/handle/11250/192280/CICERO_Working_Paper_1991-01.pdf?sequence=1}.
 
+\bibitem[Hood(2017)]{hood_input_2017}
+C.~Hood.
+\newblock Input to the {{High-level Economic Commission}} on {{Carbon Prices}},
+  2017.
+\newblock
+  \url{https://www.carbonpricingleadership.org/open-for-comments/2017/5/29/input-to-the-high-level-economic-commission-on-carbon-prices-by-christina-hood}.
+
 \bibitem[Hudson \& {van Heerde}(2012)]{hudson_mile_2012}
 D.~Hudson \& J.~{van Heerde}.
 \newblock '{{A Mile Wide}} and an {{Inch Deep}}': {{Surveys}} of {{Public
@@ -390,6 +457,13 @@ D.~Hudson \& J.~{van Heerde}.
   Learning}, 2012.
 \newblock
   \url{http://www.ingentaconnect.com/content/ioep/ijdegl/2012/00000004/00000001/art00002}.
+
+\bibitem[IEA(2017)]{iea_energy_2017}
+IEA.
+\newblock \emph{Energy {{Technology Perspectives}} 2017}.
+\newblock 2017.
+\newblock
+  \url{http://gen.lib.rus.ec/book/index.php?md5=4d5af94a02a48b799cf77641509c1c6b}.
 
 \bibitem[IMF(2019)]{imf_how_2019}
 IMF, editor.
@@ -410,12 +484,30 @@ ISSP.
   Inequality V}}.
 \newblock 2019.
 
+\bibitem[Ivanova \& Wood(2020/ed)]{ivanova_unequal_2020}
+D.~Ivanova \& R.~Wood.
+\newblock The unequal distribution of household carbon footprints in {{Europe}}
+  and its link to sustainability.
+\newblock \emph{Global Sustainability}, 2020/ed.
+\newblock
+  \url{https://www.cambridge.org/core/journals/global-sustainability/article/unequal-distribution-of-household-carbon-footprints-in-europe-and-its-link-to-sustainability/F1ED4F705AF1C6C1FCAD477398353DC2}.
+
 \bibitem[Jamieson(2001)]{jamieson_climate_2001}
 D.~Jamieson.
 \newblock Climate {{Change}} and {{Global Environmental Justice}}.
 \newblock 2001.
 \newblock
   \url{https://direct.mit.edu/books/book/2661/chapter/72114/Climate-Change-and-Global-Environmental-Justice}.
+
+\bibitem[Johansson et~al.(2012)Johansson, Patwardhan, Naki{\'c}enovi{\'c},
+  {Gomez-Echeverri}, \& {International Institute for Applied Systems
+  Analysis}]{johansson_global_2012}
+T.~B. Johansson, A.~Patwardhan, N.~Naki{\'c}enovi{\'c}, L.~{Gomez-Echeverri},
+  \& {International Institute for Applied Systems Analysis}, editors.
+\newblock \emph{Global {{Energy Assessment}} ({{GEA}})}.
+\newblock {Cambridge University Press ; International Institute for Applied
+  Systems Analysis}, {Cambridge : Laxenburg, Austria}, 2012.
+\newblock ISBN 978-1-107-00519-8 978-0-521-18293-5.
 
 \bibitem[Kant(1795)]{kant_zum_1795}
 I.~Kant.
@@ -459,6 +551,13 @@ J.~Leinen \& A.~Bummel.
 D.~J.~C. MacKay, P.~Cramton, A.~Ockenfels, \& S.~Stoft.
 \newblock Price carbon - {{I}} will if you will.
 \newblock \emph{Nature}, 2015.
+
+\bibitem[Maverick~Lloyd \& Schwimmer(1937)]{maverick_lloyd_chaos_1937}
+L.~Maverick~Lloyd \& R.~Schwimmer.
+\newblock Chaos, {{War}}, and a {{New World Order}}.
+\newblock Technical report, 1937.
+\newblock
+  \url{https://utdr.utoledo.edu/islandora/object/utoledo\%3A5135/datastream/OBJ/view}.
 
 \bibitem[McEvoy \& Cherry(2016)]{mcevoy_prospects_2016}
 D.~M. McEvoy \& T.~L. Cherry.
@@ -538,6 +637,12 @@ P.~Paxton \& S.~Knack.
 \newblock \emph{International Political Science Review}, 2012.
 \newblock \url{https://doi.org/10.1177/0192512111406095}.
 
+\bibitem[Peters et~al.(2012)Peters, Davis, \& Andrew]{peters_synthesis_2012}
+G.~P. Peters, S.~J. Davis, \& R.~Andrew.
+\newblock A synthesis of carbon in international trade.
+\newblock \emph{Biogeosciences}, 2012.
+\newblock \url{https://bg.copernicus.org/articles/9/3247/2012/}.
+
 \bibitem[Piketty(2014)]{piketty_capital_2014}
 T.~Piketty.
 \newblock \emph{{Capital in the Twenty\textendash First Century}}.
@@ -573,6 +678,26 @@ R.~Reyes, M.~Lenzen, \& J.~Murray.
 \newblock \emph{Journal of Industrial Ecology}, 2017.
 \newblock \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/jiec.12489}.
 
+\bibitem[Riahi et~al.(2017)Riahi, {van Vuuren}, Kriegler, Edmonds, O'Neill,
+  Fujimori, Bauer, Calvin, Dellink, Fricko, Lutz, Popp, Cuaresma, Kc, Leimbach,
+  Jiang, Kram, Rao, Emmerling, Ebi, Hasegawa, Havlik, Humpen{\"o}der, Da~Silva,
+  Smith, Stehfest, Bosetti, Eom, Gernaat, Masui, Rogelj, Strefler, Drouet,
+  Krey, Luderer, Harmsen, Takahashi, Baumstark, Doelman, Kainuma, Klimont,
+  Marangoni, {Lotze-Campen}, Obersteiner, Tabeau, \& Tavoni]{riahi_shared_2017}
+K.~Riahi, D.~P. {van Vuuren}, E.~Kriegler, J.~Edmonds, B.~C. O'Neill,
+  S.~Fujimori, N.~Bauer, K.~Calvin, R.~Dellink, O.~Fricko, W.~Lutz, A.~Popp,
+  J.~C. Cuaresma, S.~Kc, M.~Leimbach, L.~Jiang, T.~Kram, S.~Rao, J.~Emmerling,
+  K.~Ebi, T.~Hasegawa, P.~Havlik, F.~Humpen{\"o}der, L.~A. Da~Silva, S.~Smith,
+  E.~Stehfest, V.~Bosetti, J.~Eom, D.~Gernaat, T.~Masui, J.~Rogelj,
+  J.~Strefler, L.~Drouet, V.~Krey, G.~Luderer, M.~Harmsen, K.~Takahashi,
+  L.~Baumstark, J.~C. Doelman, M.~Kainuma, Z.~Klimont, G.~Marangoni,
+  H.~{Lotze-Campen}, M.~Obersteiner, A.~Tabeau, \& M.~Tavoni.
+\newblock The {{Shared Socioeconomic Pathways}} and their energy, land use, and
+  greenhouse gas emissions implications: {{An}} overview.
+\newblock \emph{Global Environmental Change}, 2017.
+\newblock
+  \url{http://www.sciencedirect.com/science/article/pii/S0959378016300681}.
+
 \bibitem[Schleich et~al.(2016)Schleich, D{\"u}tschke, Schwirplies, \&
   Ziegler]{schleich_citizens_2016}
 J.~Schleich, E.~D{\"u}tschke, C.~Schwirplies, \& A.~Ziegler.
@@ -580,6 +705,14 @@ J.~Schleich, E.~D{\"u}tschke, C.~Schwirplies, \& A.~Ziegler.
   empirical analysis.
 \newblock \emph{Climate Policy}, 2016.
 \newblock \url{https://doi.org/10.1080/14693062.2014.979129}.
+
+\bibitem[Sivonen(2022)]{sivonen_attitudes_2022}
+J.~Sivonen.
+\newblock Attitudes toward global and national climate policies in {{Finland}}
+  \textendash{} {{The}} significance of climate change risk perception and
+  urban/rural-domicile.
+\newblock \emph{GeoJournal}, 2022.
+\newblock \url{https://doi.org/10.1007/s10708-022-10750-0}.
 
 \bibitem[Sparkman et~al.(2022)Sparkman, Geiger, \&
   Weber]{sparkman_americans_2022}
@@ -604,6 +737,13 @@ E.~A. Stanton.
 \newblock \emph{Climatic Change}, 2011.
 \newblock \url{https://link.springer.com/article/10.1007/s10584-010-9967-6}.
 
+\bibitem[Stern \& Stiglitz(2017)]{stern_report_2017}
+N.~Stern \& J.~E. Stiglitz.
+\newblock Report of the {{High-Level Commission}} on {{Carbon Prices}}.
+\newblock Technical report, {Carbon Pricing Leadership Coalition}, 2017.
+\newblock
+  \url{https://static1.squarespace.com/static/54ff9c5ce4b0a53decccfb4c/t/59b7f2409f8dce5316811916/1505227332748/CarbonPricing_FullReport.pdf}.
+
 \bibitem[van~den Bergh et~al.(2020)van~den Bergh, Angelsen, Baranzini, Botzen,
   Carattini, Drews, Dunlop, Galbraith, Gsottbauer, Howarth, Padilla, Roca, \&
   Schmidt]{bergh_dual-track_2020}
@@ -613,6 +753,20 @@ J.~C. J.~M. van~den Bergh, A.~Angelsen, A.~Baranzini, W.~J.~W. Botzen,
 \newblock A dual-track transition to global carbon pricing.
 \newblock \emph{Climate Policy}, 2020.
 \newblock \url{https://doi.org/10.1080/14693062.2020.1797618}.
+
+\bibitem[{van Vuuren} et~al.(2017){van Vuuren}, Stehfest, Gernaat, Doelman,
+  {van den Berg}, Harmsen, {de Boer}, Bouwman, Daioglou, Edelenbosch, Girod,
+  Kram, Lassaletta, Lucas, {van Meijl}, M{\"u}ller, {van Ruijven}, {van der
+  Sluis}, \& Tabeau]{van_vuuren_energy_2017}
+D.~P. {van Vuuren}, E.~Stehfest, D.~E. H.~J. Gernaat, J.~C. Doelman, M.~{van
+  den Berg}, M.~Harmsen, H.~S. {de Boer}, L.~F. Bouwman, V.~Daioglou, O.~Y.
+  Edelenbosch, B.~Girod, T.~Kram, L.~Lassaletta, P.~L. Lucas, H.~{van Meijl},
+  C.~M{\"u}ller, B.~J. {van Ruijven}, S.~{van der Sluis}, \& A.~Tabeau.
+\newblock Energy, land-use and greenhouse gas emissions trajectories under a
+  green growth paradigm.
+\newblock \emph{Global Environmental Change}, 2017.
+\newblock
+  \url{https://www.sciencedirect.com/science/article/pii/S095937801630067X}.
 
 \bibitem[Weitzman(2017)]{weitzman_world_2017}
 M.~L. Weitzman.
