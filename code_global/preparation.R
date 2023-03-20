@@ -255,8 +255,10 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
     label(e$valid) <- "valid: Respondents that has not been screened out due to speed or failure to the attention test."
     e$dropout <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1"
     label(e$dropout) <- "dropout: Respondent who did not complete the survey though was not excluded."
-    if (country == "US1") {
-      e$dropout_late <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1" & n(e$progress) >= 19
+    if (country %in% c("US1", "US2", "EU")) {
+      progress_socio <- if (country == "US1") 19 else { if (country == "US2")  else }
+      # TODO! View(e[(e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1", ])
+      e$dropout_late <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1" & n(e$progress) >= progress_socio
       label(e$dropout_late) <- "dropout: Respondent who did not complete the survey though was not excluded, and who dropped out after the socio-demographic questions." }
     e$finished_attentive <- (e$valid | (e$duration <= duration_min & e$attention_test=="A little")) & e$finished==1
     label(e$finished_attentive) <- "finished_attentive: Respondent completed the survey and did not fail the attention test."
@@ -747,7 +749,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       unrecognized_levels <- unique(unrecognized_levels) # In EUp there are 58 respondents affected: 55 in UK, 1 in DE, 2 in ES. This is because we updated the policies names in the meantime.
       if (length(unrecognized_levels) > 0) print(paste("There are", length(unrecognized_levels), "unrecognized levels in conjoint analysis (r).", sum(e$conjoint_r_wrong_level), "respondents are affected."))
       e$conjoint_r_number <- 1*(e$conjoint_left_a_b == "A") + 2*(e$conjoint_left_a_b == "B")
-      e$conjoint_r_number[e$conjoint_r_wrong_level==T] <- NA
+      e$conjoint_r_number[e$conjoint_r_wrong_level==T | is.na(e$`F-1-1-1`)] <- NA
       label(e$conjoint_r_number) <- "conjoint_r_number: 1/2/NA (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican. NA if question not asked or there is some unrecognized level (conjoint_r_wrong_level == T)."
     }
     

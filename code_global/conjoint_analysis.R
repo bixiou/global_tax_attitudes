@@ -52,31 +52,31 @@ design_cjoint_US <- makeDesign(filename = "../conjoint_analysis/9d_F.dat") # giv
 design_cjoint_EU <- makeDesign(filename = "../conjoint_analysis/9d_F_EU.dat") 
 design_cjoint_both <- makeDesign(filename = "../conjoint_analysis/9d_F_both.dat") # The weighted are the average of the US and EU weights
 amce <- ca <- list() # We should have "Old qualtrics format detected." (otherwise it would assume new format and delete the first observation).
-for (n in c("us1", "eu", "all")) { # "usp", "eup", "ep"
-  print(n)
-  csv.path <- paste0("../conjoint_analysis/ca_", n, ".csv")
-  write.csv(d(n)[!is.na(d(n)$conjoint_r_number), c(variables_conjoint_r, 'conjoint_r_number', 'n')], csv.path, row.names = FALSE)
+for (df in c("us1", "eu", "all")) { # "usp", "eup", "ep"
+  print(df)
+  csv.path <- paste0("../conjoint_analysis/ca_", df, ".csv")
+  write.csv(d(df)[!is.na(d(df)$conjoint_r_number), c(variables_conjoint_r, 'conjoint_r_number', 'n')], csv.path, row.names = FALSE)
   temp <- readLines(csv.path)
   writeLines(c(temp[1], temp), csv.path)
-  ca[[n]] <- read.qualtrics(csv.path, responses = 'conjoint_r_number', covariates = c(variables_conjoint_r_levels), respondentID = "n") # names(d(n))[cols_conjoint]
-  names(ca[[n]])[1] <- "n"
-  ca[[n]] <- merge(d(n)[, c("country", "n")], ca[[n]])
+  ca[[df]] <- read.qualtrics(csv.path, responses = 'conjoint_r_number', covariates = c(variables_conjoint_r_levels), respondentID = "n") # names(d(n))[cols_conjoint]
+  names(ca[[df]])[1] <- "n"
+  ca[[df]] <- merge(d(df)[, c("country", "n")], ca[[df]])
   for (i in 1:5) {
-    ca[[n]][[conjoint.attributes[i]]] <- as.character(ca[[n]][[conjoint_attributes[i]]])
+    ca[[df]][[conjoint.attributes[i]]] <- as.character(ca[[df]][[conjoint_attributes[i]]])
     for (c in countries) {
-      temp <- which(ca[[n]]$country == c & !(ca[[n]][[conjoint_attributes[i]]] %in% c("soc3", "tax3", "-")))
-      ca[[n]][[conjoint.attributes[i]]][temp] <- as.character(policies.names[as.character(ca[[n]][[conjoint_attributes[i]]][temp]), c])
+      temp <- which(ca[[df]]$country == c & !(ca[[df]][[conjoint_attributes[i]]] %in% c("soc3", "tax3", "-")))
+      ca[[df]][[conjoint.attributes[i]]][temp] <- as.character(policies.names[as.character(ca[[df]][[conjoint_attributes[i]]][temp]), c])
     }
-    ca[[n]][[conjoint.attributes[i]]][ca[[n]][[conjoint_attributes[i]]] == "-"] <- "-"
-    ca[[n]][[conjoint.attributes[i]]][ca[[n]][[conjoint_attributes[i]]] == "soc3"] <- "Making abortion a right at the federal level"
-    ca[[n]][[conjoint.attributes[i]]][ca[[n]][[conjoint_attributes[i]]] == "tax3"] <- "Increase corporate income tax rate from 21% to 28%"
-    ca[[n]][[conjoint.attributes[i]]] <- as.factor(ca[[n]][[conjoint.attributes[i]]])
-    ca[[n]][[paste0(conjoint.attributes[i], ".rowpos")]] <- ca[[n]][[paste0(conjoint_attributes[i], ".rowpos")]]
+    ca[[df]][[conjoint.attributes[i]]][ca[[df]][[conjoint_attributes[i]]] == "-"] <- "-"
+    ca[[df]][[conjoint.attributes[i]]][ca[[df]][[conjoint_attributes[i]]] == "soc3"] <- "Making abortion a right at the federal level"
+    ca[[df]][[conjoint.attributes[i]]][ca[[df]][[conjoint_attributes[i]]] == "tax3"] <- "Increase corporate income tax rate from 21% to 28%"
+    ca[[df]][[conjoint.attributes[i]]] <- as.factor(ca[[df]][[conjoint.attributes[i]]])
+    ca[[df]][[paste0(conjoint.attributes[i], ".rowpos")]] <- ca[[df]][[paste0(conjoint_attributes[i], ".rowpos")]]
   }
-  formula_cjoint <- if (grepl("us", n)) formula_cjoint_specific else formula_cjoint_generic
-  design_cjoint <- if (grepl("us", n)) design_cjoint_US else { if (n %in% c("e", "ep", "all")) design_cjoint_both else design_cjoint_EU }
-  # amce[[n]] <- amce(formula_cjoint, ca[[n]], cluster = FALSE, weights= NULL)
-  amce[[n]] <- amce(formula_cjoint, ca[[n]], design = design_cjoint, cluster = FALSE, weights= NULL)
+  formula_cjoint <- if (grepl("us", df)) formula_cjoint_specific else formula_cjoint_generic
+  design_cjoint <- if (grepl("us", df)) design_cjoint_US else { if (df %in% c("e", "ep", "all")) design_cjoint_both else design_cjoint_EU }
+  # amce[[n]] <- amce(formula_cjoint, ca[[df]], cluster = FALSE, weights= NULL)
+  amce[[df]] <- amce(formula_cjoint, ca[[df]], design = design_cjoint, cluster = FALSE, weights= NULL)
 }
 # ca_e <- read.qualtrics("../data/EUn.csv", responses = "Q30", covariates = variables_conjoint_r_levels, ranks = NULL, new.format = T) 
 for (c in countries_EU) {
@@ -99,7 +99,7 @@ for (c in c("all", "eu")) {
 # baselines$attribute <- "level"
 # Amce <- amce(formula_cjoint_specific, ca[["usp"]], cluster = FALSE, weights= NULL, design = design_cjoint_US)
 # Amce <- amce(formula_cjoint_generic, ca[["eup"]], cluster = FALSE, weights= NULL, design = design_cjoint_EU)
-# Amce <- amce(formula_cjoint, ca[[n]], cluster = FALSE, weights= NULL)
+# Amce <- amce(formula_cjoint, ca[[df]], cluster = FALSE, weights= NULL)
 # # Amce <- amce(formula_cjoint, ca_e[!is.na(ca_e$selected),], cluster = FALSE, weights= NULL)
 # summary(Amce)http://127.0.0.1:11371/graphics/09d65b49-3a15-4047-bd65-2542b724f185.png
 # plot(Amce)

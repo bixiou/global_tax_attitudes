@@ -562,6 +562,20 @@ This is totally optional and will not be rewarded.
 \clearpage
 \section{Representativeness of the surveys}\label{app:representativeness}
 
+
+\begin{table}[h!]\label{tab:representativeness_waves}
+    \caption{Sample representativeness of the complementary surveys.} 
+    \makebox[\textwidth][c]{
+        \resizebox*{!}{.80\textheight}{% 73 without notes cf. https://tex.stackexchange.com/questions/13809/resizing-a-table-by-textheight 
+        \input{../tables/sample_composition/US1_US2_EU_all}
+        }
+    }
+    {\footnotesize \textit{Note}: This table displays summary statistics of the samples alongside actual population frequencies. %For \textit{Vote}, we regroup candidates or parties into three broad categories and we take abstention into account (but omit this category). 
+    %For \textit{Inactivity rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being either ``\textit{Inactive (not searching for a job)},'' a ``\textit{Student},'' or ``\textit{Retired}.'' For \textit{Unemployment rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being ``\textit{Unemployed (searching for a job)}'', (`\textit{Unemployed (searching for a job)},'' ``\textit{Full-time employed},'' ``\textit{Part-time employed},'' or ``\textit{Self-employed}''). For	\textit{Employment rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being either ``\textit{Full-time employed},'' ``\textit{Part-time employed},'' or ``\textit{Self-employed}.'' 
+    Detailed sources for each variable and country population frequencies, as well as the definitions of regions, diploma, urbanity, employment, and vote are available in % TODO Appendix \ref{app:sources}.
+    } % TODO add hline before Urbanity, move Country/Urbanity above and add in Notes that quotas are those above the line
+\end{table}
+
 \begin{table}[h]\label{tab:representativeness_EU}
     \caption{Sample representativeness for each European country.} 
     \makebox[\textwidth][c]{
@@ -575,20 +589,6 @@ This is totally optional and will not be rewarded.
     Detailed sources for each variable and country population frequencies, as well as the definitions of regions, diploma, urbanity, employment, and vote are available in % TODO Appendix \ref{app:sources}.
     }
 \end{table}
-
-\begin{table}[h]\label{tab:representativeness_waves}
-    \caption{Sample representativeness of the complementary surveys.} 
-    \makebox[\textwidth][c]{
-        \resizebox*{!}{.80\textheight}{% 73 without notes cf. https://tex.stackexchange.com/questions/13809/resizing-a-table-by-textheight 
-        \input{../tables/sample_composition/US1_US2_EU_all}
-        }
-    }
-    {\footnotesize \textit{Note}: This table displays summary statistics of the samples alongside actual population frequencies. %For \textit{Vote}, we regroup candidates or parties into three broad categories and we take abstention into account (but omit this category). 
-    %For \textit{Inactivity rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being either ``\textit{Inactive (not searching for a job)},'' a ``\textit{Student},'' or ``\textit{Retired}.'' For \textit{Unemployment rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being ``\textit{Unemployed (searching for a job)}'', (`\textit{Unemployed (searching for a job)},'' ``\textit{Full-time employed},'' ``\textit{Part-time employed},'' or ``\textit{Self-employed}''). For	\textit{Employment rate (15-64)}, the sample statistics include the share of respondents aged between 15 and 64 years old who indicated being either ``\textit{Full-time employed},'' ``\textit{Part-time employed},'' or ``\textit{Self-employed}.'' 
-    Detailed sources for each variable and country population frequencies, as well as the definitions of regions, diploma, urbanity, employment, and vote are available in % TODO Appendix \ref{app:sources}.
-    } % TODO add hline before Urbanity, move Country/Urbanity above and add in Notes that quotas are those above the line
-\end{table}
-
 \clearpage
 \section{Net gains from the Global Climate Scheme}\label{app:gain_gcs}
 
@@ -646,3 +646,25 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
     {\footnotesize %\textit{Note}: 
     }
 \end{table}
+
+% \begin{table}[h]\label{tab:attrition_US2}
+%     \caption{Attrition analysis for the US2 survey.} 
+%     \makebox[\textwidth][c]{
+% \resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
+%         \input{../tables/US2/attrition_analysis.tex}
+%         }
+%     }
+%     {\footnotesize %\textit{Note}: 
+%     }
+% \end{table}
+
+% \begin{table}[h]\label{tab:attrition_EU}
+%     \caption{Attrition analysis for the EU survey.} 
+%     \makebox[\textwidth][c]{
+% \resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
+%         \input{../tables/EU/attrition_analysis.tex}
+%         }
+%     }
+%     {\footnotesize %\textit{Note}: 
+%     }
+% \end{table}
