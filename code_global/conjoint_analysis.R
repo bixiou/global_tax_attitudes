@@ -58,6 +58,7 @@ for (df in c("us1", "eu", "all")) { # "usp", "eup", "ep"
   write.csv(d(df)[!is.na(d(df)$conjoint_r_number), c(variables_conjoint_r, 'conjoint_r_number', 'n')], csv.path, row.names = FALSE)
   temp <- readLines(csv.path)
   writeLines(c(temp[1], temp), csv.path)
+  # /!\ Bugs at CIRED but works well at home
   ca[[df]] <- read.qualtrics(csv.path, responses = 'conjoint_r_number', covariates = c(variables_conjoint_r_levels), respondentID = "n") # names(d(n))[cols_conjoint]
   names(ca[[df]])[1] <- "n"
   ca[[df]] <- merge(d(df)[, c("country", "n")], ca[[df]])
@@ -89,7 +90,7 @@ for (c in c("all", "eu")) {
   for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], "US"]
   for (i in c("climatepolclimate3", "taxsystemtax1", "foreignpolicyforeign1", "foreignpolicyforeign2", "foreignpolicyforeign3", "foreignpolicyforeign4")) amce[[c]]$user.levels[[i]] <- policies.names[amce[[c]]$user.levels[[i]], "US"]
   amce[[c]]$user.levels[["econissuesecon2"]] <- "[Higher minimum wage] (DE: Bürgerversicherung)" # TODO! switch econ 1 with 4 in UK, ES and 3 with 4 in US and write "[Higher spending on public services like health]"
-  amce[[c]]$user.levels[["climatepolclimate2"]] <- if (c == "eu") "Thermal insulation plan" else "Thermal insulation plan (except US: trillion investment in transport and insulation)"
+  amce[[c]]$user.levels[["climatepolclimate2"]] <- if (c == "eu") "Thermal insulation plan" else "[Thermal insulation plan] (except US: trillion investment in transport and insulation)"
   amce[[c]]$user.levels[["taxsystemtax2"]] <- "[Wealth tax] (ES: raise income tax above 100k€/year)"
 }
 
@@ -105,11 +106,11 @@ for (c in c("all", "eu")) {
 # plot(Amce)
 
 plot(amce$all, xlab = "Average Marginal Component Effect", text.size = 18) # TODO! good labels
-save_plot (filename = "ca_r", folder = '../figures/all/', width = 700, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+save_plot (filename = "ca_r", folder = '../figures/all/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
 plot(amce$us1, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r", folder = '../figures/US1/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
 plot(amce$eu, xlab = "Average Marginal Component Effect", text.size = 18)# TODO! good labels
-save_plot (filename = "ca_r", folder = '../figures/EU/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
+save_plot (filename = "ca_r", folder = '../figures/EU/', width = 900, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
 plot(amce$FR, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF
 plot(amce$DE, xlab = "Average Marginal Component Effect", text.size = 18)

@@ -1,7 +1,33 @@
-##### Global millionaire tax #####
-same_reg_subsamples(dep.var = "global_tax_sharing", dep.var.caption = "Prefers to share half of global tax with low-income countries", covariates = c("vote_factor"), 
-                    data = all[all$country != "US",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "global_tax_sharing_vote", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+##### Stated support #####
+# TODO complete
+# support_binary_positive
+# support_likert_positive, support_likert_share
+
+# Foreign aid
+decrit(all$foreign_aid_raise_support)
+# all/foreign_aid_condition
+
+##### petition ##### 
+
+
+##### Second-order beliefs ##### 
+decrit(us1$gcs_belief)
+decrit(eu$gcs_belief)
+decrit(eu$gcs_belief > 50, weights = eu$weight)
+
+
+##### Universalism #####
+# group_defended_agg, group_defended_agg2
+decrit("group_defended_agg", data = all, which = all$vote != 0)
+decrit("group_defended_agg", data = eu, which = eu$vote != 0)
+decrit("group_defended_agg", data = us1, which = us1$vote != 0)
+decrit("group_defended_agg", data = all, which = all$vote == -1)
+decrit("group_defended_agg", data = eu, which = eu$vote == -1)
+decrit("group_defended_agg", data = us1, which = us1$vote == -1)
+# all/negotiation
+wtd.mean(all$problem_climate, weights = all$weight)
+wtd.mean(all$problem_poverty, weights = all$weight)
+wtd.mean(all$problem_inequality, weights = all$weight)
 
 
 ##### Donation #####
@@ -24,6 +50,12 @@ same_reg_subsamples(dep.var = "donation_above_25 ", dep.var.caption = "More than
 same_reg_subsamples(dep.var = "donation_above_25 ", dep.var.caption = "More than 25\\% donated to poor people", covariates = c("branch_donation"), 
                     data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
                     filename = "donation_above_25 ", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+
+##### Global millionaire tax #####
+same_reg_subsamples(dep.var = "global_tax_sharing", dep.var.caption = "Prefers to share half of global tax with low-income countries", covariates = c("vote_factor"), 
+                    data = all[all$country != "US",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "global_tax_sharing_vote", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
 
 
 ##### Conjoint analysis: Left/Right vote #####

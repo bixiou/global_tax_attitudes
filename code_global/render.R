@@ -120,7 +120,7 @@ labels_vars <- c(
   "remove_tariffs_support" = "Removing tariffs on imports from low-income countries",
   "global_min_wage_support" = "A minimum wage in all countries at 50% of local median wage",
   "global_register_support" = "Fight tax evasion by creating a global financial register to record ownership of all assets",
-  "cap_wealth_support" = "A maximum wealth limit of $10 billion (US) / €100 million (EU) for each human", # TODO! run
+  "cap_wealth_support" = "A maximum wealth limit of $10 billion (US) / €100 million (Eu) for each human", # TODO! run
   "attention_test" = "Attention test",
   "donation_nation" = "Donation to own country",
   "donation_africa" = "Donation to Africa",
