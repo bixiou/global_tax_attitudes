@@ -111,7 +111,7 @@ co2_pop <- compute_gain(year = 2015, base_year = 2015, type = "median") # create
 co2_pop <- compute_gain(year = 2019, base_year = 2019, type = "mean") 
 co2_pop <- compute_gain(year = 2030, base_year = 2019, type = "mean") # creates mean_gain_2030
 
-# co2_pop <- compute_gain(year = 2019, base_year = 2019, type = "median") # creates median_gain_2015
+# co2_pop <- compute_gain(year = 2030, base_year = 2019, type = "median") # creates median_gain_2015
 # setNames(c(10, 25, 5, 20, 85), c("FRA", "DEU", "ESP", "GBR", "USA"))
 # setNames(LCU_per_dollar*co2_pop$median_gain_2030[sapply(c("FRA", "DEU", "ESP", "GBR", "USA"), function(c) which(co2_pop$code == c))], c("FRA", "DEU", "ESP", "GBR", "USA"))
 
