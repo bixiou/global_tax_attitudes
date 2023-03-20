@@ -2304,7 +2304,7 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
 # }
 
 representativeness_table <- function(country_list, weighted = T, non_weighted = T, label_operator = union, all = FALSE, omit = c("Other", "Not 25-64", "Employment_18_64: Employed", "Employment_18_64: 65+", "PNR", "Urban: FALSE"),
-                                     filename = NULL, folder = "../tables/sample_composition/", return_table = FALSE, threshold_skip = 0.01, weight_var = "weight") {
+                                     filename = NULL, folder = "../tables/sample_composition/", return_table = FALSE, threshold_skip = 0.01, weight_var = "weight", abbr = NULL) {
   rows <- c()
   pop <- sample <- sample_weighted <- labels <- list()
   for (i in seq_along(country_list)) {
@@ -2346,10 +2346,10 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
 
   table <- table[!multi_grepl(omit, row.names(table)),]
   if (return_table) return(table)
-  else export_representativeness_table(table = table, country_list = country_list, weighted = weighted, non_weighted = non_weighted, filename = if (all) paste0(filename, "_all") else filename, folder = folder)
+  else export_representativeness_table(table = table, country_list = country_list, weighted = weighted, non_weighted = non_weighted, filename = if (all) paste0(filename, "_all") else filename, folder = folder, abbr = abbr)
 }
 # representativeness_table(c("US1"), return_table = T)
-export_representativeness_table <- function(table, country_list, weighted = T, non_weighted = T, filename = NULL, folder = "../tables/sample_composition") {
+export_representativeness_table <- function(table, country_list, weighted = T, non_weighted = T, filename = NULL, folder = "../tables/sample_composition", abbr = NULL) {
   header <- c("", rep((1 + weighted + non_weighted), length(country_list)))
   names(header) <- c("", country_list)
 
@@ -2361,8 +2361,9 @@ export_representativeness_table <- function(table, country_list, weighted = T, n
   }
 
   row.names(table) <- gsub("_", "\\_", row.names(table), fixed = T)
+  if (is.null(abbr)) abbr <- length(country_list) > 3
   latex_output <- kbl(table, "latex", caption = NULL, position = "b", escape = F, booktabs = T,
-                      col.names = rep(c("Pop.", if (non_weighted) "Sample", if (weighted) "\\makecell{Weighted\\\\sample}"), length(country_list)),
+                      col.names = rep(c("Pop.", if (non_weighted) {if (abbr) "Sam." else ("Sample")}, if (weighted) {if (abbr) "\\makecell{Wght.\\\\sam.}" else "\\makecell{Weighted\\\\sample}"}), length(country_list)),
                       linesep = line_sep) %>% add_header_above(header)
 
   if (is.null(filename)) filename <- paste(country_list, collapse = "_")

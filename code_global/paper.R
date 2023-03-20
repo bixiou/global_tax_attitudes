@@ -99,3 +99,6 @@ plot(avg.pred.social.desirability_no_r)
 plot(avg.pred.social.desirability_r)
 
 
+##### App Representativeness #####
+representativeness_table(c("US1", "US2", "EU"), return_table = F, all = T) 
+representativeness_table(countries_EU, return_table = F, all = T, weight_var = "weight_country") 

@@ -71,16 +71,16 @@ major_candidates <- minor_candidates <- list()
   # "DE_urban_category" = c("Rural", "Towns_and_Suburbs", "Cities"),
 )
   
-  quotas <- list("EU" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "country"),
-                 "EU_all" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64", "country", "employment_18_64", "vote"), # TODO! vote_eu
-                 "US" = c("gender", "income_quartile", "age", "urban", "diploma_25_64", "region", "race"), 
-                 "US_vote" = c("gender", "income_quartile", "age", "urban", "diploma_25_64", "region", "race", "vote_us"),
-                 "US_all" = c("gender", "income_quartile", "age", "urban", "diploma_25_64", "region", "race", "employment_18_64", "vote"),
-                 "FR" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"), #, "urban_category") From oecd_climate: Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
+  quotas <- list("EU" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity"),
+                 "EU_all" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity", "employment_18_64", "vote"), # TODO! vote_eu
+                 "US" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban"), 
+                 "US_vote" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban", "vote_us"),
+                 "US_all" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban", "employment_18_64", "vote"),
+                 "FR" = c("gender", "income_quartile", "age", "diploma_25_64", "urbanity"), #, "urban_category") From oecd_climate: Pb sur cette variable car il y a des codes postaux à cheval sur plusieurs types d'aires urbaines. Ça doit fausser le type d'aire urbaine sur un peu moins de 10% des répondants. Plus souvent que l'inverse, ça les alloue au rural alors qu'ils sont urbains.
                  # Au final ça rajoute plus du bruit qu'autre chose, et ça gène pas tant que ça la représentativité de l'échantillon (surtout par rapport à d'autres variables type age ou diplôme). Mais ça justifie de pas repondérer par rapport à cette variable je pense. cf. FR_communes.R pour les détails.
-                 "DE" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"),
-                 "ES" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64"),
-                 "UK" = c("gender", "income_quartile", "age", "urbanity", "diploma_25_64")
+                 "DE" = c("gender", "income_quartile", "age", "diploma_25_64", "urbanity"),
+                 "ES" = c("gender", "income_quartile", "age", "diploma_25_64", "urbanity"),
+                 "UK" = c("gender", "income_quartile", "age", "diploma_25_64", "urbanity")
   )
   for (c in countries_EU) quotas[[paste0(c, "_all")]] <- c(quotas[[c]], "employment_18_64", "vote")
 
