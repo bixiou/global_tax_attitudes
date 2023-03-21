@@ -552,13 +552,17 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       if (wave == "pilot" & country != "US2") e$list_exp_rl[e$branch_list_exp == "gl" & e$country %in% c("US", "FR", "UK")] <- e$list_exp_gl[e$branch_list_exp == "gl" & e$country %in% c("US", "FR", "UK")]
       if (wave == "pilot" & country != "US2") e$list_exp_gl[e$branch_list_exp == "gl" & e$country %in% c("US", "FR", "UK")] <- NA
       if (wave == "pilot" & country != "US2") e$branch_list_exp[e$branch_list_exp == "gl" & e$country %in% c("US", "FR", "UK")] <- "rl"
-      label(e$branch_list_exp) <- "branch_list_exp: i/ir/gr/igr Variant of the list experiment faced, where i denotes coal exit (US) or the buildings' insulation plan (EU), r the national redistribution, and g the global climate scheme. Marriage only for opposite-sex couples (US) and death penalty for major crimes (EU) were also systematically included."
+      label(e$branch_list_exp) <- "branch_list_exp: control/rl/gl/rgl Variant of the list experiment faced, where l denotes coal exit (US) or the buildings' insulation plan (EU), r the national redistribution, and g the global climate scheme. Marriage only for opposite-sex couples (US) and death penalty for major crimes (EU) were also systematically included."
       e$branch_list_exp_g <- grepl("g", e$branch_list_exp)
       e$branch_list_exp_r <- grepl("r", e$branch_list_exp)
       label(e$branch_list_exp_r) <- "branch_list_exp_r: T/F r (national redistribution) is present in the list experiment."
       label(e$branch_list_exp_g) <- "branch_list_exp_g: T/F g (global climate scheme) is present in the list experiment."
       for (v in c("l", "rl", "gl", "rgl")) e$list_exp[e$branch_list_exp == v] <- e[[paste0("list_exp_", v)]][e$branch_list_exp == v]
       label(e$list_exp) <- "list_exp: [0-4] Number of supported policies in the list experiment (combining all branches, cf. branch_list_exp and variables_list_exp)."
+      e$branch_list_exp_ict <- e$branch_list_exp
+      e$branch_list_exp_ict[e$branch_list_exp == "l"] <- "control"
+      e$branch_list_exp_ict <- as.factor(e$branch_list_exp_ict)
+      e$branch_list_exp_ict <-  1*(e$branch_list_exp == "gl") + 2*(e$branch_list_exp == "rl") + 3*(e$branch_list_exp == "rgl")
     }
     
     for (v in c(variables_support_likert, variables_support_ets2_support)) {

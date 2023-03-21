@@ -7,7 +7,11 @@
 decrit(all$foreign_aid_raise_support)
 # all/foreign_aid_condition
 
-##### petition ##### 
+##### Petition ##### 
+t.test(us1$gcs_support[us1$branch_petition == "gcs"], us1$petition_gcs[us1$branch_petition == "gcs"]) # cannot reject equality (p=.11)
+t.test(eu$gcs_support[eu$branch_petition == "gcs"], eu$petition_gcs[eu$branch_petition == "gcs"]) # cannot reject equality (p=.11)
+wtd.t.test(us1$gcs_support[us1$branch_petition == "gcs"], us1$petition_gcs[us1$branch_petition == "gcs"], weight=us1$weight[us1$branch_petition == "gcs"]) # cannot reject equality (p=.30)
+wtd.t.test(eu$gcs_support[eu$branch_petition == "gcs"], eu$petition_gcs[eu$branch_petition == "gcs"], weight=eu$weight[eu$branch_petition == "gcs"]) # rejects equality (p=1e-5)
 
 
 ##### Second-order beliefs ##### 
@@ -102,33 +106,59 @@ same_reg_subsamples(dep.var = "list_exp_0", dep.var.caption = "No supported poli
                     add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
                                      c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
 
-# TODO! Find a test that works for the combined list experiment branch_list_exp_g:branch_list_exp_r, cf. Blair & Imai (12) sections 2.2, 2.3, 2.5.2
-# From Blair & Imai (12)
-fit.list_no_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "ml")
-fit.list_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "ml")
+# TODO! Find a test that works for the combined list experiment branch_list_exp_g:branch_list_exp_r. Mail sent to Blair & Imai 
+# From Blair & Imai (12) /!\ TODO! Read the paper to understand whether "lm" method (yielding the same as lm regression) or the default "ml" is preferable
+fit.list_no_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
+fit.list_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
 fit.direct <- glm(gcs_support == 'Yes' ~ 1, data = all, family = binomial("logit"))
 (avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
 (avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
 
-fit.list_no_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "US" & all$branch_list_exp_r == F,], weights = 'weight', method = "ml")
-fit.list_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "US" & all$branch_list_exp_r == T,], weights = 'weight', method = "ml")
+fit.list_no_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "US" & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
+fit.list_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "US" & all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
 fit.direct_US <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "US",], family = binomial("logit"))
-(avg.pred.social.desirability_no_r_US <- predict(fit.list_no_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # -.064 95% CI: (-.13, .007)
-(avg.pred.social.desirability_r_US <- predict(fit.list_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # -.02 95% CI: (-.09, .05)
+(avg.pred.social.desirability_no_r_US <- predict(fit.list_no_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # -.06 95% CI: (-.15, .03)
+(avg.pred.social.desirability_r_US <- predict(fit.list_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # .004 95% CI: (-.12, .13)
 
-fit.list_no_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "Eu" & all$branch_list_exp_r == F,], weights = 'weight', method = "ml")
+fit.list_no_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "Eu" & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
 fit.list_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "Eu" & all$branch_list_exp_r == T,], weights = 'weight', method = "ml")
 fit.direct_Eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Eu",], family = binomial("logit"))
-(avg.pred.social.desirability_no_r_Eu <- predict(fit.list_no_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # -.058 95% CI: (-.13, .01)
-(avg.pred.social.desirability_r_Eu <- predict(fit.list_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # -.126 95% CI: (-.20, -.05)
+(avg.pred.social.desirability_no_r_Eu <- predict(fit.list_no_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # .01 95% CI: (-.07, .09)
+(avg.pred.social.desirability_r_Eu <- predict(fit.list_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # -.10 95% CI: (-.17, -.03)
 
-fit.list_no_r <- ictreg(list_exp ~ continent, treat = c('branch_list_exp_g'), J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "ml")
-fit.list_r <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "ml")
+fit.list_no_r <- ictreg(list_exp ~ continent, treat = c('branch_list_exp_g'), J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
+fit.list_r <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
 fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
 (avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
 (avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
 plot(avg.pred.social.desirability_no_r)
 plot(avg.pred.social.desirability_r)
+
+# Good ones here
+summary(lm(list_exp ~ branch_list_exp_g*continent, data = all, weights = all$weight))
+fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
+fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, weights = weight, family = binomial("logit"))
+(avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE)) # -.014 95% CI: (-.07, -.04)
+
+summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "Eu",], weights = weight))
+fit.list_eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(eu$branch_list_exp_r == T, eu$weight), data = all[all$continent == "Eu",], weights = 'weight', method = "lm")
+fit.direct_eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Eu",], weights = weight, family = binomial("logit"))
+(avg.pred.social.desirability_eu <- predict(fit.list_eu, direct.glm = fit.direct_eu, se.fit = TRUE)) # -.026 95% CI: (-.10, .05)
+
+summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "US",], weights = weight))
+fit.list_us <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(us1$branch_list_exp_r == T, us1$weight), data = all[all$continent == "US",], weights = 'weight', method = "lm")
+fit.direct_us <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "US",], weights = weight, family = binomial("logit"))
+(avg.pred.social.desirability_us <- predict(fit.list_us, direct.glm = fit.direct_us, se.fit = TRUE)) # -.026 95% CI: (-.11, -.06)
+
+same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g"), 
+                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
+                    filename = "reg_list_exp_g", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
+                    add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(all$gcs_support, weights = all$weight), 3), "} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\"))))
+
+# /!\ Weighted list experiment regression is not supported (yet) for the multi-item design.
+# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
+# fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_ict', J = 2, data = all, method = "lm", multi.condition = "level")
+# (avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
 
 
 ##### App Representativeness #####

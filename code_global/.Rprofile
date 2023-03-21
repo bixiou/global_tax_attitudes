@@ -54,6 +54,7 @@ package("cjoint") # conjoint analysis /!\ I fixed a bug in the program => to ins
 package("modelsummary")
 package("xtable") # export latex table
 package("list") # list experiment aka. item count technique: ictreg
+package("weights") # wtd.t.test
 #' package("rms")
 #' package('pwr')
 #' package("foreign")
