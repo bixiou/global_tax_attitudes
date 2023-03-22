@@ -241,6 +241,7 @@ labels_vars <- c(
   "conjoint_a_matches_support" = "Conjoint (a) and support answers match",
   "nationalist" = "Nationalist",
   "universalist" = "Universalist",
+  "individualist" = "Individualist",
   "woman" = "Gender: Woman",
   "man" = "Gender: Man",
   "ets2_equal_cash_support" = "Supports ETS2 with equal cash transfer<br>(105€/year for each European)",
@@ -378,7 +379,7 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
     if (!"labels" %in% names(heatmaps[[name]])) {
       if (!"vars" %in% names(heatmaps[[name]])) { warning(paste("'vars' must be specified for", name)) }
       heatmaps[[name]]$labels <- c()
-      for (var in heatmaps[[name]]$vars) heatmaps[[name]]$labels <- c(heatmaps[[name]]$labels, ifelse(var %in% names(labels_vars), labels_vars[var], var))
+      for (var in heatmaps[[name]]$vars) heatmaps[[name]]$labels <- c(heatmaps[[name]]$labels, break_strings(ifelse(var %in% names(labels_vars), labels_vars[var], var), sep = "\n"))
     }
     if (!"conditions" %in% names(heatmaps[[name]])) heatmaps[[name]]$conditions <- conditions
     if (!"sort" %in% names(heatmaps[[name]])) heatmaps[[name]]$sort <- sort
@@ -611,8 +612,8 @@ barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_co
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
-heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint_ab_all")], weights = T)
-heatmap_multiple(heatmaps_defs[c("global_tax_global_share")], weights = T)
+heatmap_multiple(heatmaps_defs[c("foreign_aid_no", "foreign_aid_condition")], weights = T)
+heatmap_multiple(heatmaps_defs[c("foreign_aid_condition")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_only", "petition_gcs", "petition_nr", "global_tax_global_share")], weights = T)
 
