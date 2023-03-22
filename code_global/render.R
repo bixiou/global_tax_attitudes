@@ -593,8 +593,8 @@ barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 # return(barres_defs) }
 # barres_defs$foreign_aid_no
 
-barresN_defs <- fill_barres(c("group_defended_agg2"), list("negotiation" = list(width = 940)), along = "country_name")
-barresN_continent_defs <- fill_barres(c("group_defended_agg2"), list("negotiation" = list(width = 940)), along = "continent")
+barresN_defs <- fill_barres(c("group_defended_agg2", "foreign_aid_raise_support"), list("negotiation" = list(width = 940)), along = "country_name")
+barresN_continent_defs <- fill_barres(c("group_defended_agg2", "foreign_aid_raise_support"), list("negotiation" = list(width = 940)), along = "continent")
 
 
 ##### Run #####
@@ -607,7 +607,7 @@ barres_multiple(barres = barres_defs[c("income_quartile")], df = eu, folder = ".
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
 barresN_defs <- fill_barres(c("group_defended_agg2"), list("negotiation" = list(width = 940)), along = "country_name")
-barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
+barres_multiple(barres = barresN_continent_defs["foreign_aid_raise_support"], df = all, folder = "../figures/continents/") 
 
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
