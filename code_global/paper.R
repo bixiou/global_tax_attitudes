@@ -1,10 +1,9 @@
 ##### Stated support #####
 # TODO complete
 # support_binary_positive
-# support_likert_positive, support_likert_share
 
 # Global wealth tax
-# support_likert_positive, global_policies_mean, global_policies_positive, global_policies_share
+# global_tax_sharing_positive, global_tax_global_share_positive, global_tax_global_share_share TODO! combine them
 decrit(us2$global_tax_support > 0, us2, which = us2$global_tax_support != 0) 
 decrit(us2$national_tax_support > 0, us2, which = us2$national_tax_support != 0) 
 decrit("global_tax_support", us2)
@@ -17,6 +16,9 @@ decrit("global_tax_sharing", all, weight = F)
 decrit("global_tax_sharing", us2) # 65% Yes
 decrit("global_tax_support", eu, which = eu$country == "FR", weights = eu$weight_country)
 
+# Other global policies
+# support_likert_positive, support_likert_share
+# support_likert_positive, global_policies_mean, global_policies_positive, global_policies_share
 
 # Foreign aid
 decrit(all$foreign_aid_raise_support)
@@ -108,6 +110,12 @@ decrit("conjoint_left_ag_b_binary", us1)
 decrit("conjoint_left_ag_b_binary", us1, weight = F)
 wtd.t.test(eu$conjoint_left_ag_b_binary[eu$country=='UK'], .5, weight = eu$weight_country[eu$country=='UK'])
 wtd.t.test(eu$conjoint_left_ag_b_binary[eu$country=='ES'], .5, weight = eu$weight_country[eu$country=='ES'])
+
+# Conjoint 5
+same_reg_subsamples(dep.var = "conjoint_d", dep.var.caption = "Prefers the platform", covariates = c("branch_c_gcs"), 
+                    data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "conjoint_d", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
 
 
 ##### Prioritization #####
