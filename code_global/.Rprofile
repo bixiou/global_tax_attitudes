@@ -605,7 +605,7 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
     several_values[c] <- nb_values_c > 1 }
   return(several_values)
 }
-same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, along = "country3", along.levels = Levels(along, data), 
+same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, along = "country3", along.levels = Levels(along, data), weights = "weight",
                                 covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, constant_instead_mean = T,
                                 mean_control = T, dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, display_mean = FALSE,
                                 omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, 
@@ -632,15 +632,15 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
       coefs[[i]] <- logit_margin_i[,1]
       SEs[[i]] <- logit_margin_i[,2]
     } else {
-      models[[i]] <- lm(formula_i, data = data_i, weights = data_i$weight)
+      models[[i]] <- lm(formula_i, data = data_i, weights = data_i[[weights]])
       coefs[[i]] <- models[[i]]$coefficients
       if (robust_SE) SEs[[i]] <- coeftest(models[[i]], vcov = vcovHC(models[[i]], "HC1"))[,2]
       else SEs[[i]] <- summary(models[[i]])$coefficients[,2]
     }
     if (print_regs) print(summary(models[[i]]))
     if (constant_instead_mean & (include.total | j > 0)) means <- c(means, round(coefs[[i]][["(Intercept)"]], digits))
-    else if (include.total | j > 0) means <- c(means, ifelse(mean_control, round(wtd.mean(eval(parse(text = paste( "(data_i$", parse(text = dep.var), ")[data_i$treatment=='None']", sep=""))), weights = data_i$weight[data_i$treatment=='None'], na.rm = T), d = digits),
-                                                        round(wtd.mean(eval(parse(text = paste( "data_i$", parse(text = dep.var), sep=""))), weights = data_i$weight, na.rm = T), d = digits)))
+    else if (include.total | j > 0) means <- c(means, ifelse(mean_control, round(wtd.mean(eval(parse(text = paste( "(data_i$", parse(text = dep.var), ")[data_i$treatment=='None']", sep=""))), weights = data_i[[weights]][data_i$treatment=='None'], na.rm = T), d = digits),
+                                                        round(wtd.mean(eval(parse(text = paste( "data_i$", parse(text = dep.var), sep=""))), weights = data_i[[weights]], na.rm = T), d = digits)))
   }
   mean_text <- ifelse(mean_control, "Control group mean", ifelse(constant_instead_mean, "Constant", "Mean"))
   if (exists("labels_vars")) omit <- c(omit, labels_vars[omit], names(labels_vars)[which(labels_vars %in% omit)])

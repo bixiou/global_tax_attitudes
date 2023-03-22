@@ -72,7 +72,8 @@ major_candidates <- minor_candidates <- list()
 )
   
   quotas <- list("EU" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity"),
-                 "EU_all" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity", "employment_18_64", "vote"), # TODO! vote_eu
+                 "EU_vote" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity", "vote"),
+                 "EU_all" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity", "employment_18_64", "vote"), 
                  "US" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban"), 
                  "US_vote" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban", "vote_us"),
                  "US_all" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban", "employment_18_64", "vote"),
@@ -240,8 +241,8 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
     if (weighting) {
       e$weight <- weighting(e, sub("[0-9p]+", "", country))
       e$weight_all <- weighting(e, sub("[0-9p]+", "", country), variant = "all")
-      if ("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
-      if (country == "EU") for (c in countries_EU) e$weight_country[e$country == c] <- weighting(e[e$country == c,], c)
+      if (("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) | ("vote" %in% names(e))) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
+      if (country == "EU") { for (c in countries_EU) e$weight_country[e$country == c] <- weighting(e[e$country == c,], c) } else e$weight_country <- e$weight
     }
     
   # e$left_right_na <- as.numeric(e$left_right)
@@ -256,8 +257,8 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
     e$dropout <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1"
     label(e$dropout) <- "dropout: Respondent who did not complete the survey though was not excluded."
     if (country %in% c("US1", "US2", "EU")) {
-      progress_socio <- if (country == "US1") 19 else { if (country == "US2")  else }
-      # TODO! View(e[(e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1", ])
+      progress_socio <- if (country == "US1") 19 else { if (country == "US2") 14 else 15 }
+      # max(as.numeric(e$progress[is.na(e$gcs_win_lose) & (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1"]))
       e$dropout_late <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1" & n(e$progress) >= progress_socio
       label(e$dropout_late) <- "dropout: Respondent who did not complete the survey though was not excluded, and who dropped out after the socio-demographic questions." }
     e$finished_attentive <- (e$valid | (e$duration <= duration_min & e$attention_test=="A little")) & e$finished==1
@@ -721,10 +722,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$conjoint_b_na) <- "conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_rc_r'."
       e$branch_c_gcs <- grepl("g_", e$branch_conjoint_c)
       label(e$branch_c_gcs) <- "branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'."
-      e$conjoint_r_type <- "None"
-      e$conjoint_r_type[e$`F-1-1-5` %in% policies.names["foreign1",]] <- "A"
-      e$conjoint_r_type[e$`F-1-2-5` %in% policies.names["foreign1",]] <- "B"
-      e$conjoint_r_type[e$`F-1-1-5` %in% policies.names["foreign1",] & e$`F-1-2-5` %in% policies.names["foreign1",]] <- "Both"
+      e$conjoint_r_type <- temp <- "None"
+      for (i in 1:5) {
+        e$conjoint_r_type[e[[paste0("F-1-1-", i)]] %in% policies.names["foreign1",]] <- temp[e[[paste0("F-1-1-", i)]] %in% policies.names["foreign1",]] <- "A"
+        e$conjoint_r_type[e[[paste0("F-1-2-", i)]] %in% policies.names["foreign1",]] <- "B" }
+      e$conjoint_r_type[e$conjoint_r_type == "B" & temp == A] <- "Both"
       label(e$conjoint_r_type) <- "conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b"
       e$conjoint_r <- e$conjoint_left_a_b == e$conjoint_r_type
       e$conjoint_r[e$conjoint_r_type %in% c("None", "Both")] <- NA
