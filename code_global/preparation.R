@@ -484,6 +484,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   if (grepl("US", country)) temp <- as.numeric(as.vector(e$urban_category - 1 * (e$urban_category > 2)))
   e$urbanity <- as.item(temp, labels = structure(1:3, names = c("Cities", "Towns and suburbs", "Rural")), missing.values=c(NA), annotation="urbanity: 1: Cities / 2: Towns and suburbs / 3: Rural. Computed from the zipcode. For EU, equals urban_category; for the U.S., urbanity = 1; 2; 3 (resp.) corresponds to urban_category = 1; 2 or 3; 4.")
   e$urban <- e$urban_category == 1
+  e$urbanity <- as.factor(e$urbanity) # new
   label(e$urban) <- "urban: T/F urban_category == 1: Cities (EU) or Core metropolitan (US)."
   
   e$education_original <- e$education
@@ -956,6 +957,11 @@ e <- eu <- prepare(country = "EU", weighting = T)
 us <- merge(us1, us2, all = T)
 e <- all <- merge(us, eu, all = T)
 
+# variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
+us1a <- prepare(country = "US1", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+us2a <- prepare(country = "US2", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+eua <- prepare(country = "EU", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+
 e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)
 
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
@@ -964,11 +970,6 @@ eup <- prepare(country = "EU", wave = "pilot", weighting = FALSE)
 
 usp <- merge(us1p, us2p, all = T)
 e <- ep <- merge(usp, eup, all = T)
-
-# variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
-us1a <- prepare(country = "US1", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
-us2a <- prepare(country = "US2", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
-eua <- prepare(country = "EU", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 
 eupa <- prepare(country = "EU", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 us1pa <- prepare(country = "US1", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]

@@ -662,7 +662,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
   return(table)
 }
 create_covariate_labels <- function(coefs_names, regressors_names = labels_vars, keep = NULL, omit = "Constant") {
-  if (any(c("Constant", "Intercept", "(Intercept)") %in% omit)) coefs_names <- coefs_names[-1]
+  if (any(c("Constant", "Intercept", "(Intercept)") %in% omit) & coefs_names[1] %in% c("Constant", "Intercept", "(Intercept)")) coefs_names <- coefs_names[-1]
   missing_names <- setdiff(coefs_names, names(labels_vars))
   names(missing_names) <- missing_names
   if (length(missing_names) > 0) warning(paste("The following variables are missing from labels_vars (so their name will appear instead of their label):", paste(missing_names, collapse = ", ")))

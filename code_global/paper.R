@@ -285,7 +285,7 @@ representativeness_table(countries_EU, return_table = F, all = T, weight_var = "
 
 
 ##### App Attrition analysis #####
-desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"),
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), 
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\4 min}"),
            filename = "attrition_analysis", save_folder = "../tables/US1/", data = c(list(us1a), list(us1a), list(us1a[us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,])), 
            indep_vars = quotas_us) 
@@ -298,4 +298,5 @@ desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "d
 desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 6"),
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\6 min}"),
            filename = "attrition_analysis", save_folder = "../tables/EU/", data = c(list(eua), list(eua), list(eua[eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,])), 
-           indep_vars = quotas_us) 
+           indep_vars = quotas_eu) 
+# TODO? add vote?
