@@ -244,16 +244,16 @@ labels_vars <- c(
   "individualist" = "Individualist",
   "woman" = "Gender: Woman",
   "man" = "Gender: Man",
-  "ets2_equal_cash_support" = "Supports ETS2 with equal cash transfer<br>(105€/year for each European)",
-  "ets2_country_cash_support" = "Supports ETS2 with cash transfer<br>in proportion to country's emissions",
-  "ets2_investments_support" = "Supports ETS2 with low-carbon investments",
-  "ets2_vulnerable_investments_support" = "Supports ETS2 with transfers to vulnerable<br>and low-carbon investments",
-  "ets2_no_european" = "Does not support ETS2 because<br>Policies should be at national level",
-  "ets2_no_revenue_use" = "Does not support ETS2 because<br>Would prefer other revenue use",
-  "ets2_no_pricing" = "Does not support ETS2 because<br>Opposes carbon pricing",
-  "ets2_no_climate_action" = "Does not support ETS2 because<br>Opposes more climate action",
-  "ets2_no_understanding" = "Does not support ETS2 because<br>Does not understand",
-  "ets2_no_dont_know" = "Does not support ETS2 because<br>Does not know",
+  "ets2_equal_cash_support" = "ETS2 with equal cash transfer (105€/year for each European)",
+  "ets2_country_cash_support" = "ETS2 with cash transfer in proportion to country's emissions",
+  "ets2_investments_support" = "ETS2 with low-carbon investments",
+  "ets2_vulnerable_investments_support" = "ETS2 with transfers to vulnerable and low-carbon investments",
+  "ets2_no_european" = "Policies should be at national level", # Does not support ETS2 because<br>
+  "ets2_no_revenue_use" = "Would prefer other revenue use",
+  "ets2_no_pricing" = "Opposes carbon pricing",
+  "ets2_no_climate_action" = "Opposes more climate action",
+  "ets2_no_understanding" = "Does not understand",
+  "ets2_no_dont_know" = "Does not know",
   "global_tax_more_half" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 50%",
   "global_tax_more_30p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 30%",
   "global_tax_more_10p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 10%",
@@ -435,7 +435,7 @@ heatmaps_defs <- list(
 ##### vars_heatmaps #####
 vars_heatmaps <- c("support", "other_policies", "climate_policies", "global_policies", "support_binary", "support_likert", "petition", "gcs_important", "problem", 
                         "foreign_aid_amount", "duration", "donation", "belief", "points", "foreign_aid_raise", "foreign_aid_reduce", "foreign_aid_no", "foreign_aid_condition", 
-                        "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "conjoint_d", "list_exp", "understood") # misses socio-demos, politics
+                        "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "conjoint_d", "list_exp", "understood", "ets2_support", "ets2_no") # misses socio-demos, politics
 
 heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 # heatmaps_defs$foreign_aid_no
@@ -613,7 +613,6 @@ barres_multiple(barres = barresN_continent_defs["foreign_aid_raise_support"], df
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 
 heatmap_multiple(heatmaps_defs[c("foreign_aid_no", "foreign_aid_condition")], weights = T)
-heatmap_multiple(heatmaps_defs[c("foreign_aid_condition")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_only", "petition_gcs", "petition_nr", "global_tax_global_share")], weights = T)
 
@@ -669,6 +668,9 @@ write.xlsx(temp, "../../oecd_climate/tables/country_comparison/global_tax_attitu
 write.xlsx(temp2, "../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_share.xlsx")
 
 heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_defs$donation$labels, name = "donation", conditions = "", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = F) 
+
+heatmap_multiple(heatmaps_defs[c("ets2_support")], weights = T, data = eu[eu$country != 'UK',])
+heatmap_multiple(heatmaps_defs[c("ets2_no")], weights = T, data = eu[eu$country != 'UK',])
 
 
 ##### Heterogeneity #####
