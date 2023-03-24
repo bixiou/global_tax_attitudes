@@ -254,6 +254,7 @@ labels_vars <- c(
   "ets2_no_climate_action" = "Opposes more climate action",
   "ets2_no_understanding" = "Does not understand",
   "ets2_no_dont_know" = "Does not know",
+  "ets2_oppose" = "Does not support any of the ETS2 variants",
   "global_tax_more_half" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 50%",
   "global_tax_more_30p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 30%",
   "global_tax_more_10p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 10%",
@@ -394,6 +395,7 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
 ##### heatmaps_defs #####
 heatmaps_defs <- list(
   "conjoint_r" = list(vars = "conjoint_r"), 
+  "ets2_oppose" = list(vars = "ets2_oppose", conditions = ">= 1"),
   "conjoint_left_ag_b_binary" = list(vars = "conjoint_left_ag_b_binary", conditions = c(">= 1")), 
   "global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1"), nb_digits = 0),
   "global_tax_sharing" = list(vars = c("global_tax_sharing"), conditions = c(">= 1")),
@@ -671,6 +673,7 @@ heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_
 
 heatmap_multiple(heatmaps_defs[c("ets2_support")], weights = T, data = eu[eu$country != 'UK',])
 heatmap_multiple(heatmaps_defs[c("ets2_no")], weights = T, data = eu[eu$country != 'UK',])
+heatmap_multiple(heatmaps_defs[c("ets2_oppose")], weights = T, data = eu[eu$country != 'UK',])
 
 
 ##### Heterogeneity #####
