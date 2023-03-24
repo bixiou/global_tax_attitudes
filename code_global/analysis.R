@@ -12,6 +12,7 @@ e <- ep
 # TODO US/EU: put back email?, welcome: amount incentives
 # TODO read about Norway and foreign aid
 # TODO? Use donation to measure altruism?
+# TODO! decrit(us2$interview) decrit(us1$interview)
 
 ##### Duration #####
 print(paste0(round(100*sum(us1a$finished == 1 & is.na(us1a$excluded), na.rm = T)/sum(us1a$finished == 1 | us1pa$excluded=="Screened", na.rm = T)), "% IR in US1")) # 92% % incidence rate

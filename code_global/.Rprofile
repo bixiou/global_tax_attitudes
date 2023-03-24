@@ -981,7 +981,15 @@ dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FAL
 #'   else return(cbind(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[2]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[3]], miss = miss, weights = weights, fr = fr, rev = rev))) }
 dataNK <- function(var, df = list(e2, e, c), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
   if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))
-  else return(do.call(cbind, lapply(rev(df), function (d) {dataN(var, d, miss = miss, weights = weights, fr = fr, rev = rev)}))) }
+  else {
+    values <- lapply(df, function(d) dataN(var, data = d, miss = miss, weights = weights, return = "legend", fr = fr, rev = rev))
+    nb_values <- sapply(values, length)
+    levels <- values[[which(nb_values == max(nb_values))[1]]]
+    if (!all(sapply(values, function(var) all(var %in% levels)))) {
+      warning("No variable contains all possible values, this may create bugs")
+      for (d in 1:length(df)) levels <- union(levels, values[[d]]) }
+    # The above code (after else) is new (and here to manage cases with different sets of levels for different variables)
+    return(do.call(cbind, lapply(rev(df), function (d) {dataN(var, d, levels = levels, miss = miss, weights = weights, fr = fr, rev = rev)}))) } }
 #' data12 <- function(vars, df = list(e, e2), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
 #'   if (length(vars)==1) return(dataN2(var=vars, df=list(df[[2]], df[[1]]), miss=miss, weights=weights, fr=fr, rev=rev, return=return))
 #'   else {

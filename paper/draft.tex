@@ -286,7 +286,7 @@ The global survey shows strong support for climate policies enacted at the globa
 
 \begin{figure} % TD have a simpler title (e.g. "Attitudes towards global climate policies"), and a note explaining what the figure exactly does (unit of the numbers, meaning of the colors, exclusion of indifferent people, etc.
   % MAJOR figure
-  \caption{Support for global climate policies. \\ Share of \textit{Somewhat} or \textit{Strongly support} among non-\textit{indifferent} answers (in percent, $n$ = 40,680). The color blue denotes a relative majority. (Questions \ref{q:scale}-\ref{q:millionaire_tax})} 
+  \caption[Relative support for global climate policies]{Relative support for global climate policies. \\ Share of \textit{Somewhat} or \textit{Strongly support} among non-\textit{indifferent} answers (in percent, $n$ = 40,680). The color blue denotes a relative majority. See Figure \ref{fig:oecd_absolute} for the absolute support. (Questions \ref{q:scale}-\ref{q:millionaire_tax})} 
   \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{../figures/OECD/Heatplot_burden_share_all_share_countries.pdf}}\label{fig:oecd}
   {\footnotesize *In Denmark, France and the U.S., the questions with an asterisk were asked differently, cf. Question \ref{q:burden_sharing_asterisk}. } 
 \end{figure}
@@ -331,7 +331,7 @@ global policies (Figure \ref{fig:support}). All receive relative majority suppor
 
 \begin{figure}
   % MAJOR figure
-  \caption{Relative support for various global policies (percentage of \textit{somewhat} or \textit{strong support}, after excluding \textit{indifferent} answers). $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749, n_\text{US, global/national wealth tax} = 2,000$} % ; $n$ = 6,000
+  \caption[Relative support for various global policies]{Relative support for various global policies (percentage of \textit{somewhat} or \textit{strong support}, after excluding \textit{indifferent} answers). (See Figure \ref{fig:support_likert_positive} for the absolute support.) $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749, n_\text{US, global/national wealth tax} = 2,000$} % ; $n$ = 6,000
   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_share.pdf}}\label{fig:support}
 \end{figure} 
 
@@ -361,7 +361,7 @@ On the other side, not wishing to increase their country's foreign aid is mostly
 
 We use several methods to assess the sincerity of the support for the Global Climate Scheme: a list experiment, a real-stake petition, conjoint analyses, and the prioritization of policies. All methods suggest that the support is either completely sincere, or the share of insincere answers is limited. 
 
-\subsubsection{List experiment}  % NCCcomment
+\subsubsection{List experiment}\label{subsubsec:list_exp}  % NCCcomment
 % H1: List experiment: There seems to be a 8pp social norm (differential of 3pp with NR). No effect of the number of options. TODO: check literature
 
 By asking \textit{how many} policies within a list respondents support and varying the list among respondents, a list experiment allows identifying the tacit support for a policy of interest. The tacit support is estimated as the difference in the average number of policies supported between two groups, whose list differ only by the inclusion (or not) of that policy \citep{hainmueller_causal_2014}.% respondents who face a list containing the policy, and respondents who face the same list without it. 
@@ -379,17 +379,17 @@ As shown in Table \ref{tab:list_exp}, the tacit support for the GCS measured thr
 \end{table}
 
 % Donation addresses experimenter demand
-\subsubsection{Petition} % Addresses hypothetical bias  % NCCcomment
+\subsubsection{Petition}\label{subsubsec:petition} % Addresses hypothetical bias  % NCCcomment
 % H1: Petition: Small effect against GCS: -4pp
 We ask the respondents whether they are willing to sign a petition (either for the GCS or NR) and inform them that ``we will send the results to the [head of state]'s office, informing [them] what share of [fellow citizens] are willing to endorse the [Global Climate / National Redistribution] Scheme''. Both policies still obtain majority support when the support is framed as a real-stake petition. In the U.S., we cannot reject equality between the support in the real-stake petitions and the simple questions (GCS: $p=.30$; NR: $p=.76$).\footnote{We run paired weighted \textit{t}-tests, i.e. we test the equality in support for a policy on the subsample of respondents who are questioned about this policy for the petition.} In Eu, the support is significantly lower in the petition, by 7 p.p. for the GCS ($p=10^{-5}$) and 4 p.p. for NR ($p=.008$). Although a few Europeans are not willing to sign a petition for a policy they are supposed to support, this affects both policies tested, and the willingness to sign a real-stake petition is still strong: 69\% for the GCS and 67\% for NR.
 
 % TODO! all '$n$ = '
-\subsubsection{Conjoint analyses} % Addresses acquiescence bias  % NCCcomment
+\subsubsection{Conjoint analyses}\label{subsubsec:conjoint} % Addresses acquiescence bias  % NCCcomment
 % H1, H2: Conjoint analysis: G|C+R 56%, G|R 59%, G 48% ~ C (|R), G+C|R 56%, C|R 64%, Left+G - Left = -3pp, A+G vs. B 59%
 % => G is supported for itself, rather independently from R or C, with similar support to both, and it doesn't significantly penalize the Left, and would help a Democratic candidate
 In our \textit{conjoint analyses}, we ask respondents to make five choices between pairs of political platforms. The first conjoint analysis suggests that the GCS is supported for itself, independently of being complemented by the National Redistribution Scheme and a national climate policy (``Coal exit'' in the U.S., ``Thermal insulation plan'' in Eu, denoted C). Indeed, 54\% of %($n$ = 3,000) 
 U.S. respondents and 74\% of %($n$ = 3,000) 
-Eu ones prefer the combination of C, NR and the GCS to the combination of C and NR alone, indicating a similar support for the GCS conditional on NR and C than for the GCS alone. % (as it does not significantly differ from the direct support of 53\%). 
+Eu ones prefer the combination of C, NR and the GCS to the combination of C and NR alone, indicating a similar support for the GCS conditional on NR and C than for the GCS alone (Figure \ref{fig:conjoint}). % (as it does not significantly differ from the direct support of 53\%). 
 For the second analysis, we split the sample into four random branches. Results from the first branch show that the support for the GCS conditional on NR, at 55\% in the U.S. ($n$ = 757) and 77\% in Eu ($n$ = 746), is not significantly different from the support for the GCS alone. This suggests that rejection to the GCS is not driven by the cost of the policy on oneself. The second branch shows that the support for C conditional on NR is somewhat higher, at 62\% in the U.S. ($n$ = 751) and 84\% in Eu ($n$ = 747). However, the third one shows no significant preference for C compared to GCS (both conditional on NR), neither in Eu, where GCS is preferred by 52\% ($n$ = 741) nor in the U.S., where C is preferred by 53\% ($n$ = 721). The fourth branch shows that 55\% in the U.S. ($n$ = 771) and 77\% in Eu ($n$ = 766) prefer the combination of C, NR and the GCS to NR alone. % TODO? figure?
 
 In other words, there is majority support for the GCS and for a national climate policy C, which are seen as neither complement nor substitute; a few people seem to like a national climate policy and dislike a global one, but as many people prefer a global rather than a national policy; and there is no evidence that some people require a National Redistribution to support the GCS. % TD rework this paragraph
@@ -571,6 +571,7 @@ All data and code of the complementary surveys as well as figures of the paper a
 \bibliography{global_tax_attitudes}
 
 \appendix % NCCcomment
+% TODO numbering of figures/tables with A
 
 % TODO! aussi in prez: soutien par vote
 \input{literature_review.tex}

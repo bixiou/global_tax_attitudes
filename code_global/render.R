@@ -2,6 +2,7 @@
 # TODO! add G to OECD heatmap, remove Dependence on what other countries do, change label titles to make it clear that the first one was multiple answers while the others were likert
 # TODO list_exp, all_same heatmaps, 
 # TODO full results global_tax_global_share 
+# TODO global_tax_support using OECD
 
 # TODO refresh Viewer with laptop (i.e. automatic rstudioapi::executeCommand('viewerRefresh'))
 # TODO automatically set share_labels/margin_l/width, miss, thin 
@@ -128,7 +129,7 @@ labels_vars <- c(
   "global_tax_support" = "Global tax on millionaires",
   "national_tax_support" = "National tax on millionaires",
   "global_tax_global_share" = "Preferred share of global tax for low-income (in %)",
-  "global_tax_sharing" = "Sharing half of global tax with low-income",
+  "global_tax_sharing" = "Sharing half of global tax with low-income countries",
   "foreign_aid_belief" = "Belief about foreign aid", # / public spending",
   "foreign_aid_actual" = "Actual foreign aid (in % of public spending)",
   "foreign_aid_preferred_no_info" = "Preferred foreign aid (no info)",
@@ -231,10 +232,10 @@ labels_vars <- c(
   "duration_other_policies" = "Duration: other policies",
   "duration_feedback" = "Duration: feedback",
   "duration_points" = "Duration: 100 points",
-  "score_understood" = "Number of correct answers<br>to understanding questions",
-  "gcs_understood" = "With GCS,<br>typical [country] people lose and poorest humans win",
-  "nr_understood" = "With NR,<br>typical [country] people win and richest lose",
-  "both_understood" = "With GCS+NR,<br>typical [country] people neither win nor lose",
+  "score_understood" = "Number of correct answers to understanding questions",
+  "gcs_understood" = "With GCS, typical [country] people lose and poorest humans win",
+  "nr_understood" = "With NR, typical [country] people win and richest lose",
+  "both_understood" = "With GCS+NR, typical [country] people neither win nor lose",
   "share_policies_supported" = "Share of policies supported",
   "dropout" = "Dropped out",
   "petition_matches_support" = "Petition and support answers match",
@@ -281,6 +282,10 @@ for (v in intersect(names(all), names(labels_vars))) { # intersect(c(socio_demos
   
 ##### labels_vars_short_html #####
 labels_vars_short_html <- c(
+  "score_understood" = "Number of correct answers<br>to understanding questions",
+  "gcs_understood" = "With GCS,<br>typical [country] people lose and poorest humans win",
+  "nr_understood" = "With NR,<br>typical [country] people win and richest lose",
+  "both_understood" = "With GCS+NR,<br>typical [country] people neither win nor lose",
   "list_exp_gl" = "GCS/C/O",
   "list_exp_rgl" = "NR/GCS/C/O", 
   "list_exp_l" = "C/O",
@@ -413,7 +418,7 @@ heatmaps_defs <- list(
   "conjoint_all" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary, variables_conjoint_c_binary, "conjoint_left_ag_b_binary", "conjoint_r"), conditions = ">= 1"),
   "conjoint" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary, "conjoint_left_ag_b_binary", "conjoint_r"), conditions = ">= 1"), 
   "conjoint_ab" = list(vars = c("gcs_support", "conjoint_rg_r_binary", "conjoint_crg_cr_binary", "conjoint_rc_r_binary", "conjoint_cr_gr_binary"), conditions = ">= 1"),
-  "conjoint_ab_all" = list(vars = c("gcs_support", "conjoint_rg_r_binary", "conjoint_crg_cr_binary", "conjoint_rc_r_binary", "conjoint_cr_gr_binary", "conjoint_r_rcg_binary"), conditions = ">= 1"), 
+  "conjoint_ab_all" = list(vars = c("gcs_support", "conjoint_crg_cr_binary", "conjoint_rg_r_binary", "conjoint_rc_r_binary", "conjoint_cr_gr_binary", "conjoint_r_rcg_binary"), conditions = ">= 1"), 
   "conjoint_a" = list(vars = variables_conjoint_a_binary, conditions = ">= 1"),
   "conjoint_b" = list(vars = variables_conjoint_b_binary, conditions = ">= 1"),
   "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
@@ -595,8 +600,14 @@ barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 # return(barres_defs) }
 # barres_defs$foreign_aid_no
 
-barresN_defs <- fill_barres(c("group_defended_agg2", "foreign_aid_raise_support"), list("negotiation" = list(width = 940)), along = "country_name")
-barresN_continent_defs <- fill_barres(c("group_defended_agg2", "foreign_aid_raise_support"), list("negotiation" = list(width = 940)), along = "continent")
+vars_barresN <- c("group_defended_agg2", "foreign_aid_raise_support", "global_tax_support", "national_tax_support", "global_tax_global_share", "global_tax_sharing",
+                  "foreign_aid_belief_agg", "foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg", "donation_charities", "interested_politics", 
+                  "involvement_govt",  "vote_participation", "survey_biased", "interview", "left_right") 
+barresN_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "country_name")
+barresN_continent_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "continent")
+
+barres_multiple(barres = barresN_defs[c("vote")], df = all, folder = "../figures/country_comparison/")
+barres_multiple(barres = barresN_continent_defs[c("vote")], df = all, folder = "../figures/continents/")
 
 
 ##### Run #####
@@ -640,7 +651,8 @@ save_plotly(temp, filename = "list_exp", folder = "../figures/EU/", width = 850,
 
 ##### Heatmaps #####
 # TODO define e
-(nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name)))))
+nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name))))
+(nb_vars_heatmaps <- nb_vars_heatmaps[!grepl("ets2", names(nb_vars_heatmaps))])
 # Regroup heatmaps by nb of variables to change the size of the Viewer before each run and have nice saved plots
 heatmap_multiple(heatmaps_defs["belief"], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]], weights = T)
@@ -677,9 +689,9 @@ heatmap_multiple(heatmaps_defs[c("ets2_oppose")], weights = T, data = eu[eu$coun
 
 
 ##### Heterogeneity #####
-barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
+barres_multiple(barres = barresN_defs[c("foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg")], df = all, folder = "../figures/country_comparison/") 
 
-barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continents/") 
+barres_multiple(barres = barresN_continent_defs[c("foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg")], df = all, folder = "../figures/continents/") 
 
 
 ##### Word clouds and vote #####
