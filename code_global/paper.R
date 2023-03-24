@@ -247,7 +247,7 @@ same_reg_subsamples(dep.var = "global_tax_sharing", dep.var.caption = "Prefers t
 # plot(avg.pred.social.desirability_no_r)
 # plot(avg.pred.social.desirability_r)
 
-# Good ones here
+# Good ones here # TODO! apparently J=2.5 doesn't work, derive the appropriate model
 summary(lm(list_exp ~ branch_list_exp_g*continent, data = all, weights = all$weight))
 fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
 fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, weights = weight, family = binomial("logit"))

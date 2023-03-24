@@ -1,4 +1,7 @@
-% TODO Ctrl+H "\item ~[" / "\\ ["=> "\item ~[" / "\\ ~["
+% /!\ Ctrl+H "\item ~[" / "\\ ["=> "\item ~[" / "\\ ~["
+% TODO add refs to figures
+% TODO? put in italic the "didascalies" in []
+% TODO? give policies options here instead of referring to "this spreadsheet"
 Below, we provide the generic questionnaire (based on the U.S. version), which roughly corresponds to the Eu questionnaire as well as the combination of the US1 and US2 questionnaire. The main difference between Eu and the U.S. is that we split the US2 sample into four random branches to include some treatments before the Section \ref{subsec:questionnaire_GCS} on the GCS. Besides the control group, the treatments are: information regarding the support of Americans for the GCS and NR, an open-ended field, and a closed question on the pros and cons of the GCS. The pros and cons of the GCS are also asked in Eu (likewise, either as an open-ended field or a question), but only in Section \ref{subsec:questionnaire_perceptions}, after the support. 
 
 At each section or question, we specify in square brackets in which questionnaires it is present (US1, US2 and/or Eu) as well as country specificities. Figures \ref{fig:flow_Eu}-\ref{fig:flow_US2} also allow understanding the structure of each questionnaire. Qualtrics and Word versions of the questionnaires in each language are available on our \href{https://github.com/bixiou/global_tax_attitudes/tree/main/questionnaire}{public repository}, together with a spreadsheet that summarizes country specificities and our sources.
@@ -18,6 +21,7 @@ At each section or question, we specify in square brackets in which questionnair
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../questionnaire/survey_flow_US2.pdf}} 
 \end{figure}
 
+\clearpage
 \subsection*{[Eu, US1, US2] Socio-demographic characteristics}
 \begin{enumerate}
 \item Welcome to this survey!\\
@@ -50,23 +54,25 @@ Please answer every question carefully.  \\
 \item What is the [US1, US2: \textit{annual}; Eu: \textit{monthly}] gross income of your household (before withholding tax)? This includes all income: wages, self-employment earnings, Social Security benefits, pensions, investment income, welfare payments, and income from other sources. % ~[quartiles thresholds are given for the U.S. ] 
 \\ ~[US1, US2: Items based on household total income deciles and quartiles, namely: \textit{Less than \$20,000; between \$20,001 and \$35,000; between \$35,001 and \$42,000; between \$42,001 and \$50,000; between \$50,001 and \$65,000; between \$65,001 and \$82,000; between \$82,001 and \$103,000; between \$103,001 and \$130,000; between \$130,001 and \$145,000; between \$145,001 and \$165,000; between \$165,001 and \$250,000; More than \$250,000; I prefer not to answer}; \\ Eu: custom thresholds, taking into account household composition Questions \ref{q:partner}-\ref{q:children}, and corresponding to the country's deciles and quartiles of standard of living, cf. the sheet ``Income'' in \href{https://github.com/bixiou/global_tax_attitudes/raw/main/questionnaire/specificities.xlsx}{this spreadsheet}]
 \item What is the highest level of education you have completed? 
-\\ ~[\textit{Below upper secondary}, \textit{Upper secondary}, and \textit{Post secondary} are coded as the first two, middle three, and last three items, respectively. \\ US1, US2: \textit{Primary school or less; Eigth grade; Some high school; Regular high school diploma/GED or alternative credential; Some college, no degree; 2-year college degree or associates degree (for example: AA, AS); Bachelor's degree (for example: BA, BS); Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD); }, FR: \textit{École primaire / Aucun; Brevet; CAP ou BEP; Baccalauréat professionnel ou technologique; Baccalauréat général; Bac +2 (BTS, DUT, DEUG…); Bac +3 (licence…); Bac +5 ou plus (master, école d'ingénieur ou de commerce, doctorat, médecine, maîtrise, DEA, DESS...)}; DE: \textit{Keine abgeschlossene Schulbildung / Grundschule; Untere Sekundarstufe (z.B. Haupt- oder Realschulabschluss); Erstausbildung; Beruflicher Abschluss / Ausbildung; Abitur; Zweitausbildung; Bachelor oder Fachhochschulabschluss; Master-Abschluss oder höher}; ES: \textit{Educación primaria / No he completado la enseñanza básica; Educación secundaria obligatoria (ESO); Formación profesional básica (FP); Formación profesional de grado medio; Bachillerato; Formación profesional de grado superior; Grado universitario; Máster/doctorado}; UK: \textit{Primary education or less; Some secondary school; GSCE; Vocational Upper secondary (Level 3 award, level 3 certificate, level 3 diploma, advanced apprenticeship, etc.); High school degree (A level); Higher vocational education (Level 4+ award, level 4+ certificate, level 4+ diploma, higher apprenticeship, etc.); Bachelor's Degree (BA, BSc, BEng, etc.); Postgraduate diploma or certificate, Master's Degree (MSc, MA, MBA, etc.) or Ph.D.}]
+\\ ~[\textit{Below upper secondary}, \textit{Upper secondary}, and \textit{Post secondary} are coded as the first two, middle three, and last three items, respectively. \\ US1, US2: \textit{Primary school or less; Eigth grade; Some high school; Regular high school diploma/GED or alternative credential; Some college, no degree; 2-year college degree or associates degree (for example: AA, AS); Bachelor's degree (for example: BA, BS); Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD); } \\FR: \textit{École primaire / Aucun; Brevet; CAP ou BEP; Baccalauréat professionnel ou technologique; Baccalauréat général; Bac +2 (BTS, DUT, DEUG…); Bac +3 (licence…); Bac +5 ou plus (master, école d'ingénieur ou de commerce, doctorat, médecine, maîtrise, DEA, DESS...)} \\DE: \textit{Keine abgeschlossene Schulbildung / Grundschule; Untere Sekundarstufe (z.B. Haupt- oder Realschulabschluss); Erstausbildung; Beruflicher Abschluss / Ausbildung; Abitur; Zweitausbildung; Bachelor oder Fachhochschulabschluss; Master-Abschluss oder höher} \\ ES: \textit{Educación primaria / No he completado la enseñanza básica; Educación secundaria obligatoria (ESO); Formación profesional básica (FP); Formación profesional de grado medio; Bachillerato; Formación profesional de grado superior; Grado universitario; Máster/doctorado}\\ UK: \textit{Primary education or less; Some secondary school; GSCE; Vocational Upper secondary (Level 3 award, level 3 certificate, level 3 diploma, advanced apprenticeship, etc.); High school degree (A level); Higher vocational education (Level 4+ award, level 4+ certificate, level 4+ diploma, higher apprenticeship, etc.); Bachelor's Degree (BA, BSc, BEng, etc.); Postgraduate diploma or certificate, Master's Degree (MSc, MA, MBA, etc.) or Ph.D.}]
 \item What is your employment status? \label{item:employment}
 \\ \textit{Full-time employed; Part-time employed; Self-employed; Student; Retired; Unemployed (searching for a job); Inactive (not searching for a job)}
 \item Are you a homeowner or a tenant? (Multiple answers are possible) 
 \\ \textit{Tenant; Owner; Landlord renting out property; Hosted free of charge}
-\item ~[Asked if lives with partner] What is the estimated value of your household's assets (in U.S. dollars)?  \\
+\item ~[If lives with partner: What is the estimated value of your household's assets (in U.S. dollars)?  \\
+ If does not live with partner: What is the estimated value of your assets (in U.S. dollars)?]
    \\
 Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth [\$]300,000 and you have [\$]100,000 left to repay on your mortgage, your assets are [\$]200,000.  \\
   \\
-I estimate my household's assets net of debt to be:  \\% ~[Quintiles thresholds are given for the U.S. ]
-\\ ~[Items based on wealth quintiles. US1, US2: \textit{Less than \$0 (I have a net debt); Close to \$0; Between \$4,000 and \$120,000; Between \$120,000 and \$380,000; More than \$380,000}; For Eu, the thresholds are: FR: \euro{}10/100/300/600k; DE: \euro{}0/70/260/560k; ES: \euro{}0/100/200/400k; UK: £6/90/230/530k] 
-\item ~[Asked if does not live with partner] What is the estimated value of your assets (in U.S. dollars)?   \\
-   \\
-Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth [\$]300,000 and you have [\$]100,000 left to repay on your mortgage, your assets are [\$]200,000.  \\
-  \\
-  I estimate my assets net of debt to be: \\% ~[Quintiles thresholds are given for the U.S. ]
-\\ ~[Items based on wealth quintiles. US1, US2: \textit{Less than \$0 (I have a net debt); Close to \$0; Between \$4,000 and \$60,000; Between \$60,000 and \$190,000; More than \$190,000}; For Eu, the thresholds are: FR: \euro{}5/50/150/300k; DE: \euro{}0/35/130/280k; ES: \euro{}0/50/100/200k; UK: £3/45/115/270k] 
+I estimate my [If lives with partner: household's] assets net of debt to be:  \\% ~[Quintiles thresholds are given for the U.S. ]
+% \\ ~[Items based on wealth quintiles. US1, US2: \textit{Less than \$0 (I have a net debt); Close to \$0; Between \$4,000 and \$120,000; Between \$120,000 and \$380,000; More than \$380,000}; For Eu, the thresholds are: FR: \euro{}10/100/300/600k; DE: \euro{}0/70/260/560k; ES: \euro{}0/100/200/400k; UK: £6/90/230/530k] 
+\\ ~[Items based on the following individual wealth quintiles, doubled if lives with partner. US1, US2: \textit{Less than \$0 (I have a net debt); Close to \$0; Between \$4,000 and \$60,000; Between \$60,000 and \$190,000; More than \$190,000}; For Eu, the thresholds are: FR: \euro{}5/50/150/300k; DE: \euro{}0/35/130/280k; ES: \euro{}0/50/100/200k; UK: £3/45/115/270k] 
+% \item ~[Asked if does not live with partner] What is the estimated value of your assets (in U.S. dollars)?   \\
+%    \\
+% Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth [\$]300,000 and you have [\$]100,000 left to repay on your mortgage, your assets are [\$]200,000.  \\
+%   \\
+%   I estimate my assets net of debt to be: \\% ~[Quintiles thresholds are given for the U.S. ]
+% \\ ~[Items based on wealth quintiles. US1, US2: \textit{Less than \$0 (I have a net debt); Close to \$0; Between \$4,000 and \$60,000; Between \$60,000 and \$190,000; More than \$190,000}; For Eu, the thresholds are: FR: \euro{}5/50/150/300k; DE: \euro{}0/35/130/280k; ES: \euro{}0/50/100/200k; UK: £3/45/115/270k] 
 \item ~[US1, US2 (where it is instead asked toward the end, after the vote question)] What do you consider to be your political affiliation, as of today?
 \\ \textit{Republican; Democrat; Independent; Other; Non-Affiliated}
 \end{enumerate}
@@ -80,13 +86,13 @@ In accordance with the principle that each human has an equal right to pollute, 
 \item \label{q:understood_gcs} Who would win or lose financially in the Global climate scheme? [\textit{Figure \ref{fig:understood_each}}] \\
 \\
 Three respondents with the expected answer will get [\$]50 in points.
-\\ \textit{Typical [Americans] would win and the 700 million poorest humans would win.; Typical [Americans] would win and the 700 million poorest humans would lose.; Typical [Americans] would lose and the 700 million poorest humans would win.; Typical [Americans] would lose and the 700 million poorest humans would lose.}
+\\ \textit{Typical [Americans] would win and the 700 million poorest humans would win.; \\Typical [Americans] would win and the 700 million poorest humans would lose.; \\Typical [Americans] would lose and the 700 million poorest humans would win.; \\Typical [Americans] would lose and the 700 million poorest humans would lose.}
 \item[[new page\!\!\!]] For your information, the expected answer was \textit{Typical [Americans] would lose and the 700 million poorest humans would win} from the Global climate scheme. Now, here is the second policy: \\ 
 \\
-Now, here is the second policy:  \textbf{\underbar{National redistribution scheme:}} This policy would \textbf{increase taxes on the top} [US1, US2: \textbf{5\%}; 
+\textbf{\underbar{National redistribution scheme:}}\\ This policy would \textbf{increase taxes on the top} [US1, US2: \textbf{5\%}; 
 Eu: \textbf{1\%}] and provide cash transfers to all adults. More precisely, \textbf{each }[\textbf{American}]\textbf{ adult would receive }[\textbf{\$85}]\textbf{ per month} (that is [\$1,000] per year). 
 This would be financed by an increase of the federal income tax on household income in excess of [US1, US2: \$315,000 per year; FR: \euro{}15,000 per month; DE: \euro{}20,000 per month; ES: \euro{}10,000 per month; UK: £15,000 per month], leaving taxes unchanged for income below [\$315,000]. [US1, US2: \underbar{See more details}.]
-\footnote{8\% of U.S. respondents click. They then see the following text, based on \href{https://taxjusticenow.org/\#makeYourOwnTaxPlan}{taxjusticenow.org} by \citet{saez_triumph_2019}: \textit{The marginal income taxe rates would evolve as follows:\\Below \$315,000: unchanged \\ ~\$315,000 - \$400,000: current rate 32\% => new rate 41\% \\ ~\$400,000 - \$600,000: 35\% => 50\% \\ ~\$600,000 - \$2.5 million: 37\% => 60\% \\ ~\$2.5 - \$5 million: 37\% => 65\% \\ Above \$5 million: 37\% => 70\%}}
+\footnote{8\% of U.S. respondents click. They then see the following text, based on \href{https://taxjusticenow.org/\#makeYourOwnTaxPlan}{taxjusticenow.org} by \citet{saez_triumph_2019}: \textit{The marginal income taxe rates would evolve as follows:\\Below \$315,000: unchanged \\ ~\$315,000 - \$400,000: current rate 32\% =$>$ new rate 41\% \\ ~\$400,000 - \$600,000: 35\% =$>$ 50\% \\ ~\$600,000 - \$2.5 million: 37\% =$>$ 60\% \\ ~\$2.5 - \$5 million: 37\% =$>$ 65\% \\ Above \$5 million: 37\% =$>$ 70\%}}
 \item \label{q:understood_nr} Who would win or lose financially in the National redistribution? [\textit{Figure \ref{fig:understood_each}}] ~\\
 \\
 Three respondents with the expected answer will get [\$]50 in points.
@@ -101,24 +107,24 @@ It would \textbf{make polluters pay} for their emissions, which in turn would in
 The revenues would finance a \textbf{global basic income} of [\$30] per month for all humans, lifting out of extreme poverty the poorest billion people.\\
 Considering the basic income and the fuel price increases, \textbf{the typical }[\textbf{American}]\textbf{ would lose out financially }[\textbf{\$85}]\textbf{ per month}.\\
 \\
-\textbf{\underbar{National redistribution scheme:}} This policy would \textbf{increase taxes on the top }[\textbf{5\%}] and provide cash transfers to all adults. More precisely, \textbf{each }[\textbf{American}]\textbf{ would receive }[\textbf{\$85}]\textbf{ per month}. This would be financed by an increase of the federal income tax on household income in excess of [\$315,000 per year], leaving taxes unchanged for income below [\$315,000 per year].
+\textbf{\underbar{National redistribution scheme:}} \\This policy would \textbf{increase taxes on the top }[\textbf{5\%}] and provide cash transfers to all adults. More precisely, \textbf{each }[\textbf{American}]\textbf{ would receive }[\textbf{\$85}]\textbf{ per month}. This would be financed by an increase of the federal income tax on household income in excess of [\$315,000 per year], leaving taxes unchanged for income below [\$315,000 per year].
 \item \label{q:understood_both} If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical [American] be financially affected? [\textit{Figure \ref{fig:understood_each}}] \\
 Three respondents with the expected answer will get [\$]50 in points.
 \\ \textit{A typical [American] would lose out financially.; A typical [American] would neither gain nor lose.; A typical [American] would gain financially.}
 \item[[new page\!\!\!]] For your information, the expected answer was that \textit{A typical [American] would neither gain nor lose} from both schemes combined. [US1, Eu: Now, here are the last two policies:]~ \\
 \\
-~[US1: \textbf{\underbar{Coal exit:}} To reduce CO$_\text{2}$~emissions, this policy would require all U.S. coal power plants to be phased out by 2030. Coal would be replaced by renewable sources like wind and solar panels as well as stronger reliance on gas power plants.\\
-Eu: \textbf{\underbar{Thermal insulation plan:}} To reduce CO$_\text{2}$ emissions and energy insecurity, this policy would require that all buildings meet energy efficiency targets: at least rating E in 2030 and rating C in 2040. 
+~[US1: \textbf{\underbar{Coal exit:}} \\To reduce CO$_\text{2}$~emissions, this policy would require all U.S. coal power plants to be phased out by 2030. Coal would be replaced by renewable sources like wind and solar panels as well as stronger reliance on gas power plants.\\
+Eu: \textbf{\underbar{Thermal insulation plan:}}\\ To reduce CO$_\text{2}$ emissions and energy insecurity, this policy would require that all buildings meet energy efficiency targets: at least rating E in 2030 and rating C in 2040. 
 The [UK] government would subsidise half the cost of insulation for all households, and up to 90\% for the poorest households. Insulation work would cost [FR, DE: \euro{}25; ES: \euro{}20; UK: £25] billion a year, but would deliver energy savings greater than this cost.
 ]~\\
 \\
 ~[US1: \textbf{\underbar{Marriage only for opposite-sex couples:}}\\
 This policy is a proposed amendment to the U.S. Constitution that would legally define marriage as a union of one man and one woman. \\
-Eu: \textbf{\underbar{Death penalty for major crimes:}} This measure would reintroduce capital punishment for major crimes such as terrorism and mass shootings.]~\\
+Eu: \textbf{\underbar{Death penalty for major crimes:}} \\This measure would reintroduce capital punishment for major crimes such as terrorism and mass shootings.]~\\
 \\
 Now, we will ask your opinion on the [US1, Eu: four] policies.\\
 \underbar{Click here for the reminder of the [US1, Eu: first] two policies.} [\textit{Clicking displays the previous summarized descriptions.}]
-\item ~[US2] [4 Random branches (branch\_gcs): control (\textit{nothing}); Question \ref{q:gcs_field} (version: \textit{field}); Question \ref{q:gcs_important} (\textit{important}); or the following question (\textit{info}).] \label{q:info_support} For information, a recent survey has shown that:
+\item ~[US2] [4 Random branches: control (\textit{nothing}); Question \ref{q:gcs_field} (\textit{field}); Question \ref{q:gcs_important} (\textit{important}); or the following question (\textit{info}).] \label{q:info_support} For information, a recent survey has shown that:
 \begin{itemize} 
     \item 64\% of Americans support the Global climate scheme. 	
     \item 72\% of Americans support the National redistribution scheme. 
@@ -342,9 +348,9 @@ Even if you do not support the Labour Party, which of these platforms do you pre
 \subsection*{[Eu, US2] Perceptions of the GCS}\label{subsec:questionnaire_perceptions}
 [\textit{Eu: two random branches. US2: four random branches and the question is asked (if asked) before Question \ref{q:gcs_support}}]
 \begin{enumerate}[resume] \item ~[Branch: field] \label{q:gcs_field} When thinking about the Global climate scheme, what comes to your mind? \\ Please list pros and cons of the Global climate scheme.
-\\ \textit{[Open field]} 
-\item ~[\textit{Branch: important}] \label{q:gcs_important} When determining your support or opposition to the Global climate scheme, which points are important to you?
-\item \begin{itemize}
+\\ \textit{\{Open field\}} 
+\item ~[Branch: important] \label{q:gcs_important} When determining your support or opposition to the Global climate scheme, which points are important to you?
+\begin{itemize}
     \item It would succeed in limiting climate change. 
     \item It would hurt the [U.S.] economy. 
     \item It would penalize my household. 
@@ -365,9 +371,9 @@ Even if you do not support the Labour Party, which of these platforms do you pre
 \\ \textit{Not at all; A little; A lot; A great deal}
 \item ~[\textit{Two random branches}] \label{q:donation} By taking this survey, you are automatically entered into a lottery to win [\$]100 in panel points. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery. The payment will be made to you in the same way as your compensation for this survey, so no further action is required on your part.\\
 \\
-Should you be selected in the lottery, you can also donate a part of this additional compensation to [[American] / African] people living in poverty through the charity GiveDirectly. The charity GiveDirectly provides small amounts of cash to people in need in [[the U.S] / Africa].\\
+Should you be selected in the lottery, you can also donate a part of this additional compensation to [[American] / African] people living in poverty through [US1: the charity GiveDirectly. The charity GiveDirectly; Eu: a charity. We would channel this donation to a charity that] provides small amounts of cash to people in need in [[the U.S] / Africa].\\
 \\
-\textbf{In case you are winner of the lottery, what share of the [\$]100 would you donate to} [[\textbf{American}] / \textbf{African}] \textbf{people living in poverty through GiveDirectly?}  [\textit{Figure \ref{fig:donation}}]
+\textbf{In case you are winner of the lottery, what share of the [\$]100 would you donate to} [[\textbf{American}] / \textbf{African}] \textbf{people living in poverty} [US1: \textbf{through GiveDirectly}]\textbf{?}  [\textit{Figure \ref{fig:donation}}]
 \\ \textit{Amount donated to [[American] / African] people in need (in [\$])} [slider from 0 to 100]
 \item Please select ``A little'' (this is a test to see if you are paying attention).
 \\ \textit{Not at all; A little; A lot; A great deal}
@@ -403,7 +409,7 @@ Should you be selected in the lottery, you can also donate a part of this additi
 
 \subsection*{[Eu, US2] Foreign aid}
 \begin{enumerate}[resume] 
-    \item Please select ``A little'' (this is a test to see if you are paying attention).
+    \item [US2] Please select ``A little'' (this is a test to see if you are paying attention).
     \\ \textit{Not at all; A little; A lot; A great deal}
     \item From your best guess, what percentage of [U.S.] government spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?\\
  \\
@@ -481,7 +487,7 @@ Do you support [the U.S.] transferring more money to low-income countries?
 \item Did you vote in the [2020 U.S. presidential] election? \label{item:election}
 \\ \textit{Yes; No: I didn't have the right to vote in the U.S.; Prefer not to say}
 \item ~[If voted: Which candidate did you vote for in the [2020 U.S. presidential] election? \\ If did not vote: Even if you did not vote in the [2020 U.S. presidential] election, please indicate the candidate that you were most likely to have voted for or who represents your views more closely.]
-\\ ~[US1, US2: \textit{Biden; Trump; Jorgensen; Hawkins; Prefer not to say}; FR: candidates at the 2022 presidential election; DE: parties with more than 1\% of votes at the 2021 federal election and \textit{Other}; ES: lists with more than 0.9\% at the November 2019 general election and \textit{Other}; UK: parties with more than 0.5\% of votes at the 2019 general election and \textit{Other}]
+\\ ~[US1, US2: \textit{Biden; Trump; Jorgensen; Hawkins; Prefer not to say}\\ FR: candidates at the 2022 presidential election\\ DE: parties with more than 1\% of votes at the 2021 federal election and \textit{Other}\\ ES: lists with more than 0.9\% at the November 2019 general election and \textit{Other}\\ UK: parties with more than 0.5\% of votes at the 2019 general election and \textit{Other}]
 % \item ~[Asked if did not vote] Even if you did not vote in the [2020 U.S. presidential] election, please indicate the candidate that you were most likely to have voted for or who represents your views more closely.
 % \\ \textit{Biden; Trump; Jorgensen; Hawkins; Prefer not to say}
 \item \label{q:problem} To what extent do you think the following issues are a problem? [\textit{Figure \ref{fig:problem}}]
@@ -501,7 +507,7 @@ Do you support [the U.S.] transferring more money to low-income countries?
     How do you allocate the points among the following policies? [\textit{Figure \ref{fig:points_us}}]  \\
     \\
     You can adjust the number of points either using the slider or entering the number of your choice on the right-hand-side. \textbf{The sum of points must equal exactly 100}. By pushing the last slider to the right, the total will automatically adjust to 100. Please read the 6 options before making your choice.
-    // \textit{See the sheet ``Policies'' in \href{https://github.com/bixiou/global_tax_attitudes/raw/main/questionnaire/specificities.xlsx}{this spreadsheet} for the pool of policies in each country.}
+    \\ \textit{See the sheet ``Policies'' in \href{https://github.com/bixiou/global_tax_attitudes/raw/main/questionnaire/specificities.xlsx}{this spreadsheet} for the pool of policies in each country.}
 % \begin{itemize}
 %     \item Student loan forgiveness
 %     \item \$15 minimum wage 
@@ -521,13 +527,19 @@ Do you support [the U.S.] transferring more money to low-income countries?
 %     \item Global democratic assembly on climate change 
 %     \item Doubling foreign aid 
 % \end{itemize}
-[sliders from 0 to 100]
+\\ ~[sliders from 0 to 100]
 \end{enumerate}
 
 \subsection*{[FR, DE, ES] ETS2}
-\begin{enumerate}[resume] % TODO!
-    \item Similar to the Global Climate Scheme, the European Climate Scheme would impose a maximum amount of greenhouse gases we can emit across the EU in the buildings and transport sectors. It would make polluters pay for their emissions, which in turn would increase fossil fuel prices and discourage polluting activities. Several options are possible regarding the use of the scheme’s revenues:  	Provide an equal cash transfer of €105 per year to each European. 	Provide a country-specific cash transfer to each European, proportional to their country’s emissions: people in countries with higher emissions per person (like Germany) would receive more than people in countries with lower emissions (like Romania). For information, people in [Country] would receive [country gain]€/year. 	Finance low-carbon investments: the thermal insulation of buildings, the switch to clean sources of heating, public transportation, and charging stations for electric vehicles. 	Provide cash transfers to the most vulnerable half of Europeans and finance low-carbon investments.  
-    Do you support or oppose the European Climate Scheme in case the revenue is used to… ?
+\begin{enumerate}[resume] 
+    \item Similar to the Global Climate Scheme, the European Climate Scheme would impose a maximum amount of greenhouse gases we can emit across the EU in the buildings and transport sectors. It would make polluters pay for their emissions, which in turn would increase fossil fuel prices and discourage polluting activities. Several options are possible regarding the use of the scheme's revenues:
+    \begin{itemize}
+        \item Provide an equal cash transfer of \euro{}105 per year to each European.
+        \item Provide a country-specific cash transfer to each European, proportional to their country's emissions: people in countries with higher emissions per person (like Germany) would receive more than people in countries with lower emissions (like Romania). For information, people in [Germany] would receive \euro{}[FR: 110; DE: 130; ES: 90]/year.
+        \item Finance low-carbon investments: thermal insulation of buildings, switch to clean sources of heating, public transportation, and charging stations for electric vehicles.
+        \item Provide cash transfers to the most vulnerable half of Europeans and finance low-carbon investments. 
+    \end{itemize}     	 	 	 
+    Do you support or oppose the European Climate Scheme in case the revenue is used to... ?
     \begin{itemize}
         \item Provide an equal cash transfer to each European 
         \item Provide a country-specific cash transfer to each European 
@@ -536,7 +548,7 @@ Do you support [the U.S.] transferring more money to low-income countries?
     \end{itemize}
     \textit{Strongly oppose; Somewhat oppose; Neither support nor oppose; Somewhat support; Strongly support}
     \item ~[\textit{Asked iff none of the four variants of the European Climate Scheme is (somewhat or strongly) supported}] Why do you not support a European Climate Scheme? (Multiple answers possible)
-    \textit{I am opposed to climate policy being decided at the EU level, it should be decided at the national level; \\I would prefer if the revenues were used in a different way (beyond the four suggestions above) than previously suggested; \\I would prefer if decreasing carbon emissions were regulated by other climate policies; \\I am generally opposed to additional, or more ambitious, climate policies; \\I do not fully understand how the European Climate Scheme is supposed to work; \\I don't know}
+    \\ \textit{I am opposed to climate policy being decided at the EU level, it should be decided at the national level; \\I would prefer if the revenues were used in a different way (beyond the four suggestions above) than previously suggested; \\I would prefer if decreasing carbon emissions were regulated by other climate policies; \\I am generally opposed to additional, or more ambitious, climate policies; \\I do not fully understand how the European Climate Scheme is supposed to work; \\I don't know}
 \end{enumerate}
 
 \subsection*{[Eu, US1, US2] Feedback}
@@ -544,9 +556,9 @@ Do you support [the U.S.] transferring more money to low-income countries?
 \item Do you feel that this survey was politically biased?
 \\ \textit{Yes, left-wing biased; Yes, right-wing biased; No, I do not feel it was biased}
 \item ~[US2 \textit{Asked only to one random third of the respondents, instead of the feedback Question \ref{q:feedback}}] According to you, what should high-income countries do to fight extreme poverty in low-income countries?
-\\ ~[open-ended field]
+\\ ~\textit{\{Open field\}}
 \item \label{q:feedback} The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below.
-\\ ~[open-ended field]
+\\ ~\textit{\{Open field\}}
 \item Lastly, are you interested to be interviewed by a researcher (through videoconferencing) for 30 min? \\
 \\
 This is totally optional and will not be rewarded.
