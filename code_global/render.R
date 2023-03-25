@@ -594,7 +594,7 @@ vars_barres <- c("ets2_support", "ets2_no", "other_policies", "climate_policies"
                  "global_tax_sharing", "global_tax_support", "national_tax_support", "conjoint", "group_defended", "group_defended_agg", "group_defended_agg2", 
                  "group_defended_agg5", "group_defended_agg6", "country_name", "urbanity", "region", "gender", "age", "age_exact", "couple", "hh_size", "income_decile", 
                  "income_quartile", "education", "diploma", "diploma_25_64", "employment_agg", "employment_status", "employment_18_64", "race", "owner", "wealth", "survey_biased", 
-                 "interested_politics", "donation_charities", "involvement_govt", "left_right", "duration_agg") 
+                 "vote_agg", "vote_participation", "interested_politics", "donation_charities", "involvement_govt", "left_right", "duration_agg") 
 
 barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 # return(barres_defs) }
@@ -651,6 +651,19 @@ barres_multiple(barres = barres_defs, df = all, folder = "../figures/all/")
 save_plotly(temp, filename = "list_exp", folder = "../figures/US1/", width = 850, height = fig_height(4), trim = T)
 (temp <- barres(data = data_list_exp(eu), rev = F, rev_color = T, export_xls = F, sort = F, thin = T, miss=F, showLegend = T, legend = c(0:4), labels=labels_vars[variables_list_exp]))
 save_plotly(temp, filename = "list_exp", folder = "../figures/EU/", width = 850, height = fig_height(4), trim = T)
+for (c in countries_EU) {
+  (temp <- barres(data = data_list_exp(d(c)), rev = F, rev_color = T, export_xls = F, sort = F, thin = T, miss=F, showLegend = T, legend = c(0:4), labels=labels_vars[variables_list_exp]))
+  save_plotly(temp, filename = "list_exp", folder = paste0("../figures/", c, "/"), width = 850, height = fig_height(4), trim = T)
+}
+
+# Handle exceptions
+for (c in countries) {
+  e <- d(c)
+  barres_multiple(barres = fill_barres(c("vote_agg"), list()), df = d(c), folder = paste0("../figures/", c, "/")) 
+}
+e <- d("ES")
+barres_multiple(barres = fill_barres(c("global_tax_global_share"), list()), df = d("ES"), folder = paste0("../figures/ES/")) 
+e <- all
 
 
 ##### Heatmaps #####

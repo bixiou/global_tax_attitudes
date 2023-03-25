@@ -1009,6 +1009,7 @@ politics <- c("political_affiliation", "interested_politics", "involvement_govt"
 #   temp <- gsub("Eu", names_countries_eu[c], temp, fixed = T)
 #   temp <- gsub("[own country]", country_eu[c], temp, fixed = T)
 #   temp <- gsub("EU", c, temp)
+#   temp <- gsub(paste("Complementary survey", c), "Complementary survey Eu", temp, fixed = T)
 #   writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
 # }
 # # comment vote_agg in EU
