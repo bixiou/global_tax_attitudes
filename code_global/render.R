@@ -554,7 +554,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "variables_list_exp" = list(width = 500),
   "variables_petition" = list(vars = c("petition_gcs", "petition_nr"), width = 850), # 500
   "variables_donation" = list(vars = c("donation_africa_agg", "donation_nation_agg"), width = 850), # 835
-  "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg, width = 850), # 1080
+  "foreign_aid_amount" = list(vars = variables_foreign_aid_amount_agg[1:3], width = 850), # 1080
   "belief" = list(vars = variables_belief_agg, width = 850), # 750
   # "points" = list(vars = variables_points_agg, width = 850, sort = FALSE), # 750 TODO! average
   "points_mean" = list(vars = variables_points_us_agg, width = 850, sort = FALSE, add_means = T, show_legend_means = T, transform_mean = function(x) return(x/100)), # 1080 points_us
@@ -574,7 +574,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
   "support_binary_all" = list(showLegend = FALSE), 
   "global_national_tax" = list(vars = c("national_tax_support", "global_tax_support"), sort = FALSE),
-  "global_tax_share" = list(vars = c("global_tax_sharing", "global_tax_more_half", "global_tax_more_30p", "global_tax_more_10p"), sort = FALSE),
+  "global_tax_share" = list(vars = c("global_tax_sharing", "global_tax_more_half", "global_tax_more_30p", "global_tax_more_10p"), sort = FALSE), # TODO make it also a heatmap
   "vote"= list(miss = T, fr = "PNR/Non-voter"), # non_voters as such, aggregating candidates into 3 categories
   "vote_all"= list(rev = T), # hypothetical votes for non_voters
   "vote_agg"= list(rev = T), # hypothetical votes for non_voters, aggregating small candidates
@@ -640,6 +640,10 @@ barres_multiple(barres = barres_defs, df = eu, folder = "../figures/EU/")
 barres_multiple(barres = barres_defs, df = us1, folder = "../figures/US1/") 
 barres_multiple(barres = barres_defs, df = us2, folder = "../figures/US2/") 
 barres_multiple(barres = barres_defs, df = us, folder = "../figures/US/") 
+barres_multiple(barres = barres_defs, df = eu[eu$country == 'FR',], folder = "../figures/FR/") 
+barres_multiple(barres = barres_defs, df = eu[eu$country == 'DE',], folder = "../figures/DE/") 
+barres_multiple(barres = barres_defs, df = eu[eu$country == 'ES',], folder = "../figures/ES/") 
+barres_multiple(barres = barres_defs, df = eu[eu$country == 'UK',], folder = "../figures/UK/") 
 barres_multiple(barres = barres_defs, df = all, folder = "../figures/all/") 
 
 # list_exp

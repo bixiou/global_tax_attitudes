@@ -987,3 +987,56 @@ quotas_eu <- c("country", "income_factor", "post_secondary", "age_factor", "man"
 socio_demos <- c(quotas_eu, "couple", "employment_agg", "wealth_factor", "vote_factor") # add "hh_size", "owner", "wealth", "donation_charities"?
 politics <- c("political_affiliation", "interested_politics", "involvement_govt", "left_right", "vote_participation", "vote_us", "group_defended")
 
+
+##### Create Raw results appendices #####
+# # (don't forget instructions in comments)
+# countries_eu <- c(countries_EU, "Eu" = "EU")
+# names_countries_eu <- setNames(names(countries_eu), countries_eu)
+# country_eu <- setNames(c("French", "German", "Spanish", "British", "[own country]"), countries_eu)
+# c <- "EU"
+# temp <- readLines("../paper/app_desc_stats_US.tex")
+# temp <- gsub("the U.S.", names_countries_eu[c], temp, fixed = T)
+# temp <- gsub("U.S.", country_eu[c], temp, fixed = T)
+# temp <- gsub("s US1 and US2", " Eu", temp, fixed = T)
+# temp <- gsub(" \\(US1\\)| \\(US2\\)", "", temp)
+# temp <- gsub("US|US1|US2", c, temp)
+# temp <- gsub("[Asked only to non-Republicans] ", "", temp, fixed = T)
+# temp <- gsub("Democratic", "political", temp, fixed = T)
+# writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
+# # check TODO: Eu and US2 (manually remove duplicates at the end for vote, etc.)
+# for (c in countries_EU) {
+#   temp <- readLines("../paper/app_desc_stats_EU.tex")
+#   temp <- gsub("Eu", names_countries_eu[c], temp, fixed = T)
+#   temp <- gsub("[own country]", country_eu[c], temp, fixed = T)
+#   temp <- gsub("EU", c, temp)
+#   writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
+# }
+# # comment vote_agg in EU
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
