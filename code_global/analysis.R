@@ -3,14 +3,12 @@ e <- us2p
 e <- eup
 e <- eup[eup$country %in% c("DE", "ES"),]
 e <- ep
-# TODO! appendix sources, calcul net gain
+# TODO! appendix sources
 # TODO! plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
 # TODO map % winners/losers
 # TODO regress poverty gap on GDPpc and find a formula to allocate wealth tax revenues based on GDPpc (to not incentivize having large poverty gaps). Then estimate valuation of carbon date it approximates in $/tCO2 from historical respo.
 # TODO! map: in % of GDP, with NDCs, at each date with 2°C + SDG trajectories => Gore (21) (I sent an email)
 # TODO! reweighted estimate dans papier
-# TODO US/EU: put back email?, welcome: amount incentives
-# TODO read about Norway and foreign aid
 # TODO? Use donation to measure altruism?
 # TODO! decrit(us2$interview) decrit(us1$interview)
 
