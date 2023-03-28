@@ -532,12 +532,18 @@ sum(co2_pop$share_territorial_2019[co2_pop$mean_gain_2030 > 0]) # 20.9% of globa
 co2_pop$share_territorial_2019[co2_pop$code == "USA"] # 14.8%
 co2_pop$share_territorial_2019[co2_pop$code == "IND"] # 7.4%
 co2_pop$share_territorial_2019[co2_pop$code == "CHN"] # 30.2%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("JPN", "KOR", "NOR", "SWZ", "NLD", "CAN")]) # 7%, JP + SK: 5%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("AUS", "SAU", "QAT", "KWT", "ARE")]) # 4%
 sum(co2_pop$share_territorial_2019[co2_pop$code %in% EU28_countries]) # 9.2%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% EU28_countries & co2_pop$code != "GBR"]) # 8.2%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("JPN", "KOR")]) # 5%
 
+# Countries with income lower than 2* world average and losers from GCS: 
+# China, Russia, Turkey, Iran, Iraq, Algeria, Kazakhstan, Malaysia, Chile, South Africa, Lybia, Botswana, Namibia, Turkmenistan, Mongolia, and some EU countries
+co2_pop$country[co2_pop$gdp_pc_2020 < 2*wtd.mean(co2_pop$gdp_pc_2020, co2_pop$pop_2020) & co2_pop$mean_gain_2030 < 0]
+sum(co2_pop$share_territorial_2019[co2_pop$gdp_pc_2020 < 2*wtd.mean(co2_pop$gdp_pc_2020, co2_pop$pop_2020) & co2_pop$mean_gain_2030 < 0], na.rm = T) # 45.6%
 
-
-
-
+# USA: 15 / EU+UK: 9 / CHN: 30 / other middle inc, high em: 15 / gain: 21 / other OECD Asia, America or Europe: 7 / other high inc: 4
 
 
 
