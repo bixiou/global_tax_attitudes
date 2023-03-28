@@ -56,6 +56,7 @@
 \usepackage{tocloft}
 \usepackage{titletoc}
 \usepackage{csquotes}
+\usepackage{tcolorbox}
 \usepackage[export]{adjustbox}
 \usepackage[anythingbreaks]{breakurl} % for links
 \usepackage{multicol}
@@ -127,12 +128,12 @@ Indeed, the best available approximation of the historical emissions of someone 
 % Because carbon emissions were parallel to capital accumulation, countries that emitted more in the past tend to be richer today. But this is not always true (think of Ukraine). We argue that
 % Past emissions disproportionally benefitted wealthy people, as carbon footprint increases with wealth. Attributing historical responsibilities to wealthy people
 
-As the previous point exemplifies, the GCS is a good complement (rather than a substitute) to other climate or redistributive policies \citep{stiglitz_addressing_2019}. In particular, the GCS's negative effect on the purchasing power of an average emitter of a high-income country can be offset by national redistribution, through increased income taxes on the top 5\%. Furthermore, some decarbonization costs can be mutualized, e.g. through public investments in public transportation and subsidies to thermal insulation, to reduce the discrepancy in private costs between people with similar income but different carbon footprint. The GCS actually encourages complementary decarbonization policies, as countries decarbonizing faster will contribute less to the GCS revenues than countries entirely relying on the price mechanism. %which reduce the reliance on the carbon price incentive to decarbonize, 
+The GCS is a good complement (rather than a substitute) to other climate or redistributive policies \citep{stiglitz_addressing_2019}. In particular, the GCS's negative effect on the purchasing power of an average emitter of a high-income country can be offset by national redistribution, through increased income taxes on the top 5\%. Furthermore, some decarbonization costs can be mutualized, e.g. through public investments in public transportation and subsidies to thermal insulation, to reduce the discrepancy in private costs between people with similar income but different carbon footprint. The GCS actually encourages complementary decarbonization policies, as countries decarbonizing faster will contribute less to the GCS revenues than countries entirely relying on the price mechanism. %which reduce the reliance on the carbon price incentive to decarbonize, 
 % equal right to emit; efficiency of pricing, simplicity of rights allocation, complementarity with other climate & redistributive measures
 
 \paragraph*{3. A global basic income that eradicates extreme poverty.}
 
-The GCS revenues would be used to finance a global basic income. At their peak,  assuming a carbon price of \$90/tCO$_\text{2}$ in 2030, the GCS revenues are estimated to amount to 1.7\% of the Gross World Product. We use the price and emissions trajectories from the report by \citet{stern_report_2017} and estimate that the basic income would amount to \$30 per month for each human above 15 in 2030, enough to lift out of extreme poverty the 700 million people who live with less than \$2.15 a day. Conversely, high emitters like a typical German (with median German CO$_\text{2}$ emissions) would lose in net \euro{}25 per month, as they would face \euro{}55 per month in price increases. Overall, the GCS would operate substantial international transfers, estimated in Section \ref{sec:distribution}.  
+The GCS revenues would be used to finance a global basic income. At their peak,  assuming a carbon price of \$90/tCO$_\text{2}$ in 2030, the GCS revenues are estimated to amount to 1.7\% of the Gross World Product, including 1\% in international transfers (see Section \ref{sec:distribution}). We use the price and emissions trajectories from the report by \citet{stern_report_2017} and estimate that the basic income would amount to \$30 per month for each human above 15 in 2030, enough to lift out of extreme poverty the 700 million people who live with less than \$2.15 a day. Conversely, high emitters like a typical German (with median German CO$_\text{2}$ emissions) would lose in net \euro{}25 per month, as they would face \euro{}55 per month in price increases. %Overall, the GCS would operate substantial international transfers, estimated in Section \ref{sec:distribution}.  
 
 Although distributing a basic income to every human is technically challenging, different options are available, reviewed in Section \ref{sec:implementation}. 
 
@@ -155,14 +156,78 @@ The GCS would be implemented as soon as 60\% of global CO$_\text{2}$ emissions a
 
 \section{Distributive effects}\label{sec:distribution}
 
+The GCS would redistribute income from high-emitters (people with a carbon footprint higher than the world average) to low-emitters. Indeed, polluting firms would pass on the carbon price to consumers, who will ultimately pay higher costs in proportion to their carbon footprint. The basic income amounts to the global average revenues per capita and would thus equal the carbon price times the global average carbon footprint. 
+
+Currently, countries' footprints are strongly correlated (at .64) with their GDP per capita. But certain countries, like Iraq, South Africa or China, have a carbon footprint higher than predicted by their GDP per capita. In addition, it might be the case that around 2050, countries like the EU will reach very low carbon footprint, perhaps lower than some developing countries like India. EU's footprint is currently 4 times higher than India's, so it would take time before a reversal can happen between the two. Still, Section \ref{sec:details} proposes a solution to prevent the GCS from redistributing from lower income to higher income countries.
+
+\begin{figure}[h!]
+    \caption{Estimated trajectory of CO$_\text{2}$ emissions, carbon price and basic income.}\label{fig:trajectory}
+    \makebox[\textwidth][c]{\includegraphics[width=.6\textwidth]{../figures/policies/trajectory_basic_income.png}} 
+\end{figure}
+
+
+\begin{figure}[h!]
+    \caption{Net gains from the Global Climate Scheme.}\label{fig:median_gain_2015}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/maps/mean_gain_over_gdp_2019.pdf}} 
+\end{figure}
+
+\begin{tcolorbox}
+  {\small
+  \paragraph{How we compute the distributive effects}
+  To specify the GCS, we use the IEA's 2DS scenario \citep{iea_energy_2017}, which is consistent with limiting the global average temperature increase to 2\textdegree{}C with a probability of at least 50\%. The paper by \citet{hood_input_2017} contributing to the Report of the High-Level Commission on Carbon Prices \citep{stern_report_2017} presents a price corridor compatible with this emissions scenario, from which we take the midpoint. The product of these two series provides an estimate of the revenues expected from a global carbon price. We then divide it by the UN median scenario of future population aged over 15 years (\textit{adults}, for short) to derive the basic income. %that could be paid to all adults by recycling the revenues from the global carbon price: evolving between \$20 and \$30 per month, with a peak in 2030. %Accounting for the lower price levels in low-income countries, an additional income of \$30 per month would allow \href{https://data.worldbank.org/indicator/SI.POV.DDAY}{670 million people} to escape extreme poverty, defined with the threshold of \$2.15 per day in purchasing power parity.
+%\footnote{By taking the \href{https://data.worldbank.org/indicator/PA.NUS.PPPC.RF}{ratio} of the World Bank series relating the GDP per capita of Sub-Saharan Africa in \href{https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=ZG&year_high_desc=true}{PPP} and \href{https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=ZG&year_high_desc=true}{nominal}, we obtain the purchasing power of \$1 in this region: \$2.4 in 2019.} %See also the price level ratio of PPP conversion factor to market exchange rate.
+ 
+
+To estimate the increase in fossil fuel expenditures (or ``cost'') in each country by 2030, we make a key assumption concerning the evolution of the carbon footprints per adult: that they will decrease by the same proportion in each country. We use data from the Global Carbon Project \citep{peters_synthesis_2012}. %In 2030, the average carbon footprint of a country $c$, $e_c$, evolves from baseline year $b$ proportionally to the evolution of its adult population $\Delta p_c = p^{2030}_c/p^b_c$. Thus, the global share of country $c$'s carbon footprint in year $y$, $s_c$, is proportional to $\sigma_c = e^y_c \Delta p_c$, and as countries' shares sum to 1, $s_c = \frac{\sigma_c}{\sum_k \sigma_k}$. Multiplying country $c$'s emission share with global revenues in 2030, $R$, and dividing by $c$'s adult population in year $y$, yields its average cost per adult: $\frac{s_c}{p^y_c} R$. 
+%Using findings from \citet{ivanova_unequal_2020} for Europe and \citet{fremstad_impact_2019} for the U.S., we approximate the median cost as 90\% of the average cost. 
+Finally, the net gain is given by the basic income (\$30 per month) minus the cost. 
+%We provided consistent estimates of net gains in all surveys (using $y = b = 2015$), though in the global survey we gave the average net gains vs. the median ones in the complementary surveys. The latter are shown in Figure \ref{fig:median_gain_2015}. 
+% For the record, Table \ref{tab:gain_gcs.tex} also provides an estimate of \textit{average} net gains (computed with $b = 2019$ and $y = 2030$). 
+%\footnote{2015 was the last year of data available when the global questionnaire was conceived (\href{https://stats.oecd.org/Index.aspx?DataSetCode=IO_GHG_2019}{OECD data} was then used -- it does not cover all countries but give identical rounded estimates than those recomputed from the Global Carbon Project data for our complementary surveys). 2030 was chosen as the reference year as it is the date at which global carbon price revenues are expected to peak (and the GCS redistributive effects would be largest), and the GCS could not realistically enter into force before that date. In the surveys, we chose $y = b = 2015$ rather than $b = 2019$ and $y = 2030$ to get more conservative estimates of the monthly cost in the U.S. (\$20 higher than the other option) and in Europe (\euro{5} or £10 higher).}% TODO? remove footnote?
+%  ((e/E)*(f/a)*A/F)*R/a
+We have checked that the emissions per capita given by our method are broadly in line with alternative methods, even if it tends to overestimate net gains in countries which will decarbonize less rapidly than average.
+
+% Estimates of the net gains from the Global Climate Scheme are necessarily imprecise, given the uncertainties surrounding the carbon price required to achieve emissions reductions as well as each country's trajectory in terms of emissions and population. These values are highly dependent on future (non-price) climate policies, technical progress, and economic growth of each country, which are only partially known. Integrated Assessment Models have been used to derive a Global Energy Assessment \citep{johansson_global_2012}, a 100\% renewable scenario \citep{greenpeace_energy_2015} as well as Shared Socioeconomic Pathways (SSPs), which include consistent trajectories of population, emissions, and carbon price \citep{riahi_shared_2017,bauer_shared_2017,van_vuuren_energy_2017,fricko_marker_2017}. Instead of using some of these modelling trajectories, we relied on a simple and transparent formula, for a number of reasons. First and foremost, those trajectories describe territorial emissions while we need consumption-based emissions to compute the incidence of the GCS. Second, the carbon price is relatively low in trajectories of SSPs that contain global warming below 2\textdegree{}C (less than \$35/tCO$_\text{2}$ in 2030), so we conservatively chose a method yielding a higher carbon price (\$90 in 2030). Third, modelling results are available only for a few macro regions, while we wanted country by country estimates. Finally, we have checked that the emissions per capita given by our method are broadly in line with alternative methods, even if it tends to overestimate net gains in countries which will decarbonize less rapidly than average.\footnote{Computations with alternative methods can be found on \href{https://github.com/bixiou/global_tax_attitudes/blob/main/code_global/map_GCS_incidence.R}{our public repository}.} For example, although countries' decarbonization plans should realign with the GCS in place, India might still decarbonize less quickly than the European Union, so India's gain and the EU's loss might be overestimated in our computations. 
+  }
+\end{tcolorbox}
+
+% \begin{table}[h]\label{tab:gain_gcs}
+%     \caption{Net gains from the Global Climate Scheme.} 
+%     \makebox[\textwidth][c]{
+        % \resizebox*{!}{.7\textheight}{
+% \clearpage
+% \begin{multicols}{2}
+%     \setbox\ltmcbox\vbox{
+%     \makeatletter\col@number\@ne
+%         \input{../tables/gain_gcs.tex}
+%     \unskip
+%     \unpenalty
+%     \unpenalty}
+%     \unvbox\ltmcbox
+% \end{multicols}
+%         % }
+% %     }
+%     {\footnotesize \textit{Note}: %Emission data is from \cite{peters_synthesis_2012}. 
+%     Asterisks denote countries where footprint is missing and territorial emissions is used instead. %Estimation of net gains is described in the text. 
+%     Values differ from Figure \ref{fig:median_gain_2015} as this table present estimates of \textit{mean} net gain per adult in \textit{2030}, not at the present. Only the countries with more than 20 million adults (covering 87\% of the global total) are shown. 
+%     }
 
 \section{Implementation}\label{sec:implementation}
 
+In addition to geopolitical challenges, implementing the GCS would face two technical challenges. 
+
+First, carbon emissions must be monitored, reported and verified, at least for large industrial units such as coal mines or oil refineries. This might prove difficult in countries lacking a well-functioning administration. Yet, this challenge is not specific to the GCS as controlling emissions is a necessary element of any successful climate policy. Actually, the control of emissions is likely to be facilitated by the GCS compared to alternative climate policies, given that the GCS would provide resources to low-income countries (which they can use to expand their administration) and make countries work together (so that experienced countries would assist the others). 
+
+Second, the basic income needs to reach everyone and be robust to fraud (so that no one receives the basic income twice). It is difficult to reach people without a proper civil status or living in remote areas. Likewise, it is difficult to verify people's identity and to be confident that they are not registered multiple times. However, there are good reasons to be confident that the required infrastructure to deliver a basic income can be deployed within ten years, as there exists different technical solutions are available. First, most countries maintain electoral lists and already have social programs targeted to isolated people. Second, smartphones now provide biometric identification as well as a costless means of transaction (and the cost of a smartphone would be covered by just a few months of basic income). Third, while many places are still lacking internet access, progress is rapid in satellite internet access, and it might soon become cheap and ubiquitous \citep{hanson_satellite_2016}. Fourth, experience can be gained from the Aadhaar system, launched in 2009, which now provides to 99\% of the Indian adult population a unique biometric identifier. Aadhaar is linked to one's bank accounts and used to distribute welfare benefits. Although the technical challenge remains, it seems solvable by an appropriate combination of these solutions, tailored to the specific needs of each region. 
 
 \section{Support}\label{sec:support}
 
+There is widespread support for the GCS in the 20 countries where it has been tested in representative surveys. 
 
 \section{Details of the scheme}\label{sec:details}
+
+% Ask support of receiver population!
+% gradual implementation, especially of the basic income
 
 Vote with a weight corresponding to emissions(?) on emissions trajectory compatible with 2C with 66\% chance and without overshoot. Vote with same weight on details and sanctions for non-participants.
 

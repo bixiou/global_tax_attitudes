@@ -156,7 +156,10 @@ plot_world_map("median_gain_2015", breaks = thresholds_map, format = c('png', 's
 co2_pop$mean_gain_over_gdp_2019 <- 100*12*co2_pop$mean_gain_2019/co2_pop$gdp_pc_2019 # TODO! mean_gain is computed per adult, not p.c. => abs gain/loss are lower than shown, especially in young countries
 sum((co2_pop$mean_gain_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_over_gdp_2019 > 0], na.rm = T)
 -sum((co2_pop$mean_gain_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_over_gdp_2019 < 0], na.rm = T)
-# /!\ Discrepancy between transfers given (.6T) and received (.9T), probably due to the adult vs. pop issue raised above
+# /!\ Discrepancy between transfers given (.6T) and received (.9T), due to the adult vs. pop issue raised above. Indeed, computing it without the GDPpc has no problem (.85T in both cases):
+sum((12 * co2_pop$mean_gain_2030 * co2_pop$adult_2030)[co2_pop$mean_gain_2030 > 0], na.rm = T) # .85T
+-sum((12 * co2_pop$mean_gain_2030 * co2_pop$adult_2030)[co2_pop$mean_gain_2030 < 0], na.rm = T)
+sum((12 * co2_pop$mean_gain_2030 * co2_pop$adult_2030)[co2_pop$mean_gain_2030 > 0], na.rm = T)/(sum(co2_pop$gdp_pc_2030 * co2_pop$pop_2030, na.rm = T)) # 1% of GDP redistributed
 sort(setNames(co2_pop$mean_gain_over_gdp_2019, co2_pop$country))
 plot_world_map("mean_gain_over_gdp_2019", breaks = c(-Inf, -5, -2, -1, 0, 1, 5, 20, 50, Inf), format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -5, -2, -1, 0, 1, 5, 20, 50, Inf), sep = " to ", return = "levels")), 
@@ -457,6 +460,7 @@ for (i in c("IMAGE", "GEA")) {
 # China would lose: -25 $/month per person, India win +8, EU +4, US -52, Vietnam +28, Brazil +38, Australia -113
 ndc <- read.xlsx("../data/NDCs_Gao.xlsx")
 EU28_countries <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GBR", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
+EU27_countries <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
 temp <- rbind(co2_pop, c("EU28", "EU-28", colSums(co2_pop[co2_pop$code %in% EU28_countries, 3:ncol(co2_pop)])))
 for (v in setdiff(names(temp), c("country", "code"))) temp[[v]] <- as.numeric(temp[[v]])
 temp$mean_gain_2030[temp$country == "EU-28"] <- temp$mean_gain_2030[temp$code %in% EU28_countries] %*% temp$adult_2030[temp$code %in% EU28_countries] / sum(temp$adult_2030[temp$code %in% EU28_countries])
@@ -545,8 +549,7 @@ sum(co2_pop$share_territorial_2019[co2_pop$gdp_pc_2020 < 2*wtd.mean(co2_pop$gdp_
 
 # USA: 15 / EU+UK: 9 / CHN: 30 / other middle inc, high em: 15 / gain: 21 / other OECD Asia, America or Europe: 7 / other high inc: 4
 
-
-
-
-
+cor(co2_pop$emissions_pa_2019, co2_pop$gdp_pc_2019, use = "complete.obs") # .64
+sort(setNames(co2_pop$emissions_pa_2019/co2_pop$gdp_pc_2019, co2_pop$country))
+wtd.mean(co2_pop$emissions_pa_2019[co2_pop$code %in% EU27_countries], co2_pop$adult_2019[co2_pop$code %in% EU27_countries])/co2_pop$emissions_pa_2019[co2_pop$country == "India"]
 

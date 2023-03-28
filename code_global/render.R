@@ -694,7 +694,7 @@ temp[13,7] <- temp2[13,7] <- wtd.mean(eu$gcs_support[eu$country == "DE"] == "Yes
 temp[13,12] <- temp2[13,12] <- wtd.mean(eu$gcs_support[eu$country == "ES"] == "Yes", weights = eu$weight_country[eu$country == "ES"])
 temp[13,13] <- temp2[13,13] <- wtd.mean(eu$gcs_support[eu$country == "UK"] == "Yes", weights = eu$weight_country[eu$country == "UK"])
 temp[13,14] <- temp2[13,14] <- wtd.mean(us1$gcs_support == "Yes", weights = us1$weight)
-temp[13,2] <- temp2[13,2] <- mean(as.numeric(temp[13,]), na.rm = T)
+temp[13,2] <- temp2[13,2] <- mean(c(temp2[13,14], mean(temp2[13, c(6,7,12,13)]))) # as.numeric(temp[13,])
 write.xlsx(temp, "../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_positive.xlsx")
 write.xlsx(temp2, "../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_share.xlsx")
 
