@@ -72,7 +72,8 @@ major_candidates <- minor_candidates <- list()
 )
   
   quotas <- list("EU" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity"),
-                 "EU_all" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity", "employment_18_64", "vote"), # TODO! vote_eu
+                 "EU_vote" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity", "vote"),
+                 "EU_all" = c("gender", "income_quartile", "age", "diploma_25_64", "country", "urbanity", "employment_18_64", "vote"), 
                  "US" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban"), 
                  "US_vote" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban", "vote_us"),
                  "US_all" = c("gender", "income_quartile", "age", "diploma_25_64", "race", "region", "urban", "employment_18_64", "vote"),
@@ -240,8 +241,8 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
     if (weighting) {
       e$weight <- weighting(e, sub("[0-9p]+", "", country))
       e$weight_all <- weighting(e, sub("[0-9p]+", "", country), variant = "all")
-      if ("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
-      if (country == "EU") for (c in countries_EU) e$weight_country[e$country == c] <- weighting(e[e$country == c,], c)
+      if (("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) | ("vote" %in% names(e))) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
+      if (country == "EU") { for (c in countries_EU) e$weight_country[e$country == c] <- weighting(e[e$country == c,], c) } else e$weight_country <- e$weight
     }
     
   # e$left_right_na <- as.numeric(e$left_right)
@@ -256,8 +257,8 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
     e$dropout <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1"
     label(e$dropout) <- "dropout: Respondent who did not complete the survey though was not excluded."
     if (country %in% c("US1", "US2", "EU")) {
-      progress_socio <- if (country == "US1") 19 else { if (country == "US2")  else }
-      # TODO! View(e[(e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1", ])
+      progress_socio <- if (country == "US1") 19 else { if (country == "US2") 14 else 15 }
+      # max(as.numeric(e$progress[is.na(e$gcs_win_lose) & (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1"]))
       e$dropout_late <- (e$attention_test == "A little" | is.na(e$attention_test)) & is.na(e$excluded) & e$finished != "1" & n(e$progress) >= progress_socio
       label(e$dropout_late) <- "dropout: Respondent who did not complete the survey though was not excluded, and who dropped out after the socio-demographic questions." }
     e$finished_attentive <- (e$valid | (e$duration <= duration_min & e$attention_test=="A little")) & e$finished==1
@@ -483,6 +484,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   if (grepl("US", country)) temp <- as.numeric(as.vector(e$urban_category - 1 * (e$urban_category > 2)))
   e$urbanity <- as.item(temp, labels = structure(1:3, names = c("Cities", "Towns and suburbs", "Rural")), missing.values=c(NA), annotation="urbanity: 1: Cities / 2: Towns and suburbs / 3: Rural. Computed from the zipcode. For EU, equals urban_category; for the U.S., urbanity = 1; 2; 3 (resp.) corresponds to urban_category = 1; 2 or 3; 4.")
   e$urban <- e$urban_category == 1
+  e$urbanity <- as.factor(e$urbanity) # new
   label(e$urban) <- "urban: T/F urban_category == 1: Cities (EU) or Core metropolitan (US)."
   
   e$education_original <- e$education
@@ -721,10 +723,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$conjoint_b_na) <- "conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_rc_r'."
       e$branch_c_gcs <- grepl("g_", e$branch_conjoint_c)
       label(e$branch_c_gcs) <- "branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'."
-      e$conjoint_r_type <- "None"
-      e$conjoint_r_type[e$`F-1-1-5` %in% policies.names["foreign1",]] <- "A"
-      e$conjoint_r_type[e$`F-1-2-5` %in% policies.names["foreign1",]] <- "B"
-      e$conjoint_r_type[e$`F-1-1-5` %in% policies.names["foreign1",] & e$`F-1-2-5` %in% policies.names["foreign1",]] <- "Both"
+      e$conjoint_r_type <- temp <- "None"
+      for (i in 1:5) {
+        e$conjoint_r_type[e[[paste0("F-1-1-", i)]] %in% policies.names["foreign1",]] <- temp[e[[paste0("F-1-1-", i)]] %in% policies.names["foreign1",]] <- "A"
+        e$conjoint_r_type[e[[paste0("F-1-2-", i)]] %in% policies.names["foreign1",]] <- "B" }
+      e$conjoint_r_type[e$conjoint_r_type == "B" & temp == A] <- "Both"
       label(e$conjoint_r_type) <- "conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b"
       e$conjoint_r <- e$conjoint_left_a_b == e$conjoint_r_type
       e$conjoint_r[e$conjoint_r_type %in% c("None", "Both")] <- NA
@@ -948,11 +951,16 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
 ##### Run #####
 
 e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
-e <- us2 <- prepare(country = "US2", weighting = FALSE, define_var_lists = FALSE)
 e <- eu <- prepare(country = "EU", weighting = T)
+e <- us2 <- prepare(country = "US2", weighting = T, define_var_lists = FALSE)
 
 us <- merge(us1, us2, all = T)
 e <- all <- merge(us, eu, all = T)
+
+# variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
+us1a <- prepare(country = "US1", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+us2a <- prepare(country = "US2", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
+eua <- prepare(country = "EU", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 
 e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)
 
@@ -962,11 +970,6 @@ eup <- prepare(country = "EU", wave = "pilot", weighting = FALSE)
 
 usp <- merge(us1p, us2p, all = T)
 e <- ep <- merge(usp, eup, all = T)
-
-# variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
-us1a <- prepare(country = "US1", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
-us2a <- prepare(country = "US2", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
-eua <- prepare(country = "EU", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 
 eupa <- prepare(country = "EU", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
 us1pa <- prepare(country = "US1", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]
@@ -983,4 +986,58 @@ socio_demos_us <- c(quotas_us, "swing_state", "couple", "employment_agg", "wealt
 quotas_eu <- c("country", "income_factor", "post_secondary", "age_factor", "man", "urbanity") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
 socio_demos <- c(quotas_eu, "couple", "employment_agg", "wealth_factor", "vote_factor") # add "hh_size", "owner", "wealth", "donation_charities"?
 politics <- c("political_affiliation", "interested_politics", "involvement_govt", "left_right", "vote_participation", "vote_us", "group_defended")
+
+
+##### Create Raw results appendices #####
+# # (don't forget instructions in comments)
+# countries_eu <- c(countries_EU, "Eu" = "EU")
+# names_countries_eu <- setNames(names(countries_eu), countries_eu)
+# country_eu <- setNames(c("French", "German", "Spanish", "British", "[own country]"), countries_eu)
+# c <- "EU"
+# temp <- readLines("../paper/app_desc_stats_US.tex")
+# temp <- gsub("the U.S.", names_countries_eu[c], temp, fixed = T)
+# temp <- gsub("U.S.", country_eu[c], temp, fixed = T)
+# temp <- gsub("s US1 and US2", " Eu", temp, fixed = T)
+# temp <- gsub(" \\(US1\\)| \\(US2\\)", "", temp)
+# temp <- gsub("US|US1|US2", c, temp)
+# temp <- gsub("[Asked only to non-Republicans] ", "", temp, fixed = T)
+# temp <- gsub("Democratic", "political", temp, fixed = T)
+# writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
+# # check TODO: Eu and US2 (manually remove duplicates at the end for vote, etc.)
+# for (c in countries_EU) {
+#   temp <- readLines("../paper/app_desc_stats_EU.tex")
+#   temp <- gsub("Eu", names_countries_eu[c], temp, fixed = T)
+#   temp <- gsub("[own country]", country_eu[c], temp, fixed = T)
+#   temp <- gsub("EU", c, temp)
+#   temp <- gsub(paste("Complementary survey", c), "Complementary survey Eu", temp, fixed = T)
+#   writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
+# }
+# # comment vote_agg in EU
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

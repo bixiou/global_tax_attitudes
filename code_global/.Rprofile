@@ -605,10 +605,10 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
     several_values[c] <- nb_values_c > 1 }
   return(several_values)
 }
-same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, along = "country3", along.levels = Levels(along, data), 
+same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, along = "country3", along.levels = Levels(along, data), weights = "weight",
                                 covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, constant_instead_mean = T,
                                 mean_control = T, dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, display_mean = FALSE,
-                                omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, 
+                                omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, omit.note = FALSE,
                                 folder = "../tables/regs_countries/", digits= 3, model.numbers = T, replace_endAB = NULL) {
   file_path <- paste(folder, filename, ".tex", sep="")
   if (constant_instead_mean) display_mean <- T
@@ -632,15 +632,15 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
       coefs[[i]] <- logit_margin_i[,1]
       SEs[[i]] <- logit_margin_i[,2]
     } else {
-      models[[i]] <- lm(formula_i, data = data_i, weights = data_i$weight)
+      models[[i]] <- lm(formula_i, data = data_i, weights = data_i[[weights]])
       coefs[[i]] <- models[[i]]$coefficients
       if (robust_SE) SEs[[i]] <- coeftest(models[[i]], vcov = vcovHC(models[[i]], "HC1"))[,2]
       else SEs[[i]] <- summary(models[[i]])$coefficients[,2]
     }
     if (print_regs) print(summary(models[[i]]))
     if (constant_instead_mean & (include.total | j > 0)) means <- c(means, round(coefs[[i]][["(Intercept)"]], digits))
-    else if (include.total | j > 0) means <- c(means, ifelse(mean_control, round(wtd.mean(eval(parse(text = paste( "(data_i$", parse(text = dep.var), ")[data_i$treatment=='None']", sep=""))), weights = data_i$weight[data_i$treatment=='None'], na.rm = T), d = digits),
-                                                        round(wtd.mean(eval(parse(text = paste( "data_i$", parse(text = dep.var), sep=""))), weights = data_i$weight, na.rm = T), d = digits)))
+    else if (include.total | j > 0) means <- c(means, ifelse(mean_control, round(wtd.mean(eval(parse(text = paste( "(data_i$", parse(text = dep.var), ")[data_i$treatment=='None']", sep=""))), weights = data_i[[weights]][data_i$treatment=='None'], na.rm = T), d = digits),
+                                                        round(wtd.mean(eval(parse(text = paste( "data_i$", parse(text = dep.var), sep=""))), weights = data_i[[weights]], na.rm = T), d = digits)))
   }
   mean_text <- ifelse(mean_control, "Control group mean", ifelse(constant_instead_mean, "Constant", "Mean"))
   if (exists("labels_vars")) omit <- c(omit, labels_vars[omit], names(labels_vars)[which(labels_vars %in% omit)])
@@ -654,7 +654,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
   table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers, 
                 covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], add.lines = if (display_mean) list(c(mean_text, means)) else NULL,
                 dep.var.labels = if (include.total) c("All", along.levels) else along.levels, dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), 
-                omit.table.layout = "n", keep=keep, omit = omit, no.space = no.space)))
+                omit.table.layout = if (omit.note) "n" else NULL, keep=keep, omit = omit, no.space = no.space)))
 
   if (!missing(replace_endAB) & length(table) != 50) warning(paste0("Wrong specification for replacement of the last lines: table of length ", length(table)))
   if (!missing(replace_endAB) & length(table) == 50) table <- c(table[1:43], replace_endAB)
@@ -662,7 +662,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
   return(table)
 }
 create_covariate_labels <- function(coefs_names, regressors_names = labels_vars, keep = NULL, omit = "Constant") {
-  if (any(c("Constant", "Intercept", "(Intercept)") %in% omit)) coefs_names <- coefs_names[-1]
+  if (any(c("Constant", "Intercept", "(Intercept)") %in% omit) & coefs_names[1] %in% c("Constant", "Intercept", "(Intercept)")) coefs_names <- coefs_names[-1]
   missing_names <- setdiff(coefs_names, names(labels_vars))
   names(missing_names) <- missing_names
   if (length(missing_names) > 0) warning(paste("The following variables are missing from labels_vars (so their name will appear instead of their label):", paste(missing_names, collapse = ", ")))
@@ -981,7 +981,15 @@ dataKN <- function(vars, data=e, miss=T, weights = T, return = "", fr=F, rev=FAL
 #'   else return(cbind(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[2]], miss = miss, weights = weights, fr = fr, rev = rev), dataN(var, df[[3]], miss = miss, weights = weights, fr = fr, rev = rev))) }
 dataNK <- function(var, df = list(e2, e, c), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
   if (return %in% c("levels", "legend")) return(dataN(var, df[[1]], miss = miss, weights = weights, fr = fr, rev = rev, return = return))
-  else return(do.call(cbind, lapply(rev(df), function (d) {dataN(var, d, miss = miss, weights = weights, fr = fr, rev = rev)}))) }
+  else {
+    values <- lapply(df, function(d) dataN(var, data = d, miss = miss, weights = weights, return = "legend", fr = fr, rev = rev))
+    nb_values <- sapply(values, length)
+    levels <- values[[which(nb_values == max(nb_values))[1]]]
+    if (!all(sapply(values, function(var) all(var %in% levels)))) {
+      warning("No variable contains all possible values, this may create bugs")
+      for (d in 1:length(df)) levels <- union(levels, values[[d]]) }
+    # The above code (after else) is new (and here to manage cases with different sets of levels for different variables)
+    return(do.call(cbind, lapply(rev(df), function (d) {dataN(var, d, levels = levels, miss = miss, weights = weights, fr = fr, rev = rev)}))) } }
 #' data12 <- function(vars, df = list(e, e2), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
 #'   if (length(vars)==1) return(dataN2(var=vars, df=list(df[[2]], df[[1]]), miss=miss, weights=weights, fr=fr, rev=rev, return=return))
 #'   else {

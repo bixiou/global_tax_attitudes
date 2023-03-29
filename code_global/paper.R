@@ -1,27 +1,259 @@
 ##### Stated support #####
 # TODO complete
 # support_binary_positive
+decrit("gcs_support", us1)
+decrit("gcs_support", eu)
+decrit("nr_support", us1)
+decrit("nr_support", eu)
+
+# Global wealth tax
+# global_tax_sharing_positive, global_tax_global_share_positive, global_tax_global_share_share TODO! combine them
+decrit(us2$global_tax_support > 0, us2)
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'FR')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'DE')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'ES')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'UK') 
+decrit(all$global_tax_support > 0, all) 
+decrit(all$national_tax_support > 0, all)
+decrit(us2$global_tax_support > 0, us2, which = us2$global_tax_support != 0) 
+decrit(us2$national_tax_support > 0, us2, which = us2$national_tax_support != 0) 
+decrit("global_tax_support", us2)
+decrit("national_tax_support", eu)
+decrit("global_tax_global_share", all, weight = F)
+decrit("global_tax_global_share", us2) # 41
+decrit(us2$global_tax_global_share > 0)
+wtd.mean(eu$global_tax_global_share[eu$country == 'UK'] > 0, weights = eu$weight_country[eu$country == 'UK'])
+decrit("global_tax_sharing", all, weight = F)
+decrit("global_tax_sharing", us2) # 65% Yes
+decrit("global_tax_support", eu, which = eu$country == "FR", weights = eu$weight_country)
+
+# Other global policies
 # support_likert_positive, support_likert_share
+# support_likert_positive, global_policies_mean, global_policies_positive, global_policies_share
 
 # Foreign aid
-decrit(all$foreign_aid_raise_support)
+decrit("foreign_aid_raise_support", all)
 # all/foreign_aid_condition
 
+##### List experiment #####
+# same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
+#                     data = all, along = "continent", nolabel = F, include.total = FALSE, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
+#                     filename = "reg_list_exp", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
+#                     add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
+#                                      c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
+# 
+# same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
+#                     data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+#                     filename = "reg_list_exp_all", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
+#                     add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(all$gcs_support, weights = all$weight), 3), "} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
+#                                      c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(all$nr_support, weights = all$weight), 3), "} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
+# 
+# all$list_exp_0 <- all$list_exp == 0
+# same_reg_subsamples(dep.var = "list_exp_0", dep.var.caption = "No supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
+#                     data = all, along = "continent", nolabel = F, include.total = FALSE, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+#                     filename = "reg_list_exp_0", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
+#                     add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
+#                                      c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
+# 
+# # TODO! Find a test that works for the combined list experiment branch_list_exp_g:branch_list_exp_r. Mail sent to Blair & Imai 
+# # From Blair & Imai (12) /!\ TODO! Read the paper to understand whether "lm" method (yielding the same as lm regression) or the default "ml" is preferable
+# fit.list_no_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
+# fit.list_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
+# fit.direct <- glm(gcs_support == 'Yes' ~ 1, data = all, family = binomial("logit"))
+# (avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
+# (avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
+# 
+# fit.list_no_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "US" & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
+# fit.list_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "US" & all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
+# fit.direct_US <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "US",], family = binomial("logit"))
+# (avg.pred.social.desirability_no_r_US <- predict(fit.list_no_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # -.06 95% CI: (-.15, .03)
+# (avg.pred.social.desirability_r_US <- predict(fit.list_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # .004 95% CI: (-.12, .13)
+# 
+# fit.list_no_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "Eu" & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
+# fit.list_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "Eu" & all$branch_list_exp_r == T,], weights = 'weight', method = "ml")
+# fit.direct_Eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Eu",], family = binomial("logit"))
+# (avg.pred.social.desirability_no_r_Eu <- predict(fit.list_no_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # .01 95% CI: (-.07, .09)
+# (avg.pred.social.desirability_r_Eu <- predict(fit.list_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # -.10 95% CI: (-.17, -.03)
+# 
+# fit.list_no_r <- ictreg(list_exp ~ continent, treat = c('branch_list_exp_g'), J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
+# fit.list_r <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
+# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
+# (avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
+# (avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
+# plot(avg.pred.social.desirability_no_r)
+# plot(avg.pred.social.desirability_r)
+
+# Good ones here # TODO! apparently J=2.5 doesn't work, derive the appropriate model
+summary(lm(list_exp ~ branch_list_exp_g*continent, data = all, weights = all$weight))
+fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
+fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, weights = weight, family = binomial("logit"))
+(avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE, level = .9)) # -.014 95% CI: (-.07, -.04)
+
+summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "Eu",], weights = weight))
+fit.list_eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(eu$branch_list_exp_r == T, eu$weight), data = all[all$continent == "Eu",], weights = 'weight', method = "lm")
+fit.direct_eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Eu",], weights = weight, family = binomial("logit"))
+(avg.pred.social.desirability_eu <- predict(fit.list_eu, direct.glm = fit.direct_eu, se.fit = TRUE, level = .9)) # -.026 95% CI: (-.10, .05)
+
+summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "US",], weights = weight))
+fit.list_us <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(us1$branch_list_exp_r == T, us1$weight), data = all[all$continent == "US",], weights = 'weight', method = "lm")
+fit.direct_us <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "US",], weights = weight, family = binomial("logit"))
+(avg.pred.social.desirability_us <- predict(fit.list_us, direct.glm = fit.direct_us, se.fit = TRUE, level = .9)) # -.026 95% CI: (-.11, -.06)
+
+same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g"), 
+                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
+                    filename = "reg_list_exp_g", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
+                    add_lines = list(c(11, paste("\\hline  \\\\[-1.8ex] \\textit{Support for GCS} &", round(wtd.mean(all$gcs_support, weights = all$weight), 3), " & ", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), " & ", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "\\\\")),
+                                     c(12, paste("\\textit{Social desirability bias} & \\textit{$", round(avg.pred.social.desirability$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_us$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_eu$fit[3,1], 3),  "$}\\\\")),
+                                     c(13, paste("\\textit{90\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$}\\\\"))))
+
+# /!\ Weighted list experiment regression is not supported (yet) for the multi-item design.
+# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
+# fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_ict', J = 2, data = all, method = "lm", multi.condition = "level")
+# (avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
+
+
 ##### Petition ##### 
-t.test(us1$gcs_support[us1$branch_petition == "gcs"], us1$petition_gcs[us1$branch_petition == "gcs"]) # cannot reject equality (p=.11)
-t.test(eu$gcs_support[eu$branch_petition == "gcs"], eu$petition_gcs[eu$branch_petition == "gcs"]) # cannot reject equality (p=.11)
+wtd.t.test(us1$gcs_support, us1$petition_gcs, weight=us1$weight, drops = "") # rejects equality (p=.046)
+t.test(us1$gcs_support, us1$petition_gcs, paired = T) # rejects equality (p=.016)
+t.test(us1$gcs_support, us1$petition_gcs, paired = F) # rejects equality (p=.019)
+decrit("petition_gcs", us1)
 wtd.t.test(us1$gcs_support[us1$branch_petition == "gcs"], us1$petition_gcs[us1$branch_petition == "gcs"], weight=us1$weight[us1$branch_petition == "gcs"]) # cannot reject equality (p=.30)
+wtd.t.test(us1$nr_support[us1$branch_petition == "nr"], us1$petition_nr[us1$branch_petition == "nr"], weight=us1$weight[us1$branch_petition == "nr"]) # cannot reject equality (p=.76)
 wtd.t.test(eu$gcs_support[eu$branch_petition == "gcs"], eu$petition_gcs[eu$branch_petition == "gcs"], weight=eu$weight[eu$branch_petition == "gcs"]) # rejects equality (p=1e-5)
+wtd.t.test(eu$nr_support[eu$branch_petition == "nr"], eu$petition_nr[eu$branch_petition == "nr"], weight=eu$weight[eu$branch_petition == "nr"]) # rejects equality (p=.01)
+decrit("petition_gcs", eu)
+decrit("petition_nr", eu)
+
+
+##### Conjoint analyses #####
+# conjoint_ab_all_positive
+decrit(us1$branch_conjoint_b)
+decrit(eu$branch_conjoint_b)
+decrit(eu$conjoint_crg_cr, eu)
+wtd.t.test(eu$conjoint_rg_r_binary, eu$gcs_support, weight = eu$weight)
+wtd.t.test(eu$conjoint_rg_r_binary, eu$gcs_support, weight = eu$weight, drops = "")
+wtd.t.test(us1$conjoint_rg_r_binary, us1$gcs_support, weight = us1$weight)
+wtd.t.test(us1$conjoint_rg_r_binary, us1$gcs_support, weight = us1$weight, drops = "")
+wtd.t.test(us1$conjoint_cr_gr_binary, .5, weight = us1$weight)
+wtd.t.test(eu$conjoint_cr_gr_binary, .5, weight = eu$weight)
+wtd.t.test(us1$conjoint_cr_gr_binary, .5, weight = us1$weight)
+
+
+##### Conjoint analysis: Left/Right vote #####
+same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), 
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
+                    filename = "conjoint_c_left", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+same_reg_subsamples(dep.var = "conjoint_c_right", dep.var.caption = "Prefers the Conservative platform", covariates = c("branch_c_gcs"), 
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
+                    filename = "conjoint_c_right", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+decrit("conjoint_c_none", all)
+same_reg_subsamples(dep.var = "conjoint_c_none", dep.var.caption = "Prefers None of the platforms", covariates = c("branch_c_gcs"), 
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
+                    filename = "conjoint_c_none", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+# Good one
+same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), 
+                    data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
+                    filename = "conjoint_c_wo_none", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F,], weights = weight)) # p-value: .13
+summary(lm(conjoint_c_right ~ branch_c_gcs, us1, weights = weight)) # p-value: .0504
+
+same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), weights = "weight_vote", omit.note = T,
+                    data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "conjoint_c_wo_none_weight_vote", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+for (i in c("left", "right", "none", "wo_none", "wo_none_weight_vote")) {
+  temp <- readLines(paste0("../tables/country_comparison/conjoint_c_", i, ".tex"))
+  writeLines(sub("United Kingdom", "UK", temp), paste0("../tables/country_comparison/conjoint_c_", i, ".tex"))
+}
+
+# The effect tends to be driven by right-wing voters
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = all, weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = all[all$conjoint_c_none == F & all$wave != "US2",], weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = eu[eu$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = us1[us1$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = eu[eu$country=="FR" & eu$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = eu[eu$country=="FR" & eu$conjoint_c_none == F,], weights = weight))
+
+# amce is created in conjoint_analysis.R
+amce$UK$user.levels # same in all EU. 1: GCS, 2: tax, 3: assembly, 4: aid
+amce$FR$estimates$foreignpolicy # 1: .13, 2: .11, 3: .12
+amce$UK$estimates$foreignpolicy # 1: .09, 2: .13, 3: .07
+amce$ES$estimates$foreignpolicy # 1: .04, 2: .05, 3:-.01
+amce$DE$estimates$foreignpolicy # 1: .09, 2: .09, 3: .10
+amce$us1$estimates$Foreignpolicy #1: .01, 2: .09, 3: .08
+
+# Multiple hypotheses testing
+pvalues_treatment <- list() # adjusted for multiple testing
+for (c in c(countries, "all")) {
+  pvalues_treatment[[c]] <- list()
+  temp <- lm(conjoint_c ~ branch_c_gcs, data = d(c)[d(c)$conjoint_c_none == F & d(c)$wave != "US2",], weights = weight)
+  pvalues_treatment[[c]] <- summary(temp)$coefficients[(length(summary(temp)$coefficients[,4])-2):length(summary(temp)$coefficients[,4]), 4]
+  }
+pvalues_treatment
+sort(unlist(pvalues_treatment))
+(adjusted_pvalues <- sort(p.adjust(unlist(pvalues_treatment), method = 'fdr')))
+
+
+largest_effect_amce <- function(model) {
+  max <- p_max <- -1
+  for (d in names(model$estimates)) for (p in colnames(model$estimates[[d]])) if (model$estimates[[d]][1, p] > max) {
+    max <- model$estimates[[d]][1, p]
+    p_max <- p
+  }
+  names(max) <- model$user.levels[[p_max]]
+  return(round(max, 3))
+}
+
+for (i in c("us1", countries_EU)) {
+  print(i)
+  print(largest_effect_amce(amce[[i]])) }
+
+# conjoint_left_ag_b_binary_positive
+decrit("conjoint_left_ag_b_binary", us1)
+decrit("conjoint_left_ag_b_binary", us1, weight = F)
+wtd.t.test(eu$conjoint_left_ag_b_binary[eu$country=='UK'], .5, weight = eu$weight_country[eu$country=='UK'])
+wtd.t.test(eu$conjoint_left_ag_b_binary[eu$country=='ES'], .5, weight = eu$weight_country[eu$country=='ES'])
+
+# Conjoint 5
+same_reg_subsamples(dep.var = "conjoint_d", dep.var.caption = "Prefers the platform", covariates = c("branch_c_gcs"), 
+                    data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "conjoint_d", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+
+
+##### Prioritization #####
+(mean_points <- sort(setNames(sapply(variables_points_us, function(v) round(wtd.mean(all[[v]], na.rm = T, weights = all$weight), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"])))) # GCS 9th, tax 4th, assembly 10, trillion inv 5, coal 13, ban ICE 15
+(mean_points_us <- sort(setNames(sapply(variables_points_us, function(v) round(wtd.mean(us1[[v]], na.rm = T, weights = us1$weight), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"])))) # GCS 9th, tax 4th, assembly 10, trillion inv 5, coal 13, ban ICE 15
+(mean_points_uk <- sort(setNames(sapply(variables_points, function(v) round(wtd.mean(eu[[v]][eu$country == "UK"], na.rm = T, weights = eu$weight_country[eu$country == "UK"]), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points), "UK"])))) # tax 5, GCS 8, ass 10, insul 7, LEZ 11, ban 13
+(mean_points_de <- sort(setNames(sapply(variables_points, function(v) round(wtd.mean(eu[[v]][eu$country == "DE"], na.rm = T, weights = eu$weight_country[eu$country == "DE"]), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points), "DE"])))) # GCS 1, tax 2, ass 8, insul 5, solar 7, ban 14
+(mean_points_fr <- sort(setNames(sapply(variables_points, function(v) round(wtd.mean(eu[[v]][eu$country == "FR"], na.rm = T, weights = eu$weight_country[eu$country == "FR"]), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points), "FR"])))) # insul 3, GCS 4, tax 6, ass 8, LEZ 13, ban 15
+(mean_points_es <- sort(setNames(sapply(variables_points, function(v) round(wtd.mean(eu[[v]][eu$country == "ES"], na.rm = T, weights = eu$weight_country[eu$country == "ES"]), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points), "ES"])))) # 100% renew 4, tax 5, GCS 8, insul 10, ass 11, ban 15
+decrit("points_foreign1_gcs", data = all) # mean: 17.7 / median: 20
+decrit("points_foreign1_gcs", data = eu) # mean: 19.75 / median: 19
+decrit("points_foreign1_gcs", data = us1) # mean: 15.4 / median: 11
+decrit("points_foreign1_gcs", data = eu, which = eu$country == 'DE') # mean: 23.3 / median: 20
+decrit("points_foreign1_gcs", data = eu, which = eu$country == 'FR') # mean: 20.9 / median: 20
+decrit("points_foreign1_gcs", data = eu, which = eu$country == 'ES') # mean: 15.7 / median: 13
+decrit("points_foreign1_gcs", data = eu, which = eu$country == 'UK') # mean: 17 / median: 16
+decrit("points_foreign2_tax_rich", data = us1) # mean: 20.6 / median: 18
+decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'DE') # mean: 22.6 / median: 20
+decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'FR') # mean: 20.1 / median: 18
+decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'ES') # mean: 19.4 / median: 16
+decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'UK') # mean: 19.6 / median: 16
 
 
 ##### Second-order beliefs ##### 
-decrit(us1$gcs_belief)
-decrit(eu$gcs_belief)
+decrit("gcs_belief", data = us1)
+decrit("gcs_belief", data = eu)
 decrit(eu$gcs_belief > 50, weights = eu$weight)
 
 
 ##### Universalism #####
 # group_defended_agg, group_defended_agg2
+decrit("group_defended_agg5", data = all)
 decrit("group_defended_agg", data = all, which = all$vote != 0)
 decrit("group_defended_agg", data = eu, which = eu$vote != 0)
 decrit("group_defended_agg", data = us1, which = us1$vote != 0)
@@ -29,12 +261,14 @@ decrit("group_defended_agg", data = all, which = all$vote == -1)
 decrit("group_defended_agg", data = eu, which = eu$vote == -1)
 decrit("group_defended_agg", data = us1, which = us1$vote == -1)
 # all/negotiation
+decrit("negotiation", data = all)
 wtd.mean(all$problem_climate, weights = all$weight)
 wtd.mean(all$problem_poverty, weights = all$weight)
 wtd.mean(all$problem_inequality, weights = all$weight)
 
 
 ##### Donation #####
+decrit("donation", all)
 same_reg_subsamples(dep.var = "donation", dep.var.caption = "Donation to poor people (in \\%)", covariates = c("branch_donation"), 
                     data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
                     filename = "donation", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
@@ -62,103 +296,8 @@ same_reg_subsamples(dep.var = "global_tax_sharing", dep.var.caption = "Prefers t
                     filename = "global_tax_sharing_vote", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
 
 
-##### Conjoint analysis: Left/Right vote #####
-# TODO: weight_country or even weight_vote
-same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), 
-                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "conjoint_c_left", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
-
-same_reg_subsamples(dep.var = "conjoint_c_right", dep.var.caption = "Prefers the Conservative platform", covariates = c("branch_c_gcs"), 
-                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "conjoint_c_right", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
-
-same_reg_subsamples(dep.var = "conjoint_c_none", dep.var.caption = "Prefers None of the platforms", covariates = c("branch_c_gcs"), 
-                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "conjoint_c_none", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
-
-same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), 
-                    data = all[all$conjoint_c_none == F,], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "conjoint_c_wo_none", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
-
-for (i in c("left", "right", "none", "wo_none")) {
-  temp <- readLines(paste0("../tables/country_comparison/conjoint_c_", i, ".tex"))
-  writeLines(sub("United Kingdom", "UK", temp), paste0("../tables/country_comparison/conjoint_c_", i, ".tex"))
-}
-
-
-##### List experiment #####
-same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
-                    data = all, along = "continent", nolabel = F, include.total = FALSE, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
-                    filename = "reg_list_exp", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
-                    add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
-                                     c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
-
-same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
-                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "reg_list_exp_all", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
-                    add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(all$gcs_support, weights = all$weight), 3), "} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
-                                     c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(all$nr_support, weights = all$weight), 3), "} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
-
-all$list_exp_0 <- all$list_exp == 0
-same_reg_subsamples(dep.var = "list_exp_0", dep.var.caption = "No supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
-                    data = all, along = "continent", nolabel = F, include.total = FALSE, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "reg_list_exp_0", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
-                    add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
-                                     c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
-
-# TODO! Find a test that works for the combined list experiment branch_list_exp_g:branch_list_exp_r. Mail sent to Blair & Imai 
-# From Blair & Imai (12) /!\ TODO! Read the paper to understand whether "lm" method (yielding the same as lm regression) or the default "ml" is preferable
-fit.list_no_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-fit.list_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
-fit.direct <- glm(gcs_support == 'Yes' ~ 1, data = all, family = binomial("logit"))
-(avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-(avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-
-fit.list_no_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "US" & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-fit.list_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "US" & all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
-fit.direct_US <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "US",], family = binomial("logit"))
-(avg.pred.social.desirability_no_r_US <- predict(fit.list_no_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # -.06 95% CI: (-.15, .03)
-(avg.pred.social.desirability_r_US <- predict(fit.list_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # .004 95% CI: (-.12, .13)
-
-fit.list_no_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "Eu" & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-fit.list_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "Eu" & all$branch_list_exp_r == T,], weights = 'weight', method = "ml")
-fit.direct_Eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Eu",], family = binomial("logit"))
-(avg.pred.social.desirability_no_r_Eu <- predict(fit.list_no_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # .01 95% CI: (-.07, .09)
-(avg.pred.social.desirability_r_Eu <- predict(fit.list_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # -.10 95% CI: (-.17, -.03)
-
-fit.list_no_r <- ictreg(list_exp ~ continent, treat = c('branch_list_exp_g'), J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-fit.list_r <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
-fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
-(avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-(avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-plot(avg.pred.social.desirability_no_r)
-plot(avg.pred.social.desirability_r)
-
-# Good ones here
-summary(lm(list_exp ~ branch_list_exp_g*continent, data = all, weights = all$weight))
-fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
-fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, weights = weight, family = binomial("logit"))
-(avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE)) # -.014 95% CI: (-.07, -.04)
-
-summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "Eu",], weights = weight))
-fit.list_eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(eu$branch_list_exp_r == T, eu$weight), data = all[all$continent == "Eu",], weights = 'weight', method = "lm")
-fit.direct_eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Eu",], weights = weight, family = binomial("logit"))
-(avg.pred.social.desirability_eu <- predict(fit.list_eu, direct.glm = fit.direct_eu, se.fit = TRUE)) # -.026 95% CI: (-.10, .05)
-
-summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "US",], weights = weight))
-fit.list_us <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(us1$branch_list_exp_r == T, us1$weight), data = all[all$continent == "US",], weights = 'weight', method = "lm")
-fit.direct_us <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "US",], weights = weight, family = binomial("logit"))
-(avg.pred.social.desirability_us <- predict(fit.list_us, direct.glm = fit.direct_us, se.fit = TRUE)) # -.026 95% CI: (-.11, -.06)
-
-same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g"), 
-                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
-                    filename = "reg_list_exp_g", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
-                    add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(all$gcs_support, weights = all$weight), 3), "} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\"))))
-
-# /!\ Weighted list experiment regression is not supported (yet) for the multi-item design.
-# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
-# fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_ict', J = 2, data = all, method = "lm", multi.condition = "level")
-# (avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
+##### Methods #####
+decrit("survey_biased", data = all)
 
 
 ##### App Representativeness #####
@@ -167,7 +306,7 @@ representativeness_table(countries_EU, return_table = F, all = T, weight_var = "
 
 
 ##### App Attrition analysis #####
-desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"),
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), 
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\4 min}"),
            filename = "attrition_analysis", save_folder = "../tables/US1/", data = c(list(us1a), list(us1a), list(us1a[us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,])), 
            indep_vars = quotas_us) 
@@ -180,4 +319,5 @@ desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "d
 desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 6"),
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\6 min}"),
            filename = "attrition_analysis", save_folder = "../tables/EU/", data = c(list(eua), list(eua), list(eua[eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,])), 
-           indep_vars = quotas_us) 
+           indep_vars = quotas_eu) 
+# TODO? add vote?

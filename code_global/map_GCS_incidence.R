@@ -82,7 +82,7 @@ co2_emissions_2030 <- 26.3e9
 # Price         40     90    120    145 $/tCO2                         Stern & Stiglitz (2017), Table 3
 # Revenues    1372   2367   2256   1900 G$/year
 # Basic income  20     30     26     21 $/month                        Median UN ≥15 pop
-# Basic income 1.4    2.1    1.8    1.5 Sub-Saharan Africa PPP $/day   2.1: ratio of GDP pc of Sub-Saharan Africa in PPP and value (World Bank)
+# PPP          1.4    2.1    1.8    1.5 Sub-Saharan Africa PPP $/day   2.1: ratio of GDP pc of Sub-Saharan Africa in PPP and value (World Bank)
 # Share income 1.4    1.7    1.2    0.7 % of Gross World Product       2020: 98T$, then assuming 3.5% growth
 # Emissions pa   6      4    2.6    1.7 tCO2/year per adult above 15
 # Adult pop    5.7    6.6    7.2    7.5 G adult above 15
@@ -156,7 +156,10 @@ plot_world_map("median_gain_2015", breaks = thresholds_map, format = c('png', 's
 co2_pop$mean_gain_over_gdp_2019 <- 100*12*co2_pop$mean_gain_2019/co2_pop$gdp_pc_2019 # TODO! mean_gain is computed per adult, not p.c. => abs gain/loss are lower than shown, especially in young countries
 sum((co2_pop$mean_gain_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_over_gdp_2019 > 0], na.rm = T)
 -sum((co2_pop$mean_gain_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_over_gdp_2019 < 0], na.rm = T)
-# /!\ Discrepancy between transfers given (.6T) and received (.9T), probably due to the adult vs. pop issue raised above
+# /!\ Discrepancy between transfers given (.6T) and received (.9T), due to the adult vs. pop issue raised above. Indeed, computing it without the GDPpc has no problem (.85T in both cases):
+sum((12 * co2_pop$mean_gain_2030 * co2_pop$adult_2030)[co2_pop$mean_gain_2030 > 0], na.rm = T) # .85T
+-sum((12 * co2_pop$mean_gain_2030 * co2_pop$adult_2030)[co2_pop$mean_gain_2030 < 0], na.rm = T)
+sum((12 * co2_pop$mean_gain_2030 * co2_pop$adult_2030)[co2_pop$mean_gain_2030 > 0], na.rm = T)/(sum(co2_pop$gdp_pc_2030 * co2_pop$pop_2030, na.rm = T)) # 1% of GDP redistributed
 sort(setNames(co2_pop$mean_gain_over_gdp_2019, co2_pop$country))
 plot_world_map("mean_gain_over_gdp_2019", breaks = c(-Inf, -5, -2, -1, 0, 1, 5, 20, 50, Inf), format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -5, -2, -1, 0, 1, 5, 20, 50, Inf), sep = " to ", return = "levels")), 
@@ -283,7 +286,7 @@ SSPs_countries <- read.csv("../data/SSP_CMIP6.csv") # https://secure.iiasa.ac.at
 # In SSPs_countries, IMAGE has only SCENARIO: SSP1-19, SSP1-26; MESSAGE-GLOBIOM: SSP2-45; AIM/CGE: SSP3-70 (Baseline), SSP3-LowNTCF; GCAM4: SSP4-34, SSP4-60; REMIND-MAGPIE: SSP5-34-OS, SSP5-85 (Baseline); WITCH-GLOBIOM is absent
 #   while in SSPs, each MODEL has many SCENARIOs
 # I think that emissions of SSPs are first defined in CMIP6 (i.e. SSPs_countries) and then passed as inputs to IAMs, which yield consistent bud modified emissions, in SSPs
-# /!\ World emissions are not equal to the sum of the 5 R5.2 regions TODO: why? check regions definition
+# /!\ World emissions are not equal to the sum of the 5 R5.2 regions TODO! why? check regions definition
 # Nb regions (excluding the 5 R5.2 ones): AIM/CGE: 18 (3 letters), IMAGE: 27, GCAM4: 33, MESSAGE-GLOBIOM: 12, REMIND-MAGPIE: 12 (different), WITCH-GLOBIOM: absent from SSPs_countries
 
 # In ssp, data of the 6 lower-case macro-regions (incl. 'world') is given by IAM results (except for adult_*) while the rest is given by CMIP6 (emissions) or UN median projection (population). *adult_ is estimated by shrinking pop_ by the median UN adult/pop ratio in each region.
@@ -457,6 +460,7 @@ for (i in c("IMAGE", "GEA")) {
 # China would lose: -25 $/month per person, India win +8, EU +4, US -52, Vietnam +28, Brazil +38, Australia -113
 ndc <- read.xlsx("../data/NDCs_Gao.xlsx")
 EU28_countries <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GBR", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
+EU27_countries <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
 temp <- rbind(co2_pop, c("EU28", "EU-28", colSums(co2_pop[co2_pop$code %in% EU28_countries, 3:ncol(co2_pop)])))
 for (v in setdiff(names(temp), c("country", "code"))) temp[[v]] <- as.numeric(temp[[v]])
 temp$mean_gain_2030[temp$country == "EU-28"] <- temp$mean_gain_2030[temp$code %in% EU28_countries] %*% temp$adult_2030[temp$code %in% EU28_countries] / sum(temp$adult_2030[temp$code %in% EU28_countries])
@@ -504,22 +508,50 @@ SSPs[SSPs$MODEL == "IMAGE" & SSPs$SCENARIO == "SSP2-45" & SSPs$VARIABLE == "GDP|
 SSPs[SSPs$MODEL == "GCAM4" & SSPs$SCENARIO == "SSP2-45" & SSPs$VARIABLE == "GDP|PPP", c("REGION", "X2050")]
 
 
+##### 60% of emissions #####
+co2_pop$share_territorial_2019 <- co2_pop$territorial_2019/sum(co2_pop$territorial_2019)
+cumulative_emissions <- function(variable_gain = "mean_gain_over_gdp_2019", variable_share = "share_emissions_2019") {
+  order_by_gain <- order(-co2_pop[[variable_gain]]) 
+  emissions_ordered_by_gain <- setNames(co2_pop[[variable_share]], co2_pop$country)[order_by_gain]
+  (cumul_emissions <- setNames(sapply(1:204, function(i) sum(emissions_ordered_by_gain[1:i])), names(emissions_ordered_by_gain)))
+  return(round(cbind(share = co2_pop[[variable_share]][order_by_gain], cumul = cumul_emissions, gain = co2_pop$mean_gain_2030[order_by_gain]), 3))
+}
 
+cumulative_emissions("mean_gain_over_gdp_2019")
+cumulative_emissions("mean_gain_2030") 
+cumulative_emissions("mean_gain_over_gdp_2019", "territorial_2019")
+cumulative_emissions("mean_gain_2030", "territorial_2019") 
+# footprint
+sum(co2_pop$share_emissions_2019[co2_pop$mean_gain_2030 > 0 | co2_pop$code %in% c("CHN", EU28_countries)]) # exactly 60%
+sum(co2_pop$share_emissions_2019[co2_pop$code %in% c("CHN", "IND", "USA", EU28_countries)]) # 62.4%
+sum(co2_pop$share_emissions_2019[co2_pop$mean_gain_2030 > 0]) # 20.8% of global emissions in countries with gain > 0
+co2_pop$share_emissions_2019[co2_pop$code == "USA"] # 16.0%
+co2_pop$share_emissions_2019[co2_pop$code == "IND"] # 7.0%
+co2_pop$share_emissions_2019[co2_pop$code == "CHN"] # 28.1%
+sum(co2_pop$share_emissions_2019[co2_pop$code %in% EU28_countries]) # 11.4%
+# territorial
+sum(co2_pop$share_territorial_2019[co2_pop$mean_gain_2030 > 0 | co2_pop$code %in% c("CHN", EU28_countries)]) # exactly 60%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("CHN", "IND", "USA", EU28_countries)]) # 61.6%
+sum(co2_pop$share_territorial_2019[co2_pop$mean_gain_2030 > 0]) # 20.9% of global emissions in countries with gain > 0
+co2_pop$share_territorial_2019[co2_pop$code == "USA"] # 14.8%
+co2_pop$share_territorial_2019[co2_pop$code == "IND"] # 7.4%
+co2_pop$share_territorial_2019[co2_pop$code == "CHN"] # 30.2%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("JPN", "KOR", "NOR", "SWZ", "NLD", "CAN")]) # 7%, JP + SK: 5%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("AUS", "SAU", "QAT", "KWT", "ARE")]) # 4%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% EU28_countries]) # 9.2%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% EU28_countries & co2_pop$code != "GBR"]) # 8.2%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("JPN", "KOR")]) # 5%
 
+# Countries with income lower than 2* world average and losers from GCS: 
+# China, Russia, Turkey, Iran, Iraq, Algeria, Kazakhstan, Malaysia, Chile, South Africa, Lybia, Botswana, Namibia, Turkmenistan, Mongolia, and some EU countries
+co2_pop$country[co2_pop$gdp_pc_2020 < 2*wtd.mean(co2_pop$gdp_pc_2020, co2_pop$pop_2020) & co2_pop$mean_gain_2030 < 0]
+sum(co2_pop$share_territorial_2019[co2_pop$gdp_pc_2020 < 2*wtd.mean(co2_pop$gdp_pc_2020, co2_pop$pop_2020) & co2_pop$mean_gain_2030 < 0], na.rm = T) # 45.6%
 
+# USA: 15 / EU+UK: 9 / CHN: 30 / other middle inc, high em: 15 / gain: 21 / other OECD Asia, America or Europe: 7 / other high inc: 4
 
+cor(co2_pop$emissions_pa_2019, co2_pop$gdp_pc_2019, use = "complete.obs") # .64
+sort(setNames(co2_pop$emissions_pa_2019/co2_pop$gdp_pc_2019, co2_pop$country))
+wtd.mean(co2_pop$emissions_pa_2019[co2_pop$code %in% EU27_countries], co2_pop$adult_2019[co2_pop$code %in% EU27_countries])/co2_pop$emissions_pa_2019[co2_pop$country == "India"]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Revenues retained relative to the world average revenues, in function of y (where GNI pc = 1+y * world average)
+unlist(setNames(lapply(seq(0, 1, 0.1), function(x) 1+x-x*(1+x)), seq(0, 1, 0.1)))
