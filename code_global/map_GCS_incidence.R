@@ -553,3 +553,5 @@ cor(co2_pop$emissions_pa_2019, co2_pop$gdp_pc_2019, use = "complete.obs") # .64
 sort(setNames(co2_pop$emissions_pa_2019/co2_pop$gdp_pc_2019, co2_pop$country))
 wtd.mean(co2_pop$emissions_pa_2019[co2_pop$code %in% EU27_countries], co2_pop$adult_2019[co2_pop$code %in% EU27_countries])/co2_pop$emissions_pa_2019[co2_pop$country == "India"]
 
+# Revenues retained relative to the world average revenues, in function of y (where GNI pc = 1+y * world average)
+unlist(setNames(lapply(seq(0, 1, 0.1), function(x) 1+x-x*(1+x)), seq(0, 1, 0.1)))
