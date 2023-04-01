@@ -659,7 +659,10 @@ for (c in countries_EU) {
 # Handle exceptions
 for (c in countries) {
   e <- d(c)
-  barres_multiple(barres = fill_barres(c("vote_agg"), list()), df = d(c), folder = paste0("../figures/", c, "/")) 
+  barres_multiple(barres = fill_barres(c("vote_agg", "points_agg"), 
+            list("points_mean" = list(vars = variables_points_us_agg, width = 850, sort = FALSE, add_means = T, show_legend_means = T, transform_mean = function(x) return(x/100)), # 1080 points_us
+                 "points" = list(vars = variables_points_us_agg, width = 850, sort = FALSE) 
+  )), df = d(c), folder = paste0("../figures/", c, "/")) 
 }
 e <- d("ES")
 barres_multiple(barres = fill_barres(c("global_tax_global_share"), list()), df = d("ES"), folder = paste0("../figures/ES/")) 
