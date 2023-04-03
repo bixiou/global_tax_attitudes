@@ -1,3 +1,4 @@
+\documentclass[aspectratio=169,xcolor=dvipsnames, 11pt,mathserif]{beamer} 
 \input{preamble_slides.tex}
 \usepackage{multicol}
               
@@ -116,7 +117,7 @@ The policy could be put in place as soon as countries totaling more than 60\% of
         \centering 
         \caption{Do you support or oppose...? \textit{5-Likert scake} (Percentage of \textit{Support} among non-\textit{Indifferent})}
         \vspace{-.2cm}
-        \includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_share.pdf} 
+        \includegraphics[height=.9\textheight]{../figures/country_comparison/support_likert_share.pdf} 
     \end{figure}
 \end{frame}
 
@@ -225,10 +226,11 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
 {\footnotesize
     \begin{table}[h]\label{tab:list_exp}\vspace*{-.35cm}
         %\caption{Number of supported policies in the list experiment in function of the composition of the list. } % Beware, this question is quite unusual. \\ Among the policies below, how many do you support?  \\ Coal exit, Marriage only for opposite-sex couples 
-        \makebox[\textwidth][c]{\input{../tables/continents/reg_list_exp.tex}}
+        \makebox[\textwidth][c]{\input{../tables/continents/reg_list_exp_g.tex}}
       \end{table}
 }
-$\Rightarrow$ \blue{Small social desirability bias for GCS and NR in the U.S.} (tacit support is 5 p.p.*** lower), \blue{none in Europe}. % TODO! better test
+$\Rightarrow$ \blue{No (significant) social desirability bias.} 
+%\blue{Small social desirability bias for GCS and NR in the U.S.} (tacit support is 5 p.p.*** lower), \blue{none in Europe}. 
 \end{frame}
 
 \begin{frame}{Conjoint analyses: interaction with other policies\label{}} 
@@ -262,7 +264,7 @@ $\Rightarrow$ \blue{Small social desirability bias for GCS and NR in the U.S.} (
         \makebox[\textwidth][c]{\input{../tables/country_comparison/conjoint_c_wo_none.tex}}
         {\footnotesize \textit{Note:} The 14\% of \textit{None} answers have been excluded from the regression samples. GCS has no significant influence on them. }
       \end{table} \vspace*{-.2cm}
-      \bbvs \ip \rose{A progressive candidate would not lose votes by endorsing the GCS}, and could even gain 11 p.p.** in France.
+      \bbvs \ip \rose{A progressive candidate would not lose votes by endorsing the GCS}, and could even gain 11 p.p.*** in France.
       \ee
 % }
 \end{frame}

@@ -624,6 +624,11 @@ barres_multiple(barres = barresN_continent_defs["foreign_aid_raise_support"], df
 
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
+# US2
+heatmap_multiple(heatmaps_defs[c("foreign_aid_amount", "foreign_aid_more")])
+heatmap_multiple(heatmaps_defs[c("support_likert")])
+heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")])
+heatmap_multiple(heatmaps_defs[c("global_tax_global_share", "global_tax_sharing")])
 
 heatmap_multiple(heatmaps_defs[c("foreign_aid_no", "foreign_aid_condition")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
