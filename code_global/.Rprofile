@@ -989,7 +989,7 @@ dataNK <- function(var, df = list(e2, e, c), miss=T, weights = T, fr=F, rev=FALS
       warning("No variable contains all possible values, this may create bugs")
       for (d in 1:length(df)) levels <- union(levels, values[[d]]) }
     # The above code (after else) is new (and here to manage cases with different sets of levels for different variables)
-    return(do.call(cbind, lapply(rev(df), function (d) {dataN(var, d, levels = levels, miss = miss, weights = weights, fr = fr, rev = rev)}))) } }
+    return(do.call(cbind, lapply(df, function (d) {dataN(var, d, levels = levels, miss = miss, weights = weights, fr = fr, rev = rev)}))) } }
 #' data12 <- function(vars, df = list(e, e2), miss=T, weights = T, fr=F, rev=FALSE, return = "") {
 #'   if (length(vars)==1) return(dataN2(var=vars, df=list(df[[2]], df[[1]]), miss=miss, weights=weights, fr=fr, rev=rev, return=return))
 #'   else {

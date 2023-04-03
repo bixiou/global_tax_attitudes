@@ -216,6 +216,7 @@ pg <- merge(merge(pg2, merge(pg4, pg7)), GDPpcPPP[, c("Country.Name", "code", "G
 # co2_pop$country[co2_pop$code %in% setdiff(co2_pop$code, pg$code)]
 # pg$Country.Name[pg$code %in% setdiff(pg$code, co2_pop$code)]
 pg <- merge(pg, co2_pop)
+pg$gdp_2019 <- pg$gdp_pc_2019 * pg$pop_2019
 
 # reg_pg_gdp <- lm(gap ~ log10(GDPpcPPP), data = pg, weights = adult_2023) 
 # summary(reg_pg_gdp)
@@ -324,16 +325,23 @@ qplot(log10(GDPpcPPP), log10(pg4), data = pg, size = adult_2023, xlab = "log10 o
 
 # SSA gets more when using PPP. Gets most with line at 4. For lines at 2 and 4, gets more if max_reg = mean; for line at 7, gets more if max_reg = Inf.
 # Three most credible are l=4, not PPP, max_reg mean; l=7, PPP, max_reg mean; l=4, PPP, max_reg Inf; l=4, not PPP, max_reg Inf
+# LIC <- pg$code[pg$gdp_pc_2019 < 1085] # closer to the 2021 classification available on World Bank data for which LIC: 700M people
+HIC <- pg$code[pg$gdp_pc_2019 > 13205] # approximately right (63 countries instead of 81 but differences are due to small islands)
+LIC <- c("AFG", "BFA", "BDI", "TCD", "COG", "ERI", "ETH", "GMB", "GIN", "GNB", "PRK", "LBR", "MDG", "MWI", "MLI", "MOZ", "NER", "RWA", "SOM", "SRE", "SDN", "SSD", "SYR", "TGO", "UGA", "YEM", "ZMB") # 2023 official classification. LIC: 650M people
 SSA <- c("SDN", "AGO", "GIN", "GMB", "GNB", "GNQ", "BDI", "BEN", "BFA", "SEN", "BWA", "CAF", "SLE", "SOM", "SSD", "CIV", "CMR", "COD", "COG", "COM", "LBR", "LSO", "SWZ", "TCD", "TGO", "MLI", "MDG", "DJI", "ERI", "ESH", "ETH", "MWI", "MUS", "MRT", "MOZ", "TZA", "UGA", "ZMB", "ZWE", "NGA", "NER", "NAM", "GHA", "GAB")
-SSA_max_reg_inf <- SSA_max_reg_mean <- India_max_reg_inf <- India_max_reg_mean <- array(dimnames = list("line" = c(2, 4, 7), "PPP" = c(T, F)), dim = c(3, 2))
+SSA_max_reg_inf <- SSA_max_reg_mean <- LIC_max_reg_inf <- LIC_max_reg_mean <- India_max_reg_inf <- India_max_reg_mean <- array(dimnames = list("line" = c(2, 4, 7), "PPP" = c(T, F)), dim = c(3, 2))
 for (l in c(2, 4, 7)) for (p in c(TRUE, FALSE)) {
   SSA_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T))
   SSA_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T))
+  LIC_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% LIC], na.rm = T))
+  LIC_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% LIC], na.rm = T))
   India_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% "IND"], na.rm = T))
   India_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% "IND"], na.rm = T))
 }
 SSA_max_reg_inf
 SSA_max_reg_mean
+LIC_max_reg_inf
+LIC_max_reg_mean
 India_max_reg_inf
 India_max_reg_mean
 key_gap_gdp(poverty_line = 4, PPP = F, return_var = "global_share")
@@ -347,6 +355,10 @@ sum(pg$global_share[pg$code %in% SSA], na.rm = T)
 wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
 wtd.mean(pg$global_share_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
 pooled_revenues * sum(pg$global_share[pg$code %in% SSA], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% SSA], na.rm = T)
+sum(pg$global_share[pg$code %in% LIC], na.rm = T)
+wtd.mean(pg$rev_pc[pg$code %in% LIC], pg$pop_2019[pg$code %in% LIC], na.rm = T)
+wtd.mean(pg$global_share_pc[pg$code %in% LIC], pg$pop_2019[pg$code %in% LIC], na.rm = T)
+pooled_revenues * sum(pg$global_share[pg$code %in% LIC], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% LIC], na.rm = T)
 pg$gdp_share[pg$code == "BDI"]
 pg$rev_pc[pg$code == "BDI"]
 pg$global_share_pc[pg$code == "BDI"]
