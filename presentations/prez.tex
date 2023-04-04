@@ -1,3 +1,4 @@
+\documentclass[aspectratio=169,xcolor=dvipsnames, 11pt,mathserif]{beamer} 
 \input{preamble_slides.tex}
 \usepackage{multicol}
               
@@ -17,7 +18,7 @@
 %OECD/CAE \\
 \medskip
 \DTMlangsetup{showdayofmonth=false}
-\textit{March 2023} 
+\textit{April 2023} 
 %\textit{\today} 
 
 \end{center}
@@ -36,9 +37,9 @@
     \bbvs \ip \textcolor{blue}{20 countries}%in all world regions \textcolor{blue}{covering 72\% of global CO$_\text{2}$ emissions}
     ; $~$2,000 respondents per country; median duration: 28 min. \ee
     \ip Complementary surveys (01/2023-ongoing): 
-    \bbvs \ip Eu: 3,000 respondents from France, Germany, Spain, UK; 20 min. \textcolor{magenta}{99\% of responses collected}.
+    \bbvs \ip Eu: 3,000 respondents from France, Germany, Spain, UK; 20 min. \textcolor{blue}{100\% collected}.
     \ip US1: 3,000 respondents from the U.S.; 14 min. \textcolor{blue}{100\% collected}.
-    \ip US2: 2,000 respondents from the U.S. \textcolor{magenta}{10\% collected}.
+    \ip US2: 2,000 respondents from the U.S. \textcolor{magenta}{52\% collected}.
     \ee 
     \ee \vspace*{-.2cm}
     \makebox[\textwidth][c]{ \includegraphics[width=.5\textwidth]{"../figures/maps/country_coverage"}}
@@ -116,7 +117,7 @@ The policy could be put in place as soon as countries totaling more than 60\% of
         \centering 
         \caption{Do you support or oppose...? \textit{5-Likert scake} (Percentage of \textit{Support} among non-\textit{Indifferent})}
         \vspace{-.2cm}
-        \includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_share.pdf} 
+        \includegraphics[height=.9\textheight]{../figures/country_comparison/support_likert_share.pdf} 
     \end{figure}
 \end{frame}
 
@@ -225,10 +226,11 @@ $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-in
 {\footnotesize
     \begin{table}[h]\label{tab:list_exp}\vspace*{-.35cm}
         %\caption{Number of supported policies in the list experiment in function of the composition of the list. } % Beware, this question is quite unusual. \\ Among the policies below, how many do you support?  \\ Coal exit, Marriage only for opposite-sex couples 
-        \makebox[\textwidth][c]{\input{../tables/continents/reg_list_exp.tex}}
+        \makebox[\textwidth][c]{\input{../tables/continents/reg_list_exp_g.tex}}
       \end{table}
 }
-$\Rightarrow$ \blue{Small social desirability bias for GCS and NR in the U.S.} (tacit support is 5 p.p.*** lower), \blue{none in Europe}. % TODO! better test
+$\Rightarrow$ \blue{No (significant) social desirability bias.} 
+%\blue{Small social desirability bias for GCS and NR in the U.S.} (tacit support is 5 p.p.*** lower), \blue{none in Europe}. 
 \end{frame}
 
 \begin{frame}{Conjoint analyses: interaction with other policies\label{}} 
@@ -262,7 +264,7 @@ $\Rightarrow$ \blue{Small social desirability bias for GCS and NR in the U.S.} (
         \makebox[\textwidth][c]{\input{../tables/country_comparison/conjoint_c_wo_none.tex}}
         {\footnotesize \textit{Note:} The 14\% of \textit{None} answers have been excluded from the regression samples. GCS has no significant influence on them. }
       \end{table} \vspace*{-.2cm}
-      \bbvs \ip \rose{A progressive candidate would not lose votes by endorsing the GCS}, and could even gain 11 p.p.** in France.
+      \bbvs \ip \rose{A progressive candidate would not lose votes by endorsing the GCS}, and could even gain 11 p.p.*** in France.
       \ee
 % }
 \end{frame}

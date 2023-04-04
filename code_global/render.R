@@ -624,6 +624,11 @@ barres_multiple(barres = barresN_continent_defs["foreign_aid_raise_support"], df
 
 # Heatmaps
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
+# US2
+heatmap_multiple(heatmaps_defs[c("foreign_aid_amount", "foreign_aid_more")])
+heatmap_multiple(heatmaps_defs[c("support_likert")])
+heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")])
+heatmap_multiple(heatmaps_defs[c("global_tax_global_share", "global_tax_sharing")])
 
 heatmap_multiple(heatmaps_defs[c("foreign_aid_no", "foreign_aid_condition")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "foreign_aid_amount", "foreign_aid_more")], weights = T)
@@ -659,7 +664,10 @@ for (c in countries_EU) {
 # Handle exceptions
 for (c in countries) {
   e <- d(c)
-  barres_multiple(barres = fill_barres(c("vote_agg"), list()), df = d(c), folder = paste0("../figures/", c, "/")) 
+  barres_multiple(barres = fill_barres(c("vote_agg", "points_agg"), 
+            list("points_mean" = list(vars = variables_points_us_agg, width = 850, sort = FALSE, add_means = T, show_legend_means = T, transform_mean = function(x) return(x/100)), # 1080 points_us
+                 "points" = list(vars = variables_points_us_agg, width = 850, sort = FALSE) 
+  )), df = d(c), folder = paste0("../figures/", c, "/")) 
 }
 e <- d("ES")
 barres_multiple(barres = fill_barres(c("global_tax_global_share"), list()), df = d("ES"), folder = paste0("../figures/ES/")) 
@@ -707,8 +715,10 @@ heatmap_multiple(heatmaps_defs[c("ets2_oppose")], weights = T, data = eu[eu$coun
 
 ##### Heterogeneity #####
 barres_multiple(barres = barresN_defs[c("foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg")], df = all, folder = "../figures/country_comparison/") 
-
 barres_multiple(barres = barresN_continent_defs[c("foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg")], df = all, folder = "../figures/continents/") 
+
+barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
+barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continents/") 
 
 
 ##### Word clouds and vote #####
