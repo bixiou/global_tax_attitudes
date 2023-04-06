@@ -278,6 +278,8 @@ decrit("nr_support", data = e)
 decrit("gcs_support", data = e)
 summary(lm(gcs_support ~ branch_gcs, data = e))
 summary(lm(nr_support ~ branch_gcs, data = e))
+summary(lm(gcs_support ~ branch_gcs * political_affiliation, data = e))
+summary(lm(gcs_support ~ branch_gcs * (political_affiliation == "Republican"), data = e))
 
 
 ##### Wealth tax #####
