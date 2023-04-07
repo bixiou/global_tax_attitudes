@@ -478,7 +478,7 @@ ssp2 <- ssp$`SSP2-45`$`MESSAGE-GLOBIOM`
 rm(SSPs, SSPs_countries)
 rm(ssp)
 
-# TODO! use Greenpeace, Global Energy Assessment
+# TODO! use Greenpeace, Global Energy Assessment, Kriegler et al. (13)'s LIMITS
 
 ssps <- c("ssp1_19", "ssp1_26", "ssp2_26", "ssp2_45", "ssp2")
 names(ssps) <- c("SSP1-1.9 (1.4 °C)", "SSP1-2.6 (1.8 °C)", "SSP2-2.6 (1.8 °C)", "SSP2-4.5 (2.7 °C)", "SSP2 (baseline)")
