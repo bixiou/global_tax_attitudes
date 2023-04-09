@@ -83,33 +83,79 @@ decrit("foreign_aid_raise_support", all)
 # plot(avg.pred.social.desirability_no_r)
 # plot(avg.pred.social.desirability_r)
 
-# Good ones here # TODO! apparently J=2.5 doesn't work, derive the appropriate model
+# Good ones here
+# Using ml is advised because the estimator is more efficient, i.e. has tighter CIs. But Graeme Blair wrote in an email "you can use the linear model".
+# Using 80% CIs instead of the more common 95% may be a way to address the lower efficiency (which increases the SE by ~46% according to Blair (11, Figure 2), vs. 1.96/1.28=1+53% for taking 80% instead of 95% CIs)
+# The estimates, SE, CIs and test (list == direct) do not depend on J if lm is used (I've checked the R code). 
+# On the contrary, ml depends on J and cannot be used for our design (with a varying J).
+# The lm model applying to a varying J is unbiased to the extent that the four branches are balanced (which they are almost perfectly).
+# Also, contrary to the other models, the linear model (coefficient) has a clear interpretation.
+# The difference test works by Monte Carlo (cf. below): by computing the difference of 10k draws of direct & indirect support (using their respective normal distributions) and computing the differences' mean and standard deviation.
 summary(lm(list_exp ~ branch_list_exp_g*continent, data = all, weights = all$weight))
 fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
-fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, weights = weight, family = binomial("logit"))
-(avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE, level = .9)) # -.014 95% CI: (-.07, -.04)
+fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all[all$wave != "US2",], weights = weight, family = binomial("logit"))
+(avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE, level = .8))
 
 summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "Eu",], weights = weight))
 fit.list_eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(eu$branch_list_exp_r == T, eu$weight), data = all[all$continent == "Eu",], weights = 'weight', method = "lm")
 fit.direct_eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Eu",], weights = weight, family = binomial("logit"))
-(avg.pred.social.desirability_eu <- predict(fit.list_eu, direct.glm = fit.direct_eu, se.fit = TRUE, level = .9)) # -.026 95% CI: (-.10, .05)
+(avg.pred.social.desirability_eu <- predict(fit.list_eu, direct.glm = fit.direct_eu, se.fit = TRUE, level = .8)) 
 
 summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "US",], weights = weight))
 fit.list_us <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(us1$branch_list_exp_r == T, us1$weight), data = all[all$continent == "US",], weights = 'weight', method = "lm")
-fit.direct_us <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "US",], weights = weight, family = binomial("logit"))
-(avg.pred.social.desirability_us <- predict(fit.list_us, direct.glm = fit.direct_us, se.fit = TRUE, level = .9)) # -.026 95% CI: (-.11, -.06)
+fit.direct_us <- glm(gcs_support == 'Yes' ~ 1, data = all[all$wave == "US1",], weights = weight, family = binomial("logit"))
+(avg.pred.social.desirability_us <- predict(fit.list_us, direct.glm = fit.direct_us, se.fit = TRUE, level = .8)) 
 
 same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g"), 
                     data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
                     filename = "reg_list_exp_g", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
-                    add_lines = list(c(11, paste("\\hline  \\\\[-1.8ex] \\textit{Support for GCS} &", round(wtd.mean(all$gcs_support, weights = all$weight), 3), " & ", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), " & ", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "\\\\")),
+                    add_lines = list(c(11, paste("\\hline  \\\\[-1.8ex] \\textit{Support for GCS} &", round(wtd.mean(all$gcs_support[all$wave != "US2"], weights = all$weight[all$wave != "US2"]), 3), " & ", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), " & ", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "\\\\")),
                                      c(12, paste("\\textit{Social desirability bias} & \\textit{$", round(avg.pred.social.desirability$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_us$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_eu$fit[3,1], 3),  "$}\\\\")),
-                                     c(13, paste("\\textit{90\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$}\\\\"))))
+                                     c(13, paste("\\textit{80\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$}\\\\"))))
 
 # /!\ Weighted list experiment regression is not supported (yet) for the multi-item design.
 # fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
 # fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_ict', J = 2, data = all, method = "lm", multi.condition = "level")
 # (avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
+
+# Code copied from https://github.com/SensitiveQuestions/list/blob/master/R/ictreg.R, line ~5030
+# logistic <- function(object) exp(object)/(1+exp(object))
+# fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
+# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all[all$wave != "US2",], weights = weight, family = binomial("logit"))
+# # summary(lm(gcs_support == 'Yes' ~ 1, data = all[all$wave != "US2",], weights = weight))
+# # fit.list <- fit.list_eu
+# # fit.direct <- fit.direct_eu
+# 
+# beta <- fit.list$par.treat ## was coef(object)[1:nPar]
+# var.beta <- vcov(fit.list)[1:length(fit.list$coef.names), 1:length(fit.list$coef.names)]
+# xvar.direct <- model.matrix(as.formula(paste("~", c(fit.list$call$formula[[3]]))), fit.direct$data)
+# n.draws <- 1000
+# draws.list <- mvrnorm(n = n.draws, mu = beta, Sigma = var.beta/1.5^2) # /1.5^2 simulates a higher efficiency, as if ML estimator was used. Equality cannot be rejected with 90% confidence.
+# draws.direct <- mvrnorm(n = n.draws, mu = coef(fit.direct), Sigma = vcov(fit.direct))
+# pred.list.mean <- pred.direct.mean <- pred.diff.mean <- rep(NA, n.draws)
+# for (d in 1:n.draws) {
+#   par.g <- draws.list[d, ]
+#   # if (object$method == "lm")
+#     pred.list <- fit.list$x %*% par.g
+#   # else
+#   #   pred.list <- logistic(fit.list$x %*% par.g)
+# 
+#   pred.direct <- logistic(fit.list$x %*% draws.direct[d,])
+# 
+#   # pred.list.mean[d] <- mean(pred.list) # This is the original code, it doesn't include weights
+#   # pred.direct.mean[d] <- mean(pred.direct)
+#   pred.list.mean[d] <- wtd.mean(pred.list, weights = fit.list$weights)
+#   pred.direct.mean[d] <- wtd.mean(pred.direct, weights = fit.list$weights)
+#   pred.diff.mean[d] <- pred.list.mean[d] - pred.direct.mean[d]
+# 
+# }
+# (est.diff <- mean(pred.diff.mean))
+# (se.diff <- sd(pred.diff.mean))
+# mean(pred.list.mean)
+# mean(pred.direct.mean)
+# level <- .9
+# (ci.upper.diff <- est.diff + qt(1-(1-level)/2, df = nrow(fit.list$x)) * se.diff) # .007 (EU: .01)
+# (ci.lower.diff <- est.diff - qt(1-(1-level)/2, df = nrow(fit.list$x)) * se.diff) # -.06 (EU: -.075)
 
 
 ##### Petition ##### 
