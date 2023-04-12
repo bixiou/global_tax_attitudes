@@ -135,6 +135,8 @@ labels_vars <- c(
   "foreign_aid_preferred_no_info" = "Preferred foreign aid (no info)",
   "foreign_aid_preferred_info" = "Preferred foreign aid (with info)",
   "foreign_aid_preferred" = "Preferred foreign aid (any branch)",
+  "foreign_aid_preferred_info_agg" = "Preferred foreign aid (with info)",
+  "foreign_aid_preferred_no_info_agg" = "Preferred foreign aid (no info)",
   "foreign_aid_raise_how_defense" = "Lower spending on defense",
   "foreign_aid_raise_how_pensions" = "Lower spending on retirement pensions",
   "foreign_aid_raise_how_healthcare" = "Lower spending on healthcare",
