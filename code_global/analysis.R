@@ -276,8 +276,8 @@ CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, pro
 ##### GCS ~ info / pros_cons #####
 decrit("nr_support", data = e)
 decrit("gcs_support", data = e)
-summary(lm(gcs_support ~ branch_gcs, data = e))
-summary(lm(nr_support ~ branch_gcs, data = e))
+summary(lm(gcs_support ~ branch_gcs, data = e, weights = weight))
+summary(lm(nr_support ~ branch_gcs, data = e, weights = weight))
 summary(lm(gcs_support ~ branch_gcs * political_affiliation, data = e))
 summary(lm(gcs_support ~ branch_gcs * (political_affiliation == "Republican"), data = e))
 
@@ -391,6 +391,8 @@ summary(lm(conjoint_c ~ branch_c_gcs * swing_state, data = e, weights = e$weight
 reweighted_estimate("gcs_support", "EU")
 reweighted_estimate("gcs_support", "US1") # Assigns a weight 0 to vote_us = PNR/No right
 reweighted_estimate("gcs_support", "US1", omit = "vote_us") # Uses all observations and still reweight for vote using e$vote
+# reweighted_estimate("gcs_support", "US2") # Assigns a weight 0 to vote_us = PNR/No right => TODO only for branch_gcs == 'nothing'
+# reweighted_estimate("gcs_support", "US2", omit = "vote_us") # Uses all observations and still reweight for vote using e$vote
 reweighted_estimate("gcs_support", "EU", weights = T)
 reweighted_estimate("gcs_support", "US1", weights = T) 
 reweighted_estimate("gcs_support", "US2", verbose = T)
