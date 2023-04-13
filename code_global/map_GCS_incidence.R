@@ -115,6 +115,21 @@ compute_gain <- function(year = 2030, base_year = 2019, type = "mean", df = co2_
   df$emissions_pa_2030 <- df$emissions_2030 / df$adult_2030
   df[[paste0("revenues_pa_", year)]] <- df[[paste0("share_emissions_2030_base_", base_year)]] * carbon_tax_revenues_2030 / df[[paste0("adult_", year)]]/12
   df[[paste0(type, "_gain_", year)]] <- 30 - (1 - 0.1*(type == "median"))*df[[paste0("revenues_pa_", year)]]
+  # Accounts for opting out (using 2019 GDP pc)
+  df[[paste0("optout_right_", year)]] <- 2 - pmax(1, pmin(2, df$gdp_pc_2019 / wtd.mean(df$gdp_pc_2019, df$pop_2019)))
+  temp <- rep(T, nrow(df)) 
+  basic_income <- wtd.mean(df[[paste0("revenues_pa_", year)]], df[[paste0("adult_", year)]])
+  df[[paste0("large_footprint_", year)]] <- (df[[paste0("revenues_pa_", year)]] > basic_income)
+  df[[paste0("participation_rate_", year)]] <- 1 - df[[paste0("large_footprint_", year)]] * df[[paste0("optout_right_", year)]]
+  while (any(temp != df[[paste0("large_footprint_", year)]])) {
+    temp <- df[[paste0("large_footprint_", year)]]
+    basic_income <- wtd.mean(df[[paste0("revenues_pa_", year)]], df[[paste0("participation_rate_", year)]] * df[[paste0("adult_", year)]])
+    df[[paste0("large_footprint_", year)]] <- (df[[paste0("revenues_pa_", year)]] > basic_income)
+    df[[paste0("participation_rate_", year)]] <- 1 - df[[paste0("large_footprint_", year)]] * df[[paste0("optout_right_", year)]]
+  }
+  # basic_income <- 30 * wtd.mean(df[[paste0("participation_rate_", year)]], df[[paste0("revenues_pa_", year)]] * df[[paste0("adult_", year)]])
+  print(paste("Basic income adjusted for opting-out countries:", round(basic_income, 1)))
+  df[[paste0(type, "_gain_adj_", year)]] <- df[[paste0("participation_rate_", year)]] * (basic_income - (1 - 0.1*(type == "median"))*df[[paste0("revenues_pa_", year)]])
   if (return_data) return(df) else return(df[[paste0(type, "_gain_", year)]])
 }
 co2_pop <- compute_gain(year = 2015, base_year = 2015, type = "median") # creates median_gain_2015
@@ -153,7 +168,7 @@ plot_world_map("mean_gain_2030", breaks = thresholds_map, format = c('png', 'svg
                labels = sub("≤", "<", agg_thresholds(c(0), thresholds_map, sep = " to ", return = "levels")), 
                legend = "Average net\ngain per capita\nfrom the GCS\n(in $/month)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-# If bug, first use save = F then again save = T
+# If bug, first use save = F then again save = T (or reinstall ggalt)
 # Looks nice with width: 1160, height: 560 (one needs to adjust manually for PDF)
 
 plot_world_map("median_gain_2015", breaks = thresholds_map, format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
@@ -173,6 +188,18 @@ sum((12 * co2_pop$mean_gain_2030 * co2_pop$adult_2030)[co2_pop$mean_gain_2030 > 
 sort(setNames(co2_pop$mean_gain_over_gdp_2019, co2_pop$country))
 plot_world_map("mean_gain_over_gdp_2019", breaks = c(-Inf, -5, -2, -1, 0, 1, 5, 20, 50, Inf), format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -5, -2, -1, 0, 1, 5, 20, 50, Inf), sep = " to ", return = "levels")), 
+               legend = "Average net\ngain per capita\nfrom the GCS\n(in % of GDP)", fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+
+plot_world_map("mean_gain_adj_2030", breaks = c(-Inf, -70, -30, -20, -10, -.1, .1, 5, 10, 15, 20, Inf), format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -70, -30, -20, -10, 0, 0, 5, 10, 15, 20, Inf), sep = " to ", return = "levels")), 
+               legend = "Average net\ngain per capita\nfrom the GCS\n(in $/month)", fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+
+co2_pop$mean_gain_adj_over_gdp_2019 <- 100*12*co2_pop$mean_gain_adj_2019/co2_pop$gdp_pc_2019 
+sort(setNames(co2_pop$mean_gain_adj_over_gdp_2019, co2_pop$country), decreasing = T)
+plot_world_map("mean_gain_adj_over_gdp_2019", breaks = c(-Inf, -5, -2, -1, -.5, -.01, .01, 1, 5, 20, 50, Inf), format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -5, -2, -1, -.5, 0, 0, 1, 5, 20, 50, Inf), sep = " to ", return = "levels")), 
                legend = "Average net\ngain per capita\nfrom the GCS\n(in % of GDP)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 co2_pop$country[co2_pop$country == "USA"] <- "United States"

@@ -1982,7 +1982,7 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   } else {
     (plot <- ggplot(df) + geom_map(aes(map_id = country, fill = mean), map = world_map) + coord_proj("+proj=robin") + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
-       scale_fill_distiller(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
+       scale_fill_manual(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
   }
 
   print(plot)

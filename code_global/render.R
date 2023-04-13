@@ -718,7 +718,7 @@ heatmap_multiple(heatmaps_defs[c("ets2_oppose")], weights = T, data = eu[eu$coun
 ##### Heterogeneity #####
 barres_multiple(barres = barresN_defs[c("foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg")], df = all, folder = "../figures/country_comparison/") 
 barres_multiple(barres = barresN_continent_defs[c("foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg")], df = all, folder = "../figures/continents/") 
-barres_multiple(barres = barresN_defs["global_tax_support"], df = all, folder = "../figures/country_comparison/") 
+barres_multiple(barres = barresN_defs["global_tax_global_share"], df = all, folder = "../figures/country_comparison/") 
 
 barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
 barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continents/") 
