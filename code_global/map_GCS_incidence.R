@@ -128,13 +128,13 @@ compute_gain <- function(year = 2030, base_year = 2019, type = "mean", df = co2_
     df[[paste0("participation_rate_", year)]] <- 1 - df[[paste0("large_footprint_", year)]] * df[[paste0("optout_right_", year)]]
   }
   # basic_income <- 30 * wtd.mean(df[[paste0("participation_rate_", year)]], df[[paste0("revenues_pa_", year)]] * df[[paste0("adult_", year)]])
-  print(paste("Basic income adjusted for opting-out countries:", round(basic_income, 1)))
+  print(paste0("Basic income adjusted for opting-out countries: ", round(basic_income, 1), " (down from ", round(wtd.mean(df[[paste0("revenues_pa_", year)]], df[[paste0("adult_", year)]]), 1), ")"))
   df[[paste0(type, "_gain_adj_", year)]] <- df[[paste0("participation_rate_", year)]] * (basic_income - (1 - 0.1*(type == "median"))*df[[paste0("revenues_pa_", year)]])
   if (return_data) return(df) else return(df[[paste0(type, "_gain_", year)]])
 }
-co2_pop <- compute_gain(year = 2015, base_year = 2015, type = "median") # creates median_gain_2015
-co2_pop <- compute_gain(year = 2019, base_year = 2019, type = "mean") 
-co2_pop <- compute_gain(year = 2030, base_year = 2019, type = "mean") # creates mean_gain_2030
+co2_pop <- compute_gain(year = 2015, base_year = 2015, type = "median") # creates median_gain_2015. Adj: basic income 36 -> 32
+co2_pop <- compute_gain(year = 2019, base_year = 2019, type = "mean") # Adj: 34 -> 29
+co2_pop <- compute_gain(year = 2030, base_year = 2019, type = "mean") # creates mean_gain_2030. Adj: 30 -> 25
 
 # co2_pop <- compute_gain(year = 2030, base_year = 2019, type = "median") # creates median_gain_2015
 # setNames(c(10, 25, 5, 20, 85), c("FRA", "DEU", "ESP", "GBR", "USA"))
