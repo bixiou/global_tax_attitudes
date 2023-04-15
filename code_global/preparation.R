@@ -1015,12 +1015,31 @@ politics <- c("political_affiliation", "interested_politics", "involvement_govt"
 # # comment vote_agg in EU
 
 
-
-
-
-
-
-
+##### Random draws #####
+# set.seed(42)
+# winners <- data.frame(ID = character(), gain = numeric(), country = character(), wave = character(), question = character())
+# # understanding
+# for (v in variables_understood[1:3]) {
+#   understanding_winners <- sample(all$ID[all[[v]] == T], 3)
+#   winners <- rbind(winners, data.frame(ID = understanding_winners, gain = 50, country = all$country[match(understanding_winners, all$ID)], wave = all$wave[match(understanding_winners, all$ID)], question = v))
+# }
+# # second-order beliefs
+# for (v in variables_belief) {
+#   mean_belief <- c()
+#   for (c in countries_EU) mean_belief[c] <- wtd.mean(eu[[v]][eu$country == c], eu$weight_country[eu$country == c])
+#   mean_belief["US"] <- wtd.mean(us1[[v]], us1$weight)
+#   all[[paste0(v, "_distance_truth")]] <- abs(mean_belief[all$country] - all[[v]])
+#   closest <- all[[paste0(v, "_distance_truth")]] == min(all[[paste0(v, "_distance_truth")]], na.rm = T)
+#   if (sum(closest, na.rm = T) > 2) belief_winners <- sample(all$ID[which(closest)], 3)
+#   else print(paste("Less than 3 closest for", v))
+#   print(paste("Number of closest for", v, ": ", sum(closest, na.rm = T)))
+#   winners <- rbind(winners, data.frame(ID = belief_winners, gain = 50, country = all$country[match(belief_winners, all$ID)], wave = all$wave[match(belief_winners, all$ID)], question = v))
+# }
+# # donation lottery
+# donation_winner <- sample(all$ID, 1)
+# winners <- rbind(winners, data.frame(ID = donation_winner, gain = 100 - all$donation[all$ID == donation_winner], country = all$country[all$ID == donation_winner], wave = all$wave[all$ID == donation_winner], question = paste0("donation_", all$branch_donation[all$ID == donation_winner])))
+# write.xlsx(winners, "../data/winners.xlsx")
+# winners
 
 
 
