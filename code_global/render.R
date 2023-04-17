@@ -608,7 +608,7 @@ vars_barresN <- c("group_defended_agg2", "foreign_aid_raise_support", "global_ta
 barresN_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "country_name")
 barresN_continent_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "continent")
 
-barres_multiple(barres = barresN_defs[c("vote")], df = all, folder = "../figures/country_comparison/")
+barres_multiple(barres = barresN_defs[c("global_tax_support")], df = all, folder = "../figures/country_comparison/")
 barres_multiple(barres = barresN_continent_defs[c("vote")], df = all, folder = "../figures/continents/")
 
 
@@ -621,7 +621,7 @@ barres_multiple(barres = barres_defs[c("income_quartile")], df = eu, folder = ".
 (test <- barres(vars = c("score_understood"), rev = F, rev_color = T, export_xls = F, df = us1, sort = T, thin = T, miss=F, labels=unname(labels_vars[c("score_understood")])))
 save_plotly(test, filename = "cap_wealth_support", folder = "../figures/USp/", width = NULL, height = NULL, trim = FALSE)
 
-barresN_defs <- fill_barres(c("group_defended_agg2"), list("negotiation" = list(width = 940)), along = "country_name")
+# barresN_defs <- fill_barres(c("group_defended_agg2"), list("negotiation" = list(width = 940)), along = "country_name")
 barres_multiple(barres = barresN_continent_defs["foreign_aid_raise_support"], df = all, folder = "../figures/continents/") 
 
 # Heatmaps
