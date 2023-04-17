@@ -1,5 +1,6 @@
 \documentclass[12pt,english]{article}
 % TODO! remove space in OECD figure
+% TODO!? have more progressive rates as benchmark
 \usepackage[utf8]{inputenc}
 \usepackage{tgpagella} % Palatino text only
 \usepackage{mathpazo}  % Palatino math & text
@@ -98,13 +99,14 @@ We call like-minded political parties of all countries to include a wealth tax p
 
 \paragraph{A progressive tax schedule.} %We define wealth as net wealth, i.e. all assets (financial, real estate, art...) net of debt. % TODO: ask Piketty/Zucman if tax on net wealth wouldn't spur leverage, and why not tax gross wealth instead. Saez & Zucman (19, footnote p. 13) reveal that debt is 6% for the top 0.1% (>32M)
 A 2\% tax on wealth in excess of \$5 million would raise \$816 billion each year, that is 0.85\% of the Gross World Product (GWP), half of it coming from the U.S. and less than \$1 billion from all low-income countries (28 countries home to 700 million people) combined. This tax schedule is just a basic example of what a small wealth tax can raise: let us call it the ``basic'' tax schedule. \citet{chancel_world_2022} offer a \href{https://wid.world/world-wealth-tax-simulator/}{world wealth tax simulator} that allows estimating the revenues of a custom global wealth tax by world region.\footnote{Similar simulators exist for \href{https://taxjusticenow.org/}{the U.S.} \citep{saez_triumph_2019} and \href{http://taxsimulator.ukwealth.tax/\#/appendix}{the UK} while \citet{kapeller_european_2021} and \citet{oxfam_taxing_2022} offer similar estimates for the EU and many countries, respectively. Despite differences in some assumptions and the data used, all these simulators and calculations yield comparable estimates.} 
-For example, a progressive wealth tax with the following schedule could raise 6\% of the GWP: 0.5\% marginal tax rate between \$500k and \$1 million, 1\% between \$1 and \$2 million, 3\% between \$2 and \$5 million, 5\% between \$5 and \$20 million, 10\% between \$20 and \$100 million, and 20\% above \$100 million. % TODO: put in table format
-% also 6% GWP: 0.5% > 100k; 2% > 500k; 4% > 1M; 5% > 5M; 7% > 20M; 10% > 100M 
-% also 6% GWP: 5% > 500k
+For example, a progressive wealth tax with the following schedule could raise 6\% of the GWP: 0.5\% marginal tax rate between \$500k and \$1 million, 1\% between \$1 and \$2 million, 3\% between \$2 and \$5 million, 5\% between \$5 and \$20 million, 10\% between \$20 and \$100 million, and 20\% above \$100 million. % TODO: put in table format 
+% (according to https://thomasblanchet.github.io/wealth-tax/ for the U.S., 16% GDP short term and 3.7% long-term/ 6% long-term with lump-sum rebate)
+% also 6% GWP: 0.5% > 100k; 2% > 500k; 4% > 1M; 5% > 5M; 7% > 20M; 10% > 100M  (according to https://thomasblanchet.github.io/wealth-tax/ for the U.S., 19% GDP short term and 4.3% long-term / 7.6% long-term with lump-sum rebate)
+% also 6% GWP: 5% > 500k (according to https://thomasblanchet.github.io/wealth-tax/ for the U.S., 19% GDP short term and 4.1% long-term / 7% long-term with lump-sum rebate)
 % Saez & Zucman (19) do so and find 6.25% (in the U.S.) "the long-run revenue-maximizing (annual) wealth tax would be around 6.25 percent". This is from a simple theoretical model with a linear tax on billionaires. In practice, they find that the wealth share of the 400 richest billionaires would have remained constant with a 2% tax >50% and 10% >10G, meaning that that "radical tax" would be close to the revenue-maximizing one. Though in the conclusion they say that it's around 2% that we get no wealth deconcentration, i.e. perennial revenues.
-% Blanchet 
+% Blanchet (22) finds a revenue-maximizing rate of 12% above 50M in the U.S.
 % In the annex of Piketty's Capital & Ideology (p. 36), he has a back-of-the-envelope calculation (with noseguess hypotheses) of perennial revenues of his wealth tax: 4% of national income (actually in his examples for the U.S. and Europe, he finds at least 6%).
-6\% of the GWP is also a good estimate of the long-term revenues that can be reasonably expected from a strongly progressive global wealth tax, though more can be collected in the short term with an even more progressive tax (see e.g. \citealp{chancel_world_2022} who propose a top marginal rate of 90\%). 
+6\% of the GWP is also a good estimate of the long-term revenues that can be reasonably expected from a strongly progressive global wealth tax,\footnote{The last tax schedule applied to the U.S. and rebated equally to all Americans would raise 6\% of the U.S. in the long term according to the \href{https://thomasblanchet.github.io/wealth-tax/}{simulator} of \citet{blanchet_uncovering_2022}, and a similar fraction can be raised at the global level using an appropriate tax schedule.} though more can be collected in the short term with an even more progressive tax (see e.g. \citealp{chancel_world_2022} who propose a top marginal rate of 90\%). 
 Ideally, the tax schedule should be defined by democratically aggregating people's preferences \citep{fabre_french_2022}. 
 % We propose a minimal rate at 2% and a custom schedule by country, for which the second schedule given seems a reasonable proposal.
 % Half of the minimal tax, that is 1\% for wealth in excess of 5M, should be pooled to finance LIC.
@@ -212,10 +214,6 @@ In Germany, the global tax on millionaires is the most prioritized policy. In ot
   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/points_mean.pdf}} 
 \end{figure}
 
-%\clearpage
-\renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
-\bibliographystyle{plainnaturl_clean} % NCCcomment
-\bibliography{global_tax_attitudes}
 
 % \section*{Allocation of revenues between countries}
 \clearpage
@@ -228,5 +226,10 @@ In Germany, the global tax on millionaires is the most prioritized policy. In ot
 %     \unpenalty}
 %     \unvbox\ltmcbox
 % \end{multicols}
+
+\clearpage
+\renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
+\bibliographystyle{plainnaturl_clean} % NCCcomment
+\bibliography{global_tax_attitudes}
 
 \end{document}

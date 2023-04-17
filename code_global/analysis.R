@@ -276,7 +276,9 @@ CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, pro
 ##### GCS ~ info / pros_cons #####
 decrit("nr_support", data = e)
 decrit("gcs_support", data = e)
-summary(lm(gcs_support ~ branch_gcs, data = e, weights = weight))
+summary(lm(gcs_support ~ branch_gcs, data = us2, weights = weight))
+summary(lm(gcs_support ~ branch_gcs, data = usp))
+summary(lm(gcs_support ~ branch_gcs, data = merge(us2, us2p, all = T)))
 summary(lm(nr_support ~ branch_gcs, data = e, weights = weight))
 summary(lm(gcs_support ~ branch_gcs * political_affiliation, data = e))
 summary(lm(gcs_support ~ branch_gcs * (political_affiliation == "Republican"), data = e))

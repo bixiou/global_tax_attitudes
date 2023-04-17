@@ -885,6 +885,172 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     label(e$survey_biased_left) <- "survey_biased_left: T/F Finds the survey left-wing biased (survey_biased == Yes, left)"
     label(e$survey_biased_right) <- "survey_biased_right: T/F Finds the survey right-wing biased (survey_biased == Yes, right)"
     
+    if ("feedback" %in% names(e)) e$branch_poverty_field <- e$feedback == 0
+    # 1321 gcs_field in EU (branch_gcs_perception == 'field'), 477 in US2 (branch_gcs == 'field'), 662 poverty_field in US2 (branch_poverty_field == T)
+    # 737 non-NA comment fields in eu, 700 in US2 (=> 1/2), 1453 in US1 (=> 1/3). ~4k fields will be read and ~1350 comment_field not read
+    
+    # To recode gcs_field/comment_field/poverty_field (pre-treatment necessary so the following code works): ~2h/country
+    # 1. use lines below export CSV. 
+    # 2. Create country.xlsm: if language has special characters, from 'template - no wrap'; if not, from 'template' and jump to step 5 (a posteriori, don't understand this last instruction)
+    # 3. Data>Import from text>file_path>UTF8 + Delimited>Semicolon. For language without latin characters, run Sys.setlocale("LC_CTYPE","chinese") (didn't succeed with hindi and beware, it works just one at a time). Then it doesn't always works: closing and reopening Excel sometimes works, as well as replacing remaining latin characters (e.g. "NA"), after many attempts of basically the same thing it ended up working (mystery).
+    # 4. If needed, translate to English: rename .xlsm into .xslx, translate on https://www.onlinedoctranslator.com/de/translationform, rename back to .xlsm
+    # 5. Widen first row until below lifestyle. 6. Home>Wrap text on first row + Format>Column width>60 7. Click on appropriate cells. 
+    # automatic translation: https://www.onlinedoctranslator.com/de/translationform
+    # for (c in c(countries_EU, "US2")) for (v in intersect(names(d(c)), c("gcs_field", "comment_field", "poverty_field"))) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub("\r", " ", gsub('\"', "\\\\\\'", d(c)[[v]]))), collapse = '";"'), '"'), collapse=""),
+    #                            paste0("../data/fields/csv/", v, "_", c, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+    # for (i in 1:2) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub("\r", " ", gsub('\"', "\\\\\\'", us2$comment_field[seq(i,nrow(us2),2)]))), collapse = '";"'), '"'), collapse=""),
+    #                            paste0("../data/fields/csv/comment_field_US2_", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+    # for (i in 1:3) write.table(paste(c('"', paste(gsub("\n", "\\\\\\n ", gsub("\r", " ", gsub('\"', "\\\\\\'", us1$comment_field[seq(i,nrow(us1),3)]))), collapse = '";"'), '"'), collapse=""),
+    #                            paste0("../data/fields/csv/comment_field_US1_", i, ".csv"), row.names = F, quote = F, col.names = F, fileEncoding = "UTF-8")
+    # To make pre-treatment, open VBA (Alt+F11) then for each sheet needed, save:
+    # Private Sub Worksheet_SelectionChange(ByVal Target As Excel.Range)
+    #   Application.EnableEvents = False
+    #   If Target.Cells.Count = 1 Then
+    #     If Not Intersect(Target, Range("B2:ZZ50")) Is Nothing Then
+    #       Select Case Target.Value
+    #       Case ""
+    #         Target.Value = "1"
+    #       Case "1"
+    #         Target.Value = ""
+    #       End Select
+    #       Cells(1, ActiveCell.Column).Select
+    #     End If
+    #   End If
+    #   Application.EnableEvents = True
+    # End Sub
+    
+    if ("gcs_field" %in% names(e)) {
+      gcs_field_names <<- c("worrying / should act" = "worry")
+      gcs_field_names_names <<- names(gcs_field_names)
+      names(gcs_field_names_names) <<- gcs_field_names
+      var_gcs_field_names <<- paste0("gcs_field_", gcs_field_names)
+      e$gcs_field_english <- e$gcs_field
+      recode_gcs_field <- list()
+      split <- if (country %in% c("US1", "US2")) country else countries_EU
+      for (i in split) {
+        if (file.exists(paste0("../data/fields/", i, ".xlsm"))) recode_gcs_field[[i]] <- read.xlsx(paste0("../data/fields/", i, ".xlsm"), sheet = "GCS", rowNames = T, sep.names = " ", na.strings = c(), skipEmptyCols = F)
+        else if (file.exists(paste0("../data/fields/", i, "en.xlsm"))) recode_gcs_field[[i]] <- read.xlsx(paste0("../data/fields/", i, "en.xlsm"), sheet = "GCS", rowNames = T, sep.names = " ", na.strings = c(), skipEmptyCols = F)
+        else print("No file found for recoding of gcs_field.")
+        indices_i <- if (country %in% c("US1", "US2")) 1:nrow(e) else which(e$country == i)
+        if (file.exists(paste0("../data/fields/", i, "en.xlsm"))) e$gcs_field_english[indices_i] <- names(recode_gcs_field[[i]])
+        row.names(recode_gcs_field[[i]]) <- gcs_field_names[row.names(recode_gcs_field[[i]])]
+        recode_gcs_field[[i]] <- as.data.frame(t(recode_gcs_field[[i]]), row.names = indices_i)
+        if (i == split[1]) for (v in names(recode_gcs_field[[i]])) e[[paste0("gcs_field_", v)]] <- NA # /!\ There may be a bug if there are NA in gcs_field_names[names(recode_gcs_field[[i]])], which happens when the variable/column names are unknown in gcs_field_names
+        for (v in names(recode_gcs_field[[i]])) e[[paste0("gcs_field_", v)]][indices_i] <- recode_gcs_field[[i]][[v]]==1
+        # e[[paste0("gcs_field_empty")]][indices_i][recode_gcs_field[[i]][["empty"]]==2] <- 2
+      }
+      
+      label(e$gcs_field_english) <- "gcs_field_english: gcs_field translated to English."
+      e$length_gcs_field_english <- nchar(e$gcs_field_english)
+      label(e$length_gcs_field_english) <- "length_gcs_field_english: Number of characters in gcs_field_english"
+      
+      variables_gcs_field_contains <<- paste0("CC_field_contains_", c("world", "justice"))
+      grep_variables_gcs_field_contains <<- c("international|world|countr|global", "justice|poor|equalit|fair|low-income")
+      names(grep_variables_gcs_field_contains) <<- variables_gcs_field_contains
+      for (v in variables_gcs_field_contains) {
+        e[[v]] <- grepl(grep_variables_gcs_field_contains[v], e$gcs_field_english)
+        label(e[[v]]) <- paste0(v, ": T/F gcs_field_english contains: ", grep_variables_gcs_field_contains[v])  }
+      
+      # Impressions:
+      # US: 
+      # DE: 
+      # FR: 
+      # UK: 
+      
+      # Recurrent topics that don't have a variable:
+      # US: 
+      # DE: 
+      # FR: 
+      # ES: 
+      # UK: 
+      
+      # Pépites:
+      # US: 
+      # DE: 
+      # FR: 
+      # ES: 
+      # UK:     
+    }
+    
+    if (country == "US2") { # poverty_field
+      poverty_field_names <<- c("worrying / should act" = "worry")
+      poverty_field_names_names <<- names(poverty_field_names)
+      names(poverty_field_names_names) <<- poverty_field_names
+      var_poverty_field_names <<- paste0("poverty_field_", poverty_field_names)
+      if (file.exists(paste0("../data/fields/US2.xlsm"))) recode_poverty_field <- read.xlsx(paste0("../data/fields/US2.xlsm"), sheet = "poverty", rowNames = T, sep.names = " ", na.strings = c(), skipEmptyCols = F)
+      else print("No file found for recoding of poverty_field.")
+      row.names(recode_poverty_field) <- poverty_field_names[row.names(recode_poverty_field)]
+      recode_poverty_field <- as.data.frame(t(recode_poverty_field), row.names = 1:nrow(e))
+      # for (v in names(recode_poverty_field)) e[[paste0("poverty_field_", v)]] <- NA # /!\ There may be a bug if there are NA in poverty_field_names[names(recode_poverty_field)], which happens when the variable/column names are unknown in poverty_field_names
+      for (v in names(recode_poverty_field)) e[[paste0("poverty_field_", v)]]<- recode_poverty_field[[v]]==1
+      # e[[paste0("poverty_field_empty")]][indices_i][recode_poverty_field[["empty"]]==2] <- 2
+      
+      e$length_poverty_field <- nchar(e$poverty_field)
+      label(e$length_poverty_field) <- "length_poverty_field_english: Number of characters in poverty_field_english"
+      
+      variables_poverty_field_contains <<- paste0("poverty_field_contains_", c("world", "justice"))
+      grep_variables_poverty_field_contains <<- c("international|world|countr|global", "justice|poor|equalit|fair|low-income")
+      names(grep_variables_poverty_field_contains) <<- variables_poverty_field_contains
+      for (v in variables_poverty_field_contains) {
+        e[[v]] <- grepl(grep_variables_poverty_field_contains[v], e$poverty_field)
+        label(e[[v]]) <- paste0(v, ": T/F poverty_field_english contains: ", grep_variables_poverty_field_contains[v])  }
+      print("d")
+      # Impressions:
+      # 
+      
+      # Recurrent topics that don't have a variable:
+      #  
+      
+      # Pépites:
+      #      
+    }
+    
+    if ("comment_field" %in% names(e)) {
+      comment_field_names <<- c("good", "bad", "bias", "problem")
+      var_comment_field_names <<- paste0("comment_field_", comment_field_names)
+      e$comment_field_english <- e$comment_field
+      recode_comment_field <- list()
+      if (country == "US1") split <- 1:3 
+      else if (country == "US2") split <- 1:2
+      else split <- countries_EU
+      for (i in split) {
+        filename <- if (country %in% c("US1", "US2")) country else i
+        sheet_i <- if (country %in% c("US1", "US2")) i else ""
+        if (file.exists(paste0("../data/fields/", filename, ".xlsm"))) recode_comment_field[[i]] <- read.xlsx(paste0("../data/fields/", filename, ".xlsm"), sheet = paste0("comment", sheet_i), rowNames = T, sep.names = " ", na.strings = c(), skipEmptyCols = F)
+        else if (file.exists(paste0("../data/fields/", filename, "en.xlsm"))) recode_comment_field[[i]] <- read.xlsx(paste0("../data/fields/", filename, "en.xlsm"), sheet = paste0("comment", sheet_i), rowNames = T, sep.names = " ", na.strings = c(), skipEmptyCols = F)
+        else print("No file found for recoding of comment_field.")
+        if (country == "US1") indices_i <- i+3*((1:ncol(recode_comment_field[[i]])-1)) 
+        else if (country == "US2") indices_i <- i+2*((1:ncol(recode_comment_field[[i]])-1)) 
+        else indices_i <- which(e$country == i)
+        if (file.exists(paste0("../data/fields/", filename, "en.xlsm"))) e$comment_field_english[indices_i] <- names(recode_comment_field[[i]])
+        recode_comment_field[[i]] <- as.data.frame(t(recode_comment_field[[i]]), row.names = indices_i)
+        if (i == split[1]) for (v in names(recode_comment_field[[i]])) e[[paste0("comment_field_", v)]] <- NA
+        for (v in names(recode_comment_field[[i]])) e[[paste0("comment_field_", v)]][indices_i] <- recode_comment_field[[i]][[v]]==1
+      }
+      label(e$comment_field_english) <- "comment_field_english: comment_field translated to English."
+      e$dislike_comment_field <- (e$comment_field_bad | e$comment_field_bias) %in% T
+      label(e$dislike_comment_field) <- "dislike_comment_field: T/F The respondent didn't sur survey: comment_field either says the survey is bad or biased."
+      e$critic_comment_field <- (e$comment_field_bad | e$comment_field_problem | e$comment_field_bias) %in% T
+      label(e$critic_comment_field) <- "critic_comment_field: T/F The answer to comment_field is critical: either mentions an issue, says that the survey is bad or biased."
+      e$treated_comment_field <- T
+      if (country == "US1") non_treated <- c(2+3*((1:nrow(recode_comment_field[[i]])-1)), 3+3*((1:nrow(recode_comment_field[[i]])-1)))
+      else if (country == "US2") non_treated <- c(2+2*((1:nrow(recode_comment_field[[i]])-1)))
+      else non_treated <- c()
+      e$treated_comment_field[non_treated] <- FALSE
+      label(e$treated_comment_field) <- "treated_comment_field: T/F comment_field has been treated/recoded. N"
+      for (v in names(recode_comment_field[[1]])) {
+        e[[paste0("comment_field_", v)]][e$treated_comment_field & is.na(e[[paste0("comment_field_", v)]])] <- FALSE
+        label(e[[paste0("comment_field_", v)]]) <- paste0("comment_field_", v, ": ", v, " - Feeling or opinion the respondent expressed about the survey in comment_field.") }
+      variables_comment_field_contains <<- paste0("comment_field_contains_", c("long", "good", "thanks", "learned", "bias"))
+      grep_variables_comment_field_contains <<- c(" long", "good|Good|excellent|enjoy|interesting", "thank|Thank", "learnt|learn", "bias")
+      names(grep_variables_comment_field_contains) <<- variables_comment_field_contains
+      for (v in variables_comment_field_contains) {
+        e[[v]] <- grepl(grep_variables_comment_field_contains[v], e$comment_field_english)
+        label(e[[v]]) <- paste0(v, ": T/F comment_field_english contains: ", grep_variables_comment_field_contains[v])  }
+      e$non_empty_comment_field <- !is.na(e$comment_field)
+      label(e$non_empty_comment_field) <- "non_empty_comment_field: The respondent left a feedback comment, i.e. comment_field is not NA."
+    }
+
     if ("branch_petition" %in% names(e)) {
       e$petition_matches_support[e$branch_petition == "nr"] <- (e$petition == e$nr_support)[e$branch_petition == "nr"]
       e$petition_matches_support[e$branch_petition == "gcs"] <- (e$petition == e$gcs_support)[e$branch_petition == "gcs"]
