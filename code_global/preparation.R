@@ -302,6 +302,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       for (m in c("gcs", "nr")) e$petition[e$branch_petition == m] <- e[[paste0("petition_", m)]][e$branch_petition == m]
       label(e$branch_petition) <- "branch_petition: gcs/nr Whether the petition question is on the global climate scheme or national redistribution."
       label(e$petition) <- "petition: Yes/No Willing to sign a petition on gcs/nr (depends on branch_petition)."
+      e$gcs_support_branch_petition_gcs <- 1*(e$gcs_support == "Yes")
+      e$nr_support_branch_petition_nr <- 1*(e$nr_support == "Yes")
+      e$gcs_support_branch_petition_gcs[e$branch_petition == "nr"] <- NA
+      e$nr_support_branch_petition_nr[e$branch_petition == "gcs"] <- NA
     }
     
     if ("global_tax_sharing" %in% names(e)) {

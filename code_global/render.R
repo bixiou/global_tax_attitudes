@@ -71,6 +71,8 @@ labels_vars <- c(
   "nr_win_lose" = "Win/lose to NR",
   "both_win_lose" = "Win/lose to GCS+NR",
   "gcs_support" = "Global climate scheme (GCS)",
+  "gcs_support_branch_petition_gcs" = "(Comparable) support for the GCS",
+  "nr_support_branch_petition_nr" = "(Comparable) support for NR",
   "gcs_support_100" = "Support for the GCS",
   "nr_support" = "National redistribution scheme (NR)",
   "nr_support_100" = "Support for NR",
@@ -170,7 +172,7 @@ labels_vars <- c(
   "foreign_aid_no_not_our_role" = "[Country] is not responsible for what happens in other countries",
   "foreign_aid_no_nation_first" = "Charity begins at home: there is already a lot to do to support the [country] people in need",
   "foreign_aid_no_other_choice" = "Other",
-  "petition_gcs" = "Petition for GCS",
+  "petition_gcs" = "Petition for the GCS",
   "petition_nr" = "Petition for NR",
   "petition" = "Petition (any)",
   "donation_charities" = "Donation to charities",
@@ -417,6 +419,7 @@ heatmaps_defs <- list(
   "petition_gcs" = list(vars = c("petition_gcs", "gcs_support"), conditions = ">= 1"),
   "petition_nr" = list(vars = c("petition_nr", "nr_support"), conditions = ">= 1"),
   "petition" = list(vars = c("petition_gcs", "gcs_support", "petition_nr", "nr_support"), conditions = ">= 1"),
+  "petition_comparable" = list(vars = c("petition_gcs", "gcs_support_branch_petition_gcs", "petition_nr", "nr_support_branch_petition_nr"), conditions = ">= 1"),
   "conjoint_all" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary, variables_conjoint_c_binary, "conjoint_left_ag_b_binary", "conjoint_r"), conditions = ">= 1"),
   "conjoint" = list(vars = c("gcs_support", variables_conjoint_a_binary, variables_conjoint_b_binary, "conjoint_left_ag_b_binary", "conjoint_r"), conditions = ">= 1"), 
   "conjoint_ab" = list(vars = c("gcs_support", "conjoint_rg_r_binary", "conjoint_crg_cr_binary", "conjoint_rc_r_binary", "conjoint_cr_gr_binary"), conditions = ">= 1"),
@@ -628,7 +631,7 @@ barres_multiple(barres = barresN_continent_defs["foreign_aid_raise_support"], df
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 # US2
 heatmap_multiple(heatmaps_defs[c("foreign_aid_amount", "foreign_aid_more")])
-heatmap_multiple(heatmaps_defs[c("gcs_important")])
+heatmap_multiple(heatmaps_defs[c("petition_comparable")])
 heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")])
 heatmap_multiple(heatmaps_defs[c("global_tax_global_share", "global_tax_sharing")])
 
