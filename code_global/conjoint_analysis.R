@@ -104,6 +104,14 @@ for (c in names(subsamples_pol_fr)) {
   for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], sub("_.*", "", c)]
 }
 
+subsamples_pol <- c("Left" = "Left", "Right" = "Center-right or Right", "Far_right" = "Far right")
+for (v in names(subsamples_pol)) for (c in countries) {
+  amce[[paste0(c, "_", v)]] <- amce(formula_cjoint_generic, ca$all[ca$all$country == c & grepl(subsamples_pol[v], ca$all$vote_all),], design = if (country == 'US') design_cjoint_US else design_cjoint_EU, cluster = FALSE, weights= NULL)
+  for (i in names(amce[[v]]$user.levels)) if (amce[[v]]$user.levels[[i]] %in% row.names(policies.names)) amce[[v]]$user.levels[[i]] <- policies.names[amce[[v]]$user.levels[[i]], sub("_.*", "", v)]
+  for (i in names(amce[[v]]$user.names)) if (amce[[v]]$user.names[[i]] %in% row.names(policies.names)) amce[[v]]$user.names[[i]] <- policies.names[amce[[v]]$user.names[[i]], sub("_.*", "", v)]
+  plot(amce[[paste0(c, "_", v)]], xlab = "Average Marginal Component Effect", text.size = 18)
+  save_plot (filename = paste0("ca_r_", v), folder = paste0('../figures/', c, '/'), width = 1100, height = 500, method='dev', trim = T, format = 'png') 
+}
 
 ##### Analysis #####
 # baselines <- list()
@@ -129,6 +137,7 @@ plot(amce$ES, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r", folder = '../figures/ES/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
 plot(amce$UK, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r", folder = '../figures/UK/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+
 plot(amce$FR_left, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r_left", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
 plot(amce$FR_center, xlab = "Average Marginal Component Effect", text.size = 18)
@@ -139,6 +148,7 @@ plot(amce$FR_right, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r_right", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png') 
 plot(amce$FR_extr_right, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r_extr_right", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png') 
+
 plot(amce$usp) # GCS is foreign1
 plot(amce$eup)
 plot(amce$ep)
