@@ -605,9 +605,9 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
     several_values[c] <- nb_values_c > 1 }
   return(several_values)
 }
-same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, along = "country3", along.levels = Levels(along, data), weights = "weight",
+same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, data_list = NULL, along = "country3", along.levels = Levels(along, data), weights = "weight",
                                 covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, constant_instead_mean = T,
-                                mean_control = T, dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, display_mean = FALSE,
+                                mean_control = T, dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, display_mean = FALSE, share_na_remove = 0.01,
                                 omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, omit.note = FALSE,
                                 folder = "../tables/regs_countries/", digits= 3, model.numbers = T, replace_endAB = NULL) {
   file_path <- paste(folder, filename, ".tex", sep="")
@@ -620,10 +620,11 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
     if (!missing(keep)) keep <- gsub("index_", "index_c_", keep) }
   models <- coefs <- SEs <- list()
   means <- c()
-  for (j in c(0:length(along.levels))) {
-    if (j == 0) { data_i <-  data
-    } else { data_i <- data[data[[along]] == along.levels[j], ] }
-    covariates_i <- covariates[covariates_with_several_values(data = data_i, covariates = covariates)]
+  if (is.null(data_list)) data_list <- list(data, lapply(along.levels, function(j) return(data[data[[along]] == along.levels[j], ])))
+  for (j in c(0:(length(data_list)-1))) {
+    data_i <- data_list[[j+1]]
+    covariates_i <- covariates[sapply(covariates, function(v) { mean(is.na(data_i[[v]])) <= share_na_remove })]
+    covariates_i <- covariates_i[covariates_with_several_values(data = data_i, covariates = covariates_i)]
     formula_i <- as.formula(paste(dep.var, "~", paste("(", covariates_i, ")", collapse = ' + ')))
     i <- j+1
     if (logit) {
@@ -645,7 +646,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
   mean_text <- ifelse(mean_control, "Control group mean", ifelse(constant_instead_mean, "Constant", "Mean"))
   if (exists("labels_vars")) omit <- c(omit, labels_vars[omit], names(labels_vars)[which(labels_vars %in% omit)])
   if (exists("labels_vars")) omit <- omit[!is.na(omit)]
-  if (exists("labels_vars") & missing(covariate.labels)) covariate_labels <- create_covariate_labels(names(models[[1]]$coefficients), regressors_names = labels_vars, keep = keep, omit = omit)
+  if (exists("labels_vars") & missing(covariate.labels)) covariate_labels <- create_covariate_labels(unique(names(unlist(lapply(1:length(models), function(i) return(models[[i]]$coefficients))))), regressors_names = labels_vars, keep = keep, omit = omit)
   if (nolabel) covariate_labels <- NULL
   if (!nolabel & !missing(covariate.labels)) covariate_labels <- covariate.labels
   if (is.null(keep)) keep <- c(c(covariates)[!covariates %in% omit], if (any(c("(Intercept)", "Intercept", "Constant") %in% omit)) NULL else "Constant")

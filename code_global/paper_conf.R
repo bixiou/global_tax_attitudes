@@ -133,3 +133,44 @@ desc_table(dep_vars = c("gcs_support"),
            dep.var.labels = c("\\makecell{Supports the\\\\Global\\\\Climate Scheme}"),
            filename = "gcs_support", save_folder = "../tables/US1/", data = us1, 
            indep_vars = socio_demos_us) # omit: Race: Other
+
+same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "\\makecell{Supports the Global Climate Scheme}", covariates = union(socio_demos, socio_demos_us[socio_demos_us != "vote3"]), 
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "gcs_support", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
