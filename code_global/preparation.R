@@ -1151,12 +1151,12 @@ export_codebook(eup, "../data/codebook_eup.csv", stata = FALSE)
 export_codebook(eup, "../data/codebook_ep.csv", stata = FALSE)
 
 variables_list_exp <- c("list_exp_l", "list_exp_gl", "list_exp_rl", "list_exp_rgl")
-quotas_us <- c("income_factor", "post_secondary", "age_factor", "man", "urban", "race_white", "region")
+quotas_us <- c("income_factor", "post_secondary", "age_factor", "man", "urban", "race", "region") # race_white instead of race? not for representativeness
 socio_demos_us <- c(quotas_us, "swing_state", "couple", "employment_agg", "vote3") # , "wealth_factor"
-quotas_eu <- c("country", "income_factor", "post_secondary", "age_factor", "man") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
+quotas_eu <- c("country_name", "income_factor", "post_secondary", "age_factor", "man", "urbanity") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
 socio_demos <- c(quotas_eu, "couple", "employment_agg", "vote_factor") # add "hh_size", "owner", "wealth_factor", "donation_charities"?
 politics <- c("political_affiliation", "interested_politics", "involvement_govt", "left_right", "vote_participation", "vote_us", "group_defended")
-
+covariates <- c("country_name", "income_factor", "post_secondary", "age_factor", "man", "couple", "employment_agg", "vote_factor", "urban", "race_white", "region", "swing_state")
 
 ##### Create Raw results appendices #####
 # # (don't forget instructions in comments)

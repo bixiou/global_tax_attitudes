@@ -346,6 +346,13 @@ same_reg_subsamples(dep.var = "global_tax_sharing", dep.var.caption = "Prefers t
 decrit("survey_biased", data = all)
 
 
+##### App Determinants #####
+same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "\\makecell{Supports the Global Climate Scheme}", covariates = covariates, 
+                    data_list = list(all, us, eu, d("DE"), d("FR"), d("UK"), d("ES")), dep_var_labels = c("All", "United States", "Europe", countries_names), 
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "gcs_support", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+
 ##### App Representativeness #####
 representativeness_table(c("US1", "US2", "EU"), return_table = F, all = T) 
 representativeness_table(countries_EU, return_table = F, all = T, weight_var = "weight_country") 

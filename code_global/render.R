@@ -23,6 +23,7 @@ labels_vars <- c(
   "gender" = "Gender",
   "age_exact" = "Age",
   "country_name" = "Country",
+  "country_nameOther" = "Country: Other",
   "couple" = "Lives with partner",
   "hh_size" = "Household size",
   "zipcode" = "Zipcode",

@@ -549,6 +549,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
     if (!is.data.frame(data)) data <- data[[1]]
     model_total <- lm(as.formula(paste(dep_vars[1], "~", paste("(", indep_vars[covariates_with_several_values(data = data, covariates = indep_vars)], ")", collapse = ' + '))), data = data)
     indep_labels <- create_covariate_labels(names(model_total$coefficients)[-1], regressors_names = labels_vars, keep = keep, omit = "Constant")
+
     # i_max <- max_i <- 0
     # for (i in seq_along(models)) {
     #   if (length(models[[i]]$coefficients) > max_i) {
@@ -608,7 +609,7 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
 same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, data_list = NULL, along = "country3", along.levels = Levels(along, data), weights = "weight",
                                 covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, constant_instead_mean = T,
                                 mean_control = T, dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, display_mean = FALSE, share_na_remove = 0.01,
-                                omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, omit.note = FALSE,
+                                omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, omit.note = FALSE, dep_var_labels = NULL,
                                 folder = "../tables/regs_countries/", digits= 3, model.numbers = T, replace_endAB = NULL) {
   file_path <- paste(folder, filename, ".tex", sep="")
   if (constant_instead_mean) display_mean <- T
@@ -620,7 +621,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
     if (!missing(keep)) keep <- gsub("index_", "index_c_", keep) }
   models <- coefs <- SEs <- list()
   means <- c()
-  if (is.null(data_list)) data_list <- list(data, lapply(along.levels, function(j) return(data[data[[along]] == along.levels[j], ])))
+  if (is.null(data_list)) data_list <- c(list(data), lapply(along.levels, function(j) return(data[data[[along]] == j, ])))
   for (j in c(0:(length(data_list)-1))) {
     data_i <- data_list[[j+1]]
     covariates_i <- covariates[sapply(covariates, function(v) { mean(is.na(data_i[[v]])) <= share_na_remove })]
@@ -654,7 +655,8 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
   
   table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers, 
                 covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], add.lines = if (display_mean) list(c(mean_text, means)) else NULL,
-                dep.var.labels = if (include.total) c("All", along.levels) else along.levels, dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), 
+                dep.var.labels = if (is.null(dep_var_labels)) {if (include.total) c("All", along.levels) else along.levels} else dep_var_labels, 
+                dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), 
                 omit.table.layout = if (omit.note) "n" else NULL, keep=keep, omit = omit, no.space = no.space)))
 
   if (!missing(replace_endAB) & length(table) != 50) warning(paste0("Wrong specification for replacement of the last lines: table of length ", length(table)))
