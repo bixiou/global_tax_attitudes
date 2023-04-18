@@ -610,6 +610,11 @@ vars_barresN <- c("group_defended_agg2", "foreign_aid_raise_support", "global_ta
                   "involvement_govt",  "vote_participation", "survey_biased", "interview", "left_right") 
 barresN_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "country_name")
 barresN_continent_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "continent")
+main_outcomes <- c("gcs_support", "nr_support", "global_tax_support", "national_tax_support", "cap_wealth_support", "group_defended_agg2", "negotiation", "democratise_un_imf_support", "climate_mitigation_support")
+barresN_vote3_defs <- fill_barres(main_outcomes, list(), along = "vote3")
+barresN_vote_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "vote_factor")
+barresN_age_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "age_factor")
+barresN_income_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "income_factor")
 
 barres_multiple(barres = barresN_defs[c("global_tax_support")], df = all, folder = "../figures/country_comparison/")
 barres_multiple(barres = barresN_continent_defs[c("vote")], df = all, folder = "../figures/continents/")
@@ -725,6 +730,30 @@ barres_multiple(barres = barresN_defs["global_tax_global_share"], df = all, fold
 
 barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
 barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continents/") 
+
+barres_multiple(barres = barresN_vote_defs, df = eu, folder = "../figures/EU/vote/") 
+barres_multiple(barres = barresN_vote_defs, df = d("FR"), folder = "../figures/FR/vote/") 
+barres_multiple(barres = barresN_vote_defs, df = d("DE"), folder = "../figures/DE/vote/") 
+barres_multiple(barres = barresN_vote_defs, df = d("ES"), folder = "../figures/ES/vote/") 
+barres_multiple(barres = barresN_vote_defs, df = d("UK"), folder = "../figures/UK/vote/") 
+barres_multiple(barres = barresN_vote3_defs, df = us, folder = "../figures/US/vote/") 
+barres_multiple(barres = barresN_vote3_defs[c("gcs_support", "nr_support", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/vote/") 
+
+barres_multiple(barres = barresN_age_defs, df = eu, folder = "../figures/EU/age/") 
+barres_multiple(barres = barresN_age_defs, df = d("FR"), folder = "../figures/FR/age/") 
+barres_multiple(barres = barresN_age_defs, df = d("DE"), folder = "../figures/DE/age/") 
+barres_multiple(barres = barresN_age_defs, df = d("ES"), folder = "../figures/ES/age/") 
+barres_multiple(barres = barresN_age_defs, df = d("UK"), folder = "../figures/UK/age/") 
+barres_multiple(barres = barresN_age3_defs, df = us, folder = "../figures/US/age/") 
+barres_multiple(barres = barresN_age3_defs[c("gcs_support", "nr_support", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/age/") 
+
+barres_multiple(barres = barresN_income_defs, df = eu, folder = "../figures/EU/income/") 
+barres_multiple(barres = barresN_income_defs, df = d("FR"), folder = "../figures/FR/income/") 
+barres_multiple(barres = barresN_income_defs, df = d("DE"), folder = "../figures/DE/income/") 
+barres_multiple(barres = barresN_income_defs, df = d("ES"), folder = "../figures/ES/income/") 
+barres_multiple(barres = barresN_income_defs, df = d("UK"), folder = "../figures/UK/income/") 
+barres_multiple(barres = barresN_income3_defs, df = us, folder = "../figures/US/income/") 
+barres_multiple(barres = barresN_income3_defs[c("gcs_support", "nr_support", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/income/") 
 
 
 ##### Word clouds and vote #####
