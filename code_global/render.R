@@ -744,16 +744,16 @@ barres_multiple(barres = barresN_age_defs, df = d("FR"), folder = "../figures/FR
 barres_multiple(barres = barresN_age_defs, df = d("DE"), folder = "../figures/DE/age/") 
 barres_multiple(barres = barresN_age_defs, df = d("ES"), folder = "../figures/ES/age/") 
 barres_multiple(barres = barresN_age_defs, df = d("UK"), folder = "../figures/UK/age/") 
-barres_multiple(barres = barresN_age3_defs, df = us, folder = "../figures/US/age/") 
-barres_multiple(barres = barresN_age3_defs[c("gcs_support", "nr_support", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/age/") 
+barres_multiple(barres = barresN_age_defs, df = us, folder = "../figures/US/age/") 
+barres_multiple(barres = barresN_age_defs[c("gcs_support", "nr_support", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/age/") 
 
 barres_multiple(barres = barresN_income_defs, df = eu, folder = "../figures/EU/income/") 
 barres_multiple(barres = barresN_income_defs, df = d("FR"), folder = "../figures/FR/income/") 
 barres_multiple(barres = barresN_income_defs, df = d("DE"), folder = "../figures/DE/income/") 
 barres_multiple(barres = barresN_income_defs, df = d("ES"), folder = "../figures/ES/income/") 
 barres_multiple(barres = barresN_income_defs, df = d("UK"), folder = "../figures/UK/income/") 
-barres_multiple(barres = barresN_income3_defs, df = us, folder = "../figures/US/income/") 
-barres_multiple(barres = barresN_income3_defs[c("gcs_support", "nr_support", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/income/") 
+barres_multiple(barres = barresN_income_defs, df = us, folder = "../figures/US/income/") 
+barres_multiple(barres = barresN_income_defs[c("gcs_support", "nr_support", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/income/") 
 
 
 ##### Word clouds and vote #####
