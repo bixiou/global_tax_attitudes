@@ -473,9 +473,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$income_decile <- ceiling(as.numeric(as.vector(gsub("900", "901", gsub("[^0-9\\.]", "", gsub("and.*", "", e$income_original)))))/100)
   }
   e$income_factor <- as.factor(e$income_quartile)
+  e$income_character <- paste0("Q", e$income_factor)
   label(e$income_decile) <- "income_decile: [1-10] Decile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
   label(e$income_quartile) <- "income_quartile: [1-4] Quartile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
-  label(e$income_factor) <- "income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
+  label(e$income_character) <- label(e$income_factor) <- "income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
   
   if ("Nb_children__14" %in% names(e)) {
     e$children <- e$Nb_children__14 > 0
@@ -628,10 +629,12 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$foreign_aid_more_less[e$info_foreign_aid == FALSE] <- ((e$foreign_aid_preferred > e$foreign_aid_belief) - (e$foreign_aid_preferred < e$foreign_aid_belief))[e$info_foreign_aid == FALSE]
       e$foreign_aid_more_less <- as.item(e$foreign_aid_more_less, labels = structure(-1:1, names = c("Less", "Same", "More")), missing.values = NA, annotation = "foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
       e$foreign_aid_more_less_info <- e$foreign_aid_more_less_no_info <- e$foreign_aid_more_less
-      e$foreign_aid_more_less_info[e$info_foreign_aid == FALSE] <- NA
+      e$foreign_aid_more_less_info[e$info_foreign_aid == FALSE] <- NA 
       e$foreign_aid_more_less_no_info[e$info_foreign_aid == T] <- NA
-      e$foreign_aid_less_more_info <- !e$foreign_aid_more_less_info
-      e$foreign_aid_less_more_no_info <- !e$foreign_aid_more_less_no_info
+      e$foreign_aid_no_less_info <- e$foreign_aid_more_less_info >= 0
+      e$foreign_aid_no_less_no_info <- e$foreign_aid_more_less_no_info >= 0
+      e$foreign_aid_less_more_info <- as.item(-e$foreign_aid_more_less_info, labels = structure(-1:1, names = c("More", "Same", "Less")), missing.values = NA, annotation = "foreign_aid_more_less: 1: Less / 0: Same / -1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
+      e$foreign_aid_less_more_no_info <- as.item(-e$foreign_aid_more_less_no_info, labels = structure(-1:1, names = c("More", "Same", "Less")), missing.values = NA, annotation = "foreign_aid_more_less: 1: Less / 0: Same / -1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
     }
     for (v in intersect(names(e), variables_foreign_aid_reduce)) e[[v]][e$info_foreign_aid == FALSE | e$foreign_aid_more_less >= 0] <- NA
     for (v in intersect(names(e), variables_foreign_aid_raise)) e[[v]][e$info_foreign_aid == FALSE | e$foreign_aid_more_less <= 0] <- NA
@@ -998,7 +1001,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       for (v in variables_poverty_field_contains) {
         e[[v]] <- grepl(grep_variables_poverty_field_contains[v], e$poverty_field)
         label(e[[v]]) <- paste0(v, ": T/F poverty_field_english contains: ", grep_variables_poverty_field_contains[v])  }
-      print("d")
       # Impressions:
       # 
       
@@ -1151,12 +1153,12 @@ export_codebook(eup, "../data/codebook_eup.csv", stata = FALSE)
 export_codebook(eup, "../data/codebook_ep.csv", stata = FALSE)
 
 variables_list_exp <- c("list_exp_l", "list_exp_gl", "list_exp_rl", "list_exp_rgl")
-quotas_us <- c("income_factor", "post_secondary", "age_factor", "race", "man", "region", "urban")
-socio_demos_us <- c(quotas_us, "swing_state", "couple", "employment_agg", "wealth_factor", "vote3")
-quotas_eu <- c("country", "income_factor", "post_secondary", "age_factor", "man", "urbanity") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
-socio_demos <- c(quotas_eu, "couple", "employment_agg", "wealth_factor", "vote_factor") # add "hh_size", "owner", "wealth", "donation_charities"?
+quotas_us <- c("income_factor", "post_secondary", "age_factor", "man", "urban", "race", "region") # race_white instead of race? not for representativeness
+socio_demos_us <- c(quotas_us, "swing_state", "couple", "employment_agg", "vote3") # , "wealth_factor"
+quotas_eu <- c("country_name", "income_factor", "post_secondary", "age_factor", "man", "urbanity") # diploma instead of post_secondary? as.factor(urbanity) instead of urban?
+socio_demos <- c(quotas_eu, "couple", "employment_agg", "vote_factor") # add "hh_size", "owner", "wealth_factor", "donation_charities"?
 politics <- c("political_affiliation", "interested_politics", "involvement_govt", "left_right", "vote_participation", "vote_us", "group_defended")
-
+covariates <- c("country_name", "income_factor", "post_secondary", "age_factor", "man", "couple", "employment_agg", "vote_factor", "urban", "race_white", "region", "swing_state")
 
 ##### Create Raw results appendices #####
 # # (don't forget instructions in comments)

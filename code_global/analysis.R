@@ -277,6 +277,7 @@ CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, pro
 decrit("nr_support", data = e)
 decrit("gcs_support", data = e)
 summary(lm(gcs_support ~ branch_gcs, data = us2, weights = weight))
+summary(lm(reg_formula("gcs_support", c("branch_gcs", socio_demos_us)), data = us2, weights = weight))
 summary(lm(gcs_support ~ branch_gcs, data = usp))
 summary(lm(gcs_support ~ branch_gcs, data = merge(us2, us2p, all = T)))
 summary(lm(nr_support ~ branch_gcs, data = e, weights = weight))
