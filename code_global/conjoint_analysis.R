@@ -105,13 +105,15 @@ for (c in names(subsamples_pol_fr)) {
 }
 
 subsamples_pol <- c("Left" = "Left", "Right" = "Center-right or Right", "Far_right" = "Far right")
-for (v in names(subsamples_pol)) for (c in countries) {
-  amce[[paste0(c, "_", v)]] <- amce(formula_cjoint_generic, ca$all[ca$all$country == c & grepl(subsamples_pol[v], ca$all$vote_all),], design = if (country == 'US') design_cjoint_US else design_cjoint_EU, cluster = FALSE, weights= NULL)
-  for (i in names(amce[[v]]$user.levels)) if (amce[[v]]$user.levels[[i]] %in% row.names(policies.names)) amce[[v]]$user.levels[[i]] <- policies.names[amce[[v]]$user.levels[[i]], sub("_.*", "", v)]
-  for (i in names(amce[[v]]$user.names)) if (amce[[v]]$user.names[[i]] %in% row.names(policies.names)) amce[[v]]$user.names[[i]] <- policies.names[amce[[v]]$user.names[[i]], sub("_.*", "", v)]
-  plot(amce[[paste0(c, "_", v)]], xlab = "Average Marginal Component Effect", text.size = 18)
+for (v in names(subsamples_pol)) for (c in countries) { if (!(country == 'US' & v == "Far_right")) {
+  cv <- paste0(c, "_", v)
+  if (c == 'US') amce[[cv]] <- amce(formula_cjoint_specific, ca$us1[grepl(subsamples_pol[v], ca$us1$vote),], design = design_cjoint_US, cluster = FALSE, weights= NULL)
+  else amce[[cv]] <- amce(formula_cjoint_generic, ca$eu[ca$eu$country == c & grepl(subsamples_pol[v], ca$eu$vote),], design = design_cjoint_EU, cluster = FALSE, weights= NULL)
+  for (i in names(amce[[cv]]$user.levels)) if (amce[[cv]]$user.levels[[i]] %in% row.names(policies.names)) amce[[cv]]$user.levels[[i]] <- policies.names[amce[[cv]]$user.levels[[i]], c]
+  for (i in names(amce[[cv]]$user.names)) if (amce[[cv]]$user.names[[i]] %in% row.names(policies.names)) amce[[cv]]$user.names[[i]] <- policies.names[amce[[cv]]$user.names[[i]], c]
+  plot(amce[[cv]], xlab = "Average Marginal Component Effect", text.size = 18)
   save_plot (filename = paste0("ca_r_", v), folder = paste0('../figures/', c, '/'), width = 1100, height = 500, method='dev', trim = T, format = 'png') 
-}
+} }
 
 ##### Analysis #####
 # baselines <- list()
