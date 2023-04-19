@@ -473,9 +473,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$income_decile <- ceiling(as.numeric(as.vector(gsub("900", "901", gsub("[^0-9\\.]", "", gsub("and.*", "", e$income_original)))))/100)
   }
   e$income_factor <- as.factor(e$income_quartile)
+  e$income_character <- paste0("Q", e$income_factor)
   label(e$income_decile) <- "income_decile: [1-10] Decile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
   label(e$income_quartile) <- "income_quartile: [1-4] Quartile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
-  label(e$income_factor) <- "income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
+  label(e$income_character) <- label(e$income_factor) <- "income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units)."
   
   if ("Nb_children__14" %in% names(e)) {
     e$children <- e$Nb_children__14 > 0
@@ -628,10 +629,12 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$foreign_aid_more_less[e$info_foreign_aid == FALSE] <- ((e$foreign_aid_preferred > e$foreign_aid_belief) - (e$foreign_aid_preferred < e$foreign_aid_belief))[e$info_foreign_aid == FALSE]
       e$foreign_aid_more_less <- as.item(e$foreign_aid_more_less, labels = structure(-1:1, names = c("Less", "Same", "More")), missing.values = NA, annotation = "foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
       e$foreign_aid_more_less_info <- e$foreign_aid_more_less_no_info <- e$foreign_aid_more_less
-      e$foreign_aid_more_less_info[e$info_foreign_aid == FALSE] <- NA
+      e$foreign_aid_more_less_info[e$info_foreign_aid == FALSE] <- NA 
       e$foreign_aid_more_less_no_info[e$info_foreign_aid == T] <- NA
-      e$foreign_aid_less_more_info <- !e$foreign_aid_more_less_info
-      e$foreign_aid_less_more_no_info <- !e$foreign_aid_more_less_no_info
+      e$foreign_aid_no_less_info <- e$foreign_aid_more_less_info >= 0
+      e$foreign_aid_no_less_no_info <- e$foreign_aid_more_less_no_info >= 0
+      e$foreign_aid_less_more_info <- as.item(-e$foreign_aid_more_less_info, labels = structure(-1:1, names = c("More", "Same", "Less")), missing.values = NA, annotation = "foreign_aid_more_less: 1: Less / 0: Same / -1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
+      e$foreign_aid_less_more_no_info <- as.item(-e$foreign_aid_more_less_no_info, labels = structure(-1:1, names = c("More", "Same", "Less")), missing.values = NA, annotation = "foreign_aid_more_less: 1: Less / 0: Same / -1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.")
     }
     for (v in intersect(names(e), variables_foreign_aid_reduce)) e[[v]][e$info_foreign_aid == FALSE | e$foreign_aid_more_less >= 0] <- NA
     for (v in intersect(names(e), variables_foreign_aid_raise)) e[[v]][e$info_foreign_aid == FALSE | e$foreign_aid_more_less <= 0] <- NA

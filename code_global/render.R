@@ -435,8 +435,12 @@ heatmaps_defs <- list(
   "belief_all" = list(vars = c("gcs_belief", "gcs_support_100", "nr_belief", "nr_support_100"), conditions = "", nb_digits = 0), 
   "points" = list(vars = variables_points, conditions = c("", ">= 1"), nb_digits = 0),
   "foreign_aid_amount" = list(vars = c("foreign_aid_actual", "foreign_aid_belief", "foreign_aid_preferred_info", "foreign_aid_preferred_no_info"), conditions = c("", "median"), nb_digits = 1),
-  "foreign_aid_more" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_more_less_no_info", "foreign_aid_raise_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is higher than perceived", "Supports increasing foreign aid (incl. with conditions)")),
-  "foreign_aid_more_all" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_less_more_info", "foreign_aid_more_less_no_info", "foreign_aid_less_more_no_info", "foreign_aid_raise_support", "foreign_aid_reduce_support"), conditions = c("> 0"), labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is lower than current", "Preferred foreign aid is higher than perceived", "Preferred foreign aid is lower than perceived", "Supports increased foreign aid (incl. with conditions)", "Supports reduced foreign aid")),
+  "foreign_aid_more" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_more_less_no_info", "foreign_aid_raise_support"), conditions = c("> 0"), 
+              labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is higher than perceived", "Supports increasing foreign aid (incl. with conditions)")),
+  "foreign_aid_no_less" = list(vars = c("foreign_aid_no_less_info", "foreign_aid_no_less_no_info", "foreign_aid_raise_support"), conditions = c("> 0"), 
+              labels = c("Preferred foreign aid is at least as high as current", "Preferred foreign aid is at least as high as perceived", "Supports increasing foreign aid (incl. with conditions)")),
+  "foreign_aid_more_all" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_less_more_info", "foreign_aid_more_less_no_info", "foreign_aid_less_more_no_info", "foreign_aid_raise_support", "foreign_aid_reduce_support"), conditions = c("> 0"), 
+              labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is lower than current", "Preferred foreign aid is higher than perceived", "Preferred foreign aid is lower than perceived", "Supports increased foreign aid (incl. with conditions)", "Supports reduced foreign aid")),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
   "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)]),
@@ -615,7 +619,7 @@ main_outcomes <- c("gcs_support", "nr_support", "global_tax_support", "national_
 barresN_vote3_defs <- fill_barres(main_outcomes, list(), along = "vote3")
 barresN_vote_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "vote_factor")
 barresN_age_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "age_factor")
-barresN_income_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "income_factor")
+barresN_income_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "income_character")
 
 barres_multiple(barres = barresN_defs[c("global_tax_support")], df = all, folder = "../figures/country_comparison/")
 barres_multiple(barres = barresN_continent_defs[c("vote")], df = all, folder = "../figures/continents/")
@@ -690,7 +694,7 @@ e <- all
 nb_vars_heatmaps <- sort(sapply(heatmaps_defs, function(heatmap) return(setNames(length(heatmap$vars), heatmap[1]$name))))
 (nb_vars_heatmaps <- nb_vars_heatmaps[!grepl("ets2", names(nb_vars_heatmaps))])
 # Regroup heatmaps by nb of variables to change the size of the Viewer before each run and have nice saved plots
-heatmap_multiple(heatmaps_defs["belief"], weights = T)
+heatmap_multiple(heatmaps_defs[c("foreign_aid_more")], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 2]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 2][1]], weights = T, trim = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 2]], weights = T)
