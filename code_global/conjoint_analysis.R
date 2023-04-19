@@ -61,7 +61,7 @@ for (df in c("us1", "eu", "all")) { # "usp", "eup", "ep"
   # /!\ Bugs at CIRED but works well at home
   ca[[df]] <- read.qualtrics(csv.path, responses = 'conjoint_r_number', covariates = c(variables_conjoint_r_levels), respondentID = "n") # names(d(n))[cols_conjoint]
   names(ca[[df]])[1] <- "n"
-  ca[[df]] <- merge(d(df)[, c("country", "n", "vote", "vote_all")], ca[[df]])
+  ca[[df]] <- merge(d(df)[, intersect(names(d(df)), c("country", "n", "vote", "vote_all", "political_affiliation"))], ca[[df]])
   for (i in 1:5) {
     ca[[df]][[conjoint.attributes[i]]] <- as.character(ca[[df]][[conjoint_attributes[i]]])
     for (c in countries) {
@@ -104,16 +104,18 @@ for (c in names(subsamples_pol_fr)) {
   for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], sub("_.*", "", c)]
 }
 
-subsamples_pol <- c("Left" = "Left", "Right" = "Center-right or Right", "Far_right" = "Far right")
-for (v in names(subsamples_pol)) for (c in countries) { if (!(country == 'US' & v == "Far_right")) {
-  cv <- paste0(c, "_", v)
-  if (c == 'US') amce[[cv]] <- amce(formula_cjoint_specific, ca$us1[grepl(subsamples_pol[v], ca$us1$vote),], design = design_cjoint_US, cluster = FALSE, weights= NULL)
+subsamples_pol <- c("voted_abst_pnr" = "PNR/Non-voter", "voted_left" = "Left", "voted_right" = "Center-right or Right", "voted_far_right" = "Far right")
+for (v in names(subsamples_pol)) for (c in countries) {  {
+  cv <- if (c == 'US' & v == "voted_far_right") "US_ind" else paste0(c, "_", v)
+  if (cv == "US_ind") amce[[cv]] <- amce(formula_cjoint_specific, ca$us1[ca$us1$political_affiliation != "Democrat",], design = design_cjoint_US, cluster = FALSE, weights= NULL)
+  else if (c == 'US') amce[[cv]] <- amce(formula_cjoint_specific, ca$us1[grepl(subsamples_pol[v], ca$us1$vote),], design = design_cjoint_US, cluster = FALSE, weights= NULL)
   else amce[[cv]] <- amce(formula_cjoint_generic, ca$eu[ca$eu$country == c & grepl(subsamples_pol[v], ca$eu$vote),], design = design_cjoint_EU, cluster = FALSE, weights= NULL)
   for (i in names(amce[[cv]]$user.levels)) if (amce[[cv]]$user.levels[[i]] %in% row.names(policies.names)) amce[[cv]]$user.levels[[i]] <- policies.names[amce[[cv]]$user.levels[[i]], c]
   for (i in names(amce[[cv]]$user.names)) if (amce[[cv]]$user.names[[i]] %in% row.names(policies.names)) amce[[cv]]$user.names[[i]] <- policies.names[amce[[cv]]$user.names[[i]], c]
   plot(amce[[cv]], xlab = "Average Marginal Component Effect", text.size = 18)
-  save_plot (filename = paste0("ca_r_", v), folder = paste0('../figures/', c, '/'), width = 1100, height = 500, method='dev', trim = T, format = 'png') 
+  save_plot (filename = paste0("ca_r", sub(c, "", cv)), folder = paste0('../figures/', c, '/'), width = 1100, height = 500, method='dev', trim = T, format = 'png') 
 } }
+
 
 ##### Analysis #####
 # baselines <- list()
