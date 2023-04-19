@@ -998,7 +998,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       for (v in variables_poverty_field_contains) {
         e[[v]] <- grepl(grep_variables_poverty_field_contains[v], e$poverty_field)
         label(e[[v]]) <- paste0(v, ": T/F poverty_field_english contains: ", grep_variables_poverty_field_contains[v])  }
-      print("d")
       # Impressions:
       # 
       
