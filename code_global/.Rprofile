@@ -254,6 +254,7 @@ is.pnr <- function(variable, empty_as_pnr = T) {
 }
 no.na <- function(vec) return(replace_na(as.vector(vec), "na"))
 gap <- function(vec) return(if (max(vec, na.rm = T) == 0) 0 else abs((max(vec, na.rm = T) - min(vec, na.rm = T))/max(vec, na.rm = T)))
+max_gap <- function(vec1, vec2, epsilon = 1e-15) return(max(2*abs(vec1 - vec2)/(abs(vec1 + vec2) + epsilon), na.rm = T))
 is.binary <- function(vec) { return((is.logical(vec) | all(unique(as.numeric(vec)) %in% c(0, 1, NA)))) }
 majority <- function(vec) {
   if (is.binary(vec)) return(100*mean(vec, na.rm = T))

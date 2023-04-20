@@ -37,7 +37,7 @@ names(co2) <- c("country", "code", "year", "territorial", "footprint")
 
 
 ##### GDP pc data #####
-GDPpc <- read.csv("../data/GDPpc_2015$_nominal.csv") # GDP per capita (constant 2015 US$) https://data.worldbank.org/indicator/NY.GDP.PCAP.KD March 1, 2023 
+GDPpc <- read.csv("../data/GDPpc_2015$_nominal.csv") # GDP per capita (constant 2015 US$) https://data.worldbank.org/indicator/NY.GDP.PCAP.KD March 1, 2023 (last year available is 2021)
 GDPpc$code <- GDPpc$Country.Code
 GDPpc <- rbind(data.frame("code" = GDPpc$code, "gdp_pc" = GDPpc$X2015, "year" = 2015), data.frame("code" = GDPpc$code, "gdp_pc" = GDPpc$X2019, "year" = 2019))
 co2 <- merge(co2, GDPpc)
@@ -66,6 +66,7 @@ co2_pop <- co2_pop %>% group_by(code) %>% pivot_wider(id_cols = c("code", "count
 co2_pop$missing_footprint <- co2_pop$missing_footprint_2019
 co2_pop <- co2_pop[, !colnames(co2_pop) %in% c(paste0("missing_footprint_", c(2015, 2019, 2023, years)), paste0("gdp_pc_", years))]
 co2_pop <- co2_pop[!co2_pop$country %in% c("World", "Kosovo", NA), sapply(names(co2_pop), function(v) any(!is.na(co2_pop[[v]])))]
+co2_pop$gdp_2019 <- co2_pop$gdp_pc_2019 * co2_pop$pop_2019
 rm(pop, co2)  
 decrit(co2_pop$missing_footprint) # 98 out of 218 countries missing (while no missing for territorial)
 # co2_pop$country[co2_pop$missing_footprint]
@@ -106,6 +107,12 @@ co2_emissions_2030 <- 26.3e9
 # The results also slightly change if the baseline year 2019 is used instead of 2015, and if we compute the net gain for (i.e. divide by population of) year = 2030 vs. 2015, cf. deprecated/draft_map_GCS_incidence.R for an analysis
 # For consistency with the OECD survey, we use 2015 as a baseline.
 compute_gain <- function(year = 2030, base_year = 2019, type = "mean", df = co2_pop, return_data = T) {
+  # Computes revenues_pa
+  # reduction_factor <- co2_emissions_2030/sum(df[[paste0("emissions_pa_", base_year)]] * df$adult_2030)
+  # df$emissions_pa_2030 <- reduction_factor * df[[paste0("emissions_pa_", base_year)]]
+  # df[[paste0("revenues_pa_", year)]] <- df$emissions_pa_2030_bis * 90 /12
+  # df[[paste0("revenues_pa_", year)]] <- df[[paste0("revenues_pa_", year)]] * df$adult_2030 / df[[paste0("adult_", year)]]
+  # Below computations are equivalent to the above lines, they just make additional steps through share_emissions
   df[[paste0("demographic_evolution_", base_year)]] <- (df$adult_2030/df[[paste0("adult_", base_year)]]) * (sum(df[[paste0("adult_", base_year)]])/adult_pop_2030)
   df[[paste0("emissions_pa_", base_year)]] <- df[[paste0("emissions_", base_year)]]/df[[paste0("adult_", base_year)]]
   df[[paste0("share_emissions_", base_year)]] <- df[[paste0("emissions_", base_year)]]/sum(df[[paste0("emissions_", base_year)]])
@@ -114,6 +121,7 @@ compute_gain <- function(year = 2030, base_year = 2019, type = "mean", df = co2_
   df$emissions_2030 <- df[[paste0("share_emissions_2030_base_", base_year)]] * co2_emissions_2030
   df$emissions_pa_2030 <- df$emissions_2030 / df$adult_2030
   df[[paste0("revenues_pa_", year)]] <- df[[paste0("share_emissions_2030_base_", base_year)]] * carbon_tax_revenues_2030 / df[[paste0("adult_", year)]]/12
+  
   df[[paste0(type, "_gain_", year)]] <- 30 - (1 - 0.1*(type == "median"))*df[[paste0("revenues_pa_", year)]]
   # Accounts for opting out (using 2019 GDP pc)
   df[[paste0("optout_right_", year)]] <- 2 - pmax(1, pmin(2, df$gdp_pc_2019 / wtd.mean(df$gdp_pc_2019, df$pop_2019)))
@@ -235,10 +243,11 @@ pg7 <- read.csv("../data/poverty_gap_6-85.csv") # Poverty gap at $6.85 a day (20
 pg7$code <- pg7$Country.Code
 pg7 <- extract_last_year(df = pg7, cols = paste0("X", 1960:2021), var_name = "pg7", keep = c("Country.Name", "code"))
 
-GDPpcPPP <- read.csv("../data/GDPpc_2017$_PPP.csv") # GDP per capita, PPP (constant 2017 international $) https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD March 1, 2023 
+GDPpcPPP <- read.csv("../data/GDPpc_2017$_PPP.csv") # GDP per capita, PPP (constant 2017 international $) https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD March 1, 2023  (last year available is 2021)
 GDPpcPPP$code <- GDPpcPPP$Country.Code
 # all(GDPpcPPP$country == pg$country)
 GDPpcPPP$GDPpcPPP[!is.na(pg7$last_year)] <- sapply(which(!is.na(pg7$last_year)), function(i) GDPpcPPP[[paste0("X", pg7$last_year[i])]][i])
+# TODO! replace last_year (2021) by 2019 to avoid covid effects
 # We don't replace missing values for GDPpc in gap's last year (while other years are available for GDPpc) as they always coincide with missing values for poverty gaps
 # GDPpcPPP <- extract_last_year(df = GDPpcPPP, cols = paste0("X", 1960:2021), var_name = "gdp_last_year")
 # sum(is.na(GDPpcPPP$GDPpcPPP[GDPpcPPP$code %in% co2_pop$code])) # 41 missing values for GDP pc for the year at which we have the last poverty gap estimate, we use instead the last available data for GDP (in 2017 constant $)
@@ -250,7 +259,6 @@ pg <- merge(merge(pg2, merge(pg4, pg7)), GDPpcPPP[, c("Country.Name", "code", "G
 # co2_pop$country[co2_pop$code %in% setdiff(co2_pop$code, pg$code)]
 # pg$Country.Name[pg$code %in% setdiff(pg$code, co2_pop$code)]
 pg <- merge(pg, co2_pop)
-pg$gdp_2019 <- pg$gdp_pc_2019 * pg$pop_2019
 
 # reg_pg_gdp <- lm(gap ~ log10(GDPpcPPP), data = pg, weights = adult_2023) 
 # summary(reg_pg_gdp)
@@ -429,15 +437,29 @@ sort(setNames(pg$wealth_tax_rev_pc/12, pg$country)) # per month: $4.6 in India, 
 ssp_countries <- read.xlsx("../data/SSP_cmip6_iam_model_region_mapping.xlsx")
 names(ssp_countries)[1] <- "code"
 ssp_countries$R5_region <- sub("R5", "R5.2", ssp_countries$R5_region)
+co2_pop <- merge(pg[,c("code", "GDPpcPPP")], co2_pop)
+co2_pop$gdp_ppp_now <- co2_pop$GDPpcPPP * co2_pop$pop_2020
 co2_pop <- merge(ssp_countries[,c("code", "IMAGE.REGION", "MESSAGE-GLOBIOM.REGION", "R5_region")], co2_pop)
 pop_un <- list()
-pop.R5 <- co2_pop %>% group_by(R5_region) %>% summarise_at(names(co2_pop)[grepl("adult_|pop_", names(co2_pop))], sum, na.rm = T)
-pop_un[["IMAGE"]] <- co2_pop %>% group_by(IMAGE.REGION) %>% summarise_at(names(co2_pop)[grepl("adult_|pop_", names(co2_pop))], sum, na.rm = T)
-pop_un[["MESSAGE-GLOBIOM"]] <- co2_pop %>% group_by(`MESSAGE-GLOBIOM.REGION`) %>% summarise_at(names(co2_pop)[grepl("adult_|pop_", names(co2_pop))], sum, na.rm = T)
+pop.R5 <- co2_pop %>% group_by(R5_region) %>% summarise_at(names(co2_pop)[grepl("adult_|pop_|gdp_|gdp_ppp_", names(co2_pop))], sum, na.rm = T)
+pop_un[["IMAGE"]] <- co2_pop %>% group_by(IMAGE.REGION) %>% summarise_at(names(co2_pop)[grepl("adult_|pop_|gdp_|gdp_ppp_", names(co2_pop))], sum, na.rm = T)
+pop_un[["MESSAGE-GLOBIOM"]] <- co2_pop %>% group_by(`MESSAGE-GLOBIOM.REGION`) %>% summarise_at(names(co2_pop)[grepl("adult_|pop_|gdp_|gdp_ppp_", names(co2_pop))], sum, na.rm = T)
 names(pop.R5)[1] <- names(pop_un[["IMAGE"]])[1] <- names(pop_un[["MESSAGE-GLOBIOM"]])[1] <- "region"
 pop_un[["IMAGE"]] <- rbind(pop_un[["IMAGE"]], pop.R5)
 pop_un[["MESSAGE-GLOBIOM"]] <- rbind(pop_un[["MESSAGE-GLOBIOM"]], pop.R5)
 
+View(co2_pop[, c("code", "country", "IMAGE.REGION", "MESSAGE-GLOBIOM.REGION")])
+co2_pop$`MESSAGE-GLOBIOM.REGION`[is.na(co2_pop$`MESSAGE-GLOBIOM.REGION`)] <- "LAM"
+regions <- unique(co2_pop$`MESSAGE-GLOBIOM.REGION`)
+message_region_by_image <- c("BRA" = "LAM", "CAN" = "NAM", "CEU" = "EEU", "CHN" = "CPA", "EAF" = "AFR", "INDIA" = "SAS", "INDO" = "PAS", "JAP" = "PAO", "KOR" = "PAS", "ME" = "MEA", "MEX" = "LAM", "NAF" = "MEA", "OCE" = "PAO", "RCAM" = "LAM", "RSAF" = "AFR", "RSAM" = "LAM", "RSAS" = "SAS", "RUS" = "FSU", "SAF" = "AFR", "SEAS" = "PAS", "STAN" = "FSU", "TUR" = "WEU", "UKR" = "FSU", "USA" = "NAM", "WAF" = "AFR", "WEU" = "WEU")
+image_regions <- names(message_region_by_image)
+message_regions <- unique(message_region_by_image) # this is regions sorted differently
+message_region_by_code <- setNames(co2_pop$`MESSAGE-GLOBIOM.REGION`, co2_pop$code)
+image_region_by_code <- setNames(co2_pop$IMAGE.REGION, co2_pop$code)
+big_region_by_message <- c("LAM" = "lam", "NAM" = "oecd", "EEU" = "oecd", "CPA" = "asia", "AFR" = "maf", "SAS" = "asia", "PAS" = "asia", "PAO" = "oecd", "MEA" = "maf", "FSU" = "ref", "WEU" = "oecd")
+# big_region_by_image <- c("BRA" = "lam", "CAN" = "oecd", "CEU" = "oecd", "CHN" = "asia", "EAF" = "maf", "INDIA" = "asia", "INDO" = "asia", "JAP" = "oecd", "KOR" = "asia", "ME" = "maf", "MEX" = "lam", "NAF" = "maf", "OCE" = "oecd", "RCAM" = "lam", "RSAF" = "maf", "RSAM" = "lam", "RSAS" = "asia", "RUS" = "ref", "SAF" = "maf", "SEAS" = "asia", "STAN" = "ref", "TUR" = "oecd", "UKR" = "ref", "USA" = "oecd", "WAF" = "maf", "WEU" = "oecd")
+big_region_by_image <- setNames(big_region_by_message[message_regions[image_regions]], image_regions)
+big_regions <- c("asia", "lam", "maf", "oecd", "ref")
 
 SSPs <- read.csv("../data/SSPs.csv") # https://secure.iiasa.ac.at/web-apps/ene/SspDb/download/iam_v2/SSP_IAM_V2_201811.csv.zip
 SSPs_countries <- read.csv("../data/SSP_CMIP6.csv") # https://secure.iiasa.ac.at/web-apps/ene/SspDb/download/cmip6/SSP_CMIP6_201811.csv.zip
@@ -445,6 +467,7 @@ SSPs_countries <- read.csv("../data/SSP_CMIP6.csv") # https://secure.iiasa.ac.at
 # region mapping: https://secure.iiasa.ac.at/web-apps/ene/SspDb/download/cmip6/cmip6_iam_model_region_mapping.xlsx
 # In SSPs_countries, IMAGE has only SCENARIO: SSP1-19, SSP1-26; MESSAGE-GLOBIOM: SSP2-45; AIM/CGE: SSP3-70 (Baseline), SSP3-LowNTCF; GCAM4: SSP4-34, SSP4-60; REMIND-MAGPIE: SSP5-34-OS, SSP5-85 (Baseline); WITCH-GLOBIOM is absent
 #   while in SSPs, each MODEL has many SCENARIOs
+# SSPs_countries is disaggregated by 11-26 regions but has only emissions; SSPs has only 5 regions but many variables incl. pop, gdp ppp, carbon price, emissions
 # I think that emissions of SSPs are first defined in CMIP6 (i.e. SSPs_countries) and then passed as inputs to IAMs, which yield consistent bud modified emissions, in SSPs
 # /!\ World emissions are not equal to the sum of the 5 R5.2 regions TODO! why? check regions definition
 # Nb regions (excluding the 5 R5.2 ones): AIM/CGE: 18 (3 letters), IMAGE: 27, GCAM4: 33, MESSAGE-GLOBIOM: 12, REMIND-MAGPIE: 12 (different), WITCH-GLOBIOM: absent from SSPs_countries
@@ -453,7 +476,7 @@ SSPs_countries <- read.csv("../data/SSP_CMIP6.csv") # https://secure.iiasa.ac.at
 #         emissions_pc (resp. emissions_pa) is emissions divided by total (resp. adult) population
 vars_SSPs <- c("emissions_pc" = "Emissions|CO2", "fossil_emissions" = "Emissions|CO2|Fossil Fuels and Industry", # Mt CO2/yr => tCO2/yr/pers
                "energy_pc" = "Final Energy", # EJ/yr => GJ/yr/pers
-               "gdp_pc" = "GDP|PPP", # billion US$2005/yr => US$2005/yr/pers, "conso" = "Consumption"
+               "gdp_ppp" = "GDP|PPP", # billion US$2005/yr => US$2005/yr, "conso" = "Consumption"
                "pop" = "Population", # million => pers
                "carbon_price" = "Price|Carbon") # US$2005/t CO2
 ssp <- list() # 2 min
@@ -462,6 +485,9 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
   for (j in c("IMAGE", "MESSAGE-GLOBIOM")) {
     # puts the database in the right form
     ssp[[i]][[j]] <- data.frame(region = c(paste0("iam_", unique(SSPs$REGION)), unique(SSPs_countries$REGION[SSPs_countries$SCENARIO %in% c("SSP1-19", "SSP2-45")]))) # unique(SSPs_countries$REGION)
+    # loads GDP data (current one, not projections)
+    ssp[[i]][[j]]$gdp_ppp_now[match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]]$gdp_ppp_now[pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
+    ssp[[i]][[j]]$gdp_2019[match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]]$gdp_2019[pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
     for (y in years) {
       for (v in names(vars_SSPs)) {
         # print(paste(i, j, v, y))
@@ -476,22 +502,30 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
         ssp[[i]][[j]][[paste0("emissions_pc_", y)]][7:48] <- temp[ssp[[i]][[j]]$region][7:48]
       }
       if (paste0("emissions_pc_", y) %in% names(ssp[[i]][[j]])) {
-        # Defines population (using external pop_un coming from co2_pop) for disaggregated countries (it was only given for the 5 regions), also defines adult
+        # Defines population, adult and gdp (using external pop_un coming from co2_pop) for disaggregated countries (it was only given for the 5 regions)
         ssp[[i]][[j]][[paste0("emissions_", y)]] <- ssp[[i]][[j]][[paste0("emissions_pc_", y)]]
         ssp[[i]][[j]][[paste0("pop_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("pop_", y)]]
         ssp[[i]][[j]][[paste0("pop_", y)]][match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]][[paste0("pop_", y)]][pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
+        # Adjust pop_ of CMIP6 to match the region sum of IAM
+        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("pop_", y)]] <- ssp[[i]][[j]][[paste0("pop_", y)]] * ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / sum(ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
         ssp[[i]][[j]][[paste0("adult_", y)]] <- NA
         ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)] <- (pop_un[[j]][[paste0("adult_", y)]]/pop_un[[j]][[paste0("pop_", y)]])[match(unique(SSPs$REGION)[-6], pop_un[[j]]$region)] * ssp[[i]][[j]][[paste0("pop_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)]
         ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == "iam_World"] <- sum(ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)])
         ssp[[i]][[j]][[paste0("adult_", y)]][match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]][[paste0("adult_", y)]][pop_un[[j]]$region %in% ssp[[i]][[j]]$region]
-        # TODO? Adjust pop_ and adult_ of CMIP6 to match the sum of IAM? Yes, and do the same for gdp, also create gdp_pc
+        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("adult_", y)]] <- ssp[[i]][[j]][[paste0("adult_", y)]] * ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / sum(ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
         if (i %in% c("SSP1-19", "SSP1-26")) {
           for (v in c("emissions_", "pop_", "adult_")) ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region == "AFR"] <- sum(ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region %in% c("WAF", "EAF", "SAF", "RSAF")])
           for (v in c("emissions_", "pop_", "adult_")) ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region == "LAM"] <- sum(ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region %in% c("MEX", "RCAM", "RSAM")])
         }
         ssp[[i]][[j]][[paste0("emissions_pc_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("emissions_", y)]]/ssp[[i]][[j]][[paste0("pop_", y)]]
         ssp[[i]][[j]][[paste0("emissions_pa_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("emissions_", y)]]/ssp[[i]][[j]][[paste0("adult_", y)]]
-        for (var in c("energy", "gdp")) ssp[[i]][[j]][[paste0(var, "_pc_", y)]] <- 1e3 * ssp[[i]][[j]][[paste0(var, "_pc_", y)]]
+        for (var in c("energy_pc_", "gdp_ppp_")) ssp[[i]][[j]][[paste0(var, y)]] <- 1e9 * ssp[[i]][[j]][[paste0(var, y)]]
+        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("gdp_ppp_", y)]] <- ssp[[i]][[j]]$gdp_ppp_now * ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]]$gdp_ppp_now[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]
+        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("gdp_", y)]] <- ssp[[i]][[j]]$gdp_2019 * ssp[[i]][[j]][[paste0("gdp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]]$gdp_2019[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]
+        ssp[[i]][[j]][[paste0("gdp_pc_", y)]] <- ssp[[i]][[j]][[paste0("gdp_", y)]]/ssp[[i]][[j]][[paste0("pop_", y)]]
+        ssp[[i]][[j]][[paste0("gdp_pa_", y)]] <- ssp[[i]][[j]][[paste0("gdp_", y)]]/ssp[[i]][[j]][[paste0("adult_", y)]]
+        ssp[[i]][[j]][[paste0("gdp_ppp_pc_", y)]] <- ssp[[i]][[j]][[paste0("gdp_ppp_", y)]]/ssp[[i]][[j]][[paste0("pop_", y)]]
+        ssp[[i]][[j]][[paste0("gdp_ppp_pa_", y)]] <- ssp[[i]][[j]][[paste0("gdp_ppp_", y)]]/ssp[[i]][[j]][[paste0("adult_", y)]]
       }
     }
     ssp[[i]][[j]]$region[1:6] <- c("asia", "lam", "maf", "oecd", "ref", "world")
@@ -531,16 +565,9 @@ for (s in ssps) {
   for (y in years) eval(str2expression(paste0(s, "$gain_pc_", y, " <- (revenues_pc$", s, "['", y, "'] - carbon_price$", s, "['", y, "'] * ", s, "$emissions_pc_", y, ") /12"))) # Average gain in $/month
 }
 
-# Disaggregate by country emissions and gdp
+# Disaggregate by country emissions, gdp, gdp_pc
 # On top of partition in R5_region, IMAGE (ssp1_19, ssp1_26) has 26 regions (co2_pop$IMAGE.REGION), MESSAGE (ssp2) has 11 MESSAGE-GLOBIOM.REGION. No dissagregated data for ssp2_26, ssp2_45. 
 # IMAGE regions are not refinement of MESSAGE's: North Korea, Vietnam (CPA in MESSAGE instead of PAS, SEAS in IMAGE), Non-Australia Oceania (PAS instead of OCE) or rather Australia, NZ (PAO (which is these 2 + Japan) instead of OCE), Cyprus (WEU instead of CEU), Sudan, South Sudan (MEA instead of EAF)
-View(co2_pop[, c("code", "country", "IMAGE.REGION", "MESSAGE-GLOBIOM.REGION")])
-message_regions <- c("BRA" = "LAM", "CAN" = "NAM", "CEU" = "EEU", "CHN" = "CPA", "EAF" = "AFR", "INDIA" = "SAS", "INDO" = "PAS", "JAP" = "PAO", "KOR" = "PAS", "ME" = "MEA", "MEX" = "LAM", "NAF" = "MEA", "OCE" = "PAO", "RCAM" = "LAM", "RSAF" = "AFR", "RSAM" = "LAM", "RSAS" = "SAS", "RUS" = "FSU", "SAF" = "AFR", "SEAS" = "PAS", "STAN" = "FSU", "TUR" = "WEU", "UKR" = "FSU", "USA" = "NAM", "WAF" = "AFR", "WEU" = "WEU")
-image_regions <- names(message_regions)
-co2_pop$`MESSAGE-GLOBIOM.REGION`[is.na(co2_pop$`MESSAGE-GLOBIOM.REGION`)] <- "LAM"
-regions <- unique(co2_pop$`MESSAGE-GLOBIOM.REGION`)
-message_region_by_code <- setNames(co2_pop$`MESSAGE-GLOBIOM.REGION`, co2_pop$code)
-image_region_by_code <- setNames(co2_pop$IMAGE.REGION, co2_pop$code)
 
 create_demography <- function(model = 'message', df = co2_pop) {
   region <- if (model %in% c("message", "MESSAGE")) message_region_by_code else image_region_by_code
@@ -566,6 +593,8 @@ df[[paste0("share_emissions_2030_base_", base_year)]] <- df[[paste0("share_emiss
 df[[paste0("share_emissions_2030_base_", base_year)]] <- df[[paste0("share_emissions_2030_base_", base_year)]]/sum(df[[paste0("share_emissions_2030_base_", base_year)]])
 df$emissions_2030 <- df[[paste0("share_emissions_2030_base_", base_year)]] * co2_emissions_2030
 df$emissions_pa_2030 <- df$emissions_2030 / df$adult_2030
+reduction_factor <- co2_emissions_2030/sum(df[[paste0("emissions_pa_", base_year)]] * df$adult_2030)
+df$emissions_pa_2030_bis <- reduction_factor * df[[paste0("emissions_pa_", base_year)]]
 df[[paste0("revenues_pa_", year)]] <- df[[paste0("share_emissions_2030_base_", base_year)]] * carbon_tax_revenues_2030 / df[[paste0("adult_", year)]]/12
 
 # Define rights to emit i.e. allocation key, for equal pc C&C and GDR
