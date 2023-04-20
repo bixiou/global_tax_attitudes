@@ -486,8 +486,6 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
     # puts the database in the right form
     ssp[[i]][[j]] <- data.frame(region = c(paste0("iam_", unique(SSPs$REGION)), unique(SSPs_countries$REGION[SSPs_countries$SCENARIO %in% c("SSP1-19", "SSP2-45")]))) # unique(SSPs_countries$REGION)
     # loads GDP data (current one, not projections)
-    ssp[[i]][[j]]$gdp_ppp_now[match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]]$gdp_ppp_now[pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
-    ssp[[i]][[j]]$gdp_2019[match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]]$gdp_2019[pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
     for (y in years) {
       for (v in names(vars_SSPs)) {
         # print(paste(i, j, v, y))
@@ -501,29 +499,45 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
         names(temp) <- SSPs_countries$REGION[SSPs_countries$MODEL == j & SSPs_countries$SCENARIO == i & SSPs_countries$VARIABLE == "CMIP6 Emissions|CO2"]
         ssp[[i]][[j]][[paste0("emissions_pc_", y)]][7:48] <- temp[ssp[[i]][[j]]$region][7:48]
       }
+      if (y == years[1]) {
+        ssp[[i]][[j]]$gdp_ppp_now <- ssp[[i]][[j]]$gdp_2019 <- rep(NA, 48)
+        ssp[[i]][[j]]$gdp_ppp_now[match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]]$gdp_ppp_now[pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
+        # ssp[[i]][[j]]$gdp_2019[match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]]$gdp_2019[pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
+        for (r in c(big_regions)) ssp[[i]][[j]]$gdp_ppp_now[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] <- sum(ssp[[i]][[j]]$gdp_ppp_now[ssp[[i]][[j]]$region %in% c(image_regions[big_region_by_image == r], message_regions[big_region_by_message == r])], na.rm = T)
+        # for (r in c(big_regions)) ssp[[i]][[j]]$gdp_2019[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] <- sum(ssp[[i]][[j]]$gdp_2019[ssp[[i]][[j]]$region %in% c(image_regions[big_region_by_image == r], message_regions[big_region_by_message == r])], na.rm = T)
+      }
       if (paste0("emissions_pc_", y) %in% names(ssp[[i]][[j]])) {
+        ctries <- !multi_grepl(c(toupper(big_regions), "World"), ssp[[i]][[j]]$region)
         # Defines population, adult and gdp (using external pop_un coming from co2_pop) for disaggregated countries (it was only given for the 5 regions)
         ssp[[i]][[j]][[paste0("emissions_", y)]] <- ssp[[i]][[j]][[paste0("emissions_pc_", y)]]
         ssp[[i]][[j]][[paste0("pop_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("pop_", y)]]
         ssp[[i]][[j]][[paste0("pop_", y)]][match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]][[paste0("pop_", y)]][pop_un[[j]]$region %in% ssp[[i]][[j]]$region] 
         # Adjust pop_ of CMIP6 to match the region sum of IAM
-        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("pop_", y)]] <- ssp[[i]][[j]][[paste0("pop_", y)]] * ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / sum(ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
+        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
+          ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region == paste0("R5.2", toupper(r))] # sum(ssp[[i]][[j]][[paste0("pop_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
+        # Fill
         ssp[[i]][[j]][[paste0("adult_", y)]] <- NA
         ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)] <- (pop_un[[j]][[paste0("adult_", y)]]/pop_un[[j]][[paste0("pop_", y)]])[match(unique(SSPs$REGION)[-6], pop_un[[j]]$region)] * ssp[[i]][[j]][[paste0("pop_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)]
-        ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == "iam_World"] <- sum(ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)])
+        ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == "iam_World"] <- sum(ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)], na.rm = T)
         ssp[[i]][[j]][[paste0("adult_", y)]][match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]][[paste0("adult_", y)]][pop_un[[j]]$region %in% ssp[[i]][[j]]$region]
-        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("adult_", y)]] <- ssp[[i]][[j]][[paste0("adult_", y)]] * ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / sum(ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
-        if (i %in% c("SSP1-19", "SSP1-26")) {
+        # Adjust to IAM
+        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
+          ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / sum(ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
+        ssp[[i]][[j]][[paste0("gdp_ppp_", y)]] <- 1e9 * ssp[[i]][[j]][[paste0("gdp_ppp_", y)]]
+        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]]$gdp_ppp_now[ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
+          ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]]$gdp_ppp_now[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]
+        # ssp[[i]][[j]][[paste0("gdp_", y)]] <- rep(NA, 48)
+        # for (r in c(big_regions)) ssp[[i]][[j]][[paste0("gdp_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]]$gdp_2019[ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
+        #   ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]]$gdp_2019[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]
+        if (i %in% c("SSP1-19", "SSP1-26")) { # extends to all MESSAGE regions
           for (v in c("emissions_", "pop_", "adult_")) ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region == "AFR"] <- sum(ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region %in% c("WAF", "EAF", "SAF", "RSAF")])
           for (v in c("emissions_", "pop_", "adult_")) ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region == "LAM"] <- sum(ssp[[i]][[j]][[paste0(v, y)]][ssp[[i]][[j]]$region %in% c("MEX", "RCAM", "RSAM")])
         }
         ssp[[i]][[j]][[paste0("emissions_pc_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("emissions_", y)]]/ssp[[i]][[j]][[paste0("pop_", y)]]
         ssp[[i]][[j]][[paste0("emissions_pa_", y)]] <- 1e6 * ssp[[i]][[j]][[paste0("emissions_", y)]]/ssp[[i]][[j]][[paste0("adult_", y)]]
         for (var in c("energy_pc_", "gdp_ppp_")) ssp[[i]][[j]][[paste0(var, y)]] <- 1e9 * ssp[[i]][[j]][[paste0(var, y)]]
-        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("gdp_ppp_", y)]] <- ssp[[i]][[j]]$gdp_ppp_now * ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]]$gdp_ppp_now[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]
-        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("gdp_", y)]] <- ssp[[i]][[j]]$gdp_2019 * ssp[[i]][[j]][[paste0("gdp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]]$gdp_2019[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]
-        ssp[[i]][[j]][[paste0("gdp_pc_", y)]] <- ssp[[i]][[j]][[paste0("gdp_", y)]]/ssp[[i]][[j]][[paste0("pop_", y)]]
-        ssp[[i]][[j]][[paste0("gdp_pa_", y)]] <- ssp[[i]][[j]][[paste0("gdp_", y)]]/ssp[[i]][[j]][[paste0("adult_", y)]]
+        # ssp[[i]][[j]][[paste0("gdp_pc_", y)]] <- ssp[[i]][[j]][[paste0("gdp_", y)]]/ssp[[i]][[j]][[paste0("pop_", y)]]
+        # ssp[[i]][[j]][[paste0("gdp_pa_", y)]] <- ssp[[i]][[j]][[paste0("gdp_", y)]]/ssp[[i]][[j]][[paste0("adult_", y)]]
         ssp[[i]][[j]][[paste0("gdp_ppp_pc_", y)]] <- ssp[[i]][[j]][[paste0("gdp_ppp_", y)]]/ssp[[i]][[j]][[paste0("pop_", y)]]
         ssp[[i]][[j]][[paste0("gdp_ppp_pa_", y)]] <- ssp[[i]][[j]][[paste0("gdp_ppp_", y)]]/ssp[[i]][[j]][[paste0("adult_", y)]]
       }
@@ -531,6 +545,7 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
     ssp[[i]][[j]]$region[1:6] <- c("asia", "lam", "maf", "oecd", "ref", "world")
   }
 }
+# View(ssp[[i]][[j]])
 
 ssp1_19 <- ssp$`SSP1-19`$IMAGE
 ssp1_26 <- ssp$`SSP1-26`$IMAGE
@@ -540,6 +555,9 @@ ssp2 <- ssp$`SSP2-45`$`MESSAGE-GLOBIOM`
 # TODO: SSP5-Baseline is SSP5-8.5 but what is SSP1-Baseline? SSP2-Baseline? SSP2-4.5 
 rm(SSPs, SSPs_countries)
 rm(ssp)
+# j <- "IMAGE"
+# i <- unique(SSPs$SCENARIO)[1]
+# y <- 2030
 
 # TODO! use Greenpeace, Global Energy Assessment, Kriegler et al. (13)'s LIMITS
 
@@ -577,13 +595,24 @@ create_demography <- function(model = 'message', df = co2_pop) {
 }
 co2_pop <- create_demography()
 
-create_var_ssp <- function(var, y, ssp, region = message_region_by_code) {
+create_var_ssp <- function(var, y, ssp, model = "IMAGE") { # message is only for ssp2 , region = message_region_by_cod
+  region <- if (model == "IMAGE") image_region_by_code else message_region_by_code
+  regions <- if (model == "IMAGE") image_regions else message_regions
   v <- paste0(var, "_", y)
-  for (r in unique(region)) {
-    total_2020 <- sum(co2_pop[[paste0(var, "_2019")]][region[co2_pop$code] == r])
-    total_y <- sum(ssp[[v]][ssp$region == r])
+  for (r in regions) {
+    # total_2020 <- sum(co2_pop[[paste0(var, "_2019")]][region[co2_pop$code] == r])
+    # total_y <- sum(ssp[[v]][ssp$region == r])
+    # if (var %in% c("pop", "adult", "emissions")) {
+    if (var %in% names(co2_pop)) {
+      co2_pop[[v]] <- co2_pop[[v]] * ssp[[v]][ssp$region == r] / co2_pop[[v]][co2_pop$code %in% region[r]]
+    # } else if (var %in% c("gdp_ppp_pc", "gdp_ppp_pa", "gdp_pc", "gdpc_pa")) {
+    } else if (paste0(v, "_now") %in% names(co2_pop)) { # if (var %in% c("gdp_ppp", "gdp")) {
+      co2_pop[[v]] <- co2_pop[[paste0(v, "_now")]] * ssp[[v]][ssp$region == r] / co2_pop[[paste0(v, "_now")]][co2_pop$code %in% region[r]]
+    } else if (multi_grepl(c("pc", "pa"), var)) {
+      
+    } else warning(paste(var, "can not be treated"))
   }
-  co2_pop[[v]] <- 
+  # co2_pop[[v]] <- 
 }
 
 df[[paste0("demographic_evolution_", base_year)]] <- (df$adult_2030/df[[paste0("adult_", base_year)]]) * (sum(df[[paste0("adult_", base_year)]])/adult_pop_2030)
