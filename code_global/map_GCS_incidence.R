@@ -67,6 +67,13 @@ co2_pop$missing_footprint <- co2_pop$missing_footprint_2019
 co2_pop <- co2_pop[, !colnames(co2_pop) %in% c(paste0("missing_footprint_", c(2015, 2019, 2023, years)), paste0("gdp_pc_", years))]
 co2_pop <- co2_pop[!co2_pop$country %in% c("World", "Kosovo", NA), sapply(names(co2_pop), function(v) any(!is.na(co2_pop[[v]])))]
 co2_pop$gdp_2019 <- co2_pop$gdp_pc_2019 * co2_pop$pop_2019
+co2_pop$country_map <- co2_pop$country
+co2_pop$country_map[co2_pop$country == "United States"] <- "USA"
+co2_pop$country_map[co2_pop$country == "United Kingdom"] <- "UK"
+co2_pop$country_map[co2_pop$country == "Democratic Republic of Congo"] <- "Democratic Republic of the Congo"
+co2_pop$country_map[co2_pop$country == "Congo"] <- "Republic of Congo"
+co2_pop$country_map[co2_pop$country == "Cote d'Ivoire"] <- "Ivory Coast"
+co2_pop$country_map[co2_pop$country == "Czechia"] <- "Czech Republic"
 rm(pop, co2)  
 decrit(co2_pop$missing_footprint) # 98 out of 218 countries missing (while no missing for territorial)
 # co2_pop$country[co2_pop$missing_footprint]
@@ -164,12 +171,6 @@ cat(paste(kbl(table_gain_gcs, "latex", caption = "Estimated net gain from the GC
 
 
 ##### Plot map #####
-co2_pop$country[co2_pop$country == "United States"] <- "USA"
-co2_pop$country[co2_pop$country == "United Kingdom"] <- "UK"
-co2_pop$country[co2_pop$country == "Democratic Republic of Congo"] <- "Democratic Republic of the Congo"
-co2_pop$country[co2_pop$country == "Congo"] <- "Republic of Congo"
-co2_pop$country[co2_pop$country == "Cote d'Ivoire"] <- "Ivory Coast"
-co2_pop$country[co2_pop$country == "Czechia"] <- "Czech Republic"
 wtd.quantile(co2_pop$mean_gain_2030, weights = co2_pop$adult_2019, probs = seq(0, 1, 1/6)) 
 thresholds_map <- c(-Inf, -70, -30, -20, -10, 0, 10, 15, 20, 25, Inf)
 plot_world_map("mean_gain_2030", breaks = thresholds_map, format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
@@ -210,12 +211,6 @@ plot_world_map("mean_gain_adj_over_gdp_2019", breaks = c(-Inf, -5, -2, -1, -.5, 
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -5, -2, -1, -.5, 0, 0, 1, 5, 20, 50, Inf), sep = " to ", return = "levels")), 
                legend = "Average net\ngain per capita\nfrom the GCS\n(in % of GDP)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-co2_pop$country[co2_pop$country == "USA"] <- "United States"
-co2_pop$country[co2_pop$country == "UK"] <- "United Kingdom"
-co2_pop$country[co2_pop$country == "Democratic Republic of the Congo"] <- "Democratic Republic of Congo"
-co2_pop$country[co2_pop$country == "Republic of Congo"] <- "Congo"
-co2_pop$country[co2_pop$country == "Ivory Coast"] <- "Cote d'Ivoire"
-co2_pop$country[co2_pop$country == "Czech Republic"] <- "Czechia"
 
 
 ##### Poverty gaps #####
@@ -546,6 +541,7 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
     ssp[[i]][[j]]$region[1:6] <- c("asia", "lam", "maf", "oecd", "ref", "world")
   }
 }
+# /!\ ssp1_26$emissions_2030[6] != sum(ssp1_26$emissions_2030[ssp1_26$region %in% image_regions]) (and it's true for every year)
 # View(ssp[[i]][[j]])
 
 ssp1_19 <- ssp$`SSP1-19`$IMAGE
@@ -597,8 +593,7 @@ for (s in ssps) {
 # co2_pop <- create_demography()
 
 total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- list()
-create_var_ssp <- function(ssp, data = co2_pop, base_year = 2019) { # message is only for ssp2 , region = message_region_by_code
-  df <- data
+create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence = 2040, discount = .04) { # message is only for ssp2 , region = message_region_by_code
   ssp_name <- deparse(substitute(ssp))
   if (grepl("ssp1", ssp_name)) model <- "IMAGE"
   else if (deparse(substitute(ssp)) == "ssp2") model <- "MESSAGE"
@@ -625,13 +620,15 @@ create_var_ssp <- function(ssp, data = co2_pop, base_year = 2019) { # message is
     # Unadjusted mean gain pa
     if (y > 2015) {
       df[[paste0("revenues_pa_", y)]] <- carbon_price[[ssp_name]][yr] * pmax(0, df[[paste0("emissions_pa_", y)]]) # /12
-      total_revenues[[ssp_name]][yr] <- carbon_price[[ssp_name]][yr] * ssp[[paste0("emissions_", y)]][ssp$region == "world"]
+      total_revenues[[ssp_name]][yr] <- carbon_price[[ssp_name]][yr] * sum(co2_pop[[paste0("emissions_", y)]], na.rm = T) # ssp[[paste0("emissions_", y)]][ssp$region == "world"]
       if (total_revenues[[ssp_name]][yr] < 0) df[[paste0("revenues_pa_", y)]] <- 0
-      df[[paste0("gain_pa_", y)]] <- (total_revenues[[ssp_name]][yr]/ssp[[paste0("adult_", y)]][ssp$region == "world"] - df[[paste0("revenues_pa_", y)]])
+      
+      # GCS
+      df[[paste0("gain_pa_", y)]] <- (total_revenues[[ssp_name]][yr]/sum(df[[paste0("adult_", y)]], na.rm = T) - df[[paste0("revenues_pa_", y)]]) # /ssp[[paste0("adult_", y)]][ssp$region == "world"]
       # Adjusted for opt out
       df[[paste0("optout_right_", y)]] <- 2 - pmax(1, pmin(2, df[[paste0("gdp_ppp_pc_", y)]] / wtd.mean(df[[paste0("gdp_ppp_pc_", y)]], df[[paste0("pop_", y)]])))
       temp <- rep(T, nrow(df))
-      average_revenues_bis[[ssp_name]][yr] <- total_revenues[[ssp_name]][yr]/ssp[[paste0("adult_", y)]][ssp$region == "world"]
+      average_revenues_bis[[ssp_name]][yr] <- total_revenues[[ssp_name]][yr]/ssp[[paste0("adult_", y)]][ssp$region == "world"] # a bit different from average_revenues because in ssp, world emissions is not the sum of regional emissions (be it image_ or big_ regions)
       basic_income[[ssp_name]][yr] <- average_revenues[[ssp_name]][yr] <- wtd.mean(df[[paste0("revenues_pa_", y)]], df[[paste0("adult_", y)]])
       df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pa_", y)]] > basic_income[[ssp_name]][yr])
       df[[paste0("participation_rate_", y)]] <- 1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]
@@ -641,33 +638,62 @@ create_var_ssp <- function(ssp, data = co2_pop, base_year = 2019) { # message is
         df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pa_", y)]] > basic_income[[ssp_name]][yr])
         df[[paste0("participation_rate_", y)]] <- 1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]
         df[[paste0("gain_adj_", y)]] <- df[[paste0("participation_rate_", y)]] * (basic_income[[ssp_name]][yr] - df[[paste0("revenues_pa_", y)]])
-        # Adjusted to avoid high-income receiving money TODO
-      }
+      } # TODO: Adjusted to avoid high-income receiving money 
+      
+        
+      # C&C: define climate debt/credit until convergence date
+      
+        
+      # GDR: find rights on website and allocate total_revenues[[ssp_name]][yr]
+        
     }
   }
+  
+  compute_npv <- function(var = "gain_pa_", discount_rate = discount, data = df) {
+    rate <- (1+discount_rate)^10
+    return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/rate^(i-2)) })))
+  }
+  df$npv_pa_gcs <- compute_npv("gain_pa_", discount)
+  df$npv_pa_gcs_adj <- compute_npv("gain_adj_", discount)
+  df$npv_over_gdp_gcs <- df$npv_pa_gcs/compute_npv("gdp_ppp_pa_", discount) # TODO: check this formula
+  df$npv_over_gdp_gcs_adj <- df$npv_pa_gcs_adj/compute_npv("gdp_ppp_pa_", discount)
+  
+  total_revenues[[ssp_name]] <<- total_revenues[[ssp_name]]
+  average_revenues[[ssp_name]] <<- average_revenues[[ssp_name]]
+  average_revenues_bis[[ssp_name]] <<- average_revenues_bis[[ssp_name]] 
+  basic_income[[ssp_name]] <<- basic_income[[ssp_name]]
   return(df)
 }
 # Disaggregated data not available for ssp2_19 or ssp2_26. 
 co2_pop <- create_var_ssp(ssp1_26)
-
-# TODO: manage negative emissions (for country and world)
-
+View(co2_pop[,grepl("2040", names(co2_pop))])
 
 # Define rights to emit i.e. allocation key, for equal pc C&C and GDR
-
-
-# Net gain by year and revenue allocation
-
-
-# NPV
 
 
 # Historical resp: NPV equal pc + climate debt until today
 
 
 # Plots
+plot_world_map("npv_pa_gcs", breaks = c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), format = c('png', 'svg', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels =  gsub("000 ", ",000 ", sub("≤", "<", agg_thresholds(c(0), c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), sep = " to ", return = "levels"))), 
+               legend = "Net present value of\ngain per capita\nfrom the GCS\n(with 4% discount rate)", fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("npv_pa_gcs_adj", breaks = c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), format = c('png', 'svg', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = gsub("000 ", ",000 ", sub("≤", "<", agg_thresholds(c(0), c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), sep = " to ", return = "levels"))), 
+               legend = "Net present value of\ngain per capita\nfrom the adjusted GCS\n(with 4% discount rate)", fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("npv_over_gdp_gcs", breaks = c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf), format = c('png', 'svg', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf)*100, sep = " to ", return = "levels")), 
+               legend = "Net present value of\ngain per capita\nfrom the GCS (in % of GDP)\n(with 4% discount rate)", fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf), format = c('png', 'svg', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf)*100, sep = " to ", return = "levels")), 
+               legend = "Net present value of\ngain per capita (in % of GDP)\nfrom the adjusted GCS\n(with 4% discount rate)", fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 
 
+# Old plots SSP
 mar <- par()$mar
 par(mar = c(2.1, 4.1, .1, .1))
 plot(years, sapply(years, function(y) ssp1_19[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), col = "green", lwd = 2, type = 'l', xlab = "", ylab = "Carbon price (US$2005/tCO2)", xlim = c(2010, 2100), ylim = c(0, 900))
