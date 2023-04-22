@@ -292,7 +292,7 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
   if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
   if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sub(" ", "", sep), "Inf"), "> \\1", levels[length(levels)])
   if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sub(" ", "", sep), "Inf"), "≥ \\1", levels[length(levels)])
-  levels <- gsub("-", "–", levels)
+  levels <- gsub("000 ", ",000 ", gsub("-", "–", levels))
   vec_agg[is.na(vec)] <- NA
   vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
   if (return == "vec") return(vec_agg)
@@ -1983,7 +1983,7 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   if (!continuous) {
     (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj") update ggplot2 xlim = c(162, 178.5) for mercator
        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + # coord_fixed() +
-       scale_fill_manual(name = legend, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
+       scale_fill_manual(name = legend, drop = FALSE, values = color(length(breaks)-1), na.value = "grey50")) # +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
   } else {
     (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map) + coord_proj("+proj=robin") + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +

@@ -520,8 +520,12 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
         for (r in c(big_regions)) ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
           ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / sum(ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
         # ssp[[i]][[j]][[paste0("gdp_ppp_", y)]] <- 1e9 * ssp[[i]][[j]][[paste0("gdp_ppp_", y)]]
-        for (r in c(big_regions)) ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]]$gdp_ppp_now[ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
-          ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]]$gdp_ppp_now[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]
+        for (r in c(big_regions)) {
+          region_r <- ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])
+          growth_factor_ry <- ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]/sum(((ssp[[i]][[j]]$gdp_ppp_now/ssp[[i]][[j]]$pop_2020) * ssp[[i]][[j]][[paste0("pop_", y)]])[region_r], na.rm = T)
+          ssp[[i]][[j]][[paste0("gdp_ppp_pc_", y)]][region_r] <- growth_factor_ry * (ssp[[i]][[j]]$gdp_ppp_now/ssp[[i]][[j]]$pop_2020)[region_r]
+          ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][region_r] <- (ssp[[i]][[j]][[paste0("gdp_ppp_pc_", y)]] * ssp[[i]][[j]][[paste0("pop_", y)]])[region_r]
+        } 
         # ssp[[i]][[j]][[paste0("gdp_", y)]] <- rep(NA, 48)
         # for (r in c(big_regions)) ssp[[i]][[j]][[paste0("gdp_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]]$gdp_2019[ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
         #   ssp[[i]][[j]][[paste0("gdp_ppp_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / ssp[[i]][[j]]$gdp_2019[ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))]
@@ -592,7 +596,7 @@ for (s in ssps) {
 # }
 # co2_pop <- create_demography()
 
-total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- list()
+total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- list()
 create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence = 2040, discount = .04) { # message is only for ssp2 , region = message_region_by_code
   ssp_name <- deparse(substitute(ssp))
   if (grepl("ssp1", ssp_name)) model <- "IMAGE"
@@ -600,7 +604,7 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
   else model <- "big"
   region <- if (model == "big") big_region_by_code else { if (model == "IMAGE") image_region_by_code else message_region_by_code }
   regions <- if (model == "big") big_regions else { if (model == "IMAGE") image_regions else message_regions }
-  total_revenues[[ssp_name]] <- average_revenues[[ssp_name]] <- average_revenues_bis[[ssp_name]] <- basic_income[[ssp_name]] <- c()
+  total_revenues[[ssp_name]] <- average_revenues[[ssp_name]] <- average_revenues_bis[[ssp_name]] <- basic_income[[ssp_name]] <- basic_income_adj[[ssp_name]] <- c()
   
   for (y in years) {
     yr <- as.character(y)
@@ -611,7 +615,7 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
       reduction_factor_ry <- ssp[[paste0("emissions_", y)]][ssp$region == r]/sum((df[[paste0("emissions_pa_", base_year)]] * df[[paste0("adult_", y)]])[region_r])
       df[[paste0("emissions_pa_", y)]][region_r] <- reduction_factor_ry * df[[paste0("emissions_pa_", base_year)]][region_r] # df$emissions_2019[region_r] * ssp[[paste0("emissions_", y)]][ssp$region == r] / sum(df$emissions_2019[region_r], na.rm = T)
       df[[paste0("emissions_", y)]][region_r] <- (df[[paste0("emissions_pa_", y)]] * df[[paste0("adult_", y)]])[region_r]
-      growth_factor_ry <- ssp[[paste0("gdp_ppp_", y)]][ssp$region == r]/sum(df$gdp_ppp_now[region_r], na.rm = T)
+      growth_factor_ry <- ssp[[paste0("gdp_ppp_", y)]][ssp$region == r]/sum((df$GDPpcPPP * df[[paste0("pop_", y)]])[region_r], na.rm = T)
       df[[paste0("gdp_ppp_pc_", y)]][region_r] <- growth_factor_ry * df$GDPpcPPP[region_r] # TODO: manage missing values (Saudi Arabia, Afghanistan, New Zealand, Cambodia...)
       df[[paste0("gdp_ppp_", y)]][region_r] <- (df[[paste0("gdp_ppp_pc_", y)]] * df[[paste0("pop_", y)]])[region_r] # df$gdp_ppp_now[region_r] * ssp[[paste0("gdp_ppp_", y)]][ssp$region == r] / sum(df$gdp_ppp_now[region_r], na.rm = T)
     } 
@@ -637,14 +641,26 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
         basic_income[[ssp_name]][yr] <- wtd.mean(df[[paste0("revenues_pa_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("adult_", y)]])
         df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pa_", y)]] > basic_income[[ssp_name]][yr])
         df[[paste0("participation_rate_", y)]] <- 1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]
-        df[[paste0("gain_adj_", y)]] <- df[[paste0("participation_rate_", y)]] * (basic_income[[ssp_name]][yr] - df[[paste0("revenues_pa_", y)]])
-      } # TODO: Adjusted to avoid high-income receiving money 
+        df[[paste0("gain_optout_", y)]] <- df[[paste0("participation_rate_", y)]] * (basic_income[[ssp_name]][yr] - df[[paste0("revenues_pa_", y)]])
+      } 
+      # Adjusted to avoid high-income receiving money. Pb: GDP in PPP of Europe is not more than twice the world average 2050-2070.
+      # /!\ Pb, 2070 GDP pc PPP of China is larger that Western Europe in View(ssp1_26[,c("region", "gdp_ppp_pc_2020", "gdp_ppp_pc_2070")]) co2_pop$gdp_ppp_pc_2070[co2_pop$country %in% c("China", "Spain", "France", "Nigeria", "Namibia")]
+      # To estimate future emissions and GDP, I make the assumption that emissions_pc/GDPpc evolve in the same way in all big regions. Pb: this assumption is at odd with SSP1, where GDPpc converge across regions. 
+      # => Either I should drop the country-by-country analysis, or I should find better projections of GDP.
+      y_bar <- wtd.mean(df[[paste0("gdp_ppp_pc_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("pop_", y)]])
+      e_bar <- wtd.mean(df[[paste0("emissions_pa_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("adult_", y)]])
+      lambda <- pmax(0, pmin(1, (2.2*y_bar - df[[paste0("gdp_ppp_pc_", y)]])/((2.2-2)*y_bar))) # lambda = 1 means full basic income, lambda = 0 means basic income is proportional to emissions (if they are below 1.3*average)
+      lambda[is.na(lambda)] <- 1
+      df[[paste0("share_basic_income_", y)]] <- df[[paste0("participation_rate_", y)]] * (lambda + pmin(1, df[[paste0("emissions_pa_", y)]]/(1.3*e_bar))*(1-lambda))
+      df[[paste0("gain_adj_", y)]][df[[paste0("emissions_pa_", y)]] < 1.3*e_bar] <- (basic_income[[ssp_name]][yr] * df[[paste0("share_basic_income_", y)]] - 
+              df[[paste0("participation_rate_", y)]] * df[[paste0("revenues_pa_", y)]])[df[[paste0("emissions_pa_", y)]] < 1.3*e_bar]
+      basic_income_adj[[ssp_name]][yr] <- basic_income[[ssp_name]][yr] * (1 + wtd.mean(df[[paste0("participation_rate_", y)]] - df[[paste0("share_basic_income_", y)]], df[[paste0("adult_", y)]]))
+      df[[paste0("gain_adj_", y)]][lambda == 1 | df[[paste0("emissions_pa_", y)]] >= 1.3*e_bar] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[[ssp_name]][yr] - df[[paste0("revenues_pa_", y)]]))[lambda == 1 | df[[paste0("emissions_pa_", y)]] >= 1.3*e_bar]
       
-        
       # C&C: define climate debt/credit until convergence date
       
         
-      # GDR: find rights on website and allocate total_revenues[[ssp_name]][yr]
+      # GDR: find rights on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
         
     }
   }
@@ -655,17 +671,18 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
   }
   df$npv_pa_gcs <- compute_npv("gain_pa_", discount)
   df$npv_pa_gcs_adj <- compute_npv("gain_adj_", discount)
-  df$npv_over_gdp_gcs <- df$npv_pa_gcs/compute_npv("gdp_ppp_pa_", discount) # TODO: check this formula
+  df$npv_over_gdp_gcs <- df$npv_pa_gcs/compute_npv("gdp_ppp_pa_", discount) # this formula corresponds to the % loss in consumption computed in Balanced Growth Equivalent of Stern et al. (07)
   df$npv_over_gdp_gcs_adj <- df$npv_pa_gcs_adj/compute_npv("gdp_ppp_pa_", discount)
   
   total_revenues[[ssp_name]] <<- total_revenues[[ssp_name]]
   average_revenues[[ssp_name]] <<- average_revenues[[ssp_name]]
   average_revenues_bis[[ssp_name]] <<- average_revenues_bis[[ssp_name]] 
   basic_income[[ssp_name]] <<- basic_income[[ssp_name]]
+  basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
   return(df)
 }
 # Disaggregated data not available for ssp2_19 or ssp2_26. 
-co2_pop <- create_var_ssp(ssp1_26)
+co2_pop <- create_var_ssp(ssp2_26)
 View(co2_pop[,grepl("2040", names(co2_pop))])
 
 # Define rights to emit i.e. allocation key, for equal pc C&C and GDR
@@ -675,21 +692,26 @@ View(co2_pop[,grepl("2040", names(co2_pop))])
 
 
 # Plots
-plot_world_map("npv_pa_gcs", breaks = c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), format = c('png', 'svg', 'pdf'), legend_x = .07, trim = T, # svg, pdf
-               labels =  gsub("000 ", ",000 ", sub("≤", "<", agg_thresholds(c(0), c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), sep = " to ", return = "levels"))), 
+# Net gains are closer to zero than for Stern-Stiglitz due to lower carbon_price$ssp1_26. In PPP, China is not below average GDPpc, hence its (small) cost.
+for (y in years[3:9]) plot_world_map(paste0("gain_adj_", y), breaks = 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf), format = c('png', 'pdf'), trim = T, # svg, pdf
+               labels =  sub("≤", "<", agg_thresholds(c(0), 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf), sep = " to ", return = "levels")), 
+               legend = paste0("Gain per capita\nfrom the GCS\nin ", y), fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("npv_pa_gcs", breaks = c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), sep = " to ", return = "levels")), 
                legend = "Net present value of\ngain per capita\nfrom the GCS\n(with 4% discount rate)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-plot_world_map("npv_pa_gcs_adj", breaks = c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), format = c('png', 'svg', 'pdf'), legend_x = .07, trim = T, # svg, pdf
-               labels = gsub("000 ", ",000 ", sub("≤", "<", agg_thresholds(c(0), c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), sep = " to ", return = "levels"))), 
+plot_world_map("npv_pa_gcs_adj", breaks = c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), sep = " to ", return = "levels")), 
                legend = "Net present value of\ngain per capita\nfrom the adjusted GCS\n(with 4% discount rate)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-plot_world_map("npv_over_gdp_gcs", breaks = c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf), format = c('png', 'svg', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+plot_world_map("npv_over_gdp_gcs", breaks = c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf)*100, sep = " to ", return = "levels")), 
                legend = "Net present value of\ngain per capita\nfrom the GCS (in % of GDP)\n(with 4% discount rate)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf), format = c('png', 'svg', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf)*100, sep = " to ", return = "levels")), 
-               legend = "Net present value of\ngain per capita (in % of GDP)\nfrom the adjusted GCS\n(with 4% discount rate)", fill_na = T,
+               legend = "Net present value of\ngain per capita\n(in % of GDP)\nfrom the adjusted GCS\n(with 4% discount rate)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 
 
