@@ -275,7 +275,7 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
                         return_type = "list", # var, seq, function, list
                         poverty_line = 4,  # 2, 4, 7 $/day
                         max_reg = phase_out_start, # Inf, phase_out_start
-                        PPP = F, list_month = T, df = pg, global_revenues = 4.08e+11, min_pop = 30e6,
+                        PPP = F, list_month = T, df = pg, global_revenues = 6.87e+11, min_pop = 30e6, # 4.08e+11
                         phase_out_start = NULL, phase_out_end = 2*phase_out_start) { # wtd.mean(pg$GDPpcPPP, pg$pop_2019) wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
   pg <- df
   pg$gap <- pg[[paste0("pg", poverty_line)]]
@@ -345,7 +345,7 @@ qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2019, xlab = "log10 
 table_pg <- key_gap_gdp(return_var = "gdp_share", return_type = "list")
 table_pg <- cbind("gdp_share" = table_pg, "rev_pc" = key_gap_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gap_gdp("global_share_pc")[names(table_pg)], "global_share" = key_gap_gdp("global_share")[names(table_pg)])
 row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
-cat(paste(kbl(table_pg[table_pg[,1] > 0.03,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
+cat(paste(kbl(table_pg[table_pg[,1] > 0.04,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
               col.names = c("\\makecell{Revenues\\\\over GDP\\\\(in percent)}", "\\makecell{Revenues\\\\per capita\\\\(in \\$ per month)}", "\\makecell{Revenues per capita\\\\over average\\\\revenues p.c.}", "\\makecell{Global\\\\share of\\\\revenues}")), collapse="\n"), file = "../tables/allocation.tex") 
   # TODO: do total, re-order all by GDP pc
 
@@ -391,6 +391,8 @@ pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", return_type = "var")
 sum(pg$global_share[pg$code %in% SSA], na.rm = T)
 wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
 wtd.mean(pg$global_share_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
+wealth_tax_revenues <- 0.013*96e12 # From a 2% tax above $5 million / 4% above $100M / 6% above $1G, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/ # 0.0085
+pooled_revenues <- 0.5 * wealth_tax_revenues
 pooled_revenues * sum(pg$global_share[pg$code %in% SSA], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% SSA], na.rm = T)
 sum(pg$global_share[pg$code %in% LIC], na.rm = T)
 wtd.mean(pg$rev_pc[pg$code %in% LIC], pg$pop_2019[pg$code %in% LIC], na.rm = T)
@@ -422,7 +424,7 @@ sort(setNames(pg$share_revenues2, pg$country))
 cor(pg$share_revenues7, pg$share_revenues4, use = "complete.obs") # .9996
 cor(pg$share_revenues7, pg$share_revenues2, use = "complete.obs") # .959
 
-wealth_tax_revenues <- 0.0085*96e12 # From a 2% tax above $5 million, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/
+wealth_tax_revenues <- 1.3*96e12 # From a 2% tax above $5 million / 4% above $100M / 6% above $1G, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/ # 0.0085
 pooled_revenues <- 0.5 * wealth_tax_revenues
 pg$wealth_tax_rev_pc <- pooled_revenues * pg$share_revenues4 / pg$adult_2023 # per year
 sort(setNames(pg$wealth_tax_rev_pc/12, pg$country)) # per month: $4.6 in India, 2.8 in China, 14.6 in RDC, 1.3 in U.S.
@@ -660,7 +662,7 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
       # C&C: define climate debt/credit until convergence date
       
         
-      # GDR: find rights on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
+      # GDR: find emissions allocations on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
         
     }
   }
