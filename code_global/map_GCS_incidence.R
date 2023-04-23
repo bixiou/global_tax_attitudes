@@ -206,6 +206,7 @@ plot_world_map("mean_gain_adj_2030", breaks = c(-Inf, -70, -30, -20, -10, -.1, .
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 
 co2_pop$mean_gain_adj_over_gdp_2019 <- 100*12*co2_pop$mean_gain_adj_2019/co2_pop$gdp_pc_2019 
+sum(-(co2_pop$mean_gain_adj_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_adj_over_gdp_2019 < 0], na.rm = T)/sum(co2_pop$gdp_2019, na.rm = T) # 0.7% of GWP redistributed from high- to low-emitters
 sort(setNames(co2_pop$mean_gain_adj_over_gdp_2019, co2_pop$country), decreasing = T)
 plot_world_map("mean_gain_adj_over_gdp_2019", breaks = c(-Inf, -5, -2, -1, -.5, -.01, .01, 1, 5, 20, 50, Inf), format = c('png', 'svg', 'pdf'), trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -5, -2, -1, -.5, 0, 0, 1, 5, 20, 50, Inf), sep = " to ", return = "levels")), 
@@ -410,7 +411,6 @@ pg$global_share_pc[pg$code == "BDI"]
 # qplot(log10(GDPpcPPP), gap, data = pg, size = adult_2023) + geom_smooth(method = "lm",  mapping = aes(weight = adult_2023), color = "black", show.legend = FALSE) + theme_bw()
 # qplot(GDPpcPPP, gap, data = pg, size = adult_2023) + geom_line(aes(y = predicted_gap), color = "red", show.legend = FALSE) + theme_bw() + coord_trans(x="log10")
 
-# TODO: set it to 0 for high-income countries
 # TODO: different colors for different income categories. # Thresholds for lower/upper middle-income: $1085/4255/13205 in GDP pc (nominal)
 pg$share_revenues7 <- pg$predicted_gap7 * pg$adult_2023 # TODO fill missing values and use full pop instead of adults (also below)
 pg$share_revenues7 <- pg$share_revenues7/sum(pg$share_revenues7, na.rm = T)
@@ -562,7 +562,6 @@ rm(ssp)
 # i <- unique(SSPs$SCENARIO)[1]
 # y <- 2030
 
-# TODO! use Greenpeace, Global Energy Assessment, Kriegler et al. (13)'s LIMITS
 
 ssps <- c("ssp1_19", "ssp1_26", "ssp2_26", "ssp2_45", "ssp2")
 names(ssps) <- c("SSP1-1.9 (1.4 °C)", "SSP1-2.6 (1.8 °C)", "SSP2-2.6 (1.8 °C)", "SSP2-4.5 (2.7 °C)", "SSP2 (baseline)")
@@ -576,12 +575,13 @@ names(ssps) <- c("SSP1-1.9 (1.4 °C)", "SSP1-2.6 (1.8 °C)", "SSP2-2.6 (1.8 °C)
 # ssp2$carbon_price_2020[1:6]
 # ssp2$carbon_price_2030[1:6]
 
-carbon_price <- revenues_pc <- world_emissions <- world_population <- revenues_over_gdp <- list()
+carbon_price <- revenues_pc <- world_emissions <- world_emissions_pc <- world_population <- revenues_over_gdp <- list()
 for (s in ssps) {
   carbon_price[[s]] <- setNames(sapply(years, function(y) d(s)[[paste0("carbon_price_", y)]][d(s)$region == "asia"]), years)
   world_emissions[[s]] <- setNames(sapply(years, function(y) d(s)[[paste0("emissions_", y)]][d(s)$region == "world"]), years)
   world_population[[s]] <- setNames(sapply(years, function(y) d(s)[[paste0("pop_", y)]][d(s)$region == "world"]), years)
-  revenues_over_gdp[[s]] <- carbon_price[[s]] * sapply(years, function(y) d(s)[[paste0("emissions_pc_", y)]][d(s)$region == "world"]) / sapply(years, function(y) d(s)[[paste0("gdp_pc_", y)]][d(s)$region == "world"])
+  world_emissions_pc[[s]] <- world_emissions[[s]]/world_population[[s]]
+  revenues_over_gdp[[s]] <- carbon_price[[s]] * sapply(years, function(y) d(s)[[paste0("emissions_pc_", y)]][d(s)$region == "world"]) / sapply(years, function(y) d(s)[[paste0("gdp_ppp_pc_", y)]][d(s)$region == "world"])
   revenues_pc[[s]] <- carbon_price[[s]] * sapply(years, function(y) d(s)[[paste0("emissions_pc_", y)]][d(s)$region == "world"])
   for (y in years) eval(str2expression(paste0(s, "$gain_pc_", y, " <- (revenues_pc$", s, "['", y, "'] - carbon_price$", s, "['", y, "'] * ", s, "$emissions_pc_", y, ") /12"))) # Average gain in $/month
 }
@@ -612,7 +612,7 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
     yr <- as.character(y)
     for (v in paste0(c("pop_", "adult_", "emissions_", "gdp_ppp_"), y)) if (!v %in% names(df)) df[[v]] <- NA
     for (r in regions) {
-      region_r <- region[df$code] == r # df$code %in% region[r]
+      region_r <- region[df$code] == r # df$code %in% region[r] 
       for (v in paste0(c("pop_", "adult_"), y)) df[[v]][region_r] <- df[[v]][region_r] * ssp[[v]][ssp$region == r] / sum(df[[v]][region_r], na.rm = T)
       reduction_factor_ry <- ssp[[paste0("emissions_", y)]][ssp$region == r]/sum((df[[paste0("emissions_pa_", base_year)]] * df[[paste0("adult_", y)]])[region_r])
       df[[paste0("emissions_pa_", y)]][region_r] <- reduction_factor_ry * df[[paste0("emissions_pa_", base_year)]][region_r] # df$emissions_2019[region_r] * ssp[[paste0("emissions_", y)]][ssp$region == r] / sum(df$emissions_2019[region_r], na.rm = T)
@@ -790,19 +790,45 @@ plot_ssp("ssp2", var = "gain", ylim = c(-30, 40), regions = regions_MESSAGE) #
 
 
 ##### Global Energy Assessment #####
-# Emissions, population and GDP pc until 2100 disaggregated on ~50 countries, but without a price trajectory.
+# TODO try also Kriegler et al. (13)'s LIMITS, not Greenpeace (as it contains population, emissions but no GDP and only until 2050)/
+# GEA: Emissions (2°C >50% chance), population and GDP pc until 2100 disaggregated on ~50 countries, but without a price trajectory.
 gea_emissions <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_emissions_regions.xlsx")
-gea_pop <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_emissions_regions.xlsx")
+gea_pop <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_pop_regions.xlsx")
+gea_gdp_ppp <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_GDP_PPP_regions.xlsx")
+gea_gdp_mer <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_GDP_MER_regions.xlsx")
 gea <- list() # GEA model is done with MESSAGE
 for (i in c("IMAGE", "GEA")) {
   gea[[i]] <- data.frame(region = unique(gea_pop$Region))
   for (y in years) {
-    gea[[i]][[paste0("emissions_", y)]] <- gea_emissions[[as.character(y)]][gea_emissions$Model == i]
-    gea[[i]][[paste0("pop_", y)]] <- gea_pop[[as.character(y)]][gea_emissions$Model == i]
-    gea[[i]][[paste0("emissions_pc_", y)]] <- gea[[i]][[paste0("emissions_", y)]]/gea[[i]][[paste0("pop_", y)]]
+    for (v in c("emissions", "pop", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_", y)]] <- d(paste0("gea_", v))[[as.character(y)]][d(paste0("gea_", v))$Model == i]
+    gea[[i]][[paste0("adult_", y)]][match.nona(ssp2_26$region, gea[[i]]$region)] <- ssp2_26[[paste0("adult_", y)]][ssp2_26$region %in% gea[[i]]$region]
+    # gea[[i]][[paste0("emissions_", y)]] <- gea_emissions[[as.character(y)]][gea_emissions$Model == i]
+    # gea[[i]][[paste0("pop_", y)]] <- gea_pop[[as.character(y)]][gea_pop$Model == i]
+    # gea[[i]][[paste0("gea_gdp_ppp_", y)]] <- gea_gdp_ppp[[as.character(y)]][gea_gdp_ppp$Model == i]
+    # gea[[i]][[paste0("gea_gdp_mer_", y)]] <- gea_gdp_mer[[as.character(y)]][gea_gdp_mer$Model == i]
+    for (v in c("emissions", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_pc_", y)]] <- gea[[i]][[paste0(v, "_", y)]]/gea[[i]][[paste0("pop_", y)]]
+    for (v in c("emissions", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_pa_", y)]] <- gea[[i]][[paste0(v, "_", y)]]/gea[[i]][[paste0("adult_", y)]]
   }
 }
-# TODO! finir ça
+world_emissions_pc$gea_gea <- setNames(gea$GEA[gea$GEA$region == "World", grepl("emissions_pc", names(gea$GEA))], years)
+world_emissions_pc$gea_image <- setNames(gea$IMAGE[gea$IMAGE$region == "World", grepl("emissions_pc", names(gea$IMAGE))], years)
+View(rbind("gea_gea" = world_emissions_pc$gea_gea, "gea_image" = world_emissions_pc$gea_image, "SSP1-2.6" = world_emissions_pc$ssp1_26, "SSP2-2.6" = world_emissions_pc$ssp2_26, "SSP2" = world_emissions_pc$ssp2))
+# GEA scenario is closest to ssp1_26 (higher emissions than ssp2_26 before 2050, larger negative emissions after), gea_image has almost no negative emissions => use gea_gea
+# I impute the price trajectory of ssp2_26 (at least three times higher than ssp1_26) to be conservative although emissions_pc are much closer to ssp1_26
+carbon_price$gea_gea <- carbon_price$ssp2_26
+# TODO! finir ça # pop_, adult_, emissions_, region (incl. "world"), gdp_ppp_, carbon_price, 
+# TODO: impute adult_, manage region (be careful about sums and "world"), gdp_ppp => gdp
+world_population$gea_gea <- setNames(gea$GEA[gea$GEA$region == "World", grepl("pop_", names(gea$GEA))], years)
+world_population$gea_image <- setNames(gea$IMAGE[gea$IMAGE$region == "World", grepl("pop_", names(gea$IMAGE))], years)
+View(rbind("gea_gea" = world_population$gea_gea, "gea_image" = world_population$gea_image, "SSP1-2.6" = world_population$ssp1_26, "SSP2-2.6" = world_population$ssp2_26, "SSP2" = world_population$ssp2))
+# World population closest to that of ssp2_26 (maximum 1% difference before 2070) so we can take adult_ from ssp2_26 one as first approximation. TODO: improve the imputation of adult_ in GEA using the commented lines below
+# ssp[[i]][[j]][[paste0("adult_", y)]] <- NA
+# ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)] <- (pop_un[[j]][[paste0("adult_", y)]]/pop_un[[j]][[paste0("pop_", y)]])[match(unique(SSPs$REGION)[-6], pop_un[[j]]$region)] * ssp[[i]][[j]][[paste0("pop_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)]
+# ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == "iam_World"] <- sum(ssp[[i]][[j]][[paste0("adult_", y)]][match(paste0("iam_", unique(SSPs$REGION)[-6]), ssp[[i]][[j]]$region)], na.rm = T)
+# ssp[[i]][[j]][[paste0("adult_", y)]][match.nona(pop_un[[j]]$region, ssp[[i]][[j]]$region)] <- pop_un[[j]][[paste0("adult_", y)]][pop_un[[j]]$region %in% ssp[[i]][[j]]$region]
+# # Adjust to IAM
+# for (r in c(big_regions)) ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
+#   ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / sum(ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
 
 
 ##### NDCs #####
