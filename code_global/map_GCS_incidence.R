@@ -708,12 +708,12 @@ plot_world_map("npv_pa_gcs_adj", breaks = c(-Inf, -10000, -5000, -1000, 0, 1000,
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -10000, -5000, -1000, 0, 1000, 2000, 3000, Inf), sep = " to ", return = "levels")), 
                legend = "Net present value of\ngain per capita\nfrom the adjusted GCS\n(with 4% discount rate)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-plot_world_map("npv_over_gdp_gcs", breaks = c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf)*100, sep = " to ", return = "levels")), 
+plot_world_map("npv_over_gdp_gcs", breaks = c(-Inf, -.01, -.003, -.001, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf # -.003, -.001, -.0005, 0, .0005, .01, .02
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.01, -.003, -.001, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), 
                legend = "Net present value of\ngain per capita\nfrom the GCS (in % of GDP)\n(with 4% discount rate)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.003, -.001, -.0005, 0, .0005, .01, .02, Inf)*100, sep = " to ", return = "levels")), 
+plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.01, -.003, -.001, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.01, -.003, -.001, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), 
                legend = "Net present value of\ngain per capita\n(in % of GDP)\nfrom the adjusted GCS\n(with 4% discount rate)", fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 
@@ -797,12 +797,14 @@ gea_emissions <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_emissions_regi
 gea_pop <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_pop_regions.xlsx")
 gea_gdp_ppp <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_GDP_PPP_regions.xlsx")
 gea_gdp_mer <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_GDP_MER_regions.xlsx")
+# TODO! gdp_ppp vs. mer, missing GDP data, 
 gea <- list() # GEA model is done with MESSAGE. It contains three additional regions: ASIA (CPA+SAS+PAS), MAF (AFR+MEA), REF (FSU+EEU), OECD90
 for (i in c("IMAGE", "GEA")) {
   gea[[i]] <- data.frame(region = unique(gea_pop$Region))
   temp <- ssp2_26 # I make it temp to avoid problems with intersect(image_regions, message_regions) == "WEU"
   for (y in years) {
-    for (v in c("emissions", "pop", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_", y)]] <- d(paste0("gea_", v))[[as.character(y)]][d(paste0("gea_", v))$Model == i]
+    for (v in c("gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_", y)]] <- 1e9 * d(paste0("gea_", v))[[as.character(y)]][d(paste0("gea_", v))$Model == i]
+    for (v in c("emissions", "pop")) gea[[i]][[paste0(v, "_", y)]] <- 1e6 * d(paste0("gea_", v))[[as.character(y)]][d(paste0("gea_", v))$Model == i]
     for (r in message_regions) temp[[paste0("adult_", y)]][temp$region == r] <- sum(temp[[paste0("adult_", y)]][message_region_by_image[temp$region] == r], na.rm = T)
     gea[[i]][[paste0("adult_", y)]][match.nona(temp$region, gea[[i]]$region)] <- temp[[paste0("adult_", y)]][temp$region %in% gea[[i]]$region]
     # gea[[i]][[paste0("emissions_", y)]] <- gea_emissions[[as.character(y)]][gea_emissions$Model == i]
@@ -814,7 +816,7 @@ for (i in c("IMAGE", "GEA")) {
   }
   gea[[i]]$region[gea[[i]]$region == "World"] <- "world"
   gea[[i]] <- gea[[i]][!gea[[i]]$region %in% c("ASIA", "MAF", "REF", "OECD90", "North", "South"), ]
-  for (y in years) for (v in c("emissions", "pop", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_", y)]][gea[[i]]$region == "world"] <- sum(gea[[i]][[paste0(v, "_", y)]][gea[[i]]$region != "world"], na.rm = T)
+  for (y in years) for (v in c("adult")) gea[[i]][[paste0(v, "_", y)]][gea[[i]]$region == "world"] <- sum(gea[[i]][[paste0(v, "_", y)]][gea[[i]]$region != "world"], na.rm = T) # , "emissions", "pop", "gdp_ppp", "gdp_mer"
 }
 world_emissions_pc$gea_gea <- setNames(gea$GEA[gea$GEA$region == "World", grepl("emissions_pc", names(gea$GEA))], years)
 world_emissions_pc$gea_image <- setNames(gea$IMAGE[gea$IMAGE$region == "World", grepl("emissions_pc", names(gea$IMAGE))], years)
