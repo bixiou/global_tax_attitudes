@@ -602,7 +602,7 @@ total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- ba
 create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence = 2040, discount = .04) { # message is only for ssp2 , region = message_region_by_code
   ssp_name <- deparse(substitute(ssp))
   if (grepl("ssp1", ssp_name)) model <- "IMAGE"
-  else if (deparse(substitute(ssp)) == "ssp2") model <- "MESSAGE"
+  else if (ssp_name == "ssp2" | grepl("gea", ssp_name)) model <- "MESSAGE"
   else model <- "big"
   region <- if (model == "big") big_region_by_code else { if (model == "IMAGE") image_region_by_code else message_region_by_code }
   regions <- if (model == "big") big_regions else { if (model == "IMAGE") image_regions else message_regions }
@@ -684,6 +684,7 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
   return(df)
 }
 # Disaggregated data not available for ssp2_19 or ssp2_26. 
+co2_pop <- create_var_ssp(gea_gea)
 co2_pop <- create_var_ssp(ssp2_26)
 View(co2_pop[,grepl("2040", names(co2_pop))])
 
@@ -796,12 +797,14 @@ gea_emissions <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_emissions_regi
 gea_pop <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_pop_regions.xlsx")
 gea_gdp_ppp <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_GDP_PPP_regions.xlsx")
 gea_gdp_mer <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_GDP_MER_regions.xlsx")
-gea <- list() # GEA model is done with MESSAGE
+gea <- list() # GEA model is done with MESSAGE. It contains three additional regions: ASIA (CPA+SAS+PAS), MAF (AFR+MEA), REF (FSU+EEU), OECD90
 for (i in c("IMAGE", "GEA")) {
   gea[[i]] <- data.frame(region = unique(gea_pop$Region))
+  temp <- ssp2_26 # I make it temp to avoid problems with intersect(image_regions, message_regions) == "WEU"
   for (y in years) {
     for (v in c("emissions", "pop", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_", y)]] <- d(paste0("gea_", v))[[as.character(y)]][d(paste0("gea_", v))$Model == i]
-    gea[[i]][[paste0("adult_", y)]][match.nona(ssp2_26$region, gea[[i]]$region)] <- ssp2_26[[paste0("adult_", y)]][ssp2_26$region %in% gea[[i]]$region]
+    for (r in message_regions) temp[[paste0("adult_", y)]][temp$region == r] <- sum(temp[[paste0("adult_", y)]][message_region_by_image[temp$region] == r], na.rm = T)
+    gea[[i]][[paste0("adult_", y)]][match.nona(temp$region, gea[[i]]$region)] <- temp[[paste0("adult_", y)]][temp$region %in% gea[[i]]$region]
     # gea[[i]][[paste0("emissions_", y)]] <- gea_emissions[[as.character(y)]][gea_emissions$Model == i]
     # gea[[i]][[paste0("pop_", y)]] <- gea_pop[[as.character(y)]][gea_pop$Model == i]
     # gea[[i]][[paste0("gea_gdp_ppp_", y)]] <- gea_gdp_ppp[[as.character(y)]][gea_gdp_ppp$Model == i]
@@ -809,6 +812,9 @@ for (i in c("IMAGE", "GEA")) {
     for (v in c("emissions", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_pc_", y)]] <- gea[[i]][[paste0(v, "_", y)]]/gea[[i]][[paste0("pop_", y)]]
     for (v in c("emissions", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_pa_", y)]] <- gea[[i]][[paste0(v, "_", y)]]/gea[[i]][[paste0("adult_", y)]]
   }
+  gea[[i]]$region[gea[[i]]$region == "World"] <- "world"
+  gea[[i]] <- gea[[i]][!gea[[i]]$region %in% c("ASIA", "MAF", "REF", "OECD90", "North", "South"), ]
+  for (y in years) for (v in c("emissions", "pop", "gdp_ppp", "gdp_mer")) gea[[i]][[paste0(v, "_", y)]][gea[[i]]$region == "world"] <- sum(gea[[i]][[paste0(v, "_", y)]][gea[[i]]$region != "world"], na.rm = T)
 }
 world_emissions_pc$gea_gea <- setNames(gea$GEA[gea$GEA$region == "World", grepl("emissions_pc", names(gea$GEA))], years)
 world_emissions_pc$gea_image <- setNames(gea$IMAGE[gea$IMAGE$region == "World", grepl("emissions_pc", names(gea$IMAGE))], years)
@@ -816,7 +822,7 @@ View(rbind("gea_gea" = world_emissions_pc$gea_gea, "gea_image" = world_emissions
 # GEA scenario is closest to ssp1_26 (higher emissions than ssp2_26 before 2050, larger negative emissions after), gea_image has almost no negative emissions => use gea_gea
 # I impute the price trajectory of ssp2_26 (at least three times higher than ssp1_26) to be conservative although emissions_pc are much closer to ssp1_26
 carbon_price$gea_gea <- carbon_price$ssp2_26
-# TODO! finir ça # pop_, adult_, emissions_, region (incl. "world"), gdp_ppp_, carbon_price, 
+# TODO! finir ça # pop_, adult_, emissions_, region (incl. "world"), gdp_ppp_
 # TODO: impute adult_, manage region (be careful about sums and "world"), gdp_ppp => gdp
 world_population$gea_gea <- setNames(gea$GEA[gea$GEA$region == "World", grepl("pop_", names(gea$GEA))], years)
 world_population$gea_image <- setNames(gea$IMAGE[gea$IMAGE$region == "World", grepl("pop_", names(gea$IMAGE))], years)
@@ -829,6 +835,8 @@ View(rbind("gea_gea" = world_population$gea_gea, "gea_image" = world_population$
 # # Adjust to IAM
 # for (r in c(big_regions)) ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] <- ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])] * 
 #   ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region == paste0("iam_R5.2", toupper(r))] / sum(ssp[[i]][[j]][[paste0("adult_", y)]][ssp[[i]][[j]]$region %in% c(message_regions[big_region_by_message == r], image_regions[big_region_by_image == r])], na.rm = T)
+gea_gea <- gea$GEA
+co2_pop <- create_var_ssp(gea_gea)
 
 
 ##### NDCs #####
