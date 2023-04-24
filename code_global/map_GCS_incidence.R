@@ -726,9 +726,9 @@ for (r in message_regions) co2_pop$gdp_over_region[message_region_by_code[co2_po
 
 # Plots
 # Net gains are closer to zero than for Stern-Stiglitz due to lower carbon_price$ssp1_26. In PPP, China is not below average GDPpc, hence its (small) cost.
-for (y in years[3:9]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+for (y in years[3:9]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), 
-               legend = paste0("Gain per capita\nfrom the GCS\nin ", y), #fill_na = T,
+               legend = paste0("Gain per capita\nfrom the GCS\nin ", y, "(in $ per year)"), #fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 plot_world_map("npv_pa_gcs", breaks = c(-Inf, -30000, -10000, -1000, -1e-10, 0, 1000, 5000, 10000, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -30000, -10000, -1000, 0, 0, 1000, 5000, 10000, Inf), sep = " to ", return = "levels")), 
