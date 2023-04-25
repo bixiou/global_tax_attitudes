@@ -760,9 +760,11 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
     }        
     # GDR: find emissions allocations on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
     df$gain_gdr_2030 <- (carbon_price[[ssp_name]][["2030"]] * df$gdr_pa_2030  - df$revenues_pa_2030)
-    df$gain_gdr_over_gdp_2030 <- df$gain_gdr_2030/df$gdp_pc_2030
+    df$gain_gdr_over_gdp_2030 <- df$gain_gdr_2030/df$gdp_pa_2030
+    df$diff_gain_gdr_gcs_2030 <- df$gain_gdr_2030 - df$gain_pa_2030
+    df$diff_gain_gdr_gcs_over_gdp_2030 <- df$diff_gain_gdr_gcs_2030/df$gdp_pa_2030
     df$diff_gain_gdr_gcs_adj_2030 <- df$gain_gdr_2030 - df$gain_adj_2030
-    df$diff_gain_gdr_gcs_adj_over_gdp_2030 <- df$diff_gain_gdr_gcs_adj_2030/df$gdp_pc_2030
+    df$diff_gain_gdr_gcs_adj_over_gdp_2030 <- df$diff_gain_gdr_gcs_adj_2030/df$gdp_pa_2030
   }
   
   compute_npv <- function(var = "gain_pa_", discount_rate = discount, data = df) {
@@ -793,7 +795,7 @@ for (r in message_regions) co2_pop$gdp_over_region[message_region_by_code[co2_po
 # To manage co2_pop$country %in% c("Botswana", "China", "Gabon", "Equatorial Guinea", "Namibia", "South Africa"), I could attach them to SAS (they are 35% above its GDP average vs. +75% for AFR)
 # TODO manage small countries (Eswatini, Montenegro, Western Sahara, Antillas, Taiwan, Cape Verde) for which there is a bug
 # Define rights to emit i.e. allocation key, for equal pc C&C and GDR
-
+# co2_pop$gain_gdr_over_gdp_2030[co2_pop$country == "China"] # 7%
 
 # Historical resp: NPV equal pc + climate debt until today
 
@@ -831,6 +833,14 @@ plot_world_map("diff_gain_gdr_gcs_adj_2030", breaks = c(-Inf, -1000, -500, -200,
 plot_world_map("diff_gain_gdr_gcs_adj_over_gdp_2030", breaks = c(-Inf, -.3, -.1, -.05, -.02, -1e-10, 0, .005, .01, .05, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.3, -.1, -.05, -.02, 0, 0, .005, .01, .05, .1, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Difference in\ngain per adult:\nGDRs - GCS\nin 2030 (in % of GDP)"), #fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("diff_gain_gdr_gcs_2030", breaks = c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 400, 800, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 400, 800, Inf), sep = " to ", return = "levels")), 
+               legend = paste0("Difference in\ngain per adult:\nGDRs - GCS\nin 2030 (in $ per year)"), #fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("diff_gain_gdr_gcs_over_gdp_2030", breaks = c(-Inf, -.3, -.1, -.05, -.02, -1e-10, 0, .005, .01, .05, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.3, -.1, -.05, -.02, 0, 0, .005, .01, .05, .1, Inf), sep = " to ", return = "levels")), 
+               legend = paste0("Difference in\nnet gain:\nGDRs - equal pc\nin 2030 (in % of GDP)"), #fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 plot_world_map("npv_pa_gcs", breaks = c(-Inf, -30000, -10000, -1000, -1e-10, 0, 1000, 5000, 10000, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -30000, -10000, -1000, 0, 0, 1000, 5000, 10000, Inf), sep = " to ", return = "levels")), 
