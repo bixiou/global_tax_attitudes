@@ -758,19 +758,20 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
       # C&C: define climate debt/credit until convergence date
       
     }        
-    # GDR: find emissions allocations on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
-    df$gain_gdr_2030 <- (carbon_price[[ssp_name]][["2030"]] * df$gdr_pa_2030  - df$revenues_pa_2030)
-    df$gain_gdr_over_gdp_2030 <- df$gain_gdr_2030/df$gdp_pa_2030
-    df$diff_gain_gdr_gcs_2030 <- df$gain_gdr_2030 - df$gain_pa_2030
-    df$diff_gain_gdr_gcs_over_gdp_2030 <- df$diff_gain_gdr_gcs_2030/df$gdp_pa_2030
-    df$diff_gain_gdr_gcs_adj_2030 <- df$gain_gdr_2030 - df$gain_adj_2030
-    df$diff_gain_gdr_gcs_adj_over_gdp_2030 <- df$diff_gain_gdr_gcs_adj_2030/df$gdp_pa_2030
   }
   
   compute_npv <- function(var = "gain_pa_", discount_rate = discount, data = df) {
     rate <- (1+discount_rate)^10
     return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/rate^(i-2)) })))
   }
+  # GDR: find emissions allocations on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
+  df$gain_gdr_2030 <- (carbon_price[[ssp_name]][["2030"]] * df$gdr_pa_2030  - df$revenues_pa_2030)
+  df$gain_gdr_over_gdp_2030 <- df$gain_gdr_2030/df$gdp_pa_2030
+  df$diff_gain_gdr_gcs_2030 <- df$gain_gdr_2030 - df$gain_pa_2030
+  df$diff_gain_gdr_gcs_over_gdp_2030 <- df$diff_gain_gdr_gcs_2030/df$gdp_pa_2030
+  df$diff_gain_gdr_gcs_adj_2030 <- df$gain_gdr_2030 - df$gain_adj_2030
+  df$diff_gain_gdr_gcs_adj_over_gdp_2030 <- df$diff_gain_gdr_gcs_adj_2030/df$gdp_pa_2030
+  
   df$npv_pa_gcs <- compute_npv("gain_pa_", discount)
   df$npv_pa_gcs_adj <- compute_npv("gain_adj_", discount)
   df$npv_over_gdp_gcs <- df$npv_pa_gcs/compute_npv("gdp_pa_", discount) # this formula corresponds to the % loss in consumption computed in Balanced Growth Equivalent of Stern et al. (07)
@@ -806,10 +807,6 @@ for (y in years[3:9]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1
                labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gain per adult\nfrom the GCS\nin ", y, " (in $ per year)"), #fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-plot_world_map("gain_gdr_2030", breaks = c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), 
-               legend = paste0("Gain per adult\nfrom GDRs\nin 2030 (in $ per year)"), #fill_na = T,
-               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 for (y in years[3:9]) plot_world_map(paste0("gain_over_gdp_", y), breaks = c(-Inf, -.04, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.04, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gain per adult\nfrom the GCS\nin ", y, " (in % of GDP)"), #fill_na = T,
@@ -821,6 +818,10 @@ for (y in years[3:9]) plot_world_map(paste0("gain_adj_over_gdp_", y), breaks = c
 for (y in years) plot_world_map(paste0("emissions_pc_", y), breaks = c(-Inf, 0, 1, 2, 4, 5, 7, 10, 15, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, rev_color = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, 0, 1, 2, 4, 5, 7, 10, 15, Inf), sep = " to ", return = "levels")), 
                legend = paste0("tCO2 emissions\nper capita\nin ", y, "\nin GEA Efficiency"), #fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("gain_gdr_2030", breaks = c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, -.1, .1, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), 
+               legend = paste0("Gain per adult\nfrom GDRs\nin 2030 (in $ per year)"), #fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 plot_world_map("gain_gdr_over_gdp_2030", breaks = c(-Inf, -.04, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.04, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
