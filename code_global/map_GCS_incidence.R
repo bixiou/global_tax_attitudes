@@ -76,6 +76,7 @@ co2_pop$country_map[co2_pop$country == "Democratic Republic of Congo"] <- "Democ
 co2_pop$country_map[co2_pop$country == "Congo"] <- "Republic of Congo"
 co2_pop$country_map[co2_pop$country == "Cote d'Ivoire"] <- "Ivory Coast"
 co2_pop$country_map[co2_pop$country == "Czechia"] <- "Czech Republic"
+co2_pop$share_territorial_2019 <- co2_pop$territorial_2019/sum(co2_pop$territorial_2019)
 # rm(pop, co2)  
 decrit(co2_pop$missing_footprint) # 98 out of 218 countries missing (while no missing for territorial)
 # co2_pop$country[co2_pop$missing_footprint]
@@ -592,13 +593,14 @@ for (s in ssps) {
 
 
 ##### Global Energy Assessment #####
+# This is the one we use (because SSPs I had are not disaggregated enough). /!\ It's territorial, not footprint.
 # TODO try also Kriegler et al. (13)'s LIMITS, not Greenpeace (as it contains population, emissions but no GDP and only until 2050)/
 # GEA: Emissions (2°C >50% chance), population and GDP pc until 2100 disaggregated on ~50 countries, but without a price trajectory.
 gea_emissions <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_emissions_regions.xlsx")
 gea_pop <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_pop_regions.xlsx")
 gea_gdp_ppp <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_GDP_PPP_regions.xlsx")
 gea_gdp_mer <- read.xlsx("../data/GEA_efficiency/GEA_efficiency_GDP_MER_regions.xlsx")
-# TODO! gdp_ppp vs. mer, missing GDP data, 
+
 gea <- list() # GEA model is done with MESSAGE. It contains three additional regions: ASIA (CPA+SAS+PAS), MAF (AFR+MEA), REF (FSU+EEU), OECD90
 for (i in c("IMAGE", "GEA")) {
   gea[[i]] <- data.frame(region = unique(gea_pop$Region))
@@ -626,8 +628,7 @@ world_emissions_pc$gea_image <- setNames(gea$IMAGE[gea$IMAGE$region == "world", 
 # GEA scenario is closest to ssp1_26 (higher emissions than ssp2_26 before 2050, larger negative emissions after), gea_image has almost no negative emissions => use gea_gea
 # I impute the price trajectory of ssp2_26 (at least three times higher than ssp1_26) to be conservative although emissions_pc are much closer to ssp1_26
 carbon_price$gea_gea <- carbon_price$ssp2_26
-# TODO! finir ça # pop_, adult_, emissions_, region (incl. "world"), gdp_ppp_
-# TODO: impute adult_, manage region (be careful about sums and "world"), gdp_ppp => gdp
+
 world_population$gea_gea <- setNames(gea$GEA[gea$GEA$region == "world", grepl("pop_", names(gea$GEA))], years)
 world_population$gea_image <- setNames(gea$IMAGE[gea$IMAGE$region == "world", grepl("pop_", names(gea$IMAGE))], years)
 world_emissions$gea_gea <- setNames(world_emissions_pc$gea_gea * world_population$gea_gea, years)
@@ -665,6 +666,7 @@ co2_pop$gdr_pa_2030_cerc <- (co2_pop$emissions_baseline_2030 - co2_pop$rci_2030 
 co2_pop$gdr_pa_2030 <- (co2_pop$emissions_baseline_2030 - co2_pop$rci_2030 * world_emissions_reduction_2030)/co2_pop$adult_2030
 # wtd.mean(co2_pop$gdr_pa_2030_cerc, co2_pop$adult_2030)
 
+# TODO!! instead of SSPs/GEA, use AR6/ country-disaggregated data. Also, I should look for a model/scenario with a uniform carbon price and carbon footprints (pb: Ctrl+F "footprint", "embodied", "consumption-based" returns nothing).
 
 # Disaggregate by country emissions, gdp, gdp_pc
 # On top of partition in R5_region, IMAGE (ssp1_19, ssp1_26) has 26 regions (co2_pop$IMAGE.REGION), MESSAGE (ssp2) has 11 MESSAGE-GLOBIOM.REGION. No dissagregated data for ssp2_26, ssp2_45. 
@@ -755,7 +757,7 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
       df[[paste0("gain_adj_over_gdp_", y)]] <- df[[paste0("gain_adj_", y)]]/df[[paste0("gdp_pc_", y)]]
       df[[paste0("gain_over_gdp_", y)]] <- df[[paste0("gain_pa_", y)]]/df[[paste0("gdp_pc_", y)]]
       
-      # C&C: define climate debt/credit until convergence date
+      # C&C: define climate debt/credit until convergence date TODO!
       
     }        
   }
@@ -798,21 +800,59 @@ for (r in message_regions) co2_pop$gdp_over_region[message_region_by_code[co2_po
 # Define rights to emit i.e. allocation key, for equal pc C&C and GDR
 # co2_pop$gain_gdr_over_gdp_2030[co2_pop$country == "China"] # 7%
 
-# Historical resp: NPV equal pc + climate debt until today
+# TODO Historical resp: NPV equal pc + climate debt until today. Use function cumulative_emissions 
+
+##### GCS Policy brief #####
+# Total revenues in % of global GDP
+total_revenues$gea_gea/sapply(years[3:11], function(y) sum(co2_pop[[paste0("gdp_", y)]], na.rm = T))
+# International transfers in % of global GDP
+setNames(sapply(years[3:11], function(y) sum(co2_pop[[paste0("gain_adj_", y)]] * co2_pop[[paste0("adult_", y)]] * (co2_pop[[paste0("gain_adj_", y)]] > 0), na.rm = T)/sum(co2_pop[[paste0("gdp_", y)]], na.rm = T)), years[3:11])
+carbon_price$ssp2_26
+basic_income_adj$gea_gea/12
+# Median gain in 2030 in complementary survey countries
+setNames(0.9*co2_pop$gain_adj_2030[match.nona(countries_names, co2_pop$country)]/12, countries_names) # vs. 12 25 5 23 86 in the survey. Different only in DE, ES. Why not higher with +50% price (and +20% emissions)? Because in this co2 data, carbon footprint is lower by a comparable amount. E.g. France's 2020 is 6.7 setNames(co2_pop$emissions_pa_2020[match.nona(countries_names, co2_pop$country)], countries_names)
+# Share of emissions of countries which gain from the (adjusted) GCS
+co2_pop$share_territorial_2019[co2_pop$code == "CHN"] # 30.2%
+co2_pop$share_territorial_2019[co2_pop$code == "USA"] # 14.8%
+co2_pop$share_territorial_2019[co2_pop$code == "IND"] # 7.4%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% EU28_countries]) # 9.2%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("CHN", "IND", "USA", EU28_countries)]) # 61.7%
+sum(co2_pop$share_territorial_2019[co2_pop$npv_pa_gcs_adj > 0], na.rm = T) # 22.7% of global emissions in countries with gain > 0
+sum(co2_pop$share_territorial_2019[co2_pop$npv_pa_gcs_adj == 0], na.rm = T) # 57.8% of global emissions in countries with gain >= 0
+sum(co2_pop$share_territorial_2019[(co2_pop$code %in% EU28_countries & co2_pop$code != "GBR") | co2_pop$npv_pa_gcs_adj >= 0], na.rm = T) # 65%
+# TODO! redo the computations with partial participation (e.g. without the U.S.)
+cor(co2_pop$emissions_pa_2019, co2_pop$gdp_pc_2019, use = "complete.obs") # .69
+average_revenues$gea_gea/12
+basic_income_adj$gea_gea/12
 
 
-# Plots
+# GCS_adj_trajectories
+mar <- par()$mar
+par(mar = c(2.1, 4.1, 0.1, 4.1))
+plot(years[3:9], basic_income_adj$gea_gea[1:7]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(-5, 53))
+lines(years[3:9], world_emissions$gea_gea[3:9]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
+par(new = T)
+plot(years[3:9], carbon_price$gea_gea[3:9], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+mtext("Carbon price ($/tCO2)", side=4, col="blue", line=2.5) 
+axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
+grid()
+legend("topright", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+
+
+
+
+##### Plots #####
 # Net gains are closer to zero than for Stern-Stiglitz due to lower carbon_price$ssp1_26. In PPP, China is not below average GDPpc, hence its (small) cost.
 for (y in years[3:9]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gain per adult\nfrom the GCS\nin ", y, " (in $ per year)"), #fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-for (y in years[3:9]) plot_world_map(paste0("gain_over_gdp_", y), breaks = c(-Inf, -.04, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-               labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.04, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
+for (y in years[3:9]) plot_world_map(paste0("gain_over_gdp_", y), breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gain per adult\nfrom the GCS\nin ", y, " (in % of GDP)"), #fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-for (y in years[3:9]) plot_world_map(paste0("gain_adj_over_gdp_", y), breaks = c(-Inf, -.04, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-               labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.04, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
+for (y in years[3:9]) plot_world_map(paste0("gain_adj_over_gdp_", y), breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gain per adult\nfrom the GCS\nin ", y, " (in % of GDP)"), #fill_na = T,
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 for (y in years) plot_world_map(paste0("emissions_pc_", y), breaks = c(-Inf, 0, 1, 2, 4, 5, 7, 10, 15, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, rev_color = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
