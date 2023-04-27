@@ -410,6 +410,7 @@ decrit("gcs_support", us1, weights = us1$weight_vote)
 
 ##### CI support ####
 binconf(sum(us1$weight[us1$gcs_support == 'Yes']), nrow(us1))
+# Significantly lower than 50% for branch_gcs == 'important' or branch_gcs %in% c('field', 'important'
 binconf(sum(us2$weight[us2$gcs_support == 'Yes' & us2$branch_gcs == 'important']), sum(us2$weight[us2$branch_gcs == 'important']))
 binconf(sum(us2$weight[us2$gcs_support == 'Yes' & us2$branch_gcs == 'field']), sum(us2$weight[us2$branch_gcs == 'field']))
 binconf(sum(us2$weight[us2$gcs_support == 'Yes' & us2$branch_gcs %in% c('field', 'important')]), sum(us2$weight[us2$branch_gcs %in% c('field', 'important')]))
