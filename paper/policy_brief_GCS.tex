@@ -53,6 +53,8 @@
 \usepackage{longtable}
 \usepackage{rotating}
 \usepackage{fancyhdr}
+% \pagestyle{fancy}% header
+% \usepackage{xcolor}% header
 \usepackage{tocloft}
 \usepackage{titletoc}
 \usepackage{csquotes}
@@ -64,17 +66,24 @@
 %\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
 %\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
 \renewcommand{\floatpagefraction}{.9}
+% \setlength\headheight{1.5in} % to get logo on each page's header
+% \lhead{\includegraphics[height=1.3cm]{../figures/policies/logo_full_white_bg}}
 
 \title{The Global Climate Scheme -- Policy Brief
 } 
 
-\author{Global Redistribution Advocates\footnote{The author is Adrien Fabre, CNRS researcher in economics at CIRED. E-mail: fabre.adri1@gmail.com.}} 
+\author{Adrien Fabre\footnote{CNRS researcher in economics at CIRED. E-mail: fabre.adri1@gmail.com.}} 
+% \author{Global Redistribution Advocates\footnote{The author is Adrien Fabre, CNRS researcher in economics at CIRED. E-mail: fabre.adri1@gmail.com.}} 
 
 \date{\today{} -- \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/policy_brief_GCS.pdf}{Link to most recent version}} 
 
 \begin{document}
 
 \maketitle
+\tikz [remember picture, overlay] %
+\node [shift={(5.5cm,-1cm)}] at (current page.north west) % north west
+[anchor=north west] % north west
+{\href{http://global-redistribution-advocates.org}{\includegraphics[height=1.3cm]{../figures/policies/logo_full_white_bg}}};
 
 % \begin{center}
 % {\textbf{\href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/policy_brief_GCS.pdf}{Link to most recent version}}}
