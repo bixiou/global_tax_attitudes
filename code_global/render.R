@@ -457,10 +457,11 @@ vars_heatmaps <- c("support", "other_policies", "climate_policies", "global_poli
 heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 # heatmaps_defs$foreign_aid_no
 
-heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T) {
+heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T, folder = NULL, name = NULL) {
   for (heatmap in heatmaps) {
     vars_present <- heatmap$vars %in% names(data)
-    heatmap_wrapper(vars = heatmap$vars[vars_present], special = "Europe", data = data, labels = heatmap$labels[vars_present], name = heatmap$name, conditions = heatmap$conditions, sort = heatmap$sort, percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights) 
+    heatmap_wrapper(vars = heatmap$vars[vars_present], special = "Europe", data = data, labels = heatmap$labels[vars_present], name = if (is.null(name)) heatmap$name else name, conditions = heatmap$conditions, sort = heatmap$sort, 
+                    percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights, folder = folder)   
   }
 }
 
@@ -726,6 +727,10 @@ heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_
 heatmap_multiple(heatmaps_defs[c("ets2_support")], weights = T, data = eu[eu$country != 'UK',])
 heatmap_multiple(heatmaps_defs[c("ets2_no")], weights = T, data = eu[eu$country != 'UK',])
 heatmap_multiple(heatmaps_defs[c("ets2_oppose")], weights = T, data = eu[eu$country != 'UK',])
+heatmap_multiple(heatmaps_defs[c("gcs_important")], weights = T, data = all[all$vote >= 0,], name = "gcs_important_voteRight")
+heatmap_multiple(heatmaps_defs[c("gcs_important")], weights = T, data = all[all$vote == -1,], name = "gcs_important_voteLeft")
+heatmap_multiple(heatmaps_defs[c("gcs_important")], weights = T, data = all[all$gcs_support == "Yes",], name = "gcs_important_gcs_support")
+heatmap_multiple(heatmaps_defs[c("gcs_important")], weights = T, data = all[all$gcs_support == "No",], name = "gcs_important_gcs_oppose")
 
 
 ##### Heterogeneity #####
