@@ -1439,7 +1439,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
   # alternative solution to see Ukraine/labels: reduce height (e.g. width=1000, height=240 for 5 rows). Font is larger but picture of lower quality / more pixelized.
   # Longest label: "Richest countries should pay even more to help vulnerable ones" (62 characters, variables_burden_sharing_few).
   # special can be c("World", "OECD")
-  if (missing(folder)) folder <- automatic_folder(along, data)
+  if (is.null(folder)) folder <- automatic_folder(along, data)
   if (is.null(width)) width <- ifelse(length(labels) <= 3, 1000, ifelse(length(labels) <= 8, 1550, 1770)) # TODO! more precise than <= 3 vs. > 3
   if (is.null(height)) height <- ifelse(length(labels) <= 3, 163, ifelse(length(labels) <= 8, 400, 600))
 
@@ -2323,7 +2323,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
   for (i in seq_along(country_list)) {
     df <- d(country_list[i])
     k <- country_list[i]
-    c <- sub("[0-9p]+", "", k)
+    c <- sub("[0-9p]+", "", toupper(k))
 
     labels[[k]] <- "Sample size"
     pop[[k]] <- ""

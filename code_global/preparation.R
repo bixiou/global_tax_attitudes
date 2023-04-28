@@ -433,7 +433,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   if (grepl("US", country)) e$country_name <- "United States"
   e$country <- countries[e$country_name]
   # e$continent <- sub("[0-9p]+", "", e$wave)
-  e$continent <- if (country == "EU") "Eu" else "US"
+  e$continent <- if (country == "EU") "Europe" else "U.S."
   
   e$woman <- e$gender == "Woman"
   e$man <- e$gender == "Man"
