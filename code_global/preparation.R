@@ -965,8 +965,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       # UK: 
       
       # Recurrent topics that don't have a variable:
-      # US: 
-      # DE: 
+      # US: people confusing GCS and GCS+NR, people thinking poor Americans would win from GCS (forgetting it's global or thinking they are in the bottom 700M)
+      # DE: pessimism (e.g. politicians all corrupt, or GCS would be good but won't happen), that global (not national) action is needed, that (any) climate action is needed
       # FR: 
       # ES: 
       # UK: 
