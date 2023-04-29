@@ -56,13 +56,13 @@
 \usepackage{fancyhdr}
 
 % Header on every page except frontpage (handled by tikz)
-\pagestyle{fancy}% header
-\renewcommand{\headrulewidth}{0pt} % removes horizontal line from header
-\setlength{\headheight}{62pt} % adjust the nb of pt here and below if there is a warning
-\addtolength{\topmargin}{-62pt}
-\fancyhead[R]{} % removes section title from header
-\fancyhead[L]{} % removes section title from header
-\chead{\href{http://global-redistribution-advocates.org}{\includegraphics[height=1cm]{../figures/policies/logo_full_white_bg}}\\ \quad }
+% \pagestyle{fancy}% header
+% \renewcommand{\headrulewidth}{0pt} % removes horizontal line from header
+% \setlength{\headheight}{62pt} % adjust the nb of pt here and below if there is a warning
+% \addtolength{\topmargin}{-62pt}
+% \fancyhead[R]{} % removes section title from header
+% \fancyhead[L]{} % removes section title from header
+% \chead{\href{http://global-redistribution-advocates.org}{\includegraphics[height=1cm]{../figures/policies/logo_full_white_bg}}\\ \quad }
 
 \usepackage{tocloft}
 \usepackage{titletoc}
@@ -88,7 +88,7 @@
 
 \maketitle
 \tikz [remember picture, overlay] %
-\node [shift={(5.5cm,-1cm)}] at (current page.north west) % north west
+\node [shift={(5.5cm,-1.5cm)}] at (current page.north west) % north west
 [anchor=north west] % north west
 {\href{http://global-redistribution-advocates.org}{\includegraphics[height=1.3cm]{../figures/policies/logo_full_white_bg}}};
 
