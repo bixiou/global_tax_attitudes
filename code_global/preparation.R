@@ -965,18 +965,19 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       # UK: 
       
       # Recurrent topics that don't have a variable:
-      # US: people confusing GCS and GCS+NR, people thinking poor Americans would win from GCS (forgetting it's global or thinking they are in the bottom 700M)
-      # DE: pessimism (e.g. politicians all corrupt, or GCS would be good but won't happen), that global (not national) action is needed, that (any) climate action is needed
-      # FR: 
-      # ES: 
+      # US: people confusing GCS and GCS+NR, people thinking poor Americans would win from GCS (forgetting it's global or thinking they are in the bottom 700M), plan will help raising awareness, selfish reasoning, accusation of socialism/communism, 
+      # DE: pessimism (e.g. politicians all corrupt, or GCS would be good but won't happen), that global (not national) action is needed, that (any) climate action is needed, will increase bureaucracy
+      # FR: middle class always pays (squeezed middle), we'll need to consume less, avoids migration, future for our children, 
+      # ES: better world, better for biodiversity or nature
       # UK: 
+      # TODO (add cost, poorest humans, change doctrine): US2 A-ZZ, UK A-GH
       
       # Pépites:
-      # US: 
-      # DE: 
-      # FR: 
-      # ES: 
-      # UK:     
+      # US: HI, GI, JX, OL, 3E, 3EG, 3GM, 3GU (!), 3IT, 3JR
+      # DE: FM, HM, LP, MZ, QH, AKN
+      # FR: KP, MN, OI, OM, OS, OU, YA,
+      # ES: JD, KA, KD, KU, LO, MW
+      # UK: M, GX, KC, KD, LE, LL, OI, PW, ZR  
     }
     
     if (country == "US2") { # poverty_field
