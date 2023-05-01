@@ -973,7 +973,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       # TODO (add cost, poorest humans, change doctrine): US2 A-ZZ, UK A-GH
       
       # Pépites:
-      # US: HI, GI, JX, OL, 3E, 3EG, 3GM, 3GU (!), 3IT, 3JR
+      # US: HI, GI, JX, OL, 3E, 3EG, 3GM, 3GU (!), 3IT, 3JR, 2ED, 2NJ
       # DE: FM, HM, LP, MZ, QH, AKN
       # FR: KP, MN, OI, OM, OS, OU, YA,
       # ES: JD, KA, KD, KU, LO, MW
@@ -1003,13 +1003,28 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
         e[[v]] <- grepl(grep_variables_poverty_field_contains[v], e$poverty_field)
         label(e[[v]]) <- paste0(v, ": T/F poverty_field_english contains: ", grep_variables_poverty_field_contains[v])  }
       # Impressions:
-      # 
+      # Give more money is the most common answered, followed by "teach them how to fish", i.e. providing education, then comes providing in-king assistance (food, healthcare...), and finally: help poor Americans first
       
       # Recurrent topics that don't have a variable:
-      #  
+      # Increase wages in low-income countries (e.g. by generalizing fair trade); provide loans (e.g. for infrastructure); promote democracy / have them remove their authoritarian leaders
       
       # Pépites:
-      #      
+      # They should figure out what are the most important basic necessities that poor people need and go from there.
+      # program/should help: Assist low-income countries as much as they can.
+      # give money: Donate money to a fund run by the UN
+      # Contribute more
+      # Spend more in foreign aid
+      # Give more aid but watch where it goes
+      # program/should help: Help the poor
+      # against helping them: Stop helping other countries
+      # against helping them: Nothing
+      # against helping them: help usa first
+      # against helping them: first we should focus on ourselves. we have many people living in poverty in america
+      # jobs: create jobs and opportunity in their country
+      # education (& give money): I think teaching the country to work for themselves, teach them how to better their country. We would of course need to provide monetary care as well
+      # other: Help pay for infrastructure, welcome refugees into the US, pay higher wages to factory workers worldwide
+      # tax: Raise taxes on the rich.
+      # I believe that there should be a higher tax on the wealthy individuals and this should go to support lower income countries
     }
     
     if ("comment_field" %in% names(e)) {
