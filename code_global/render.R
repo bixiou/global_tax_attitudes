@@ -701,6 +701,8 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 2][1]
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 2]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 3][1]], weights = T, trim = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 3]], weights = T)
+heatmap_multiple(heatmaps_defs[c("support_likert", "belief_all", "petition_comparable")], weights = T, data = all[all$wave != "US2",]) # TODO! run
+heatmap_multiple(heatmaps_defs[c("conjoint_ab_all", "conjoint_ab")], weights = T, data = all[all$wave != "US2",]) 
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb_vars_heatmaps >= 4][1]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb_vars_heatmaps >= 4]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 8 & nb_vars_heatmaps >= 5][1]], weights = T)
