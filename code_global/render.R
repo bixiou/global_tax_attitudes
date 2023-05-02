@@ -274,7 +274,11 @@ labels_vars <- c(
   "branch_donationOwn nation:vote_factorCenter-right or Right" = "Poor in own country $\\times$ Vote: Center-right or Right",
   "branch_donationOwn nation:vote_factorLeft" = "Poor in own country $\\times$ Vote: Left",
   "branch_donationOwn nation:vote_factorPNR/Non-voter" = "Poor in own country $\\times$ Vote: PNR/Non-voter",
-  "branch_donationOwn nation:vote_factorFar right" = "Poor in own country $\\times$ Vote: Far right"
+  "branch_donationOwn nation:vote_factorFar right" = "Poor in own country $\\times$ Vote: Far right",
+  "branch_gcs" = "Treatment",
+  "branch_gcsfield" = "Treatment: Open-ended field on GCS pros & cons",
+  "branch_gcsimportant" = "Treatment: Closed questions on GCS pros & cons", 
+  "branch_gcsinfo" = "Treatment: Info on actual support for GCS and NR"
 )
 for (v in c(variables_gcs_field_names, variables_poverty_field_names, "gcs_field_empty", "poverty_field_empty")) labels_vars[v] <-sub("dont", "don't", gsub("_", " ", gsub(".*_field_", "", v)))
 for (v in c(variables_gcs_field_contains, variables_poverty_field_contains)) labels_vars[v] <-  paste0(gsub(".*_", "", v), ": ", gsub(".*contains: ", "", Label(all[[v]])))
