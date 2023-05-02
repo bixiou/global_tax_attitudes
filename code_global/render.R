@@ -58,6 +58,8 @@ labels_vars <- c(
   "wealth" = "Wealth quintile",
   "wealth_factor" = "Wealth quintile",
   "swing_state" = "Swing State",
+  "swing_state_5pp" = "Swing State (at 5%)",
+  "swing_state_3pp" = "Swing State (at 3%)",
   "vote" = "Vote",
   "vote_factor" = "Vote",
   "vote3" = "Vote",
@@ -278,7 +280,8 @@ labels_vars <- c(
   "branch_gcs" = "Treatment",
   "branch_gcsfield" = "Treatment: Open-ended field on GCS pros & cons",
   "branch_gcsimportant" = "Treatment: Closed questions on GCS pros & cons", 
-  "branch_gcsinfo" = "Treatment: Info on actual support for GCS and NR"
+  "branch_gcsinfo" = "Treatment: Info on actual support for GCS and NR",
+  "(Intercept)" = "Constant"
 )
 for (v in c(variables_gcs_field_names, variables_poverty_field_names, "gcs_field_empty", "poverty_field_empty")) labels_vars[v] <-sub("dont", "don't", gsub("_", " ", gsub(".*_field_", "", v)))
 for (v in c(variables_gcs_field_contains, variables_poverty_field_contains)) labels_vars[v] <-  paste0(gsub(".*_", "", v), ": ", gsub(".*contains: ", "", Label(all[[v]])))

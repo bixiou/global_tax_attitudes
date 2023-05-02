@@ -288,6 +288,9 @@ desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename
               dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, 
               add_lines = list(c(18, "Includes controls &  & \\checkmark &  & \\checkmark \\\\")))
 
+desc_table("gcs_support", filename = "swing_state", data = us1, indep_vars = c("swing_state", "swing_state_5pp"), indep_vars_included = list("swing_state", "swing_state_5pp"), model.numbers = T, keep = c("Constant", "swing_state", "swing_state_5pp"), omit = c(), mean_above = F, #!mean_above,
+           dep.var.labels = "Global Climate Scheme", dep.var.caption = c("Support"), digits= 3, robust_SE = T, only_mean = F, save_folder = "../tables/US1/", nolabel = F)
+
 
 ##### Wealth tax #####
 decrit("global_tax_support", data = e)

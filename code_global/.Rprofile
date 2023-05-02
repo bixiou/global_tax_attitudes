@@ -564,11 +564,12 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   }
   if (only_mean) mean_above <- T
   table <- do.call(stargazer, c(models, list(out=file_path, header=F, model.numbers = model.numbers,
-                                             covariate.labels = if (nolabel) NULL else latexify(indep_labels, doublebackslash = FALSE), add.lines =list(c(mean_text, means)),
-                                             coef = coefs, se = SEs,
+                                             covariate.labels = if (nolabel) NULL else latexify(indep_labels, doublebackslash = FALSE), add.lines = if (!"\\QConstant\\E" %in% keep) list(c(mean_text, means)) else NULL,
+                                             coef = coefs, se = SEs, 
                                              dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
                                              multicolumn = multicolumn, float = F, keep.stat = c("n", "rsq"), omit.table.layout = "n", keep=keep, no.space = no.space
   )))
+  print(table)
   if (!missing(replace_endAB) & length(table) != 54) warning(paste0("Wrong specification for replacement of the last lines: table of length ", length(table)))
   if (!missing(replace_endAB) & length(table) == 54) table <- c(table[1:46], replace_endAB)
   if (!nolabel) table <- table_mean_lines_save(table, mean_above = mean_above, only_mean = only_mean, indep_labels = indep_labels, indep_vars = indep_vars, add_lines = add_lines, file_path = file_path, oecd_latex = oecd_latex, nb_columns = length(indep_vars_included), omit = omit)
@@ -589,7 +590,6 @@ table_mean_lines_save <- function(table, mean_above = T, only_mean = FALSE, inde
   for (l in add_lines) {
     line <- if (length(gregexpr("&", l[2])[[1]]) == nb_columns) l[2] else { if (grepl("\\hline", table[as.numeric(l[1])+0*mean_above-1])) c("\\\\[1ex]", l[2]) else c(" \\\\[1ex] \\hline \\\\[1ex]",  paste("\\multicolumn{", nb_columns + 1, "}{l}{\\textbf{", l[2], "}} \\\\")) }
     table <- c(table[1:(as.numeric(l[1])+0*mean_above-1)], line, table[(as.numeric(l[1])+0*mean_above):length(table)]) }
-  print(table)
   if (length(omit) > 0) {
     omit_constant <- any(c("Constant", "(Intercept)") %in% omit)
     omit <- omit[!omit %in% c("Constant", "(Intercept)")]
