@@ -227,6 +227,9 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   
   if (missing(wave)) wave <- "full"
   e <- relabel_and_rename(e, country = country, wave = wave)
+  all_na <- c()
+  for (v in 1:ncol(e)) if (all(is.na(e[[v]])) & is.na(names(e)[[v]])) all_na <- c(all_na, v)
+  e <- e[, setdiff(1:ncol(e), all_na)]
   
   print(paste(length(which(e$excluded=="QuotaMet")), "QuotaMet"))
   e$finished[e$excluded=="QuotaMet"] <- "False" # To check the number of QuotaMet that shouldn't have incremented the quota, comment this line and: decrit(e$each_strate[e$exclu=="QuotaMet" & e$csp=="Employé" & !grepl("2019-03-04 07", e$date)])
@@ -453,7 +456,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$race[e$race_white==T & e$race_asian == FALSE & e$race_native == FALSE] <- "White only"
     e$race[e$race_hispanic==T] <- "Hispanic"
     e$race[e$race_black==T] <- "Black"
-    e$race <- relevel(as.factor(e$race), "White only")
+    if (any(e$race == "White only")) e$race <- relevel(as.factor(e$race), "White only")
     label(e$race) <- "race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08"
   }
 
@@ -584,8 +587,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       temp[is.na(e[[v]])] <- NA
       e[[v]] <- as.item(temp, labels = structure(c(-2,-1,1,2), names = text_importance), #sub(" important", "", text_importance)), 
                         missing.values=c(NA), annotation=Label(e[[v]]))    
-      e$branch_gcs_perception[!is.na(e$gcs_field)] <- "field"
+      e$branch_gcs_perception <- "field"
       e$branch_gcs_perception[!is.na(e[[v]])] <- "gcs_important"
+      if (country == "EU") e$branch_gcs_field <- e$branch_gcs_perception == "field"
       label(e$branch_gcs_perception) <- "branch_gcs_perception: field/gcs_important/NA Whether the perception of the global climate scheme is asked as a matrix 'gcs_important' or an entry field 'field'"
     }
     
@@ -784,7 +788,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     
     if ("branch_gcs_info" %in% names(e)) {
       for (m in c("info", "nothing", "field", "important")) e$branch_gcs[!is.na(e[[paste0("branch_gcs_", m)]])] <- m
-      e$branch_gcs <- relevel(as.factor(e$branch_gcs), "nothing")
+      for (m in c("info", "nothing", "field", "important")) e[[paste0("branch_gcs_", m)]] <- !is.na(e[[paste0("branch_gcs_", m)]])
+      e$branch_gcs_perception <- e$branch_gcs <- relevel(as.factor(e$branch_gcs), "nothing")
       label(e$branch_gcs) <- "branch_gcs: info/nothing/field/important Whether gcs/nr_support is preceded by the info on the actual support, nothing, gcs_field or variables_gcs_important."
     }
     
@@ -927,10 +932,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     # End Sub
     
     if ("gcs_field" %in% names(e)) {
-      gcs_field_names <<- c("worrying / should act" = "worry")
-      gcs_field_names_names <<- names(gcs_field_names)
-      names(gcs_field_names_names) <<- gcs_field_names
-      var_gcs_field_names <<- paste0("gcs_field_", gcs_field_names)
+      gcs_field_names <<- c("pro", "con", "support", "oppose", "dont_know", "unclassifiable", "misunderstands_gcs", "environment", "tax_redistribution", "misunderstands_question", "difficult_agreement", "difficult_implement", "cost",  "poorest_humans") # "climate_denier", "copy_paste", 
+      # gcs_field_names_names <<- names(gcs_field_names)
+      # names(gcs_field_names_names) <<- gcs_field_names
+      variables_gcs_field_names <<- paste0("gcs_field_", gcs_field_names)
       e$gcs_field_english <- e$gcs_field
       recode_gcs_field <- list()
       split <- if (country %in% c("US1", "US2")) country else countries_EU
@@ -939,26 +944,33 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
         else if (file.exists(paste0("../data/fields/", i, "en.xlsm"))) recode_gcs_field[[i]] <- read.xlsx(paste0("../data/fields/", i, "en.xlsm"), sheet = "GCS", rowNames = T, sep.names = " ", na.strings = c(), skipEmptyCols = F)
         else print("No file found for recoding of gcs_field.")
         indices_i <- if (country %in% c("US1", "US2")) 1:nrow(e) else which(e$country == i)
-        if (file.exists(paste0("../data/fields/", i, "en.xlsm"))) e$gcs_field_english[indices_i] <- names(recode_gcs_field[[i]])
-        row.names(recode_gcs_field[[i]]) <- gcs_field_names[row.names(recode_gcs_field[[i]])]
+        if (file.exists(paste0("../data/fields/", i, "en.xlsm"))) e$gcs_field_english[indices_i] <- as.character(read.xlsx(paste0("../data/fields/", i, "en.xlsm"), sheet = "GCS", rowNames = T, colNames = F, sep.names = " ", na.strings = c(), skipEmptyCols = F)[1,])
+        # row.names(recode_gcs_field[[i]]) <- gcs_field_names[row.names(recode_gcs_field[[i]])]
         recode_gcs_field[[i]] <- as.data.frame(t(recode_gcs_field[[i]]), row.names = indices_i)
         if (i == split[1]) for (v in names(recode_gcs_field[[i]])) e[[paste0("gcs_field_", v)]] <- NA # /!\ There may be a bug if there are NA in gcs_field_names[names(recode_gcs_field[[i]])], which happens when the variable/column names are unknown in gcs_field_names
         for (v in names(recode_gcs_field[[i]])) e[[paste0("gcs_field_", v)]][indices_i] <- recode_gcs_field[[i]][[v]]==1
         # e[[paste0("gcs_field_empty")]][indices_i][recode_gcs_field[[i]][["empty"]]==2] <- 2
       }
+      for (v in names(recode_gcs_field[[i]])) e[[paste0("gcs_field_", v)]][e$branch_gcs_field == T & is.na(e[[paste0("gcs_field_", v)]])] <- FALSE
       
       label(e$gcs_field_english) <- "gcs_field_english: gcs_field translated to English."
       e$length_gcs_field_english <- nchar(e$gcs_field_english)
+      e$length_gcs_field_english[is.na(e$length_gcs_field_english) & e$branch_gcs_field == T] <- 0
       label(e$length_gcs_field_english) <- "length_gcs_field_english: Number of characters in gcs_field_english"
+      e$gcs_field_empty <- e$length_gcs_field_english == 0
+      e$gcs_field_empty[e$branch_gcs_field == FALSE] <- NA
       
-      variables_gcs_field_contains <<- paste0("CC_field_contains_", c("world", "justice"))
-      grep_variables_gcs_field_contains <<- c("international|world|countr|global", "justice|poor|equalit|fair|low-income")
+      variables_gcs_field_contains <<- paste0("gcs_field_contains_", c("pro", "con", "world", "environment", "cost", "poorest", "tax", "redistribution", "implementation", "agreement", "justice", "awareness", "socialism", "bureaucracy", "migration", "children"))
+      grep_variables_gcs_field_contains <<- c("pro |pro:|pros |pros:", "con |con: |cons |cons: ", "international|world|countr|global", "climat|environment|animal|emission|natur", "cost|expensive|higher price|85|inflation", "poor|low-income|700|poverty", "tax", "rich|redistribu", 
+                                              "implement|enforce|polic|monitor", "agree|accept|participat", "justice|equal|fair|low-income", "aware|educat", "socialis|communis", "bureaucra|administr", "migra", "child")
       names(grep_variables_gcs_field_contains) <<- variables_gcs_field_contains
       for (v in variables_gcs_field_contains) {
-        e[[v]] <- grepl(grep_variables_gcs_field_contains[v], e$gcs_field_english)
+        e[[v]] <- grepl(grep_variables_gcs_field_contains[v], e$gcs_field_english, ignore.case = T)
+        e[[v]][e$branch_gcs_field == FALSE] <- NA
         label(e[[v]]) <- paste0(v, ": T/F gcs_field_english contains: ", grep_variables_gcs_field_contains[v])  }
       
       # Impressions:
+      # Most people mention environmental benefits from the GCS or environmental impacts of CC; the majority seems to understand the trade-off between climate protection and costs, though many answers are very short or out-of-topic; effects on the poorest humans are less mentioned
       # US: 
       # DE: 
       # FR: 
@@ -970,37 +982,108 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       # FR: middle class always pays (squeezed middle), we'll need to consume less, avoids migration, future for our children, 
       # ES: better world, better for biodiversity or nature
       # UK: 
-      # TODO (add cost, poorest humans, change doctrine): US2 A-ZZ, UK A-GH
+      # TODO! (add cost, poorest humans, change doctrine): US2 A-ZZ, UK A-GH
       
       # Pépites:
       # US: HI, GI, JX, OL, 3E, 3EG, 3GM, 3GU (!), 3IT, 3JR, 2ED, 2NJ
+      # I'm probably one of the 700 million in poverty and although the numbers on paper look good , no body wins in the end. The rich pay more and for what I'm still gonna be poor . \n  \n The only good I can think of is the worls itself. The life span of our world would be a little greater without all his gas and pollution.
+      # It sounds like this would be a win for typical Americans.
+      # I think it sounds like a good idea to limit climate change, I like the idea that it would benefit the poorest on this planet but it would come at a cost for Americans. They would lose out financially or wouldn't gain anything.  \n  \n I do think that the national redistribution scheme sounds great, but the Global Climate scheme would make it unbalanced.  It would need to be tweaked to the point where both the poorest and Americans equally gain from these schemes.
+      # I think its a good idea to combat climate. However, as an american myself, i do not like this idea.
+      # the scheme is good but the people who would run it would not be reliable
+      # pros are the poorest will benefit and the cons are the rich will be taxed more to pay for it
+      # I feel like the typical american would not benefit so I don't see any pros
+      # I think anything is better then what we're doing now and if the calculations have been done by the properly suited people then it is what we must to to improve the earth for future generations and more importantly the animals.  \n  \n Pros: World doesn't die, people don't die, animals don't die  \n  \n Cons: I might not be able to drive my V8 anymore \n  \n Well .. actually now that I think about that, no I don't approve it. People should be allowed to drive what they want. You can't race or have good memories in an electric car. There's no sentimental value to a electric car, they're not customizable and they're tiny and powerless. Plus there would not be energy stations in the country which means country and rural people couldn't drive.
+      # I don't think there are any pros. You should not force me to suffer in order to help those who cannot help themselves.
+      # I definitely do not support this. It's nice that it helps those in extreme poverty but why should Americans have to suffer. I obviously support working towards reversing climate change but there is no excuse why anyone should have to pay for it. Especially not Americans who are already dealing with horrible inflation. If there was a way to change this where Americans would benefit as well then I'd definitely support it.
+      # I think it’s a good plan, but has no chance of working because no American politician would go for it.
+      # Not sure of all the pros and cons of global climate change - but it is real and needs to be dealt with      # 
+
       # DE: FM, HM, LP, MZ, QH, AKN
+      # Habe nicht soviel Ahnung davon aber die leite die sich mit Politik beschäftigen und beim Bundesrat reden haben auch keine Ahnung
+      # es ist längst überfällig dies zu unternehmen
+      # Ist mir alles zu fremd. Ich kann die Vor- oder Nachteile nicht verstehen. Ich bin für einfacherer Sachen und nicht so was \'weltfremdes\'. Hier werden Arme gegen Reiche ausgespielt. Ich finde, das alles gleich behandelt werden sollen.
+      # Versucht das Klima zu retten, aber dies interessiert mich nicht wirklich, sorry!
+      # Gewinner sind die Menschen (vor allem zukünftige Generationen) da das Klima erhalten bleibt, ebenso alldiejenige auf Nachhaltigkeit setzen. Verlierer sind alldiejenige, die auf fossile Brennstoffe oder hohen CO2-Verbrauch setzen.
+      # Wenn wirklich alle Nationen mitmachen würden   \n Dann wäre es für das Klimaprogramm vorteilhaft. Leider ist das nicht so. Jede Nation sucht ihren Vorteil.
+      # Translated:
+      # Don't have so much idea about it but the leaders who deal with politics and talk at the Bundesrat don't have a clue either
+      # it is long overdue to undertake this
+      # It's all too foreign to me. I can't understand the pros or cons. I am for simpler things and not so what \'weltfremdes\'. Here the poor are pitted against the rich. I think that everything should be treated equally.
+      # Try to save the climate, but this does not really interest me, sorry!
+      # Winners are the people (especially future generations) because the climate is preserved, as well as all those who rely on sustainability. Losers are all those who rely on fossil fuels or high CO2 consumption.
+      # If all nations would really join in \n then it would be beneficial for the climate program. Unfortunately, it is not. Every nation is looking for its advantage.
+      
       # FR: KP, MN, OI, OM, OS, OU, YA,
+      # Pas d'autres alternatives.
+      # C'est important que tout le monde agisse contre le réchauffement climatique
+      # Sauver la planete ça urge
+      # plus de justice sociale mais difficile à mettre en oeuvre
+      # Il aurait supposément l'avantage de limiter l'émission des gaz à effet de serre et l'utilisation des énergies fossiles et d'aider à sortir de l'extrême pauvreté un grand nombre de personnes. Ses inconvénients seraient son caractère contraignant, sanctions économiques pour les pays réfractaires notamment, et la perte financière qu'il représenterait pour des Français comme moi dont le revenu est somme toute très moyen !
+      # Arnaque pour détourner des fond
+      # Il faut convaincre les plus grands pays et les plus grandes industries
+      # Translated:
+      # No other alternatives.
+      # It's important that everyone takes action against global warming
+      # Saving the planet is urgent
+      # More social justice but difficult to implement
+      # It would supposedly have the advantage of limiting greenhouse gas emissions and the use of fossil fuels and of helping to lift a large number of people out of extreme poverty. Its disadvantages would be its constraining character, economic sanctions for the refractory countries in particular, and the financial loss that it would represent for French people like me whose income is quite average!
+      # Scam to divert funds
+      # It is necessary to convince the biggest countries and the biggest industries
+      
       # ES: JD, KA, KD, KU, LO, MW
+      # Pro: intento de que el entorno global no se vaya degradando o por lo menos no tan rapido como lo hace actualmente.\n Contra: muchas personas con ingresos muy altos se opondrian
+      # Que tenemos que colaborar todos los países del mundo  , si no es asi nuestro futuro va a ser complicado
+      # Los fondos se distorsionan en tareas no prioritarias.\n La lucha contra el cambio climático no la pueden pagar los ciudadanos
+      # me parece bien tal como esta espresado en el enunciado
+      # No me gusta la GLOBALIZACION. Siempre ganan los ricos y pierdes los pobres.
+      # Tenemos que luchar contra el cambio climático sin ni siquiera pensar en los contras que pueda haber.
+      # Translated:
+      # Pro: attempt to keep the global environment from degrading or at least not as fast as it is currently degrading.
+      # That we have to collaborate with all the countries of the world, otherwise our future will be complicated.
+      # Funds are distorted in non-priority tasks. The fight against climate change cannot be paid by the citizens.
+      # I'm fine with it as it is expressed in the statement.
+      # I don't like GLOBALIZATION. It's always a win-win for the rich and a lose-lose for the poor.
+      # We have to fight climate change without even thinking about the cons.
+      
       # UK: M, GX, KC, KD, LE, LL, OI, PW, ZR  
+      # The normal person will see no benefit from the scheme
+      # I think we could do alot more than we are doing but if the education structure is not there how is it possible, also alot of people don't really care about our climate change problems or care to think about it and just live there lives everyday.
+      # Pro: this is a matter of extreme urgency; action needed now!\n Con: idiot climate change deniers will make a noise!
+      # In an ideal world it sounds fine and would be a massive boost for some of the poorest people in the world. \n In reality however it's a pipe dream and stands zero chance of even coming close to achieving. \n There is always going to be a large part of the world cut off from the rest and in abject poverty.
+      # It is of benefit to many and might well encourage people to switch from fossil fuels.\n However it is a great excuse for the fossil fuel producers to hike prices
+      # We need to do something and we have to suffer short term pain
+      # Pros be good for the world, cons cost
+      # Assisting 700 million of the world's poorest must be a aim worth striving for. Those who earn the most should pay the most tax. Majority of British people would not lose out financially so all good
+      # Will never get implemented as too many rich and or powerful people will stop it for their own interests
     }
     
     if (country == "US2") { # poverty_field
-      poverty_field_names <<- c("worrying / should act" = "worry")
-      poverty_field_names_names <<- names(poverty_field_names)
-      names(poverty_field_names_names) <<- poverty_field_names
-      var_poverty_field_names <<- paste0("poverty_field_", poverty_field_names)
+      poverty_field_names <<- c("give_money", "education", "food", "jobs", "unspecified_aid", "against_help", "tax", "other", "dont_know")
+      # poverty_field_names_names <<- names(poverty_field_names)
+      # names(poverty_field_names_names) <<- poverty_field_names
+      variables_poverty_field_names <<- paste0("poverty_field_", poverty_field_names)
       if (file.exists(paste0("../data/fields/US2.xlsm"))) recode_poverty_field <- read.xlsx(paste0("../data/fields/US2.xlsm"), sheet = "poverty", rowNames = T, sep.names = " ", na.strings = c(), skipEmptyCols = F)
       else print("No file found for recoding of poverty_field.")
-      row.names(recode_poverty_field) <- poverty_field_names[row.names(recode_poverty_field)]
+      # row.names(recode_poverty_field) <- poverty_field_names[row.names(recode_poverty_field)]
       recode_poverty_field <- as.data.frame(t(recode_poverty_field), row.names = 1:nrow(e))
       # for (v in names(recode_poverty_field)) e[[paste0("poverty_field_", v)]] <- NA # /!\ There may be a bug if there are NA in poverty_field_names[names(recode_poverty_field)], which happens when the variable/column names are unknown in poverty_field_names
-      for (v in names(recode_poverty_field)) e[[paste0("poverty_field_", v)]]<- recode_poverty_field[[v]]==1
+      for (v in names(recode_poverty_field)) e[[paste0("poverty_field_", v)]] <- recode_poverty_field[[v]]==1
+      for (v in names(recode_poverty_field)) e[[paste0("poverty_field_", v)]][e$branch_poverty_field == T & is.na(e[[paste0("poverty_field_", v)]])] <- FALSE
       # e[[paste0("poverty_field_empty")]][indices_i][recode_poverty_field[["empty"]]==2] <- 2
       
       e$length_poverty_field <- nchar(e$poverty_field)
+      e$length_poverty_field[is.na(e$length_poverty_field) & e$branch_poverty_field == T] <- 0
       label(e$length_poverty_field) <- "length_poverty_field_english: Number of characters in poverty_field_english"
+      e$poverty_field_empty <- e$length_poverty_field == 0
+      e$poverty_field_empty[e$branch_poverty_field == FALSE] <- NA
       
-      variables_poverty_field_contains <<- paste0("poverty_field_contains_", c("world", "justice"))
-      grep_variables_poverty_field_contains <<- c("international|world|countr|global", "justice|poor|equalit|fair|low-income")
+      variables_poverty_field_contains <<- paste0("poverty_field_contains_", c("justice", "education", "corruption", "money", "help", "job", "tax", "health", "food", "world", "wage"))
+      grep_variables_poverty_field_contains <<- c("justice|poor|equalit|fair|low-income", "train|teach|educat", "ruler|leader|democracy|corrupt", "money|financ", "help|aid", "job", "tax", "health|medic", "food", "international|world|global", "wage")
       names(grep_variables_poverty_field_contains) <<- variables_poverty_field_contains
       for (v in variables_poverty_field_contains) {
-        e[[v]] <- grepl(grep_variables_poverty_field_contains[v], e$poverty_field)
+        e[[v]] <- grepl(grep_variables_poverty_field_contains[v], e$poverty_field, ignore.case = T)
+        e[[v]][e$branch_poverty_field == FALSE] <- NA
         label(e[[v]]) <- paste0(v, ": T/F poverty_field_english contains: ", grep_variables_poverty_field_contains[v])  }
       # Impressions:
       # Give more money is the most common answered, followed by "teach them how to fish", i.e. providing education, then comes providing in-king assistance (food, healthcare...), and finally: help poor Americans first
@@ -1124,17 +1207,18 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
   label(e$wrong_language) <- "wrong_language: T/F The language does not correspond to the respondent's country (including Spanish in the U.S.)."
   }
   
-  count_IP <- rle(as.vector(sort(e$ip)))
-  e$number_same_ip <- count_IP$lengths[match(e$ip, count_IP$values)]
-  e$duplicate_ip <- e$number_same_ip > 1
-  label(e$number_same_ip) <- "number_same_ip: Number of respondents with the same IP."
-  label(e$duplicate_ip) <- "duplicate_ip: T/F The respondent's IP is used by other respondents."
+  # count_IP <- rle(as.vector(sort(e$ip)))
+  # e$number_same_ip <- count_IP$lengths[match(e$ip, count_IP$values)]
+  # e$duplicate_ip <- e$number_same_ip > 1
+  # label(e$number_same_ip) <- "number_same_ip: Number of respondents with the same IP."
+  # label(e$duplicate_ip) <- "duplicate_ip: T/F The respondent's IP is used by other respondents."
   
   e$n <- paste0(country, ifelse(wave == "pilot", "p_", "_"), 1:nrow(e))
   
   print(paste("convert: success", country))
   return(e)
 }
+
 
 ##### Run #####
 

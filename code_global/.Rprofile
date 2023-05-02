@@ -1377,7 +1377,7 @@ heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T, perc
   par(xpd=TRUE)
   return(corrplot(data, method='color', col = if(colors %in% c('RdBu', 'BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdYlBu')) COL2(colors) else COL1(colors), tl.cex = 1.3, na.label = "NA", number.cex = 1.3, mar = c(1,1,1.3,3), cl.pos = 'n', col.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = (proportion | percent), type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale # cex # mar ...1.1
 }
-heatmap_table <- function(vars, labels = vars, data = e, along = "country_name", special = c(), conditions = c("", ">= 1", "/"), on_control = FALSE, alphabetical = T, export_xls = T, filename = "", sort = FALSE, folder = NULL, weights = T) {
+heatmap_table <- function(vars, labels = vars, data = e, along = "country_name", special = c(), conditions = c("", ">= 1", "/"), on_control = FALSE, alphabetical = T, export_xls = T, filename = "", sort = FALSE, folder = NULL, weights = T, remove_na = T, transpose = FALSE) {
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
   e <- data
   if (on_control) e <- e[e$treatment=="None",]
@@ -1409,7 +1409,7 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     } else if (c %in% c('non-OECD', 'Non-OECD', 'non-oecd')) { df_c <- e[which(!oecd[e$country]),]
     } else if (c %in% c('high-income', 'High-income', 'High income')) { df_c <- e[which(high_income[e$country]),]
     } else if (c %in% c('middle-income', 'Middle-income', 'Middle income')) { df_c <- e[which(!high_income[e$country]),]
-    } else if (c %in% c('Europe', 'Europe4')) { df_c <- e[e$continent != "US",]
+    } else if (c %in% c('Europe', 'Europe4')) { df_c <- e[e$continent == "Europe",]
     } else if (c %in% countries) { df_c <- e[e$country == c,]
     } else if (c %in% c("Eu", "Eu4", "EU4", "EU")) { df_c <- e[e$continent == "Eu4",] 
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
@@ -1428,6 +1428,8 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
   }
   row.names(table) <- labels
   if (sort) table <- table[order(-table[,1]),]
+  if (remove_na) table <- table[sapply(1:nrow(table), function(i) { !all(is.na(table[i,])) }), sapply(1:ncol(table), function(j) { !all(is.na(table[,j])) }), drop = FALSE]
+  if (transpose) table <- t(table)
   if (export_xls) save_plot(table, filename = sub("figures", "xlsx", paste0(folder, filename)))
   return(table)
 }
@@ -1466,7 +1468,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
         for (i in 1:length(vars)) if (is.logical(data[[vars[i]]])) temp[i, ] <- pos[i, ]
       } else {  temp <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights) }
       if (!missing(labels_along) & length(labels_along) == ncol(temp)) colnames(temp) <- labels_along
-      if (sort) temp <- temp[order(-temp[,1]),]
+      if (sort) temp <- temp[order(-temp[,1]),, drop = FALSE]
       if (export_xls) save_plot(as.data.frame(temp), filename = sub("figures", "xlsx", paste0(folder, filename)))
       heatmap_plot(temp, proportion = ifelse(is.null(proportion), !cond %in% c("median", ""), proportion), percent = percent, nb_digits = nb_digits, colors = colors)
       save_plot(filename = paste0(folder, filename), width = width, height = height, format = format, trim = trim)

@@ -276,6 +276,8 @@ labels_vars <- c(
   "branch_donationOwn nation:vote_factorPNR/Non-voter" = "Poor in own country $\\times$ Vote: PNR/Non-voter",
   "branch_donationOwn nation:vote_factorFar right" = "Poor in own country $\\times$ Vote: Far right"
 )
+for (v in c(variables_gcs_field_names, variables_poverty_field_names, "gcs_field_empty", "poverty_field_empty")) labels_vars[v] <-sub("dont", "don't", gsub("_", " ", gsub(".*_field_", "", v)))
+for (v in c(variables_gcs_field_contains, variables_poverty_field_contains)) labels_vars[v] <-  paste0(gsub(".*_", "", v), ": ", gsub(".*contains: ", "", Label(all[[v]])))
 for (v in c(variables_donation, variables_points, variables_belief, variables_foreign_aid_amount, "share_policies_supported")) labels_vars[paste0(v, "_agg")] <- labels_vars[v]
 for (v in intersect(names(all), names(labels_vars))) { # intersect(c(socio_demos, socio_demos_us), names(all)), 
   if (grepl("TRUE / FALSE", Levels(all[[v]])[1])) labels_vars[paste0(v, "TRUE")] <- labels_vars[v]
@@ -415,6 +417,10 @@ heatmaps_defs <- list(
   "understood_score" = list(vars = variables_understood[4], conditions = c("")),
   "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
+  "gcs_field_contains" = list(vars = variables_gcs_field_contains[1:10], conditions = ">= 1", sort = T),
+  "gcs_field" = list(vars = c(variables_gcs_field_names, "gcs_field_empty"), conditions = ">= 1", sort = T),
+  "poverty_field_contains" = list(vars = variables_poverty_field_contains[1:9], conditions = ">= 1", sort = T),
+  "poverty_field" = list(vars = c(variables_poverty_field_names, "poverty_field_empty"), conditions = ">= 1", sort = T),
   "petition_only" = list(vars = variables_petition[1:2], conditions = ">= 1"),
   "petition" = list(vars = c("petition_gcs", "gcs_support", "petition_nr", "nr_support"), conditions = ">= 1"),
   "petition_gcs" = list(vars = c("petition_gcs", "gcs_support"), conditions = ">= 1"),
@@ -705,6 +711,8 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 3]], 
 heatmap_multiple(heatmaps_defs[c("petition", "belief_all")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_gcs", "petition_nr")], weights = T)
 heatmap_multiple(heatmaps_defs[c("conjoint_all", "conjoint")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("gcs_field")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("gcs_field_contains", "poverty_field_contains", "poverty_field")], weights = T) 
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb_vars_heatmaps >= 4][1]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb_vars_heatmaps >= 4]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 8 & nb_vars_heatmaps >= 5][1]], weights = T)
