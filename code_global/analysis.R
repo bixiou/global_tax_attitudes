@@ -278,11 +278,18 @@ decrit("nr_support", data = e)
 decrit("gcs_support", data = e)
 summary(lm(gcs_support ~ branch_gcs, data = us2, weights = weight))
 summary(lm(reg_formula("gcs_support", c("branch_gcs", socio_demos_us)), data = us2, weights = weight))
+summary(lm(reg_formula("gcs_support", c("branch_gcs", covariates[-1])), data = us2, weights = weight))
 summary(lm(gcs_support ~ branch_gcs, data = usp))
 summary(lm(gcs_support ~ branch_gcs, data = merge(us2, us2p, all = T)))
 summary(lm(nr_support ~ branch_gcs, data = e, weights = weight))
 summary(lm(gcs_support ~ branch_gcs * political_affiliation, data = e))
 summary(lm(gcs_support ~ branch_gcs * (political_affiliation == "Republican"), data = e))
+desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
+              dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, 
+              add_lines = list(c(18, "Includes controls &  & \\checkmark &  & \\checkmark \\\\")))
+
+desc_table("gcs_support", filename = "swing_state", data = us1, indep_vars = c("swing_state", "swing_state_5pp"), indep_vars_included = list("swing_state", "swing_state_5pp"), model.numbers = T, keep = c("Constant", "swing_state", "swing_state_5pp"), omit = c(), mean_above = F, #!mean_above,
+           dep.var.labels = "Global Climate Scheme", dep.var.caption = c("Support"), digits= 3, robust_SE = T, only_mean = F, save_folder = "../tables/US1/", nolabel = F)
 
 
 ##### Wealth tax #####
@@ -417,3 +424,39 @@ binconf(sum(us2$weight[us2$gcs_support == 'Yes' & us2$branch_gcs %in% c('field',
 us3 <- us2[us2$branch_gcs == 'important', ]
 reweighted_estimate("gcs_support", "US3", verbose = T)
 rm(us3)
+usa <- merge(us2, us2p, all = T)
+binconf(sum(us2$gcs_support == 'Yes' & us2$branch_gcs == 'important'), sum(us2$branch_gcs == 'important'))
+binconf(sum(usa$gcs_support == 'Yes' & usa$branch_gcs == 'important'), sum(usa$branch_gcs == 'important'))
+binconf(sum(usa$gcs_support == 'Yes' & usa$branch_gcs %in% c('important', 'field')), sum(usa$branch_gcs %in% c('important', 'field')))
+rm(usa)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

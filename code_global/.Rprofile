@@ -494,7 +494,7 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
 #'   if (return) return(output)
 #' }
 reg_formula <- function(dep_var, indep_vars) return(as.formula(paste(dep_var, "~", paste(indep_vars, collapse = '+'))))
-desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = NULL, weights = data$weight, add_lines = NULL, model.numbers = T, #!mean_above,
+desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control_variables, indep_labels = NULL, weights = data$weight, add_lines = NULL, model.numbers = T, multicolumn = T, #!mean_above,
                        save_folder = "../tables/", dep.var.labels = NULL, dep.var.caption = c(""), digits= 3, mean_control = FALSE, logit = FALSE, atmean = T, robust_SE = T, omit = c("Constant", "Race: Other"),
                        mean_above = T, only_mean = F, keep = indep_vars, nolabel = F, indep_vars_included = T, no.space = T, print_regs = FALSE, replace_endAB = NULL, oecd_latex = FALSE) {
   # Wrapper for stargazer
@@ -503,7 +503,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   # (in)dep_vars accept expressions of type : var_name expression (e.g. "equal_quota %in% 0:1", but not "equal_quota == 0 | equal_quota==1)
   # /!\ Interaction terms should be added with :, not *. There is a bug if the interaction terms are not at the end of indep_vars, also a bug if the unused indep variables in the first regression are not at the end
   # /!\ To appear in the table, they should be written without parentheses and with due space, e.g. "var > 0" and not "(var>0)"
-  # indep_vars is the list of potential covariates, they are by default all included by
+  # indep_vars is the vector of potential covariates, they are by default all included by
   # indep_vars_included can be set to a list (of length the number of columns) of booleans or variable names to specify which covariates to include in each column
   # keep is a vector of regular expressions allowing to specify which covariates to display (by default, all except the Constant)
   # mean_above=T displays the mean of the dependant var (for those which treatment=="control" if mean_control = T) at top rather than bottom of Table (only_mean=T only displays that)
@@ -521,6 +521,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   for (i in seq_along(dep_vars)) {
     df <- if (is.data.frame(data)) data else data[[i]]
     if (is.character(weights) & !is.data.frame(data)) weights <- df[[weights]]
+    if (is.character(indep_vars_included[[i]])) indep_vars_included[[i]] <- indep_vars %in% indep_vars_included[[i]]
     formula_i <- as.formula(paste(dep_vars[i], "~", paste("(", indep_vars[indep_vars_included[[i]] & covariates_with_several_values(data = df, covariates = indep_vars)], ")", collapse = ' + ')))
     if (logit[i]) {
       models[[i]] <- glm(formula_i, data = df, family = binomial(link='logit'))
@@ -539,14 +540,15 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
       means[i] <- round(wtd.mean(eval(parse(text = paste( "df$", parse(text = dep_vars[i]), sep=""))), weights = weights, na.rm = T), d = digits)
       mean_text <- "Mean"
     } else {
-      means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$treatment=='None']", sep=""))), weights = weights[df$treatment=='None'], na.rm = T), d = digits)
+      # means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$treatment=='None']", sep=""))), weights = weights[df$treatment=='None'], na.rm = T), d = digits)
+      means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$branch_gcs=='nothing']", sep=""))), weights = weights[df$branch_gcs=='nothing'], na.rm = T), d = digits)
       mean_text <- "Control group mean"
     }
   }
   if (missing(filename)) file_path <- NULL
   else file_path <- paste0(save_folder, filename, ".tex")
   keep <- gsub("(.*)", "\\\\\\Q\\1\\\\\\E", sub("^\\(", "", sub("\\)$", "", keep)))
-  if (exists("labels_vars") & missing(indep_labels)) {
+  if (exists("labels_vars") & is.null(indep_labels)) {
     if (!is.data.frame(data)) data <- data[[1]]
     model_total <- lm(as.formula(paste(dep_vars[1], "~", paste("(", indep_vars[covariates_with_several_values(data = data, covariates = indep_vars)], ")", collapse = ' + '))), data = data)
     indep_labels <- create_covariate_labels(names(model_total$coefficients)[-1], regressors_names = labels_vars, keep = keep, omit = "Constant")
@@ -562,11 +564,12 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   }
   if (only_mean) mean_above <- T
   table <- do.call(stargazer, c(models, list(out=file_path, header=F, model.numbers = model.numbers,
-                                             covariate.labels = if (nolabel) NULL else indep_labels, add.lines =list(c(mean_text, means)),
-                                             coef = coefs, se = SEs,
+                                             covariate.labels = if (nolabel) NULL else latexify(indep_labels, doublebackslash = FALSE), add.lines = if (!"\\QConstant\\E" %in% keep) list(c(mean_text, means)) else NULL,
+                                             coef = coefs, se = SEs, 
                                              dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
-                                             multicolumn = F, float = F, keep.stat = c("n", "rsq"), omit.table.layout = "n", keep=keep, no.space = no.space
+                                             multicolumn = multicolumn, float = F, keep.stat = c("n", "rsq"), omit.table.layout = "n", keep=keep, no.space = no.space
   )))
+  print(table)
   if (!missing(replace_endAB) & length(table) != 54) warning(paste0("Wrong specification for replacement of the last lines: table of length ", length(table)))
   if (!missing(replace_endAB) & length(table) == 54) table <- c(table[1:46], replace_endAB)
   if (!nolabel) table <- table_mean_lines_save(table, mean_above = mean_above, only_mean = only_mean, indep_labels = indep_labels, indep_vars = indep_vars, add_lines = add_lines, file_path = file_path, oecd_latex = oecd_latex, nb_columns = length(indep_vars_included), omit = omit)
@@ -576,18 +579,17 @@ multi_grepl <- function(patterns, vec) return(1:length(vec) %in% sort(unlist(lap
 table_mean_lines_save <- function(table, mean_above = T, only_mean = FALSE, indep_vars = NULL, indep_labels = indep_vars, add_lines = NULL, file_path = NULL, oecd_latex = FALSE, nb_columns = 2, omit = c("Constant", "Gender: Other", "econ_leaningPNR", "Race: Other")) {
   if (mean_above) {
     mean_line <- regmatches(table, regexpr('(Mean|Control group mean) &[^\\]*', table))
-    first_lab <- ifelse(missing(indep_labels), latexify(indep_vars[1]), paste0(latexify(indep_labels[1]), " &")) # was: latexify(ifelse(missing(indep_labels), indep_vars[1], indep_labels[1]))
+    first_lab <- ifelse(missing(indep_labels), latexify(indep_vars[1], doublebackslash = FALSE), paste0(latexify(indep_labels[1], doublebackslash = FALSE), " &")) # was: latexify(ifelse(missing(indep_labels), indep_vars[1], indep_labels[1]))
     if (only_mean) { # removes coefs and leaves only the mean in the table
       table <- write_clip(gsub(paste(first_lab, ".*"), paste(mean_line, '\\\\\\\\'), table), collapse=' ')
       table <- table[c(1:grep('(Mean|Control group mean) &[^\\]*', table)[1], (length(table)-3):length(table))]
     } else {
       table <- gsub('(Mean|Control group mean) &.*', '', table)
-      table <- c(table[1:(grep(first_lab, table)[1]-1)], paste(mean_line, '\\\\ \\hline \\\\[-1.8ex]'), table[grep(first_lab, table)[1]:length(table)]) }
+      table <- c(table[1:(grep(first_lab, table, fixed = T)[1]-1)], paste(mean_line, '\\\\ \\hline \\\\[-1.8ex]'), table[grep(first_lab, table, fixed = T)[1]:length(table)]) } # Before: fixed = F
   }
   for (l in add_lines) {
     line <- if (length(gregexpr("&", l[2])[[1]]) == nb_columns) l[2] else { if (grepl("\\hline", table[as.numeric(l[1])+0*mean_above-1])) c("\\\\[1ex]", l[2]) else c(" \\\\[1ex] \\hline \\\\[1ex]",  paste("\\multicolumn{", nb_columns + 1, "}{l}{\\textbf{", l[2], "}} \\\\")) }
     table <- c(table[1:(as.numeric(l[1])+0*mean_above-1)], line, table[(as.numeric(l[1])+0*mean_above):length(table)]) }
-  print(table)
   if (length(omit) > 0) {
     omit_constant <- any(c("Constant", "(Intercept)") %in% omit)
     omit <- omit[!omit %in% c("Constant", "(Intercept)")]
@@ -1377,7 +1379,7 @@ heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T, perc
   par(xpd=TRUE)
   return(corrplot(data, method='color', col = if(colors %in% c('RdBu', 'BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdYlBu')) COL2(colors) else COL1(colors), tl.cex = 1.3, na.label = "NA", number.cex = 1.3, mar = c(1,1,1.3,3), cl.pos = 'n', col.lim = color_lims, number.digits = nb_digits, p.mat = p.mat, sig.level = 0.01, diag=diag, tl.srt=35, tl.col='black', insig = 'blank', addCoef.col = 'black', addCoefasPercent = (proportion | percent), type=type, is.corr = F) ) #  cl.pos = 'n' removes the scale # cex # mar ...1.1
 }
-heatmap_table <- function(vars, labels = vars, data = e, along = "country_name", special = c(), conditions = c("", ">= 1", "/"), on_control = FALSE, alphabetical = T, export_xls = T, filename = "", sort = FALSE, folder = NULL, weights = T) {
+heatmap_table <- function(vars, labels = vars, data = e, along = "country_name", special = c(), conditions = c("", ">= 1", "/"), on_control = FALSE, alphabetical = T, export_xls = T, filename = "", sort = FALSE, folder = NULL, weights = T, remove_na = T, transpose = FALSE) {
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
   e <- data
   if (on_control) e <- e[e$treatment=="None",]
@@ -1409,7 +1411,7 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     } else if (c %in% c('non-OECD', 'Non-OECD', 'non-oecd')) { df_c <- e[which(!oecd[e$country]),]
     } else if (c %in% c('high-income', 'High-income', 'High income')) { df_c <- e[which(high_income[e$country]),]
     } else if (c %in% c('middle-income', 'Middle-income', 'Middle income')) { df_c <- e[which(!high_income[e$country]),]
-    } else if (c %in% c('Europe', 'Europe4')) { df_c <- e[e$continent != "US",]
+    } else if (c %in% c('Europe', 'Europe4')) { df_c <- e[e$continent == "Europe",]
     } else if (c %in% countries) { df_c <- e[e$country == c,]
     } else if (c %in% c("Eu", "Eu4", "EU4", "EU")) { df_c <- e[e$continent == "Eu4",] 
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
@@ -1428,6 +1430,8 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
   }
   row.names(table) <- labels
   if (sort) table <- table[order(-table[,1]),]
+  if (remove_na) table <- table[sapply(1:nrow(table), function(i) { !all(is.na(table[i,])) }), sapply(1:ncol(table), function(j) { !all(is.na(table[,j])) }), drop = FALSE]
+  if (transpose) table <- t(table)
   if (export_xls) save_plot(table, filename = sub("figures", "xlsx", paste0(folder, filename)))
   return(table)
 }
@@ -1466,7 +1470,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
         for (i in 1:length(vars)) if (is.logical(data[[vars[i]]])) temp[i, ] <- pos[i, ]
       } else {  temp <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights) }
       if (!missing(labels_along) & length(labels_along) == ncol(temp)) colnames(temp) <- labels_along
-      if (sort) temp <- temp[order(-temp[,1]),]
+      if (sort) temp <- temp[order(-temp[,1]),, drop = FALSE]
       if (export_xls) save_plot(as.data.frame(temp), filename = sub("figures", "xlsx", paste0(folder, filename)))
       heatmap_plot(temp, proportion = ifelse(is.null(proportion), !cond %in% c("median", ""), proportion), percent = percent, nb_digits = nb_digits, colors = colors)
       save_plot(filename = paste0(folder, filename), width = width, height = height, format = format, trim = trim)
