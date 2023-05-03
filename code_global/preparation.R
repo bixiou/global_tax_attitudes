@@ -606,6 +606,12 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                           # works: c("[Country] interest, not global justice", "[Country] interest, with global justice", "Indifferent or don't know", "Global justice, with [Country] interest", "Global justice, not [Country] interest") 
                                                         # too long: c("[Country] interest, even against global justice", "[Country] interest, respecting global justice", "Indifferent or don't know", "Global justice, respecting [Country] interest", "Global justice, even against [Country] interest")
                                                         ), missing.values=c(NA), annotation=Label(e$negotiation_original))  
+      e$negotiation_only_country <- e$negotiation == -2
+      e$negotiation_country_respecting <- e$negotiation == -1
+      e$negotiation_global_before <- e$negotiation > 0
+      label(e$negotiation_only_country) <- "negotiation_only_country: Respondents favors Only [Country] interest in negotiation."
+      label(e$negotiation_country_respecting) <- "negotiation_country_respecting: Respondents favors [Country] then global in negotiation."
+      label(e$negotiation_global_before) <- "negotiation_global_before: Respondents favors Global then [Country] or Only global justice in negotiation."
     }
     
     if ("foreign_aid_preferred_info" %in% names(e)) {
@@ -664,6 +670,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$nr_understood <- e$nr_win_lose == "Typical win, richest lose"
       label(e$nr_understood) <- "nr_understood: T/F Correct answer to nr_win_lose (in national redistribution, typical people win, richest lose)."
     }
+    
+    if ("gcs_support" %in% names(e)) e$gcs_support_neg <- 2*e$gcs_support - 1
     
     if ("gcs_win_lose" %in% names(e)) {
       e$gcs_win_lose[e$gcs_win_lose == "Typical Americans would lose and the 700 million poorest humans would lose."] <- "Typical lose, poorest lose"
@@ -801,9 +809,11 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       temp <- 0*grepl("myself", e$group_defended) + 1*grepl("relatives", e$group_defended) + 2*grepl("town|State", e$group_defended) + 3*grepl("religion", e$group_defended) + 4*grepl("Americans", e$group_defended) + 5*grepl("European", e$group_defended) + 6*grepl("Humans", e$group_defended) + 7*grepl("animals", e$group_defended)
       e$group_defended <- as.item(temp, labels = structure(0:7, names = c("Family and self", "Relatives", "Region, U.S. State or town", "Culture or religion", "Fellow citizens", "Europeans", "Humans", "Sentient beings")), annotation = Label(e$group_defended))
       e$nationalist <- e$group_defended == 4
+      e$egoistic <- e$group_defended == 0
       e$universalist <- e$group_defended > 5
       label(e$nationalist) <- "nationalist: T/F Defends one's nation / fellow citizens when one votes (cf. group_defended)."
       label(e$universalist) <- "universalist: T/F Defends humans or sentient beings (humans and animals) when one votes (cf. group_defended)."
+      label(e$egoistic) <- "egoistic: T/F Defends one's self and family when one votes (cf. group_defended)."
       e$group_defended_agg <- sign(e$group_defended - 4)
       e$group_defended_agg[e$group_defended == 0] <- -2
       e$group_defended_agg[e$group_defended == 5] <- 0
@@ -864,6 +874,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
       major_candidates <<- major_candidates
       minor_candidates <<- minor_candidates
+      
+      temp <- as.character(e$vote)
+      temp[grepl("ight", temp)] <- "Right"
+      e$continent_vote <- paste(e$continent, temp)
     }
 
     if ("vote_us_voters" %in% names(e)) {

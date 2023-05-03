@@ -77,6 +77,7 @@ labels_vars <- c(
   "gcs_support_branch_petition_gcs" = "(Comparable) support for the GCS",
   "nr_support_branch_petition_nr" = "(Comparable) support for NR",
   "gcs_support_100" = "Support for the GCS",
+  "gcs_support_neg" = "Support for the GCS",
   "nr_support" = "National redistribution scheme (NR)",
   "nr_support_100" = "Support for NR",
   "cgr_support" = "National climate policy + GCS + NR", # "Support for C+G+R",
@@ -162,7 +163,7 @@ labels_vars <- c(
   "foreign_aid_reduce_how_corporations" = "Lower corporate income tax rate",
   "foreign_aid_reduce_how_income_tax" = "Lower personal income tax rates",
   "foreign_aid_reduce_how_deficit" = "Lower public deficit",
-  "foreign_aid_raise_support" = "Should [Country]'s foreign aid increase?",
+  "foreign_aid_raise_support" = "[Country]'s foreign aid should be increased",
   "foreign_aid_condition_human_rights" = "That recipient countries comply with climate targets and human rights",
   "foreign_aid_condition_fight_migration" = "That recipient countries cooperate to fight illegal migrations",
   "foreign_aid_condition_all_high_income" = "That other high-income countries also increase their foreign aid",
@@ -178,6 +179,9 @@ labels_vars <- c(
   "petition_gcs" = "Petition for the GCS",
   "petition_nr" = "Petition for NR",
   "petition" = "Petition (any)",
+  "negotiation_country_respecting" = "Favors [Country]'s interests restrained by global justice",
+  "negotiation_global_before" = "Favors global justice, restrained or not by [Country]'s interests",
+  "negotiation_only_country" = "Favors [Country]'s interests even against global justice",
   "donation_charities" = "Donation to charities",
   "interested_politics" = "Interested in politics",
   "group_defended" = "Group defended when voting",
@@ -198,9 +202,9 @@ labels_vars <- c(
   "vote_es_non_voters" = "Vote (non voters)",
   "vote_uk_voters" = "Vote (voters)",
   "vote_uk_non_voters" = "Vote (non voters)",
-  "problem_inequality" = "Income inequality in [Country]",
-  "problem_climate" = "Climate change",
-  "problem_poverty" = "Global poverty",
+  "problem_inequality" = "Income inequality in [Country] is a problem",
+  "problem_climate" = "Climate change is a problem",
+  "problem_poverty" = "Global poverty is a problem",
   "points_econ1" = "econ1",
   "points_econ2" = "econ2: [Higher minimum wage] (DE: Bürgerversicherung)",
   "points_econ3" = "econ3",
@@ -250,6 +254,7 @@ labels_vars <- c(
   "nationalist" = "Nationalist",
   "universalist" = "Universalist",
   "individualist" = "Individualist",
+  "egoistic" = "Individualist",
   "woman" = "Gender: Woman",
   "man" = "Gender: Man",
   "ets2_equal_cash_support" = "ETS2 with equal cash transfer (105€/year for each European)",
@@ -314,6 +319,10 @@ labels_vars_short_html <- c(
   "conjoint_left_a_b_binary" = "Random program <b>A</b> vs. B",
   "conjoint_left_ag_b_binary" = "Random program <b>A+GCS</b> vs. B",
   "conjoint_r" = "Random program <b>with GCS</b> vs. without",
+  "foreign_aid_raise_support" = "Should [Country]'s foreign aid be increased?",
+  "problem_inequality" = "Income inequality in [Country]",
+  "problem_climate" = "Climate change",
+  "problem_poverty" = "Global poverty",
   "gcs_important_limit_CC" = "It would succeed in limiting climate change",
   "gcs_important_hurt_economy" = "It would hurt the [Country] economy",
   "gcs_important_hurt_me" = "It would penalize my household",
@@ -459,7 +468,9 @@ heatmaps_defs <- list(
   "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)]),
   "foreign_aid_condition" = list(vars = variables_foreign_aid_condition[!grepl("other", variables_foreign_aid_condition)]),
   "share_policies_supported" = list(vars = c("share_policies_supported"), conditions = c("")),
-  "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), conditions = c(">= 1"))
+  "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), conditions = c(">= 1")),
+  "universalism" = list(vars = c("universalist", "nationalist", "egoistic", "negotiation_only_country", "negotiation_country_respecting", "negotiation_global_before", "problem_climate", "problem_poverty", "problem_inequality"), conditions = c(">= 1")),
+  "main" = list(vars = c("gcs_support_neg", "global_tax_support", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support", "universalist"), conditions = c("/"))
 )
 
 ##### vars_heatmaps #####
@@ -715,11 +726,6 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 2][1]
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 2]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 3][1]], weights = T, trim = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps == 3]], weights = T)
-heatmap_multiple(heatmaps_defs[c("petition", "belief_all")], weights = T)
-heatmap_multiple(heatmaps_defs[c("petition_gcs", "petition_nr")], weights = T)
-heatmap_multiple(heatmaps_defs[c("conjoint_all", "conjoint")], weights = T) 
-heatmap_multiple(heatmaps_defs[c("gcs_field")], weights = T) 
-heatmap_multiple(heatmaps_defs[c("gcs_field_contains", "poverty_field_contains", "poverty_field")], weights = T) 
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb_vars_heatmaps >= 4][1]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 5 & nb_vars_heatmaps >= 4]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 8 & nb_vars_heatmaps >= 5][1]], weights = T)
@@ -727,6 +733,15 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps < 8 & nb
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 8][1]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 8 & nb_vars_heatmaps < 14]], weights = T)
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 14]], weights = T)
+heatmap_multiple(heatmaps_defs[c("petition", "belief_all")], weights = T)
+heatmap_multiple(heatmaps_defs[c("petition_gcs", "petition_nr")], weights = T)
+heatmap_multiple(heatmaps_defs[c("conjoint_all", "conjoint")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("gcs_field")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("gcs_field_contains", "poverty_field_contains", "poverty_field")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("universalism")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("main")], weights = T) 
+heatmap_wrapper(vars = heatmaps_defs$main$vars, data = all, labels = heatmaps_defs$main$labels, name = "main_by_vote", along = "continent_vote", conditions = "/", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = T) 
+
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
 
@@ -741,7 +756,7 @@ temp[13,2] <- temp2[13,2] <- mean(c(temp2[13,14], mean(temp2[13, c(6,7,12,13)]))
 write.xlsx(temp, "../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_positive.xlsx")
 write.xlsx(temp2, "../../oecd_climate/tables/country_comparison/global_tax_attitudes_GCS_share.xlsx")
 
-heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_defs$donation$labels, name = "donation", conditions = "", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = F) 
+heatmap_wrapper(vars = heatmaps_defs$donation$vars, data = e, labels = heatmaps_defs$donation$labels, name = "donation", conditions = "", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = F) 
 
 heatmap_multiple(heatmaps_defs[c("ets2_support")], weights = T, data = eu[eu$country != 'UK',])
 heatmap_multiple(heatmaps_defs[c("ets2_no")], weights = T, data = eu[eu$country != 'UK',])
