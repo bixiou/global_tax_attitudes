@@ -52,9 +52,28 @@ Country-specific raw results are also available as supplementary material files:
 % \end{figure}
 
 \begin{figure}[h!]
-    \caption[Perceptions of the GCS]{Perceptions of the GCS. Elements seen as important for supporting the GCS (in percent). (Question \ref{q:gcs_important})}\label{fig:gcs_important}
+    \caption[Perceptions of the GCS]{Perceptions of the GCS. Elements seen as important for supporting the GCS in a 4-Likert scale (in percent). (Question \ref{q:gcs_important})}\label{fig:gcs_important}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/gcs_important_positive.pdf}} 
 \end{figure}
+
+\begin{figure}[h!]
+    \caption[Classification of open-ended field on the GCS]{Perceptions of the GCS. Elements found in the open-ended field on the GCS (manually recoded, in percent). (Question \ref{q:gcs_field})}\label{fig:gcs_field}
+    \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{../figures/country_comparison/gcs_field_positive.pdf}} 
+\end{figure}
+
+\begin{figure}[h!]
+    \caption[Topics of open-ended field on the GCS]{Perceptions of the GCS. Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent). (Question \ref{q:gcs_field})}\label{fig:gcs_field_contains}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/gcs_field_contains_positive.pdf}} 
+\end{figure}
+
+\begin{table}[h]\label{tab:branch_gcs}
+    \caption[Campaign and bandwagon effects on the support for the GCS.]{Effects on the support for the GCS of a question on its pros and cons and on information about the actual support, in the U.S. (See Section \ref{subsec:questionnaire_perceptions} in the US2 Questionnaire)} 
+    \makebox[\textwidth][c]{
+        \input{../tables/US2/branch_gcs.tex}
+    }
+    {\footnotesize %\textit{Note}: 
+    }
+\end{table}
 
 \begin{figure}[h!]
     \caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality (mean). (Question \ref{q:donation})}\label{fig:donation}
@@ -218,6 +237,32 @@ Country-specific raw results are also available as supplementary material files:
     \makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/country_comparison/survey_biased.pdf}} 
 \end{figure}
 
+% \begin{columns}
+% \begin{column}{.5\textwidth}
+% \begin{multicols}{2}
+    \begin{figure}[h!]
+        \caption[Classification of open-ended field on extreme poverty]{Opinion on the fight against extreme poverty. \\ ``According to you, what should high-income countries do to fight extreme poverty in low-income countries?'' (Question \ref{q:poverty_field})}\label{fig:poverty_field}
+    \begin{subfigure}{.34\textwidth}
+        \caption{Elements found in the open-ended field on the question (manually recoded, in percent)}.
+        \includegraphics[width=\textwidth]{../figures/country_comparison/poverty_field_positive.pdf}        
+    \end{subfigure}
+    \hspace{.02\textwidth}
+    \begin{subfigure}{.64\textwidth}
+        \caption{Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent).}
+        \includegraphics[width=\textwidth]{../figures/country_comparison/poverty_field_contains_positive.pdf}    
+    \end{subfigure}
+    \end{figure}
+% \end{column}
+% \begin{column}{.5\textwidth}
+    % \begin{figure}[h!]
+    %     \caption[Topics of open-ended field on extreme poverty]{Opinion on the fight against extreme poverty. \\ ``According to you, what should high-income countries do to fight extreme poverty in low-income countries?'' \\ Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent). (Question \ref{q:poverty_field})}\label{fig:poverty_field_contains}
+    %     \makebox[\textwidth][c]{\includegraphics[width=\columnwidth]{../figures/country_comparison/poverty_field_contains_positive.pdf}} 
+    % \end{figure}
+% \end{multicols}
+% \end{column}
+% \end{columns}
+
+
 % \begin{figure}[h!] 
 %     \caption[Interested to be interviewed]{Interested to be interviewed by a researcher for 30 min through videoconference. (Question \ref{q:interview})}\label{fig:interview}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/interview.pdf}} 
@@ -352,14 +397,6 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
     }
 \end{table}
 
-% \begin{table}[h]\label{tab:branch_gcs}
-%     \caption[s]{f} 
-%     \makebox[\textwidth][c]{
-%         \input{../tables/US2/branch_gcs.tex}
-%     }
-%     {\footnotesize %\textit{Note}: 
-%     }
-% \end{table}
 
 \clearpage
 \section{Representativeness of the surveys}\label{app:representativeness}

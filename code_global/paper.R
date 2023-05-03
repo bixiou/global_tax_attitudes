@@ -204,6 +204,9 @@ same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progr
                     data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
                     filename = "conjoint_c_wo_none", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
 summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F,], weights = weight)) # p-value: .13
+summary(lm(gcs_support ~ swing_state, us1, weights = weight)) # .012, n=693
+summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state == T,], weights = weight)) # .012, n=693
+summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state_3pp == T,], weights = weight)) # .006, n=509
 summary(lm(conjoint_c_right ~ branch_c_gcs, us1, weights = weight)) # p-value: .0504
 
 same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), weights = "weight_vote", omit.note = T,
@@ -289,6 +292,14 @@ decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'DE') # mean
 decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'FR') # mean: 20.1 / median: 18
 decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'ES') # mean: 19.4 / median: 16
 decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'UK') # mean: 19.6 / median: 16
+
+
+##### Pros and cons #####
+decrit(all$gcs_field_pro | all$gcs_field_con, all)
+summary(lm(nr_support ~ branch_gcs, us2, weights = weight))
+desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
+           dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, 
+           add_lines = list(c(18, "Includes controls &  & \\checkmark &  & \\checkmark \\\\")))
 
 
 ##### Second-order beliefs ##### 

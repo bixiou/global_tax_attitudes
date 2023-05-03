@@ -255,6 +255,7 @@ decrit("conjoint_c", data = e) # TODO! non-right
 decrit("conjoint_left_right", data = e)
 decrit("conjoint_leftg_right", data = e)
 summary(lm(conjoint_c ~ branch_c_gcs, data = e[e$country == "FR",])) # -.1
+summary(lm(conjoint_c ~ branch_c_gcs, data = us1, weights = weight, subset = us1$conjoint_c != "None")) # -.1
 decrit("gcs_support", data = e, which = e$branch_conjoint_c == "leftg_right")
 # d
 decrit("conjoint_d", data = e) # 59%
