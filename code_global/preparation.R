@@ -671,7 +671,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       label(e$nr_understood) <- "nr_understood: T/F Correct answer to nr_win_lose (in national redistribution, typical people win, richest lose)."
     }
     
-    if ("gcs_support" %in% names(e)) e$gcs_support_neg <- 2*e$gcs_support - 1
+    if ("gcs_support" %in% names(e) & country != "US2") e$gcs_support_neg <- 2*e$gcs_support - 1
     
     if ("gcs_win_lose" %in% names(e)) {
       e$gcs_win_lose[e$gcs_win_lose == "Typical Americans would lose and the 700 million poorest humans would lose."] <- "Typical lose, poorest lose"
