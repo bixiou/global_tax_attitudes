@@ -2,9 +2,16 @@
 # TODO complete
 # support_binary_positive
 decrit("gcs_support", us1)
+binconf(sum(us1$weight[us1$gcs_support == 'Yes']), nrow(us1), alpha = 0.05)
+binconf(sum(eu$weight[eu$gcs_support == 'Yes']), nrow(eu), alpha = 0.05)
 decrit("gcs_support", eu)
 decrit("nr_support", us1)
 decrit("nr_support", eu)
+reweighted_estimate("gcs_support", "EU") # 76
+reweighted_estimate("gcs_support", "US1") # 53 Assigns a weight 0 to vote_us = PNR/No right
+reweighted_estimate("gcs_support", "US1", omit = "vote_us") # 52 Uses all observations and still reweight for vote using e$vote
+decrit("gcs_support", us1, which = us1$voted)
+
 
 # Global wealth tax
 # global_tax_sharing_positive, global_tax_global_share_positive, global_tax_global_share_share TODO! combine them

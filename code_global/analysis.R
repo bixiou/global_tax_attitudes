@@ -399,9 +399,9 @@ summary(lm(conjoint_c ~ branch_c_gcs * swing_state, data = e, weights = e$weight
 
 
 ##### Reweighted estimate #####
-reweighted_estimate("gcs_support", "EU")
-reweighted_estimate("gcs_support", "US1") # Assigns a weight 0 to vote_us = PNR/No right
-reweighted_estimate("gcs_support", "US1", omit = "vote_us") # Uses all observations and still reweight for vote using e$vote
+reweighted_estimate("gcs_support", "EU") # 76
+reweighted_estimate("gcs_support", "US1") # 53 Assigns a weight 0 to vote_us = PNR/No right
+reweighted_estimate("gcs_support", "US1", omit = "vote_us") # 52 Uses all observations and still reweight for vote using e$vote
 # reweighted_estimate("gcs_support", "US2") # Assigns a weight 0 to vote_us = PNR/No right => TODO only for branch_gcs == 'nothing'
 # reweighted_estimate("gcs_support", "US2", omit = "vote_us") # Uses all observations and still reweight for vote using e$vote
 reweighted_estimate("gcs_support", "EU", weights = T)

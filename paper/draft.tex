@@ -1,6 +1,5 @@
 % /!\ No footnote for NCC or NS.
-% aussi in prez: soutien par vote (heatmap avec US left, right, Eu left, right, far right instead of countries)
-% add reweighted estimate
+% aussi in prez: soutien par vote (heatmap avec US left, right, Eu left, right, far right instead of countries); replace main_by_vote by main_all_by_vote after cropping it
 % plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
 % improve net gains with SSPs
 
@@ -246,7 +245,7 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
 
 \onehalfspacing % NCCcomment
 
-\clearpage
+%\clearpage
 \section{Introduction}  % NCCcomment
 % Inequality between countries: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?contextual=default&end=2021&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2021&view=bar (PPP current $) / https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2021&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2021&view=bar (current $) / https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2021&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2021&view=bar (PPP 2017 $) / Pop high-income 1.2G, low-income 700M https://data.worldbank.org/indicator/SP.POP.TOTL?locations=XD-XM
 
@@ -339,7 +338,7 @@ The remainder of the paper analyzes the results from the complementary surveys i
 
 \subsubsection{Global Climate Scheme} % NCCcomment
 In the complementary surveys, we describe the Global Climate Scheme, explain its distributive effects (specifying the amounts at stake, cf. the box below), %Appendix \ref{app:gain_gcs}), 
-test the understanding that typical people would lose in high-income countries and that the poorest humans would win using an incentivized question, and then give the correct answer. We proceed the same way for a National Redistribution Scheme (NR) that would tax the top 5\% (in the U.S.) or the top 1\% (in Europe) to finance cash transfers to all adults (calibrated to offset the monetary loss of the GCS for the median emitter), expecting people to find out at the comprehension question that the richest would lose and the typical people in their country would win. Then, we summarize both schemes to make sure that the respondents remember them. Right after, we ask a last incentivized question of comprehension, and later give the expected answer that a typical fellow citizen would neither win nor lose with the GCS and NR combined. Finally, we directly ask the support for the GCS and for NR in a simple \textit{Yes}/\textit{No} question. The stated support for the GCS is at 54\% in the U.S. and 76\% in Europe, and the support for NR is very close, at 56 and 73\%, respectively (Figure \ref{fig:support_binary}). % TD add something if equality remains
+test the understanding that typical people would lose in high-income countries and that the poorest humans would win using an incentivized question, and then give the correct answer. We proceed the same way for a National Redistribution Scheme (NR) that would tax the top 5\% (in the U.S.) or the top 1\% (in Europe) to finance cash transfers to all adults (calibrated to offset the monetary loss of the GCS for the median emitter), expecting people to find out at the comprehension question that the richest would lose and the typical people in their country would win. Then, we summarize both schemes to make sure that the respondents remember them. Right after, we ask a last incentivized question of comprehension, and later give the expected answer that a typical fellow citizen would neither win nor lose with the GCS and NR combined. Finally, we directly ask the support for the GCS and for NR in a simple \textit{Yes}/\textit{No} question. The stated support for the GCS is at 54\% in the U.S. and 76\% in Europe,\footnote{The 95\% confidence intervals are $[52.4, 55.9]$ in the U.S. and $[74.2, 77.2]$ in Europe. The average support is computed with survey weights, with weights based on quota variables, which do not include vote. Another method to reweigh the raw results is to run a regression of the support for the GCS on sociodemographic characteristics (including vote) and to multiply each coefficient by the population frequencies. The latter method yields similar figures: 76\% in Europe and 52\% or 53\% in the U.S. (depending on whether we count people who did not disclose their vote as non-voter or discard them). Note that the average support excluding non-voters is 54\% in the U.S.} and the support for NR is very close, at 56 and 73\%, respectively (Figure \ref{fig:support_binary}). % TD add something if equality remains
 Appendix \ref{app:determinants} presents the sociodemographic determinants of the support for the GCS, and shows e.g. a stronger support among young people. %\ref{tab:gcs_determinant} 
 
 \begin{figure}[h!]
@@ -458,7 +457,11 @@ In the U.S., swing states\footnote{We define swing states as the 8 states with l
 
 Our last two analyses (four and five) make people choose between two random platforms. In Europe, respondents are prompted to imagine that a left- or center-left coalition will win the next election and are asked what platform they would prefer that coalition to have campaigned on. In the U.S., the question is framed as a hypothetical duel in a Democratic primary, and asked only to non-Republicans ($n$ = 2,218), i.e. the respondents who choose \textit{Democrat}, \textit{Independent}, \textit{Non-Affiliated} or \textit{Other} for their political affiliation. In the fourth analysis, a policy (or an absence of policy) is randomly drawn for each platform in each of five categories: \textit{economic issues}, \textit{societal issues}, \textit{climate policy}, \textit{tax system}, \textit{foreign policy} (Figure \ref{fig:ca_r}). 
 Except for the category \textit{foreign policy}, which features the GCS 42\% of the time, the policies are prominent progressive policies and they are drawn uniformly. % except for tax1: .35 vs. tax2: .4 in EU. 
-In the UK, Germany, and France, a platform is about 9 to 13 p.p. more likely to be preferred if it includes the GCS rather than no foreign policy.\footnote{This is the Average Marginal Component Effect computed following \citet{hainmueller_causal_2014}.} This effect is between 1 and 4 p.p. and no longer significant in the U.S. and in Spain. Moreover, a platform that includes a global tax on millionaires rather that no foreign policy is 5 to 13 percentage points (p.p.) more likely to be preferred in all countries (the effect is significant and at least 9 p.p. in all
+In the UK, Germany, and France, a platform is about 9 to 13 p.p. more likely to be preferred if it includes the GCS rather than no foreign policy.\footnote{This is the Average Marginal Component Effect computed following \citet{hainmueller_causal_2014}.} This effect is between 1 and 4 p.p. and no longer significant in the U.S. and in Spain. Moreover, a platform that includes a global tax on millionaires rather that no foreign policy is 5 to 13 percentage points (p.p.) more likely to be preferred in all countries (the effect is significant and at least 9 p.p. in all countries but Spain). 
+% Moreover, a platform that includes a global tax on millionaires rather that no foreign policy is 9 to 13 percentage points (p.p.) more likely to be preferred in all countries but Spain (not significant, at +5 p.p.). 
+Likewise, a global democratic assembly on climate change has a significant effect of 8 to 12 p.p. in the U.S., Germany, and France. 
+%In each country, a platform is more likely to be preferred if it includes the GCS rather than no foreign policy. This effect is significant in France, Germany and the UK, where a platform is about 10 p.p. more likely to be preferred. 
+These effects are large, and not far from the effects of the policies most influential on the platforms, which range between 15 and 18 p.p. in most countries (and 27 p.p. in Spain), and all relate to improved public services (in particular healthcare, housing and education). 
 
 \begin{figure}[h] 
   \caption[Preferences for various policies in political platforms]{Effects of the presence of a policy (rather than none from this domain) in a random platform on the likelihood that it is preferred to another random platform. (Question \ref{q:conjoint_r}%; in the U.S., asked only to non-Republicans.
@@ -489,12 +492,7 @@ In the UK, Germany, and France, a platform is about 9 to 13 p.p. more likely to 
   %\makebox[\textwidth][c]{} 
 \end{figure}
 \clearpage 
-\noindent
-countries but Spain). 
-% Moreover, a platform that includes a global tax on millionaires rather that no foreign policy is 9 to 13 percentage points (p.p.) more likely to be preferred in all countries but Spain (not significant, at +5 p.p.). 
-Likewise, a global democratic assembly on climate change has a significant effect of 8 to 12 p.p. in the U.S., Germany, and France. 
-%In each country, a platform is more likely to be preferred if it includes the GCS rather than no foreign policy. This effect is significant in France, Germany and the UK, where a platform is about 10 p.p. more likely to be preferred. 
-These effects are large, and not far from the effects of the policies most influential on the platforms, which range between 15 and 18 p.p. in most countries (and 27 p.p. in Spain), and all relate to improved public services (in particular healthcare, housing and education). 
+% \noindent
 
 The fifth analysis draws random platforms in a similar ways, except that candidate A's platform always contains the GCS while B's includes no foreign policy. In this case, A is chosen by 60\% in Europe %($n$ = 3,000) 
 and 58\% in the U.S. (Figure \ref{fig:conjoint_left_ag_b}). %($n$ = 2,218). 
@@ -553,7 +551,7 @@ In the US2 survey, we displayed these questions only to random subsamples, \text
 % TD It is not obvious how these answers are informative of malleable opinions. So I don't think we should state the hypothesis and sell this as a test.
 %Another hypothesis to explain the discrepancy between the lack of interest for global policies in the public debate despite a strong stated support is that opinions on the topic are weak and malleable. A way to test this is to
 We ask broad questions on people's values to see whether their core values are consistent with universalism. When asked what group they defend when they vote% ($n$ = 6,000)
-, 20\% choose ``sentient beings (humans and animals)'', 22\% ``humans'', 33\% their fellow citizens (or ``Europeans''), 15\% ``My family and myself'', and the rest (10\%) choose another group (mostly ``My State or region'' or ``People sharing my culture or religion''). The first two categories can be described as universalist, and they represent close to one out of two people. The share of universalist even constitutes a majority of left-wing voters. % TODO check
+, 20\% choose ``sentient beings (humans and animals)'', 22\% ``humans'', 33\% their fellow citizens (or ``Europeans''), 15\% ``My family and myself'', and the rest (10\%) choose another group (mostly ``My State or region'' or ``People sharing my culture or religion''). The first two categories can be described as universalist, and they represent close to one out of two people. The share of universalist even constitutes a majority of left-wing voters (see Figure \ref{fig:main_by_vote} for main attitudes by vote). 
 When asked what should their country's diplomats defend in international climate negotiations, only 11\% prefer their country's ``interests, even if it goes against global justice''; 30\% prefer global justice (mitigated or not by national interests) and the bulk of respondents (38\%) prefer their country's ``interests, to the extent it respects global justice''. % ($n$ = 6,000). 
 Furthermore, when asked to judge the extent to which climate change, global poverty, and inequality in their country are an issue, climate change is generally viewed as the biggest problem (with a mean of 0.59 once we recode answers between $-2$ and $2$), followed by global poverty (0.42) and national inequality (0.37). %, $n$ = 6,000). 
 

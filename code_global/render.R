@@ -269,7 +269,7 @@ labels_vars <- c(
   "ets2_no_dont_know" = "Does not know",
   "ets2_oppose" = "Does not support any of the ETS2 variants",
   "global_tax_more_half" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 50%",
-  "global_tax_more_30p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 30%",
+  "global_tax_more_30p" = "Preferred share of global wealth tax for low-income countries: ≥ 30%",
   "global_tax_more_10p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 10%",
   "branch_list_exp_g" = "List contains: GCS",
   "branch_list_exp_r" = "List contains: NR",
@@ -309,6 +309,7 @@ labels_vars_short_html <- c(
   "list_exp_rgl" = "NR/GCS/C/O", 
   "list_exp_l" = "C/O",
   "list_exp_rl" = "NR/C/O",   
+  "global_tax_more_30p" = "Preferred share of global wealth tax<br>for low-income countries: ≥ 30%",
   "conjoint_crg_cr_binary" = "<b>C+NR+GCS</b> vs. C+NR",
   "conjoint_cr_gr_binary" = "C+NR vs. <b>GCS+NR</b>",
   "conjoint_r_rcg_binary" = "NR vs. <b>NR+C+GCS</b>",
@@ -470,7 +471,8 @@ heatmaps_defs <- list(
   "share_policies_supported" = list(vars = c("share_policies_supported"), conditions = c("")),
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), conditions = c(">= 1")),
   "universalism" = list(vars = c("universalist", "nationalist", "egoistic", "negotiation_only_country", "negotiation_country_respecting", "negotiation_global_before", "problem_climate", "problem_poverty", "problem_inequality"), conditions = c(">= 1")),
-  "main" = list(vars = c("gcs_support_neg", "global_tax_support", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support", "universalist"), conditions = c("/"))
+  "main" = list(vars = c("gcs_support_neg", "global_tax_support", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support", "universalist"), conditions = c("/")),
+  "main_all" = list(vars = c("gcs_support_neg", "global_tax_support", "global_tax_sharing", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support", "universalist"), conditions = c("/"))
 )
 
 ##### vars_heatmaps #####
@@ -741,6 +743,7 @@ heatmap_multiple(heatmaps_defs[c("gcs_field_contains", "poverty_field_contains",
 heatmap_multiple(heatmaps_defs[c("universalism")], weights = T) 
 heatmap_multiple(heatmaps_defs[c("main")], weights = T) 
 heatmap_wrapper(vars = heatmaps_defs$main$vars, data = all, labels = heatmaps_defs$main$labels, name = "main_by_vote", along = "continent_vote", conditions = "/", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = T) 
+heatmap_wrapper(vars = heatmaps_defs$main_all$vars, data = all, labels = heatmaps_defs$main_all$labels, name = "main_all_by_vote", along = "continent_vote", conditions = "/", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = T) 
 
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
