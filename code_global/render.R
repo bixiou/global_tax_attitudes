@@ -737,12 +737,14 @@ heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 8 & n
 heatmap_multiple(heatmaps_defs[names(nb_vars_heatmaps)[nb_vars_heatmaps >= 14]], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition", "belief_all")], weights = T)
 heatmap_multiple(heatmaps_defs[c("petition_gcs", "petition_nr")], weights = T)
-heatmap_multiple(heatmaps_defs[c("conjoint_all", "conjoint")], weights = T) # TODO! conjoint_ab
+heatmap_multiple(heatmaps_defs[c("conjoint_all", "conjoint")], weights = T) # TODO! crop conjoint_ab, conjoint_ab_all, support binary, etc.
 heatmap_multiple(heatmaps_defs[c("gcs_field")], weights = T) 
 heatmap_multiple(heatmaps_defs[c("gcs_field_contains", "poverty_field_contains", "poverty_field")], weights = T) 
 heatmap_multiple(heatmaps_defs[c("universalism")], weights = T) 
 heatmap_multiple(heatmaps_defs[c("main")], weights = T) 
 heatmap_multiple(heatmaps_defs[c("main_all")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("support_binary")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint_ab_all")], weights = T) 
 heatmap_wrapper(vars = heatmaps_defs$main$vars, data = all, labels = heatmaps_defs$main$labels, name = "main_by_vote", along = "continent_vote", conditions = "/", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = T) 
 heatmap_wrapper(vars = heatmaps_defs$main_all$vars, data = all, labels = heatmaps_defs$main_all$labels, name = "main_all_by_vote", along = "continent_vote", conditions = "/", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = F, weights = T) 
 
