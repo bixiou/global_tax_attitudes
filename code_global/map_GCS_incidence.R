@@ -1077,3 +1077,12 @@ unlist(setNames(lapply(seq(0, 1, 0.1), function(x) 1+x-x*(1+x)), seq(0, 1, 0.1))
 # Adult population. In the world: 5.2G, incl. 54.7M (1%) >1M; 4.56M (.09%) >5M
 sum(co2_pop$adult_2023[co2_pop$code %in% c("CAN", "USA")]) # North America: 312M incl. 22.1M (7.1%) >1M; 2.14M >5M (0.7%)
 sum(co2_pop$adult_2023[co2_pop$code %in% c(EU28_countries, "UKR", "NOR", "BEL", "SWZ", "SRB", "ALB", "MAC")]) # 485M incl. 15.6M >1M (3.2%); 1.05M >5M (0.2%)
+
+
+##### Figure GDP pc PPP #####
+# Data 2021: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?contextual=default&end=2021&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2021&view=bar
+fig_gdp <- c("Luxembourg" = 133330, "United States" = 69288, "High income" = 54758, "European Union" = 48767, "China" = 19338, "World" = 18605, "India" = 7242, "Sub-Saharan Africa" = 4070, "Low income" = 2124, "Congo Dem. Rep." = 1180, "Burundi" = 775)
+names_fig_gdp <- names(fig_gdp)
+fig_gdp <- array(fig_gdp/18605, dim = c(1, length(fig_gdp)))
+barres(data = fig_gdp, labels = names_fig_gdp, legend = c("GDP"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP")
+barres(data = array(fig_gdp[1,2:10], dim = c(1, 9)), labels = names_fig_gdp[2:10], legend = c("GDP"), sort = FALSE, show_ticks = FALSE, save = T, showLegend = FALSE, file = "../figures/policies/GDP_pc_PPP_few")
