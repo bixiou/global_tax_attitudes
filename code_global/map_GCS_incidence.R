@@ -838,6 +838,19 @@ axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
 legend("topright", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
 
+# mar <- par()$mar
+# par(mar = c(2.1, 4.1, 0.1, 4.1))
+# plot(years[3:9], world_emissions$gea_gea[3:9]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(-5, 53))
+# lines(years[3:9], basic_income_adj$gea_gea[1:7]/12, type = 'b', col = 'darkgreen', lwd = 2)
+# par(new = T)
+# plot(years[3:9], carbon_price$gea_gea[3:9], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+# mtext("Carbon price ($/tCO2)", side=4, col="blue", line=2.5) 
+# axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
+# grid()
+# legend("topright", legend = c("CO2 emissions", "Carbon price (right axis)", "Basic income"), col = c("red", "blue", "darkgreen"), lwd = 2, lty = c(1,2,1), pch = c(16, 17, 15))
+# legend("topright", legend = c("CO2 emissions", "Carbon price (right axis)", "                                         "), col = c("red", "blue", "white"), lwd = 2, lty = c(1,2,1), pch = c(16, 17, 15))
+# legend("topright", legend = c("CO2 emissions", "                                         ", ""), col = c("red", "white", "white"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+
 
 
 
