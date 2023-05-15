@@ -73,7 +73,7 @@ labels_vars <- c(
   "gcs_win_lose" = "Win/lose to GCS",
   "nr_win_lose" = "Win/lose to NR",
   "both_win_lose" = "Win/lose to GCS+NR",
-  "gcs_support" = "Global climate scheme (GCS)",
+  "gcs_support" = "Global climate scheme (GCS)", # "Supports the Global Climate Plan", # "Soutient le Plan mondial pour le climat", #"Global climate scheme (GCS)", # 
   "gcs_support_branch_petition_gcs" = "(Comparable) support for the GCS",
   "nr_support_branch_petition_nr" = "(Comparable) support for NR",
   "gcs_support_100" = "Support for the GCS",
@@ -452,6 +452,7 @@ heatmaps_defs <- list(
   "conjoint_b" = list(vars = variables_conjoint_b_binary, conditions = ">= 1"),
   "conjoint_c" = list(vars = variables_conjoint_c_binary, conditions = ">= 1"),
   "conjoint_d" = list(vars = variables_conjoint_d_binary, conditions = ">= 1"),
+  "gcs_support" = list(vars = "gcs_support", conditions = ">= 1"), 
   "duration" = list(vars = variables_duration, conditions = ""),
   "donation" = list(vars = c("donation_nation", "donation_africa"), conditions = c(""), nb_digits = 0), # removes 'donation'
   "belief" = list(vars = variables_belief, conditions = "", nb_digits = 0), 
@@ -611,6 +612,7 @@ barres_defs <- list( # It cannot contained unnamed strings (e.g. it can contain 
   # "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   # "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
   "support_binary_all" = list(showLegend = FALSE), 
+  "gcs_support" = list(vars = "gcs_support", rev = T, rev_color = F), 
   "global_national_tax" = list(vars = c("national_tax_support", "global_tax_support"), sort = FALSE),
   "global_tax_share" = list(vars = c("global_tax_sharing", "global_tax_more_half", "global_tax_more_30p", "global_tax_more_10p"), sort = FALSE), # TODO make it also a heatmap
   "vote"= list(miss = T, fr = "PNR/Non-voter"), # non_voters as such, aggregating candidates into 3 categories
@@ -641,10 +643,10 @@ barres_defs <- fill_barres(vars_barres, barres_defs) # , df = us1
 vars_barresN <- c("group_defended_agg2", "foreign_aid_raise_support", "global_tax_support", "national_tax_support", "global_tax_global_share", "global_tax_sharing",
                   "foreign_aid_belief_agg", "foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg", "donation_charities", "interested_politics", 
                   "involvement_govt",  "vote_participation", "survey_biased", "interview", "left_right") 
-barresN_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "country_name")
+barresN_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T), "gcs_support" = list(rev = T, rev_color = F)), along = "country_name")
 barresN_continent_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "continent")
 main_outcomes <- c("gcs_support", "nr_support", "global_tax_support", "national_tax_support", "cap_wealth_support", "group_defended_agg2", "negotiation", "democratise_un_imf_support", "climate_mitigation_support")
-barresN_vote3_defs <- fill_barres(main_outcomes, list(), along = "vote3")
+barresN_vote3_defs <- fill_barres(main_outcomes, list("gcs_support" = list(rev = T, rev_color = F)), along = "vote3")
 barresN_vote_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "vote_factor")
 barresN_age_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "age_factor")
 barresN_income_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "income_character")
@@ -669,7 +671,7 @@ barres_multiple(barres = barresN_continent_defs["foreign_aid_raise_support"], df
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 # US2
 heatmap_multiple(heatmaps_defs[c("foreign_aid_amount", "foreign_aid_more")])
-heatmap_multiple(heatmaps_defs[c("petition_comparable")])
+heatmap_multiple(heatmaps_defs[c("gcs_support")])
 heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")])
 heatmap_multiple(heatmaps_defs[c("global_tax_global_share", "global_tax_sharing")])
 
@@ -685,7 +687,7 @@ save_plotly(plot_points, filename = "points_line", folder = automatic_folder(alo
 
 ##### Bars #####
 barres_multiple(barres = barres_defs, df = eu, folder = "../figures/EU/") 
-barres_multiple(barres = barres_defs, df = us1, folder = "../figures/US1/") 
+barres_multiple(barres = barres_defs["gcs_support"], df = us1, folder = "../figures/US1/") 
 barres_multiple(barres = barres_defs, df = us2, folder = "../figures/US2/") 
 barres_multiple(barres = barres_defs, df = us, folder = "../figures/US/") 
 barres_multiple(barres = barres_defs, df = eu[eu$country == 'FR',], folder = "../figures/FR/") 
@@ -774,6 +776,7 @@ heatmap_multiple(heatmaps_defs[c("gcs_important")], weights = T, data = all[all$
 
 
 ##### Heterogeneity #####
+barres_multiple(barres = barresN_defs[c("gcs_support")], df = eu, folder = "../figures/EU/") 
 barres_multiple(barres = barresN_defs[c("foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg")], df = all, folder = "../figures/country_comparison/") 
 barres_multiple(barres = barresN_continent_defs[c("foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg")], df = all, folder = "../figures/continents/") 
 barres_multiple(barres = barresN_defs["global_tax_global_share"], df = all, folder = "../figures/country_comparison/") 
@@ -787,7 +790,7 @@ barres_multiple(barres = barresN_vote_defs, df = d("DE"), folder = "../figures/D
 barres_multiple(barres = barresN_vote_defs, df = d("ES"), folder = "../figures/ES/vote/") 
 barres_multiple(barres = barresN_vote_defs, df = d("UK"), folder = "../figures/UK/vote/") 
 barres_multiple(barres = barresN_vote3_defs, df = us, folder = "../figures/US/vote/") 
-barres_multiple(barres = barresN_vote3_defs[c("gcs_support", "nr_support", "foreign_aid_raise_support")], df = us1, folder = "../figures/US1/vote/") 
+barres_multiple(barres = barresN_vote3_defs[c("gcs_support")], df = us1, folder = "../figures/US1/vote/") 
 
 barres_multiple(barres = barresN_age_defs, df = eu, folder = "../figures/EU/age/") 
 barres_multiple(barres = barresN_age_defs, df = d("FR"), folder = "../figures/FR/age/") 
