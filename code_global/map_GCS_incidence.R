@@ -914,6 +914,14 @@ plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.02, -.01, -.003, -1e-1
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 
 
+##### NPV of the basic income #####
+discount_rate <- .04
+rate <- (1+discount_rate)^10
+(monthly_annualized_basic_income <- discount_rate*sum(sapply(2:10, function(i) { return(10*basic_income_adj$gea_gea[[as.character(2000+10*i)]]/rate^(i-2)) }))/12)
+(monthly_annualized_gdp_pa <- discount_rate*sum(sapply(2:10, function(i) { return(10*wtd.mean(co2_pop[[paste0("gdp_pa_", 2000+10*i)]], co2_pop[[paste0("adult_", 2000+10*i)]])/rate^(i-2)) }))/12)
+39.4/1754 # 2.2%
+
+
 # Old plots SSP
 mar <- par()$mar
 par(mar = c(2.1, 4.1, .1, .1))
