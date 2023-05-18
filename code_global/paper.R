@@ -38,8 +38,14 @@ decrit("global_tax_support", eu, which = eu$country == "FR", weights = eu$weight
 # support_likert_positive, support_likert_share
 # support_likert_positive, global_policies_mean, global_policies_positive, global_policies_share
 
-# Foreign aid
+# Foreign aid 
 decrit("foreign_aid_raise_support", all)
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education), d(c)$weight), 3)))
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education | d(c)$foreign_aid_reduce_how_pensions), d(c)$weight), 3)))
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education | d(c)$foreign_aid_reduce_how_pensions | d(c)$foreign_aid_reduce_how_welfare), d(c)$weight), 3)))
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education | d(c)$foreign_aid_reduce_how_pensions | d(c)$foreign_aid_reduce_how_welfare) | d(c)$foreign_aid_reduce_how_defense | d(c)$foreign_aid_reduce_how_other, d(c)$weight), 3)))
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_income_tax | d(c)$foreign_aid_reduce_how_wealthy | d(c)$foreign_aid_reduce_how_corporations | d(c)$foreign_aid_reduce_how_deficit), d(c)$weight), 3)))
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_income_tax | d(c)$foreign_aid_reduce_how_wealthy | d(c)$foreign_aid_reduce_how_corporations), d(c)$weight), 3)))
 # all/foreign_aid_condition
 
 ##### List experiment #####
