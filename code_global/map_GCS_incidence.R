@@ -1099,6 +1099,11 @@ unlist(setNames(lapply(seq(0, 1, 0.1), function(x) 1+x-x*(1+x)), seq(0, 1, 0.1))
 sum(co2_pop$adult_2023[co2_pop$code %in% c("CAN", "USA")]) # North America: 312M incl. 22.1M (7.1%) >1M; 2.14M >5M (0.7%)
 sum(co2_pop$adult_2023[co2_pop$code %in% c(EU28_countries, "UKR", "NOR", "BEL", "SWZ", "SRB", "ALB", "MAC")]) # 485M incl. 15.6M >1M (3.2%); 1.05M >5M (0.2%)
 
+setNames(co2_pop$adult_2023, co2_pop$country)/sum(co2_pop$adult_2023, na.rm = T)
+setNames(ssp2_26$adult_2020, ssp2_26$region)/sum(co2_pop$adult_2020, na.rm = T)
+sum(c(ssp2_26$adult_2020[ssp2_26$region %in% c("NAF", "WAF", "EAF", "SAF", "RSAF", "MEX", "BRA", "RCAM", "RSAM", "SEAS", "INDIA", "INDO")]),  + co2_pop$adult_2020[co2_pop$code %in% EU28_countries])/sum(co2_pop$adult_2023, na.rm = T)
+# EU28+LAM+SSA+IA+ID+SEAS: 53.6%
+# China: 20%, Saudi Arabia + UAE + Afghanistan: 1%, Russia + Iran: 3%
 
 ##### Figure GDP pc PPP #####
 # Data 2021: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?contextual=default&end=2021&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2021&view=bar
