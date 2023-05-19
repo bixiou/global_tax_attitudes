@@ -335,6 +335,21 @@ for (v in variables_foreign_aid_reduce) means_variables_foreign_aid_reduce[v] <-
 -sort(-means_variables_foreign_aid_reduce)
 summary(lm(foreign_aid_preferred ~ income_factor + country + foreign_aid_belief, all))
 
+# a healthcare, education
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education), d(c)$weight), 3)))
+# b healthcare, education, pensions
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education | d(c)$foreign_aid_reduce_how_pensions), d(c)$weight), 3)))
+# c spending except defense
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education | d(c)$foreign_aid_reduce_how_pensions | d(c)$foreign_aid_reduce_how_welfare), d(c)$weight), 3)))
+# d spending
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education | d(c)$foreign_aid_reduce_how_pensions | d(c)$foreign_aid_reduce_how_welfare) | d(c)$foreign_aid_reduce_how_defense | d(c)$foreign_aid_reduce_how_other, d(c)$weight), 3)))
+# e taxes & deficit
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_income_tax | d(c)$foreign_aid_reduce_how_wealthy | d(c)$foreign_aid_reduce_how_corporations | d(c)$foreign_aid_reduce_how_deficit), d(c)$weight), 3)))
+# f taxes
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_income_tax | d(c)$foreign_aid_reduce_how_wealthy | d(c)$foreign_aid_reduce_how_corporations), d(c)$weight), 3)))
+# e << d
+# f << a
+
 
 ##### 100 points #####
 policies_names

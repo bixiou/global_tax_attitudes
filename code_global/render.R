@@ -465,6 +465,8 @@ heatmaps_defs <- list(
               labels = c("Preferred foreign aid is at least as high as current", "Preferred foreign aid is at least as high as perceived", "Supports increasing foreign aid (incl. with conditions)")),
   "foreign_aid_more_all" = list(vars = c("foreign_aid_more_less_info", "foreign_aid_less_more_info", "foreign_aid_more_less_no_info", "foreign_aid_less_more_no_info", "foreign_aid_raise_support", "foreign_aid_reduce_support"), conditions = c("> 0"), 
               labels = c("Preferred foreign aid is higher than current", "Preferred foreign aid is lower than current", "Preferred foreign aid is higher than perceived", "Preferred foreign aid is lower than perceived", "Supports increased foreign aid (incl. with conditions)", "Supports reduced foreign aid")),
+  "foreign_aid_no_less_all" = list(vars = c("foreign_aid_no_less_info", "foreign_aid_more_less_info", "foreign_aid_no_less_no_info", "foreign_aid_more_less_no_info"), conditions = c("> 0"), 
+                               labels = c("Preferred foreign aid is at least as high as current", "Preferred foreign aid is higher than current", "Preferred foreign aid is at least as high as perceived", "Preferred foreign aid is higher than perceived")),
   "foreign_aid_raise" = list(vars = variables_foreign_aid_raise, conditions = ">= 1"),
   "foreign_aid_reduce" = list(vars = variables_foreign_aid_reduce, conditions = ">= 1"),
   "foreign_aid_no" = list(vars = variables_foreign_aid_no[!grepl("other", variables_foreign_aid_no)]),
@@ -671,7 +673,7 @@ barres_multiple(barres = barresN_continent_defs["foreign_aid_raise_support"], df
 heatmap_multiple() # Doesn't work if data contains a single country (by design, to avoid overwriting files)
 # US2
 heatmap_multiple(heatmaps_defs[c("foreign_aid_amount", "foreign_aid_more")])
-heatmap_multiple(heatmaps_defs[c("gcs_support")])
+heatmap_multiple(heatmaps_defs[c("foreign_aid_no_less_all")])
 heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")])
 heatmap_multiple(heatmaps_defs[c("global_tax_global_share", "global_tax_sharing")])
 
