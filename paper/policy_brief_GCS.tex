@@ -54,6 +54,7 @@
 \usepackage{longtable}
 \usepackage{rotating}
 \usepackage{xcolor}% header
+\usepackage{titlesec} % To change size of Bibliography heading
 \usepackage{fancyhdr}
 
 % Header on every page except frontpage (handled by tikz)
@@ -376,11 +377,18 @@ If the governance body finds it appropriate to encourage participation, it could
 \paragraph{Negotiations}
 
 We tried to be as specific as possible to anchor discussions on a concrete plan that we deem fair. Still, some elements of the GCP can be modified without fundamentally altering it, such as the opt-out threshold or using a tax rather than an ETS. It is now up to the public and policy makers to take up this proposal and negotiate it. 
+\quad \\ \quad 
 
+\textit{We are here to feed the public debate on global redistribution. We welcome counter-proposals, criticisms and suggestions concerning our policy brief (including pull requests). Feel free to engage the discussion on \href{https://github.com/bixiou/global_tax_attitudes/issues}{github}. }
+
+{\footnotesize
+\begingroup
+\setstretch{.5}
+\titleformat*{\section}{\fontsize{11pt}{14pt}\bfseries\selectfont}
 \renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
-{\small 
 \bibliographystyle{plainnaturl_clean} % NCCcomment
 \bibliography{global_tax_attitudes}
-}
+\endgroup }
+
 
 \end{document}
