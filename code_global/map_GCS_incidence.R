@@ -1,5 +1,6 @@
 # TODO? share of winners per country: Ivanova & Wood (20) show that 2020 World average of 6t pc is at ~50 percentile in FR, ~65 in ES, ~50 in UK, ~20 in DE; Fremstad & Paul (19) show it's at ~20p in the U.S.
 # TODO: more accurate assumption/computations (e.g. based on NDCs)
+# TODO! new data: use either NICE (probably disaggregated by country by MCC) or SSP2 with MESSAGE (or REMIND or WITCH), look at downscaling to country-disaggregation done by Climate Analytics.
 
 # plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
 # equal pc
@@ -279,7 +280,7 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
                         return_type = "list", # var, seq, function, list
                         poverty_line = 4,  # 2, 4, 7 $/day
                         max_reg = phase_out_start, # Inf, phase_out_start
-                        PPP = F, list_month = T, df = pg, global_revenues = 6.87e+11, min_pop = 30e6, # 4.08e+11
+                        PPP = F, list_month = T, df = pg, global_revenues = 0.926e+12, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
                         phase_out_start = NULL, phase_out_end = 2*phase_out_start) { # wtd.mean(pg$GDPpcPPP, pg$pop_2019) wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
   pg <- df
   pg$gap <- pg[[paste0("pg", poverty_line)]]
@@ -349,7 +350,7 @@ qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2019, xlab = "log10 
 table_pg <- key_gap_gdp(return_var = "gdp_share", return_type = "list")
 table_pg <- cbind("gdp_share" = table_pg, "rev_pc" = key_gap_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gap_gdp("global_share_pc")[names(table_pg)], "global_share" = key_gap_gdp("global_share")[names(table_pg)])
 row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
-cat(paste(kbl(table_pg[table_pg[,1] > 0.04,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
+cat(paste(kbl(table_pg[table_pg[,1] > 0.07,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
               col.names = c("\\makecell{Revenues\\\\over GDP\\\\(in percent)}", "\\makecell{Revenues\\\\per capita\\\\(in \\$ per month)}", "\\makecell{Revenues per capita\\\\over average\\\\revenues p.c.}", "\\makecell{Global\\\\share of\\\\revenues}")), collapse="\n"), file = "../tables/allocation.tex") 
   # TODO: do total, re-order all by GDP pc
 
@@ -392,10 +393,11 @@ pg$global_share <- key_gap_gdp(return_var = "global_share", return_type = "var")
 pg$global_share_pc <- key_gap_gdp(return_var = "global_share_pc", return_type = "var")
 pg$rev_pc <- key_gap_gdp(return_var = "rev_pc", return_type = "var")
 pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", return_type = "var")
-sum(pg$global_share[pg$code %in% SSA], na.rm = T)
-wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
+sum(pg$global_share[pg$code %in% SSA], na.rm = T) # 53%
+wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) # $36
+wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) / wtd.mean(pg$rev_pc, pg$pop_2019, na.rm = T)
 wtd.mean(pg$global_share_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
-wealth_tax_revenues <- 0.013*96e12 # From a 2% tax above $5 million / 4% above $100M / 6% above $1G, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/ # 0.0085
+wealth_tax_revenues <- 0.0176*96e12  # 0.013*96e12 # From a 2% tax above $5 million / 4% above $100M / 6% above $1G, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/ # 0.0085
 pooled_revenues <- 0.5 * wealth_tax_revenues
 pooled_revenues * sum(pg$global_share[pg$code %in% SSA], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% SSA], na.rm = T)
 sum(pg$global_share[pg$code %in% LIC], na.rm = T)
