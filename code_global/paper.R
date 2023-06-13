@@ -308,6 +308,7 @@ decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'UK') # mean
 
 ##### Pros and cons #####
 decrit(all$gcs_field_pro | all$gcs_field_con, all)
+summary(lm(gcs_support ~ branch_gcs, us2, weights = weight))
 summary(lm(nr_support ~ branch_gcs, us2, weights = weight))
 desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
            dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, 

@@ -1,8 +1,7 @@
-% TODO main_all_by_vote
-
 \documentclass[aspectratio=169,xcolor=dvipsnames, 11pt,mathserif]{beamer} 
 \input{preamble_slides.tex}
 \usepackage{multicol}
+% TODO: advice Linus: remove Linus, reword "We need you!"
               
 \begin{document}
 
@@ -15,6 +14,8 @@
 
 \vspace{1cm}
 \textbf{Adrien Fabre} (CNRS, CIRED) %,\\ Thomas Douenne (University of Amsterdam), Linus Mattauch (TU Berlin, Oxford)
+
+% TODO! encadrer en rouge des trucs
 
 %\vspace{-0.3cm}
 %OECD/CAE \\
@@ -30,6 +31,21 @@
 \end{frame}
 
 \section{Introduction}
+
+\begin{frame}{A global solution for a global problem}
+    \bbsp \ip Climate change is a global problem.
+    \ip Lower-income countries lack resources to tackle it.
+    \ip Absent global coordination, countries lack incentives to decarbonize.
+    \ip Many ponder over the current lack of fairness.
+    \ip A fair \blue{Global Climate Plan} can address these key issues.
+    \ip We test it among the population in 20 countries \pause $\Rightarrow$ it \blue{is widely supported}.
+    \ee
+\end{frame}
+
+% TODO: more support national or global carbon tax?
+
+% Why people support it at global level if they can't agree at national level?
+
 
 \begin{frame}{Meeting the 2\textdegree{}C target}
 \bbsp \ip \blue{How can we guarantee an emissions trajectory in line with the carbon budget?}
@@ -47,15 +63,15 @@
 % \end{frame}
 % How can we stop climate change before a 2°C increase? How can we alleviate exteme poverty before 2030?
 
-\subsection{Questionnaires}
+% \subsection{Questionnaires}
 \subsection{Support for the Global Climate Scheme}
 
 \begin{frame}{International surveys with a focus on the West\label{questionnaires}}
     \bbvs
-    \ip Global survey (02/2021--02/2022): 
+    \ip \green{\textbf{Global survey}}  (02/2021--02/2022) by \rose{Dechezleprêtre et al. (2022)} 
     \bbvs \ip \textcolor{blue}{20 countries}%in all world regions \textcolor{blue}{covering 72\% of global CO$_\text{2}$ emissions}
     ; $~$2,000 respondents per country; median duration: 28 min. \ee
-    \ip Complementary surveys (01--04/2023): 
+    \ip \yellow{\textbf{Complementary surveys}} (01--04/2023) by \rose{Fabre, Douenne \& Mattauch (2023)} -- \href{https://bit.ly/Fabre2023}{bit.ly/Fabre2023}
     \bbvs \ip Eu: 3,000 respondents from France, Germany, Spain, UK; 20 min. 
     \ip US1: 3,000 respondents from the U.S.; 14 min. 
     \ip US2: 2,000 respondents from the U.S.; 11 min.
@@ -90,7 +106,7 @@
 	\vspace{-.3cm}
 	\begin{figure}[h!]
 		\centering		
-		\caption{Share of support (somewhat or strongly) for the main global policies among non-\textit{indifferent}. %\hyperlink{detail_global}{\beamergotobutton{Detailed results}}
+		\caption{Share of support (somewhat or strongly) for the main global policies among non-\textit{indifferent}.  \hyperlink{national_policies}{\beamergotobutton{Absolute}} \hyperlink{national_policies}{\beamergotobutton{National}}%\hyperlink{detail_global}{\beamergotobutton{Detailed results}}
         }
         \vspace{-.2cm}
 		\includegraphics[height=.9\textheight]{../figures/OECD/Heatplot_global_tax_attitudes_share.pdf} % burden_share_all_share_countries
@@ -119,20 +135,20 @@ The policy could be put in place as soon as countries totaling more than 60\% of
 
 \begin{frame}{Support for the Global Climate Scheme\label{gcs_support}}
 \bbvsp \ip To offset the losses of the median emitter, we design a \rose{National Redistribution Scheme} (NR) funded by increased income taxes on the top 5\% (US) / 1\% (Eu).
-\ip We test understanding of the distributive effects of the GCS, NR, and both combined (and then give the expected answer) in an incentivized way after each policy description.%  TODO see more
+\ip We test understanding of the distributive effects of the GCS, NR, and both combined (and then give the expected answer) in an incentivized way after each policy description. \hyperlink{understanding}{\beamergotobutton{Understanding}}
 \ip We also describe a national climate policy. US: Coal exit / Eu: Insulation plan (mandatory, subsidised).
 \ee \vspace{-.3cm}
     \begin{figure}
         \centering % TODO perceptions G
         \only<1-3>{\includegraphics[height=.55\textheight]{../figures/blank}}
-        \only<4>{\caption{Do you support...? \textit{Yes/No} (Percentage of \textit{Yes}) \hyperlink{gcs_perceptions}{\beamergotobutton{Perceptions}} \hyperlink{conjoint_ab}{\beamergotobutton{Complementary policies}} \hyperlink{gcs_vote}{\beamergotobutton{By vote}}}
+        \only<4>{\caption{Do you support...? \textit{Yes/No} (Percentage of \textit{Yes}) \hyperlink{gcs_perceptions}{\beamergotobutton{Perceptions}} \hyperlink{conjoint_ab}{\beamergotobutton{Complementary policies}} \hyperlink{gcs_vote}{\beamergotobutton{By vote}} \hyperlink{national_policies}{\beamergotobutton{National policies}}}
         \includegraphics[height=.55\textheight]{../figures/country_comparison/support_binary_positive.pdf} } % 45
     \end{figure}
 \end{frame}
 
-\subsection{Stated support for other global redistribution policies}
+\subsection{Support for other global policies}
 
-\begin{frame}{Support for other global policies\label{}}
+\begin{frame}{Support for other global policies\label{other_policies}  \hyperlink{foreign_aid_conditions}{\beamergotobutton{Foreign aid}}}
 	\vspace{-.3cm}
     \begin{figure}
         \centering 
@@ -142,7 +158,7 @@ The policy could be put in place as soon as countries totaling more than 60\% of
     \end{figure}
 \end{frame}
 
-\begin{frame}{Support for a global wealth tax\label{wealth_tax}}
+\begin{frame}{Support for a global wealth tax\label{wealth_tax}  \hyperlink{foreign_aid_conditions}{\beamergotobutton{Foreign aid}}}
 \bbvs \ip We describe a global tax on wealth in excess of \$/\euro{}/£ 5 million and either ask:\pause
 \ee
 \vspace{-.4cm}
@@ -156,7 +172,7 @@ The policy could be put in place as soon as countries totaling more than 60\% of
         \caption{Whether half of the tax revenues should go to low-income countries (vs. none).}\vspace{-.2cm}
         \includegraphics[height=.3\textheight]{../figures/country_comparison/global_tax_sharing_positive.pdf} 
     \end{figure}
-$\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-income countries}.
+% $\Rightarrow$ \rose{Median Eu preference is 30\% of global wealth tax for low-income countries}.
 \end{frame}
 
 \subsection{Sincerity of the support for the GCS}
@@ -323,7 +339,7 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 %             \ip GCS is as prioritized as the average policy, or even more in France and Germany. \\ It is more prioritized than some planned climate policies, like the ban on thermal cars.
 %             \ip The global tax on millionaires is among the most prioritized measures.\\ It as prioritized as a national wealth tax, if not more.
 %             \ip Most prioritized are better public services and a higher minimum wage.
-%             \ee        % TODO!? everywhere, put interpretation after figures
+%             \ee       
 %         \end{column}
 %         \begin{column}{0.65\textwidth}\vspace{-.6cm}
 %             \begin{figure}
@@ -339,7 +355,9 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 \subsection{Second-order beliefs}
 
 \begin{frame}{Belief about the support\label{}}
-	\bbvs \ip Beliefs on the support for the GCS are relatively accurate: \\ \blue{no evidence of pluralistic ignorance in the U.S. \\ an underestimation by 15-20 p.p. in Eu}.
+	\bbvs \ip Beliefs on the support for the GCS are relatively accurate: \\ 
+    \quad \blue{no evidence of pluralistic ignorance in the U.S. \\ 
+    \quad an underestimation by 15-20 p.p. in Eu}.
     \ee \vspace*{-.4cm}
     \begin{figure}
         \centering 
@@ -462,50 +480,116 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
     \ee
 \end{frame}
 
+\begin{frame}{The trajectories}
+    \begin{figure}
+        \centering 
+        \caption{Global trajectories estimated for the Global Climate Plan (GCP)
+        }
+        \only<1>{\includegraphics[height=.8\textheight]{../figures/policies/trajectory_emissions} }
+        \only<2>{\includegraphics[height=.8\textheight]{../figures/policies/trajectory_price}  }
+        \only<3>{\includegraphics[height=.8\textheight]{../figures/policies/trajectory_full}  }
+    \end{figure}    
+\end{frame}
+
 \begin{frame}{The principles}
-    \begin{enumerate}
+    \begin{enumerate}[<+->]
         \item \blue{A cap on emissions to meet the 2\textdegree{}C target.}
         \bbvsp \ip $\Rightarrow$ Define a carbon budget and an emissions trajectory.
         \ip ETSs already cover 17\% of global GHG emissions (EU, China, South Korea...), are considered in various countries (India, Brazil, Nigeria).
         \ee
-        \item \blue{A glbal basic income that eradicates extreme poverty.}
-        \bbvsp \ip At their peak, GCP revenues would be 5\% of world GDP, with 1\% of world GDP in international transfers. 
-        \ip The basic income of $\approx$\$50 per month (in nominal) for each human above 15 would lift out of extreme poverty the 700 million people who live with less than \$2.15 a day (in PPP).
+        \item \blue{A global basic income that eradicates extreme poverty.}
+        \bbvsp \ip At their peak, GCP revenues at 5\% of world GDP, with 1\% of world GDP in international transfers. 
+        \ip The basic income of $\approx$\$50 per month (in nominal) for each human above 15 would lift out of extreme poverty the 700 million people with less than \$2.15 a day (in PPP).
         \ee
         \item \blue{A climate club to foster global cooperation.}
+        \bbvsp \ip Entry into force when signatories cover 60\% of global emissions.
+        \ip A carbon border adjustment. \ee % TODO! detail BCA
     \end{enumerate}
 \end{frame}
 
 \begin{frame}{The unadjusted distributive effects}
-    
+    \begin{figure}
+        \centering 
+        \caption{Distributive effects of the Global Climate Scheme in 2030.}
+        \includegraphics[height=.8\textheight]{../figures/maps/mean_gain_2030.pdf} 
+    \end{figure}        
 \end{frame}
 
 \begin{frame}{Participation mechanisms}
-    
+    \bbsp 
+    \ip An \textit{opt out} provision to account for the ability to pay.
+    \bbvsp \ip Middle-income countries with higher-than-average carbon footprint can opt out from the mutualization of revenues.
+        \ip Opting out countries retain the auction revenues they collect.
+        \ip Full opt out authorized up to 1.5 times world average GDP p.c. 
+        \ip Opt out right is phased out between 1.5 and 2 times world average GDP p.c. 
+        \ip \blue{$\Rightarrow$ China, Iran, South Africa... would not lose from the Global Climate \textit{Plan}.}
+        \ee
+    \ip Provisions to accommodate subnational entities into the club.
+    \bbvsp \ip They can opt out from the carbon border adjustment.
+        \ip They can use their revenues as they please.
+        \ip $\Rightarrow$ The states of California, New York, Illinois, Massachusetts... could join.% 40\% of U.S. GDP
+        \ee
+    \ip A provision to avoid anti-redistributive effects.
+    \bbvsp \ip High-income countries with a lower-than-average carbon footprint would not receive any revenues.
+        \ee
+    \ee
 \end{frame}
 
-\begin{frame}{The distributive effects}
-    
+\begin{frame}{The distributive effects\label{distributive}}
+    \begin{figure}
+        \centering 
+        \only<1>{ \caption{Distributive effects of the Global Climate Plan in 2030.   \hyperlink{other_distributive}{\beamergotobutton{More maps}}}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2030.pdf}}
+        % \only<2>{ \caption{Distributive effects of the Global Climate Plan in 2030.}
+        % \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2030.pdf} } % TODO! more slides
+        \only<2>{ \caption{Distributive effects of the Global Climate Plan throughout the century. \hyperlink{other_distributive}{\beamergotobutton{More maps}}}
+        \includegraphics[height=.8\textheight]{../figures/maps/npv_over_gdp_gcs_adj.pdf} }
+    \end{figure}        
 \end{frame}
 
-\begin{frame}{The distributive effects (cc'ed)}
-    
-\end{frame}
-
-\begin{frame}{Complement to others policies}
-    \bbsp \ip Wealth tax
-    \ip Other sources of funding  (e.g. a global corporate tax) to sustain the basic income in the long run.
-    \ip National redistribution
-    \ip Climate policies % some decarbonization costs can be mutualized, e.g. through public investments in public transportation and subsidies to thermal insulation, to reduce the discrepancy in private costs between people with similar income but different carbon footprint. 
+\begin{frame}{Complementarity with others policies}
+    \bbsp \ip The basic income increases the fiscal capacity of \blue{low-income countries}, which \blue{can raise taxes} to fund public services and infrastructures.
+    \ip Other sources of funding (e.g. a global corporate tax) should \blue{sustain the basic income in the long run}.
+    \ip \rose{A global wealth tax financing (at least in part) low-income countries can address historical responsibilities}.
+    \ip In high-income countries, \rose{national redistribution} can offset the negative incidence on median emitters.
+    \ip The GCP fosters \rose{national climate policies} (price, investments, subsidies, norms):
+        \bbsp \ip Lowering a country's emissions reduces what it pays to the rest of the world.
+        \ip By mutualizing some decarbonization costs, national climate policies can reduce horizontal inequalities (discrepancies in private costs between individuals with similar income but different carbon footprints).
+        \ee
+    \ip A \blue{global democratic climate assembly} would be the ideal forum for climate governance.
     \ee
 \end{frame}
 
 \begin{frame}{Implementation}
-    
+    \bbsp \ip Need to monitor, report and verify emissions of industrial units.
+        \bbsp \ip Challenging to avoid fraud in countries lacking institutional capacity, but same for any climate policy.
+        \ip The GCP would provide resources and assistance from experienced countries. \ee
+    \ip Distributing a global basic income is challenging: need to reach everyone and avoid fraud.
+        \bbsp \ip Most countries maintain electoral lists and already have social programs for isolated people.
+        \ip Smartphones can provide biometric identification and means of transaction.
+        \ip Satellite internet access might soon become cheap and ubiquitous (Hanson 2016).
+        \ee
+    \ee 
 \end{frame}
 
 \begin{frame}{Details}
-    
+    \bbsp \ip \textbf{Ideal timeline}: negotiation, consultations up to 2030, phase-in between 2030 and 2035.
+    \ip \textbf{Scope}: ideally, all CO$_\text{2}$. Initially, CO$_\text{2}$ from fossil fuels and cement production in large industrial units, including shipping and aviation.
+    \ip \textbf{Framework}: defines the scope, use of revenues, rules of governance, and \blue{carbon budget} (e.g. 500 GtCO$_\text{2}$ from 2030 $\approx$ $<+2$\textdegree{}C with 67\% chance).
+    \ip \textbf{Governance}: the governing body would choose the yearly emissions quota, the market design, and possible sanctions against non-participating or non-complying entities. % Voting rights proportional to emissions
+    \ip \textbf{Market design}: Carbon offsets should not be allowed. Borrowing and banking emissions permits should be limited.
+    \ee
+\end{frame}
+
+\begin{frame}{We need you!}
+    \begin{figure}
+        \centering \caption{You liked the GCP? \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/policy_brief_GCS.pdf}{Read}, share, endorse on \rose{\href{https://global-redistribution-advocates.org/the-global-climate-plan/}{global-redistribution-advocates.org}}!}
+        \includegraphics[height=.55\textheight]{../figures/policies/petition.PNG} 
+    \end{figure}    
+    \bbsp \ip \quad \quad \quad \quad \quad \quad Want to help? \pause We need specialists for the GCP's scientific committee.
+    \ip \pause \quad \quad \quad \quad \quad \quad Have comments or criticisms? \pause Happy to take any question or remark!
+    \ip \hspace{6.5cm} \href{https://youtu.be/Bypt4H8K5dI?t=106s}{\beamergotobutton{Video}}
+    \ee
 \end{frame}
 
 \appendix
@@ -530,7 +614,7 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 % 	\quad \quad \quad \quad \quad \quad \blue{Actual foreign aid is overestimated.} \quad \quad \quad \rose{Majorities support more foreign aid.}
 % \end{frame}
 
-\begin{frame}{Conditions for increased foreign aid\label{foreign_aid_conditions} \hyperlink{foreign_aid_perceptions}{\beamergotobutton{Perceptions}}}
+\begin{frame}{Conditions for increased foreign aid \label{foreign_aid_conditions} \hyperlink{other_policies}{\beamergotobutton{Go back}}}
     \begin{figure} \vspace{-.2cm}
         \centering 
         \caption{[Info on actual amount]. Do you support [the U.S.] transferring more money to low-income countries?}\vspace{-.2cm}
@@ -547,7 +631,7 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 \end{frame}
 
 \begin{frame}{Preferences over public spending%How to fund increased foreign aid
-	\label{} \hyperlink{foreign_aid_perceptions}{\beamergotobutton{Perceptions}}}
+	\hyperlink{other_policies}{\beamergotobutton{Go back}}}
 	\begin{columns}
         \begin{column}{0.5\textwidth}
             \begin{figure}
@@ -569,9 +653,9 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
     \end{columns}
 	\bbvs \ip \rose{People want better public services and higher taxes on the wealthiest.}
 	\ee 
-\end{frame} % TODO: links
+\end{frame} 
 
-\begin{frame}{Support for increased foreign aid \hyperlink{foreign_aid_conditions}{\beamergotobutton{Go back}}\label{foreign_aid_perceptions}}\vspace{-.2cm} 
+\begin{frame}{Support for increased foreign aid \hyperlink{other_policies}{\beamergotobutton{Go back}}\label{foreign_aid_perceptions}}\vspace{-.2cm} 
     \begin{figure} 
         \centering 
         \caption{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Mean})}\vspace{-.2cm}
@@ -610,7 +694,7 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
     \end{figure}
 \end{frame}
 
-\begin{frame}{Conjoint analyses: influence on preferred platform (Eu) \hyperlink{conjoint_r_fr}{\beamergotobutton{Go back}}\label{conjoint_r_eu}} 
+\begin{frame}{Conjoint analyses: influence on preferred platform (Eu) \hyperlink{conjoint_r_uk}{\beamergotobutton{Go back}}\label{conjoint_r_eu}} 
     \begin{figure}\vspace{-.2cm}
         \centering 
         \caption{%Imagine that a [Left or Center-left coalition wins the next elections]. Here are two possible platforms on which [the coalition] may campaign (the policies in each platform are randomly drawn from a pool of credible [Left/Center-left] policies).\\
@@ -639,7 +723,7 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
     \end{figure}
 \end{frame}
 
-\begin{frame}{Conjoint analyses: influence on preferred platform (US) \hyperlink{conjoint_r_fr}{\beamergotobutton{Go back}}\label{conjoint_r_us}} 
+\begin{frame}{Conjoint analyses: influence on preferred platform (U.S.) \hyperlink{conjoint_r_uk}{\beamergotobutton{Go back}}\label{conjoint_r_us}} 
     \bbvs \ip \rose{Endorsing the GCS is not determinant to gain the Democratic primary.}
     \ee
     \begin{figure}\vspace{-.4cm}
@@ -648,6 +732,30 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 		Which of these candidates do you prefer?}
         \vspace{-.2cm} 
         \includegraphics[height=.7\textheight]{../figures/US1/ca_r.png} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform (Germany) \hyperlink{conjoint_r_uk}{\beamergotobutton{Go back}}\label{conjoint_r_de}} 
+    \bbvs \ip \rose{Endorsing the GCS is not determinant to gain the Democratic primary.}
+    \ee
+    \begin{figure}\vspace{-.4cm}
+        \centering 
+        \caption{Imagine that a Rot-Rot-Grüne coalition wins the next elections. Here are two possible platforms on which the coalition may campaign (the policies in each platform are randomly drawn from a pool of credible left-wing policies).\\
+		(...) Even if you do not support the Left, which of these platforms do you prefer? }
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/DE/ca_r.png} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform (Spain) \hyperlink{conjoint_r_uk}{\beamergotobutton{Go back}}\label{conjoint_r_es}} 
+    \bbvs \ip \rose{Endorsing the GCS is not determinant to gain the Democratic primary.}
+    \ee
+    \begin{figure}\vspace{-.4cm}
+        \centering 
+        \caption{Imagine that the PSOE wins the next elections. Here are two possible platforms on which it may campaign (the policies in each platform are randomly drawn from a pool of credible PSOE policies).\\
+		(...) Even if you do not support the PSOE, which of these platforms do you prefer? }
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/ES/ca_r.png} 
     \end{figure}
 \end{frame}
 
@@ -758,6 +866,34 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
         \makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/country_comparison/main_all_by_vote_share.pdf}} 
     \end{figure}
 \end{frame}
+
+\begin{frame}{Main attitudes by vote \hyperlink{gcs_support}{\beamergotobutton{Go back}}\label{gcs_vote}} % TODO: Yes on left
+    \begin{figure}[h!] 
+        \only<1>{\caption{Main attitudes by vote in France}
+        \includegraphics[width=.7\textwidth]{../figures/FR/vote/gcs_support.pdf}}
+        \only<2>{\caption{Main attitudes by vote in Germany}
+        \includegraphics[width=.7\textwidth]{../figures/DE/vote/gcs_support.pdf}}
+        \only<3>{\caption{Main attitudes by vote in Spain}
+        \includegraphics[width=.7\textwidth]{../figures/ES/vote/gcs_support.pdf}}
+        \only<4>{\caption{Main attitudes by vote in the UK}
+        \includegraphics[width=.7\textwidth]{../figures/UK/vote/gcs_support.pdf}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Comprehension of the policies}\label{understanding}
+    \begin{figure}[h!]
+        \caption[Comprehension]{Correct answers to comprehension questions (in percent). \hyperlink{gcs_support}{\beamergotobutton{Go back}}}\label{fig:understood_each}
+        \includegraphics[width=\textwidth]{../figures/country_comparison/understood_each_positive.pdf}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Comprehension of the policies}
+\begin{figure}[h!]
+    \caption[Comprehension score]{Number of correct answers to comprehension questions (mean). \hyperlink{gcs_support}{\beamergotobutton{Go back}}}\label{fig:understood_score}
+    \includegraphics[width=\textwidth]{../figures/country_comparison/understood_score_mean.pdf} 
+\end{figure}
+\end{frame}
+
 % 
 % 
 % \subsection{Socio-Demographics}
@@ -853,6 +989,55 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 % \end{figure}
 % \end{frame}
 
+\subsection{Distributive effects of the Global Climate Plan}
+
+\begin{frame}{Distributive effects of the Global Climate Plan\label{other_distributive} \hyperlink{distributive}{\beamergotobutton{Go back}}}
+    \begin{figure}
+        \centering 
+        \only<1>{ \caption{Distributive effects of the Global Climate Plan in 2030.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2030.pdf}}
+        \only<2>{ \caption{Distributive effects of the Global Climate Plan in 2040.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2040.pdf}}
+        \only<3>{ \caption{Distributive effects of the Global Climate Plan in 2050.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2050.pdf}}
+        \only<4>{ \caption{Distributive effects of the Global Climate Plan in 2060.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2060.pdf}}
+        \only<5>{ \caption{Distributive effects of the Global Climate Plan in 2070.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2070.pdf}}
+        \only<6>{ \caption{Distributive effects of the Global Climate Plan in 2080.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2080.pdf}}
+    \end{figure}        
+\end{frame}
+
+\begin{frame}{Distributive effects of the Global Climate Plan \hyperlink{distributive}{\beamergotobutton{Go back}}}
+    \begin{figure}
+        \centering 
+        \only<1>{ \caption{Distributive effects of the Global Climate Plan in 2030.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2030.pdf}}
+        \only<2>{ \caption{Distributive effects of the Global Climate Plan in 2040.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2040.pdf}}
+        \only<3>{ \caption{Distributive effects of the Global Climate Plan in 2050.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2050.pdf}}
+        \only<4>{ \caption{Distributive effects of the Global Climate Plan in 2060.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2060.pdf}}
+        \only<5>{ \caption{Distributive effects of the Global Climate Plan in 2070.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2070.pdf}}
+        \only<6>{ \caption{Distributive effects of the Global Climate Plan in 2080.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2080.pdf}}
+    \end{figure}        
+\end{frame}
+
+\begin{frame}{Distributive effects of the Global Climate Plan \hyperlink{distributive}{\beamergotobutton{Go back}}}
+    \begin{figure}
+        \centering 
+        \only<1>{ \caption{Distributive effects of the Global Climate \textit{Scheme}.}
+        \includegraphics[height=.8\textheight]{../figures/maps/npv_over_gdp_gcs.pdf}}
+        \only<2>{ \caption{Distributive effects of the Global Climate \textit{Plan}.}
+        \includegraphics[height=.8\textheight]{../figures/maps/npv_over_gdp_gcs_adj.pdf}}
+        % \only<3>{ \caption{Distributive effects of the Global Climate Plan.}
+        % \includegraphics[height=.8\textheight]{../figures/maps/npv_pa_gcs_adj.pdf}} % TODO! pb with this figure
+    \end{figure}        
+\end{frame}
 
 \subsection{OECD\label{detail_global}}
 
@@ -885,6 +1070,25 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 % %\caption{}
 % \end{figure}
 % \end{frame}
+
+\begin{frame}{Relative support for national policies\label{national_policies} \hyperlink{global_policies}{\beamergotobutton{Go back}}} 
+    % National vs. global support: global T&D < national T&D << GCS (except in U.S. where the three are equally supported)
+	\begin{figure}[h!]
+	\centering
+	%\caption{Relative support for national policies}
+	\includegraphics[height=.8\paperheight]{../../oecd_climate/figures/country_comparison/Heatplot_national_policies_share_countries.pdf}
+	\end{figure}
+    Support in high-income countries: Global tax and dividend $\lesssim$ National tax and dividend $<$ Global quota and dividend \\ Except in the U.S. where the three are equally supported.
+\end{frame}
+
+\begin{frame}{Absolute support for global policies\label{absolute_oecd} \hyperlink{global_policies}{\beamergotobutton{Go back}}} 
+\begin{figure}[h!]
+    \centering		
+    \caption{Share of support (somewhat or strongly) for the main global policies among non-\textit{indifferent}.   }
+    \vspace{-.2cm}
+    \includegraphics[height=.82\textheight]{../figures/OECD/Heatplot_global_tax_attitudes_positive.pdf} % burden_share_all_share_countries
+    \end{figure}
+\end{frame}
 
 \begin{frame}{} % TODOO
 	\begin{figure}[h!]

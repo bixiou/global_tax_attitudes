@@ -1,0 +1,526 @@
+\documentclass[12pt,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella} % Palatino text only
+\usepackage{mathpazo}  % Palatino math & text
+\usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
+% \linespread{1.5}
+% \usepackage[super,comma,sort]{natbib} % WPcomment
+\usepackage[round,sort&compress]{natbib} % NCCcomment
+\usepackage{url} % [hyphens]
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation.
+\usepackage[pagebackref]{hyperref}
+% \usepackage{multibib} % incompatible with backref
+\hypersetup{
+  colorlinks=true, % breaklinks=true,
+  urlcolor=purple,    % color of external links
+  linkcolor=blue,  % color of toc, list of figs etc.
+  citecolor=violet,   % color of links to bibliography
+}
+\usepackage{bm}
+\usepackage{indentfirst}
+\usepackage{tocbibind}
+\setcitestyle{aysep={}} 
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{supertabular}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{gensymb}
+\usepackage{textcomp}
+
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{fullpage}
+\usepackage{morefloats}
+\usepackage{makecell}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage{titletoc}
+\usepackage[export]{adjustbox}
+\usepackage[anythingbreaks]{breakurl} % for links
+\usepackage{multicol}
+\newsavebox\ltmcbox % For net gain table over two columns
+%\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
+%\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
+\renewcommand{\floatpagefraction}{.99}
+
+% % Getting landscape page and page number/footer on bottom of page (instead of to the left)
+% \fancypagestyle{mylandscape}{
+% \fancyhf{} %Clears the header/footer
+% \fancyfoot{% Footer
+% \makebox[\textwidth][r]{% Right
+%   \rlap{\hspace{1.5cm}% Push out of margin by \footskip
+%     \smash{% Remove vertical height
+%       \raisebox{13.6cm}{% Raise vertically
+%         \rotatebox{90}{\thepage}}}}}}% Rotate counter-clockwise
+% \renewcommand{\headrulewidth}{0pt}% No header rule
+% \renewcommand{\footrulewidth}{0pt}% No footer rule
+% }
+
+% \fancypagestyle{page_left}{%
+% 	\renewcommand{\headrulewidth}{0pt}
+%   \fancyhf{}
+%   \fancyfoot[OC]{%
+%       \begin{tikzpicture}[remember picture,overlay]
+%           \node[xshift=1cm] (number) at (current page.west) {\thepage};
+%       \end{tikzpicture}
+%   }%
+% }
+% \renewcommand{\thesubfigure}{\Alph{subfigure}}
+
+% \newcites{App}{Appendix References}
+
+% \captionsetup[table]{skip=-10pt}
+% \begin{document}
+
+% \maketitle
+
+% \clearpage
+% % \startcontents
+% % \printcontents{ }{1}{\section{\contentsname}}
+% % \clearpage
+% \section{Introduction\label{sec:intro}}
+
+% % \clearpage
+% \renewcommand{\bibsection}{\section{\refname}}
+% \bibliographystyle{naturemag}
+% \bibliography{global_tax_attitudes}
+% % \stopcontents
+
+% \end{document}
+
+
+\title{International Attitudes Toward Global Policies %\\ Addressing Climate Change and Inequality 
+} 
+
+\author{Adrien Fabre$^{1,2}$, Thomas Douenne$^3$ and Linus Mattauch$^{4,5,6}$} % WPcomment
+\author{Adrien Fabre\footnote{CNRS, CIRED. E-mail: fabre.adri1@gmail.com (corresponding author).}, Thomas Douenne\footnote{University of Amsterdam}\; and Linus Mattauch\footnote{Technical University Berlin, Potsdam Institute for Climate Impact Research -- Member of the Leibniz Association and University of Oxford}~~\thanks{The project %is approved by IRB at Harvard University (IRB21-0137), and 
+was preregistered in the Open Science Foundation registry (\href{https://osf.io/fy6gd}{osf.io/fy6gd}). \\ We are grateful for financial support from the University of Amsterdam and TU Berlin. Mattauch also thanks the Robert Bosch Foundation. %We are grateful for financial support from the OECD, the French Ministry of Foreign Affairs, the French Conseil d’Analyse Economique and the Spanish Ministry for the Ecological Transition and Demographic Challenge. We also acknowledge support from the Grantham Foundation for the Protection of the Environment and the Economic and Social Research Council through the Centre for Climate Change Economics and Policy. 
+We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez Chico, and Stefanie Stantcheva for their invaluable inputs for the project. We thank Auriane Meilland for feedback. We further thank Jakob Niemann, Laura Schepp, Martín Fernández-Sánchez, Samuel Gervais, Samuel Haddad, and Guadalupe Manzo for assistance. Fabre declares that he also serves as president of Global Redistribution Advocates.}} % NCCcomment
+
+\date{\today} % NCCcomment
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+{\textbf{Work in progress --- \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/US1.pdf}{Link to most recent version}}}
+\end{center}
+
+
+% WPcomment
+% \begin{affiliations}
+% \item CNRS
+% \item CIRED
+% \item University of Amsterdam
+% \item Technical University Berlin
+% \item Potsdam Institute for Climate Impact Research 
+% \item University of Oxford
+% \end{affiliations}
+
+\begin{abstract}
+  %A global carbon price funding a global basic income, called the ``Global Climate Scheme'' (GCS), would be an effective and progressive way to combat climate change and poverty. Yet, such policy is mostly absent from political platforms and the policy debate. Recent surveys on 40,680 respondents in 20 countries covering 72\% of global CO$_\text{2}$ emissions document majority support for this and other global policies. Using a complementary survey on 8,000 respondents in the U.S., France, Germany, Spain and the U.K., we test several hypotheses that could reconcile strong stated support with a lack of salience of these issues. The complementary analyses show that the stated support is mostly sincere, as a list experiment shows no evidence of social desirability bias, majorities are willing to sign a real-stake petition, and global redistributive policies rank high in the prioritization of policies. Conjoint analyses reveal that a progressive candidate would not significantly lose voting share by endorsing the GCS in any country, and may even gain 11 p.p. in France. Likewise, a platform is more likely to be preferred if it contains the GCS or a global tax on millionaires. Accurate beliefs about the level of support for the GCS dismisses the hypothesis of pluralistic ignorance of the support. Universalistic attitudes are confirmed in more general questions, including an incentivized donation. In sum, our findings indicate that global policies are genuinely supported by a majority of the population. Public opinion is therefore not the reason that they do not prominently enter political debates.
+
+
+  We document majority support for policies entailing global redistribution and climate mitigation. Recent surveys on 40,680 respondents in 20 countries covering 72\% of global carbon emissions show strong support for an effective and progressive way to combat climate change and poverty: a global carbon price funding a global basic income, called the ``Global Climate Scheme'' (GCS). Using complementary surveys on 8,000 respondents in the U.S., France, Germany, Spain, and the U.K., we test several hypotheses that could reconcile strong stated support with a lack of salience in policy circles. A list experiment shows no evidence of social desirability bias, majorities are willing to sign a real-stake petition, and global redistribution ranks high in the prioritization of policies. Conjoint analyses reveal that a platform is more likely to be preferred if it contains the GCS or a global tax on millionaires. Universalistic attitudes are confirmed by an incentivized donation. In sum, our findings indicate that global policies are genuinely supported by a majority of the population. Public opinion is therefore not the reason that they do not prominently enter political debates.
+\end{abstract}
+
+\textbf{JEL codes:} P48, Q58, H23, Q54
+
+\textbf{Keywords:} Climate change, global policies, cap-and-trade, attitudes, survey.
+
+\tableofcontents
+
+\onehalfspacing
+
+\section{Introduction}
+
+Major sustainability objectives could be achieved by global approaches to mitigating climate change and inequality. Disagreements on burden-sharing, differing priorities, and lack of institutional capacity are standardly seen as obstacles to effective global collaboration on these objectives. We examine a key condition for the success of global cooperation, neglected in social science research so far: the support of citizens in affluent countries for globally redistributive policies which can deliver on poverty reduction and climate change mitigation. This article investigates public attitudes towards such global policies.
+
+Recent surveys administered to over 40,000 respondents from 20 high- and middle-income countries reveal substantial support for those policies, especially global climate policies and a global tax on the wealthiest aimed at financing low-income countries \citep{dechezlepretre_fighting_2022}. In particular, a global 2\% tax on individual wealth in excess of \$5 million would effectively reduce poverty as it would mechanically increase low-income countries’ national income by 50\%, if merely 35\% of the revenue were allocated for this purpose.\footnote{Figures derived from \citet{chancel_world_2022}, the \href{https://wid.world/world-wealth-tax-simulator/}{WID wealth tax simulator}, and the World Bank.} Surprisingly, even in wealthy nations that would bear a significant burden, majorities of citizens express support for such globally redistributive measures.
+
+To gain insights into the factors shaping public support for global policies in high-income countries, we conducted complementary surveys among 8,000 respondents from France, Germany, Spain, the U.S., and the U.K. The focus of our approach is a specific policy aimed at addressing both climate change and poverty, referred to as the ``Global Climate Scheme'' (GCS). It implements a cap on carbon emissions to limit global warming below 2\textdegree{}C. The emission rights are auctioned each year to polluting firms and fund a global basic income, alleviating extreme poverty. By employing a list experiment, a real-stake petition, and conjoint analyses, our study demonstrates genuine and robust support for the GCS among respondents. For example, the conjoint analyses provide evidence that political parties would not lose vote intention by endorsing the GCS.
+
+These findings underscore a strong demand for globally redistributive climate policies, even in the absence of significant policy proposal. In our discussion we offer potential explanations behind this policy implementation gap.
+
+
+% Global cooperation is necessary to solve sustainability challenges such as poverty and climate change. Disagreements on burden-sharing, differing priorities and lack of institutional capacity are obstacles to effective global collaboration. One further obstacle, neglected in social science research so far, is the willingness of citizens in affluent countries to bear the costs of the global redistribution associated with effective poverty reduction and climate change mitigation. This article investigates public attitudes towards global policies delivering on climate change mitigation and poverty reduction.
+
+% To explore relevant public attitudes, we use surveys administered to over 40,000 respondents from 20 high- and middle-income countries covering 72\% of global carbon emissions. The responses reveal substantial support for global policies, including global emissions trading and a global wealth tax aimed at financing low-income countries. Surprisingly, even in wealthy nations that would bear a significant burden, majorities of citizens express support for globally redistributive measures.
+
+% To gain insights into the factors shaping public support in these countries, we conducted complementary surveys among 8,000 respondents from France, Germany, Spain, the U.S., and the U.K. The focus is a specific policy aimed at addressing both climate change and extreme poverty, referred to as the ``Global Climate Scheme'' (GCS). It consists of global emissions trading, which limits total carbon emissions. The emission rights are auctioned each year to polluting firms and fund a global basic income. By employing a list experiment, a real-stake petition, and conjoint analysis, our study demonstrates the genuine and robust support for the GCS among respondents. For example, the conjoint analysis provides evidence that policymakers do not lose public support by endorsing the GCS.
+
+% These findings underscore a strong demand for globally redistributive climate policies, even in the absence of significant policy implementation. In our discussion we offer potential explanations behind this policy implementation gap.
+
+
+\paragraph{Literature} Few prior attitudinal surveys have examined policies for global redistribution. Exceptions include \citet{carattini_how_2019}, who studies global carbon taxes with international per capita redistribution and find agreement close to 50\% in high-income countries. In addition, \citet{issp_international_2019} uncover near consensus that ``present economic differences between rich and poor countries are too large'' (overall, 78\% agree and 5\% disagree) in each of 29 countries. \citet{ghassim_public_2022} examines support for global democracy in a range of countries and finds that, in countries where the government stems from a coalition, voting shares would shift by 8 (Brazil) to 12 p.p. (Germany) from parties that are said to oppose global democracy to parties that supposedly support it. Appendix \ref{sec:literature} contains a broader literature review including further attitudinal surveys on global policies (\ref{subsubsec:literature_attitudes_policies}); prior work on attitudes toward climate burden sharing (Appendix \ref{subsubsec:literature_attitudes_burden_sharing}), attitudes toward foreign aid (Appendix \ref{subsubsec:literature_foreign_aid}); global carbon pricing (Appendix \ref{subsubsec:literature_pricing}), global redistribution (Appendix \ref{subsubsec:literature_redistribution}), basic income (Appendix \ref{subsubsec:literature_basic_income}), and global democracy (Appendix \ref{subsubsec:literature_democracy}).
+
+
+% \paragraph{Literature.} The literature review is relegated to Appendix \ref{sec:literature}. It includes references to the few other attitudinal surveys on global policies (e.g. \citet{carattini_how_2019,issp_international_2019,ghassim_public_2022}, see Appendix \ref{subsubsec:literature_attitudes_policies}); a critical review of the literature on attitudes toward climate burden sharing (Appendix \ref{subsubsec:literature_attitudes_burden_sharing}); references to the large literature on attitudes toward foreign aid (Appendix \ref{subsubsec:literature_foreign_aid}); and introduction to the literatures on global carbon pricing (Appendix \ref{subsubsec:literature_pricing}), global redistribution (Appendix \ref{subsubsec:literature_redistribution}), basic income (Appendix \ref{subsubsec:literature_basic_income}), and global democracy (Appendix \ref{subsubsec:literature_democracy}). 
+
+
+\section{Results}
+
+The presentation of results proceeds as follows: after briefly describing the survey data (\ref{subsec:data}), we first document broad international support for global approaches to climate policy that lead to global redistribution (\ref{subsubsec:global_support}). Subsequently, we present specific findings from surveys in the U.S. and Europe that document support for the GCS, wealth taxes, and foreign aid in those countries (\ref{subsubsec:support_gcs}-\ref{subsubsec:support_foreign_aid}). We proceed to study the support for the Global Climate Scheme in more detail, by means of a list experiment, petition, conjoint analyses, prioritization task, and by eliciting pros and cons (\ref{subsec:robustness_sincerity}). To understand the gap between support for global policies and their appearance in public discussion, we conclude by reporting results on underlying universalistic values (\ref{subsec:universalistic}) and beliefs about the support of others (\ref{subsec:second_order_beliefs}). 
+
+\subsection{Data}\label{subsec:data}
+
+The study relies on two sets of surveys: the \textit{Global} survey and the \textit{Complementary} surveys (see Table \ref{tab:survey_summary}).
+
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.5}
+\caption{Summary of the surveys used in the analysis.}
+\label{tab:survey_summary}
+\centering
+\footnotesize
+\begin{tabular}{ |p{2.5cm}|p{3.5cm}|p{2.5cm}|p{2.5cm}|p{3.5cm}|  }
+\cline{2-5}
+\multicolumn{1}{c|}{} & \textbf{Global survey} & \multicolumn{3}{|c|}{\textbf{Complementary surveys}} \\
+\hline
+\textbf{\textit{Name}} & \textit{Global} & \textit{US1} & \textit{US2} & \textit{Eu} \\
+\hline
+\textbf{Region} & 20 high and middle-income countries & U.S. & U.S. & France, Germany, Spain, U.K. \\
+\hline
+\textbf{Sample size} & 40,680 & 3,000 & 2,000 & 3,000 \\
+\hline
+\textbf{Main purpose} & Stated support for global policies & \multicolumn{3}{|p{8.5cm}|}{Focus on GCS (sincerity, rationales, etc.) + Support for global redistribution + Universalistic values} \\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Global Survey}
+
+The \textit{Global} survey, conducted in 2021, involved 40,680 respondents from 20 countries, representing approximately 72\% of global CO$_\text{2}$ emissions. This survey serves as the basis for measuring stated support for various global policies worldwide. Detailed information about the data collection process, sample representativeness, and analysis of questions on national policies can be found in \citealp{dechezlepretre_fighting_2022}.
+
+\paragraph{Complementary Surveys}
+
+To delve deeper into the sincerity and rationales behind support for the GCS and attitudes towards global policies, global redistribution, and universalistic values, complementary surveys were conducted in 2023. These surveys are based on a sample of 8,000 respondents from France, Germany, Spain, the U.K., and the U.S. The European survey (\textit{Eu}) comprises 3,000 respondents, while the U.S. sample was collected in two separate waves: \textit{US1} with 3,000 respondents and \textit{US2} with 2,000 respondents. The survey questions in both the European and U.S. surveys are identical, except for an additional question in \textit{US2} that uses results from \textit{US1} to assess the bandwagon effect.
+
+The complementary surveys ensured representativeness along key dimensions such as gender, income, age, highest diploma, and degree of urbanization. The \textit{Eu} survey is also representative of its four countries in terms of population size, while the \textit{US1} and \textit{US2} surveys are representative in terms of region and ethnicity. Tables \ref{tab:representativeness_waves}-\ref{tab:representativeness_EU} confirm that our samples closely match population frequencies. More detail on data collection is given in Section \ref{sec:methods}. The questionnaires used in the surveys are provided in Appendices \ref{app:questionnaire_oecd} and \ref{app:questionnaire}.
+% Details regarding the representativeness of the samples are provided in Tables \ref{tab:representativeness_waves}-\ref{tab:representativeness_EU}.
+
+
+
+\subsection{Stated support for global policies}\label{subsec:stated_support}
+
+The results from both the \textit{Global} and \textit{Complementary} surveys demonstrate robust support for global policies across all surveyed countries, with a clear preference for addressing climate action on a global scale over regional, national, or local approaches.
+
+\subsubsection{Global support}\label{subsubsec:global_support}
+
+\begin{figure}[h!]
+  \caption[Relative support for global climate policies]{Relative support for global climate policies.} 
+  \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]
+  {Images/figure_1_paper_gcs.png}}\label{fig:oecd}
+  {\footnotesize \\ $\quad$ \\ Note 1: The numbers represent the share of \textit{Somewhat} or \textit{Strongly support} among non-\textit{indifferent} answers (in percent, $n$ = 40,680). The color blue denotes a relative majority. See Figure \ref{fig:oecd_absolute} for the absolute support. (Questions \ref{q:scale}-\ref{q:millionaire_tax}. Reproduced from \citealp{dechezlepretre_fighting_2022}, Figure A21.)) \\ Note 2: *In Denmark, France and the U.S., the questions with an asterisk were asked differently, cf. Question \ref{q:burden_sharing_asterisk}. } 
+\end{figure}
+
+
+The global survey shows strong support for climate policies enacted at the global level (Figure \ref{fig:oecd}, reproduced from \citealp{dechezlepretre_fighting_2022}). When asked ``At which level(s) do you think public policies to tackle climate change need to be put in place?'', 70\% (in the U.S.) to 94\% (in Japan) choose the global level. The next most popular choice is the federal or continental level, favored by 52\% of Americans and less than half of European respondents. Local policies receive the least support in almost all countries. This preference for climate policies implemented at the global scale is in line with \citet{beiser-mcgrath_could_2019} and consistent with individuals' concerns for the fairness and effectiveness of such policies, which have been identified as two of the three key determinants of support, besides self-interest \citep{klenert_making_2018,douenne_yellow_2022,dechezlepretre_fighting_2022}.
+
+Among the four global climate policies examined in the \textit{Global} survey, three policies garner high support across all countries (Figure \ref{fig:oecd}). These policies include a global democratic assembly on climate change, a global tax on millionaires to finance low-income countries contingent on their climate action, and a global carbon budget of +2\textdegree{}C divided among countries based on tradable shares.\footnote{The policies were all described with further details to make sure people understood them. Specifically, the policies were presented as follows: an international emissions trading system where ``countries that emit more than their national share would pay a fee to countries that emit less than their share''; ``a tax on all millionaires in dollars around the world to finance low-income countries that comply with international standards regarding climate action [which] would finance infrastructure and public services such as access to drinking water, healthcare, and education''; ``a global democratic assembly whose role would be to draft international treaties against climate change [where] each adult across the world would have one vote to elect members of the assembly''.} In high-income countries, the global quota policy obtains 64\% absolute support (i.e., ``somewhat'' or ``strong'' support) and 84\% relative support (i.e., excluding ``indifferent'' answers). Support for this policy is even higher in middle-income countries, however their samples are only representative of the online population (young, graduated and urban people are over-represented).%due to the over-representation of young, educated, and urban populations in the online sample.
+
+Following the support for the global quota, respondents are asked about their preferences for dividing the carbon budget among countries, as depicted in the third block of Figure \ref{fig:oecd}. Consistent with the existing literature (see Appendix \ref{subsubsec:literature_attitudes_burden_sharing}), an equal per capita allocation of emission rights emerges as the preferred burden-sharing principle, garnering majority support in all countries and never below 84\% relative support. Considering historical responsibilities or vulnerability to climate damages is also popular, albeit with less consensus, while grandfathering (i.e., allocation of emission shares based on current emissions) receives the least support in all countries.
+
+A global quota with equal per capita emission rights produces the same distributional outcomes as a global carbon tax that funds a global basic income. However, support for the carbon tax is lower than for the quota, particularly in high-income countries, and there is no  relative majority for the tax in Anglo-Saxon countries.\footnote{The levels of support are consistent with the findings of \citet{carattini_how_2019}, the only previous study that tested a global carbon tax.} Two possible reasons for this lower support are that distributive effects are made salient in the case of the tax, and that people may find a quota more effective than a tax to reduce emissions. This interpretation is consistent with the level of support for the global quota once we make the distributive effects salient, as we do in the complementary surveys.
+
+% One possible reason for this discrepancy is the explicit emphasis on the redistributive effects associated with the tax in the survey. The survey informs respondents that the \$30 per month basic income would lift 700 million people earning less than \$2/day out of extreme poverty, while fossil price increases would impose costs (specified in the survey) on the typical person in their country. Although other factors such as perceptions of effectiveness may also influence support for a quota versus a tax, this interpretation aligns with the level of support for the global quota when distributive effects are made salient, as we do in the complementary surveys. 
+
+
+%\subsubsection{Complementary surveys}
+
+\subsubsection{Global Climate Scheme}\label{subsubsec:support_gcs}
+%\paragraph{Global Climate Scheme}
+
+The complementary surveys (\textit{US1}, \textit{US2}, \textit{Eu}) consist of a comprehensive exploration of citizens' attitudes towards the GCS. We present to respondents a detailed description of the GCS and explain its distributive effects, including specific amounts at stake (as specified in the box below). Furthermore, we assess respondents' understanding of the GCS with incentivized questions to test their comprehension of the expected outcome for typical individuals in high-income countries (loss) and the poorest individuals globally (gain), followed by the provision of correct answers. The same approach is applied to evaluate respondents' understanding of a National Redistribution scheme (NR) targeting the top 5\% (in the U.S.) or top 1\% (in Europe) with the aim of financing cash transfers to all adults,\footnote{The wider base in the U.S. was chosen because emissions are larger in the U.S. than in Europe, and it would hardly be feasible to offset the median American's loss by taxing only the top 1\%.} calibrated to offset the monetary loss of the GCS for the median emitter in their country. Subsequently, we summarize both schemes to enhance respondents' recall. Additionally, we present a final incentivized comprehension question and provide the expected answer that the combined GCS and NR would result in no net gain or loss for a typical fellow citizen. Finally, participants are directly asked to express their support for the GCS and NR using a simple \textit{Yes}/\textit{No} question.
+
+The stated support for the GCS is 54\% in the U.S. and 76\% in Europe,\footnote{The 95\% confidence intervals are $[52.4\%, 55.9\%]$ in the U.S. and $[74.2\%, 77.2\%]$ in Europe. The average support is computed with survey weights, employing weights based on quota variables, which exclude vote. Another method to reweigh the raw results involves running a regression of the support for the GCS on sociodemographic characteristics (including vote) and multiplying each coefficient by the population frequencies. This alternative approach yields similar figures: 76\% in Europe and 52\% or 53\% in the U.S. (depending on whether individuals who did not disclose their vote are classified as non-voters or excluded). Notably, the average support excluding non-voters is 54\% in the U.S.} while the support for NR is very similar: 56\% and 73\% respectively (see Figure \ref{fig:support_binary}). Appendix \ref{app:determinants} provides further insight into the sociodemographic determinants of GCS support, highlighting, for instance, stronger support among young individuals.
+
+
+
+\begin{figure}[h!]
+    \caption[Support for the Global Climate Scheme]{Support for the GCS, NR and the combination of GCS, NR and C. (Questions \ref{q:gcs_support}, \ref{q:nr_support} and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)
+    }\label{fig:support_binary}
+    \makebox[\textwidth][c]{\includegraphics[width=1.3\textwidth]{Images/support_binary_positive.pdf}} 
+\end{figure}
+
+% TODO: add note to the figure above, to explain what is the national climate policy.
+
+
+\begin{tcolorbox}
+  \paragraph{The Global Climate Scheme} The GCS consists of global emissions trading with emission rights being auctioned each year to polluting firms, and of a global basic income, funded by the auction revenues. Using the price and emissions trajectories from the report by \cite{stern_report_2017}, and in particular a carbon price of \$90/tCO$_\text{2}$ in 2030, we estimate that the basic income would amount to \$30 per month for each human above 15 (see details in Appendix \ref{app:gain_gcs}). We describe the GCS to the respondents as a ``climate club'' and we specify its redistributive effects: The 700 million people with less than \$2/day would be lifted out of extreme poverty, and fossil fuel price increases would cost the typical person in their country a specified amount (see Appendix \ref{subsec:questionnaire_GCS} for details). This median net cost is \$85 in the U.S., \euro{}10 in France, \euro{}25 in Germany, \euro{}5 in Spain, £20 in the U.K.
+\end{tcolorbox}
+
+
+
+\subsubsection{Global wealth tax}\label{subsubsec:support_global_wealth_tax}
+%\paragraph{Global wealth tax}
+
+Consistent with the results of the global survey, a ``tax on millionaires of all countries to finance low-income countries'' garners majority support of over 67\% in each country, only 5 p.p. lower than a national millionaires tax overall (Figure \ref{fig:support}). In random subsamples, we inquire about respondents' preferences regarding the redistribution of revenues from a global tax on individual wealth exceeding \$5 million, after providing information on the revenue raised by such a tax in their country compared to low-income countries.\footnote{A 2\% tax on net wealth exceeding \$5 million would annually raise €5 billion in Spain, €16 billion in France, £20 billion in the U.K., €44 billion in Germany, \$430 billion in the U.S., and \$1 billion collectively in all low-income countries (28 countries, home to 700 million people).} We ask certain respondents ($n$ = 1283) what percentage of global tax revenues should be pooled to finance low-income countries. In each country, at least 88\% of respondents indicate a positive amount, with an average ranging from 30\% (Germany) to 36\% (U.S., France) (Figure \ref{fig:global_share_mean}). To other respondents ($n$ = 1233), we inquire whether they would prefer each country to retain all their collected revenues or that half of the revenues be pooled to finance low-income countries. Approximately half of the respondents opt to allocate half of the tax revenues to low-income countries.
+
+
+\begin{figure}
+    \centering 
+    \caption[Preferred share of wealth tax for low-income countries]{Percent of global wealth tax that should finance low-income countries (\textit{mean}). (Question \ref{q:global_tax_global_share})} % TODO! n
+    \includegraphics[width=1\textwidth]{Images/global_tax_global_share_mean.pdf} \label{fig:global_share_mean}
+\end{figure}
+
+
+\subsubsection{Other global policies}\label{subsubsec:support_other_global_policies}
+%\paragraph{Other global policies}
+
+We also assess support for other global policies (Figure \ref{fig:support}). Most policies garner relative majority support in each country, with two exceptions: the ``cancellation of low-income countries' public debt'' and ``a maximum wealth limit.'' The latter policy obtains relative majority support in Europe but not in the U.S., despite the cap being set at \$10 billion in the U.S. compared to \euro{}/£100 million in Europe. Notably, climate-related policies enjoy significant popularity, with ``high-income countries funding renewable energy in low-income countries'' receiving absolute majority support across all surveyed countries. Additionally, relative support for loss and damages compensation, as approved in principle at the international climate negotiations in 2022 (``COP27''), ranges from 55\% (U.S.) to 81\% (Spain).
+
+\begin{figure}
+  \caption[Relative support for further global policies]{Relative support for various global policies (percentage of \textit{somewhat} or \textit{strong support}, after excluding \textit{indifferent} answers). (Questions \ref{q:climate_policies} and \ref{q:other_policies}; See Figure \ref{fig:support_likert_positive} for the absolute support.)
+  }
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{Images/support_likert_share.pdf}}\label{fig:support}
+\end{figure} 
+
+
+\subsubsection{Foreign aid}\label{subsubsec:support_foreign_aid}
+%\paragraph{Foreign aid}
+
+We provide respondents with information about the actual amount ``spent on foreign aid to reduce poverty in low-income countries'' relative to their country's government spending and GDP. Less than 16\% of respondents state that their country's foreign aid should be reduced, while 62\% express support for increasing it, including 17\% who support an unconditional increase (Figure \ref{fig:foreign_aid_raise_support}). Among the 45\% who think aid should be increased under certain conditions, we subsequently ask them to specify the conditions they deem necessary (Figure \ref{fig:foreign_aid_condition}). The three most commonly selected conditions are: ``we can be sure the aid reaches people in need and money is not diverted'' (73\% chose this condition), ``that recipient countries comply with climate targets and human rights'' (67\%), and ``that other high-income countries also increase their foreign aid'' (48\%).\footnote{It is worth noting that these conditions align closely with the principles of the GCS.} On the other hand, respondents who do not wish to increase their country's foreign aid primarily justify their view by prioritizing the well-being of their fellow citizens or by perceiving each country as responsible for its own fate (Figure \ref{fig:foreign_aid_no}). In response to an open-ended question regarding measures high-income countries should take to combat extreme poverty, a significant majority of Americans emphasize the need for increased assistance (Figure \ref{fig:poverty_field}). The most commonly suggested form of aid is financial support, closely followed by investments in education.
+
+We also inquire about the perceived amount of foreign aid. Consistent with prior research (see Appendix \ref{subsubsec:literature_foreign_aid}), most people overestimate the actual amount of foreign aid (Figure \ref{fig:foreign_aid_belief}). We then elicit respondents' preferred amount of foreign aid, after randomly presenting them with either the actual amount or no information. Most of the respondents who learn the actual amount choose a bracket at least as high as the actual one, and most of those without the information choose a bracket at least as high as the perceived one (Figures \ref{fig:foreign_aid_amount}--\ref{fig:foreign_aid_preferred_info}). Finally, we ask a last question to the respondents who received the information. To those who prefer an increase of foreign aid, we ask how they would finance it: by far, the preferred source of funding is higher taxes on the wealthiest (Figure \ref{fig:foreign_aid_raise_how}). To those who prefer a reduction, we ask how they would use the resulting savings: In every country, more people choose higher spending on education or healthcare rather than lower taxes (Figure \ref{fig:foreign_aid_reduce_how}). 
+
+
+
+\begin{figure}[h!]
+  \caption[Attitudes on the evolution of foreign aid]{Attitudes regarding the evolution of [own country] foreign aid. (Question \ref{q:foreign_aid_raise_support})}\label{fig:foreign_aid_raise_support}
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{Images/foreign_aid_raise_support.pdf}} 
+\end{figure}
+
+\begin{figure}[h!]
+  \caption[Conditions at which foreign aid should be increased]{Conditions at which foreign aid should be increased (in percent). [Asked to those who wish an increase of foreign aid at some conditions.] (Question \ref{q:foreign_aid_condition})}\label{fig:foreign_aid_condition}
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{Images/foreign_aid_condition_positive.pdf}} 
+\end{figure}
+
+\begin{figure}[h!]
+  \caption[Reasons why foreign aid should not be increased]{Reasons why foreign aid should not be increased (in percent). [Asked to those who wish a decrease or stability of foreign aid.] (Question \ref{q:foreign_aid_no})}\label{fig:foreign_aid_no}
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{Images/foreign_aid_no_positive.pdf}} 
+\end{figure}
+
+
+
+
+\subsection{Robustness and sincerity of support for the GCS}\label{subsec:robustness_sincerity}
+
+We use several methods to assess the sincerity of the support for the GCS: a list experiment, a real-stake petition, conjoint analyses, and the prioritization of policies. All methods suggest that the support is either completely sincere, or the share of insincere answers is limited. 
+
+\subsubsection{List experiment}\label{subsubsec:list_exp}
+
+
+
+% A list experiment is employed to gauge tacit support for a specific policy of interest by asking respondents how many policies within a given list they support. By varying the list among respondents, the difference in number of policies supported can be used to estimate tacit support, revealing potential social desirability biases \citep{hainmueller_causal_2014}.
+By asking \textit{how many} policies within a list respondents support and varying the list among respondents, a list experiment allows identifying the tacit support for a policy of interest. The tacit support is estimated as the difference in the average number of policies supported between two groups, whose list differ only by the inclusion of that policy \citep{hainmueller_causal_2014}. List experiments have been used to reveal social desirability bias, silencing racism in the Southern U.S. \citep{kuklinski_racial_1997} or opposition to the invasion of Ukraine in Russia \citep{chapkovski_solid_2022}. In our case, as shown in Table \ref{tab:list_exp}, the tacit support for the GCS measured through the list experiment is not significantly lower than the direct stated support.\footnote{We utilize the difference-in-means estimator, and confidence intervals are computed using Monte Carlo simulation with the R package \textit{list} \citep{imai_multivariate_2011}.} Hence, we do not find a social desirability bias in our study.
+
+
+\begin{table}[h]
+  \caption[List experiment: tacit support for the GCS]{Number of supported policies in the list experiment depending on the presence of the Global Climate Scheme (GCS) in the list.
+  }\label{tab:list_exp}
+  \makebox[\textwidth][c]{\input{reg_list_exp_g.tex}
+  }
+\end{table}
+
+
+\subsubsection{Petition}\label{subsubsec:petition} % Addresses hypothetical bias  % NCCcomment
+
+% H1: Petition: Small effect against GCS: -4pp
+We ask respondents whether they are willing to sign a petition in support of either the GCS or NR policy. We inform them that the petition results will be sent to the head of state's office, highlighting the proportion of fellow citizens endorsing the respective scheme. Even when framed as a real-stake petition, both policies continue to receive majority support. In the U.S., we find no significant difference between the support in the real-stake petitions and the simple questions (GCS: $p=.30$; NR: $p=.76$).\footnote{Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition.} In Europe, the petition leads to a comparable decrease in support for both the GCS (7 p.p., $p=10^{-5}$) and NR (4 p.p., $p = .008$). While some European respondents show hesitancy in signing a petition for policies they are expected to support, this effect is not specific to the GCS, and the overall willingness to sign a real-stake petition remains strong, with 69\% expressing support for the GCS and 67\% for NR.
+
+\subsubsection{Conjoint analyses}\label{subsubsec:conjoint}
+
+In order to assess the public support for the GCS in conjunction with other policies, we conduct a series of conjoint analyses. We ask respondents to make five choices between pairs of political platforms.
+
+The first conjoint analysis suggests that the GCS is supported independently of being complemented by the NR scheme and a national climate policy (``Coal exit'' in the U.S., ``Thermal insulation plan'' in Europe, denoted C).\footnote{Indeed, 54\% of U.S. respondents and 74\% of European ones prefer the combination of C, NR and the GCS to the combination of C and NR alone, indicating similar support for the GCS conditional on NR and C than for the GCS alone (Figure \ref{fig:conjoint}).} For the second analysis, we split the sample into four random branches.\footnote{Results from the first branch show that the support for the GCS conditional on NR, at 55\% in the U.S. ($n$ = 757) and 77\% in Europe ($n$ = 746), is not significantly different from the support for the GCS alone. This suggests that rejection of the GCS is not driven by the cost of the policy on oneself. The second branch shows that the support for C conditional on NR is somewhat higher, at 62\% in the U.S. ($n$ = 751) and 84\% in Europe ($n$ = 747). However, the third one shows no significant preference for C compared to GCS (both conditional on NR), neither in Europe, where GCS is preferred by 52\% ($n$ = 741) nor in the U.S., where C is preferred by 53\% ($n$ = 721). The fourth branch shows that 55\% in the U.S. ($n$ = 771) and 77\% in Europe ($n$ = 766) prefer the combination of C, NR and the GCS to NR alone.} The outcome is that there is majority support for the GCS and for C, which are seen as neither complement nor substitute. A minor share of respondents like a national climate policy and dislike a global one, but as many people prefer a global rather than a national policy; and there is no evidence that a national redistribution would increase the support for the GCS.
+
+% aaaaa
+In the third analysis, we present to two random branches of the sample hypothetical progressive and conservative platforms that differ only by the presence (or not) of the GCS in the progressive platform. Table \ref{tab:conjoint_c} shows that a progressive candidate would not significantly lose voting share by endorsing the GCS in any country, and may even gain 11 p.p. ($p = .005$) in voting intention in France. The effect is also positive at 3 p.p. ($p = .13$) in the U.S., although not significant at the 5\% threshold. Though the level of support for the GCS is significantly lower in swing States (at 51\%) that are key to win U.S. elections, the electoral effect of endorsing the GCS remains non-significantly different from zero (at +1.2 p.p.) in these States.\footnote{We define swing states as the 8 states with less than 5 p.p. margin of victory in the 2020 election (MI, NV, PA, WI, AZ, GA, NC, FL). The results are robust to using the 3 p.p. threshold (that excludes FL) instead.}
+
+\begin{table}[h]
+  % MAJOR figure
+  \caption[Influence of the GCS on electoral prospects]{Preference for a progressive platform depending on whether it includes the GCS or not. (Question \ref{q:conjoint_c}) 
+    }
+  \makebox[\textwidth][c]{\input{Images/conjoint_c_wo_none.tex}}\label{tab:conjoint_c}
+  {\footnotesize \textit{Note:} The 14\% of \textit{None of them} answers have been excluded from the regression samples. GCS has no significant influence on them. $^{*}p<0.1$; $^{**} p<0.05$; $^{***} p<0.01$. 
+  }
+\end{table}
+
+Our last two analyses  make respondents choose between two random platforms. In Europe, respondents are prompted to imagine that a left- or center-left coalition will win the next election and are asked what platform they would prefer that coalition to have campaigned on. In the U.S., the question is framed as a hypothetical duel in a Democratic primary, and asked only to non-Republicans ($n$ = 2,218), i.e. the respondents who choose \textit{Democrat}, \textit{Independent}, \textit{Non-Affiliated} or \textit{Other} for their political affiliation. In the fourth analysis, a policy (or an absence of policy) is randomly drawn for each platform in each of five categories: \textit{economic issues}, \textit{societal issues}, \textit{climate policy}, \textit{tax system}, \textit{foreign policy} (Figure \ref{fig:ca_r}). 
+Except for the category \textit{foreign policy}, which features the GCS 42\% of the time, the policies are prominent progressive policies and they are drawn uniformly. In the U.K., Germany, and France, a platform is about 9 to 13 p.p. more likely to be preferred if it includes the GCS rather than no foreign policy.\footnote{This is the Average Marginal Component Effect computed following \citet{hainmueller_causal_2014}.} This effect is between 1 and 4 p.p. and no longer significant in the U.S. and in Spain. Moreover, a platform that includes a global tax on millionaires rather than no foreign policy is 5 to 13 percentage points (p.p.) more likely to be preferred in all countries (the effect is significant and at least 9 p.p. in all countries but Spain). Similarly, a global democratic assembly on climate change has a significant effect of 8 to 12 p.p. in the U.S., Germany, and France. These effects are large, and not far from the effects of the policies most influential on the platforms, which range between 15 and 18 p.p. in most countries (and 27 p.p. in Spain), and all relate to improved public services (in particular healthcare, housing, and education).
+
+\begin{figure}[h] 
+  \caption[Preferences for various policies in political platforms]{Effects of the presence of a policy (rather than none from this domain) in a random platform on the likelihood that it is preferred to another random platform. (Question \ref{q:conjoint_r}%; in the U.S., asked only to non-Republicans.
+  )}\label{fig:ca_r}
+  \begin{subfigure}{\textwidth}
+    \subcaption{U.S. (Asked only to non-Republicans)}
+    \includegraphics[width=\textwidth]{Images/ca_r.png}
+  \end{subfigure}
+  \begin{subfigure}{\textwidth}
+    \subcaption{France}
+    \includegraphics[width=\textwidth]{Images/ca_r.png}
+  \end{subfigure}
+\end{figure}%
+\clearpage
+\begin{figure}[h!]\ContinuedFloat % if bugs try b! instead of h!
+  \begin{subfigure}{\textwidth}
+    \subcaption{Germany}
+    \includegraphics[width=\textwidth]{Images/ca_r.png}
+  \end{subfigure}
+  \begin{subfigure}{\textwidth}
+    \subcaption{Spain}
+    \includegraphics[width=\textwidth]{Images/ca_r.png}
+  \end{subfigure}
+  \begin{subfigure}{\textwidth}
+    \subcaption{UK}
+    \includegraphics[width=\textwidth]{Images/ca_r.png}
+  \end{subfigure}
+  %\makebox[\textwidth][c]{} 
+\end{figure}
+\clearpage 
+% \noindent
+
+
+The fifth analysis draws random platforms in a similar way, except that candidate A's platform always contains the GCS while B's includes no foreign policy. In this case, A is chosen by 60\% in Europe and 58\% in the U.S. (Figure \ref{fig:conjoint_left_ag_b}). In the U.S. for example, our conjoint analyses indicate that a candidate at the Democratic primary would have more chances to obtain the nomination by endorsing the GCS, and this endorsement would not penalize her or him at the presidential election. This result reminds the finding that 12\% of Germans shift their voting intention from SPD and CDU/CSU to the Greens and the Left when they are told that the latter parties support global democracy \citep{ghassim_who_2020}.
+
+
+\begin{figure}[h!]
+    \caption[Influence of the GCS on preferred platform]{Influence of the GCS on preferred platform:\\ Preference for a random platform A that contains the Global Climate Scheme rather than a platform B that does not (in percent). (Question \ref{q:conjoint_d}; in the U.S., asked only to non-Republicans.)}\label{fig:conjoint_left_ag_b}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{Images/conjoint_left_ag_b_binary_positive.pdf}} 
+\end{figure}
+
+
+
+\subsubsection{Prioritization}\label{subsubsec:prioritization}
+
+Towards the end of the survey, we ask respondents to allocate 100 points among six randomly selected policies from the previous conjoint analyses, using sliders. The instruction was to distribute the points based on their level of support, with a higher allocation indicating greater support for a policy. As a result, the average support across policies is 16.67 points. In each country, the GCS ranks in the middle of all policies or above, with an average number of points from 15.4 in the U.S. to 22.9 in Germany.%The GCS ranked in the middle or higher among all policies in each country, receiving an average of 15.4 points in the U.S. and 22.9 points in Germany.
+
+Interestingly, in Germany, the most prioritized policy is the global tax on millionaires, while the GCS came in as the second most prioritized policy. The global tax on millionaires consistently ranks no lower than fifth position (out of 15 or 17 policies) in every country, garnering an average of 18.3 points in Spain to 22.9 points in Germany.
+
+This question sheds light on a potential discrepancy between the policy priorities of the public and those enacted by legislators. For instance, while the European Union and California have enacted plans to phase out new combustion-engine cars by 2035, the proposal to ``ban the sale of new combustion-engine cars by 2030'' emerged as one of the three least prioritized policies in each country, with an average allocation of 7.8 points in France to 11.4 points in the U.K.
+
+\subsubsection{Pros and Cons}
+
+We survey respondents to gather their perspectives on the pros and cons of the GCS, utilizing both open-ended and closed questions. In the closed question format, respondents tend to consider every argument as important in determining their support or opposition to the GCS (see Figure \ref{fig:gcs_important}). Notably, the least important aspect was the potential impact on their household, with 60\% in Europe ($n$=1,505) and 75\% in the U.S. ($n$=493) finding it important. The most important elements differ between Europe and the U.S. In Europe, the key factors are the GCS's potential to limit climate change and reduce poverty in low-income countries, both deemed important by 85\% of respondents. In the U.S., having sufficient information about the scheme ranks highest at 89\%, followed by its potential to foster global cooperation at 82\%. However, due to the limited variation in the ratings for each element, the closed question format is inconclusive.
+
+The open-ended question provides more insights into what people associate with the GCS when prompted to think about it. Analyzing keywords in the responses (automatically translated into English), the most frequently mentioned topics are the international aspect and the environment, each appearing in approximately one-quarter of the answers (see Figure \ref{fig:gcs_field_contains}). This is followed by discussions on the effects of the GCS on poverty and prices, which are mentioned by about one-tenth of the respondents. We also manually classified each answer into different categories (see Figure \ref{fig:gcs_field}). This exercise confirms the findings from the automatic search: the environmental benefit of the GCS is the most commonly discussed topic, while obstacles to implementation or agreement on the proposal are relatively infrequently mentioned.\footnote{Moreover, around one in four respondents explicitly cites pros or cons. Few individuals explicitly express support or opposition, and misunderstandings are rare. Only 11\% of the responses are empty or express a lack of opinion, though one-quarter are unclassifiable due to the rarity, nonsensical nature, or irrelevance of the conveyed idea.}
+
+% In the \textit{US2} survey, we presented these questions to random subsamples \textit{before} inquiring about support for the GCS or NR. The sample was divided into four branches: two branches with questions on pros and cons (either in closed or open form), one branch providing information on the actual level of support for the GCS and NR (estimated in \textit{US1}), and one control group without these questions.\footnote{Consistent with Americans accurately perceiving the levels of support for the GCS or NR, providing information on the actual level had no substantial effect on their support. In the closed question regarding pros and cons, we intentionally included more cons (6) than pros (3) to conservatively estimate the potential campaign effect on the GCS, which refers to the shift in opinion resulting from media coverage of the proposal. Interestingly, the support for the GCS decreased by 11 p.p. after participants viewed a list of its pros and cons. Surprisingly, the support for National Redistribution also decreased by 7 p.p. following the closed question about the GCS. This suggests that some individuals may lack attention and confuse the two policies, or that contemplating the pros and cons alters the mood of some people, moving them away from their initial positive impression. Notably, the support also decreased by 7 p.p. after participants were asked to consider the pros and cons in an open-ended question.} Despite some significant effects of pondering the pros and cons (see Table \ref{tab:branch_gcs}), approximately half of the Americans expressed support for the GCS across all treatment branches. If similar effects were observed in Europe, it suggests that the GCS would still enjoy strong majority support among Europeans once it enters the public debate (Table \ref{tab:branch_gcs}).
+
+In the \textit{US2} survey, we divided the sample into four random branches. Two branches were presented the pros and cons questions (either in open or closed format) \textit{before} being asked about their support for the GCS or NR. Another branch received information on the actual level of support for the GCS and NR (estimated in \textit{US1}, see Section \ref{subsec:second_order_beliefs}), and one control group received none of these treatments. The objective of this ``pros and cons treatment'' was to simulate a ``campaign effect'', which refers to the shift in opinion resulting from media coverage of the proposal. To conservatively estimate the effect of a (potentially negative) campaign, we intentionally included more cons (6) than pros (3). Interestingly, the support for the GCS decreased by 11 p.p. after participants viewed a list of its pros and cons.\footnote{Surprisingly, the support for National Redistribution also decreased by 7 p.p. following the closed question about the GCS. This suggests that some individuals may lack attention and confuse the two policies, or that contemplating the pros and cons alters the mood of some people, moving them away from their initial positive impression.} Notably, the support also decreased by 7 p.p. after participants were asked to consider the pros and cons in an open-ended question. Although support remains significant,\footnote{Despite some significant effects of pondering the pros and cons, approximately half of the Americans express support for the GCS across all treatment branches (see Table \ref{tab:branch_gcs}).} these results suggest that the public success of the GCS would be sensitive to the content of the debate around it, and subject to the discourse adopted by interest groups.
+
+% where respondents are prompted to think about the advantages and drawbacks of the policy before making a decision
+
+
+\subsection{Universalistic values}\label{subsec:universalistic}
+
+To better understand people's support for specific policies, we also ask broad questions to study their values. When we ask participants which group they defend when they vote, 20\% choose ``sentient beings (humans and animals),'' 22\% choose ``humans,'' 33\% select their fellow citizens (or ``Europeans''), 15\% choose ``My family and myself,'' and the remaining 10\% choose another group (mainly ``My State or region'' or ``People sharing my culture or religion''). The first two categories, representing close to one out of two people, can be described as universalist in their vote. Notably,  a majority of left-wing voters can even be considered universalist voters (see Figure \ref{fig:main_by_vote} for main attitudes by vote).
+
+Regarding the priorities of their country's diplomats in international climate negotiations, only 11\% prefer their country's ``interests, even if it goes against global justice.'' In contrast, 30\% prefer global justice (with or without consideration of national interests), and the bulk of respondents (38\%) prefer their country's ``interests, to the extent it respects global justice.''
+
+Furthermore, when we ask participants to assess the extent to which climate change, global poverty, and inequality in their country are issues, climate change is generally viewed as the most significant problem (with a mean score of 0.59 after recoding answers between -2 and 2). This is followed by global poverty (0.42) and national inequality (0.37).
+
+Finally, we conduct a lottery experiment to elicit universalistic values. Respondents were automatically enrolled in a lottery with a \$100 prize and had to choose the proportion of the prize they would keep for themselves versus give to a person living in poverty. The charity donation is directed either to an African individual or a fellow citizen, depending on the respondent's random assignment. In Europe, we observe no significant variation in the willingness to donate based on the recipient's origin, while in the U.S., the donations to Africans are 3 p.p. lower (with an average donation of 34\%). Moreover, the slightly lower donations to Africans are entirely driven by right-wing voters or non-voters.
+
+
+\subsection{Second-order Beliefs}\label{subsec:second_order_beliefs}
+
+To explain the strong support for the GCS despite its absence from political platforms and public debate, we hypothesized pluralistic ignorance, i.e. that the general public and policymakers mistakenly perceive the GCS as unpopular. As a result, individuals might conceal their support for such globally redistributive policies, believing that advocating for them would be futile. However, the evidence for pluralistic ignorance is limited based on an incentivized question about perceived support (Figure \ref{fig:belief}).
+
+In the case of Americans, their beliefs about the level of support for the GCS are relatively accurate. The mean perceived support is 52\% (with quartiles of 36\%, 52\%, and 68\%), which closely aligns with the actual support of 53\%. Europeans, on the other hand, underestimate the support by 17 p.p. Nonetheless, 65\% of them correctly estimate that the GCS garners majority support, and the mean perceived support is 59\% (and quartiles of 43\%, 61\%, and 74\%), compared to the actual support of 76\%. Second-order beliefs are equally accurate for the NR scheme in the U.S. and similarly underestimated in Europe. Finally, consistent with Americans accurately perceiving the levels of support for the GCS or NR, providing information on the actual level had no substantial effect on their support in the \textit{US2} survey.
+
+\begin{figure}[h!]
+    \caption[Beliefs about support for the GCS and NR]{Beliefs regarding the support for the GCS and NR. (Questions \ref{q:gcs_belief} and \ref{q:nr_belief})}\label{fig:belief}
+    \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{Images/belief_all_mean.pdf}} 
+\end{figure}
+
+
+\section{Discussion} % Summary, conclusion
+% TODO? give less space to OECD paper?
+Our point of departure are recent surveys conducted by \citet{dechezlepretre_fighting_2022} in 20 of the largest countries, as they reveal robust majority support for global redistributive and climate policies, even in high-income countries that would financially lose from them. The results from complementary surveys conducted in the U.S. and four European countries presented here reinforce these findings. We find strong support for global taxes on the wealthiest individuals, as well as majority support for our main policy of interest—the Global Climate Scheme (GCS). The GCS encompasses carbon pricing at a global level through an emissions trading system, accompanied by a global basic income funded by the scheme's revenues. Additional experiments, such as a list experiment and a real-stake petition, demonstrate that the support for the GCS is real. 
+Such genuine support is further substantiated by the prioritization of the GCS over prominent national climate policies and aligned with a significant portion of the population holding universalistic values rather than nationalistic or egoistic ones. Moreover, the conjoint analyses indicate that a progressive candidate would not lose voting shares by endorsing the GCS, and may even gain 11 p.p. in voting shares in France. Similarly, a candidate endorsing the GCS would gain votes in a U.S. Democratic primary, while in Europe, a progressive platform that includes the GCS would be preferred over one that does not.
+% aaaaaaaaa
+Having ruled out insincerity and underestimation of fellow citizens' support as potential explanations for the scarcity of global policies in the public debate, we propose five alternative explanations. 
+The first two are variations of pluralistic ignorance, and the last two represent complementary explanations. 
+First, there may be pluralistic ignorance \textit{among policymakers} regarding universalistic values, support for the GCS, or the electoral advantage of endorsing it. Second, people or policy makers may believe that globally redistributive policies are politically infeasible in some key (potentially foreign) countries like the U.S. 
+Third, political discourse predominantly happens at the level of national institutions, national-focused media. 
+Nationalistic framing by political voices may create biases and suppress universalistic values. 
+Fourth, many individuals, including policymakers, may simply be unaware of specific global redistributive policies, let alone base their political ideas on them. This lack of awareness may lead people to perceive such policies as ill-defined or technically infeasible, ultimately dismissing them as unrealistic. This hypothesis is supported by ignorance of the GCS expressed in the feedback fields, where a common response is a variation of ``thank you for this interesting, thought-provoking survey.'' 
+Fifth, just as policy is disproportionately influenced by the economic elites \citep{gilens_testing_2014,persson_rich_2023}, public debate may be shaped by the wealthiest, who have vested interests in preventing global redistribution.
+
+% aaaaa
+Confirmation of any of these hypotheses would lead to a common conclusion: there exists substantial support for global policies addressing climate change and global inequality, even in high-income countries, and the perceived boundaries of political realism on this issue may soon shift. Uncovering evidence to support these hypotheses could help draw attention to global policies in the public debate and contribute to their increased prominence.
+
+\begin{small} % NCCcomment
+%Put methods in here.  If you are going to subsection it, use \subsection commands.  Methods section should be less than 800 words and if it is less than 200 words, it can be incorporated into the main text.
+\section*{\normalsize Methods}\label{sec:methods} % NCCcomment
+\addcontentsline{toc}{section}{\nameref{sec:methods}}
+% \subsection{Data collection.} % WPcomment
+\paragraph{\small Data collection.} % NCCcomment
+% The paper relies on two different sets of surveys. The first set of surveys was conducted between March 2021 and March 2022 on 40,680 respondents from 20 countries  (between 1,465 and 2,488 respondents per country). The first U.S. complementary, denoted \textit{US1}, was conducted on 3,000 U.S. respondents between January and March 2023, while the second, \textit{US2}, was conducted on 2,000 respondents between March and April 2023. The \textit{Eu} complementary survey was conducted on 3,000 respondents between February and March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. Stratified quotas ensure that the samples are representative along the dimensions of gender, age (5 brackets), income (4), region (4), education level (3), as well as ethnicity (3) for the U.S. To correct for small remaining imbalances, we apply survey weights throughout the analysis, constructed using the quotas variables as well as the degree of urbanity, and trimmed between 0.25 and 4. Weights make the results fully representative of the country (or of the four European countries combined in the case of results at the European level, where different weights are used). Appendix \ref{app:representativeness} confirms that our samples are representative of the population. % TODO! and urbanity instead of education for OECD, TODO table representativeness
+%\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} 
+
+The paper utilizes two sets of surveys: the \textit{Global} survey and the \textit{Complementary} surveys. The \textit{Complementary} surveys consist of two U.S. surveys, \textit{US1} and \textit{US2}, and one European survey, \textit{Eu}. The \textit{Global} survey was conducted from March 2021 to March 2022 on 40,680 respondents from 20 countries (with 1,465 to 2,488 respondents per country). \textit{US1} collected responses from 3,000 participants between January and March 2023, while \textit{US2} gathered data from 2,000 respondents between March and April 2023. \textit{Eu} included 3,000 participants and was conducted from February to March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. To ensure representative samples, we employed stratified quotas based on gender, age (5 brackets), income (4), region (4), education level (3), and ethnicity (3) for the U.S. We also incorporated survey weights throughout the analysis to account for any remaining imbalances. These weights were constructed using the quota variables as well as the degree of urbanity, and trimmed between 0.25 and 4. By applying weights, the results are fully representative of the respective countries. At the European level, where different weights were used, the results are representative of the combined four European countries. Appendix \ref{app:representativeness} confirms that our samples are representative of the population.
+
+
+% \subsection*{\small Data quality.} % WPcomment % TODO attrition analysis
+\paragraph{\small Data quality.} % NCCcomment
+The median duration is 28 minutes for the \textit{Global} survey, 14 min for \textit{US1}, 11 min for \textit{US2}, and 20 min for \textit{Eu}. To ensure the best possible data quality, we exclude respondents who fail an attention test or rush through the survey (i.e., answer in less than 11.5 minutes in the \textit{Global} survey, 4 minutes in \textit{US1} or \textit{US2}, 6 minutes in \textit{Eu}). %All the results and analyses use survey weights, defined to make the results fully representative of the country (or of Eu in the case of results at the Eu level) along the quota variables. Weights are trimmed to be between .25 and 4. 
+%\textit{Ex post}, we checked that there were only a few careless response patterns (such as choosing the same answer for all items in a matrix of questions; see Appendix \ref{app:data_quality}). At the end of the survey, we ask whether respondents thought that our survey was politically biased and provide some feedback. 67\% of the respondents found the survey unbiased. 25\% found it left-wing biased, and 8\% found it right-wing biased.
+
+
+% TODO: add time US2 and Eu.
+
+% \subsection*{\small Questionnaires and raw results.} % WPcomment
+\paragraph{\small Questionnaires and raw results.} % NCCcomment
+% Possible confusion in the questionnaire: people confuse GCS with the four policies together (so support for GCS can suffer from dislike of death penalty), although this confusion is mitigating by the fact that we right after ask about NR; people may answer about revenue-use rather than the whole measure for ETS2 support; people may answer that GCS will or will not have the effects proposed rather than these effects being important or not in their attitude towards GCS; they may answer that it's important that others (not them) get more information; the minimum wage could be reduced at 50% of local median wage.
+The questionnaire and raw results of the \textit{Global} survey can be found in the Appendix of the companion paper \citep{dechezlepretre_fighting_2022}. %.\cite{dechezlepretre_fighting_2022} 
+The raw results are reported in Appendix \ref{app:raw_results}\footnote{Country-specific raw results are also available as supplementary material files:  \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_US.pdf}{US}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_EU.pdf}{EU}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_FR.pdf}{FR}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_DE.pdf}{DE}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_ES.pdf}{ES}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_UK.pdf}{UK}.} while the surveys' structures and questionnaires are given in Appendices \ref{app:questionnaire_oecd} and \ref{app:questionnaire}. The questionnaires are the same as the ones given \textit{ex ante} in the registration plan (\href{https://osf.io/fy6gd}{osf.io/fy6gd}).
+
+
+\paragraph{\small Incentives.}
+To encourage accurate and truthful responses, several questions of the \textit{US1} survey use incentives. For each of the three comprehension questions that follow the policy descriptions, we randomly select and reward three respondents who provide correct answers with a \$50 gift certificate. Similarly, for questions involving estimating support shares for the GCS and NR, three participants with the closest guesses to the actual values receive a \$50 gift certificate. In the donation lottery question, we randomly select one respondent and split the \$100 prize between the NGO GiveDirectly and the winner according to the winner's choice. In total, our incentives scheme distributes gift certificates (and donations) for a value of \$850. Finally, respondents have an incentive to answer truthfully to the petition question, as they are aware that the results for that question (the share of respondents supporting the policy) will be transmitted to the U.S. President's office.
+
+%To encourage respondents to answer accurately and truthfully, several questions of the \textit{US1} survey use incentives. For each of the three comprehension questions that follow the policies' descriptions, we reward three (randomly drawn) respondents with the correct answer with a \$50 gift certificate. For each of the questions asking respondents to guess the share of support for the GCS and NR, we reward three people who are closest to the true value with a \$50 gift certificate. For the donation lottery question, we randomly draw one respondent and split the \$100 prize between the NGO GiveDirectly and the winner according to the winner's choice. In total, our incentives scheme distributes gift certificates (and donation) for a value of \$850. Finally, respondents have an incentive to answer truthfully to the petition question, given that they know that the results to that question (the share of respondents supporting the policy) will be transmitted to the U.S. President's office.
+
+
+
+
+% Here is a description of a specific method used.  Note that the subsection heading ends with a full stop (period) and that the command is \verb|\subsection{}| not \verb|\subsection**{}|.
+
+\section*{\normalsize Data and code availability}
+
+All data and code of the \textit{Complementary} surveys as well as figures of the paper are available on \href{https://github.com/bixiou/global_tax_attitudes}{github.com/bixiou/global\_tax\_attitudes}. Data and code for the \textit{Global} survey will be made public upon publication.
+
+% \end{methods} % WPcomment
+\end{small}  % NCCcomment
+
+
+\newpage
+
+\bibliographystyle{ecta}
+\bibliography{global_tax_attitudes}
+
+\end{document}
