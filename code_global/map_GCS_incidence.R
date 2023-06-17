@@ -1114,3 +1114,7 @@ names_fig_gdp <- names(fig_gdp)
 fig_gdp <- array(fig_gdp/18605, dim = c(1, length(fig_gdp)))
 barres(data = fig_gdp, labels = names_fig_gdp, legend = c("GDP"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP")
 barres(data = array(fig_gdp[1,2:10], dim = c(1, 9)), labels = names_fig_gdp[2:10], legend = c("GDP"), sort = FALSE, show_ticks = FALSE, save = T, showLegend = FALSE, file = "../figures/policies/GDP_pc_PPP_few")
+
+
+##### Sandbox #####
+co2_pop$gain_adj_over_gdp_2030[co2_pop$country == "India"]
