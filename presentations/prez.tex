@@ -1,4 +1,4 @@
-% TODO main_all_by_vote
+% TODO! encadrer en rouge des trucs
 
 \documentclass[aspectratio=169,xcolor=dvipsnames, 11pt,mathserif]{beamer} 
 \input{preamble_slides.tex}
@@ -20,7 +20,7 @@
 %OECD/CAE \\
 \medskip
 \DTMlangsetup{showdayofmonth=false}
-\textit{May 2023} 
+\textit{June 2023} 
 %\textit{\today} 
 
 \end{center}
@@ -35,10 +35,10 @@
 
 \begin{frame}{International surveys with a focus on the West\label{questionnaires}}
     \bbvs
-    \ip Global survey (02/2021--02/2022): 
+    \ip \green{\textbf{Global survey}}  (02/2021--02/2022) by \rose{Dechezleprêtre et al. (2022)} 
     \bbvs \ip \textcolor{blue}{20 countries}%in all world regions \textcolor{blue}{covering 72\% of global CO$_\text{2}$ emissions}
     ; $~$2,000 respondents per country; median duration: 28 min. \ee
-    \ip Complementary surveys (01--04/2023): 
+    \ip \yellow{\textbf{Complementary surveys}} (01--04/2023) by \rose{Fabre, Douenne \& Mattauch (2023)} -- \href{https://bit.ly/Fabre2023}{bit.ly/Fabre2023}
     \bbvs \ip Eu: 3,000 respondents from France, Germany, Spain, UK; 20 min. 
     \ip US1: 3,000 respondents from the U.S.; 14 min. 
     \ip US2: 2,000 respondents from the U.S.; 11 min.
@@ -46,6 +46,7 @@
     \ee \vspace*{-.2cm}
     \makebox[\textwidth][c]{ \includegraphics[width=.5\textwidth]{"../figures/maps/country_coverage"}}
 \end{frame}
+
 
 % \section{Sample quality}
 
@@ -73,7 +74,7 @@
 	\vspace{-.3cm}
 	\begin{figure}[h!]
 		\centering		
-		\caption{Share of support (somewhat or strongly) for the main global policies among non-\textit{indifferent}. %\hyperlink{detail_global}{\beamergotobutton{Detailed results}}
+		\caption{Share of support (somewhat or strongly) for the main global policies among non-\textit{indifferent}.  \hyperlink{national_policies}{\beamergotobutton{Absolute}} \hyperlink{national_policies}{\beamergotobutton{National}}%\hyperlink{detail_global}{\beamergotobutton{Detailed results}}
         }
         \vspace{-.2cm}
 		\includegraphics[height=.9\textheight]{../figures/OECD/Heatplot_global_tax_attitudes_share.pdf} % burden_share_all_share_countries
@@ -91,7 +92,7 @@ The policy could be put in place as soon as countries totaling more than 60\% of
 \ee
 \end{frame}
 
-\begin{frame}{Net gains from the Global Climate Scheme\label{GCS_gain}}
+\begin{frame}{Net gains from the Global Climate Scheme\label{GCS_gain}  \hyperlink{other_distributive}{\beamergotobutton{More maps}}}
     \begin{figure}
         \centering % TODO add map with opt out in appendix
         %\caption{  %\hyperlink{}{\beamergotobutton{See more}}
@@ -101,17 +102,17 @@ The policy could be put in place as soon as countries totaling more than 60\% of
 \end{frame}
 
 \begin{frame}{Support for the Global Climate Scheme\label{gcs_support}}
-\bbvsp \ip To offset the losses of the median emitter, we design a \rose{National Redistribution Scheme} (NR) funded by increased income taxes on the top 5\% (US) / 1\% (Eu).
-\ip We test understanding of the distributive effects of the GCS, NR, and both combined (and then give the expected answer) in an incentivized way after each policy description.%  TODO see more
-\ip We also describe a national climate policy. US: Coal exit / Eu: Insulation plan (mandatory, subsidised).
-\ee \vspace{-.3cm}
-    \begin{figure}
-        \centering % TODO perceptions G
-        \only<1-3>{\includegraphics[height=.55\textheight]{../figures/blank}}
-        \only<4>{\caption{Do you support...? \textit{Yes/No} (Percentage of \textit{Yes}) \hyperlink{gcs_perceptions}{\beamergotobutton{Perceptions}} \hyperlink{conjoint_ab}{\beamergotobutton{Complementary policies}} \hyperlink{gcs_vote}{\beamergotobutton{By vote}}}
-        \includegraphics[height=.55\textheight]{../figures/country_comparison/support_binary_positive.pdf} } % 45
-    \end{figure}
-\end{frame}
+    \bbvsp \ip To offset the losses of the median emitter, we design a \rose{National Redistribution Scheme} (NR) funded by increased income taxes on the top 5\% (US) / 1\% (Eu).
+    \ip We test understanding of the distributive effects of the GCS, NR, and both combined (and then give the expected answer) in an incentivized way after each policy description. \hyperlink{understanding}{\beamergotobutton{Understanding}}
+    \ip We also describe a national climate policy. US: Coal exit / Eu: Insulation plan (mandatory, subsidised).
+    \ee \vspace{-.3cm}
+        \begin{figure}
+            \centering % TODO perceptions G
+            \only<1-3>{\includegraphics[height=.55\textheight]{../figures/blank}}
+            \only<4>{\caption{Do you support...? \textit{Yes/No} (Percentage of \textit{Yes}) \hyperlink{gcs_perceptions}{\beamergotobutton{Perceptions}} \hyperlink{conjoint_ab}{\beamergotobutton{Complementary policies}} \hyperlink{gcs_vote}{\beamergotobutton{By vote}} \hyperlink{national_policies}{\beamergotobutton{National policies}}}
+            \includegraphics[height=.55\textheight]{../figures/country_comparison/support_binary_positive.pdf} } % 45
+        \end{figure}
+    \end{frame}
 
 \begin{frame}{Support for other global policies\label{}}
 	\vspace{-.3cm}
@@ -263,8 +264,25 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
     %     \includegraphics[height=.5\textheight]{../figures/country_comparison/conjoint_c_positive.pdf} % /all/ca_r.png + in US: only on non-Republican
     % \end{figure}
     % {\footnotesize
+    \only<1>{
+        \begin{center}Choice between a conservative platform and a progressive platform with/without the GCS.\end{center}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering 
+                \includegraphics[height=.8\textheight]{../figures/UK/screenshot_en_with}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering 
+                \includegraphics[height=.8\textheight]{../figures/UK/screenshot_en_wo}
+            \end{figure}
+        \end{column}
+    \end{columns}
+    }
+    \only<2->{
     \begin{table}[h]\label{tab:conjoint_c_wo_none}\vspace*{-.2cm}
-        \pause
         \caption{Imagine if the [Democratic and Republican presidential candidates in 2024] campaigned with the following policies in their platforms. [Credible Progressive and Conservative platforms] \\ % TODO See More
         Which of these candidates would you vote for? \textit{A; B; None of them} \\
         ~[FR: second round of presidential; DE, ES, UK: two favorite candidates in one's constituency]} % Beware, this question is quite unusual. \\ Among the policies below, how many do you support?  \\ Coal exit, Marriage only for opposite-sex couples 
@@ -273,6 +291,7 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
       \end{table} \vspace*{-.2cm}
       \bbvs \ip \rose{A progressive candidate would not lose votes by endorsing the GCS}, and could even gain 11 p.p.*** in France.
       \ee
+      }
 % }
 \end{frame}
 
@@ -359,7 +378,7 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 \section{Second-order beliefs}
 
 \begin{frame}{Belief about the support\label{}}
-	\bbvs \ip Beliefs on the support for the GCS are relatively accurate: \\ \blue{no evidence of pluralistic ignorance in the U.S. \\ an underestimation by 15-20 p.p. in Eu}.
+	\bbvs \ip Beliefs on the support for the GCS are relatively accurate: \\ \quad \blue{no evidence of pluralistic ignorance in the U.S. \\ \quad an underestimation by 15-20 p.p. in Eu}.
     \ee \vspace*{-.4cm}
     \begin{figure}
         \centering 
@@ -524,7 +543,7 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
     \ee
 \end{frame}
 
-\begin{frame}{Conjoint analyses: influence on preferred platform (US) \hyperlink{conjoint_r_fr}{\beamergotobutton{Go back}}\label{conjoint_r_us}} 
+\begin{frame}{Conjoint analyses: influence on preferred platform (U.S.) \hyperlink{conjoint_r_fr}{\beamergotobutton{Go back}}\label{conjoint_r_us}} 
     \bbvs \ip \rose{Endorsing the GCS is not determinant to gain the Democratic primary.}
     \ee
     \begin{figure}\vspace{-.4cm}
@@ -533,6 +552,42 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 		Which of these candidates do you prefer?}
         \vspace{-.2cm} 
         \includegraphics[height=.7\textheight]{../figures/US1/ca_r.png} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform (Germany) \hyperlink{conjoint_r_fr}{\beamergotobutton{Go back}}\label{conjoint_r_de}} 
+    \bbvs \ip \rose{Endorsing the GCS is not determinant to gain the Democratic primary.}
+    \ee
+    \begin{figure}\vspace{-.4cm}
+        \centering 
+        \caption{Imagine that a Rot-Rot-Grüne coalition wins the next elections. Here are two possible platforms on which the coalition may campaign (the policies in each platform are randomly drawn from a pool of credible left-wing policies).\\
+		(...) Even if you do not support the Left, which of these platforms do you prefer? }
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/DE/ca_r.png} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform (Spain) \hyperlink{conjoint_r_fr}{\beamergotobutton{Go back}}\label{conjoint_r_es}} 
+    \bbvs \ip \rose{Endorsing the GCS is not determinant to gain the Democratic primary.}
+    \ee
+    \begin{figure}\vspace{-.4cm}
+        \centering 
+        \caption{Imagine that the PSOE wins the next elections. Here are two possible platforms on which it may campaign (the policies in each platform are randomly drawn from a pool of credible PSOE policies).\\
+		(...) Even if you do not support the PSOE, which of these platforms do you prefer? }
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/ES/ca_r.png} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Conjoint analyses: influence on preferred platform (UK) \hyperlink{conjoint_r_fr}{\beamergotobutton{Go back}}\label{conjoint_r_uk}} 
+    \bbvs \ip \rose{Endorsing the GCS is not determinant to gain the Democratic primary.}
+    \ee
+    \begin{figure}\vspace{-.4cm}
+        \centering 
+        \caption{Imagine that the Labour wins the next elections. Here are two possible platforms on which it may campaign (the policies in each platform are randomly drawn from a pool of credible Labour policies).\\
+		(...) Even if you do not support the Labour, which of these platforms do you prefer? }
+        \vspace{-.2cm} 
+        \includegraphics[height=.7\textheight]{../figures/UK/ca_r.png} 
     \end{figure}
 \end{frame}
 
@@ -643,6 +698,34 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
         \makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/country_comparison/main_all_by_vote_share.pdf}} 
     \end{figure}
 \end{frame}
+
+\begin{frame}{Main attitudes by vote \hyperlink{gcs_support}{\beamergotobutton{Go back}}\label{gcs_vote}} % TODO: Yes on left
+    \begin{figure}[h!] 
+        \only<1>{\caption{Main attitudes by vote in France}
+        \includegraphics[width=.7\textwidth]{../figures/FR/vote/gcs_support.pdf}}
+        \only<2>{\caption{Main attitudes by vote in Germany}
+        \includegraphics[width=.7\textwidth]{../figures/DE/vote/gcs_support.pdf}}
+        \only<3>{\caption{Main attitudes by vote in Spain}
+        \includegraphics[width=.7\textwidth]{../figures/ES/vote/gcs_support.pdf}}
+        \only<4>{\caption{Main attitudes by vote in the UK}
+        \includegraphics[width=.7\textwidth]{../figures/UK/vote/gcs_support.pdf}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Comprehension of the policies}\label{understanding}
+    \begin{figure}[h!]
+        \caption[Comprehension]{Correct answers to comprehension questions (in percent). \hyperlink{gcs_support}{\beamergotobutton{Go back}}}\label{fig:understood_each}
+        \includegraphics[width=\textwidth]{../figures/country_comparison/understood_each_positive.pdf}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Comprehension of the policies}
+\begin{figure}[h!]
+    \caption[Comprehension score]{Number of correct answers to comprehension questions (mean). \hyperlink{gcs_support}{\beamergotobutton{Go back}}}\label{fig:understood_score}
+    \includegraphics[width=\textwidth]{../figures/country_comparison/understood_score_mean.pdf} 
+\end{figure}
+\end{frame}
+
 % 
 % 
 % \subsection{Socio-Demographics}
@@ -738,6 +821,75 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 % \end{figure}
 % \end{frame}
 
+\subsection{Distributive effects of the Global Climate Plan}
+
+\begin{frame}{The distributive effects of the GCS\label{other_distributive} \hyperlink{GCS_gain}{\beamergotobutton{Go back}}}
+    \begin{figure}
+        \centering 
+        \caption{Distributive effects of the Global Climate Scheme in 2030.}
+        \includegraphics[height=.8\textheight]{../figures/maps/mean_gain_2030.pdf} 
+    \end{figure}        
+\end{frame}
+
+\begin{frame}{The distributive effects \hyperlink{GCS_gain}{\beamergotobutton{Go back}}}
+    \begin{figure}
+        \centering 
+        \only<1>{ \caption{Distributive effects of the Global Climate Plan in 2030.   \hyperlink{other_distributive}{\beamergotobutton{More maps}}}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2030.pdf}}
+        % \only<2>{ \caption{Distributive effects of the Global Climate Plan in 2030.}
+        % \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2030.pdf} } % TODO! more slides
+        \only<2>{ \caption{Distributive effects of the Global Climate Plan throughout the century. \hyperlink{other_distributive}{\beamergotobutton{More maps}}}
+        \includegraphics[height=.8\textheight]{../figures/maps/npv_over_gdp_gcs_adj.pdf} }
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Distributive effects of the Global Climate Plan \hyperlink{GCS_gain}{\beamergotobutton{Go back}}}
+    \begin{figure}
+        \centering 
+        \only<1>{ \caption{Distributive effects of the Global Climate Plan in 2030.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2030.pdf}}
+        \only<2>{ \caption{Distributive effects of the Global Climate Plan in 2040.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2040.pdf}}
+        \only<3>{ \caption{Distributive effects of the Global Climate Plan in 2050.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2050.pdf}}
+        \only<4>{ \caption{Distributive effects of the Global Climate Plan in 2060.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2060.pdf}}
+        \only<5>{ \caption{Distributive effects of the Global Climate Plan in 2070.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2070.pdf}}
+        \only<6>{ \caption{Distributive effects of the Global Climate Plan in 2080.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_2080.pdf}}
+    \end{figure}        
+\end{frame}
+
+\begin{frame}{Distributive effects of the Global Climate Plan \hyperlink{GCS_gain}{\beamergotobutton{Go back}}}
+    \begin{figure}
+        \centering 
+        \only<1>{ \caption{Distributive effects of the Global Climate Plan in 2030.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2030.pdf}}
+        \only<2>{ \caption{Distributive effects of the Global Climate Plan in 2040.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2040.pdf}}
+        \only<3>{ \caption{Distributive effects of the Global Climate Plan in 2050.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2050.pdf}}
+        \only<4>{ \caption{Distributive effects of the Global Climate Plan in 2060.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2060.pdf}}
+        \only<5>{ \caption{Distributive effects of the Global Climate Plan in 2070.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2070.pdf}}
+        \only<6>{ \caption{Distributive effects of the Global Climate Plan in 2080.}
+        \includegraphics[height=.8\textheight]{../figures/maps/gain_adj_over_gdp_2080.pdf}}
+    \end{figure}        
+\end{frame}
+
+\begin{frame}{Distributive effects of the Global Climate Plan \hyperlink{GCS_gain}{\beamergotobutton{Go back}}}
+    \begin{figure}
+        \centering 
+        \only<1>{ \caption{Distributive effects of the Global Climate \textit{Scheme}.}
+        \includegraphics[height=.8\textheight]{../figures/maps/npv_over_gdp_gcs.pdf}}
+        \only<2>{ \caption{Distributive effects of the Global Climate \textit{Plan}.}
+        \includegraphics[height=.8\textheight]{../figures/maps/npv_over_gdp_gcs_adj.pdf}}
+        % \only<3>{ \caption{Distributive effects of the Global Climate Plan.}
+        % \includegraphics[height=.8\textheight]{../figures/maps/npv_pa_gcs_adj.pdf}} % TODO! pb with this figure
+    \end{figure}        
+\end{frame}
 
 \subsection{OECD\label{detail_global}}
 
@@ -770,6 +922,25 @@ $\Rightarrow$ \blue{No (significant) social desirability bias.}
 % %\caption{}
 % \end{figure}
 % \end{frame}
+
+\begin{frame}{Relative support for national policies\label{national_policies} \hyperlink{global_policies}{\beamergotobutton{Go back}}} 
+    % National vs. global support: global T&D < national T&D << GCS (except in U.S. where the three are equally supported)
+	\begin{figure}[h!]
+	\centering
+	%\caption{Relative support for national policies}
+	\includegraphics[height=.8\paperheight]{../../oecd_climate/figures/country_comparison/Heatplot_national_policies_share_countries.pdf}
+	\end{figure}
+    Support in high-income countries: Global tax and dividend $\lesssim$ National tax and dividend $<$ Global quota and dividend \\ Except in the U.S. where the three are equally supported.
+\end{frame}
+
+\begin{frame}{Absolute support for global policies\label{absolute_oecd} \hyperlink{global_policies}{\beamergotobutton{Go back}}} 
+\begin{figure}[h!]
+    \centering		
+    \caption{Share of support (somewhat or strongly) for the main global policies among non-\textit{indifferent}.   }
+    \vspace{-.2cm}
+    \includegraphics[height=.82\textheight]{../figures/OECD/Heatplot_global_tax_attitudes_positive.pdf} % burden_share_all_share_countries
+    \end{figure}
+\end{frame}
 
 \begin{frame}{} % TODOO
 	\begin{figure}[h!]
