@@ -289,8 +289,8 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
   }
   if (min == -Inf & strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "≤ ", levels[1])
   if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
-  if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sub(" ", "", sep), "Inf"), "> \\1", levels[length(levels)])
-  if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sub(" ", "", sep), "Inf"), "≥ \\1", levels[length(levels)])
+  if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "> \\1", levels[length(levels)]) # sub(" ", "", sep)
+  if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "≥ \\1", levels[length(levels)]) # sub(" ", "", sep)
   levels <- gsub("000 ", ",000 ", gsub("-", "–", levels))
   vec_agg[is.na(vec)] <- NA
   vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
