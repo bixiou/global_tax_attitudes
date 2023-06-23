@@ -450,7 +450,7 @@ names(pop.R5)[1] <- names(pop_un[["IMAGE"]])[1] <- names(pop_un[["MESSAGE-GLOBIO
 pop_un[["IMAGE"]] <- rbind(pop_un[["IMAGE"]], pop.R5)
 pop_un[["MESSAGE-GLOBIOM"]] <- rbind(pop_un[["MESSAGE-GLOBIOM"]], pop.R5)
 
-View(co2_pop[, c("code", "country", "IMAGE.REGION", "MESSAGE-GLOBIOM.REGION")])
+# View(co2_pop[, c("code", "country", "IMAGE.REGION", "MESSAGE-GLOBIOM.REGION")])
 co2_pop$`MESSAGE-GLOBIOM.REGION`[is.na(co2_pop$`MESSAGE-GLOBIOM.REGION`)] <- "LAM"
 regions <- unique(co2_pop$`MESSAGE-GLOBIOM.REGION`)
 message_region_by_image <- c("BRA" = "LAM", "CAN" = "NAM", "CEU" = "EEU", "CHN" = "CPA", "EAF" = "AFR", "INDIA" = "SAS", "INDO" = "PAS", "JAP" = "PAO", "KOR" = "PAS", "ME" = "MEA", "MEX" = "LAM", "NAF" = "MEA", "OCE" = "PAO", "RCAM" = "LAM", "RSAF" = "AFR", "RSAM" = "LAM", "RSAS" = "SAS", "RUS" = "FSU", "SAF" = "AFR", "SEAS" = "PAS", "STAN" = "FSU", "TUR" = "WEU", "UKR" = "FSU", "USA" = "NAM", "WAF" = "AFR", "WEU" = "WEU")
@@ -789,8 +789,8 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
   return(df)
 }
 # Disaggregated data not available for ssp2_19 or ssp2_26. 
+# co2_pop <- create_var_ssp(ssp2_26)
 co2_pop <- create_var_ssp(gea_gea, opt_out_threshold = 1.5)
-co2_pop <- create_var_ssp(ssp2_26)
 View(co2_pop[,grepl("2040", names(co2_pop))])
 View(co2_pop[,grepl("over_mean|country|pop_2020", names(co2_pop))])
 View(gea_gea[,grepl("over_mean|region|pop_2020", names(gea_gea))])
@@ -913,7 +913,7 @@ plot_world_map("npv_over_gdp_gcs", breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0
 plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), 
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
-               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+               save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 
 
 ##### NPV of the basic income #####
@@ -1047,6 +1047,8 @@ setNames(ssp$`SSP2-45`$`MESSAGE-GLOBIOM`$emissions_2020, ssp$`SSP2-45`$`MESSAGE-
 SSPs[SSPs$MODEL == "MESSAGE-GLOBIOM" & SSPs$SCENARIO == "SSP2-45" & SSPs$VARIABLE == "GDP|PPP", c("REGION", "X2050")]
 SSPs[SSPs$MODEL == "IMAGE" & SSPs$SCENARIO == "SSP2-45" & SSPs$VARIABLE == "GDP|PPP", c("REGION", "X2050")]
 SSPs[SSPs$MODEL == "GCAM4" & SSPs$SCENARIO == "SSP2-45" & SSPs$VARIABLE == "GDP|PPP", c("REGION", "X2050")]
+
+co2_pop$npv_over_gdp_gcs_adj[co2_pop$country == "Colombia"]
 
 
 ##### 60% of emissions #####
