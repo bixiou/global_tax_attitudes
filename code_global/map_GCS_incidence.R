@@ -1119,4 +1119,6 @@ barres(data = array(fig_gdp[1,2:10], dim = c(1, 9)), labels = names_fig_gdp[2:10
 
 
 ##### Sandbox #####
-co2_pop$gain_adj_over_gdp_2030[co2_pop$country == "India"]
+co2_pop$gain_adj_over_gdp_2030[co2_pop$country == "France"]
+co2_pop$gain_adj_2030[co2_pop$country == "France"]/12
+co2_pop$npv_over_gdp_gcs_adj[co2_pop$country == "France"]
