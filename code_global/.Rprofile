@@ -2158,7 +2158,7 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste0(outcome_va
   if (!is.null(covariates)) { # If conditional (regressions)
     if (!(along %in% c(covariates, subsamples))) print("ERROR: along must be in covariates")
     if (any(logit) & !logit_margin) print("Warning: Are you sure you want the logit coefficients rather than the marginal effects? If not, set logit_margin = T.")
-    if (!is.null(subsamples) & (missing(labels) | labels == outcome_vars)) labels <- Levels(df[[subsamples]])
+    if (!is.null(subsamples) & (missing(labels) | identical(labels, outcome_vars))) labels <- Levels(df[[subsamples]])
     regs <- regressions_list(outcomes = outcomes, covariates = covariates, subsamples = subsamples, df = df, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, summary = FALSE)
     mean_ci <- mean_ci_along_regressions(regs = regs, along = along, labels = labels, df = df, origin = origin, logit = logit, logit_margin = logit_margin, confidence = confidence, subsamples = subsamples, covariates = covariates, names_levels = names_levels, levels_along = levels_along, factor_along = factor_along, weight = weight, print_regs = print_regs)
     mean_ci$along <- labels_along[as.character(mean_ci$along)]
@@ -2167,7 +2167,7 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste0(outcome_va
       if (length(outcomes) > 1) warning("There cannot be several outcomes with subsamples, only the first outcome will be used.")
       outcome <- outcomes[1]
       y_loop <- Levels(df[[subsamples]])
-      if (missing(labels) | labels == outcome_vars) labels <- y_loop # TODO: replace by/use name_levels or levels_along
+      if (missing(labels) | identical(labels, outcome_vars)) labels <- y_loop # TODO: replace by/use name_levels or levels_along
       if (is.character(y_loop)) y_loop <- paste0("'", y_loop, "'")
       cond <- paste0("[x$", subsamples, "==", y_loop, "]")
       configurations <- paste0("(x$", outcome, ")", cond, ", w = x[[weight]]", cond)

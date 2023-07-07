@@ -319,6 +319,8 @@ desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename
 decrit("gcs_belief", data = us1)
 decrit("gcs_belief", data = eu)
 decrit(eu$gcs_belief > 50, weights = eu$weight)
+decrit(eu$gcs_belief < 76, data = eu) # 78%
+decrit(us1$gcs_belief < 54, data = us1) # 53%
 
 
 ##### Universalism #####

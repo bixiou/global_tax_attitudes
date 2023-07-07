@@ -176,6 +176,12 @@ datasummary(gcs_support  ~ Mean*as.factor(urbanity), data = us1, output = 'markd
 datasummary(gcs_support  ~ Mean*as.factor(income_quartile), data = us1, output = 'markdown')
 
 
+##### Second-order beliefs #####
+plot_along(vars = "gcs_belief", subsamples = "country", along = "income_factor", labels = Levels(all$country), conditions = c(""), df = all[!is.pnr(all$gcs_belief),], save = FALSE)
+plot_along(vars = "gcs_belief", subsamples = "country", along = "diploma", labels = Levels(all$country), conditions = c(""), df = all[!is.pnr(all$gcs_belief),], save = FALSE)
+all$
+
+
 ##### NR ######
 decrit("nr_support", data = e)
 decrit("nr_belief", data = e)
@@ -192,6 +198,20 @@ decrit("petition_matches_support", data = e) # 77%
 summary(lm(petition_matches_support ~ branch_petition, data = e))
 decrit("petition_yes_support_no", data = e)
 decrit("petition_no_support_yes", data = e)
+petition_petition <- petition_direct <- all[, c("petition", "branch_petition", "gcs_support", "nr_support", "country", "weight")]
+petition_petition$support <- petition_petition$petition
+petition_petition$type <- "petition"
+petition_direct$support <- petition_direct$gcs_support
+petition_direct$support[no.na(petition_direct$branch_petition) == 'nr'] <- petition_direct$nr_support[no.na(petition_direct$branch_petition) == 'nr']
+petition_direct$type <- "simple"
+petition <- rbind(petition_petition, petition_direct)
+summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition") + country, data = petition, weights = weight)) # Interaction not significant
+summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition") * country, data = petition, weights = weight))
+summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition"), data = petition, subset = country == "UK", weights = weight))
+summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition"), data = petition, subset = country == "US", weights = weight))
+summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition"), data = petition, subset = country == "FR", weights = weight))
+summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition"), data = petition, subset = country == "DE", weights = weight)) # Only country with significant interaction
+summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition"), data = petition, subset = country == "ES", weights = weight))
 
 
 ##### List experiment #####
