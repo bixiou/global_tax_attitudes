@@ -292,6 +292,10 @@ summary(lm(donation ~ branch_donation, data = e))
 decrit(!(e$donation %in% c(0, 100))) # 88%
 decrit("negotiation", data = e)
 CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, prop.c = T, total.c = F, total.r = F, cell.layout = F)
+desc_table(dep_vars = "donation", filename = "donation_interaction", data = list(all, us1, us1, eu), 
+           indep_vars = c("branch_donation", "vote3_factor", "branch_donation:vote3_factor", "branch_donation:vote3_factor"), model.numbers = F,
+           indep_vars_included = list(c(T,F,F,F), c(T,F,F,F), c(T,T,T,T), c(T,F,F,F)), weights = "weight", save_folder = "../tables/continents/", robust_SE = FALSE, omit = c("Constant", "^  Vote", "^  vote3"))
+
 
 
 ##### GCS ~ info / pros_cons #####

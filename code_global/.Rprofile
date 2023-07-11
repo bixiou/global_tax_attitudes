@@ -520,7 +520,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   means <- c()
   for (i in seq_along(dep_vars)) {
     df <- if (is.data.frame(data)) data else data[[i]]
-    if (is.character(weights) & !is.data.frame(data)) weights <- df[[weights]]
+    if (is.character(weights) & !is.data.frame(data)) weight <- df[[weights]]
     if (is.character(indep_vars_included[[i]])) indep_vars_included[[i]] <- indep_vars %in% indep_vars_included[[i]]
     formula_i <- as.formula(paste(dep_vars[i], "~", paste("(", indep_vars[indep_vars_included[[i]] & covariates_with_several_values(data = df, covariates = indep_vars)], ")", collapse = ' + ')))
     if (logit[i]) {
@@ -530,18 +530,18 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
       SEs[[i]] <- logit_margin_i[,2]
     }
     else {
-      models[[i]] <- lm(formula_i, data = df, weights = weights)
+      models[[i]] <- lm(formula_i, data = df, weights = weight)
       coefs[[i]] <- models[[i]]$coefficients
       if (robust_SE) SEs[[i]] <- coeftest(models[[i]], vcov = vcovHC(models[[i]], "HC1"))[,2]
       else SEs[[i]] <- summary(models[[i]])$coefficients[,2]
     }
     if (print_regs) print(summary(models[[i]]))
     if (mean_control==FALSE){
-      means[i] <- round(wtd.mean(eval(parse(text = paste( "df$", parse(text = dep_vars[i]), sep=""))), weights = weights, na.rm = T), d = digits)
+      means[i] <- round(wtd.mean(eval(parse(text = paste( "df$", parse(text = dep_vars[i]), sep=""))), weights = weight, na.rm = T), d = digits)
       mean_text <- "Mean"
     } else {
       # means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$treatment=='None']", sep=""))), weights = weights[df$treatment=='None'], na.rm = T), d = digits)
-      means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$branch_gcs=='nothing']", sep=""))), weights = weights[df$branch_gcs=='nothing'], na.rm = T), d = digits)
+      means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$branch_gcs=='nothing']", sep=""))), weights = weight[df$branch_gcs=='nothing'], na.rm = T), d = digits)
       mean_text <- "Control group mean"
     }
   }
@@ -564,7 +564,8 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   }
   if (only_mean) mean_above <- T
   table <- do.call(stargazer, c(models, list(out=file_path, header=F, model.numbers = model.numbers,
-                                             covariate.labels = if (nolabel) NULL else latexify(indep_labels, doublebackslash = FALSE), add.lines = if (!"\\QConstant\\E" %in% keep) list(c(mean_text, means)) else NULL,
+                                             covariate.labels = if (nolabel) NULL else gsub("\\{", "{", gsub("\\}", "}", gsub("\\$", "$", gsub("\\textbackslash ", "\\", latexify(indep_labels, doublebackslash = FALSE), fixed = T), fixed = T), fixed = T), fixed = T), 
+                                             add.lines = if (!"\\QConstant\\E" %in% keep) list(c(mean_text, means)) else NULL,
                                              coef = coefs, se = SEs, 
                                              dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
                                              multicolumn = multicolumn, float = F, keep.stat = c("n", "rsq"), omit.table.layout = "n", keep=keep, no.space = no.space

@@ -890,6 +890,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$vote3 <- as.character(e$vote_us)
       e$vote3[e$vote3 %in% c("PNR/no right", "Other/Non-voter")] <- "Abstention/PNR/Other"
       label(e$vote3) <- "vote3: Abstention/PNR/Other / Biden / Trump Vote at 2020 presidential election"
+      e$vote3_factor <- relevel(as.factor(e$vote3), "Biden")
+      e$vote_Biden <- e$vote3 == 'Biden'
+      e$vote_not_Biden <- e$vote3 != 'Biden'
       
       e$swing_state_3pp <- n(e$zipcode/1000) %between% c(48, 50) | n(e$zipcode/1000) %between% c(88.9, 90.0) | n(e$zipcode/1000) %between% c(15.0, 19.7) | n(e$zipcode/1000) %between% c(53, 55) | n(e$zipcode/1000) %between% c(85, 87) | n(e$zipcode/1000) %between% c(30, 32) | n(e$zipcode/1000) %between% c(39.8, 40.0) | n(e$zipcode/1000) %between% c(27, 29) 
       e$swing_state_5pp <- e$swing_state_3pp | n(e$zipcode/1000) %between% c(32, 35)
