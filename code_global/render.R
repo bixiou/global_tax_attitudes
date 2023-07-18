@@ -439,6 +439,7 @@ heatmaps_defs <- list(
   "understood_score" = list(vars = variables_understood[4], conditions = c("")),
   "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
   "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
+  "support_likert_gcs" = list(vars = c("gcs_support", variables_support_likert), conditions = "/"),
   "gcs_field_contains" = list(vars = variables_gcs_field_contains[1:10], conditions = ">= 1", sort = T),
   "gcs_field" = list(vars = c(variables_gcs_field_names, "gcs_field_empty"), conditions = ">= 1", sort = T),
   "poverty_field_contains" = list(vars = variables_poverty_field_contains[1:9], conditions = ">= 1", sort = T),
@@ -679,7 +680,7 @@ heatmap_multiple() # Doesn't work if data contains a single country (by design, 
 # US2
 heatmap_multiple(heatmaps_defs[c("foreign_aid_amount", "foreign_aid_more")])
 heatmap_multiple(heatmaps_defs[c("foreign_aid_no_less_all")])
-heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")])
+heatmap_multiple(heatmaps_defs[c("support_likert_gcs")])
 heatmap_multiple(heatmaps_defs[c("global_tax_global_share", "global_tax_sharing")])
 
 heatmap_multiple(heatmaps_defs[c("foreign_aid_no", "foreign_aid_condition")], weights = T)

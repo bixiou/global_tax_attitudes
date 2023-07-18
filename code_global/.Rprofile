@@ -1461,13 +1461,18 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
                                 cond == "== 2" ~ "max",
                                 cond == "== -2" ~ "min",
                                 cond == "-" ~ "difference",
-                                cond == "/" ~ "share",
+                                cond == "/" ~ "share", # uses >0 for binary data (detected as neg=0) 
+                                cond == "//" ~ "share_strict", # to use when no one gave a negative answer though it was an option
                                 TRUE ~ "unknown"), sep = "_")
     tryCatch({
-      if (cond %in% c("/", "-")) { # TODO: manage binary for / or -
+      if (cond %in% c("/", "-", "//")) { # TODO: manage binary for / or -
         pos <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = ">= 1", on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights)
         neg <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = "<= -1", on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights)
         if (cond == "-") temp <- pos - neg else temp <- pos / (pos + neg)
+        if (cond == "/") {
+          binary_rows <- which(rowMeans(neg)==0)
+          temp[binary_rows,] <- pos[binary_rows,]
+          row.names(temp)[binary_rows] <- paste0(row.names(temp)[binary_rows], "*") }
         for (i in 1:length(vars)) if (is.logical(data[[vars[i]]])) temp[i, ] <- pos[i, ]
       } else {  temp <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights) }
       if (!missing(labels_along) & length(labels_along) == ncol(temp)) colnames(temp) <- labels_along
