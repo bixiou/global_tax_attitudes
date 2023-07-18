@@ -133,8 +133,8 @@ labels_vars <- c(
   "donation_nation" = "Donation to own country",
   "donation_africa" = "Donation to Africa",
   "donation" = "Donation (any)",
-  "global_tax_support" = "Global tax on millionaires",
-  "national_tax_support" = "National tax on millionaires",
+  "global_tax_support" = "Global tax on millionaires funding low-income countries",
+  "national_tax_support" = "National tax on millionaires funding public services",
   "global_tax_global_share" = "Preferred share of global tax for low-income (in %)",
   "global_tax_sharing" = "Sharing half of global tax with low-income countries",
   "foreign_aid_belief" = "Belief about foreign aid", # / public spending",
@@ -438,7 +438,7 @@ heatmaps_defs <- list(
   "understood_each" = list(vars = variables_understood[1:3], conditions = c(">= 1")),
   "understood_score" = list(vars = variables_understood[4], conditions = c("")),
   "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
-  "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
+  "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"), # /!\ The support is computed only on US1, not US2 (which had different branches)
   "support_likert_gcs" = list(vars = c("gcs_support", variables_support_likert), conditions = "/"),
   "gcs_field_contains" = list(vars = variables_gcs_field_contains[1:10], conditions = ">= 1", sort = T),
   "gcs_field" = list(vars = c(variables_gcs_field_names, "gcs_field_empty"), conditions = ">= 1", sort = T),
@@ -495,7 +495,7 @@ heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T, folder = NULL, name = NULL) {
   for (heatmap in heatmaps) {
     vars_present <- heatmap$vars %in% names(data)
-    if (any(c("gcs_support", "nr_support", "gcs_support_100") %in% heatmap$vars)) data <- data[data$wave != "US2",]
+    # if (any(c("gcs_support", "nr_support", "gcs_support_100") %in% heatmap$vars)) data <- data[data$wave != "US2",]
     heatmap_wrapper(vars = heatmap$vars[vars_present], special = "Europe", data = data, labels = heatmap$labels[vars_present], name = if (is.null(name)) heatmap$name else name, conditions = heatmap$conditions, sort = heatmap$sort, 
                     percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights, folder = folder)   
   }

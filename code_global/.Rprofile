@@ -1417,6 +1417,9 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     } else if (c %in% c("Eu", "Eu4", "EU4", "EU")) { df_c <- e[e$continent == "Eu4",] 
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
     for (v in 1:nb_vars) {
+      if (vars[v] %in% c("gcs_support", "nr_support", "gcs_support_100")) { 
+        temp <- df_c
+        df_c <- df_c[df_c$wave != "US2",] }
       var_c <- df_c[[vars[v]]][!is.na(df_c[[vars[v]]])]
       if (conditions[v] == "median") {
         if (weights & length(var_c) > 0 & c %in% c(countries_EU, names(countries_EU))) table[v,c] <- eval(str2expression(paste("wtd.median(var_c, na.rm = T, weight = df_c$weight_country[!is.na(df_c[[vars[v]]])])")))
@@ -1427,6 +1430,7 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
         if (weights & length(var_c) > 0 & !(c %in% c(countries_EU, names(countries_EU)))) table[v,c] <- eval(str2expression(paste("wtd.mean(var_c", conditions[v], ", na.rm = T, weights = df_c$weight[!is.na(df_c[[vars[v]]])])")))
         if (!weights & length(var_c) > 0) table[v,c] <- eval(str2expression(paste("mean(var_c", conditions[v], ", na.rm = T)")))
       }
+      if (vars[v] %in% c("gcs_support", "nr_support", "gcs_support_100")) df_c <- temp
     }
   }
   row.names(table) <- labels
@@ -1465,7 +1469,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
                                 cond == "//" ~ "share_strict", # to use when no one gave a negative answer though it was an option
                                 TRUE ~ "unknown"), sep = "_")
     tryCatch({
-      if (cond %in% c("/", "-", "//")) { # TODO: manage binary for / or -
+      if (cond %in% c("/", "-", "//")) { 
         pos <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = ">= 1", on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights)
         neg <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = "<= -1", on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights)
         if (cond == "-") temp <- pos - neg else temp <- pos / (pos + neg)
