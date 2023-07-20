@@ -655,7 +655,7 @@ barresN_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940)
 barresN_continent_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "continent")
 main_outcomes <- c("gcs_support", "nr_support", "global_tax_support", "national_tax_support", "cap_wealth_support", "group_defended_agg2", "negotiation", "democratise_un_imf_support", "climate_mitigation_support")
 barresN_vote3_defs <- fill_barres(main_outcomes, list("gcs_support" = list(rev = T, rev_color = F)), along = "vote3")
-barresN_vote_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "vote_factor")
+barresN_vote_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support", "global_tax_sharing", "global_tax_global_share"), list(), along = "vote_factor")
 barresN_age_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "age_factor")
 barresN_income_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "income_character")
 
@@ -792,7 +792,7 @@ barres_multiple(barres = barresN_defs["global_tax_global_share"], df = all, fold
 barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
 barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continents/") 
 
-barres_multiple(barres = barresN_vote_defs, df = eu, folder = "../figures/EU/vote/") 
+barres_multiple(barres = barresN_vote_defs["gl"], df = eu, folder = "../figures/EU/vote/") 
 barres_multiple(barres = barresN_vote_defs, df = d("FR"), folder = "../figures/FR/vote/") 
 barres_multiple(barres = barresN_vote_defs, df = d("DE"), folder = "../figures/DE/vote/") 
 barres_multiple(barres = barresN_vote_defs, df = d("ES"), folder = "../figures/ES/vote/") 
