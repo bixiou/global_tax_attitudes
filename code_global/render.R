@@ -133,8 +133,8 @@ labels_vars <- c(
   "donation_nation" = "Donation to own country",
   "donation_africa" = "Donation to Africa",
   "donation" = "Donation (any)",
-  "global_tax_support" = "Global tax on millionaires",
-  "national_tax_support" = "National tax on millionaires",
+  "global_tax_support" = "Global tax on millionaires funding low-income countries",
+  "national_tax_support" = "National tax on millionaires funding public services",
   "global_tax_global_share" = "Preferred share of global tax for low-income (in %)",
   "global_tax_sharing" = "Sharing half of global tax with low-income countries",
   "foreign_aid_belief" = "Belief about foreign aid", # / public spending",
@@ -438,7 +438,8 @@ heatmaps_defs <- list(
   "understood_each" = list(vars = variables_understood[1:3], conditions = c(">= 1")),
   "understood_score" = list(vars = variables_understood[4], conditions = c("")),
   "gcs_important" = list(vars = variables_gcs_important, conditions = c("", ">= 1")),
-  "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"),
+  "support_binary" = list(vars = variables_support_binary, conditions = ">= 1"), # /!\ The support is computed only on US1, not US2 (which had different branches)
+  "support_likert_gcs" = list(vars = c("gcs_support", variables_support_likert), conditions = "/"),
   "gcs_field_contains" = list(vars = variables_gcs_field_contains[1:10], conditions = ">= 1", sort = T),
   "gcs_field" = list(vars = c(variables_gcs_field_names, "gcs_field_empty"), conditions = ">= 1", sort = T),
   "poverty_field_contains" = list(vars = variables_poverty_field_contains[1:9], conditions = ">= 1", sort = T),
@@ -494,7 +495,7 @@ heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T, folder = NULL, name = NULL) {
   for (heatmap in heatmaps) {
     vars_present <- heatmap$vars %in% names(data)
-    if (any(c("gcs_support", "nr_support", "gcs_support_100") %in% heatmap$vars)) data <- data[data$wave != "US2",]
+    # if (any(c("gcs_support", "nr_support", "gcs_support_100") %in% heatmap$vars)) data <- data[data$wave != "US2",]
     heatmap_wrapper(vars = heatmap$vars[vars_present], special = "Europe", data = data, labels = heatmap$labels[vars_present], name = if (is.null(name)) heatmap$name else name, conditions = heatmap$conditions, sort = heatmap$sort, 
                     percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights, folder = folder)   
   }
@@ -654,7 +655,7 @@ barresN_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940)
 barresN_continent_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "continent")
 main_outcomes <- c("gcs_support", "nr_support", "global_tax_support", "national_tax_support", "cap_wealth_support", "group_defended_agg2", "negotiation", "democratise_un_imf_support", "climate_mitigation_support")
 barresN_vote3_defs <- fill_barres(main_outcomes, list("gcs_support" = list(rev = T, rev_color = F)), along = "vote3")
-barresN_vote_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "vote_factor")
+barresN_vote_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support", "global_tax_sharing", "global_tax_global_share"), list(), along = "vote_factor")
 barresN_age_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "age_factor")
 barresN_income_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "income_character")
 
@@ -679,7 +680,7 @@ heatmap_multiple() # Doesn't work if data contains a single country (by design, 
 # US2
 heatmap_multiple(heatmaps_defs[c("foreign_aid_amount", "foreign_aid_more")])
 heatmap_multiple(heatmaps_defs[c("foreign_aid_no_less_all")])
-heatmap_multiple(heatmaps_defs[c("foreign_aid_more_all")])
+heatmap_multiple(heatmaps_defs[c("support_likert_gcs")])
 heatmap_multiple(heatmaps_defs[c("global_tax_global_share", "global_tax_sharing")])
 
 heatmap_multiple(heatmaps_defs[c("foreign_aid_no", "foreign_aid_condition")], weights = T)
@@ -791,7 +792,7 @@ barres_multiple(barres = barresN_defs["global_tax_global_share"], df = all, fold
 barres_multiple(barres = barresN_defs, df = all, folder = "../figures/country_comparison/") 
 barres_multiple(barres = barresN_continent_defs, df = all, folder = "../figures/continents/") 
 
-barres_multiple(barres = barresN_vote_defs, df = eu, folder = "../figures/EU/vote/") 
+barres_multiple(barres = barresN_vote_defs["gl"], df = eu, folder = "../figures/EU/vote/") 
 barres_multiple(barres = barresN_vote_defs, df = d("FR"), folder = "../figures/FR/vote/") 
 barres_multiple(barres = barresN_vote_defs, df = d("DE"), folder = "../figures/DE/vote/") 
 barres_multiple(barres = barresN_vote_defs, df = d("ES"), folder = "../figures/ES/vote/") 

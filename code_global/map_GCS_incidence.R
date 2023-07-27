@@ -840,6 +840,9 @@ axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
 legend("topright", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
 
+(10*sum(world_emissions$gea_gea[4:8])+5*sum(world_emissions$gea_gea[c(3,9)]))/10^9 # total positive emissions 2020-80: 963 GtCO2
+(10*sum(world_emissions$gea_gea[4:10])+5*sum(world_emissions$gea_gea[c(3,11)]))/10^9 # total 2020-2100 emissions (incl. net negative in 2080-2100): 756 GtCO2
+
 # mar <- par()$mar
 # par(mar = c(2.1, 4.1, 0.1, 4.1))
 # plot(years[3:9], world_emissions$gea_gea[3:9]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(-5, 53))
