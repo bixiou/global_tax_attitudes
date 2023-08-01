@@ -682,6 +682,7 @@ compute_npv <- function(var = "gain_pa_", discount_rate = discount, data = co2_p
   return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/rate^(i-2)) })))
 }
 compute_gain_given_parties <- function(parties = df$code, df = co2_pop, return = "df", discount = .04, ssp_name = "gea_gea") {
+  if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   basic_income <- basic_income_adj <- c()
   for (y in seq(2020, 2100, 10)) {
     yr <- as.character(y)
@@ -742,22 +743,28 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
   total_revenues[[ssp_name]] <- average_revenues[[ssp_name]] <- average_revenues_bis[[ssp_name]] <- basic_income[[ssp_name]] <- basic_income_adj[[ssp_name]] <- c()
   if (!exists("scenarios_parties") & scenario == "all_countries") parties <- df$code
   else parties <- scenarios_parties[[scenario]]
+  if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   
   if ("Dem USA" %in% parties) { # split USA for scenario == "optimistic" into Dem USA (the 12 States + DC with Democratic lead > 10 pp) and Non-Dem USA
-    all_us <- dem_us <- non_dem_us <- as.data.frame(df[df$code == "USA",])
-    dem_us$country_map <- dem_us$code <- "Dem USA" # dem_us$country <- 
-    non_dem_us$country_map <- non_dem_us$code <- "Non-Dem USA" # non_dem_us$country <- 
-    dem_us$gdp_pc_2019 <- (.3897/.3295) * all_us$gdp_pc_2019
-    dem_us$GDPpcPPP <- (.3897/.3295) * all_us$GDPpcPPP
-    non_dem_us$gdp_pc_2019 <- (1 - (.3897/.3295)) * all_us$gdp_pc_2019
-    non_dem_us$GDPpcPPP <- (1 - (.3897/.3295)) * all_us$GDPpcPPP
-    for (y in years) for (v in paste0(c("pop_", "adult_"), y)) {
-      dem_us[[v]] <- .3295 * all_us[[v]]
-      non_dem_us[[v]] <- (1 - .3295) * all_us[[v]]
-    } # TODO (though not necessary) territorial_, footprint_ emissions_n gdp_2019, share_territorial
-    dem_us[[paste0("emissions_pa_", base_year)]] <- (.2033/.3295) * all_us[[paste0("emissions_pa_", base_year)]]
-    non_dem_us[[paste0("emissions_pa_", base_year)]] <- (1 - (.2033/.3295)) * all_us[[paste0("emissions_pa_", base_year)]]
-    df <- rbind(df[!df$code %in% c("USA", "Dem USA", "Non-Dem USA"),], dem_us, non_dem_us)
+    # all_us <- dem_us <- non_dem_us <- as.data.frame(df[df$code == "USA",])
+    # dem_us$country_map <- dem_us$code <- "Dem USA" # dem_us$country <-
+    # # non_dem_us$country_map <- non_dem_us$code <- "Non-Dem USA" # non_dem_us$country <-
+    # dem_us$gdp_pc_2019 <- (.3897/.3295) * all_us$gdp_pc_2019
+    # dem_us$GDPpcPPP <- (.3897/.3295) * all_us$GDPpcPPP
+    # # non_dem_us$gdp_pc_2019 <- ((1 - .3897)/(1 - .3295)) * all_us$gdp_pc_2019
+    # # non_dem_us$GDPpcPPP <- ((1 - .3897)/(1 - .3295)) * all_us$GDPpcPPP
+    # for (y in years) for (v in paste0(c("pop_", "adult_"), y)) {
+    #   dem_us[[v]] <- .3295 * all_us[[v]]
+    #   # non_dem_us[[v]] <- (1 - .3295) * all_us[[v]]
+    # } # TODO (though not necessary) territorial_, footprint_ emissions_n gdp_2019, share_territorial
+    # dem_us[[paste0("emissions_pa_", base_year)]] <- (.2033/.3295) * all_us[[paste0("emissions_pa_", base_year)]]
+    # # non_dem_us[[paste0("emissions_pa_", base_year)]] <- ((1 - .2033)/(1 - .3295)) * all_us[[paste0("emissions_pa_", base_year)]]
+    # # df <- rbind(df[!df$code %in% c("USA", "Dem USA", "Non-Dem USA"),], dem_us, non_dem_us)
+    # df <- rbind(df[!df$code %in% c("USA", "Dem USA", "Non-Dem USA"),], dem_us)
+    
+    for (y in years) for (v in paste0(c("pop_", "adult_"), y)) df[[v]][df$code == "USA"] <- .3295 * df[[v]][df$code == "USA"]
+    for (v in c("gdp_pc_2019", "GDPpcPPP")) df[[v]][df$code == "USA"] <- (.3897/.3295) * df[[v]][df$code == "USA"]
+    df[[paste0("emissions_pa_", base_year)]][df$code == "USA"] <- (.2033/.3295) * df[[paste0("emissions_pa_", base_year)]][df$code == "USA"]
   }
 
   for (y in years) {
@@ -828,17 +835,17 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
     basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
     df <- df_parties
   } else {
-    if ("Dem USA" %in% parties) {
-      df <- rbind(df, all_us)
-      all_us <- as.data.frame(df_parties[df_parties$code == "Non-Dem USA",])
-      all_us$country_map <- all_us$code <- all_us$country <- "USA"
-      # for (v in names(all_us)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj|^diff_gain_gdr_gcs_adj"), names(all_us))]) all_us[[v]] <- 0
-      df_parties <- rbind(df_parties, all_us) # TODO: check that it doesn't raise an issue to duplicate USA (with both USA and Dem/Non-Dem USA)
-    }
+    # if ("Dem USA" %in% parties) {
+    #   df <- rbind(df, all_us)
+    #   all_us <- as.data.frame(df_parties[df_parties$code == "Non-Dem USA",])
+    #   all_us$country_map <- all_us$code <- all_us$country <- "USA"
+    #   # for (v in names(all_us)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj|^diff_gain_gdr_gcs_adj"), names(all_us))]) all_us[[v]] <- 0
+    #   df_parties <- rbind(df_parties, all_us) # TODO: check that it doesn't raise an issue to duplicate USA (with both USA and Dem/Non-Dem USA)
+    # }
     for (v in names(df)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj|^diff_gain_gdr_gcs_adj"), names(df))]) df[[paste0("S", scenario, "_", v)]] <- df_parties[[v]]
     for (v in names(df)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj"), names(df))]) df[[paste0("S", scenario, "_", v)]][!df$code %in% parties] <- NA
-
-    if ("Dem USA" %in% parties) for (v in names(df)) if (is.numeric(df[[v]]) & !grepl(paste0("S", scenario), v)) df[[v]][df$code %in% c("Dem USA", "Non-Dem USA")] <- 0
+    
+    # if ("Dem USA" %in% parties) for (v in names(df)) if (is.numeric(df[[v]]) & !grepl(paste0("S", scenario), v)) df[[v]][df$code %in% c("Dem USA", "Non-Dem USA")] <- 0
   }
   basic_income[[scenario]] <<- basic_income[[ssp_name]]
   basic_income_adj[[scenario]] <<- basic_income_adj[[ssp_name]]
