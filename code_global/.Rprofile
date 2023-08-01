@@ -55,6 +55,12 @@ package("modelsummary")
 package("xtable") # export latex table
 package("list") # list experiment aka. item count technique: ictreg
 package("weights") # wtd.t.test
+package("raster") # merge boundaries in maps
+package("sf") # merge boundaries in maps
+package("maptools")
+package("threadr", github = "skgrange") # dependency of gissr
+package("gissr", github = "skgrange") # merge boundaries in maps
+package("maps") # merge boundaries in maps
 #' package("rms")
 #' package('pwr')
 #' package("foreign")
@@ -163,7 +169,6 @@ package("dplR") # latexify, used in table_mean_lines_save
 #' package("RStata")
 #' package("relaimpo") # works well with 21 variables, not much more. install from: install.packages("https://prof.bht-berlin.de/fileadmin/prof/groemp/downloads/relaimpo_2.2-5.zip", repos = NULL)
 #' package("missMDA") # PCA
-#' package("maps")
 #' package("forcats")
 #' package("modi")
 #' package("descr")
@@ -1963,7 +1968,11 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 # }
 #
 plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE,
-                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T) {
+                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL) {
+  if (!is.null(parties)) {
+    if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
+    df[[var]][!df$code %in% parties] <- NA
+    na_label <- "Non Parties" }
   table <- heatmap_table(vars = var, data = df, along = "country_map", conditions = c(condition), on_control = on_control, remove_na = FALSE)
   # df_countries <- c(Country_Names[colnames(table)], "Wallis and Futuna", "Vatican", "Tobago", "Trinidad", "Sint Maarten", "Liechtenstein", "Saint Kitts", "Nevis", "Monaco", "Jersey", "Barbuda", "Antigua", "Saint Barthelemy", "Reunion", "Grenadines", "Virgin Islands", "Turks and Caicos Islands", "Saint Pierre and Miquelon", "Saint Helena", "Ascension Island", "Niue", "Palau", "Pitcairn Islands", "South Sandwich Islands")
   # df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2))) # For oecd_climate
@@ -1988,6 +1997,17 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   world_map <- world_map[!world_map$region %in% c("Antarctica", "American Samoa", "Micronesia", "Guam", "Niue", "Pitcairn Islands", "Cook Islands", "Tonga", "Kiribati", "Marshall Islands", "French Polynesia", "Fiji", "Samoa", "Wallis and Futuna", "Vanuatu"),]
   # world_map$region <- iso.alpha(world_map$region)
 
+  if ("Dem USA" %in% parties) {
+    us_states <- map_data(map = "state")
+    blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont")) # , "Hawaii" and Alaska missing from the map
+    non_blue_states <- setdiff(us_states$region, blue_states)
+    us_states$region[us_states$region %in% blue_states] <- "USA" #"Dem USA"
+    us_states$region[us_states$region %in% non_blue_states] <- "Non-Dem USA"
+    world_map$region[world_map$subregion == "Alaska"] <- "Non-Dem USA"
+    world_map <- world_map[world_map$region != "USA",] # | world_map$subregion == "Alaska",]
+    world_map <- merge_maps(world_map, us_states) 
+  }
+
   df_na <- data.frame(country_map = setdiff(world_map$region, df_countries), mean = if (fill_na) breaks[2] else NA)
   df <- merge(df, df_na, all = T)
 
@@ -1996,7 +2016,7 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   if (!continuous) {
     (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj") update ggplot2 xlim = c(162, 178.5) for mercator
        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + # coord_fixed() +
-       scale_fill_manual(name = legend, drop = FALSE, values = color(length(breaks)-1, rev_color = rev_color))) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
+       scale_fill_manual(name = legend, drop = FALSE, values = color(length(breaks)-1, rev_color = rev_color), labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
   } else {
     (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map) + coord_proj("+proj=robin") + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
@@ -2007,6 +2027,169 @@ plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE
   if (save) for (f in format) save_plot(plot, filename = ifelse(continuous, paste0(var, "_cont"), var), folder = '../figures/maps/', width = width, height = height, format = f, trim = trim)
   # return(plot)
 }
+
+merge_maps <- function(map1, map2) {
+  map1$group <- map1$group + max(map2$group)
+  map1$order <- map1$order + max(map2$order)
+  return(rbind(map1, map2))
+}
+
+dem_us <- non_dem_us <- co2_pop[co2_pop$code == "USA",]
+dem_us$country_map <- "Dem USA"
+non_dem_us$country_map <- "Non-Dem USA"
+dem_us$gain_adj_over_gdp_2040 <- .05
+df <- rbind(co2_pop[co2_pop$code != "USA",], dem_us, non_dem_us)
+# df <- co2_pop[co2_pop$code != "USA",]
+# for (s in unique(us_states$region)) {
+#   temp <- co2_pop[co2_pop$code == "USA",]
+#   temp$country_map <- s
+#   df <- rbind(df, temp)
+# }
+
+# df_map <- data.frame(country_map = df$country_map, mean = df$gain_adj_over_gdp_2050) # mean = as.vector(table))
+df$group <- cut(df$gain_adj_over_gdp_2040, breaks = c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf), labels = c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2"))
+
+us_states <- map_data(map = "state")
+blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont")) # , "Hawaii" and Alaska missing from the map
+non_blue_states <- setdiff(us_states$region, blue_states)
+us_regions <- data.frame(list(state = unique(us_states$region)))
+us_regions$region <- ifelse(us_regions$state %in% blue_states, "Dem USA", "Non-Dem USA")
+us_states$region[us_states$region %in% blue_states] <- "Dem USA"
+us_states$region[us_states$region %in% non_blue_states] <- "Non-Dem USA"
+# us_states$group[us_states$region %in% blue_states] <- 1
+# us_states$group[us_states$region %in% non_blue_states] <- 2
+# non_blue_usa <- maps::map("state", regions = non_blue_states, boundary = FALSE, interior = TRUE, plot = FALSE, fill = TRUE)
+# non_blue_usa <- fortify(non_blue_usa)
+# non_blue_usa <- us_states %>% st_as_sf(coords = c("long", "lat"), crs = 4326) %>% st_transform(crs = 3310)
+# non_blue_usa <- non_blue_usa %>% group_by(region)
+# non_blue_usa$value <- 0.1
+world_map <- map_data(map = "world")
+world_map$region[world_map$subregion == "Alaska"] <- "Non-Dem USA"
+world_map <- world_map[world_map$region != "USA",]
+# row.names(world_map) <- paste0("w", row.names(world_map))
+# world_map <- spChFIDs(world_map, row.names(world_map)) # Requires maptools:: or mappoly::merge_maps or rgdal::spRbind
+# world_map <- world_map %>% st_as_sf(coords = c("long", "lat"), crs = 4326) %>% st_transform(crs = 3310)
+world_map <- merge_maps(world_map, us_states)
+
+us_states <- maps::map("state", plot = FALSE, exact = FALSE, fill = TRUE) %>% st_as_sf()
+world_map <- map_data(map = "world")
+world_map$region[world_map$subregion == "Alaska"] <- "Non-Dem USA"
+world_map <- world_map[world_map$region != "USA",] # | world_map$subregion == "Alaska",]
+world_map <- maps::map("world", plot = FALSE, exact = FALSE, fill = TRUE, regions = "(?!USA):*|USA:Alaska") #%>% st_as_sf()
+names(world_map)[5] <- "ID"
+world_map <- world_map[, c(1:5)]
+world_map <- world_map %>% st_as_sf()
+
+us_state <- maps::map("state", plot = FALSE, exact = FALSE, fill = TRUE)
+IDs <- sapply(strsplit(us_state$names, ":"), function(x) x[1])
+us_state <- map2SpatialPolygons(us_state, IDs=IDs, proj4string=CRS("+proj=longlat +datum=WGS84"))
+us_state <- merge(us_state, us_regions, by.x = "", )
+names(us_states)
+world_map <- raster::aggregate(world_map, "region")
+
+states <- getData("GADM", country = "USA", level = 1) %>% st_as_sf() %>% st_transform(crs = 3310)
+
+ggplot(non_blue_usa) +
+  geom_sf(aes(fill = value)) +
+  geom_sf_text(aes(label = region), check_overlap = T)+
+  scale_fill_viridis_c()
+
+megakotas <- states %>%
+  left_join(y = rownames_to_column(co2_pop, var = "State"), by = c("NAME_1" = "State")) %>%
+  mutate(State = fct_collapse(NAME_1, Megakotas = c("North Dakota", "South Dakota"))) %>%
+  # group_by(State) %>%  summarise(Murder = sum(Murder)) %>%
+  st_simplify(dTolerance = 1000)
+
+world_map <- world_map %>% st_as_sf() %>% st_transform(crs = 3310) %>% st_simplify(dTolerance = 1000)
+
+us_coord <- map_data("state")
+blue_states_coord <- map("state", regions = blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%  base::as.data.frame() %>%  sort_points(y = "y", x = "x") %>%  mutate(region = "Dem USA")
+non_blue_states_coord <- map("state", regions = non_blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%  as.data.frame() %>%  sort_points(y = "y", x = "x") %>%  mutate(region = "Non-Dem USA")
+names(blue_states_coord) <- names(non_blue_states_coord) <- c("long", "lat", "region")
+world_map <- world_map[world_map$region != "USA",]
+world_map <- merge_maps(world_map, non_blue_states_coord)
+
+world_map <- world_map %>%
+  add_rownames("region") %>%
+  mutate(region = replace(tolower(region), tolower(region) %in% c("north dakota", "south dakota"),
+                          "megakotas")) %>%
+  group_by(region) %>%
+  mutate_all(sum)
+
+df <- rbind(co2_pop, co2_pop[co2_pop$code]
+
+ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map) + #coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj") update ggplot2 xlim = c(162, 178.5) for mercator
+  geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(0.05, .29)) + # coord_fixed() +
+  # geom_map(data = as.data.frame(list(ID = "Non-Dem USA", group = "0.4 - 0.8")), map = us_states, color = 'green', size = 0) +
+  # geom_map(data = df, map = world_map, color = 'green', size = 0) +
+  scale_fill_manual(name = "mean", drop = FALSE, values = color(8), labels = paste("a", 1:8)) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
+
+
+ggplot(mapping = aes(map_id=country_map, fill = group)) +
+  geom_map(data = df[!df$code %in% c("USA", "Dem USA", "Non-Dem USA"),],
+           map = world_map, size = 0.15, color = "#ffffff") +
+  geom_map(data = df[df$code %in% c("Non-Dem USA"),],
+           map = non_blue_states_coord, size = 0.15, color = "#ffffff") + 
+  expand_limits(x = world_map$long, y = world_map$lat) +
+  scale_fill_manual(name = "mean", drop = FALSE, values = color(8), labels = paste("a", 1:8)) +
+  theme_void() + theme(legend.position = c(0.05, .29))
+
+plot_world_map("gain_adj_over_gdp_2050", condition = "", df = df, save = FALSE, breaks = NULL, labels = NULL, legend = NULL, limits = NULL, parties = NULL)
+ 
+us_states <- map_data("state")
+states_data <- data.frame(region = ifelse(us_states$region %in% non_blue_states, "Non-Dem USA", "Dem USA"), long = c(us_states$x), lat = c(us_states$y))
+states_sf <- st_as_sf(us_states, coords = c("long", "lat"), crs = 4326)
+
+ggplot() +
+  geom_sf(data = states_sf, aes(fill = region, group = region), color = "black") +
+  scale_fill_manual(values = c("A" = "lightblue", "B" = "white")) +
+  coord_sf(crs = st_crs(4326)) +
+  theme_void()
+
+us_coord <- map_data("state") 
+non_blue_coord <- map("state", regions = non_blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
+  as.data.frame() %>%   sort_points(y = "y", x = "x") %>% mutate(region = "Non-Dem USA")
+blue_coord <- map("state", regions = blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
+  as.data.frame() %>%   sort_points(y = "y", x = "x") %>% mutate(region = "Dem USA")
+
+us_regions <- data.frame(list(state = unique(us_states$region)))
+# us_regions$region <- ifelse(us_regions$state %in% blue_states, "Dem USA", us_regions$state)
+us_regions$value <- runif(49)
+us_regions$area <- us_regions$region
+us_regions$region <- us_regions$state
+us_regions$region[grepl("Non-Dem USA", us_regions$region)] <- "Non-Dem USA"
+# us_regions <- add_rownames(us_regions, "region")
+
+ggplot(mapping = aes(map_id=region, fill = value)) +
+  geom_map(data = us_regions[us_regions$region != "Non-Dem USA",],
+           map = blue_coord, size = 0.15, color = "#ffffff") +
+  geom_map(data =  us_regions[us_regions$region == "Non-Dem USA",],
+           map = non_blue_coord, size = 0.15, color = "#ffffff") + 
+  expand_limits(x = us_coord$long, y = us_coord$lat) +
+  scale_fill_continuous(low = 'thistle2', high = 'darkred', guide = 'colorbar') +
+  labs(x=NULL, y=NULL) 
+
+us_coord <- map_data("state") 
+megakotas_coord <- map("state", regions = non_blue_states, 
+                       boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
+  as.data.frame() %>%
+  sort_points(y = "y", x = "x") %>%
+  mutate(region = "dakota")
+
+us_regions$value <- runif(49)
+us_regions$area <- us_regions$region
+us_regions$region <- us_regions$state
+us_regions$region[grepl("dakota", us_regions$region)] <- "dakota"
+# us_regions <- add_rownames(us_regions, "region")
+
+ggplot(mapping = aes(map_id=region, fill = value)) +
+  geom_map(data = us_regions[us_regions$region != "dakota",],
+           map = us_coord, size = 0.15, color = "#ffffff") +
+  geom_map(data =  us_regions[us_regions$region == "dakota",],
+           map = megakotas_coord, size = 0.15, color = "#ffffff") + 
+  expand_limits(x = us_coord$long, y = us_coord$lat) +
+  scale_fill_continuous(low = 'thistle2', high = 'darkred', guide = 'colorbar') +
+  labs(x=NULL, y=NULL) 
 
 ##### Plot along #####
 # gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
