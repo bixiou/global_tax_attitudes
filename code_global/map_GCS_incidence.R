@@ -762,9 +762,9 @@ create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence =
     # # df <- rbind(df[!df$code %in% c("USA", "Dem USA", "Non-Dem USA"),], dem_us, non_dem_us)
     # df <- rbind(df[!df$code %in% c("USA", "Dem USA", "Non-Dem USA"),], dem_us)
     
-    for (y in years) for (v in paste0(c("pop_", "adult_"), y)) df[[v]][df$code == "USA"] <- .3295 * df[[v]][df$code == "USA"]
-    for (v in c("gdp_pc_2019", "GDPpcPPP")) df[[v]][df$code == "USA"] <- (.3897/.3295) * df[[v]][df$code == "USA"]
-    df[[paste0("emissions_pa_", base_year)]][df$code == "USA"] <- (.2033/.3295) * df[[paste0("emissions_pa_", base_year)]][df$code == "USA"]
+    for (y in years) for (v in paste0(c("pop_", "adult_"), y)) df[[v]][df$code == "USA"] <- .3429 * df[[v]][df$code == "USA"]
+    for (v in c("gdp_pc_2019", "GDPpcPPP")) df[[v]][df$code == "USA"] <- (.4082/.3429) * df[[v]][df$code == "USA"]
+    df[[paste0("emissions_pa_", base_year)]][df$code == "USA"] <- (.2149/.3429) * df[[paste0("emissions_pa_", base_year)]][df$code == "USA"]
   }
 
   for (y in years) {
@@ -903,6 +903,16 @@ axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
 legend("topright", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
 
+# FR
+plot(years[3:9], basic_income_adj$all_countries[1:7]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Revenu de base ($ par mois); Émissions de CO2 (Gt par an)", ylim = c(-5, 53))
+lines(years[3:9], world_emissions$gea_gea[3:9]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
+par(new = T)
+plot(years[3:9], carbon_price$gea_gea[3:9], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+mtext("Prix du carbone ($/tCO2)", side=4, col="blue", line=2.5) 
+axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
+grid()
+legend("topright", legend = c("Émissions de CO2", "Revenu de base", "Prix du carbone (axe de droite)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+
 (10*sum(world_emissions$gea_gea[4:8])+5*sum(world_emissions$gea_gea[c(3,9)]))/10^9 # total positive emissions 2020-80: 963 GtCO2
 (10*sum(world_emissions$gea_gea[4:10])+5*sum(world_emissions$gea_gea[c(3,11)]))/10^9 # total 2020-2100 emissions (incl. net negative in 2080-2100): 756 GtCO2
 
@@ -991,6 +1001,16 @@ for (s in scenarios_names[3]) {
                  legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in % of GDP)\nScenario: ", capitalize(gsub("_", " ", s))), #fill_na = T,
                  save = T, parties = scenarios_parties[[s]])
 }
+# FR
+for (y in years[3:4]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+                                     labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
+                                     legend = paste0("Gain net par adulte au\nPlan mondial pour le climat\nen ", y, " (en $ par an)"), #fill_na = T,
+                                     save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
+               legend = "Gains nets au\nPlan mondial pour le Climat\nagrégés sur le siècle\n(en % of GDP)", #fill_na = T, \n(with 4% discount rate)
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+
 
 ##### NPV of the basic income #####
 discount_rate <- .04
@@ -1166,10 +1186,10 @@ sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("JPN", "KOR")]) # 5%
 # Book scenarios
 sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("JPN", "KOR", "NOR", "CHE", "NZL", "CAN", EU28_countries) | co2_pop$npv_pa_gcs_adj >= 0], na.rm = T) # 73%
 sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("USA", "AUS", "RUS", "KAZ", "SAU", "QAT", "KWT", "ARE", "OMN", "BHR", "SGP", "MYS", "ISR", "CHL", "URY", "PAN", "TKM", "TTO")], na.rm = T) # 27%
-# States with Democratic lead by >10pp: California + Illinois + New York + New Jersey + Washington + Massachusetts + Oregon + Connecticut + Delaware + Hawaii + Rhose Island + DC + Vermont
-(303.7+170.2+143.7+ 83.9+68.3+52.3+37.4+33.8+12.4+15+9.8+2.4+5.4)/4615 # 20.33% CO2 emissions, 3.1% of World total (incl. 2% for CA+IL+NY)
-(39.5+12.8+20.2+9.3+7.7+7+4.2+3.6+1+1.5+1.1+0.7+0.6)/331.45 # 109M = 32.95% population
-(3598+2053+1033+745+726+688+322+299+162+98+88+71+41)/25463 # 38.97% GDP
+# States with Democratic margin (e.g. 57%-41%) by >15pp: California + Illinois + New York + New Jersey + Washington + Massachusetts + Oregon + Connecticut + Delaware + Hawaii + Rhose Island + DC + Vermont + Maryland
+(303.7+170.2+143.7+ 83.9+68.3+52.3+37.4+33.8+12.4+15+9.8+2.4+5.4+48.1)/4591 # 21.49% CO2 emissions, 3.1% of World total (incl. 2% for CA+IL+NY) # 2022 https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_carbon_dioxide_emissions
+(39.1+12.6+19.7+9.3+7.8+7+4.2+3.6+1+1.4+1.1+.7+.6+6.2)/333.29 # 114M = 34.29% population # 2022 https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_population
+(3598+2053+1033+745+726+688+322+299+162+98+88+71+41+470)/25463 # 40.82% GDP # 2022 https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_GDP
 (109*1e6+sum(co2_pop$pop_2023[co2_pop$code %in% c("JPN", "KOR", "NOR", "CHE", "NZL", "CAN", EU28_countries) | co2_pop$npv_pa_gcs_adj >= 0], na.rm = T))/sum(co2_pop$pop_2023, na.rm = T) # 93%
 
 
@@ -1214,12 +1234,12 @@ barres(data = array(fig_gdp[1,2:10], dim = c(1, 9)), labels = names_fig_gdp[2:10
 all_countries <- setNames(co2_pop$code, co2_pop$country)
 # 2. All against OPEC+: World except OPEC+ losers
 all_but_OPEC <- all_countries[!co2_pop$code %in% c("RUS", "KAZ", "SAU", "QAT", "KWT", "ARE", "OMN", "BHR", "MYS")] # NB: Qatar has left OPEC
-# 3. Optimistic scenario: not losers + EU28 + Norway + Switzerland + Canada + Japan + Korea + NZ + TODO!: U.S. Democratic states 
+# 3. Optimistic scenario: not losers + EU28 + Norway + Switzerland + Canada + Japan + Korea + NZ + U.S. Democratic states 
 optimistic <- c(all_countries[co2_pop$npv_pa_gcs_adj >= 0 | co2_pop$code %in% c("CHN", EU28_countries, "NOR", "CHE", "CAN", "JPN", "KOR", "NZL")], "Dem USA" = "Dem USA")
-# 4. Cautious scenario: 2030 winners + China + EU28 + Norway + Switzerland + Japan + NZ
-cautious <- all_countries[co2_pop$gain_adj_over_gdp_2030 > 0 | co2_pop$code %in% c("CHN", EU28_countries, "NOR", "CHE", "JPN", "NZL")]
-# 5. Generous EU: EU27 + China + African winners + Asia winners
-generous_EU <- all_countries[(co2_pop$npv_over_gdp_gcs_adj >= 0 & big_region_by_code[co2_pop$code] %in% c("maf", "asia")) | co2_pop$code %in% c("CHN", EU27_countries)]
+# 4. Cautious scenario: winners + China + EU28 + Norway + Switzerland + Japan + NZ (Before, was 2030 instead of NPV winners)
+cautious <- all_countries[co2_pop$npv_over_gdp_gcs_adj > 0 | co2_pop$code %in% c("CHN", EU28_countries, "NOR", "CHE", "JPN", "NZL")]
+# 5. Generous EU: EU27 + China + winners. (Before, was EU27 + China + African non-losers + Asia non-losers)
+generous_EU <- all_countries[(co2_pop$npv_over_gdp_gcs_adj > 0) | co2_pop$code %in% c("CHN", EU27_countries)]
 # 6. Africa-EU partnership: EU27 + African winners
 africa_EU <- all_countries[(co2_pop$npv_over_gdp_gcs_adj >= 0 & image_region_by_code[co2_pop$code] %in% c("WAF", "SAF", "RSAF", "NAF", "EAF")) | co2_pop$code %in% c(EU27_countries)]
 scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "cautious", "generous_EU", "africa_EU")
@@ -1241,6 +1261,25 @@ emissions_pa
 EU_gain_adj
 EU_gain_adj_over_gdp
 EU_npv_gain_adj_over_gdp
+
+scenarios_features <- data.frame(scenario = capitalize(gsub("_", " ", scenarios_names)), row.names = scenarios_names)
+for (s in scenarios_names) {
+  scenarios_features[s, "emissions_covered"] <- sum(co2_pop$share_territorial_2019[co2_pop$code %in% eval(str2expression(s))]) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
+  scenarios_features[s, "pop_covered"] <- (sum(co2_pop$pop_2023[co2_pop$code %in% eval(str2expression(s))]) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(co2_pop$pop_2023)
+  scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]/12
+  scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
+}
+(scenarios_table <- scenarios_features)
+
+for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_", col)) 1 else 0, "f"), if (grepl("basic_income", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income", col)) "" else "\\%")
+# write.table(scenarios_table, file = "scenarios_table.tex", sep = "\t", row.names = capitalize(gsub("_", " ", scenarios_names)), 
+#             col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 ($/month)}", "\\makecell{EU loss in 2040\\\\(in share of GDP)}"))
+cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the different scenarios.", position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table.tex", row.names = FALSE,  
+              col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", "\\makecell{EU loss in 2040\\\\(share of its GDP)}")), collapse="\n"), file = "../tables/scenarios_table.tex") 
+scenarios_table_fr <- scenarios_table
+scenarios_table_fr$scenario <- c("Tous les pays", "Tous sauf OPEP+", "Optimiste", "Prudent", "UE + Chine + gagnants", "UE + Afrique")
+cat(paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios de club climatique.", position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table_fr.tex", row.names = FALSE,  
+              col.names = c("\\makecell{Scenario\\\\de club}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", "\\makecell{Revenu de base\\\\en 2040\\\\(\\$/mois)}", "\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}")), collapse="\n"), file = "../tables/scenarios_table_fr.tex") 
 
 
 ##### Sandbox #####
