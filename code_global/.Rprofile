@@ -45,20 +45,19 @@ package("ggdist") # nice confidence intervals in regression plots
 package('tidyverse')
 package("dplyr")
 package("tidyr")
-package("Hmisc")
 package("expss") # fre (for weighted frequency table)
 package("GDAtools") # wtable (for weighted frequency crosstable)
 package("beepr") # beep() makes sound
 package("openxlsx")
 package("cjoint") # conjoint analysis /!\ I fixed a bug in the program => to install my version, package("devtools"), clone repo, setwd(/cjoint/R), build(), install()
 package("modelsummary")
-package("xtable") # export latex table
+package("xtable") # must be loaded before Hmisc; export latex table
 package("list") # list experiment aka. item count technique: ictreg
 package("weights") # wtd.t.test
 package("raster") # merge boundaries in maps
 package("sf") # merge boundaries in maps
 package("rnaturalearth") # merge boundaries in maps
-package("maptools")
+# package("maptools") # merge boundaries in maps
 # package("threadr", github = "skgrange") # dependency of gissr
 # package("gissr", github = "skgrange") # merge boundaries in maps
 package("maps") # merge boundaries in maps
@@ -144,7 +143,6 @@ package("corrplot") #, github = 'taiyun')#, version = "0.88") # 0.92 installed: 
 #' package("KSgeneral")
 #' package("dgof")
 #' package("SnowballC")
-package("wordcloud")
 #' package("RCurl")
 #' package("XML")
 #' package("equivalence")
@@ -165,6 +163,9 @@ package("quanteda") # stopwords
 #' package("tidytext")
 #' package("modelsummary")
 package("dplR") # latexify, used in table_mean_lines_save
+package("tm") # must be loaded before memisc; used for wordcloud
+package("wordcloud")
+package("Hmisc")
 #' package("ggpubr")
 #' package("RStata")
 #' package("relaimpo") # works well with 21 variables, not much more. install from: install.packages("https://prof.bht-berlin.de/fileadmin/prof/groemp/downloads/relaimpo_2.2-5.zip", repos = NULL)
@@ -183,7 +184,6 @@ if (!is.element("memisc", installed.packages()[,1])) {
   remove.packages("memisc")
   install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
 } else library(memisc)
-package("tm") # wordcloud
 #' # If this doesn't work (runs infinitely). Download the archive and from the Terminal run `R CMD INSTALL memisc_0.99.22.tar.gz  '
 #' # The following will not work: package("memisc", version = "0.99.22") # in case of bug (endless loop), copy/paste folder /memisc in library and: install.packages("memisc", method = "win.binary") OR install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL). If it still doesn't work, run library(utils); install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL) from R (not RStudio)
 #' # package("estimatr")
@@ -258,7 +258,7 @@ is.pnr <- function(variable, empty_as_pnr = T) {
     else return(is.missing(variable))
   }
 }
-no.na <- function(vec) return(replace_na(as.vector(vec), "na"))
+no.na <- function(vec, rep = "na") return(replace_na(as.vector(vec), rep))
 gap <- function(vec) return(if (max(vec, na.rm = T) == 0) 0 else abs((max(vec, na.rm = T) - min(vec, na.rm = T))/max(vec, na.rm = T)))
 max_gap <- function(vec1, vec2, epsilon = 1e-15) return(max(2*abs(vec1 - vec2)/(abs(vec1 + vec2) + epsilon), na.rm = T))
 is.binary <- function(vec) { return((is.logical(vec) | all(unique(as.numeric(vec)) %in% c(0, 1, NA)))) }
@@ -1968,7 +1968,7 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
 #
-plot_world_map <- function(var, condition = "", df = co2_pop, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE,
+plot_world_map <- function(var, condition = "", df = s2, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE,
                            breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL) {
   if (!is.null(parties)) {
     if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
