@@ -1398,8 +1398,9 @@ create_var_ssp <- function(ssp = NULL, df = s2, CC_convergence = 2040, discount 
   linear_downscaling <- !is.null(base_year_downscaling)
   years <- if (linear_downscaling) c(2005, seq(2010, 2100, 10)) else 2020:2100
   if (is.null(ssp)) {
-    ssp_name <- if (deparse(substitute(df)) == "s2") "ssp2_26" else "ssp1_19"
+    ssp_name <- if (deparse(substitute(df)) == "s1") "ssp1_19" else "ssp2_26"
   } else ssp_name <- deparse(substitute(ssp))
+  if (!deparse(substitute(df)) %in% c("co2_pop", "s1", "s2") & is.null(ssp_name)) warning("ssp is not given, ssp2_26 assumed.")
   total_revenues[[ssp_name]] <- average_revenues[[ssp_name]] <- basic_income[[ssp_name]] <- basic_income_adj[[ssp_name]] <- c()
   
   if (!exists("scenarios_parties") & scenario == "all_countries") parties <- df$code
@@ -1551,7 +1552,7 @@ africa_EU <- all_countries[(df$npv_over_gdp_gcs_adj >= 0 & image_region_by_code[
 scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "cautious", "generous_EU", "africa_EU")
 scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
 
-for (s in scenarios_names) df <- create_var_ssp(df = s2, scenario = s)
+for (s in scenarios_names) df <- create_var_ssp(df = df, scenario = s)
 
 emissions_tot <- emissions_pc <- c()
 for (y in as.character(2025:2100)) {
@@ -1560,10 +1561,10 @@ for (y in as.character(2025:2100)) {
 EU_gain_adj <- EU_gain_adj_over_gdp <- EU_npv_gain_adj_over_gdp <- list()
 for (s in scenarios_names) {
   emissions_pa[[s]] <- EU_gain_adj[[s]] <- EU_gain_adj_over_gdp[[s]] <- c()
-  for (y in as.character(seq(2020, 2100, 10))) {
+  for (y in as.character(2025:2100)) { # seq(2020, 2100, 10)
     EU_gain_adj[[s]][y] <- wtd.mean(df[[paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "gain_adj_", y)]], weights = df[[paste0("adult_", y)]] * (df$code %in% EU27_countries))
     EU_gain_adj_over_gdp[[s]][y] <- EU_gain_adj[[s]][y]/wtd.mean(df[[paste0("gdp_pc_", y)]], weights = df[[paste0("pop_", y)]] * (df$code %in% EU27_countries)) }
-  EU_npv_gain_adj_over_gdp[[s]] <- sum(sapply(2:10, function(i) { return(10*EU_gain_adj[[s]][as.character(2000+10*i)]/rate^(i-2)) }))/sum(sapply(2:10, function(i) { return(10*wtd.mean(df[[paste0("gdp_pa_", 2000+10*i)]], weights = df[[paste0("adult_", y)]] * (df$code %in% EU27_countries))/rate^(i-2)) })) # TODO: correct years
+  EU_npv_gain_adj_over_gdp[[s]] <- sum(sapply(2025:2100, function(y) { return(EU_gain_adj[[s]][as.character(y)]/(1+discount_rate)^(y-2025)) }))/sum(sapply(2025:2100, function(y) { return(wtd.mean(df[[paste0("gdp_pa_", y)]], weights = df[[paste0("adult_", y)]] * (df$code %in% EU27_countries))/(1+discount_rate)^(y-2025)) })) 
 }
 basic_income_adj
 emissions_pc
@@ -1575,8 +1576,8 @@ world_emissions_pc
 
 scenarios_features <- data.frame(scenario = capitalize(gsub("_", " ", scenarios_names)), row.names = scenarios_names)
 for (s in scenarios_names) {
-  scenarios_features[s, "emissions_covered"] <- sum(co2_pop$share_territorial_2019[co2_pop$code %in% eval(str2expression(s))]) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
-  scenarios_features[s, "pop_covered"] <- (sum(co2_pop$pop_2023[co2_pop$code %in% eval(str2expression(s))]) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(co2_pop$pop_2023)
+  scenarios_features[s, "emissions_covered"] <- sum(df$share_territorial_2019[df$code %in% eval(str2expression(s))]) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
+  scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))]) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023)
   scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]/12
   scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
 }
