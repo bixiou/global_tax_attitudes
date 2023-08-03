@@ -1,6 +1,5 @@
 # TODO? share of winners per country: Ivanova & Wood (20) show that 2020 World average of 6t pc is at ~50 percentile in FR, ~65 in ES, ~50 in UK, ~20 in DE; Fremstad & Paul (19) show it's at ~20p in the U.S.
 # TODO: more accurate assumption/computations (e.g. based on NDCs)
-# TODO! new data: use either 12-regions NICE (probably disaggregated by country by MCC) or SSP2 with MESSAGE (or REMIND or WITCH), look at downscaling to country-disaggregation done by Climate Analytics, mail sent to Gidden.
 
 # plot maps and compare distributive effects of equal pc, contraction & convergence, greenhouse dvlpt rights, historical respo, and each country retaining its revenues
 # equal pc
@@ -77,6 +76,7 @@ co2_pop$country_map[co2_pop$country == "Democratic Republic of Congo"] <- "Democ
 co2_pop$country_map[co2_pop$country == "Congo"] <- "Republic of Congo"
 co2_pop$country_map[co2_pop$country == "Cote d'Ivoire"] <- "Ivory Coast"
 co2_pop$country_map[co2_pop$country == "Czechia"] <- "Czech Republic"
+co2_pop$country_map[co2_pop$country == "Eswatini"] <- "Swaziland"
 co2_pop$share_territorial_2019 <- co2_pop$territorial_2019/sum(co2_pop$territorial_2019)
 # rm(pop, co2)  
 decrit(co2_pop$missing_footprint) # 98 out of 218 countries missing (while no missing for territorial)
@@ -191,7 +191,7 @@ plot_world_map("median_gain_2015", breaks = thresholds_map, format = c('png', 's
 # If needed run  cd .\Documents\www\global_tax_attitudes\figures\maps\
 #      and  pdfcrop --margins '-20 0 70 -7' mean_gain_2030 (or simply sh crop_pdf.sh to treat all PDFs)
 
-co2_pop$mean_gain_over_gdp_2019 <- 100*12*co2_pop$mean_gain_2019/co2_pop$gdp_pc_2019 # TODO! mean_gain is computed per adult, not p.c. => abs gain/loss are lower than shown, especially in young countries
+co2_pop$mean_gain_over_gdp_2019 <- 100*12*co2_pop$mean_gain_2019/co2_pop$gdp_pc_2019 # TODO mean_gain is computed per adult, not p.c. => abs gain/loss are lower than shown, especially in young countries
 sum((co2_pop$mean_gain_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_over_gdp_2019 > 0], na.rm = T)
 -sum((co2_pop$mean_gain_over_gdp_2019 * co2_pop$gdp_pc_2019 * co2_pop$adult_2019 / 100)[co2_pop$mean_gain_over_gdp_2019 < 0], na.rm = T)
 # /!\ Discrepancy between transfers given (.6T) and received (.9T), due to the adult vs. pop issue raised above. Indeed, computing it without the GDPpc has no problem (.85T in both cases):
@@ -474,7 +474,7 @@ SSPs_countries <- read.csv("../data/SSP_CMIP6.csv") # https://secure.iiasa.ac.at
 #   while in SSPs, each MODEL has many SCENARIOs
 # SSPs_countries is disaggregated by 11-26 regions but has only emissions; SSPs has only 5 regions but many variables incl. pop, gdp ppp, carbon price, emissions
 # I think that emissions of SSPs are first defined in CMIP6 (i.e. SSPs_countries) and then passed as inputs to IAMs, which yield consistent bud modified emissions, in SSPs
-# /!\ World emissions are not equal to the sum of the 5 R5.2 regions TODO! why? check regions definition
+# /!\ World emissions are not equal to the sum of the 5 R5.2 regions TODO why? check regions definition
 # Nb regions (excluding the 5 R5.2 ones): AIM/CGE: 18 (3 letters), IMAGE: 27, GCAM4: 33, MESSAGE-GLOBIOM: 12, REMIND-MAGPIE: 12 (different), WITCH-GLOBIOM: absent from SSPs_countries
 
 # On top of partition in R5_region, IMAGE (ssp1_19, ssp1_26) has 26 regions (co2_pop$IMAGE.REGION), MESSAGE (ssp2) has 11 MESSAGE-GLOBIOM.REGION. No dissagregated data for ssp2_26, ssp2_45. 
@@ -672,13 +672,11 @@ co2_pop$gdr_pa_2030_cerc <- (co2_pop$emissions_baseline_2030 - co2_pop$rci_2030 
 co2_pop$gdr_pa_2030 <- (co2_pop$emissions_baseline_2030 - co2_pop$rci_2030 * world_emissions_reduction_2030)/co2_pop$adult_2030
 # wtd.mean(co2_pop$gdr_pa_2030_cerc, co2_pop$adult_2030)
 
-# TODO!! instead of SSPs/GEA, use AR6/ country-disaggregated data. Also, I should look for a model/scenario with a uniform carbon price and carbon footprints (pb: Ctrl+F "footprint", "embodied", "consumption-based" returns nothing).
-
 # Disaggregate by country emissions, gdp, gdp_pc
 
 # compute_npv <- function(var = "gain_pa_", discount_rate = discount, data = co2_pop) {
 #   rate <- (1+discount_rate)^10
-#   # /!\ NPV is computed on 2020-2100. TODO!? Compute it on 2030-2080 (this would make India neutral in Generous EU as the positive part comes from 2020).
+#   # /!\ NPV is computed on 2020-2100. TODO? Compute it on 2030-2080 (this would make India neutral in Generous EU as the positive part comes from 2020).
 #   return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/rate^(i-2)) })))
 # }
 
@@ -817,7 +815,7 @@ co2_pop$gdr_pa_2030 <- (co2_pop$emissions_baseline_2030 - co2_pop$rci_2030 * wor
 #       average_revenues[[ssp_name]][yr] <- wtd.mean(df[[paste0("revenues_pa_", y)]], df[[paste0("adult_", y)]])
 #       df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pa_", y)]] > average_revenues[[ssp_name]][yr])
 #       
-#       # C&C: define climate debt/credit until convergence date TODO!
+#       # C&C: define climate debt/credit until convergence date 
 #     }   
 #   }
 #   
@@ -1015,7 +1013,7 @@ plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.02, -.01, -.003, -1e-1
 
 
 ##### NPV of the basic income #####
-discount_rate <- .04
+discount_rate <- .03
 rate <- (1+discount_rate)^10
 (monthly_annualized_basic_income <- discount_rate*sum(sapply(2:10, function(i) { return(10*basic_income_adj$gea_gea[[as.character(2000+10*i)]]/rate^(i-2)) }))/12)
 (monthly_annualized_gdp_pa <- discount_rate*sum(sapply(2:10, function(i) { return(10*wtd.mean(co2_pop[[paste0("gdp_pa_", 2000+10*i)]], co2_pop[[paste0("adult_", 2000+10*i)]])/rate^(i-2)) }))/12)
@@ -1177,7 +1175,7 @@ sum(co2_pop$share_territorial_2019[co2_pop$mean_gain_2030 > 0]) # 20.9% of globa
 co2_pop$share_territorial_2019[co2_pop$code == "USA"] # 14.8%
 co2_pop$share_territorial_2019[co2_pop$code == "IND"] # 7.4%
 co2_pop$share_territorial_2019[co2_pop$code == "CHN"] # 30.2%
-sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("JPN", "KOR", "NOR", "SWZ", "NZL", "CAN")]) # 7%, JP + SK: 5%
+sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("JPN", "KOR", "NOR", "CHE", "NZL", "CAN")]) # 7%, JP + SK: 5%
 sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("RUS", "KAZ", "SAU", "QAT", "KWT", "ARE", "OMN")]) # 9%
 sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("IRN", "IRQ")]) # 2.5%
 sum(co2_pop$share_territorial_2019[co2_pop$code %in% c("AUS", "ISR", "MYS", "CHL", "URY", "PAN", "TKM")]) # 2.6%
@@ -1211,7 +1209,7 @@ unlist(setNames(lapply(seq(0, 1, 0.1), function(x) 1+x-x*(1+x)), seq(0, 1, 0.1))
 
 # Adult population. In the world: 5.2G, incl. 54.7M (1%) >1M; 4.56M (.09%) >5M
 sum(co2_pop$adult_2023[co2_pop$code %in% c("CAN", "USA")]) # North America: 312M incl. 22.1M (7.1%) >1M; 2.14M >5M (0.7%)
-sum(co2_pop$adult_2023[co2_pop$code %in% c(EU28_countries, "UKR", "NOR", "BEL", "SWZ", "SRB", "ALB", "MAC")]) # 485M incl. 15.6M >1M (3.2%); 1.05M >5M (0.2%)
+sum(co2_pop$adult_2023[co2_pop$code %in% c(EU28_countries, "UKR", "NOR", "BEL", "CHE", "SRB", "ALB", "MAC")]) # 485M incl. 15.6M >1M (3.2%); 1.05M >5M (0.2%)
 
 setNames(co2_pop$adult_2023, co2_pop$country)/sum(co2_pop$adult_2023, na.rm = T)
 setNames(ssp2_26$adult_2020, ssp2_26$region)/sum(co2_pop$adult_2020, na.rm = T)
@@ -1289,7 +1287,8 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 # /!\ Problem with this (and all other available) data: emissions are territorial, not footprint.
 # /!\ Problem specific with this data: GDP is in PPP, not nominal (though carbon price is nominal)
 # TODO! /!\ Check that the carbon price I use is consistent
-# TODO! Find nominal GDP estimates
+# TODO! Find nominal GDP estimates => rob.dellink@oecd.org will produce MER GDP by country for the SSPs in August/September
+# TODO! Find carbon footprint instead of territorial emissions
 # TODO smoothen the carbon price trajectory
 
 # ssp_country <- read.csv("../data/PMSSPIE_05Feb20.csv") # Gütschow et al. (21) https://zenodo.org/record/3638137
@@ -1304,22 +1303,38 @@ ssp_country <- read.csv("../data/PMSSPIE.csv")
 # unique(ssp_country$category) # ECO DEMOGR IPCM0EL
 # unique(paste(ssp_country$entity, ssp_country$unit)) # GDPPPP (M 2011 $ (International, Geary–Khamis)) POP (k) CO2 (Gg = kt CO2(eq), same for all gases) CH4 N2O FGASES FGASESAR4 KYOTOGHG KYOTOGHGAR4
 ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "BASIC", "EU28", "LDC", "NONANNEXI", "UMBRELLA", "MAC"),]
+# Missing countries: present in co2_pop: SWZ (Eswatini), PSE (Palestine); not in co2_pop: XXK (Kosovo), ESH (Western Sahara)
 
 prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) {
   # Uses country, country_map and adult_ from co2_pop
   # TODO: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030 
   # TODO: streamline fetching of carbon_price
-  # TODO: complete missing data: pop for SSD, TWN; emissions for PRK (and FSM: Micronesia); GRD (I don't know what is missing for Gambia but npv_over_gdp_gcs_adj == NA)
   # sum(is.na(ssp2_26_country)) # 1134
   # sum(is.na(ssp2_26_country[!ssp2_26_country$code %in% c("SSD", "TWN", "PRK", "FSM"),])) # 0
   # setdiff(co2_pop$code, ssp2_26_country$code) # small islands and small countries, Palestine
   # setdiff(ssp2_26_country$code, co2_pop$code) # Taiwan, Hong Kong
-  ssps <- ssps[ssps$country %in% df$code & !ssps$country %in% c("SSD", "TWN", "PRK", "FSM", "GRD"),]
+  # Add Taiwan data
+  if (exists("pop_iso3")) {
+    twn <- df[df$code == "KOR",]
+    twn$code <- "TWN"
+    twn$country <- twn$country_map <- "Taiwan"
+    for (y in c(2023, seq(2020, 2100, 10))) { 
+      twn[[paste0("pop_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$pop[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$pop[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
+      twn[[paste0("adult_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$adult[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$adult[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
+    } 
+    df <- rbind(df, twn)
+  }
+  ssps <- ssps[ssps$country %in% df$code & !ssps$country %in% c("FSM", "GRD"),] # "SSD", "TWN", "PRK", 
   ssp <- data.frame(code = unique(ssps$country))
   for (y in 2020:2100) { # Years span 1850:2100
     ssp[[paste0("pop_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "POP"], ssps$country[ssps$scenario == scenario & ssps$entity == "POP"])[ssp$code]
     ssp[[paste0("gdp_", y)]] <- 1e6 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "GDPPPP"], ssps$country[ssps$scenario == scenario & ssps$entity == "GDPPPP"])[ssp$code]  # /!\ It is in PPP (contrary to old code with IIASA SSPs)
     ssp[[paste0("emissions_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "CO2"], ssps$country[ssps$scenario == scenario & ssps$entity == "CO2"])[ssp$code]
+    # Add North Korea data
+    ssp[[paste0("emissions_", y)]][ssp$code == "PRK"] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("emissions_", y - y %% 10)]][df$code == "PRK"], df[[paste0("emissions_", 10*ceiling(y/10))]][df$code == "PRK"])
+    ssp[[paste0("gdp_", y)]][ssp$code == "PRK"] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("gdp_", y - y %% 10)]][df$code == "PRK"], df[[paste0("gdp_", 10*ceiling(y/10))]][df$code == "PRK"])
+    # Add South Sudan and Taiwan data
+    for (c in c("TWN", "SSD")) ssp[[paste0("pop_", y)]][ssp$code == c] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("pop_", y - y %% 10)]][df$code == c], df[[paste0("pop_", 10*ceiling(y/10))]][df$code == c])
   }
   for (y in c(2023, seq(2020, 2100, 10))) ssp[[paste0("adult_", y)]][match.nona(df$code, ssp$code)] <- ssp[[paste0("pop_", y)]][match.nona(df$code, ssp$code)] * (df[[paste0("adult_", y)]]/df[[paste0("pop_", y)]])[df$code %in% ssp$code]
   for (y in 2020:2100) { # Interpolate adult_ from pop_ and df$adult/df$pop
@@ -1341,12 +1356,12 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
   return(ssp)
 }
 
-compute_npv <- function(var = "gain_pa_", discount_rate = .04, start = 2025, end = 2100, data = co2_pop, decadal = FALSE) {
+compute_npv <- function(var = "gain_pa_", discount_rate = .03, start = 2030, end = 2100, data = co2_pop, decadal = FALSE) {
   # /!\ If decadal == T, NPV is computed on 2020-2100. TODO!? Compute it on 2030-2080 (this would make India neutral in Generous EU as the positive part comes from 2020).
   if (decadal) return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/((1+discount_rate)^10)^(i-2)) })))
   else return(rowSums(sapply(start:end, function(i) { return(data[[paste0(var, i)]]/(1+discount_rate)^(i-start)) })))
 }
-compute_gain_given_parties <- function(parties = df$code, df = s2, return = "df", discount = .04, ssp_name = "ssp2_26_country", start = 2025, end = 2100, linear_downscaling = FALSE) {
+compute_gain_given_parties <- function(parties = df$code, df = s2, return = "df", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100, linear_downscaling = FALSE) {
   # Uses large_footprint_, optout_right_, revenues_pa_, adult_, gdp_pc_, pop_, pop_, emissions_pa_, carbon_price[[ssp_name]]
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   basic_income <- basic_income_adj <- c()
@@ -1394,7 +1409,7 @@ compute_gain_given_parties <- function(parties = df$code, df = s2, return = "df"
 }
 
 total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- list()
-create_var_ssp <- function(ssp = NULL, df = s2, CC_convergence = 2040, discount = .04, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", base_year_downscaling = NULL) { # message is only for ssp2 , region = message_region_by_code
+create_var_ssp <- function(ssp = NULL, df = s2, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", base_year_downscaling = NULL) { # message is only for ssp2 , region = message_region_by_code
   linear_downscaling <- !is.null(base_year_downscaling)
   years <- if (linear_downscaling) c(2005, seq(2010, 2100, 10)) else 2020:2100
   if (is.null(ssp)) {
@@ -1484,7 +1499,7 @@ create_var_ssp <- function(ssp = NULL, df = s2, CC_convergence = 2040, discount 
     }   
   }
   
-  df_parties <- compute_gain_given_parties(parties, df = df, return = "df", ssp_name = ssp_name, linear_downscaling = linear_downscaling)
+  df_parties <- compute_gain_given_parties(parties, df = df, return = "df", ssp_name = ssp_name, discount = discount, linear_downscaling = linear_downscaling)
   for (y in years[years >= 2020]) {
     yr <- as.character(y)
     basic_income[[ssp_name]][yr] <- wtd.mean(df_parties[[paste0("revenues_pa_", y)]], df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0("adult_", y)]])
@@ -1495,7 +1510,7 @@ create_var_ssp <- function(ssp = NULL, df = s2, CC_convergence = 2040, discount 
   average_revenues[[ssp_name]] <<- average_revenues[[ssp_name]]
   carbon_price[[ssp_name]] <<- carbon_price[[ssp_name]] # carbon_price is just completed between decadal years by interpolation
   
-  if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG", "TWN")], parties)) == 0) {
+  if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG")], parties)) == 0) { # , "TWN
     basic_income[[ssp_name]] <<- basic_income[[ssp_name]] 
     basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
     df <- df_parties
@@ -1533,7 +1548,6 @@ for (y in years[4:9]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = s1, b
 
 
 ##### Scenarios #####
-# Several scenarios: Compute basic income and distributive effects TODO!
 # /!\ Pb: the price used is the global carbon price, which would induce stronger emission reductions than the proportional share of the carbon budget when participation is not universal (and involves lower average emission than the world).
 # In other words, the scenarios 2-6 are best seen as a carbon tax than an ETS.
 df <- s2

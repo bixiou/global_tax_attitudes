@@ -31,7 +31,8 @@ if (!is.element("iatgen", installed.packages()[,1])) {
   # devtools::install_github("iatgen/iatgen")
 } else library(iatgen)
 package("ggplot2")
-package("ggalt") # maps
+if (!is.element("ggalt", installed.packages()[,1])) { devtools::install_github("eliocamp/ggalt@new-coord-proj") 
+} else package("ggalt") # maps
 package("janitor") # heatmaps
 package("ggdist") # nice confidence intervals in regression plots
 
@@ -269,6 +270,11 @@ majority <- function(vec) {
 positive <- function(vec) {
   if (is.binary(vec)) return(100*mean(vec, na.rm = T))
   else return(100 * sum(!is.na(vec) & vec > 0) / sum(!is.na(vec)))
+}
+
+barycenter <- function(x, x_prev, x_next, y_prev, y_next) {
+  lambda <- if (x_next == x_prev) 0 else (x - x_prev)/(x_next - x_prev)
+  return(((1 - lambda) * y_prev + lambda * y_next))
 }
 agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T, return = "vec" # min = 0, max = Inf,
 ) { 
