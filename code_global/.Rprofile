@@ -55,12 +55,13 @@ package("modelsummary")
 package("xtable") # export latex table
 package("list") # list experiment aka. item count technique: ictreg
 package("weights") # wtd.t.test
-package("raster") # merge boundaries in maps
-package("sf") # merge boundaries in maps
-package("maptools")
-package("threadr", github = "skgrange") # dependency of gissr
-package("gissr", github = "skgrange") # merge boundaries in maps
-package("maps") # merge boundaries in maps
+# package("raster") # merge boundaries in maps
+# package("sf") # merge boundaries in maps
+# package("maptools") # merge boundaries in maps
+# package("threadr", github = "skgrange") # dependency of gissr
+# package("gissr", github = "skgrange") # merge boundaries in maps
+# package("maps") # merge boundaries in maps
+package("rnaturalearth")
 #' package("rms")
 #' package('pwr')
 #' package("foreign")
