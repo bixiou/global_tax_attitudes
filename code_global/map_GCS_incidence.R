@@ -1286,6 +1286,7 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 ##### Downscaled data from Gütschow et al. (21) #####
 # /!\ Problem with this (and all other available) data: emissions are territorial, not footprint.
 # /!\ Problem specific with this data: GDP is in PPP, not nominal (though carbon price is nominal)
+# Gütschow et al. (21) exclude LULUCF emissions
 # TODO! /!\ Check that the carbon price I use is consistent
 # TODO! Find nominal GDP estimates => rob.dellink@oecd.org will produce MER GDP by country for the SSPs in August/September
 # TODO! Find carbon footprint instead of territorial emissions
@@ -1304,6 +1305,16 @@ ssp_country <- read.csv("../data/PMSSPIE.csv")
 # unique(paste(ssp_country$entity, ssp_country$unit)) # GDPPPP (M 2011 $ (International, Geary–Khamis)) POP (k) CO2 (Gg = kt CO2(eq), same for all gases) CH4 N2O FGASES FGASESAR4 KYOTOGHG KYOTOGHGAR4
 ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "BASIC", "EU28", "LDC", "NONANNEXI", "UMBRELLA", "MAC"),]
 # Missing countries: present in co2_pop: SWZ (Eswatini), PSE (Palestine); not in co2_pop: XXK (Kosovo), ESH (Western Sahara)
+
+# possible_scenarios <- ssp_country[grepl("119|226", ssp_country$scenario) & ssp_country$source != "SSPIAMIE" & ssp_country$entity == "CO2" & ssp_country$country == "EARTH", c("scenario", paste0("X", years))]
+# possible_scenarios <- rbind(possible_scenarios, c("ssp2_26", world_emissions$ssp2_26/1e3), c("ssp1_26", world_emissions$ssp1_26/1e3), c("ssp1_19", world_emissions$ssp1_19/1e3)) 
+# rownames(possible_scenarios) <- possible_scenarios$scenario
+# possible_scenarios <- as.matrix(possible_scenarios[,-1])
+# class(possible_scenarios) <- "numeric"
+# matplot(x = years, y = t(possible_scenarios/1e6),  type = c("l"), lty = 1, lwd = c(rep(1, nrow(possible_scenarios)-3), rep(2,3)), col = 1:nrow(possible_scenarios))
+# grid()
+# legend("bottomleft", legend = row.names(possible_scenarios), lty = 1, lwd = c(rep(1, nrow(possible_scenarios)-3), rep(2,3)), col=1:nrow(possible_scenarios))
+# # 4 best matches (1st best 1st): ssp1_19, SSP119IMAGE > ssp1_26,  SSP119GCAM4 > ssp1_26, SSP226MESGB > ssp2_26, SSP226AIMCGE
 
 prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) {
   # Uses country, country_map and adult_ from co2_pop
@@ -1533,7 +1544,7 @@ s2 <- create_var_ssp(df = s2)
 sort(setNames(s2$npv_over_gdp_gcs_adj, s2$code))
 
 plot_world_map("npv_over_gdp_gcs_adj", df = s2, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), 
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 plot_world_map("npv_pa_gcs_adj", df = s2, breaks = c(-Inf, -30000, -10000, -1000, -1e-4, 0, 1000, 5000, 10000, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
