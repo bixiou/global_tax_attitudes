@@ -2000,7 +2000,7 @@ plot_world_map <- function(var, condition = "", df = s2, on_control = FALSE, sav
 
   if ("Dem USA" %in% parties) {
     us_states <- map_data(map = "state")
-    blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont", "Maryland")) # , "Hawaii" and Alaska missing from the map
+    blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont", "Maryland", "Hawaii")) #  and Alaska missing from the map
     non_blue_states <- setdiff(us_states$region, blue_states)
     us_states$region[us_states$region %in% blue_states] <- "USA" #"Dem USA"
     us_states$region[us_states$region %in% non_blue_states] <- "Non-Dem USA"
@@ -2050,8 +2050,8 @@ merge_maps <- function(map1, map2) {
 # # df_map <- data.frame(country_map = df$country_map, mean = df$gain_adj_over_gdp_2050) # mean = as.vector(table))
 # df$group <- cut(df$gain_adj_over_gdp_2040, breaks = c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf), labels = c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2"))
 # 
-# us_states <- map_data(map = "state")
-# blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont")) # , "Hawaii" and Alaska missing from the map
+# us_states <- map_data(map = "state") # tolower
+# blue_states <- c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont") # , "Hawaii" and Alaska missing from the map
 # non_blue_states <- setdiff(us_states$region, blue_states)
 # us_regions <- data.frame(list(state = unique(us_states$region)))
 # us_regions$region <- ifelse(us_regions$state %in% blue_states, "Dem USA", "Non-Dem USA")
@@ -2072,6 +2072,15 @@ merge_maps <- function(map1, map2) {
 # # world_map <- world_map %>% st_as_sf(coords = c("long", "lat"), crs = 4326) %>% st_transform(crs = 3310)
 # world_map <- merge_maps(world_map, us_states)
 # 
+# 
+# ne_states(country = 'United States of America', returnclass = 'sf') %>% mutate(democrat = name %in% blue_states) %>%  group_by(democrat) %>%  dplyr::summarize(geometry = st_union(geometry)) %>%
+#   ggplot() +
+#   geom_sf(aes(fill = democrat), color = NA) +
+#   scale_fill_manual(values = c('red3', 'blue2')) +
+#   coord_sf(xlim = c(-180, -60)) +
+#   theme_void() +
+#   theme(legend.position = 'none')
+# 
 # us_states <- maps::map("state", plot = FALSE, exact = FALSE, fill = TRUE) %>% st_as_sf()
 # world_map <- map_data(map = "world")
 # world_map$region[world_map$subregion == "Alaska"] <- "Non-Dem USA"
@@ -2090,14 +2099,6 @@ merge_maps <- function(map1, map2) {
 # 
 # states <- getData("GADM", country = "USA", level = 1) %>% st_as_sf() %>% st_transform(crs = 3310)
 # 
-# ne_states(country = 'United States of America', returnclass = 'sf') %>%
-#   mutate(democrat = name %in% blue_states) %>%  group_by(democrat) %>%  dplyr::summarize(geometry = st_union(geometry)) %>%
-#   ggplot() +
-#   geom_sf(aes(fill = democrat), color = NA) +
-#   scale_fill_manual(values = c('red3', 'blue2')) +
-#   coord_sf(xlim = c(-180, -60)) +
-#   theme_void() +
-#   theme(legend.position = 'none') 
 # 
 # ggplot(non_blue_usa) +
 #   geom_sf(aes(fill = value)) +
@@ -2139,13 +2140,13 @@ merge_maps <- function(map1, map2) {
 #   geom_map(data = df[!df$code %in% c("USA", "Dem USA", "Non-Dem USA"),],
 #            map = world_map, size = 0.15, color = "#ffffff") +
 #   geom_map(data = df[df$code %in% c("Non-Dem USA"),],
-#            map = non_blue_states_coord, size = 0.15, color = "#ffffff") + 
+#            map = non_blue_states_coord, size = 0.15, color = "#ffffff") +
 #   expand_limits(x = world_map$long, y = world_map$lat) +
 #   scale_fill_manual(name = "mean", drop = FALSE, values = color(8), labels = paste("a", 1:8)) +
 #   theme_void() + theme(legend.position = c(0.05, .29))
 # 
 # plot_world_map("gain_adj_over_gdp_2050", condition = "", df = df, save = FALSE, breaks = NULL, labels = NULL, legend = NULL, limits = NULL, parties = NULL)
-#  
+# 
 # us_states <- map_data("state")
 # states_data <- data.frame(region = ifelse(us_states$region %in% non_blue_states, "Non-Dem USA", "Dem USA"), long = c(us_states$x), lat = c(us_states$y))
 # states_sf <- st_as_sf(us_states, coords = c("long", "lat"), crs = 4326)
@@ -2156,7 +2157,7 @@ merge_maps <- function(map1, map2) {
 #   coord_sf(crs = st_crs(4326)) +
 #   theme_void()
 # 
-# us_coord <- map_data("state") 
+# us_coord <- map_data("state")
 # non_blue_coord <- map("state", regions = non_blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
 #   as.data.frame() %>%   sort_points(y = "y", x = "x") %>% mutate(region = "Non-Dem USA")
 # blue_coord <- map("state", regions = blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
@@ -2174,13 +2175,13 @@ merge_maps <- function(map1, map2) {
 #   geom_map(data = us_regions[us_regions$region != "Non-Dem USA",],
 #            map = blue_coord, size = 0.15, color = "#ffffff") +
 #   geom_map(data =  us_regions[us_regions$region == "Non-Dem USA",],
-#            map = non_blue_coord, size = 0.15, color = "#ffffff") + 
+#            map = non_blue_coord, size = 0.15, color = "#ffffff") +
 #   expand_limits(x = us_coord$long, y = us_coord$lat) +
 #   scale_fill_continuous(low = 'thistle2', high = 'darkred', guide = 'colorbar') +
-#   labs(x=NULL, y=NULL) 
+#   labs(x=NULL, y=NULL)
 # 
-# us_coord <- map_data("state") 
-# megakotas_coord <- map("state", regions = non_blue_states, 
+# us_coord <- map_data("state")
+# megakotas_coord <- map("state", regions = non_blue_states,
 #                        boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
 #   as.data.frame() %>%
 #   sort_points(y = "y", x = "x") %>%
@@ -2196,10 +2197,10 @@ merge_maps <- function(map1, map2) {
 #   geom_map(data = us_regions[us_regions$region != "dakota",],
 #            map = us_coord, size = 0.15, color = "#ffffff") +
 #   geom_map(data =  us_regions[us_regions$region == "dakota",],
-#            map = megakotas_coord, size = 0.15, color = "#ffffff") + 
+#            map = megakotas_coord, size = 0.15, color = "#ffffff") +
 #   expand_limits(x = us_coord$long, y = us_coord$lat) +
 #   scale_fill_continuous(low = 'thistle2', high = 'darkred', guide = 'colorbar') +
-#   labs(x=NULL, y=NULL) 
+#   labs(x=NULL, y=NULL)
 
 ##### Plot along #####
 # gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
