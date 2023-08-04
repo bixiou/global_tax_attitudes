@@ -1290,8 +1290,11 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 # TODO! Chose what scenario should be chosen as default
 # TODO! Find nominal GDP estimates => rob.dellink@oecd.org will produce MER GDP by country for the SSPs in August/September
 # TODO! Find carbon footprint instead of territorial emissions
-# TODO! Compute which share of carbon price revenues collected rich countries lose and which share of basic income poor ones collect themselves
+# TODO! merge U.S. Dem vs. Non-Dem
 # TODO smoothen the carbon price trajectory
+# - estimating costs per country of the wealth tax
+# - estimating effects on the global income distribution of the GCP (I know how to do these first two points, I just need data that Lucas Chancel will give me once he's back from holidays)
+# - making some geopolitical scenarios/simulations linking the cartelization (or not) of oil exporters, the price of oil, long-term purchase agreements of fossil fuels with climate-ambitious countries (to try to make some oil exporters deviate from a potential cartel), and the net gains by country from the GCP. I'll prioritize writing the book to this latter point though.
 
 ssp_country <- read.csv("../data/PMSSPIE_05Feb20.csv") # Gütschow et al. (21) https://zenodo.org/record/3638137
 # unique(ssp_country$scenario) # SSP119IMAGE and SSP226MESGB are the best as they correspond to illustrative marker scenario of respective SSP1 and 2
@@ -1318,7 +1321,8 @@ ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "
 # # best matches (1st best 1st): ssp1_19,SSP119IMAGE > ssp2_26msg,SSP119GCAM4 > ssp1_26,SSP226MESGB > ssp1_26,SSP119GCAM4 > ssp1_26,SSP226MESGB > ssp2_26,SSP226AIMCGE
 # # highest prices (taking 2040 as ex): ssp1_19 550 > ssp2_26 190 > ssp2_26msg 50 ~ ssp1_26 70
 # # 3 scenarios: high prices - high ambition: ssp1_19,SSP119IMAGE; medium price - medium ambition: ssp2_26,SSP226AIMCGE; low price - medium ambition: ssp2_26msg,SSP119GCAM4 (or ssp1_26,SSP226MESGB but worse match, or ssp1_26,SSP126REMMP to get same SSP but even worse match) 
-# # TODO!? why same SSP don't have same emissions trajectories? e.g. ssp2_26 (image) always has lower emissions than ssp2_26msg (which has emissions similar to SSP119GCAM4). Is it due to non-CO2 gases? I thought all SSPs shared the emissions trajectories...
+# # Why same SSP don't have same emissions trajectories? e.g. ssp2_26 (image) always has lower emissions than ssp2_26msg (which has emissions similar to SSP119GCAM4). 
+# # => See WA conv with Thomas Bossy: The different IAMs don't agree on absorption/decay of CO2 (hence divergences in emisssions for a given concentration pathway) + differ on LULUCF emissions.
 
 prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) {
   # Uses country, country_map and adult_ from co2_pop
@@ -1379,7 +1383,7 @@ compute_npv <- function(var = "gain_pa_", discount_rate = .03, start = 2030, end
 compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100, linear_downscaling = FALSE) {
   # Uses large_footprint_, optout_right_, revenues_pa_, adult_, gdp_pc_, pop_, pop_, emissions_pa_, carbon_price[[ssp_name]]
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
-  basic_income <- basic_income_adj <- c()
+  basic_income <- basic_income_adj <- share_pooled <- c()
   for (y in start:end) { 
     yr <- as.character(y)
     df[[paste0("participation_rate_", y)]] <- (1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]) * (df$code %in% parties)
@@ -1404,7 +1408,15 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
                                                                                      df[[paste0("participation_rate_", y)]] * df[[paste0("revenues_pa_", y)]])[no.na(df[[paste0("emissions_pa_", y)]] < 1.3*e_bar, rep = FALSE)]
     basic_income_adj[yr] <- basic_income[yr] * (1 + wtd.mean(df[[paste0("participation_rate_", y)]] - df[[paste0("share_basic_income_", y)]], df[[paste0("adult_", y)]]))
     df[[paste0("gain_adj_", y)]][lambda == 1 | no.na(df[[paste0("emissions_pa_", y)]] >= 1.3*e_bar, rep = FALSE)] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pa_", y)]]))[lambda == 1 | no.na(df[[paste0("emissions_pa_", y)]] >= 1.3*e_bar, rep = FALSE)]
-    df[[paste0("gain_adj_over_gdp_", y)]] <- df[[paste0("gain_adj_", y)]]/df[[paste0("gdp_pc_", y)]]
+    df[[paste0("gain_adj_over_gdp_", y)]] <- df[[paste0("gain_adj_", y)]]/df[[paste0("gdp_pa_", y)]]
+    
+    df[[paste0("share_revenues_lost_", y)]] <- ifelse(df[[paste0("revenues_pa_", y)]] > 0, pmax(0, (df[[paste0("revenues_pa_", y)]] - basic_income_adj[yr])/df[[paste0("revenues_pa_", y)]]), 0)
+    df[[paste0("share_basic_income_collected_", y)]] <- df[[paste0("revenues_pa_", y)]]/basic_income_adj[yr]
+    df[[paste0("basic_income_over_revenues_", y)]] <- basic_income_adj[yr]/df[[paste0("revenues_pa_", y)]]
+    # Alternative policy, called "gcs_pool", where all losers keep the same proportion of revenues they collect
+    share_pooled[yr] <- sum(((basic_income_adj[yr] - df[[paste0("revenues_pa_", y)]]) * df[[paste0("adult_", y)]])[df[[paste0("gain_adj_", y)]] > 0])/(sum((df[[paste0("revenues_pa_", y)]] * df[[paste0("adult_", y)]])[df[[paste0("gain_adj_", y)]] < 0]) + 1e10) # wtd.mean(df[[paste0("share_revenues_lost_", y)]], df[[paste0("adult_", y)]])
+    df[[paste0("gain_pool_", y)]] <- (df[[paste0("gain_adj_", y)]] >= 0) * df[[paste0("gain_adj_", y)]] - (df[[paste0("gain_adj_", y)]] < 0) * share_pooled[yr] * df[[paste0("revenues_pa_", y)]]
+    df[[paste0("gain_pool_over_gdp_", y)]] <- df[[paste0("gain_pool_", y)]]/df[[paste0("gdp_pa_", y)]]
   }
   
   # GDR: find emissions allocations on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
@@ -1419,11 +1431,13 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
   df$npv_pa_gcs_adj <- compute_npv("gain_adj_", discount = discount, data = df, decadal = linear_downscaling)
   df$npv_over_gdp_gcs <- df$npv_pa_gcs/compute_npv("gdp_pa_", discount = discount, data = df, decadal = linear_downscaling) # this formula corresponds to the % loss in consumption computed in Balanced Growth Equivalent of Stern et al. (07)
   df$npv_over_gdp_gcs_adj <- df$npv_pa_gcs_adj/compute_npv("gdp_pa_", discount = discount, data = df, decadal = linear_downscaling)
+  df$npv_over_gdp_gcs_pool <- compute_npv("gain_pool_", discount = discount, data = df, decadal = linear_downscaling)/compute_npv("gdp_pa_", discount = discount, data = df, decadal = linear_downscaling)
+  df$diff_npv_over_gdp_pool__adj <- df$npv_over_gdp_gcs_pool - df$npv_over_gdp_gcs_adj
   
   return(df)
 }
 
-total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- list()
+total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- share_pooled <- list()
 create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", base_year_downscaling = NULL) { # message is only for ssp2 , region = message_region_by_code
   linear_downscaling <- !is.null(base_year_downscaling)
   years <- if (linear_downscaling) c(2005, seq(2010, 2100, 10)) else 2020:2100
@@ -1519,6 +1533,7 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
     yr <- as.character(y)
     basic_income[[ssp_name]][yr] <- wtd.mean(df_parties[[paste0("revenues_pa_", y)]], df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0("adult_", y)]])
     basic_income_adj[[ssp_name]][yr] <- basic_income[[ssp_name]][yr] * (1 + wtd.mean(df_parties[[paste0("participation_rate_", y)]] - df_parties[[paste0("share_basic_income_", y)]], df_parties[[paste0("adult_", y)]]))
+    share_pooled[[ssp_name]][yr] <- sum(((basic_income_adj[[ssp_name]][yr] - df_parties[[paste0("revenues_pa_", y)]]) * df_parties[[paste0("adult_", y)]])[df_parties[[paste0("gain_adj_", y)]] > 0])/sum((df_parties[[paste0("revenues_pa_", y)]] * df_parties[[paste0("adult_", y)]])[df_parties[[paste0("gain_adj_", y)]] < 0]) # wtd.mean(df_parties[[paste0("share_revenues_lost_", y)]], df_parties[[paste0("adult_", y)]])
   }
   
   total_revenues[[ssp_name]] <<- total_revenues[[ssp_name]]
@@ -1528,6 +1543,7 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG")], parties)) == 0) { # , "TWN
     basic_income[[ssp_name]] <<- basic_income[[ssp_name]] 
     basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
+    share_pooled[[ssp_name]] <<- share_pooled[[ssp_name]]
     df <- df_parties
   } else {
     for (v in names(df)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj|^diff_gain_gdr_gcs_adj"), names(df))]) df[[paste0("S", scenario, "_", v)]] <- df_parties[[v]]
@@ -1535,6 +1551,7 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   }
   basic_income[[scenario]] <<- basic_income[[ssp_name]]
   basic_income_adj[[scenario]] <<- basic_income_adj[[ssp_name]]
+  share_pooled[[scenario]] <<- share_pooled[[ssp_name]]
   return(df)
 }
 
@@ -1542,18 +1559,28 @@ copy_from_co2_pop <- c("country", "country_map", "gdr_pa_2030", # These three ar
                        "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
 sh <- prepare_ssp_country("SSP119IMAGE") # SSP1-1.9, sh, temp max: 1.6°C, temp 2100: 1.4°C https://www.carbone4.com/publication-scenarios-ssp-adaptation
 sm <- prepare_ssp_country("SSP226MESGB") # SSP2-2.6, sm, temp max: 1.8°C, temp 2100: 1.8°C
-sf <- prepare_ssp_country("SSP226MESGB") # best fit for high prices (incidentally, China wins in this scenario)
+sf <- prepare_ssp_country("SSP226AIMCGE") # best fit for high prices (incidentally, China wins in this scenario)
 sl <- prepare_ssp_country("SSP119GCAM4")  # SSP1-1.9, sl: scenario low price
 sh <- create_var_ssp(df = sh) # high prices - high ambition: ssp1_19 (price), SSP119IMAGE (emissions)
 sm <- create_var_ssp(df = sm) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB
 sf <- create_var_ssp(df = sf) # medium price - medium ambition. ssp2_26, SSP226AIMCGE best match for emissions with medium price trajectory ssp2_26
 sl <- create_var_ssp(df = sl) # low price - medium ambition: ssp2_26msg, SSP119GCAM4 (alternative: ssp1_26,SSP226MESGB but worse match for emissions, or ssp1_26,SSP126REMMP to get same SSP but even worse match) 
 
+share_pooled # 50-60%
 sort(setNames(sm$npv_over_gdp_gcs_adj, sm$code))
+sort(setNames(sm$npv_over_gdp_gcs_pool, sm$code))
 
 plot_world_map("npv_over_gdp_gcs_adj", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
+               save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("npv_over_gdp_gcs_pool", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
+               legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
+               save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+plot_world_map("diff_npv_over_gdp_pool__adj", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
+               legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Pool", #fill_na = T, \n(with 4% discount rate)
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 plot_world_map("npv_pa_gcs_adj", df = sm, breaks = c(-Inf, -30000, -10000, -1000, -1e-4, 0, 1000, 5000, 10000, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -30000, -10000, -1000, 0, 0, 1000, 5000, 10000, Inf), sep = " to ", return = "levels")), 
@@ -1563,6 +1590,10 @@ for (y in years[4]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = sm, bre
                labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in % of GDP)"), #fill_na = T,
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+for (df in c("sl", "sm", "sh", "sf")) plot_world_map("npv_over_gdp_gcs_adj", df = d(df), breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), filename = paste0("npv_over_gdp_gcs_adj_", df), # .003, .01, .03
+               legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 
 
 
