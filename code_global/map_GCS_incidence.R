@@ -563,6 +563,7 @@ for (i in unique(SSPs$SCENARIO)) { # unique(SSPs$MODEL)
 ssp1_19 <- ssp$`SSP1-19`$IMAGE
 ssp1_26 <- ssp$`SSP1-26`$IMAGE
 ssp2_26 <- ssp$`SSP2-26`$IMAGE
+ssp2_26msg <- ssp$`SSP2-26`$`MESSAGE-GLOBIOM`
 ssp2_45 <- ssp$`SSP2-45`$IMAGE
 ssp2_ref <- ssp$`SSP2-45`$`MESSAGE-GLOBIOM`
 # TODO: SSP5-Baseline is SSP5-8.5 but what is SSP1-Baseline? SSP2-Baseline? SSP2-4.5 
@@ -572,9 +573,8 @@ rm(ssp)
 # i <- unique(SSPs$SCENARIO)[1]
 # y <- 2030
 
-
-ssps <- c("ssp1_19", "ssp1_26", "ssp2_26", "ssp2_45", "ssp2_ref")
-names(ssps) <- c("SSP1-1.9 (1.4 °C)", "SSP1-2.6 (1.8 °C)", "SSP2-2.6 (1.8 °C)", "SSP2-4.5 (2.7 °C)", "SSP2 (baseline)")
+ssps <- c("ssp1_19", "ssp1_26", "ssp2_26", "ssp2_26msg", "ssp2_45", "ssp2_ref")
+names(ssps) <- c("SSP1-1.9 (1.4 °C)", "SSP1-2.6 (1.8 °C)", "SSP2-2.6 (1.8 °C)", "SSP2-2.6  (1.8 °C)", "SSP2-4.5 (2.7 °C)", "SSP2 (baseline)")
 # In all SSPs considered, carbon prices converge in 2035 at the latest. We use Asian carbon price, which are very close to the others except for ssp2 in 2020 and 2030
 # for (s in ssps) for (y in years) if (gap(d(s)[[paste0("carbon_price_", y)]]) > .1) print(paste("Non unique carbon price for", s, y, "gap: ", round(gap(d(s)[[paste0("carbon_price_", y)]]), 3)))
 # ssp1_19$carbon_price_2020[1:6] # c("asia", "lam", "maf", "oecd", "ref", "world")
@@ -680,7 +680,7 @@ co2_pop$gdr_pa_2030 <- (co2_pop$emissions_baseline_2030 - co2_pop$rci_2030 * wor
 #   return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/rate^(i-2)) })))
 # }
 
-# compute_gain_given_parties <- function(parties = df$code, df = co2_pop, return = "df", discount = .04, ssp_name = "gea_gea") {
+# compute_gain_given_parties <- function(parties = df$code, df = co2_pop, return = "df", discount = .03, ssp_name = "gea_gea") {
 #   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
 #   basic_income <- basic_income_adj <- c()
 #   for (y in seq(2020, 2100, 10)) {
@@ -727,7 +727,7 @@ co2_pop$gdr_pa_2030 <- (co2_pop$emissions_baseline_2030 - co2_pop$rci_2030 * wor
 # }
 # 
 # total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- list()
-# create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence = 2040, discount = .04, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries") { # message is only for ssp2_ref , region = message_region_by_code
+# create_var_ssp <- function(ssp, df = co2_pop, base_year = 2019, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries") { # message is only for ssp2_ref , region = message_region_by_code
 #   ssp_name <- deparse(substitute(ssp))
 #   if (grepl("ssp1", ssp_name)) model <- "IMAGE"
 #   else if (ssp_name %in% c("ssp2_ref", "ssp2_26_country") | grepl("gea", ssp_name)) model <- "MESSAGE"
@@ -1287,16 +1287,17 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 # /!\ Problem with this (and all other available) data: emissions are territorial, not footprint.
 # /!\ Problem specific with this data: GDP is in PPP, not nominal (though carbon price is nominal)
 # Gütschow et al. (21) exclude LULUCF emissions
-# TODO! /!\ Check that the carbon price I use is consistent
+# TODO! Chose what scenario should be chosen as default
 # TODO! Find nominal GDP estimates => rob.dellink@oecd.org will produce MER GDP by country for the SSPs in August/September
 # TODO! Find carbon footprint instead of territorial emissions
+# TODO! Compute which share of carbon price revenues collected rich countries lose and which share of basic income poor ones collect themselves
 # TODO smoothen the carbon price trajectory
 
-# ssp_country <- read.csv("../data/PMSSPIE_05Feb20.csv") # Gütschow et al. (21) https://zenodo.org/record/3638137
+ssp_country <- read.csv("../data/PMSSPIE_05Feb20.csv") # Gütschow et al. (21) https://zenodo.org/record/3638137
 # unique(ssp_country$scenario) # SSP119IMAGE and SSP226MESGB are the best as they correspond to illustrative marker scenario of respective SSP1 and 2
 # unique(paste(ssp_country$entity, ssp_country$unit)) # GDPPPP (M 2011 $ (International, Geary–Khamis)) POP (k) CO2 (Gg = kt OR Mt) CH4 (Gg OR Mt) N2O FGASES FGASESAR4 KYOTOGHG KYOTOGHGAR4
 # names(ssp_country)
-# ssp_country <- ssp_country %>% .[.$scenario %in% c("SSP119IMAGE", "SSP226MESGB") & .$source != "SSPIAMIE",]
+# ssp_country <- ssp_country %>% .[.$scenario %in% c("SSP119IMAGE", "SSP226MESGB", "SSP119GCAM4", "SSP226AIMCGE") & .$source != "SSPIAMIE",]
 # ssp_country <- write.csv(ssp_country, "../data/PMSSPIE.csv", row.names = FALSE)
 ssp_country <- read.csv("../data/PMSSPIE.csv")
 # unique(ssp_country$source) # PMSSPIEMISC: gdp, pop; PMSSPIE: emissions; SSPIAMIE: unharmonized (useless)
@@ -1306,15 +1307,18 @@ ssp_country <- read.csv("../data/PMSSPIE.csv")
 ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "BASIC", "EU28", "LDC", "NONANNEXI", "UMBRELLA", "MAC"),]
 # Missing countries: present in co2_pop: SWZ (Eswatini), PSE (Palestine); not in co2_pop: XXK (Kosovo), ESH (Western Sahara)
 
-# possible_scenarios <- ssp_country[grepl("119|226", ssp_country$scenario) & ssp_country$source != "SSPIAMIE" & ssp_country$entity == "CO2" & ssp_country$country == "EARTH", c("scenario", paste0("X", years))]
-# possible_scenarios <- rbind(possible_scenarios, c("ssp2_26", world_emissions$ssp2_26/1e3), c("ssp1_26", world_emissions$ssp1_26/1e3), c("ssp1_19", world_emissions$ssp1_19/1e3)) 
+# possible_scenarios <- ssp_country[grepl("SSP119GCAM4|SSP226MESGB|SSP119IMAGE|SSP226AIMCGE", ssp_country$scenario) & ssp_country$source != "SSPIAMIE" & ssp_country$entity == "CO2" & ssp_country$country == "EARTH", c("scenario", paste0("X", years))]
+# possible_scenarios <- rbind(possible_scenarios, c("ssp2_26", world_emissions$ssp2_26/1e3), c("ssp1_26", world_emissions$ssp1_26/1e3), c("ssp1_19", world_emissions$ssp1_19/1e3), c("ssp2_26msg", world_emissions$ssp2_26msg/1e3))
 # rownames(possible_scenarios) <- possible_scenarios$scenario
 # possible_scenarios <- as.matrix(possible_scenarios[,-1])
 # class(possible_scenarios) <- "numeric"
-# matplot(x = years, y = t(possible_scenarios/1e6),  type = c("l"), lty = 1, lwd = c(rep(1, nrow(possible_scenarios)-3), rep(2,3)), col = 1:nrow(possible_scenarios))
+# matplot(x = years, y = t(possible_scenarios/1e6),  type = c("l"), lty = 1, lwd = c(rep(1, nrow(possible_scenarios)-4), rep(3,4)), col = 1:nrow(possible_scenarios))
 # grid()
-# legend("bottomleft", legend = row.names(possible_scenarios), lty = 1, lwd = c(rep(1, nrow(possible_scenarios)-3), rep(2,3)), col=1:nrow(possible_scenarios))
-# # 4 best matches (1st best 1st): ssp1_19, SSP119IMAGE > ssp1_26,  SSP119GCAM4 > ssp1_26, SSP226MESGB > ssp2_26, SSP226AIMCGE
+# legend("bottomleft", legend = row.names(possible_scenarios), lty = 1, lwd = c(rep(1, nrow(possible_scenarios)-4), rep(3,4)), col=1:nrow(possible_scenarios))
+# # best matches (1st best 1st): ssp1_19,SSP119IMAGE > ssp2_26msg,SSP119GCAM4 > ssp1_26,SSP226MESGB > ssp1_26,SSP119GCAM4 > ssp1_26,SSP226MESGB > ssp2_26,SSP226AIMCGE
+# # highest prices (taking 2040 as ex): ssp1_19 550 > ssp2_26 190 > ssp2_26msg 50 ~ ssp1_26 70
+# # 3 scenarios: high prices - high ambition: ssp1_19,SSP119IMAGE; medium price - medium ambition: ssp2_26,SSP226AIMCGE; low price - medium ambition: ssp2_26msg,SSP119GCAM4 (or ssp1_26,SSP226MESGB but worse match, or ssp1_26,SSP126REMMP to get same SSP but even worse match) 
+# # TODO!? why same SSP don't have same emissions trajectories? e.g. ssp2_26 (image) always has lower emissions than ssp2_26msg (which has emissions similar to SSP119GCAM4). Is it due to non-CO2 gases? I thought all SSPs shared the emissions trajectories...
 
 prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) {
   # Uses country, country_map and adult_ from co2_pop
@@ -1372,7 +1376,7 @@ compute_npv <- function(var = "gain_pa_", discount_rate = .03, start = 2030, end
   if (decadal) return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/((1+discount_rate)^10)^(i-2)) })))
   else return(rowSums(sapply(start:end, function(i) { return(data[[paste0(var, i)]]/(1+discount_rate)^(i-start)) })))
 }
-compute_gain_given_parties <- function(parties = df$code, df = s2, return = "df", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100, linear_downscaling = FALSE) {
+compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100, linear_downscaling = FALSE) {
   # Uses large_footprint_, optout_right_, revenues_pa_, adult_, gdp_pc_, pop_, pop_, emissions_pa_, carbon_price[[ssp_name]]
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   basic_income <- basic_income_adj <- c()
@@ -1420,13 +1424,13 @@ compute_gain_given_parties <- function(parties = df$code, df = s2, return = "df"
 }
 
 total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- list()
-create_var_ssp <- function(ssp = NULL, df = s2, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", base_year_downscaling = NULL) { # message is only for ssp2 , region = message_region_by_code
+create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", base_year_downscaling = NULL) { # message is only for ssp2 , region = message_region_by_code
   linear_downscaling <- !is.null(base_year_downscaling)
   years <- if (linear_downscaling) c(2005, seq(2010, 2100, 10)) else 2020:2100
-  if (is.null(ssp)) {
-    ssp_name <- if (deparse(substitute(df)) == "s1") "ssp1_19" else "ssp2_26"
+  if (is.null(ssp)) { 
+    ssp_name <- if (deparse(substitute(df)) %in% c("s1", "sh")) "ssp1_19" else { if (deparse(substitute(df)) %in% c("s3", "sl")) "ssp2_26msg" else "ssp2_26" } 
   } else ssp_name <- deparse(substitute(ssp))
-  if (!deparse(substitute(df)) %in% c("co2_pop", "s1", "s2") & is.null(ssp_name)) warning("ssp is not given, ssp2_26 assumed.")
+  if (!deparse(substitute(df)) %in% c("co2_pop", "s1", "s2", "s3", "sh", "sm", "sl") & is.null(ssp_name)) warning("ssp is not given, ssp2_26 assumed.")
   total_revenues[[ssp_name]] <- average_revenues[[ssp_name]] <- basic_income[[ssp_name]] <- basic_income_adj[[ssp_name]] <- c()
   
   if (!exists("scenarios_parties") & scenario == "all_countries") parties <- df$code
@@ -1536,22 +1540,26 @@ create_var_ssp <- function(ssp = NULL, df = s2, CC_convergence = 2040, discount 
 
 copy_from_co2_pop <- c("country", "country_map", "gdr_pa_2030", # These three are absolutely needed 
                        "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
-s1 <- prepare_ssp_country("SSP119IMAGE") # SSP1-1.9, temp max: 1.6°C, temp 2100: 1.4°C https://www.carbone4.com/publication-scenarios-ssp-adaptation
-s2 <- prepare_ssp_country("SSP226MESGB") # SSP2-2.6, temp max: 1.8°C, temp 2100: 1.8°C 
-s1 <- create_var_ssp(df = s1)
-s2 <- create_var_ssp(df = s2)
+sh <- prepare_ssp_country("SSP119IMAGE") # SSP1-1.9, sh, temp max: 1.6°C, temp 2100: 1.4°C https://www.carbone4.com/publication-scenarios-ssp-adaptation
+sm <- prepare_ssp_country("SSP226MESGB") # SSP2-2.6, sm, temp max: 1.8°C, temp 2100: 1.8°C
+sf <- prepare_ssp_country("SSP226MESGB") # best fit for high prices (incidentally, China wins in this scenario)
+sl <- prepare_ssp_country("SSP119GCAM4")  # SSP1-1.9, sl: scenario low price
+sh <- create_var_ssp(df = sh) # high prices - high ambition: ssp1_19 (price), SSP119IMAGE (emissions)
+sm <- create_var_ssp(df = sm) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB
+sf <- create_var_ssp(df = sf) # medium price - medium ambition. ssp2_26, SSP226AIMCGE best match for emissions with medium price trajectory ssp2_26
+sl <- create_var_ssp(df = sl) # low price - medium ambition: ssp2_26msg, SSP119GCAM4 (alternative: ssp1_26,SSP226MESGB but worse match for emissions, or ssp1_26,SSP126REMMP to get same SSP but even worse match) 
 
-sort(setNames(s2$npv_over_gdp_gcs_adj, s2$code))
+sort(setNames(sm$npv_over_gdp_gcs_adj, sm$code))
 
-plot_world_map("npv_over_gdp_gcs_adj", df = s2, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+plot_world_map("npv_over_gdp_gcs_adj", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-plot_world_map("npv_pa_gcs_adj", df = s2, breaks = c(-Inf, -30000, -10000, -1000, -1e-4, 0, 1000, 5000, 10000, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+plot_world_map("npv_pa_gcs_adj", df = sm, breaks = c(-Inf, -30000, -10000, -1000, -1e-4, 0, 1000, 5000, 10000, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -30000, -10000, -1000, 0, 0, 1000, 5000, 10000, Inf), sep = " to ", return = "levels")), 
                legend = "Net present value\nof net gains per adult\nfrom the GCP", #fill_na = T,
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-for (y in years[4:9]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = s1, breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+for (y in years[4]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = sm, breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in % of GDP)"), #fill_na = T,
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
@@ -1561,7 +1569,7 @@ for (y in years[4:9]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = s1, b
 ##### Scenarios #####
 # /!\ Pb: the price used is the global carbon price, which would induce stronger emission reductions than the proportional share of the carbon budget when participation is not universal (and involves lower average emission than the world).
 # In other words, the scenarios 2-6 are best seen as a carbon tax than an ETS.
-df <- s2
+df <- sm
 # 1. All: Whole World
 all_countries <- setNames(df$code, df$country)
 # 2. All against OPEC+: World except OPEC+ losers
