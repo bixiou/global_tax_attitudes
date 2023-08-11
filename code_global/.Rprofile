@@ -1985,7 +1985,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   # df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2))) # For oecd_climate
   df_countries <- df$country_map
   df <- data.frame(country_map = df_countries, mean = as.vector(table))
-
+  
   if (condition != "") {
     if (is.null(breaks)) breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
     if (is.null(labels)) labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
@@ -2017,9 +2017,9 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
 
   df_na <- data.frame(country_map = setdiff(world_map$region, df_countries), mean = if (fill_na) breaks[2] else NA)
   df <- merge(df, df_na, all = T)
-
+  
   df$group <- cut(df$mean, breaks = breaks, labels = labels)
-
+  
   if (!continuous) {
     (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj") update ggplot2 xlim = c(162, 178.5) for mercator
        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + # coord_fixed() +

@@ -1002,9 +1002,9 @@ for (s in scenarios_names[3]) {
                  save = T, parties = scenarios_parties[[s]])
 }
 # FR
-for (y in years[3:4]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-                                     labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
-                                     legend = paste0("Gain net par adulte au\nPlan mondial pour le climat\nen ", y, " (en $ par an)"), #fill_na = T,
+for (y in years[4]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+                                     labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_", y, "_fr"),
+                                     legend = paste0("Gain net\npar adulte au\nPlan mondial pour le climat\nen ", y, " (en $ par an)"), #fill_na = T,
                                      save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
