@@ -86,6 +86,12 @@ for (c in countries_EU) {
   for (i in names(amce[[c]]$user.levels)) if (amce[[c]]$user.levels[[i]] %in% row.names(policies.names)) amce[[c]]$user.levels[[i]] <- policies.names[amce[[c]]$user.levels[[i]], sub("_.*", "", c)]
   for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], sub("_.*", "", c)]
 }
+for (c in c("FR", "DE", "ES")) {
+  print(c) 
+  amce[[paste0(c, "_en")]] <- amce(formula_cjoint_generic, ca$eu[ca$eu$country == sub("_.*", "", c),], design = design_cjoint_EU, cluster = FALSE, weights= NULL)
+  for (i in names(amce[[paste0(c, "_en")]]$user.levels)) if (amce[[paste0(c, "_en")]]$user.levels[[i]] %in% row.names(policies.names.en)) amce[[paste0(c, "_en")]]$user.levels[[i]] <- policies.names.en[amce[[paste0(c, "_en")]]$user.levels[[i]], sub("_.*", "", c)]
+  for (i in names(amce[[paste0(c, "_en")]]$user.names)) if (amce[[paste0(c, "_en")]]$user.names[[i]] %in% row.names(policies.names.en)) amce[[paste0(c, "_en")]]$user.names[[i]] <- policies.names.en[amce[[paste0(c, "_en")]]$user.names[[i]], sub("_.*", "", c)]
+}
 for (c in c("all", "eu")) {
   for (i in names(amce[[c]]$user.names)) if (amce[[c]]$user.names[[i]] %in% row.names(policies.names)) amce[[c]]$user.names[[i]] <- policies.names[amce[[c]]$user.names[[i]], "US"]
   for (i in c("climatepolclimate3", "taxsystemtax1", "foreignpolicyforeign1", "foreignpolicyforeign2", "foreignpolicyforeign3", "foreignpolicyforeign4")) amce[[c]]$user.levels[[i]] <- policies.names[amce[[c]]$user.levels[[i]], "US"]
@@ -141,6 +147,12 @@ plot(amce$ES, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r", folder = '../figures/ES/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
 plot(amce$UK, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r", folder = '../figures/UK/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$FR_en, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r_en", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$DE_en, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r_en", folder = '../figures/DE/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$ES_en, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r_en", folder = '../figures/ES/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
 
 plot(amce$FR_left, xlab = "Average Marginal Component Effect", text.size = 18)
 save_plot (filename = "ca_r_left", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
