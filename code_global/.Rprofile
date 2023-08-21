@@ -56,7 +56,7 @@ package("xtable") # must be loaded before Hmisc; export latex table
 package("list") # list experiment aka. item count technique: ictreg
 package("weights") # wtd.t.test
 # package("raster") # merge boundaries in maps
-# package("sf") # merge boundaries in maps
+package("sf") # merge boundaries in maps
 # package("maptools") # merge boundaries in maps
 # package("threadr", github = "skgrange") # dependency of gissr
 # package("gissr", github = "skgrange") # merge boundaries in maps
@@ -2057,7 +2057,7 @@ merge_maps <- function(map1, map2) {
 # df$group <- cut(df$gain_adj_over_gdp_2040, breaks = c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf), labels = c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2"))
 # 
 # us_states <- map_data(map = "state") # tolower
-# blue_states <- c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont") # , "Hawaii" and Alaska missing from the map
+# blue_states <- c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont", "Hawaii") #  and Alaska missing from the map
 # non_blue_states <- setdiff(us_states$region, blue_states)
 # us_regions <- data.frame(list(state = unique(us_states$region)))
 # us_regions$region <- ifelse(us_regions$state %in% blue_states, "Dem USA", "Non-Dem USA")
@@ -2079,13 +2079,20 @@ merge_maps <- function(map1, map2) {
 # world_map <- merge_maps(world_map, us_states)
 # 
 # 
-# ne_states(country = 'United States of America', returnclass = 'sf') %>% mutate(democrat = name %in% blue_states) %>%  group_by(democrat) %>%  dplyr::summarize(geometry = st_union(geometry)) %>%
+# test <- ne_states(country = 'United States of America', returnclass = 'sf') %>% mutate(admin = ifelse(name %in% blue_states, "Dem USA", "Non-Dem USA")) %>%  group_by(admin) %>%  dplyr::summarize(geometry = st_union(geometry)) #%>%
 #   ggplot() +
 #   geom_sf(aes(fill = democrat), color = NA) +
 #   scale_fill_manual(values = c('red3', 'blue2')) +
 #   coord_sf(xlim = c(-180, -60)) +
 #   theme_void() +
 #   theme(legend.position = 'none')
+# 
+# temp <- ne_countries(returnclass = 'sf')
+# 
+#   
+# ne_states() %>% ggplot() +
+#   scale_fill_manual(values = c('red3', 'blue2'))
+# 
 # 
 # us_states <- maps::map("state", plot = FALSE, exact = FALSE, fill = TRUE) %>% st_as_sf()
 # world_map <- map_data(map = "world")

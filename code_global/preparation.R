@@ -25,6 +25,8 @@ rm(qinc)
 
 policies.names <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies", rowNames = T, rows = c(1, 16:41), cols = 1:6))
 policies.names <- policies.names[is.na(as.numeric(row.names(policies.names))),] # NAs by coercion normal
+policies.names.en <- as.matrix(read.xlsx("../questionnaire/specificities.xlsx", sheet = "Policies_EN", rowNames = T, rows = c(1, 16:41), cols = 1:6))
+policies.names.en <- policies.names.en[is.na(as.numeric(row.names(policies.names.en))),] # NAs by coercion normal
 policies.names.us <- rbind(policies.names, "tax3" = c(rep(NA, 4), "Increase corporate income tax rate from 21% to 28%"), "soc3" = c(rep(NA, 4), "Making abortion a right at the federal level"))
 # write.csv(policies.names, "../data/policies_names.csv") # to recover it in case specificities.xlsx is modified
 conjoint_attributes <- c("econ_issues", "society_issues", "climate_pol", "tax_system", "foreign_policy")
