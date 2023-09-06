@@ -326,18 +326,18 @@ decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FA
     if (!miss) {
       # if (is.element("Oui", levels(as.factor(variable))) | grepl("(char)", annotation(variable)) | is.element("quotient", levels(as.factor(variable)))  | is.element("Pour", levels(as.factor(variable))) | is.element("Plutôt", levels(as.factor(variable))) ) { describe(as.factor(variable[variable!="" & !is.na(variable)]), weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) }
       # else { describe(variable[variable!="" & !is.na(variable)], weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) }
-      if (length(which(!is.na(suppressWarnings(as.numeric(levels(as.factor(variable)))))))==0) { describe(as.factor(variable[variable!=""]), weights = weights[variable!=""], descript=Label(variable)) } # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
-      else { describe(as.numeric(as.vector(variable[variable!=""])), weights = weights[variable!=""], descript=Label(variable)) } # avant:  & !is.na(variable)
+      if (length(which(!is.na(suppressWarnings(as.numeric(levels(as.factor(variable)))))))==0) { describe(as.factor(variable[no.na(variable)!=""]), weights = weights[no.na(variable)!=""], descript=Label(variable)) } # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
+      else { describe(as.numeric(as.vector(variable[no.na(variable)!=""])), weights = weights[no.na(variable)!=""], descript=Label(variable)) } # avant:  & !is.na(variable)
     }
     else {
-      if (length(which(suppressWarnings(!is.na(as.numeric(levels(as.factor(variable)))))))>10) describe(include.missings(variable[variable!="" & !is.na(variable)]), weights = weights[variable!="" & !is.na(variable)], descript=Label(variable)) # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
+      if (length(which(suppressWarnings(!is.na(as.numeric(levels(as.factor(variable)))))))>10) describe(include.missings(variable[no.na(variable)!="" & !is.na(variable)]), weights = weights[no.na(variable)!="" & !is.na(variable)], descript=Label(variable)) # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
       else describe(as.factor(include.missings(variable)[include.missings(variable)!="" & !is.na(variable)]), weights = weights[include.missings(variable)!="" & !is.na(variable)], descript=Label(variable)) }
   }
   else {
     if (length(annotation(variable))>0) {
-      if (miss) describe(variable[variable!=""], weights = weights[variable!=""], descript=Label(variable))
-      else describe(variable[variable!="" & !is.missing(variable)], weights = weights[variable!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
-    } else describe(variable[variable!=""], weights = weights[variable!=""])  }
+      if (miss) describe(variable[no.na(variable)!=""], weights = weights[no.na(variable)!=""], descript=Label(variable))
+      else describe(variable[no.na(variable)!="" & !is.missing(variable)], weights = weights[no.na(variable)!="" & !is.missing(variable)], descript=paste(length(which(is.missing(variable))), "missing obs.", Label(variable)))
+    } else describe(variable[no.na(variable)!=""], weights = weights[no.na(variable)!=""])  }
 }
 # Levels_data <- function(var) { # I replaced it by Levels, haven't checked if it may create bugs
 #   if (setequal(levels(var), c(T, F))) levels <- c(T) # before: not this line
