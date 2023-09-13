@@ -898,8 +898,10 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       
       e$swing_state_3pp <- n(e$zipcode/1000) %between% c(48, 50) | n(e$zipcode/1000) %between% c(88.9, 90.0) | n(e$zipcode/1000) %between% c(15.0, 19.7) | n(e$zipcode/1000) %between% c(53, 55) | n(e$zipcode/1000) %between% c(85, 87) | n(e$zipcode/1000) %between% c(30, 32) | n(e$zipcode/1000) %between% c(39.8, 40.0) | n(e$zipcode/1000) %between% c(27, 29) 
       e$swing_state_5pp <- e$swing_state_3pp | n(e$zipcode/1000) %between% c(32, 35)
+      e$democratic_state <- n(e$zipcode/100) %between% c(900, 994) | n(e$zipcode/1000) %between% c(5, 8) | n(e$zipcode/1000) %between% c(60, 62) | n(e$zipcode/100) %between% c(10, 29) | n(e$zipcode/10000) == 1 | n(e$zipcode/100) == 200 # 900-994, 1, 010-029, 05-08, 200, 60-62 
       label(e$swing_state_3pp) <- "swing_state: T/F Lives in one of the 7 States with less than 3 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC)."
       label(e$swing_state_5pp) <- "swing_state_5pp: T/F Lives in one of the 8 States with less than 5 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC, FL)."
+      label(e$democratic_state) <- "democratic_state: T/F States with Democratic margin (e.g. 57%-41%) by >15pp: California + Illinois + New York + New Jersey + Washington + Massachusetts + Oregon + Connecticut + Delaware + Hawaii + Rhose Island + DC + Vermont + Maryland"
       e$swing_state <- e$swing_state_5pp
         # 7 States with less than 3pp margin from tipping-point (or from 50%, both yield the same) in 2020:
         # Michigan MI (zipcodes: 48-49, 2.8%D margin, 15 electoral votes), Nevada NV (889-899, 2.4%D, 6), Pennsylvania PA (150-196, 1.2%D, 19), Wisconsin WI (53-54, .6%D, 10, tipping-point state), Arizona AZ (85-86, .3%D, 11), Georgia GA (30-31/398-399, .2%D, 16), North Carolina NC (27-28, 1.4%R, 16). [If instead we use 5pp, it adds Florida FL (32-34, 3.4%R, 30)] Apart from these, Dems should secure 228 electoral votes, i.e. need 42 more to win (out of 538 electoral votes or 83 swing ones).

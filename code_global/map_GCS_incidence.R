@@ -1419,7 +1419,7 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
     df[[paste0("gain_pool_", y)]] <- (df[[paste0("gain_adj_", y)]] >= 0) * df[[paste0("gain_adj_", y)]] - (df[[paste0("gain_adj_", y)]] < 0) * share_pooled[yr] * df[[paste0("revenues_pa_", y)]]
     df[[paste0("gain_pool_over_gdp_", y)]] <- df[[paste0("gain_pool_", y)]]/df[[paste0("gdp_pa_", y)]]
   }
-  
+
   # GDR: find emissions allocations on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
   df$gain_gdr_2030 <- (carbon_price[[ssp_name]][["2030"]] * df$gdr_pa_2030  - df$revenues_pa_2030)
   df$gain_gdr_over_gdp_2030 <- df$gain_gdr_2030/df$gdp_pa_2030
@@ -1541,7 +1541,7 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   average_revenues[[ssp_name]] <<- average_revenues[[ssp_name]]
   carbon_price[[ssp_name]] <<- carbon_price[[ssp_name]] # carbon_price is just completed between decadal years by interpolation
   
-  if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG")], parties)) == 0) { # , "TWN
+  if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG", "MDV", "MUS")], parties)) == 0) { # , "TWN
     basic_income[[ssp_name]] <<- basic_income[[ssp_name]] 
     basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
     share_pooled[[ssp_name]] <<- share_pooled[[ssp_name]]
@@ -1572,8 +1572,8 @@ share_pooled # 50-60%
 sort(setNames(sm$npv_over_gdp_gcs_adj, sm$code))
 sort(setNames(sm$npv_over_gdp_gcs_pool, sm$code))
 
-plot_world_map("npv_over_gdp_gcs_adj", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
+plot_world_map("npv_over_gdp_gcs_adj", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 plot_world_map("npv_over_gdp_gcs_pool", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
@@ -1588,10 +1588,14 @@ plot_world_map("npv_pa_gcs_adj", df = sm, breaks = c(-Inf, -30000, -10000, -1000
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -30000, -10000, -1000, 0, 0, 1000, 5000, 10000, Inf), sep = " to ", return = "levels")), 
                legend = "Net present value\nof net gains per adult\nfrom the GCP", #fill_na = T,
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-for (y in years[4]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = sm, breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+for (y in years[5]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = sm, breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in % of GDP)"), #fill_na = T,
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+for (y in years[5]) plot_world_map(paste0("gain_adj_", y), df = sm, breaks = c(-Inf, -2000, -800, -300, -100, -0.1, 0.1, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -2000, -800, -300, -100, 0, 0, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), 
+               legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in $/year)"), #fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 for (df in c("sl", "sm", "sh", "sf")) plot_world_map("npv_over_gdp_gcs_adj", df = d(df), breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), filename = paste0("npv_over_gdp_gcs_adj_", df), # .003, .01, .03
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
