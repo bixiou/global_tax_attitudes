@@ -85,7 +85,8 @@ if (!is.element("plotly", installed.packages()[,1])) install.packages("https://g
 #' if (!is.element("gdata", installed.packages()[,1])) package("memisc")
 #' package('gdata')
 package("descr") # CrossTable
-#' package("quantreg")
+# package("quantreg")
+package("segmented")
 #' package("rcompanion")
 #' package("DescTools")
 #' # package("VCA")
@@ -311,7 +312,7 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
 }
 no.na <- function(vec, num_as_char = T) {
   if (num_as_char) {
-    if (is.numeric(vec)) return(replace_na(as.character(as.vector(vec)), "na"))
+    if (is.numeric(vec) | is.logical(vec)) return(replace_na(as.character(as.vector(vec)), "na"))
     else return(replace_na(as.vector(vec), "na"))
   } else return(vec)
 }
