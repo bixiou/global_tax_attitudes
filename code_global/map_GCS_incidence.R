@@ -276,42 +276,54 @@ pg$predicted_gap2[as.numeric(names(reg_pg2_gdp_log$fitted.values))] <- 10^reg_pg
 # pg$predicted_gap_simplfied <- 10^(4 - log10(pg7$GDPpcPPP))
 # reg_pg_gdp_predicted <- predict(reg_pg_gdp, type = "response")
 
-key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_pc
+# /!\ Big issue with this allocation: it doesn't preserve GDP rankings, cf. plot below.
+key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_pc, new_gni
                         return_type = "list", # var, seq, function, list
                         poverty_line = 4,  # 2, 4, 7 $/day
                         max_reg = phase_out_start, # Inf, phase_out_start
-                        PPP = F, list_month = T, df = pg, global_revenues = 0.926e+12, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
-                        phase_out_start = NULL, phase_out_end = 2*phase_out_start) { # wtd.mean(pg$GDPpcPPP, pg$pop_2019) wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
+                        type_reg = "lm", # piecewise
+                        PPP = F, monthly = T, df = pg, global_revenues = 0.926e+12, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
+                        phase_out_start = NULL, phase_out_end = 1.5*phase_out_start) { # wtd.mean(pg$GDPpcPPP, pg$pop_2019) wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
   pg <- df
   pg$gap <- pg[[paste0("pg", poverty_line)]]
   pg$gdp <- if (PPP) pg$GDPpcPPP else pg$gdp_pc_2019
-  if (is.null(phase_out_start)) phase_out_start <- wtd.mean(pg$gdp, pg$pop_2019)
-  reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp), data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
+  pg$log_gdp <- log10(pg$gdp)
+  if (is.null(phase_out_start)) phase_out_start <- wtd.mean(pg$gdp, pg$pop_2019) #  + I(log10(gdp)^3)
+  if (type_reg == "piecewise") {
+    reg_gap_gdp_log <- lm(log10(gap) ~ log_gdp, data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
+    reg_gap_gdp_log <- segmented(reg_gap_gdp_log, seg.Z = ~log_gdp, weights = pop_2023)
+  } else reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp) + I(log10(gdp)^2), data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
   # pg$predicted_gap[as.numeric(names(reg_gap_gdp_log$fitted.values))] <- 10^reg_gap_gdp_log$fitted.values
   print(paste("R^2: ", round(summary(reg_gap_gdp_log)$r.squared, 3)))
+
   key_gap <- function(gdp) {
-    gap <- (gdp < phase_out_end)*10^((gdp <= phase_out_start) * (reg_gap_gdp_log$coefficients[1] + reg_gap_gdp_log$coefficients[2] * log10(gdp)) +
-             (gdp > phase_out_start) * (-1 + (reg_gap_gdp_log$coefficients[1] + reg_gap_gdp_log$coefficients[2] * log10(phase_out_start) + 1) * (log10(phase_out_end) - log10(gdp))/(log10(phase_out_end) - log10(phase_out_start))))
-    gap[gdp > phase_out_end] <- 0
-    return(gap)
+    predicted <- data.frame(log_gdp = pg$log_gdp, gdp = pg$gdp, pop_2023 = pg$pop_2023) # [pg$gap > 0 & pg$gdp < max_reg]
+    predicted$gap <- 10^predict(reg_gap_gdp_log, newdata = predicted)
+    predicted$gap[predicted$gdp > phase_out_end] <- 0
+    return(predicted$gap)
     # if (gdp <= phase_out_start) gap <- reg_gap_gdp_log$coefficients[1] + reg_gap_gdp_log$coefficients[2] * log10(gdp)
     # else if (gdp > phase_out_end) gap <- 0
     # else gap <- log10(key_gap(phase_out_start)) * (log10(phase_out_end) - log10(gdp))/(log10(phase_out_end) - log10(phase_out_start))
     # return(10^gap)
   }
-  
+
   global_share <- function(gdp, pop) {
     share <- key_gap(gdp) * pop
     return(100*share/sum(share, na.rm = T))
   }
-  
+
   global_share_pc <- function(gdp, pop) return(global_share(gdp, pop) / (100*pop/sum(pop, na.rm = T)))
-  
+
   gdp_share <- function(gdp, pop, revenues = global_revenues) {
     return(global_share(gdp, pop) * revenues / (gdp*pop))
   }
-  
-  rev_pc <- function(gdp, pop, revenues = global_revenues) return(global_share(gdp, pop) * revenues / pop / 100 / ifelse(list_month, 12, 1))
+
+  rev_pc <- function(gdp, pop, revenues = global_revenues) return(global_share(gdp, pop) * revenues / pop / 100 / ifelse(monthly, 12, 1))
+
+  new_gni <- function(gdp, pop, revenues = global_revenues) return(gdp / ifelse(monthly, 12, 1) + rev_pc(gdp, pop, revenues = global_revenues))
+
+  if (any(new_gni(pg$gdp, pg$pop_2023)[order(pg$gdp)] != sort(new_gni(pg$gdp, pg$pop_2023), na.last = T), na.rm = T)) warning("new_gni is not increasing")
+  if (any(rev_pc(pg$gdp, pg$pop_2023)[order(pg$gdp)] != sort(rev_pc(pg$gdp, pg$pop_2023), decreasing = T, na.last = T), na.rm = T)) warning("new_gni is not decreasing")
   
   if (return_type == "var") {
     if (return_var == "gap") return(key_gap(pg$gdp))
@@ -319,12 +331,15 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
     if (return_var == "global_share_pc") return(global_share_pc(pg$gdp, pg$pop_2023))
     if (return_var == "gdp_share") return(gdp_share(pg$gdp_pc_2019, pg$pop_2023))
     if (return_var == "rev_pc") return(rev_pc(pg$gdp, pg$pop_2023))
+    if (return_var == "new_gni") return(new_gni(pg$gdp, pg$pop_2023))
+    if (return_var == "gdp") return(pg$gdp / ifelse(monthly, 12, 1))
   } else if (return_type == "function") {
     if (return_var == "gap") return(key_gap)
     if (return_var == "global_share") return(global_share)
     if (return_var == "global_share") return(global_share_pc)
     if (return_var == "gdp_share") return(gdp_share)
     if (return_var == "rev_pc") return(rev_pc)
+    if (return_var == "new_gni") return(new_gni)
   } else if (return_type == "seq") {
     if (return_var == "gap") return(key_gap(seq(250, 120000, 250)))
     # if (return_var == "rev_pc") return(rev_pc(seq(250, 120000, 250)))
@@ -335,9 +350,80 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
     if (return_var == "global_share_pc") return(sort(setNames(global_share_pc(pg$gdp, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
     if (return_var == "gdp_share") return(sort(setNames(gdp_share(pg$gdp_pc_2019, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
     if (return_var == "rev_pc") return(sort(setNames(rev_pc(pg$gdp, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
+    if (return_var == "new_gni") return(sort(setNames(new_gni(pg$gdp, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
+    if (return_var == "gdp") return(sort(setNames(pg$gdp[pg$pop_2023 > min_pop] / ifelse(monthly, 12, 1), pg$country[pg$pop_2023 > min_pop]), decreasing = T))
   }
 }
-# TODO: run the regression only for countries below lower threshold
+plot(pg$gdp_pc_2019, key_gap_gdp("new_gni", return_type = 'var', monthly = F, poverty_line = 4), xlim = c(0,3000), ylim = c(0,3000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
+lines(c(0,1e5), c(0,1e5), type = 'l') + grid() # /!\ Big issue with this allocation: it doesn't preserve GDP rankings.
+plot(pg$gdp_pc_2019, key_gap_gdp("rev_pc", return_type = 'var', monthly = F, poverty_line = 4), xlim = c(0,3000), ylim = c(0,1000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
+# /!\ Two conditions to check to select an allocation key: rev_pc(gdp) must be decreasing and new_gni(gdp) increasing.
+
+table_pg <- key_gap_gdp(return_var = "gdp_share", return_type = "list")
+(table_pg <- cbind("gdp_share" = table_pg, "rev_pc" = key_gap_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gap_gdp("global_share_pc")[names(table_pg)], "global_share" = key_gap_gdp("global_share")[names(table_pg)]))
+row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
+cat(paste(kbl(table_pg[table_pg[,1] > 0.07,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
+              col.names = c("\\makecell{Revenues\\\\over GDP\\\\(in percent)}", "\\makecell{Revenues\\\\per capita\\\\(in \\$ per month)}", "\\makecell{Revenues per capita\\\\over average\\\\revenues p.c.}", "\\makecell{Global\\\\share of\\\\revenues}")), collapse="\n"), file = "../tables/allocation.tex") 
+
+key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_pc
+                    return_type = "list", # var,function, list, params
+                    PPP = F, monthly = T, df = pg, global_revenues = 8.8e+11, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
+                    phase_out = "mean_gdp_pc", country = NULL) {
+  pg <- df
+  pg$gdp <- if (PPP) pg$GDPpcPPP else pg$gdp_pc_2019
+  pg$pop <- pg$pop_2019 # TODO? use pop_2023?
+  if (phase_out == "mean_gdp_pc") phase_out <- wtd.mean(pg$gdp, pg$pop)
+  gdp_below_phase_out <- sum(pg$gdp * pg$pop * (pg$gdp < phase_out), na.rm = T)
+  pop_below_phase_out <- sum(pg$pop * (pg$gdp < phase_out), na.rm = T)
+  gap_to_phase_out <- pop_below_phase_out * phase_out - gdp_below_phase_out
+  a <- 1 - global_revenues/gap_to_phase_out
+  m <- global_revenues * phase_out/gap_to_phase_out
+  
+  new_gni <- function(gdp = pg$gdp, slope = a, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (a * gdp + m)) / ifelse(by_month, 12, 1))
+  rev_pc <- function(gdp = pg$gdp, slope = a, demogrant = m, by_month = monthly) return((new_gni(gdp, by_month = F) - gdp) / ifelse(by_month, 12, 1))
+  gdp_share <- function(gdp = pg$gdp, slope = a, demogrant = m) return(rev_pc(gdp, by_month = F)/gdp)
+  global_share_pc <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues, slope = a, demogrant = m) return(rev_pc(gdp, slope = a, demogrant = m, by_month = F)/(revenues/sum(pop)))
+  global_share <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues) {  return(rev_pc(gdp, by_month = F) * pop / revenues)  }
+
+  if (any(new_gni()[order(pg$gdp)] != sort(new_gni(), na.last = T), na.rm = T)) warning("new_gni is not increasing")
+  if (any(rev_pc()[order(pg$gdp)] != sort(rev_pc(), decreasing = T, na.last = T), na.rm = T)) warning("new_gni is not decreasing")
+  
+  if (!is.null(country)) return(key_gdp(return_var = return_var, return_type = "var", PPP = PPP, monthly = monthly, df = df, global_revenues = global_revenues, phase_out = phase_out)[df$country == country])
+  else if (return_type == "var") {
+    if (return_var == "global_share") return(global_share())
+    if (return_var == "global_share_pc") return(global_share_pc())
+    if (return_var == "gdp_share") return(gdp_share())
+    if (return_var == "rev_pc") return(rev_pc())
+    if (return_var == "new_gni") return(new_gni())
+    if (return_var == "gdp") return(pg$gdp / ifelse(monthly, 12, 1))
+  } else if (return_type == "function") {
+    if (return_var == "global_share") return(global_share)
+    if (return_var == "global_share") return(global_share_pc)
+    if (return_var == "gdp_share") return(gdp_share)
+    if (return_var == "rev_pc") return(rev_pc)
+    if (return_var == "new_gni") return(new_gni)
+  } else if (return_type == "list") {
+    if (return_var == "global_share") return(sort(setNames(global_share()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
+    if (return_var == "global_share_pc") return(sort(setNames(global_share_pc()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
+    if (return_var == "gdp_share") return(sort(setNames(gdp_share()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
+    if (return_var == "rev_pc") return(sort(setNames(rev_pc()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
+    if (return_var == "new_gni") return(sort(setNames(new_gni()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
+    if (return_var == "gdp") return(sort(setNames(pg$gdp[pg$pop > min_pop] / ifelse(monthly, 12, 1), pg$country[pg$pop > min_pop]), decreasing = T))
+  } else if (return_type == "params") return(c("slope" = a, "demogrant" = m))
+}
+# sum(key_gdp("gdp", return_type = 'var', monthly = F) * pg$pop_2019, na.rm=T)/(sum(key_gdp("new_gni", return_type = 'var', monthly = F) * pg$pop_2019, na.rm=T)-global_revenues)
+key_gdp(return_type = 'params', monthly = F)
+plot(sort(key_gdp("gdp", return_type = 'var', monthly = F)), sort(key_gdp("new_gni", return_type = 'var', monthly = F)), xlim = c(0,3000), ylim = c(0,3000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
+lines(c(0,1e5), c(0,1e5), type = 'l') + grid() # /!\ Big issue with this allocation: it doesn't preserve GDP rankings.
+# If a country with gdp=600 gets new_gni=y=1080 (like Mozambique), to preserve GDP rankings around x=600, we need pg(x+dx)>p(x)*(1-dx/(y-x)). [This comes from: y = x + b*p(x) = x+dx + b.p(x+dx) where p is the predicted pg, and y-x(-dx) is the transfer rev_pc at x(+dx), and the equality of botwh new_gni (with y) is the limit where GDP rankings are preserved]
+x <- key_gap_gdp("gdp", return_type = 'var', PPP = T, monthly = F, poverty_line = 4)[pg$country == "Madagascar"] # 600 # log10(600)=2.78 key_gdp(return_var = "gdp", country = "Mozambique", monthly = F)
+y <- key_gap_gdp("new_gni", return_type = 'var', PPP = T, monthly = F, poverty_line = 4)[pg$country == "Madagascar"] # Use Madagascar, Tanzania or Niger
+p <- pg$pg4[pg$country == "Madagascar"]
+x <- key_gdp(return_var = "gdp", country = "Niger", monthly = F) # 600
+y <- key_gdp(return_var = "new_gni", country = "Niger", monthly = F) # 1080
+p <- pg$pg4[pg$country == "Niger"] # 50
+iso_y <- data.frame(z = seq(2.4, 4, 0.01))
+iso_y$pz <- log10(p*(1-(10^iso_y$z-x)/(y-x)))
 
 # These lines are the ones used
 pg$predicted_gap <- key_gap_gdp(poverty_line = 4, PPP = F, phase_out_start = wtd.mean(pg$gdp_pc_2019, pg$pop_2019), return_var = "gap", return_type = "var")
@@ -347,23 +433,67 @@ qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2019, xlab = "log10 
   geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE) + theme_bw()
 # save_plot(filename = "poverty_gap_gdp", folder = "../figures/policies/", format = "png", width = 538, height = 413) # Renders much better by hand
 
-table_pg <- key_gap_gdp(return_var = "gdp_share", return_type = "list")
-table_pg <- cbind("gdp_share" = table_pg, "rev_pc" = key_gap_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gap_gdp("global_share_pc")[names(table_pg)], "global_share" = key_gap_gdp("global_share")[names(table_pg)])
+table_pg <- key_gdp(return_var = "gdp_share", country = "list")
+table_pg <- cbind("gdp_share" = 100*table_pg, "rev_pc" = key_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gdp("global_share_pc")[names(table_pg)], "global_share" = 100*key_gdp("global_share")[names(table_pg)])
 row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
-cat(paste(kbl(table_pg[table_pg[,1] > 0.07,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
+cat(paste(kbl(table_pg[table_pg[,1] > 0,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
               col.names = c("\\makecell{Revenues\\\\over GDP\\\\(in percent)}", "\\makecell{Revenues\\\\per capita\\\\(in \\$ per month)}", "\\makecell{Revenues per capita\\\\over average\\\\revenues p.c.}", "\\makecell{Global\\\\share of\\\\revenues}")), collapse="\n"), file = "../tables/allocation.tex") 
   # TODO: do total, re-order all by GDP pc
 
+pg$log_gdp <- log10(pg$gdp_pc_2019)
+fit <- lm(log10(pg4) ~ log_gdp, data = pg[pg$pg4 > 0 & pg$gdp_pc_2019 < wtd.mean(pg$gdp_pc_2019, pg$pop_2019),], weights = pop_2023) # 
+segmented.fit <- segmented(fit, seg.Z = ~log_gdp, weights = pop_2023) # npsi: number of breakpoints, fixed.psi: location of breakpoints (if not automatically found)
+# segmented.fit <- segmented(fit, seg.Z = ~log_gdp, psi=3, fixed.psi = c(3, 3.5), weights = pop_2023)
+# plot(pg$x, log10(pg$pg4), pch=16, col='steelblue')
+# plot(segmented.fit, add=T)
+predicted_data <- data.frame(log_gdp = pg$log_gdp, pop_2023 = pg$pop_2023, gdp_pc_2019 = pg$gdp_pc_2019, GDPpcPPP = pg$GDPpcPPP, pg4 = pg$pg4)
+predicted_data$predicted_pg <- predict(segmented.fit, newdata = predicted_data)
+
 mean_GDPpcPPP <- wtd.mean(pg$GDPpcPPP, pg$pop_2019)
-qplot(log10(GDPpcPPP), log10(pg7), data = pg, size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $6.85 a day (2017 PPP) (%)", show.legend = FALSE) + 
-  geom_smooth(method = "lm",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "black", show.legend = FALSE, se = F) + theme_bw() 
+mean_gdp_pc_2019 <- wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
+qplot(log10(gdp_pc_2019), log10(pg4), data = pg[pg$pg4 > 0 & pg$gdp_pc_2019 < mean_gdp_pc_2019,], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2),  mapping = aes(weight = pop_2023 * (gdp_pc_2019 < mean_gdp_pc_2019)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+qplot(log10(GDPpcPPP), log10(pg4), data = pg[pg$pg4 > 0 & pg$GDPpcPPP < mean_GDPpcPPP,], size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "loess",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+qplot(log10(gdp_pc_2019), log10(pg4), data = pg[pg$pg4 > 0 & pg$gdp_pc_2019 < mean_gdp_pc_2019,], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "loess", mapping = aes(weight = pop_2023 * (gdp_pc_2019 < mean_gdp_pc_2019)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+qplot(log10(GDPpcPPP), log10(pg4), data = pg[pg$pg4 > 0 & pg$GDPpcPPP < mean_GDPpcPPP,], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2),  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2),  mapping = aes(weight = pop_2023 * (gdp_pc_2019 < mean_gdp_pc_2019)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+qplot(log10(gdp_pc_2019), log10(pg4), data = pg[pg$pg4 > 0 & pg$gdp_pc_2019 < mean_gdp_pc_2019,], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2),  mapping = aes(weight = pop_2023 * (gdp_pc_2019 < mean_gdp_pc_2019)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw() + 
+  geom_line(data = iso_y, mapping = aes(x = z, y = pz), inherit.aes = F, size = 1.3) # If the red curve decreases faster that the black one, GDP rankings won't be preserved (use Niger to define iso_y)
+qplot(log10(gdp_pc_2019), log10(pg7), data = pg, size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $6.85 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2) + I(x^3),  mapping = aes(weight = pop_2023 * (gdp_pc_2019 < mean_gdp_pc_2019)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw() 
+qplot(log10(gdp_pc_2019), log10(pg7), data = pg[pg$pg7 > 0 & pg$gdp_pc_2019 < wtd.mean(pg$gdp_pc_2019, pg$pop_2019),], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $6.85 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2),  mapping = aes(weight = pop_2023 * (gdp_pc_2019 < mean_gdp_pc_2019)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw() 
+qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_line(data = predicted_data, mapping = aes(log_gdp, predicted_pg), size = 2, color = "red", show.legend = FALSE) + theme_bw()
+qplot(log10(gdp_pc_2019), log10(pg4), data = pg[pg$pg4 > 0 & pg$gdp_pc_2019 < mean_gdp_pc_2019,], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_line(data = predicted_data[predicted_data$pg4 > 0 & predicted_data$gdp_pc_2019 < mean_gdp_pc_2019,], mapping = aes(log_gdp, predicted_pg), size = 2, color = "red", show.legend = FALSE) + theme_bw()
+qplot(log10(GDPpcPPP), log10(pg4), data = pg, size = pop_2023, xlab = "log10 of GDP per capita , PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_line(data = predicted_data, mapping = aes(log_gdp, predicted_pg), size = 2, color = "red", show.legend = FALSE) + theme_bw()
+qplot(log10(GDPpcPPP), log10(pg4), data = pg, size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "loess",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+qplot(log10(GDPpcPPP), log10(pg4), data = pg, size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", formula = y ~ I(exp(x)) + I(exp(x)^2), mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+qplot(log10(GDPpcPPP), log10(pg7), data = pg, size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $6.85 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw() 
 qplot(log10(GDPpcPPP), log10(pg4), data = pg, size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE) + 
-  geom_smooth(method = "lm",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "black", show.legend = FALSE, se = F) + theme_bw() 
+  geom_smooth(method = "lm",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw() 
+qplot(log10(GDPpcPPP), log10(pg4), data = pg, size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE) + 
+  geom_smooth(method = "lm",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw() +
+  geom_line(data = iso_y, mapping = aes(x = z, y = pz), inherit.aes = F, size = 1.3) # If the red curve decreases faster that the black one, GDP rankings won't be preserved (which is the case here on the left) (use Madagascar to define iso_y)
 qplot(log10(GDPpcPPP), log10(pg2), data = pg, size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $2.15 a day (2017 PPP) (%)", show.legend = FALSE) + 
-  geom_smooth(method = "lm",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "black", show.legend = FALSE, se = F) + theme_bw() 
+  geom_smooth(method = "lm",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", show.legend = FALSE, se = F) + theme_bw() 
 qplot(log10(GDPpcPPP), log10(pg4), data = pg, size = adult_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE) + 
   geom_smooth(method = "lm",  mapping = aes(weight = adult_2023), color = "black", show.legend = FALSE, se = F) + theme_bw() +
   geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE)
+
+key_gdp("gdp")
+key_gdp("new_gni")
+key_gdp("rev_pc")
 
 # SSA gets more when using PPP. Gets most with line at 4. For lines at 2 and 4, gets more if max_reg = mean; for line at 7, gets more if max_reg = Inf.
 # Three most credible are l=4, not PPP, max_reg mean; l=7, PPP, max_reg mean; l=4, PPP, max_reg Inf; l=4, not PPP, max_reg Inf
@@ -373,12 +503,12 @@ LIC <- c("AFG", "BFA", "BDI", "TCD", "COG", "ERI", "ETH", "GMB", "GIN", "GNB", "
 SSA <- c("SDN", "AGO", "GIN", "GMB", "GNB", "GNQ", "BDI", "BEN", "BFA", "SEN", "BWA", "CAF", "SLE", "SOM", "SSD", "CIV", "CMR", "COD", "COG", "COM", "LBR", "LSO", "SWZ", "TCD", "TGO", "MLI", "MDG", "DJI", "ERI", "ESH", "ETH", "MWI", "MUS", "MRT", "MOZ", "TZA", "UGA", "ZMB", "ZWE", "NGA", "NER", "NAM", "GHA", "GAB")
 SSA_max_reg_inf <- SSA_max_reg_mean <- LIC_max_reg_inf <- LIC_max_reg_mean <- India_max_reg_inf <- India_max_reg_mean <- array(dimnames = list("line" = c(2, 4, 7), "PPP" = c(T, F)), dim = c(3, 2))
 for (l in c(2, 4, 7)) for (p in c(TRUE, FALSE)) {
-  SSA_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T))
-  SSA_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T))
-  LIC_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% LIC], na.rm = T))
-  LIC_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% LIC], na.rm = T))
-  India_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% "IND"], na.rm = T))
-  India_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gap_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% "IND"], na.rm = T))
+  SSA_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T))
+  SSA_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T))
+  LIC_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% LIC], na.rm = T))
+  LIC_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% LIC], na.rm = T))
+  India_max_reg_inf[as.character(l), as.character(p)] <- round(sum(key_gdp(poverty_line = l, PPP = p, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% "IND"], na.rm = T))
+  India_max_reg_mean[as.character(l), as.character(p)] <- round(sum(key_gdp(poverty_line = l, PPP = p, return_var = "global_share", return_type = "var")[pg$code %in% "IND"], na.rm = T))
 }
 SSA_max_reg_inf
 SSA_max_reg_mean
@@ -386,18 +516,18 @@ LIC_max_reg_inf
 LIC_max_reg_mean
 India_max_reg_inf
 India_max_reg_mean
-key_gap_gdp(poverty_line = 4, PPP = F, return_var = "global_share")
-key_gap_gdp(poverty_line = 4, PPP = F, max_reg = Inf, return_var = "global_share_pc")
-sum(key_gap_gdp(poverty_line = 4, PPP = T, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T)
-pg$global_share <- key_gap_gdp(return_var = "global_share", return_type = "var")
-pg$global_share_pc <- key_gap_gdp(return_var = "global_share_pc", return_type = "var")
-pg$rev_pc <- key_gap_gdp(return_var = "rev_pc", return_type = "var")
-pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", return_type = "var")
+key_gdp(poverty_line = 4, PPP = F, return_var = "global_share")
+key_gdp(poverty_line = 4, PPP = F, max_reg = Inf, return_var = "global_share_pc")
+sum(key_gdp(poverty_line = 4, PPP = T, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T)
+pg$global_share <- key_gdp(return_var = "global_share", return_type = "var")
+pg$global_share_pc <- key_gdp(return_var = "global_share_pc", return_type = "var")
+pg$rev_pc <- key_gdp(return_var = "rev_pc", return_type = "var")
+pg$gdp_share <- key_gdp(return_var = "gdp_share", return_type = "var")
 sum(pg$global_share[pg$code %in% SSA], na.rm = T) # 53%
 wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) # $36
 wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) / wtd.mean(pg$rev_pc, pg$pop_2019, na.rm = T)
 wtd.mean(pg$global_share_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
-wealth_tax_revenues <- 0.0176*96e12  # 0.013*96e12 # From a 2% tax above $5 million / 4% above $100M / 6% above $1G, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/ # 0.0085
+wealth_tax_revenues <- 0.0176*1e14  # 0.013*96e12 (2/4/6) # From a 2% tax above $5 million / 6% above $100M / 10% above $1G, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/ # 0.0085
 pooled_revenues <- 0.5 * wealth_tax_revenues
 pooled_revenues * sum(pg$global_share[pg$code %in% SSA], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% SSA], na.rm = T)
 sum(pg$global_share[pg$code %in% LIC], na.rm = T)
@@ -1284,6 +1414,7 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 
 
 ##### Downscaled data from Gütschow et al. (21) #####
+# Emissions data (already downscaled) comes from Gütschow et al. (21) while price comes from SSP_CMIP6
 # /!\ Problem with this (and all other available) data: emissions are territorial, not footprint.
 # /!\ Problem specific with this data: GDP is in PPP, not nominal (though carbon price is nominal)
 # Gütschow et al. (21) exclude LULUCF emissions
@@ -1419,7 +1550,7 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
     df[[paste0("gain_pool_", y)]] <- (df[[paste0("gain_adj_", y)]] >= 0) * df[[paste0("gain_adj_", y)]] - (df[[paste0("gain_adj_", y)]] < 0) * share_pooled[yr] * df[[paste0("revenues_pa_", y)]]
     df[[paste0("gain_pool_over_gdp_", y)]] <- df[[paste0("gain_pool_", y)]]/df[[paste0("gdp_pa_", y)]]
   }
-  
+
   # GDR: find emissions allocations on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
   df$gain_gdr_2030 <- (carbon_price[[ssp_name]][["2030"]] * df$gdr_pa_2030  - df$revenues_pa_2030)
   df$gain_gdr_over_gdp_2030 <- df$gain_gdr_2030/df$gdp_pa_2030
@@ -1541,7 +1672,7 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   average_revenues[[ssp_name]] <<- average_revenues[[ssp_name]]
   carbon_price[[ssp_name]] <<- carbon_price[[ssp_name]] # carbon_price is just completed between decadal years by interpolation
   
-  if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG")], parties)) == 0) { # , "TWN
+  if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG", "MDV", "MUS")], parties)) == 0) { # , "TWN
     basic_income[[ssp_name]] <<- basic_income[[ssp_name]] 
     basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
     share_pooled[[ssp_name]] <<- share_pooled[[ssp_name]]
@@ -1572,8 +1703,8 @@ share_pooled # 50-60%
 sort(setNames(sm$npv_over_gdp_gcs_adj, sm$code))
 sort(setNames(sm$npv_over_gdp_gcs_pool, sm$code))
 
-plot_world_map("npv_over_gdp_gcs_adj", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
+plot_world_map("npv_over_gdp_gcs_adj", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 plot_world_map("npv_over_gdp_gcs_pool", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
@@ -1588,10 +1719,14 @@ plot_world_map("npv_pa_gcs_adj", df = sm, breaks = c(-Inf, -30000, -10000, -1000
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -30000, -10000, -1000, 0, 0, 1000, 5000, 10000, Inf), sep = " to ", return = "levels")), 
                legend = "Net present value\nof net gains per adult\nfrom the GCP", #fill_na = T,
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-for (y in years[4]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = sm, breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+for (y in years[5]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = sm, breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
                legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in % of GDP)"), #fill_na = T,
                save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+for (y in years[5]) plot_world_map(paste0("gain_adj_", y), df = sm, breaks = c(-Inf, -2000, -800, -300, -100, -0.1, 0.1, 50, 100, 200, 400, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -2000, -800, -300, -100, 0, 0, 50, 100, 200, 400, Inf), sep = " to ", return = "levels")), 
+               legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in $/year)"), #fill_na = T,
+               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
 for (df in c("sl", "sm", "sh", "sf")) plot_world_map("npv_over_gdp_gcs_adj", df = d(df), breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), filename = paste0("npv_over_gdp_gcs_adj_", df), # .003, .01, .03
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)

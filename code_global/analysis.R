@@ -427,7 +427,7 @@ for (v in variables_problem) means_variables_problem[v] <- mean(e[[v]], na.rm = 
 -sort(-means_variables_problem)
 
 
-##### Swing States #####
+##### Swing States & Democratic States #####
 decrit(e$swing_state)
 decrit("gcs_support", data = e, weights = e$weight, which = e$swing_state)
 decrit("gcs_support", data = e, weights = e$weight, which = e$swing_state_5pp)
@@ -435,6 +435,7 @@ summary(lm(gcs_support == 'Yes' ~ swing_state_5pp, data = e, weights = e$weight)
 summary(lm(gcs_support == 'Yes' ~ swing_state, data = e, weights = e$weight)) # .ht - 0.018 - 0.008
 summary(lm(gcs_support == 'Yes' ~ swing_state + swing_state_5pp, data = e, weights = e$weight)) # .ht - 0.018 - 0.008
 summary(lm(conjoint_c ~ branch_c_gcs * swing_state, data = e, weights = e$weight))
+decrit("gcs_support", which = us1$democratic_state == T) # 62%
 
 
 ##### Reweighted estimate #####

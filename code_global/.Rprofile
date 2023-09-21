@@ -85,7 +85,8 @@ if (!is.element("plotly", installed.packages()[,1])) install.packages("https://g
 #' if (!is.element("gdata", installed.packages()[,1])) package("memisc")
 #' package('gdata')
 package("descr") # CrossTable
-#' package("quantreg")
+# package("quantreg")
+package("segmented")
 #' package("rcompanion")
 #' package("DescTools")
 #' # package("VCA")
@@ -259,7 +260,6 @@ is.pnr <- function(variable, empty_as_pnr = T) {
     else return(is.missing(variable))
   }
 }
-no.na <- function(vec, rep = "na") return(replace_na(as.vector(vec), rep))
 gap <- function(vec) return(if (max(vec, na.rm = T) == 0) 0 else abs((max(vec, na.rm = T) - min(vec, na.rm = T))/max(vec, na.rm = T)))
 max_gap <- function(vec1, vec2, epsilon = 1e-15) return(max(2*abs(vec1 - vec2)/(abs(vec1 + vec2) + epsilon), na.rm = T))
 is.binary <- function(vec) { return((is.logical(vec) | all(unique(as.numeric(vec)) %in% c(0, 1, NA)))) }
@@ -310,6 +310,12 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
   else if (return %in% c("levels", "labels")) return(levels)
   else if (return == "values") return(values)
 }
+no.na <- function(vec, num_as_char = T) {
+  if (num_as_char) {
+    if (is.numeric(vec) | is.logical(vec)) return(replace_na(as.character(as.vector(vec)), "na"))
+    else return(replace_na(as.vector(vec), "na"))
+  } else return(vec)
+}
 decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights
   # if (!missing(data)) variable <- data[[variable]]
   if (is.character(variable) & length(variable)==1) variable <- data[[variable]]
@@ -331,7 +337,7 @@ decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FA
     }
     else {
       if (length(which(suppressWarnings(!is.na(as.numeric(levels(as.factor(variable)))))))>10) describe(include.missings(variable[no.na(variable)!="" & !is.na(variable)]), weights = weights[no.na(variable)!="" & !is.na(variable)], descript=Label(variable)) # encore avant:  & !is.na(variable), avant: (length(which(is.numeric(levels(as.factor(variable)))))==0)
-      else describe(as.factor(include.missings(variable)[include.missings(variable)!="" & !is.na(variable)]), weights = weights[include.missings(variable)!="" & !is.na(variable)], descript=Label(variable)) }
+      else describe(as.factor(include.missings(variable)[no.na(include.missings(variable))!="" & !is.na(variable)]), weights = weights[no.na(include.missings(variable))!="" & !is.na(variable)], descript=Label(variable)) }
   }
   else {
     if (length(annotation(variable))>0) {
