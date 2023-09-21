@@ -367,6 +367,7 @@ cat(paste(kbl(table_pg[table_pg[,1] > 0.07,], "latex", caption = "Allocation of 
 
 key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_pc
                     return_type = "list", # var,function, list, params
+                    fit = "power", # linear, power, 
                     PPP = F, monthly = T, df = pg, global_revenues = 8.8e+11, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
                     phase_out = "mean_gdp_pc", country = NULL) {
   pg <- df
@@ -376,13 +377,23 @@ key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_p
   gdp_below_phase_out <- sum(pg$gdp * pg$pop * (pg$gdp < phase_out), na.rm = T)
   pop_below_phase_out <- sum(pg$pop * (pg$gdp < phase_out), na.rm = T)
   gap_to_phase_out <- pop_below_phase_out * phase_out - gdp_below_phase_out
-  a <- 1 - global_revenues/gap_to_phase_out
-  m <- global_revenues * phase_out/gap_to_phase_out
   
-  new_gni <- function(gdp = pg$gdp, slope = a, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (a * gdp + m)) / ifelse(by_month, 12, 1))
-  rev_pc <- function(gdp = pg$gdp, slope = a, demogrant = m, by_month = monthly) return((new_gni(gdp, by_month = F) - gdp) / ifelse(by_month, 12, 1))
-  gdp_share <- function(gdp = pg$gdp, slope = a, demogrant = m) return(rev_pc(gdp, by_month = F)/gdp)
-  global_share_pc <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues, slope = a, demogrant = m) return(rev_pc(gdp, slope = a, demogrant = m, by_month = F)/(revenues/sum(pop)))
+  if (fit == "linear") {
+    a <- 1 - global_revenues/gap_to_phase_out
+    m <- global_revenues * phase_out/gap_to_phase_out
+    new_gni <- function(gdp = pg$gdp, coef = a, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (m + a^gdp)) / ifelse(by_month, 12, 1))
+  } else if (fit == "power") {
+    fit_function <- function(a, pop = pg$pop[pg$gdp < phase_out], gdp = pg$gdp[pg$gdp < phase_out]) {
+      return(gdp_below_phase_out + global_revenues - pop_below_phase_out * phase_out + pop_below_phase_out * a^phase_out - sum(pop * a^gdp, na.rm = T)) }
+    # plot(seq(0.9999, 1.0001, 1e-6), sapply(seq(0.9999, 1.0001, 1e-6), fit_function))
+    a <- uniroot(fit_function, interval = c(0, 1))
+    m <- phase_out - a^phase_out
+    new_gni <- function(gdp = pg$gdp, coef = a, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (m + a * gdp)) / ifelse(by_month, 12, 1))
+  } 
+
+  rev_pc <- function(gdp = pg$gdp, coef = a, demogrant = m, by_month = monthly) return((new_gni(gdp, by_month = F) - gdp) / ifelse(by_month, 12, 1))
+  gdp_share <- function(gdp = pg$gdp, coef = a, demogrant = m) return(rev_pc(gdp, by_month = F)/gdp)
+  global_share_pc <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues, coef = a, demogrant = m) return(rev_pc(gdp, coef = a, demogrant = m, by_month = F)/(revenues/sum(pop)))
   global_share <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues) {  return(rev_pc(gdp, by_month = F) * pop / revenues)  }
 
   if (any(new_gni()[order(pg$gdp)] != sort(new_gni(), na.last = T), na.rm = T)) warning("new_gni is not increasing")
@@ -409,7 +420,7 @@ key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_p
     if (return_var == "rev_pc") return(sort(setNames(rev_pc()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
     if (return_var == "new_gni") return(sort(setNames(new_gni()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
     if (return_var == "gdp") return(sort(setNames(pg$gdp[pg$pop > min_pop] / ifelse(monthly, 12, 1), pg$country[pg$pop > min_pop]), decreasing = T))
-  } else if (return_type == "params") return(c("slope" = a, "demogrant" = m))
+  } else if (return_type == "params") return(c("coef" = a, "demogrant" = m))
 }
 # sum(key_gdp("gdp", return_type = 'var', monthly = F) * pg$pop_2019, na.rm=T)/(sum(key_gdp("new_gni", return_type = 'var', monthly = F) * pg$pop_2019, na.rm=T)-global_revenues)
 key_gdp(return_type = 'params', monthly = F)

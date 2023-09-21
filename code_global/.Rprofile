@@ -178,6 +178,7 @@ package("Hmisc")
 package("knitr") # plot_crop, representativeness_table
 options(knitr.kable.NA = '')
 package("kableExtra") # add_header_above in representativeness_table
+# package("rootSolve")
 #' # One needs a *patched* version of memisc version 0.99.22 (not a newer), hence the code below (cf. this issue: https://github.com/melff/memisc/issues/62)
 if (!is.element("memisc", installed.packages()[,1])) {
   install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
