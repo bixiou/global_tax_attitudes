@@ -281,7 +281,8 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
                         return_type = "list", # var, seq, function, list
                         poverty_line = 4,  # 2, 4, 7 $/day
                         max_reg = phase_out_start, # Inf, phase_out_start
-                        type_reg = "lm", # piecewise
+                        type_reg = "linear", # piecewise
+                        cap_fit = Inf, # Unfortunetaly, cap_fit doesn't suffice to preserve GDP rankings
                         PPP = F, monthly = T, df = pg, global_revenues = 0.926e+12, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
                         phase_out_start = NULL, phase_out_end = 1.5*phase_out_start) { # wtd.mean(pg$GDPpcPPP, pg$pop_2019) wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
   pg <- df
@@ -292,13 +293,18 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
   if (type_reg == "piecewise") {
     reg_gap_gdp_log <- lm(log10(gap) ~ log_gdp, data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
     reg_gap_gdp_log <- segmented(reg_gap_gdp_log, seg.Z = ~log_gdp, weights = pop_2023)
-  } else reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp) + I(log10(gdp)^2), data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
+  } else if (type_reg == "quadratic") {
+    reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp) + I(log10(gdp)^2), data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
+  } else if (type_reg == "linear") {
+    reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp), data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
+  }
   # pg$predicted_gap[as.numeric(names(reg_gap_gdp_log$fitted.values))] <- 10^reg_gap_gdp_log$fitted.values
   print(paste("R^2: ", round(summary(reg_gap_gdp_log)$r.squared, 3)))
 
   key_gap <- function(gdp) {
     predicted <- data.frame(log_gdp = pg$log_gdp, gdp = pg$gdp, pop_2023 = pg$pop_2023) # [pg$gap > 0 & pg$gdp < max_reg]
     predicted$gap <- 10^predict(reg_gap_gdp_log, newdata = predicted)
+    predicted$gap <- pmin(cap_fit, predicted$gap)
     predicted$gap[predicted$gdp > phase_out_end] <- 0
     return(predicted$gap)
     # if (gdp <= phase_out_start) gap <- reg_gap_gdp_log$coefficients[1] + reg_gap_gdp_log$coefficients[2] * log10(gdp)
@@ -367,9 +373,9 @@ cat(paste(kbl(table_pg[table_pg[,1] > 0.07,], "latex", caption = "Allocation of 
 
 key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_pc
                     return_type = "list", # var,function, list, params
-                    fit = "power", # linear, power, 
-                    PPP = F, monthly = T, df = pg, global_revenues = 8.8e+11, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
-                    phase_out = "mean_gdp_pc", country = NULL) {
+                    fit = "power", min_gni = 1200,
+                    PPP = F, monthly = T, df = pg, global_revenues = 8.8e+11, min_pop = 30e6, country = NULL, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
+                    phase_out = "mean_gdp_pc") { # "mean_gdp_pc" 0.5*wtd.mean(pg$gdp_pc_2019, pg$pop_2019) 4045 $ GNI pc (nominal: Atlas method, cf. Vaggi 17) is the threshold between lower and upper MI
   pg <- df
   pg$gdp <- if (PPP) pg$GDPpcPPP else pg$gdp_pc_2019
   pg$pop <- pg$pop_2019 # TODO? use pop_2023?
@@ -381,19 +387,23 @@ key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_p
   if (fit == "linear") {
     a <- 1 - global_revenues/gap_to_phase_out
     m <- global_revenues * phase_out/gap_to_phase_out
-    new_gni <- function(gdp = pg$gdp, coef = a, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (m + a^gdp)) / ifelse(by_month, 12, 1))
-  } else if (fit == "power") {
-    fit_function <- function(a, pop = pg$pop[pg$gdp < phase_out], gdp = pg$gdp[pg$gdp < phase_out]) {
-      return(gdp_below_phase_out + global_revenues - pop_below_phase_out * phase_out + pop_below_phase_out * a^phase_out - sum(pop * a^gdp, na.rm = T)) }
-    # plot(seq(0.9999, 1.0001, 1e-6), sapply(seq(0.9999, 1.0001, 1e-6), fit_function))
-    a <- uniroot(fit_function, interval = c(0, 1))
-    m <- phase_out - a^phase_out
-    new_gni <- function(gdp = pg$gdp, coef = a, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (m + a * gdp)) / ifelse(by_month, 12, 1))
-  } 
+    b <- NULL
+    new_gni <- function(gdp = pg$gdp, coef = a, base = NULL, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (demogrant + a*gdp)) / ifelse(by_month, 12, 1))
+  # Other methods than linear line (e.g. power law line: y = m + b*a^x or regressions: polynomial, loess, or piecewise linear continuous) either require extra parameters (power, loess) or do not necessarily fulfill the conditions (regressions)
+  # The issue with linear line is the spread of transfers - though this may be geopolitically convenient (which reduces over time as countries converge). Other methods concentrate more the transfers on poorest countries (though less so over time as countries converge).
+  } else if (fit == "power") { 
+    fit_function <- function(a, m = min_gni, pop = pg$pop[pg$gdp < phase_out], gdp = pg$gdp[pg$gdp < phase_out]) { 
+      return(gdp_below_phase_out + global_revenues + pop_below_phase_out * (a - m) - a * sum(pop * (1 + (phase_out - m)/a)^(gdp/phase_out), na.rm = T)) } 
+    # plot(seq(1e2, 4e4, 1e2), sapply(seq(1e2, 4e4, 1e2), fit_function)) + grid()
+    a <- uniroot(fit_function, interval = c(1e-6, 1e6))$root
+    m <- min_gni
+    b <- exp(log((1 + (phase_out - m)/a))/phase_out)
+    new_gni <- function(gdp = pg$gdp, coef = a, base = b, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (demogrant + a * b^gdp)) / ifelse(by_month, 12, 1)) 
+  }  
 
-  rev_pc <- function(gdp = pg$gdp, coef = a, demogrant = m, by_month = monthly) return((new_gni(gdp, by_month = F) - gdp) / ifelse(by_month, 12, 1))
-  gdp_share <- function(gdp = pg$gdp, coef = a, demogrant = m) return(rev_pc(gdp, by_month = F)/gdp)
-  global_share_pc <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues, coef = a, demogrant = m) return(rev_pc(gdp, coef = a, demogrant = m, by_month = F)/(revenues/sum(pop)))
+  rev_pc <- function(gdp = pg$gdp, coef = a, base = b, demogrant = m, by_month = monthly) return((new_gni(gdp, by_month = F) - gdp) / ifelse(by_month, 12, 1))
+  gdp_share <- function(gdp = pg$gdp, coef = a, base = b, demogrant = m) return(rev_pc(gdp, by_month = F)/gdp)
+  global_share_pc <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues, coef = a, base = b, demogrant = m) return(rev_pc(gdp, coef = a, base = b, demogrant = m, by_month = F)/(revenues/sum(pop)))
   global_share <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues) {  return(rev_pc(gdp, by_month = F) * pop / revenues)  }
 
   if (any(new_gni()[order(pg$gdp)] != sort(new_gni(), na.last = T), na.rm = T)) warning("new_gni is not increasing")
@@ -420,11 +430,11 @@ key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_p
     if (return_var == "rev_pc") return(sort(setNames(rev_pc()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
     if (return_var == "new_gni") return(sort(setNames(new_gni()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
     if (return_var == "gdp") return(sort(setNames(pg$gdp[pg$pop > min_pop] / ifelse(monthly, 12, 1), pg$country[pg$pop > min_pop]), decreasing = T))
-  } else if (return_type == "params") return(c("coef" = a, "demogrant" = m))
+  } else if (return_type == "params") return(c("coef" = a, "base" = b, "demogrant" = m))
 }
 # sum(key_gdp("gdp", return_type = 'var', monthly = F) * pg$pop_2019, na.rm=T)/(sum(key_gdp("new_gni", return_type = 'var', monthly = F) * pg$pop_2019, na.rm=T)-global_revenues)
 key_gdp(return_type = 'params', monthly = F)
-plot(sort(key_gdp("gdp", return_type = 'var', monthly = F)), sort(key_gdp("new_gni", return_type = 'var', monthly = F)), xlim = c(0,3000), ylim = c(0,3000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
+plot(key_gdp("gdp", return_type = 'var', monthly = F), key_gdp("new_gni", return_type = 'var', monthly = F), xlim = c(0,3000), ylim = c(0,3000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
 lines(c(0,1e5), c(0,1e5), type = 'l') + grid() # /!\ Big issue with this allocation: it doesn't preserve GDP rankings.
 # If a country with gdp=600 gets new_gni=y=1080 (like Mozambique), to preserve GDP rankings around x=600, we need pg(x+dx)>p(x)*(1-dx/(y-x)). [This comes from: y = x + b*p(x) = x+dx + b.p(x+dx) where p is the predicted pg, and y-x(-dx) is the transfer rev_pc at x(+dx), and the equality of botwh new_gni (with y) is the limit where GDP rankings are preserved]
 x <- key_gap_gdp("gdp", return_type = 'var', PPP = T, monthly = F, poverty_line = 4)[pg$country == "Madagascar"] # 600 # log10(600)=2.78 key_gdp(return_var = "gdp", country = "Mozambique", monthly = F)
@@ -444,8 +454,8 @@ qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2019, xlab = "log10 
   geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE) + theme_bw()
 # save_plot(filename = "poverty_gap_gdp", folder = "../figures/policies/", format = "png", width = 538, height = 413) # Renders much better by hand
 
-table_pg <- key_gdp(return_var = "gdp_share", country = "list")
-table_pg <- cbind("gdp_share" = 100*table_pg, "rev_pc" = key_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gdp("global_share_pc")[names(table_pg)], "global_share" = 100*key_gdp("global_share")[names(table_pg)])
+table_pg <- key_gdp(return_var = "gdp_share", return_type = "list")
+(table_pg <- cbind("gdp_share" = 100*table_pg, "rev_pc" = key_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gdp("global_share_pc")[names(table_pg)], "global_share" = 100*key_gdp("global_share")[names(table_pg)]))
 row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
 cat(paste(kbl(table_pg[table_pg[,1] > 0,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
               col.names = c("\\makecell{Revenues\\\\over GDP\\\\(in percent)}", "\\makecell{Revenues\\\\per capita\\\\(in \\$ per month)}", "\\makecell{Revenues per capita\\\\over average\\\\revenues p.c.}", "\\makecell{Global\\\\share of\\\\revenues}")), collapse="\n"), file = "../tables/allocation.tex") 
