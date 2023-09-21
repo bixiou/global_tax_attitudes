@@ -281,10 +281,10 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
                         return_type = "list", # var, seq, function, list
                         poverty_line = 4,  # 2, 4, 7 $/day
                         max_reg = phase_out_start, # Inf, phase_out_start
-                        type_reg = "linear", # piecewise
+                        type_reg = "quadratic", # piecewise linear quadratic
                         cap_fit = Inf, # Unfortunetaly, cap_fit doesn't suffice to preserve GDP rankings
-                        PPP = F, monthly = T, df = pg, global_revenues = 0.926e+12, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
-                        phase_out_start = NULL, phase_out_end = 1.5*phase_out_start) { # wtd.mean(pg$GDPpcPPP, pg$pop_2019) wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
+                        PPP = F, monthly = T, df = pg, global_revenues = 8.8e+11, min_pop = 30e6, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5 0.926e+12
+                        phase_out_start = NULL, phase_out_end = 2*phase_out_start) { # wtd.mean(pg$GDPpcPPP, pg$pop_2019) wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
   pg <- df
   pg$gap <- pg[[paste0("pg", poverty_line)]]
   pg$gdp <- if (PPP) pg$GDPpcPPP else pg$gdp_pc_2019
@@ -304,13 +304,11 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
   key_gap <- function(gdp) {
     predicted <- data.frame(log_gdp = pg$log_gdp, gdp = pg$gdp, pop_2023 = pg$pop_2023) # [pg$gap > 0 & pg$gdp < max_reg]
     predicted$gap <- 10^predict(reg_gap_gdp_log, newdata = predicted)
+    predicted_gap_phase_out_start <- predict(reg_gap_gdp_log, newdata = data.frame(log_gdp = log10(phase_out_start), gdp = phase_out_start))
+    predicted$gap[!is.na(predicted$gdp) & predicted$gdp > phase_out_start] <- 10^(-1 + (predicted_gap_phase_out_start + 1) * (log10(phase_out_end) - log10(predicted$gdp[!is.na(predicted$gdp) & predicted$gdp > phase_out_start]))/(log10(phase_out_end) - log10(phase_out_start)))
     predicted$gap <- pmin(cap_fit, predicted$gap)
     predicted$gap[predicted$gdp > phase_out_end] <- 0
     return(predicted$gap)
-    # if (gdp <= phase_out_start) gap <- reg_gap_gdp_log$coefficients[1] + reg_gap_gdp_log$coefficients[2] * log10(gdp)
-    # else if (gdp > phase_out_end) gap <- 0
-    # else gap <- log10(key_gap(phase_out_start)) * (log10(phase_out_end) - log10(gdp))/(log10(phase_out_end) - log10(phase_out_start))
-    # return(10^gap)
   }
 
   global_share <- function(gdp, pop) {
@@ -373,7 +371,6 @@ cat(paste(kbl(table_pg[table_pg[,1] > 0.07,], "latex", caption = "Allocation of 
 
 key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_pc
                     return_type = "list", # var,function, list, params
-                    fit = "power", min_gni = 1200,
                     PPP = F, monthly = T, df = pg, global_revenues = 8.8e+11, min_pop = 30e6, country = NULL, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
                     phase_out = "mean_gdp_pc") { # "mean_gdp_pc" 0.5*wtd.mean(pg$gdp_pc_2019, pg$pop_2019) 4045 $ GNI pc (nominal: Atlas method, cf. Vaggi 17) is the threshold between lower and upper MI
   pg <- df
@@ -384,26 +381,15 @@ key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_p
   pop_below_phase_out <- sum(pg$pop * (pg$gdp < phase_out), na.rm = T)
   gap_to_phase_out <- pop_below_phase_out * phase_out - gdp_below_phase_out
   
-  if (fit == "linear") {
-    a <- 1 - global_revenues/gap_to_phase_out
-    m <- global_revenues * phase_out/gap_to_phase_out
-    b <- NULL
-    new_gni <- function(gdp = pg$gdp, coef = a, base = NULL, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (demogrant + a*gdp)) / ifelse(by_month, 12, 1))
-  # Other methods than linear line (e.g. power law line: y = m + b*a^x or regressions: polynomial, loess, or piecewise linear continuous) either require extra parameters (power, loess) or do not necessarily fulfill the conditions (regressions)
+  a <- 1 - global_revenues/gap_to_phase_out
+  m <- global_revenues * phase_out/gap_to_phase_out
+  # Other methods than linear line (e.g. power law line: y = m + b*a^x or regressions: polynomial, loess, or piecewise linear continuous) either require extra parameters (power, loess) or do not necessarily fulfill the conditions (regressions). I tried to make power line work (either m+b*(a^gdp-1) fixing m, or m+a^gdp), but there was no solution (we'd need another specification with more parameters).
   # The issue with linear line is the spread of transfers - though this may be geopolitically convenient (which reduces over time as countries converge). Other methods concentrate more the transfers on poorest countries (though less so over time as countries converge).
-  } else if (fit == "power") { 
-    fit_function <- function(a, m = min_gni, pop = pg$pop[pg$gdp < phase_out], gdp = pg$gdp[pg$gdp < phase_out]) { 
-      return(gdp_below_phase_out + global_revenues + pop_below_phase_out * (a - m) - a * sum(pop * (1 + (phase_out - m)/a)^(gdp/phase_out), na.rm = T)) } 
-    # plot(seq(1e2, 4e4, 1e2), sapply(seq(1e2, 4e4, 1e2), fit_function)) + grid()
-    a <- uniroot(fit_function, interval = c(1e-6, 1e6))$root
-    m <- min_gni
-    b <- exp(log((1 + (phase_out - m)/a))/phase_out)
-    new_gni <- function(gdp = pg$gdp, coef = a, base = b, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (demogrant + a * b^gdp)) / ifelse(by_month, 12, 1)) 
-  }  
 
-  rev_pc <- function(gdp = pg$gdp, coef = a, base = b, demogrant = m, by_month = monthly) return((new_gni(gdp, by_month = F) - gdp) / ifelse(by_month, 12, 1))
-  gdp_share <- function(gdp = pg$gdp, coef = a, base = b, demogrant = m) return(rev_pc(gdp, by_month = F)/gdp)
-  global_share_pc <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues, coef = a, base = b, demogrant = m) return(rev_pc(gdp, coef = a, base = b, demogrant = m, by_month = F)/(revenues/sum(pop)))
+  new_gni <- function(gdp = pg$gdp, coef = a, demogrant = m, by_month = monthly) return(((gdp >= phase_out) * gdp + (gdp < phase_out) * (demogrant + a*gdp)) / ifelse(by_month, 12, 1))
+  rev_pc <- function(gdp = pg$gdp, coef = a, demogrant = m, by_month = monthly) return((new_gni(gdp, by_month = F) - gdp) / ifelse(by_month, 12, 1))
+  gdp_share <- function(gdp = pg$gdp, coef = a, demogrant = m) return(rev_pc(gdp, by_month = F)/gdp)
+  global_share_pc <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues, coef = a, demogrant = m) return(rev_pc(gdp, coef = a, demogrant = m, by_month = F)/(revenues/sum(pop)))
   global_share <- function(gdp = pg$gdp, pop = pg$pop, revenues = global_revenues) {  return(rev_pc(gdp, by_month = F) * pop / revenues)  }
 
   if (any(new_gni()[order(pg$gdp)] != sort(new_gni(), na.last = T), na.rm = T)) warning("new_gni is not increasing")
@@ -430,7 +416,7 @@ key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_p
     if (return_var == "rev_pc") return(sort(setNames(rev_pc()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
     if (return_var == "new_gni") return(sort(setNames(new_gni()[pg$pop > min_pop], pg$country[pg$pop > min_pop]), decreasing = T))
     if (return_var == "gdp") return(sort(setNames(pg$gdp[pg$pop > min_pop] / ifelse(monthly, 12, 1), pg$country[pg$pop > min_pop]), decreasing = T))
-  } else if (return_type == "params") return(c("coef" = a, "base" = b, "demogrant" = m))
+  } else if (return_type == "params") return(c("coef" = a, "demogrant" = m))
 }
 # sum(key_gdp("gdp", return_type = 'var', monthly = F) * pg$pop_2019, na.rm=T)/(sum(key_gdp("new_gni", return_type = 'var', monthly = F) * pg$pop_2019, na.rm=T)-global_revenues)
 key_gdp(return_type = 'params', monthly = F)
@@ -454,6 +440,8 @@ qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2019, xlab = "log10 
   geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE) + theme_bw()
 # save_plot(filename = "poverty_gap_gdp", folder = "../figures/policies/", format = "png", width = 538, height = 413) # Renders much better by hand
 
+# Best solutions: 0. PMA, 1. quadratic fit of pg (pb: meets monotonicity conditions by chance), 2. affine line up to 4k (pb: nothing for 4-10k), 3. piecewise affine continuous with breakpoints and transfers share for each income bin decided in advance (pb: arbitrariness).
+# TODO! Poverty-Minimizing (Allocation) Revenue Sharing Between Countries (PMA): Define a number (or-and locations) of breakpoints; Compute the distances between what a country receives and its poverty gap, for each parametrization of the piecewise affine continuous allocation; Pick the parameters that minimize the sum of (squared?) distances.
 table_pg <- key_gdp(return_var = "gdp_share", return_type = "list")
 (table_pg <- cbind("gdp_share" = 100*table_pg, "rev_pc" = key_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gdp("global_share_pc")[names(table_pg)], "global_share" = 100*key_gdp("global_share")[names(table_pg)]))
 row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
@@ -474,6 +462,7 @@ mean_GDPpcPPP <- wtd.mean(pg$GDPpcPPP, pg$pop_2019)
 mean_gdp_pc_2019 <- wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
 qplot(log10(gdp_pc_2019), log10(pg4), data = pg[pg$pg4 > 0 & pg$gdp_pc_2019 < mean_gdp_pc_2019,], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
   geom_smooth(method = "lm", formula = y ~ x + I(x^2),  mapping = aes(weight = pop_2023 * (gdp_pc_2019 < mean_gdp_pc_2019)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+
 qplot(log10(GDPpcPPP), log10(pg4), data = pg[pg$pg4 > 0 & pg$GDPpcPPP < mean_GDPpcPPP,], size = pop_2023, xlab = "log10 of GDP per capita, PPP (constant 2017 international $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
   geom_smooth(method = "loess",  mapping = aes(weight = pop_2023 * (GDPpcPPP < mean_GDPpcPPP)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
 qplot(log10(gdp_pc_2019), log10(pg4), data = pg[pg$pg4 > 0 & pg$gdp_pc_2019 < mean_gdp_pc_2019,], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
@@ -540,17 +529,17 @@ India_max_reg_mean
 key_gdp(poverty_line = 4, PPP = F, return_var = "global_share")
 key_gdp(poverty_line = 4, PPP = F, max_reg = Inf, return_var = "global_share_pc")
 sum(key_gdp(poverty_line = 4, PPP = T, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T)
-pg$global_share <- key_gdp(return_var = "global_share", return_type = "var")
-pg$global_share_pc <- key_gdp(return_var = "global_share_pc", return_type = "var")
-pg$rev_pc <- key_gdp(return_var = "rev_pc", return_type = "var")
-pg$gdp_share <- key_gdp(return_var = "gdp_share", return_type = "var")
-sum(pg$global_share[pg$code %in% SSA], na.rm = T) # 53%
-wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) # $36
-wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) / wtd.mean(pg$rev_pc, pg$pop_2019, na.rm = T)
+pg$global_share <- key_gap_gdp(return_var = "global_share", return_type = "var")
+pg$global_share_pc <- key_gap_gdp(return_var = "global_share_pc", return_type = "var")
+pg$rev_pc <- key_gap_gdp(return_var = "rev_pc", return_type = "var")
+pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", return_type = "var")
+sum(pg$global_share[pg$code %in% SSA], na.rm = T) # 39%, linear: 53%
+wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) # $26, linear: $36
+wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) / wtd.mean(pg$rev_pc, pg$pop_2019, na.rm = T) # 2.9, linear: 4
 wtd.mean(pg$global_share_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
 wealth_tax_revenues <- 0.0176*1e14  # 0.013*96e12 (2/4/6) # From a 2% tax above $5 million / 6% above $100M / 10% above $1G, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/ # 0.0085
 pooled_revenues <- 0.5 * wealth_tax_revenues
-pooled_revenues * sum(pg$global_share[pg$code %in% SSA], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% SSA], na.rm = T)
+pooled_revenues * sum(pg$global_share[pg$code %in% SSA], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% SSA], na.rm = T) # 25%, linear: 32%
 sum(pg$global_share[pg$code %in% LIC], na.rm = T)
 wtd.mean(pg$rev_pc[pg$code %in% LIC], pg$pop_2019[pg$code %in% LIC], na.rm = T)
 wtd.mean(pg$global_share_pc[pg$code %in% LIC], pg$pop_2019[pg$code %in% LIC], na.rm = T)
