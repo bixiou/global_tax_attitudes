@@ -363,12 +363,21 @@ lines(c(0,1e5), c(0,1e5), type = 'l') + grid() # /!\ Big issue with this allocat
 plot(pg$gdp_pc_2019, key_gap_gdp("rev_pc", return_type = 'var', monthly = F, poverty_line = 4), xlim = c(0,3000), ylim = c(0,1000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
 # /!\ Two conditions to check to select an allocation key: rev_pc(gdp) must be decreasing and new_gni(gdp) increasing.
 
+# These lines are the ones used
+pg$predicted_gap <- key_gap_gdp(poverty_line = 4, PPP = F, phase_out_start = wtd.mean(pg$gdp_pc_2019, pg$pop_2019), return_var = "gap", return_type = "var")
+mean_gdp_pc <- wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
+qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2019, xlab = "log10 of 2019 GDP per capita (constant 2015 $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE) + 
+  # geom_smooth(method = "lm",  mapping = aes(weight = pop_2019 * (gdp_pc_2019 < mean_gdp_pc)), color = "black", show.legend = FALSE, se = F) +
+  geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE) + theme_bw()
+# save_plot(filename = "poverty_gap_gdp", folder = "../figures/policies/", format = "png", width = 538, height = 413) # Renders much better by hand
+
 table_pg <- key_gap_gdp(return_var = "gdp_share", return_type = "list")
 (table_pg <- cbind("gdp_share" = table_pg, "rev_pc" = key_gap_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gap_gdp("global_share_pc")[names(table_pg)], "global_share" = key_gap_gdp("global_share")[names(table_pg)]))
 row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
 cat(paste(kbl(table_pg[table_pg[,1] > 0.07,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
               col.names = c("\\makecell{Revenues\\\\over GDP\\\\(in percent)}", "\\makecell{Revenues\\\\per capita\\\\(in \\$ per month)}", "\\makecell{Revenues per capita\\\\over average\\\\revenues p.c.}", "\\makecell{Global\\\\share of\\\\revenues}")), collapse="\n"), file = "../tables/allocation.tex") 
 
+# Linear line from demogrant to phase_out (where GDPpc after = before)
 key_gdp <- function(return_var = "rev_pc", # gap, global_share, gdp_share, rev_pc
                     return_type = "list", # var,function, list, params
                     PPP = F, monthly = T, df = pg, global_revenues = 8.8e+11, min_pop = 30e6, country = NULL, # 1: 4.08e+11, 1-2-3: 6.87e+11, default: 1-3-5
@@ -432,16 +441,9 @@ p <- pg$pg4[pg$country == "Niger"] # 50
 iso_y <- data.frame(z = seq(2.4, 4, 0.01))
 iso_y$pz <- log10(p*(1-(10^iso_y$z-x)/(y-x)))
 
-# These lines are the ones used
-pg$predicted_gap <- key_gap_gdp(poverty_line = 4, PPP = F, phase_out_start = wtd.mean(pg$gdp_pc_2019, pg$pop_2019), return_var = "gap", return_type = "var")
-mean_gdp_pc <- wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
-qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2019, xlab = "log10 of 2019 GDP per capita (constant 2015 $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE) + 
-  # geom_smooth(method = "lm",  mapping = aes(weight = pop_2019 * (gdp_pc_2019 < mean_gdp_pc)), color = "black", show.legend = FALSE, se = F) +
-  geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE) + theme_bw()
-# save_plot(filename = "poverty_gap_gdp", folder = "../figures/policies/", format = "png", width = 538, height = 413) # Renders much better by hand
-
 # Best solutions: 0. PMA, 1. quadratic fit of pg (pb: meets monotonicity conditions by chance), 2. affine line up to 4k (pb: nothing for 4-10k), 3. piecewise affine continuous with breakpoints and transfers share for each income bin decided in advance (pb: arbitrariness).
 # TODO! Poverty-Minimizing (Allocation) Revenue Sharing Between Countries (PMA): Define a number (or-and locations) of breakpoints; Compute the distances between what a country receives and its poverty gap, for each parametrization of the piecewise affine continuous allocation; Pick the parameters that minimize the sum of (squared?) distances.
+# Unused:
 table_pg <- key_gdp(return_var = "gdp_share", return_type = "list")
 (table_pg <- cbind("gdp_share" = 100*table_pg, "rev_pc" = key_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gdp("global_share_pc")[names(table_pg)], "global_share" = 100*key_gdp("global_share")[names(table_pg)]))
 row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
@@ -1428,6 +1430,7 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 # /!\ Problem with this (and all other available) data: emissions are territorial, not footprint.
 # /!\ Problem specific with this data: GDP is in PPP, not nominal (though carbon price is nominal)
 # Gütschow et al. (21) exclude LULUCF emissions
+# TODO! Run Gidden's R routine for country-downscaling (cf. email, he doesn't want to share the output) https://github.com/iiasa/emissions_downscaling
 # TODO! Use Battiston et al. (22) data: it goes only until 2050 but it includes a global carbon price
 # Scenario sm should be chosen by default
 # TODO! Find nominal GDP estimates => rob.dellink@oecd.org will produce MER GDP by country for the SSPs in August/September
