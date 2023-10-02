@@ -1428,6 +1428,7 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 # /!\ Problem with this (and all other available) data: emissions are territorial, not footprint.
 # /!\ Problem specific with this data: GDP is in PPP, not nominal (though carbon price is nominal)
 # Gütschow et al. (21) exclude LULUCF emissions
+# TODO! Run Gidden's R routine for country-downscaling (cf. email, he doesn't want to share the output) https://github.com/iiasa/emissions_downscaling
 # TODO! Use Battiston et al. (22) data: it goes only until 2050 but it includes a global carbon price
 # Scenario sm should be chosen by default
 # TODO! Find nominal GDP estimates => rob.dellink@oecd.org will produce MER GDP by country for the SSPs in August/September
