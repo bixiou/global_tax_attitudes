@@ -240,15 +240,15 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   if (exclude_speeder) e <- e[as.numeric(as.vector(e$duration)) > duration_min,] # & !incl_quality_fail
   if (only_finished & !incl_quality_fail) e <- e[e$finished==1,] 
   # if (only_finished | incl_quality_fail) { # TODO: le faire marcher même pour les autres
-    e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa, combine_age_50 = combine_age_50, only_finished = only_finished, define_var_lists = define_var_lists)
-    e <- e[,!duplicated(names(e))]
-    # if (!incl_quality_fail) e <- e[e$attention_test == T, ] # TODO!
-    if (weighting) {
-      e$weight <- weighting(e, sub("[0-9p]+", "", country))
-      e$weight_all <- weighting(e, sub("[0-9p]+", "", country), variant = "all")
-      if (("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) | ("vote" %in% names(e))) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
-      if (country == "EU") { for (c in countries_EU) e$weight_country[e$country == c] <- weighting(e[e$country == c,], c) } else e$weight_country <- e$weight
-    }
+  e <- convert(e, country = country, wave = wave, weighting = weighting, zscores = zscores, zscores_dummies = zscores_dummies, efa = efa, combine_age_50 = combine_age_50, only_finished = only_finished, define_var_lists = define_var_lists)
+  e <- e[,!duplicated(names(e))]
+  # if (!incl_quality_fail) e <- e[e$attention_test == T, ] # TODO!
+  if (weighting) {
+    e$weight <- weighting(e, sub("[0-9p]+", "", country))
+    e$weight_all <- weighting(e, sub("[0-9p]+", "", country), variant = "all")
+    if (("vote_us" %in% names(e) & (sum(e$vote_us=="PNR/no right")!=0)) | ("vote" %in% names(e))) e$weight_vote <- weighting(e, sub("[0-9]+[a-z]*", "", country), variant = "vote")
+    if (country == "EU") { for (c in countries_EU) e$weight_country[e$country == c] <- weighting(e[e$country == c,], c) } else e$weight_country <- e$weight
+  }
     
   # e$left_right_na <- as.numeric(e$left_right)
   # e$left_right_na[e$indeterminate == T] <- wtd.mean(e$left_right, weights = e$weight)
@@ -555,6 +555,73 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     e$duration_agg <- agg_thresholds(e$duration, thresholds_duration[2:length(thresholds_duration)], labels = labels_duration[2:length(labels_duration)])
   }
   
+  if ("vote_participation" %in% names(e)) {
+    e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
+    
+    major_threshold <- 5 # 5% is the treshold to be considered a major candidate
+    e$vote <- -0.1 # "PNR/Non-voter"
+    for (c in tolower(countries)) {
+      if (paste0("vote_", c, "_voters") %in% names(e)) {
+        e$vote_all[!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"] <- e[[paste0("vote_", c, "_voters")]][!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"]
+        e$vote_all[!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"] <- e[[paste0("vote_", c, "_non_voters")]][!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"]
+        major_candidates[[c]] <<- setdiff(names(table(e$vote_all[e$country == toupper(c)]))[table(e$vote_all[e$country == toupper(c)]) > major_threshold * sum(e$country == toupper(c)) / 100], text_pnr)
+        minor_candidates[[c]] <<- setdiff(names(table(e$vote_all[e$country == toupper(c)]))[table(e$vote_all[e$country == toupper(c)]) <= .05 * sum(e$country == toupper(c))], text_pnr)
+        e$vote_agg[e$country == toupper(c) & no.na(e$vote_all) %in% c(major_candidates[[c]], text_pnr)] <- e$vote_all[e$country == toupper(c) & no.na(e$vote_all) %in% c(major_candidates[[c]], text_pnr)]
+        e$vote_agg[e$country == toupper(c) & no.na(e$vote_all) %in% minor_candidates[[c]]] <- "Other"
+        e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Biden", "Hawkins", "Jean-Luc Mélenchon", "Yannick Jadot", "Fabien Roussel", "Anne Hidalgo", "Philippe Poutou", "Nathalie Arthaud", 
+                                                         "PSOE", "Unidas Podemos", "Esquerra Republicana", "Más País", "JxCat–Junts", "Euskal Herria Bildu (EHB)", "Candidatura d'Unitat Popular-Per la Ruptura (CUP–PR)", "Partido Animalista (PACMA)", 
+                                                         "SPD", "Grüne", "Die Linke", "Tierschutzpartei", "dieBasis", "Die PARTEI", "Labour", "SNP", "Green", "Sinn Féin")] <- -1 # "Left"
+        e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Trump", "Jorgensen", "Emmanuel Macron", "Valérie Pécresse", "Jean Lassalle", "CDU/CSU", "Freie Wähler", "FDP", 
+                                                         "PP", "Ciudadanos", "Partido Nacionalista Vasco (EAJ-PNV)", "Conservative", "Liberal Democrats", "DUP")] <- 0 #"Center-right or Right"
+        e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Marine Le Pen", "Éric Zemmour", "Nicolas Dupont-Aignan", "AfD", "Vox", "Brexit Party")] <- 1 #"Far right"
+        e$vote <- as.item(e$vote, labels = structure(c(-1:1, -0.1), names = c("Left", "Center-right or Right", "Far right", "PNR/Non-voter")), missing.values = c(-0.1, NA), annotation = "vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs.")
+        e$vote_factor <- as.factor(as.character(e$vote))
+        e$vote_factor <- relevel(e$vote_factor, "Left")
+        # e$vote_factor <- relevel(e$vote_factor, "PNR/Non-voter")
+        label(e$vote_factor) <- Label(e$vote)
+      }
+    }
+    e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
+    label(e$vote_all) <- "vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters."
+    label(e$vote_agg) <- paste0("vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than ", major_threshold, "% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters.")
+    # e$vote_all <- as.item(as.character(e$vote_all), missing.values = 'PNR', annotation="vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.")
+    # e$vote_agg <- as.item(as.character(e$vote_agg), missing.values = 'PNR', annotation=paste0("vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than ", major_threshold, "% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters."))
+    e$voted <- e$vote_participation == 'Yes'
+    label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
+    major_candidates <<- major_candidates
+    minor_candidates <<- minor_candidates
+    
+    temp <- as.character(e$vote)
+    temp[grepl("ight", temp)] <- "Right"
+    e$continent_vote <- paste(e$continent, temp)
+  }
+  
+  if ("vote_us_voters" %in% names(e)) {
+    e$vote_us <- "Other/Non-voter" # What respondent voted in 2020.
+    e$vote_us[e$vote_participation %in% c("No right to vote", "Prefer not to say") | e$vote_us_voters %in% c("PNR", "Prefer not to say")] <- "PNR/no right"
+    e$vote_us[e$vote_us_voters == "Biden"] <- "Biden"
+    e$vote_us[e$vote_us_voters == "Trump"] <- "Trump"
+    e$vote_us <- as.item(e$vote_us, annotation = "vote_us: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
+    missing.values(e$vote_us) <- "PNR/no right"
+    e$vote3 <- as.character(e$vote_us)
+    e$vote3[e$vote3 %in% c("PNR/no right", "Other/Non-voter")] <- "Abstention/PNR/Other"
+    label(e$vote3) <- "vote3: Abstention/PNR/Other / Biden / Trump Vote at 2020 presidential election"
+    e$vote3_factor <- relevel(as.factor(e$vote3), "Biden")
+    e$vote_Biden <- e$vote3 == 'Biden'
+    e$vote_not_Biden <- e$vote3 != 'Biden'
+    
+    e$swing_state_3pp <- n(e$zipcode/1000) %between% c(48, 50) | n(e$zipcode/1000) %between% c(88.9, 90.0) | n(e$zipcode/1000) %between% c(15.0, 19.7) | n(e$zipcode/1000) %between% c(53, 55) | n(e$zipcode/1000) %between% c(85, 87) | n(e$zipcode/1000) %between% c(30, 32) | n(e$zipcode/1000) %between% c(39.8, 40.0) | n(e$zipcode/1000) %between% c(27, 29) 
+    e$swing_state_5pp <- e$swing_state_3pp | n(e$zipcode/1000) %between% c(32, 35)
+    e$democratic_state <- n(e$zipcode/100) %between% c(900, 994) | n(e$zipcode/1000) %between% c(5, 8) | n(e$zipcode/1000) %between% c(60, 62) | n(e$zipcode/100) %between% c(10, 29) | n(e$zipcode/10000) == 1 | n(e$zipcode/100) == 200 # 900-994, 1, 010-029, 05-08, 200, 60-62 
+    label(e$swing_state_3pp) <- "swing_state: T/F Lives in one of the 7 States with less than 3 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC)."
+    label(e$swing_state_5pp) <- "swing_state_5pp: T/F Lives in one of the 8 States with less than 5 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC, FL)."
+    label(e$democratic_state) <- "democratic_state: T/F States with Democratic margin (e.g. 57%-41%) by >15pp: California + Illinois + New York + New Jersey + Washington + Massachusetts + Oregon + Connecticut + Delaware + Hawaii + Rhose Island + DC + Vermont + Maryland"
+    e$swing_state <- e$swing_state_5pp
+    # 7 States with less than 3pp margin from tipping-point (or from 50%, both yield the same) in 2020:
+    # Michigan MI (zipcodes: 48-49, 2.8%D margin, 15 electoral votes), Nevada NV (889-899, 2.4%D, 6), Pennsylvania PA (150-196, 1.2%D, 19), Wisconsin WI (53-54, .6%D, 10, tipping-point state), Arizona AZ (85-86, .3%D, 11), Georgia GA (30-31/398-399, .2%D, 16), North Carolina NC (27-28, 1.4%R, 16). [If instead we use 5pp, it adds Florida FL (32-34, 3.4%R, 30)] Apart from these, Dems should secure 228 electoral votes, i.e. need 42 more to win (out of 538 electoral votes or 83 swing ones).
+    # sources: https://en.wikipedia.org/wiki/Swing_state#Swing_states_by_results, https://www.270towin.com/, consistent with analyses from https://www.businessinsider.com/battleground-states-2024-presidential-election-road-white-house-2022-12?r=US&IR=T, https://edition.cnn.com/2022/11/22/politics/2022-preview-2024-presidential-election/index.html
+  }
+  
   if (only_finished) {
     if ("list_exp_rgl" %in% names(e)) {
       e$branch_list_exp[!is.na(e$list_exp_l)] <- "l"
@@ -839,73 +906,6 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$donation_charities_original <- e$donation_charities
       temp <- 50*grepl("100", e$donation_charities) + 300*grepl("101", e$donation_charities) + 750*grepl("501", e$donation_charities) + 3000*grepl("001", e$donation_charities) + 7000*grepl("More", e$donation_charities) + 0*grepl("did not", e$donation_charities)
       e$donation_charities <- as.item(temp, structure(c(0, 50, 300, 750, 3000, 7000), names = agg_thresholds(c(1), thresholds = c(0, 0, 100, 500, 1000, 5000, Inf), return = "levels", shift = 1)), annotation = Label(e$donation_charities))
-    }
-    
-    if ("vote_participation" %in% names(e)) {
-      e$vote_participation[grepl("right to vote", e$vote_participation)] <- "No right to vote"
-
-      major_threshold <- 5 # 5% is the treshold to be considered a major candidate
-      e$vote <- -0.1 # "PNR/Non-voter"
-      for (c in tolower(countries)) {
-        if (paste0("vote_", c, "_voters") %in% names(e)) {
-          e$vote_all[!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"] <- e[[paste0("vote_", c, "_voters")]][!is.na(e[[paste0("vote_", c, "_voters")]]) & e$vote_participation=="Yes"]
-          e$vote_all[!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"] <- e[[paste0("vote_", c, "_non_voters")]][!is.na(e[[paste0("vote_", c, "_non_voters")]]) & e$vote_participation!="Yes"]
-          major_candidates[[c]] <<- setdiff(names(table(e$vote_all[e$country == toupper(c)]))[table(e$vote_all[e$country == toupper(c)]) > major_threshold * sum(e$country == toupper(c)) / 100], text_pnr)
-          minor_candidates[[c]] <<- setdiff(names(table(e$vote_all[e$country == toupper(c)]))[table(e$vote_all[e$country == toupper(c)]) <= .05 * sum(e$country == toupper(c))], text_pnr)
-          e$vote_agg[e$country == toupper(c) & e$vote_all %in% c(major_candidates[[c]], text_pnr)] <- e$vote_all[e$country == toupper(c) & e$vote_all %in% c(major_candidates[[c]], text_pnr)]
-          e$vote_agg[e$country == toupper(c) & e$vote_all %in% minor_candidates[[c]]] <- "Other"
-          e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Biden", "Hawkins", "Jean-Luc Mélenchon", "Yannick Jadot", "Fabien Roussel", "Anne Hidalgo", "Philippe Poutou", "Nathalie Arthaud", 
-                                                           "PSOE", "Unidas Podemos", "Esquerra Republicana", "Más País", "JxCat–Junts", "Euskal Herria Bildu (EHB)", "Candidatura d'Unitat Popular-Per la Ruptura (CUP–PR)", "Partido Animalista (PACMA)", 
-                                                           "SPD", "Grüne", "Die Linke", "Tierschutzpartei", "dieBasis", "Die PARTEI", "Labour", "SNP", "Green", "Sinn Féin")] <- -1 # "Left"
-          e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Trump", "Jorgensen", "Emmanuel Macron", "Valérie Pécresse", "Jean Lassalle", "CDU/CSU", "Freie Wähler", "FDP", 
-                                                           "PP", "Ciudadanos", "Partido Nacionalista Vasco (EAJ-PNV)", "Conservative", "Liberal Democrats", "DUP")] <- 0 #"Center-right or Right"
-          e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Marine Le Pen", "Éric Zemmour", "Nicolas Dupont-Aignan", "AfD", "Vox", "Brexit Party")] <- 1 #"Far right"
-          e$vote <- as.item(e$vote, labels = structure(c(-1:1, -0.1), names = c("Left", "Center-right or Right", "Far right", "PNR/Non-voter")), missing.values = c(-0.1, NA), annotation = "vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs.")
-          e$vote_factor <- as.factor(as.character(e$vote))
-          e$vote_factor <- relevel(e$vote_factor, "Left")
-          # e$vote_factor <- relevel(e$vote_factor, "PNR/Non-voter")
-          label(e$vote_factor) <- Label(e$vote)
-        }
-      }
-      e$vote_participation <- as.item(as.character(e$vote_participation), missing.values = 'PNR', annotation=Label(e$vote_participation))
-      label(e$vote_all) <- "vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters."
-      label(e$vote_agg) <- paste0("vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than ", major_threshold, "% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters.")
-      # e$vote_all <- as.item(as.character(e$vote_all), missing.values = 'PNR', annotation="vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.")
-      # e$vote_agg <- as.item(as.character(e$vote_agg), missing.values = 'PNR', annotation=paste0("vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than ", major_threshold, "% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters."))
-      e$voted <- e$vote_participation == 'Yes'
-      label(e$voted) <- "voted: Has voted in last election: Yes to vote_participation."
-      major_candidates <<- major_candidates
-      minor_candidates <<- minor_candidates
-      
-      temp <- as.character(e$vote)
-      temp[grepl("ight", temp)] <- "Right"
-      e$continent_vote <- paste(e$continent, temp)
-    }
-
-    if ("vote_us_voters" %in% names(e)) {
-      e$vote_us <- "Other/Non-voter" # What respondent voted in 2020.
-      e$vote_us[e$vote_participation %in% c("No right to vote", "Prefer not to say") | e$vote_us_voters %in% c("PNR", "Prefer not to say")] <- "PNR/no right"
-      e$vote_us[e$vote_us_voters == "Biden"] <- "Biden"
-      e$vote_us[e$vote_us_voters == "Trump"] <- "Trump"
-      e$vote_us <- as.item(e$vote_us, annotation = "vote_us: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0")
-      missing.values(e$vote_us) <- "PNR/no right"
-      e$vote3 <- as.character(e$vote_us)
-      e$vote3[e$vote3 %in% c("PNR/no right", "Other/Non-voter")] <- "Abstention/PNR/Other"
-      label(e$vote3) <- "vote3: Abstention/PNR/Other / Biden / Trump Vote at 2020 presidential election"
-      e$vote3_factor <- relevel(as.factor(e$vote3), "Biden")
-      e$vote_Biden <- e$vote3 == 'Biden'
-      e$vote_not_Biden <- e$vote3 != 'Biden'
-      
-      e$swing_state_3pp <- n(e$zipcode/1000) %between% c(48, 50) | n(e$zipcode/1000) %between% c(88.9, 90.0) | n(e$zipcode/1000) %between% c(15.0, 19.7) | n(e$zipcode/1000) %between% c(53, 55) | n(e$zipcode/1000) %between% c(85, 87) | n(e$zipcode/1000) %between% c(30, 32) | n(e$zipcode/1000) %between% c(39.8, 40.0) | n(e$zipcode/1000) %between% c(27, 29) 
-      e$swing_state_5pp <- e$swing_state_3pp | n(e$zipcode/1000) %between% c(32, 35)
-      e$democratic_state <- n(e$zipcode/100) %between% c(900, 994) | n(e$zipcode/1000) %between% c(5, 8) | n(e$zipcode/1000) %between% c(60, 62) | n(e$zipcode/100) %between% c(10, 29) | n(e$zipcode/10000) == 1 | n(e$zipcode/100) == 200 # 900-994, 1, 010-029, 05-08, 200, 60-62 
-      label(e$swing_state_3pp) <- "swing_state: T/F Lives in one of the 7 States with less than 3 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC)."
-      label(e$swing_state_5pp) <- "swing_state_5pp: T/F Lives in one of the 8 States with less than 5 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC, FL)."
-      label(e$democratic_state) <- "democratic_state: T/F States with Democratic margin (e.g. 57%-41%) by >15pp: California + Illinois + New York + New Jersey + Washington + Massachusetts + Oregon + Connecticut + Delaware + Hawaii + Rhose Island + DC + Vermont + Maryland"
-      e$swing_state <- e$swing_state_5pp
-        # 7 States with less than 3pp margin from tipping-point (or from 50%, both yield the same) in 2020:
-        # Michigan MI (zipcodes: 48-49, 2.8%D margin, 15 electoral votes), Nevada NV (889-899, 2.4%D, 6), Pennsylvania PA (150-196, 1.2%D, 19), Wisconsin WI (53-54, .6%D, 10, tipping-point state), Arizona AZ (85-86, .3%D, 11), Georgia GA (30-31/398-399, .2%D, 16), North Carolina NC (27-28, 1.4%R, 16). [If instead we use 5pp, it adds Florida FL (32-34, 3.4%R, 30)] Apart from these, Dems should secure 228 electoral votes, i.e. need 42 more to win (out of 538 electoral votes or 83 swing ones).
-        # sources: https://en.wikipedia.org/wiki/Swing_state#Swing_states_by_results, https://www.270towin.com/, consistent with analyses from https://www.businessinsider.com/battleground-states-2024-presidential-election-road-white-house-2022-12?r=US&IR=T, https://edition.cnn.com/2022/11/22/politics/2022-preview-2024-presidential-election/index.html
     }
     
     e$survey_biased[e$survey_biased %in% c("Yes, left-wing biased")] <- "Yes, left"

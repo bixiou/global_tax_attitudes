@@ -539,6 +539,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   means <- c()
   for (i in seq_along(dep_vars)) {
     df <- if (is.data.frame(data)) data else data[[i]]
+    if (is.null(weights)) weight <- rep(1, nrow(df))
     if (is.character(weights) & !is.data.frame(data)) weight <- df[[weights]]
     if (is.character(indep_vars_included[[i]])) indep_vars_included[[i]] <- indep_vars %in% indep_vars_included[[i]]
     formula_i <- as.formula(paste(dep_vars[i], "~", paste("(", indep_vars[indep_vars_included[[i]] & covariates_with_several_values(data = df, covariates = indep_vars)], ")", collapse = ' + ')))
