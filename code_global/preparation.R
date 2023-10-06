@@ -575,7 +575,9 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
                                                          "PP", "Ciudadanos", "Partido Nacionalista Vasco (EAJ-PNV)", "Conservative", "Liberal Democrats", "DUP")] <- 0 #"Center-right or Right"
         e$vote[e[[paste0("vote_", c, "_voters")]] %in% c("Marine Le Pen", "Éric Zemmour", "Nicolas Dupont-Aignan", "AfD", "Vox", "Brexit Party")] <- 1 #"Far right"
         e$vote <- as.item(e$vote, labels = structure(c(-1:1, -0.1), names = c("Left", "Center-right or Right", "Far right", "PNR/Non-voter")), missing.values = c(-0.1, NA), annotation = "vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs.")
-        e$vote_factor <- as.factor(as.character(e$vote))
+        e$vote_factor <- as.character(e$vote)
+        e$vote_factor[is.na(e$vote_participation)] <- "NA"
+        e$vote_factor <- as.factor(e$vote_factor)
         e$vote_factor <- relevel(e$vote_factor, "Left")
         # e$vote_factor <- relevel(e$vote_factor, "PNR/Non-voter")
         label(e$vote_factor) <- Label(e$vote)
@@ -605,6 +607,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     missing.values(e$vote_us) <- "PNR/no right"
     e$vote3 <- as.character(e$vote_us)
     e$vote3[e$vote3 %in% c("PNR/no right", "Other/Non-voter")] <- "Abstention/PNR/Other"
+    e$vote3[is.na(e$vote_participation)] <- "NA"
     label(e$vote3) <- "vote3: Abstention/PNR/Other / Biden / Trump Vote at 2020 presidential election"
     e$vote3_factor <- relevel(as.factor(e$vote3), "Biden")
     e$vote_Biden <- e$vote3 == 'Biden'
