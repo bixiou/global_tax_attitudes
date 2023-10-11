@@ -221,6 +221,10 @@ summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_s
 summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state_3pp == T,], weights = weight)) # .006, n=509
 summary(lm(conjoint_c_right ~ branch_c_gcs, us1, weights = weight)) # p-value: .0504
 
+# Interaction with political leaning:
+summary(lm(conjoint_c ~ branch_c_gcs * vote_factor, d("FR")[d("FR")$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c ~ branch_c_gcs * vote3, us1[us1$conjoint_c_none == F,], weights = weight))
+
 same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), weights = "weight_vote", omit.note = T,
                     data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
                     filename = "conjoint_c_wo_none_weight_vote", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
@@ -397,18 +401,17 @@ representativeness_table(countries_EU, return_table = F, all = T, weight_var = "
 
 
 ##### App Attrition analysis #####
-desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), 
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), weights = NULL, omit = c("Constant", "Race: Other", "vote3NA"),
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\4 min}"),
-           filename = "attrition_analysis", save_folder = "../tables/US1/", data = c(list(us1a), list(us1a), list(us1a[us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,])), 
-           indep_vars = quotas_us) 
+           filename = "attrition_analysis_vote", save_folder = "../tables/US1/", data = c(list(us1a), list(us1a), list(us1a[us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,])), 
+           indep_vars = c(quotas_us, "vote3")) 
 
-desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"),
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), weights = NULL, omit = c("Constant", "Race: Other", "vote3NA"),
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\4 min}"),
-           filename = "attrition_analysis", save_folder = "../tables/US2/", data = c(list(us2a), list(us2a), list(us2a[us2a$stayed == T,]), list(us2a[us2a$failed_test == F & us2a$stayed == T,]), list(us2a[us2a$failed_test == F & us2a$stayed == T,])), 
-           indep_vars = quotas_us) 
+           filename = "attrition_analysis_vote", save_folder = "../tables/US2/", data = c(list(us2a), list(us2a), list(us2a[us2a$stayed == T,]), list(us2a[us2a$failed_test == F & us2a$stayed == T,]), list(us2a[us2a$failed_test == F & us2a$stayed == T,])), 
+           indep_vars = c(quotas_us, "vote3")) 
 
-desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 6"),
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 6"),weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\6 min}"),
-           filename = "attrition_analysis", save_folder = "../tables/EU/", data = c(list(eua), list(eua), list(eua[eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,])), 
-           indep_vars = quotas_eu) 
-# TODO? add vote?
+           filename = "attrition_analysis_vote", save_folder = "../tables/EU/", data = c(list(eua), list(eua), list(eua[eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,])), 
+           indep_vars = c(quotas_eu, "vote_factor")) 
