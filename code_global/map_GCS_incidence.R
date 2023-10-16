@@ -1470,6 +1470,7 @@ ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "
 # # => See WA conv with Thomas Bossy: The different IAMs don't agree on absorption/decay of CO2 (hence divergences in emisssions for a given concentration pathway) + differ on LULUCF emissions.
 
 prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) { # GDP is in PPP
+  # TODO! Pb: scenarios of GDP pc are unrealistic: 14% annual growth in DRC over 2019-30 (25% over 2019-23 and 8% over 2023-30), 7% over 2030-40, 6% 2040-50. => Underestimation of gains over GDP in low-income countries.
   # Uses country, country_map and adult_ from co2_pop
   # TODO: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030 
   # TODO: streamline fetching of carbon_price
@@ -1715,6 +1716,11 @@ sl <- create_var_ssp(df = sl) # low price - medium ambition: ssp2_26msg, SSP119G
 share_pooled # 50-60%
 sort(setNames(sm$npv_over_gdp_gcs_adj, sm$code))
 sort(setNames(sm$npv_over_gdp_gcs_pool, sm$code))
+# Total revenues: 2.5% world GDP; International transfers: 0.65% world GDP
+total_revenues$ssp2_26[["2030"]]/sum(sm$gdp_2030, na.rm = T) 
+sum((sm$gain_adj_2030 * sm$adult_2030)[sm$gain_adj_2030 > 0], na.rm = T)/sum(sm$gdp_2030, na.rm = T)
+sum((sf$gain_adj_2030 * sf$adult_2030)[sf$gain_adj_2030 > 0], na.rm = T)/sum(sf$gdp_2030, na.rm = T)
+
 
 plot_world_map("npv_over_gdp_gcs_adj", df = sm, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
