@@ -1756,7 +1756,7 @@ for (df in c("sl", "sm", "sh", "sf")) plot_world_map("npv_over_gdp_gcs_adj", df 
 ##### Scenarios #####
 # /!\ Pb: the price used is the global carbon price, which would induce stronger emission reductions than the proportional share of the carbon budget when participation is not universal (and involves lower average emission than the world).
 # In other words, the scenarios 2-6 are best seen as a carbon tax than an ETS.
-df <- cs #sm
+df <- sm # cs
 # 1. All: Whole World
 all_countries <- setNames(df$code, df$country)
 # 2. All against OPEC+: World except OPEC+ losers
@@ -1815,21 +1815,31 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
 
 
 ##### Global trajectories #####
+agg_png("../figures/policies/trajectories_sm_ZH.png", width = 715,  height= 433)
 mar <- par()$mar
 par(mar = c(2.1, 4.1, 0.1, 4.1))
-plot(2025:2080, basic_income_adj$all_countries[as.character(2025:2080)]/12, type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(-5, 70))
+# plot(c(2025, seq(2030, 2080, 10)), basic_income_adj$all_countries[as.character(c(2025, seq(2030, 2080, 10)))]/12, type = 'b', pch = 16, col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(-5, 70))
+plot(c(2025, seq(2030, 2080, 10)), basic_income_adj$all_countries[as.character(c(2025, seq(2030, 2080, 10)))]/12, type = 'b', pch = 16, col = 'darkgreen', lwd = 2, xlab = "", ylab = "基本收入（每月美元）；二氧化碳排放量（每年千兆吨）", ylim = c(-5, 53), family="Microsoft JhengHei")
+# plot(2025:2080, basic_income_adj$all_countries[as.character(2025:2080)]/12, type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(-5, 70))
 # lines(2025:2080, basic_income_adj$optimistic[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
 # lines(2025:2080, basic_income_adj$cautious[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
 # lines(2025:2080, basic_income_adj$all_but_OPEC[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
 # lines(2025:2080, basic_income_adj$generous_EU[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
 # lines(2025:2080, basic_income_adj$africa_EU[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
-lines(2025:2080, emissions_tot[as.character(2025:2080)]/1e9, type = 'l', col = 'red', lwd = 2)
+lines(c(2025, seq(2030, 2080, 10)), emissions_tot[as.character(c(2025, seq(2030, 2080, 10)))]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
+# lines(2025:2080, emissions_tot[as.character(2025:2080)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
 par(new = T)
-plot(2025:2080, carbon_price$ssp2_26[as.character(2025:2080)], type = 'l', axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
-mtext("Carbon price ($/tCO2)", side=4, col="blue", line=2.5) 
+plot(c(2025, seq(2030, 2080, 10)), carbon_price$ssp2_26[as.character(c(2025, seq(2030, 2080, 10)))], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+# plot(2025:2080, carbon_price$ssp2_26[as.character(2025:2080)], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+# mtext("Carbon price ($/tCO2)", side=4, col="blue", line=2.5) 
+mtext("碳价格（美元/吨 CO2）", side=4, col="blue", line=2.5, family="Microsoft JhengHei") 
 axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
-legend("topright", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+# legend("topleft", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+op <- par(family = "Microsoft JhengHei")
+legend("topleft", legend = c("二氧化碳排放量", "基本收入", "碳价格（右轴）"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+par(op)
+dev.off()
 
 # plot(2025:2080, sapply(2025:2080, function(y) sum(df[[paste0("adult_", y)]], na.rm = T)), type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)")
 
