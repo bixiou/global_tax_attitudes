@@ -245,9 +245,15 @@
 
 \onehalfspacing % NCCcomment
 
+\appendix % NCCcomment
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
 \clearpage
-\section*{Main figures}\label{sec:figures}
-\addcontentsline{toc}{section}{\nameref{sec:figures}}
+\section{Supplementary Figures and Tables}\label{sec:figures}
+% \addcontentsline{toc}{section}{\nameref{sec:figures}}
 
 \begin{figure}[h!]
   % MAJOR figure
@@ -255,7 +261,7 @@
   \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]
   {../figures/OECD/Heatplot_global_tax_attitudes_positive.pdf}}\label{fig:oecd} % with dependence on others (absent from OECD): Heatplot_burden_share_all_share_countries
   {\footnotesize \\ $\quad$ \\ Note 1: Percentage of \textit{Somewhat} or \textit{Strongly support} ($n$ = 40,680). The color blue denotes an absolute majority. (Questions \ref{q:scale}-\ref{q:millionaire_tax}). %Reproduced from \cite{dechezlepretre_fighting_2022}, Figure A21.) % TODO!? put back?
-  \\ Note 2: *In Denmark, France and the U.S., the questions with an asterisk were asked differently, cf. Question F.% \ref{q:burden_sharing_asterisk}. 
+  \\ Note 2: *In Denmark, France and the U.S., the questions with an asterisk were asked differently, cf. Question \ref{q:burden_sharing_asterisk}.% \ref{q:burden_sharing_asterisk}. 
   } 
 \end{figure}
 
@@ -263,7 +269,7 @@
   % MAJOR figure
   \caption[Absolute support for further global policies]{Absolute support for various global policies (percentage of \textit{somewhat} or \textit{strong support}). (Questions \ref{q:climate_policies} and \ref{q:other_policies}.)% $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749, n_\text{US, global/national wealth tax} = 2,000$
   }
-  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_share.pdf}}\label{fig:support}
+  \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_positive.pdf}}\label{fig:support}
 \end{figure} 
 
 \begin{table}[h]
@@ -366,11 +372,82 @@
   \makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/country_comparison/belief_all_mean.pdf}} 
 \end{figure}
 
-\appendix % NCCcomment
-\renewcommand{\thetable}{A\arabic{table}}
-\renewcommand{\thefigure}{A\arabic{figure}}
-\setcounter{figure}{0}
-\setcounter{table}{0}
+
+\clearpage
+% \chapter*{Materials and Methods}\label{ch:material}
+% \addcontentsline{toc}{chapter}{\nameref{ch:material}}
+\section{Methods}\label{sec:methods}
+% \addcontentsline{toc}{section}{\nameref{sec:methods}}
+
+\subsection{Data and questionnaires}
+\paragraph{Data collection} % WPcomment
+
+The paper utilizes two sets of surveys: the \textit{Global} survey and the \textit{Complementary} surveys. The \textit{Complementary} surveys consist of two U.S. surveys, \textit{US1} and \textit{US2}, and one European survey, \textit{Eu}. The \textit{Global} survey was conducted from March 2021 to March 2022 on 40,680 respondents from 20 countries (with 1,465 to 2,488 respondents per country). \textit{US1} collected responses from 3,000 participants between January and March 2023, while \textit{US2} gathered data from 2,000 respondents between March and April 2023. \textit{Eu} included 3,000 participants and was conducted from February to March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. To ensure representative samples, we employed stratified quotas based on gender, age (5 brackets), income (4), region (4), and education level (3), as well as ethnicity (3) for the U.S. We also incorporated survey weights throughout the analysis to account for any remaining imbalances. These weights were constructed using the quota variables as well as the degree of urbanity, and trimmed between 0.25 and 4. By applying weights, the results are fully representative of the respective countries. Results at the European level apply different weights which ensure  representativeness of the combined four European countries. 
+Supplementary Section \ref{app:representativeness} confirms that our samples closely match population frequencies in high-income countries. In middle-income countries, the samples are only representative of the online population (young, graduated and urban people are over-represented). %due to the over-representation of young, educated, and urban populations in the online sample
+% Supplementary Section G confirms that our samples are representative of the population.%\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} % /!\ leave commented
+
+
+\paragraph{Data quality} % WPcomment % TODO attrition analysis
+% \paragraph{\small Data quality.} % NCCcomment
+The median duration is 28 minutes for the \textit{Global} survey, 14 min for \textit{US1}, 11 min for \textit{US2}, and 20 min for \textit{Eu}. To ensure the best possible data quality, we exclude respondents who fail an attention test or rush through the survey (i.e., answer in less than 11.5 minutes in the \textit{Global} survey, 4 minutes in \textit{US1} or \textit{US2}, 6 minutes in \textit{Eu}). We study the determinants of attrition in Supplementary Section \ref{app:attrition}. Some socio-demographics drop out significantly more frequently than others, but the coefficients remain small, indicating that our results are not driven by selection bias.  %All the results and analyses use survey weights, defined to make the results fully representative of the country (or of Eu in the case of results at the Eu level) along the quota variables. Weights are trimmed to be between .25 and 4. 
+%\textit{Ex post}, we checked that there were only a few careless response patterns (such as choosing the same answer for all items in a matrix of questions; see Appendix \ref{app:data_quality}). At the end of the survey, we ask whether respondents thought that our survey was politically biased and provide some feedback. 67\% of the respondents found the survey unbiased. 25\% found it left-wing biased, and 8\% found it right-wing biased.
+
+\paragraph{Questionnaires and raw results} % WPcomment
+% \paragraph{\small Questionnaires and raw results.} % NCCcomment
+% Possible confusion in the questionnaire: people confuse GCS with the four policies together (so support for GCS can suffer from dislike of death penalty), although this confusion is mitigating by the fact that we right after ask about NR; people may answer about revenue-use rather than the whole measure for ETS2 support; people may answer that GCS will or will not have the effects proposed rather than these effects being important or not in their attitude toward GCS; they may answer that it's important that others (not them) get more information; the minimum wage could be reduced at 50% of local median wage.
+The questionnaire and raw results of the \textit{Global} survey can be found in the Appendix of the companion paper \citep{dechezlepretre_fighting_2022}. %.\cite{dechezlepretre_fighting_2022} the companion paper TODO? put back?
+The raw results are reported in Supplementary Section \ref{app:raw_results} %\footnote{Country-specific raw results are also available as supplementary material files:  \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_US.pdf}{US}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_EU.pdf}{EU}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_FR.pdf}{FR}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_DE.pdf}{DE}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_ES.pdf}{ES}, \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/app_desc_stats_UK.pdf}{UK}.} 
+while the surveys' structures and questionnaires are given in Supplementary Sections \ref{app:questionnaire_oecd} and \ref{app:questionnaire}. The questionnaires are the same as the ones given \textit{ex ante} in the registration plan (\href{https://osf.io/fy6gd}{osf.io/fy6gd}).
+
+
+\paragraph{Incentives} % WPcomment
+% \paragraph{\small Incentives.} % NCCcomment
+To encourage accurate and truthful responses, several questions of the \textit{US1} survey use incentives. For each of the three comprehension questions that follow the policy descriptions, we randomly select and reward three respondents who provide correct answers with a \$50 gift certificate. Similarly, for questions involving estimating support shares for the GCS and NR, three participants with the closest guesses to the actual values receive a \$50 gift certificate. In the donation lottery question, we randomly select one respondent and split the \$100 prize between the NGO GiveDirectly and the winner according to the winner's choice. In total, our incentives scheme distributes gift certificates (and donations) for a value of \$850. Finally, respondents have an incentive to answer truthfully to the petition question, as they are aware that the results for that question (the share of respondents supporting the policy) will be transmitted to the head of state's office.
+
+%To encourage respondents to answer accurately and truthfully, several questions of the \textit{US1} survey use incentives. For each of the three comprehension questions that follow the policies' descriptions, we reward three (randomly drawn) respondents with the correct answer with a \$50 gift certificate. For each of the questions asking respondents to guess the share of support for the GCS and NR, we reward three people who are closest to the true value with a \$50 gift certificate. For the donation lottery question, we randomly draw one respondent and split the \$100 prize between the NGO GiveDirectly and the winner according to the winner's choice. In total, our incentives scheme distributes gift certificates (and donation) for a value of \$850. Finally, respondents have an incentive to answer truthfully to the petition question, given that they know that the results to that question (the share of respondents supporting the policy) will be transmitted to the U.S. President's office.
+
+
+
+
+% Here is a description of a specific method used.  Note that the subsection heading ends with a full stop (period) and that the command is \verb|\subsection{}| not \verb|\subsection**{}|.
+% \subsection{\small Details on sources, methodology and results} % WPcomment
+\subsection{Methodology}
+\paragraph{National Redistribution scheme} 
+After describing the Global Climate Scheme (GCS) to the respondents, we assess respondents' understanding of the GCS with incentivized questions to test their comprehension of the expected financial outcome for typical individuals in high-income countries (loss) and the poorest individuals globally (gain), followed by the provision of correct answers (Figures \ref{fig:understood_each}-\ref{fig:understood_score}). The same approach is then applied to a National Redistribution scheme. NR targets the top 5\% (in the U.S.) or top 1\% (in Europe) with the aim of financing cash transfers to all adults,\footnote{The wider base in the U.S. was chosen because emissions are larger in the U.S. than in Europe, and it would hardly be feasible to offset the median American's loss by taxing only the top 1\%.} calibrated to offset the monetary loss of the GCS for the median emitter in their country. We evaluate respondents' understanding that the richest would lose and the typical fellow citizens would gain from that policy. Subsequently, we summarize both schemes to enhance respondents' recall. Additionally, we present a final incentivized comprehension question and provide the expected answer that the combined GCS and NR would result in no net gain or loss for a typical fellow citizen. 
+
+We introduced NR in the questionnaire because we formulated the hypothesis that the GCS would be more supported if complemented with NR. As shown in conjoint analyses (see below), this hypothesis turned out to be false. 
+
+We also used NR at several occasions in the questionnaire (the list experiment, the petition, and second-order beliefs) as a point of comparison with the GCS (see Supplementary Section \ref{app:questionnaire}). The rationale was to test whether we found higher or smaller effects for the GCS compared to a benchmark policy: NR. Overall, we find similar effects for the GCS and for NR.
+
+\paragraph{Support for the GCS} The 95\% confidence intervals are $[52.4\%, 55.9\%]$ in the U.S. and $[74.2\%, 77.2\%]$ in Europe. The average support is computed with survey weights, employing weights based on quota variables, which exclude vote. Another method to reweigh the raw results involves running a regression of the support for the GCS on sociodemographic characteristics (including vote) and multiplying each coefficient by the population frequencies. This alternative approach yields similar figures: 76\% in Europe and 52\% or 53\% in the U.S. (depending on whether individuals who did not disclose their vote are classified as non-voters or excluded). Notably, the average support excluding non-voters is 54\% in the U.S. 
+
+Though the level of support for the GCS is significantly lower in swing States (at 51\%) that are key to win U.S. elections, the electoral effect of endorsing the GCS remains non-significantly different from zero (at +1.2 p.p.) in these States. Note that we define swing states as the 8 states with less than 5 p.p. margin of victory in the 2020 election (MI, NV, PA, WI, AZ, GA, NC, FL). The results are robust to using the 3 p.p. threshold (that excludes FL) instead. 
+
+\paragraph{Global wealth tax estimates}
+A 2\% tax on net wealth exceeding \$5 million would annually raise \$816 billion, leaving unaffected 99.9\% of the world population. More specifically, it would collect \euro{}5 billion in Spain, \euro{}16 billion in France, £20 billion in the UK, \euro{}44 billion in Germany, \$430 billion in the U.S., and \$1 billion collectively in all low-income countries (28 countries, home to 700 million people). These Figures come from the \href{https://wid.world/world-wealth-tax-simulator/}{WID wealth tax simulator} of \cite{chancel_world_2022}.
+
+\paragraph{List experiment}
+We utilize the difference-in-means estimator, and confidence intervals are computed using Monte Carlo simulation with the R package \textit{list} by \cite{imai_multivariate_2011}.
+
+\paragraph{Petition}
+Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition.
+
+\paragraph{Conjoint analysis}
+In order to assess the public support for the GCS in conjunction with other policies, we conduct a series of conjoint analyses. We ask respondents to make five choices between pairs of political platforms. In the main text, we do not present the first two conjoint analyses.
+
+The first conjoint analysis suggests that the GCS is supported independently of being complemented by the National Redistribution Scheme and a national climate policy (``Coal exit'' in the U.S., ``Thermal insulation plan'' in Europe, denoted C).\footnote{Indeed, 54\% of %($n$ = 3,000) 
+U.S. respondents and 74\% of %($n$ = 3,000) 
+European ones prefer the combination of C, NR and the GCS to the combination of C and NR alone, indicating similar support for the GCS conditional on NR and C than for the GCS alone (Figure \ref{fig:conjoint}).} % (as it does not significantly differ from the direct support of 53\%). 
+
+For the second analysis, we split the sample into four random branches.\footnote{Results from the first branch show that the support for the GCS conditional on NR, at 55\% in the U.S. ($n$ = 757) and 77\% in Europe ($n$ = 746), is not significantly different from the support for the GCS alone. This suggests that rejection of the GCS is not driven by the cost of the policy on oneself. The second branch shows that the support for C conditional on NR is somewhat higher, at 62\% in the U.S. ($n$ = 751) and 84\% in Europe ($n$ = 747). However, the third one shows no significant preference for C compared to GCS (both conditional on NR), neither in Europe, where GCS is preferred by 52\% ($n$ = 741) nor in the U.S., where C is preferred by 53\% ($n$ = 721). The fourth branch shows that 55\% in the U.S. ($n$ = 771) and 77\% in Europe ($n$ = 766) prefer the combination of C, NR and the GCS to NR alone.} The outcome is that there is majority support for the GCS and for C, which are seen as neither complement nor substitute. A minor share of respondents like a national climate policy and dislike a global one, but as many people prefer a global rather than a national policy; and there is no evidence that implementing NR would increase the support for the GCS.
+
+The effects reported as the changes in likelihood that a platform is preferred are the Average Marginal Component Effects \citep{hainmueller_causal_2014}. The policies studied are progressive policies prominent in the country. Except for the category \textit{foreign policy}, which features the GCS 42\% of the time, they are drawn uniformly.
+
+\paragraph{Pros and cons}
+Surprisingly, the support for National Redistribution also decreased by 7 p.p. following the closed question about the GCS. This suggests that some individuals may lack attention and confuse the two policies, or that contemplating the pros and cons alters the mood of some people, moving them away from their initial positive impression.
+
+\subsection{Sources}
+Detailed sources for the questionnaires and the figures are given in the \href{https://github.com/bixiou/international_attitudes_toward_global_policies/raw/main/questionnaire/specificities.xlsx}{Supplementary Spreadsheet}.
 
 \input{literature_review_nature.tex}
 
@@ -378,7 +455,7 @@
 % \section{Raw results% from the complementary surveys
 % }\label{app:raw_results}
 
-\input{app_nature} 
+\input{app_science} 
 
 \clearpage
 \renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
