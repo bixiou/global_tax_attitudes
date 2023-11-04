@@ -239,7 +239,7 @@ pg4 <- read.csv("../data/poverty_gap_3-65.csv") # Poverty gap at $3.65 a day (20
 pg4$code <- pg4$Country.Code
 pg4 <- extract_last_year(df = pg4, cols = paste0("X", 1960:2021), var_name = "pg4", keep = c("Country.Name", "code"))
 
-pg7 <- read.csv("../data/poverty_gap_6-85.csv") # Poverty gap at $6.85 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.UMIC.GP March 1, 2023. World average: 21% i.e. (less than - bc PPP) 4T$ = 6.85*365*8e9*.21
+pg7 <- read.csv("../data/poverty_gap_6-85.csv") # Poverty gap at $6.85 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.UMIC.GP March 1, 2023. World average: 21% i.e. (less than - bc PPP) 4.2T$ = 6.85*365*8e9*.21
 pg7$code <- pg7$Country.Code
 pg7 <- extract_last_year(df = pg7, cols = paste0("X", 1960:2021), var_name = "pg7", keep = c("Country.Name", "code"))
 
