@@ -75,9 +75,9 @@ for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_
 # (avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
 # (avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
 # 
-# fit.list_no_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "US" & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-# fit.list_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "US" & all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
-# fit.direct_US <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "US",], family = binomial("logit"))
+# fit.list_no_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "U.S." & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
+# fit.list_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "U.S." & all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
+# fit.direct_US <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "U.S.",], family = binomial("logit"))
 # (avg.pred.social.desirability_no_r_US <- predict(fit.list_no_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # -.06 95% CI: (-.15, .03)
 # (avg.pred.social.desirability_r_US <- predict(fit.list_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # .004 95% CI: (-.12, .13)
 # 
@@ -105,17 +105,17 @@ for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_
 # The difference test works by Monte Carlo (cf. below): by computing the difference of 10k draws of direct & indirect support (using their respective normal distributions) and computing the differences' mean and standard deviation.
 summary(lm(list_exp ~ branch_list_exp_g*continent, data = all, weights = all$weight))
 fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
-fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all[all$wave != "US2",], weights = weight, family = binomial("logit"))
+fit.direct <- glm(as.character(gcs_support) == 'Yes' ~ continent, data = all[all$wave != "US2",], weights = weight, family = binomial("logit"))
 (avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE, level = .8))
 
 summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "Europe",], weights = weight))
 fit.list_eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(eu$branch_list_exp_r == T, eu$weight), data = all[all$continent == "Europe",], weights = 'weight', method = "lm")
-fit.direct_eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Europe",], weights = weight, family = binomial("logit"))
+fit.direct_eu <- glm(as.character(gcs_support) == 'Yes' ~ 1, data = all[all$continent == "Europe",], weights = weight, family = binomial("logit"))
 (avg.pred.social.desirability_eu <- predict(fit.list_eu, direct.glm = fit.direct_eu, se.fit = TRUE, level = .8)) 
 
-summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "US",], weights = weight))
-fit.list_us <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(us1$branch_list_exp_r == T, us1$weight), data = all[all$continent == "US",], weights = 'weight', method = "lm")
-fit.direct_us <- glm(gcs_support == 'Yes' ~ 1, data = all[all$wave == "US1",], weights = weight, family = binomial("logit"))
+summary(lm(list_exp ~ branch_list_exp_g, data = all[all$continent == "U.S.",], weights = weight))
+fit.list_us <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(us1$branch_list_exp_r == T, us1$weight), data = all[all$continent == "U.S.",], weights = 'weight', method = "lm")
+fit.direct_us <- glm(as.character(gcs_support) == 'Yes' ~ 1, data = all[all$wave == "US1",], weights = weight, family = binomial("logit"))
 (avg.pred.social.desirability_us <- predict(fit.list_us, direct.glm = fit.direct_us, se.fit = TRUE, level = .8)) 
 
 same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g"), share_na_remove = 0.5,
@@ -123,7 +123,7 @@ same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported
                     filename = "reg_list_exp_g", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
                     add_lines = list(c(11, paste("\\hline  \\\\[-1.8ex] \\textit{Support for GCS} &", round(wtd.mean(all$gcs_support[all$wave != "US2"], weights = all$weight[all$wave != "US2"]), 3), " & ", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), " & ", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "\\\\")),
                                      c(12, paste("\\textit{Social desirability bias} & \\textit{$", round(avg.pred.social.desirability$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_us$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_eu$fit[3,1], 3),  "$}\\\\")),
-                                     c(13, paste("\\textit{80\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$}\\\\"))))
+                                     c(13, paste("\\textit{80\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us$fit[3,2], 2), ";", round(avg.pred.social.desirability_us$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu$fit[3,2], 2), ";", round(avg.pred.social.desirability_eu$fit[3,3], 2), "]$}\\\\"))))
 
 # /!\ Weighted list experiment regression is not supported (yet) for the multi-item design.
 # fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
