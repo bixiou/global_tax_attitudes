@@ -35,6 +35,7 @@ names(conjoint.attributes) <- conjoint_attributes # c("Economic.issues", "Societ
 # row.names(policies.names)[unique(which(policies.names %in% conjoint_attributes) %% 20)] <- conjoint_attributes
 
 countries_names <- c("France", "Germany", "Spain", "United Kingdom", "United States")
+countries_names_fr <- c("Allemagne", "Espagne", "États-Unis", "France", "Royaume-Uni")
 foreign_aid_actual <- c(.8, 1.3, .5, 1.7, .4)
 names(countries_names) <- names(foreign_aid_actual) <- countries <- c("FR", "DE", "ES", "UK", "US")
 names(countries) <- countries_names

@@ -1424,6 +1424,8 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
   if (any(c('middle-income', 'Middle-income', 'Middle income') %in% special) & length(levels) == 8)  up_labels <- c("Middle-income", levels)
   if (any(c("Eu", "Eu4", "EU4", "EU", "Europe") %in% special) & all(levels == countries_names)) up_labels <- c(levels[5], "Europe", levels[1:4])
   if (any(c("Eu", "Eu4", "EU4", "EU", "Europe") %in% special) & all(levels == countries_names[1:4])) up_labels <- c("Europe", levels[1:4])
+  if (any(c("Eu", "Eu4", "EU4", "EU", "Europe") %in% special) & all(levels == countries_names_fr)) up_labels <- c(levels[3], "Europe", levels[c(1,2,4,5)])
+  if (any(c("Eu", "Eu4", "EU4", "EU", "Europe") %in% special) & all(levels == countries_names_fr[1:4])) up_labels <- c("Europe", levels[c(1,2,4)])
   table <- array(NA, dim = c(nb_vars, length(c(special, levels))), dimnames = list(vars, up_labels))
   for (c in up_labels) {
     if (c %in% levels) { df_c <- e[e[[along]]==c,]

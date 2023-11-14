@@ -387,8 +387,10 @@ for (c in countries) {
   }
 }
 labels_vars_country$US["foreign_aid_no_nation_first"] <- "Charity begins at home: there is already a lot to do to support the American people in need"
+labels_vars_country$FR["gcs_support"] <- "Plan mondial pour le climat"
+labels_vars_country$FR["conjoint_left_ag_b_binary"] <- "Programme aléatoire : A+Plan préféré à B"
 
-fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL) {
+fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, labels = labels_vars) {
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type heatmaps_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
   # /!\ Bug if an object named 'heatmaps' exists in the environment.
   if (missing(list_var_list)) list_var_list <- list()
@@ -414,7 +416,7 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
     if (!"labels" %in% names(heatmaps[[name]])) {
       if (!"vars" %in% names(heatmaps[[name]])) { warning(paste("'vars' must be specified for", name)) }
       heatmaps[[name]]$labels <- c()
-      for (var in heatmaps[[name]]$vars) heatmaps[[name]]$labels <- c(heatmaps[[name]]$labels, break_strings(ifelse(var %in% names(labels_vars), labels_vars[var], var), sep = "\n"))
+      for (var in heatmaps[[name]]$vars) heatmaps[[name]]$labels <- c(heatmaps[[name]]$labels, break_strings(ifelse(var %in% names(labels), labels[var], var), sep = "\n"))
     }
     if (!"conditions" %in% names(heatmaps[[name]])) heatmaps[[name]]$conditions <- conditions
     if (!"sort" %in% names(heatmaps[[name]])) heatmaps[[name]]$sort <- sort
@@ -490,14 +492,15 @@ vars_heatmaps <- c("support", "other_policies", "climate_policies", "global_poli
                         "conjoint", "conjoint_a", "conjoint_b", "conjoint_c", "conjoint_d", "list_exp", "understood", "ets2_support", "ets2_no") # misses socio-demos, politics
 
 heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
+
 # heatmaps_defs$foreign_aid_no
 
-heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T, folder = NULL, name = NULL) {
+heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, weights = T, folder = NULL, name = NULL, along = "country_name") {
   for (heatmap in heatmaps) {
     vars_present <- heatmap$vars %in% names(data)
     # if (any(c("gcs_support", "nr_support", "gcs_support_100") %in% heatmap$vars)) data <- data[data$wave != "US2",]
     heatmap_wrapper(vars = heatmap$vars[vars_present], special = "Europe", data = data, labels = heatmap$labels[vars_present], name = if (is.null(name)) heatmap$name else name, conditions = heatmap$conditions, sort = heatmap$sort, 
-                    percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights, folder = folder)   
+                    percent = heatmap$percent, proportion = heatmap$proportion, nb_digits = heatmap$nb_digits, trim = trim, weights = weights, folder = folder, along = along)   
   }
 }
 
@@ -534,6 +537,7 @@ fill_barres <- function(list_var_list = NULL, plots = barres_defs, df = e, count
   # c <- if (deparse(substitute(df)) != "e") gsub("[0-9p]*", "",  deparse(substitute(df))) else if (length(unique(df$country)) == 1) unique(df$country)[1] else NULL
   c <- if (length(unique(df$country)) == 1) unique(df$country)[1] else NULL
   if (!is.null(c)) labels[names(labels_vars_country[[c]])] <- labels_vars_country[[c]]
+  if (!is.null(country)) labels[names(labels_vars_country[[country]])] <- labels_vars_country[[country]]
   if (missing(list_var_list)) list_var_list <- list()
   if (is.character(list_var_list)) {
     vec_vars <- list_var_list
@@ -725,6 +729,13 @@ for (c in countries) {
 e <- d("ES")
 barres_multiple(barres = fill_barres(c("global_tax_global_share"), list()), df = d("ES"), folder = paste0("../figures/ES/")) 
 e <- all
+
+# Plots in French
+# barres_multiple(barres = fill_barres("conjoint_left_ag_b_binary", list("gcs_support" = list(rev = T, rev_color = F)), country= "FR", along = "country_name"),  folder = paste0("../figures/FR/")) 
+heatmaps_defs_fr <- fill_heatmaps(c(), list("conjoint_left_ag_b_binary" = list(vars = "conjoint_left_ag_b_binary", conditions = c(">= 1")), 
+                                            "gcs_support" = list(vars = "gcs_support", conditions = ">= 1")), labels = labels_vars_country$FR)
+e$country_name_fr <- case_when(e$country_name == "United States" ~ "États-Unis", e$country_name == "France"  ~ "France", e$country_name == "Germany" ~ "Allemagne", e$country_name == "Spain" ~ "Espagne", e$country_name == "United Kingdom" ~ "Royaume-Uni")
+heatmap_multiple(heatmaps_defs_fr, along = "country_name_fr", folder = "../figures/FR/")
 
 
 ##### Heatmaps #####
