@@ -93,7 +93,7 @@ package("segmented")
 #' package("glmnet")
 #' # package("installr") # not for linux
 #' package("processx")
-#' package("readstata13")
+package("readstata13")
 #' package("permute")
 #' package("AER")
 #' package("ivmodel")

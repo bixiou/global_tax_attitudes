@@ -1841,6 +1841,11 @@ legend("topleft", legend = c("二氧化碳排放量", "基本收入", "碳价格
 par(op)
 dev.off()
 
+
+##### Chancel data #####
+wid <- read.dta13("../data/WID_world-pct-em-income.dta")
+
+
 # plot(2025:2080, sapply(2025:2080, function(y) sum(df[[paste0("adult_", y)]], na.rm = T)), type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)")
 
 # 
