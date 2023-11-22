@@ -1844,6 +1844,41 @@ dev.off()
 
 ##### Chancel data #####
 wid <- read.dta13("../data/WID_world-pct-em-income.dta")
+wid <- rbind(t(sapply(1:5, function(i) c(pctile = i, wid[1, 2:4]/5))), wid[2:96,])
+for (i in 1:4) wid[[i]] <- unlist(wid[[i]])
+mean(wid$emissions)
+
+emissions_reduction_factor <- 0.9
+price <- 100
+# emissions_reduction_factor <- 0.7
+# price <- 200
+wid$post_emissions <- wid$emissions * emissions_reduction_factor
+(basic_income <- sum(price * wid$post_emissions)/1200) # 44; (0.7, 200) => 68
+wid$post_income <- wid$income + basic_income*12 - price * wid$post_emissions # basic income, carbon price
+
+# max_gap(sum(wid$income), sum(wid$post_income)) # check that mean income is preserved
+sum(wid$post_income > wid$income) # 71% of winners
+
+wid$diff_income <- stats::filter(sort(wid$post_income - wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
+wid$diff_income[is.na(wid$diff_income)] <- sort(wid$post_income - wid$income, decreasing = T)[is.na(wid$diff_income)]
+wid$diff_income[98:100] <- (wid$post_income - wid$income)[98:100]
+wid$variation_income <- stats::filter(sort((wid$post_income - wid$income)/wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
+wid$variation_income[is.na(wid$variation_income)] <- sort((wid$post_income - wid$income)/wid$income, decreasing = T)[is.na(wid$variation_income)]
+
+# BOOK Figure
+mar <- par()$mar
+par(mar = c(4.1, 4.1, 0.3, 0.1))
+plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en $/mois)")
+lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
+legend("topleft", legend = list("actuel", "suite au Plan"), col = c("red", "darkgreen"), title = "Niveau de vie", lwd = 2, lty = c(1,2))
+plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
+plot(1:100, wid$diff_income, col = "blue", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en $/an)") + grid() + abline(h = 0)
+plot(1:100, 100*wid$variation_income, col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
+
+# plot(1:100, 100*sort(pmin(6, (wid$post_income - wid$income)/wid$income), decreasing = T)[1:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 5), xlab = "Percentile de revenus", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
+# plot(1:99, sort(wid$post_income - wid$income, decreasing = T)[1:99], col = "blue", lwd = 2, type = 'l', xlab = "Percentile de revenus", ylab = "Variation de niveau de vie suite au Plan (en $/an)") + grid() + abline(h = 0)
+# plot(1:100, 100*sort((wid$post_income - wid$income)/wid$income, decreasing = T), col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.02, 0.05), xlab = "Percentile de revenus", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
+
 
 
 # plot(2025:2080, sapply(2025:2080, function(y) sum(df[[paste0("adult_", y)]], na.rm = T)), type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)")
