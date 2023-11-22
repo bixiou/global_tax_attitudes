@@ -1873,7 +1873,9 @@ lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2
 legend("topleft", legend = list("actuel", "suite au Plan"), col = c("red", "darkgreen"), title = "Niveau de vie", lwd = 2, lty = c(1,2))
 plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
 plot(1:100, wid$diff_income, col = "blue", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en $/an)") + grid() + abline(h = 0)
-plot(1:100, 100*wid$variation_income, col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
+plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
+
+# plot(1:100, 100*wid$variation_income, col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
 
 # plot(1:100, 100*sort(pmin(6, (wid$post_income - wid$income)/wid$income), decreasing = T)[1:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 5), xlab = "Percentile de revenus", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
 # plot(1:99, sort(wid$post_income - wid$income, decreasing = T)[1:99], col = "blue", lwd = 2, type = 'l', xlab = "Percentile de revenus", ylab = "Variation de niveau de vie suite au Plan (en $/an)") + grid() + abline(h = 0)
