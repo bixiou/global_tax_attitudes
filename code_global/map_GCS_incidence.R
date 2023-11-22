@@ -25,6 +25,8 @@ pop_adult_iso3 <- aggregate(adult ~ year + code, data = pop_adult, FUN = sum)
 names(pop) <- c("country", "ISO2_code", "code", "year", "AgeGrpStart", "pop")
 pop_iso3 <- aggregate(pop ~ year + code, data = pop, FUN = sum)
 pop_iso3 <- merge(pop_iso3, pop_adult_iso3)
+iso2to3 <- setNames(pop$code, pop$ISO2_code)
+
 
 ##### CO2 emissions data #####
 # source: https://ourworldindata.org/co2-emissions#how-do-consumption-based-emissions-compare-to-production-based-emissions CO2 emissions from fossil fuels and industry. Land use change is not included.
@@ -1810,7 +1812,7 @@ cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the differen
               col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", "\\makecell{EU loss in 2040\\\\(share of its GDP)}")), collapse="\n"), file = "../tables/scenarios_table.tex") 
 scenarios_table_fr <- scenarios_table
 scenarios_table_fr$scenario <- c("Tous les pays", "Tous sauf OPEP+", "Optimiste", "Prudent", "UE + Chine + gagnants", "UE + Afrique")
-cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios de club climatique.", position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table_fr", row.names = FALSE,  
+cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios de club climatique.", position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
               col.names = c("\\makecell{Scenario\\\\de club}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", "\\makecell{Revenu de base\\\\en 2040\\\\(\\$/mois)}", "\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}")), collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
 
 
@@ -1857,7 +1859,6 @@ wid$post_emissions <- wid$emissions * emissions_reduction_factor
 wid$post_income <- wid$income + basic_income*12 - price * wid$post_emissions # basic income, carbon price
 
 # max_gap(sum(wid$income), sum(wid$post_income)) # check that mean income is preserved
-sum(wid$post_income > wid$income) # 71% of winners
 
 wid$diff_income <- stats::filter(sort(wid$post_income - wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
 wid$diff_income[is.na(wid$diff_income)] <- sort(wid$post_income - wid$income, decreasing = T)[is.na(wid$diff_income)]
@@ -1867,13 +1868,41 @@ wid$variation_income[is.na(wid$variation_income)] <- sort((wid$post_income - wid
 
 # BOOK Figure
 mar <- par()$mar
-par(mar = c(4.1, 4.1, 0.3, 0.1))
+mgp <- par()$mgp
+par(mar = c(3.1, 3.1, 0.3, 0.2), mgp = c(2.2, 1, 0)) # width: 342, height: 312
 plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en $/mois)")
 lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
 legend("topleft", legend = list("actuel", "suite au Plan"), col = c("red", "darkgreen"), title = "Niveau de vie", lwd = 2, lty = c(1,2))
-plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
-plot(1:100, wid$diff_income, col = "blue", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en $/an)") + grid() + abline(h = 0)
-plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
+plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en $/an)") + grid() + abline(h = 0)
+plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
+plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
+
+sum(wid$post_income > wid$income) # 71% of winners
+sum((wid$post_income - wid$income)[wid$post_income > wid$income])/sum(wid$income) # 1.3% redistributed
+Gini(wid$income) # .675
+Gini(wid$post_income) # .657
+wid$income[90]/wid$income[10] # 54
+wid$post_income[90]/wid$post_income[10] # 32
+wid$income[90]/wid$income[50] # 5.55
+wid$post_income[90]/wid$post_income[50] # 5.27
+sum(wid$income[91:100])/sum(wid$income) # 53%
+sum(wid$post_income[91:100])/sum(wid$post_income) # 52%
+sum(wid$income[100])/sum(wid$income) # 19.6%
+sum(wid$post_income[100])/sum(wid$post_income) # 19.1%
+sum(wid$income[1:50])/sum(wid$income) # 8.5%
+sum(wid$post_income[1:50])/sum(wid$post_income) # 9.6%
+sum(wid$income[91:100])/sum(wid$income[1:40]) # 10.4
+sum(wid$post_income[91:100])/sum(wid$post_income[1:40]) # 8.5
+
+(table_ineq <- cbind("top10" = 100*c(sum(wid$income[91:100])/sum(wid$income), sum(wid$post_income[91:100])/sum(wid$post_income)), "bottom50" = 100*c(sum(wid$income[1:50])/sum(wid$income), sum(wid$post_income[1:50])/sum(wid$post_income)),
+                    "Gini" = 100*c(Gini(wid$income), Gini(wid$post_income)), "D9/D1" = c(wid$income[90]/wid$income[10], wid$post_income[90]/wid$post_income[10]),
+                    "Palma" = c(sum(wid$income[91:100])/sum(wid$income[1:40]), sum(wid$post_income[91:100])/sum(wid$post_income[1:40]))))
+row.names(table_ineq) <- c("Avant", "Après")
+cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", paste(kbl(table_ineq, "latex", caption = "Évolution de l'inégalité mondiale suite au Plan.", position = "b", escape = F, booktabs = T, digits = 1, label = "gcp_ineq", align = 'c', format.args = list(decimal = ","),
+              col.names = c("\\makecell{Top 10~\\%\\\\(part en \\%)}", "\\makecell{Bottom 50~\\%\\\\(part en \\%)}", "\\makecell{Gini (en \\%)}", "\\makecell{D9/D1\\\\Ratio\\\\inter-décile}", "\\makecell{Top 10~\\% sur\\\\Bottom 40~\\%\\\\(ratio des parts)}")), collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") 
+
+# plot(stats::density(log10(wid$income)), col = "red")
+# lines(stats::density(log10(wid$post_income)), col = "darkgreen")
 
 # plot(1:100, 100*wid$variation_income, col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
 
@@ -1882,6 +1911,39 @@ plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l'
 # plot(1:100, 100*sort((wid$post_income - wid$income)/wid$income, decreasing = T), col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.02, 0.05), xlab = "Percentile de revenus", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
 
 
+##### Bruckner et al. (22) #####
+country_distr <- read.xlsx("../data/bruckner.xlsx") # /!\ Elasticities are generally > 1, i.e. larger carbon intensities for richer households within a country
+deciles <- data.frame("country" = unique(country_distr$ctry_iso3))
+for (i in 1:10) for (c in deciles$country) deciles[[paste0("footprint_d", i)]][deciles$country == c] <- country_distr$CF_decile[country_distr$ctry_iso3 == c & country_distr$decile == i]
+deciles$winning <- rowSums(deciles[, 2:11] < 3.2) # World average carbon footprint is 3.2 tCO2 according to their 2014 data
+country_names <- setNames(co2_pop$country_map, co2_pop$code)
+deciles$country_map <- country_names[deciles$country]
+
+plot_world_map("winning", df = deciles,  breaks = seq(-0.5, 10.5, 1), format = c('png', 'pdf'), legend_x = .045, trim = T, # svg, pdf
+               labels = paste0(seq(0, 100, 10), " %"), legend = "Part de gagnants", 
+               save = T) 
+
+
+##### World Inequality Database #####
+# 2019 World average carbon footprint (all gases): 5.97237587 tCO2eq
+# All WID data downloaded from https://wid.world/data/ on Nov 22, 2023
+wid_countries <- read.csv2("../data/wid_all_data/WID_countries.csv")$alpha2
+percentiles <- data.frame("iso2" = wid_countries[!grepl("-", wid_countries)])
+for (c in percentiles$iso2) {
+  dataC <- read.csv2(paste0("../data/wid_all_data/WID_data_", c, ".csv"))
+  for (i in unique(dataC$percentile[dataC$variable == "lpfghgi999" & dataC$year == 2019])) percentiles[[i]][percentiles$iso2 == c] <- dataC$value[dataC$variable == "lpfghgi999" & dataC$year == 2019 & dataC$percentile == i]
+}
+percentiles$code <- iso2to3[percentiles$iso2]
+percentiles$country_map <- country_names[percentiles$code]
+write.csv(percentiles, "../data/wid_emissions_percentiles.csv")
+percentiles$share_below_global_mean <- rowSums(percentiles[, sapply(0:99, function(i) paste0("p", i, "p", i+1))] < 5.97237587)
+
+plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = seq(-0.5, 100.5, 1), format = c('png', 'pdf'), legend_x = .045, trim = T, # svg, pdf
+               labels = paste0(seq(0, 100, 1), " %"), legend = "Part de gagnants", 
+               save = T) 
+plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),], continuous = T, format = c('png', 'pdf'), legend_x = .045, trim = T, # svg, pdf
+               legend = "Part de gagnants", limits = c(0, 100), breaks = seq(-0.5, 100.5, 1), labels = paste0(seq(0, 100, 1), " %"), 
+               save = F) 
 
 # plot(2025:2080, sapply(2025:2080, function(y) sum(df[[paste0("adult_", y)]], na.rm = T)), type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)")
 

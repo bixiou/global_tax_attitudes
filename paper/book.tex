@@ -545,6 +545,7 @@ Par exemple, l'État français pourrait apporter ce financement et rembourser ai
 
 \chapter{Un transfert massif vers les pays du Sud\label{ch:effets_distributifs}}
 % Le plan mondial pour le climat : les effets distributifs dans le monde (évolution de la distrib mondiale des revenus + % de gagnants par pays + carte des pays gagnants et perdants)
+% 1.3% redistributed / 71% of winners
 
 % TODO! Pb with using Gütschow et al. (21) + price from SSP_CMIP6: 1. scenarios of GDP pc unrealistic (e.g. 25% annual growth in DRC over 2019-23), 2. GDP is in PPP while price is in MER, 3. emissions are territorial => Underestimation of gains over GDP in low-income countries.
 \begin{figure}[h!]
@@ -566,7 +567,7 @@ Par exemple, l'État français pourrait apporter ce financement et rembourser ai
   % \caption{Distribution des niveaux de vie avant/après le Plan.}
   \caption{Distribution avant/après.}
   \includegraphics[width=\textwidth]{../figures/policies/gcp_rev_distr.pdf}
-\end{subfigure}
+\end{subfigure} \quad
 \begin{subfigure}{.5\textwidth}
   % \caption{Variation absolue de niveaux de vie}
   \caption{Variation absolue}
@@ -577,13 +578,17 @@ Par exemple, l'État français pourrait apporter ce financement et rembourser ai
   % \caption{Variation relative de niveaux de vie}
   \caption{Variation relative}
   \includegraphics[width=\textwidth]{../figures/policies/gcp_var_rev.pdf}
-\end{subfigure}
+\end{subfigure} \quad
 \begin{subfigure}{.5\textwidth}
   % \caption{Variation relative de niveaux de vie (zoom sur les plus riches)}
-  \caption{Variation relative (riches)}
+  \caption{Variation relative (top 50~\%)}
   \includegraphics[width=\textwidth]{../figures/policies/gcp_var_rev_rich_only.pdf}
 \end{subfigure}
+{\footnotesize \textit{Note:} Calcul de l'auteur à partir d'un prix à 100 \$/tCO$_\text{2}$ et 10~\% de réduction d'émissions, ce qui donne un revenu de base à 44~\$/mois. Données~: empreinte carbone par percentile de revenus. Source~: Lucas Chancel (World Inequality Database).}
 \end{figure}
+
+\input{../tables/gcp_ineq.tex}
+
 
 \chapter{Un pas vers un monde soutenable\label{ch:premier_pas}} % Une des briques d'un monde soutenable
 % Un pas vers un monde soutenable (le Plan n'est pas suffisant, il doit être complémenté d'autres mesures climatiques (nationales, sectorielles), d'autres mesures de redistribution mondiale (impôt sur la fortune), et l'objectif de long terme doit être d'assurer les conditions nécessaires au bien-être à chaque humain)
@@ -1103,7 +1108,7 @@ Il revient maintenant au public et aux responsables politiques de reprendre cett
 
 \listoftables
 \listoffigures
-% \section{Fin} % TODO! remerciements: Isabelle Tallec,  Robert Philippe, Bluebery Planterose, Opal Ocean
+% \section{Fin} % TODO! remerciements: Isabelle Tallec,  Robert Philippe, Bluebery Planterose, Opal Ocean, Lucas Chancel
 
 \end{document}
 

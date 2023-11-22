@@ -62,6 +62,7 @@ package("sf") # merge boundaries in maps
 # package("gissr", github = "skgrange") # merge boundaries in maps
 # package("maps") # merge boundaries in maps
 package("rnaturalearth")
+# package("ggfortify") # density plot
 #' package("rms")
 #' package('pwr')
 #' package("foreign")
@@ -88,12 +89,14 @@ package("descr") # CrossTable
 # package("quantreg")
 package("segmented")
 #' package("rcompanion")
-#' package("DescTools")
+package("DescTools") # Gini
 #' # package("VCA")
 #' package("glmnet")
 #' # package("installr") # not for linux
 #' package("processx")
 package("readstata13")
+# devtools::install_github("WIDworld/wid-r-tool")
+# package("wid-r-tool", github = "WIDworld")
 #' package("permute")
 #' package("AER")
 #' package("ivmodel")
@@ -2027,7 +2030,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
 
   df_na <- data.frame(country_map = setdiff(world_map$region, df_countries), mean = if (fill_na) breaks[2] else NA)
   df <- merge(df, df_na, all = T)
-  
+  # print(df)
   df$group <- cut(df$mean, breaks = breaks, labels = labels)
   
   if (!continuous) {
@@ -2035,9 +2038,9 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
        geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + # coord_fixed() +
        scale_fill_manual(name = legend, drop = FALSE, values = color(length(breaks)-1, rev_color = rev_color), labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
   } else {
-    (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map) + coord_proj("+proj=robin") + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
-       geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + coord_fixed() +
-       scale_fill_manual(palette = "RdBu", direction = 1, limits = limits, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
+    (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj")
+       geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + #coord_fixed() +
+       scale_fill_manual(palette = "RdBu", limits = limits, na.value = "grey50")) #direction = 1,  #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
   }
 
   print(plot)
