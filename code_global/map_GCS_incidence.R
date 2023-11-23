@@ -26,6 +26,7 @@ names(pop) <- c("country", "ISO2_code", "code", "year", "AgeGrpStart", "pop")
 pop_iso3 <- aggregate(pop ~ year + code, data = pop, FUN = sum)
 pop_iso3 <- merge(pop_iso3, pop_adult_iso3)
 iso2to3 <- setNames(pop$code, pop$ISO2_code)
+iso2to3["NA"] <- "NAM"
 
 
 ##### CO2 emissions data #####
@@ -1925,25 +1926,28 @@ plot_world_map("winning", df = deciles,  breaks = seq(-0.5, 10.5, 1), format = c
 
 
 ##### World Inequality Database #####
-# 2019 World average carbon footprint (all gases): 5.97237587 tCO2eq
-# All WID data downloaded from https://wid.world/data/ on Nov 22, 2023
-wid_countries <- read.csv2("../data/wid_all_data/WID_countries.csv")$alpha2
-percentiles <- data.frame("iso2" = wid_countries[!grepl("-", wid_countries)])
-for (c in percentiles$iso2) {
-  dataC <- read.csv2(paste0("../data/wid_all_data/WID_data_", c, ".csv"))
-  for (i in unique(dataC$percentile[dataC$variable == "lpfghgi999" & dataC$year == 2019])) percentiles[[i]][percentiles$iso2 == c] <- dataC$value[dataC$variable == "lpfghgi999" & dataC$year == 2019 & dataC$percentile == i]
-}
-percentiles$code <- iso2to3[percentiles$iso2]
-percentiles$country_map <- country_names[percentiles$code]
-write.csv(percentiles, "../data/wid_emissions_percentiles.csv")
-percentiles$share_below_global_mean <- rowSums(percentiles[, sapply(0:99, function(i) paste0("p", i, "p", i+1))] < 5.97237587)
+# # 2019 World average carbon footprint (all gases): 5.97237587 tCO2eq (from wid.world/data)
+# # All WID data downloaded from https://wid.world/data/ on Nov 22, 2023
+# wid_countries <- read.csv2("../data/wid_all_data/WID_countries.csv", na.strings = c())$alpha2
+# percentiles <- data.frame("iso2" = wid_countries[!grepl("-", wid_countries)])
+# for (c in percentiles$iso2) {
+#   dataC <- read.csv2(paste0("../data/wid_all_data/WID_data_", c, ".csv"))
+#   for (i in unique(dataC$percentile[dataC$variable == "lpfghgi999" & dataC$year == 2019])) percentiles[[i]][percentiles$iso2 == c] <- as.numeric(dataC$value[dataC$variable == "lpfghgi999" & dataC$year == 2019 & dataC$percentile == i])
+# }
+# percentiles$code <- iso2to3[percentiles$iso2]
+# percentiles$country_map <- country_names[percentiles$code]
+# percentiles$share_below_global_mean <- rowSums(percentiles[, sapply(0:99, function(i) paste0("p", i, "p", i+1))] < 5.97237587) # percentiles$p0p100[percentiles$iso2 == "WO"]
+# write.csv(percentiles, "../data/wid_emissions_percentiles.csv")
 
-plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = seq(-0.5, 100.5, 1), format = c('png', 'pdf'), legend_x = .045, trim = T, # svg, pdf
-               labels = paste0(seq(0, 100, 1), " %"), legend = "Part de gagnants", 
+percentiles <- read.csv("../data/wid_emissions_percentiles.csv")
+
+plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% à ", end = "%", return = "levels")), legend = "Part de gagnants", 
                save = T) 
-plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),], continuous = T, format = c('png', 'pdf'), legend_x = .045, trim = T, # svg, pdf
+plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),], continuous = T, format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
                legend = "Part de gagnants", limits = c(0, 100), breaks = seq(-0.5, 100.5, 1), labels = paste0(seq(0, 100, 1), " %"), 
-               save = F) 
+               save = T) 
+
 
 # plot(2025:2080, sapply(2025:2080, function(y) sum(df[[paste0("adult_", y)]], na.rm = T)), type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)")
 
