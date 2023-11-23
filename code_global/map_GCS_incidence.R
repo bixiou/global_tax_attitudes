@@ -1010,7 +1010,7 @@ for (r in message_regions) co2_pop$gdp_over_region[message_region_by_code[co2_po
 # Define rights to emit i.e. allocation key, for equal pc C&C and GDR
 # co2_pop$gain_gdr_over_gdp_2030[co2_pop$country == "China"] # 7%
 
-# TODO Historical resp: NPV equal pc + climate debt until today. Use function cumulative_emissions 
+# TODO! Historical resp: NPV equal pc + climate debt until today. Use function cumulative_emissions 
 
 ##### GCS Policy brief #####
 # Total revenues in % of global GDP
@@ -1433,7 +1433,7 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 # /!\ Problem with this (and all other available) data: emissions are territorial, not footprint.
 # /!\ Problem specific with this data: GDP is in PPP, not nominal (though carbon price is nominal)
 # Gütschow et al. (21) exclude LULUCF emissions
-# TODO! Run Gidden's R routine for country-downscaling (cf. email, he doesn't want to share the output) https://github.com/iiasa/emissions_downscaling
+# TODO!! Run Gidden's R routine for country-downscaling (cf. email, he doesn't want to share the output) https://github.com/iiasa/emissions_downscaling
 # TODO! Use Battiston et al. (22) data: it goes only until 2050 but it includes a global carbon price
 # Scenario sm should be chosen by default
 # TODO! Find nominal GDP estimates => rob.dellink@oecd.org will produce MER GDP by country for the SSPs in August/September
@@ -1475,7 +1475,7 @@ ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "
 prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) { # GDP is in PPP
   # TODO! Pb: scenarios of GDP pc are unrealistic: 14% annual growth in DRC over 2019-30 (25% over 2019-23 and 8% over 2023-30), 7% over 2030-40, 6% 2040-50. => Underestimation of gains over GDP in low-income countries.
   # Uses country, country_map and adult_ from co2_pop
-  # TODO: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030 
+  # TODO!!: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030 
   # TODO: streamline fetching of carbon_price
   # sum(is.na(ssp2_26_country)) # 1134
   # sum(is.na(ssp2_26_country[!ssp2_26_country$code %in% c("SSD", "TWN", "PRK", "FSM"),])) # 0
@@ -1968,18 +1968,33 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 
 # plot(2025:2080, sapply(2025:2080, function(y) sum(df[[paste0("adult_", y)]], na.rm = T)), type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)")
 
-# 
-# ##### Downscaled data from Richters (et al.) (22) #####
+
+##### Downscaled data from Richters et al. (23) #####
+# Goes until 2100 (contrary to Richters et al. (22)). Fully downscaled, with all variables needed. This is NGFS v4.1 https://data.ece.iiasa.ac.at/ngfs/#/downloads
+# Pb: CO2 prices are not uniform (but check, they may not differ that much between countries.)
+# temp <- read.xlsx("../data/NGFS/Downscaled_MESSAGEix-GLOBIOM 1.1-M-R12_data.xlsx") # max gap: MESSAGE: 44% (Delayed transition & Below 2°C - but Low demand also interesting as the peak gap of 85% is in 2080 and it's < 10% before 2050, and same for Net  2050 (with peak 42% and <25%)); REMIND 90%; GCAM 70%
+# temp <- temp[temp$Variable %in% c("Price|Carbon", "Emissions|CO2", "GDP|PPP|Counterfactual without damage", "Net GDP|PPP|median damage|KW panel population-weighted GMT AR6 climate diagnostics Surface Temperature (GSAT) MAGICCv7.5.3|50.0th Percentile", 
+#                                   "Revenue|Government|Tax|Carbon", "Carbon Sequestration|CCS", "Emissions|Total Non-CO2", "Emissions|CO2|Energy and Industrial Processes", "Revenue|Government|Tax|Carbon"), 
+#              c("Scenario", "Region", "Variable", 2000 + seq(20, 100, 10))] # IAM_data contains Price|Carbon, Temperature (peaking at 1.64° in Net Zero 2050), GDP|MER per world region and the whole world, etc.
+# test <- temp[temp$Variable == "Price|Carbon", c("Scenario", "Region", 2000 + seq(20, 100, 10))]
+# unique(test$Scenario) # Best scenarios is MESSAGE Net Zero 2050 as it's where prices are close to uniform until 2050, BUT prices are very high (700$ in 2030). (Pb: with Low demand which is also in this situation: there is no GDP data for it)
+# for (s in unique(test$Scenario)) for (y in c(2000 + seq(20, 100, 10))) print(paste("max_gap", s, y, gap(test[[as.character(y)]][test$Scenario == s])))
+# sort(setNames(test$`2040`[test$Scenario == "Below 2°C"], test$Region[test$Scenario == "Below 2°C"])) # Price is lowest in Australia-Japan and highest in EU
+# sort(setNames(test$`2050`[test$Scenario == "Delayed transition"], test$Region[test$Scenario == "Delayed transition"])) # Price is lowest in Indonesia-Korea and highest in Latin America
+# sort(setNames(test$`2080`[test$Scenario == "Net Zero 2050"], test$Region[test$Scenario == "Net Zero 2050"])) # Price is lowest in Australia-Japan and highest in EU
+
+
+##### Downscaled data from Richters (et al.) (22) #####
 # ngfs <- read.xlsx("../data/NGFS/downscaled_data.xlsx") # Covers only 2010-2050 (but contains all variables I need)
 # ngfs <- read.xlsx("../data/NGFS/IAM_data.xlsx") # Only GDP PPP is downscaled, Pop is absent. Richters et al. (22) [https://zenodo.org/record/7198430](https://zenodo.org/record/7198430)
 # names(ngfs)[1:5] <- c("model", "scenario", "country", "entity", "unit")
 # unique(ngfs$scenario) # Below 2°C (1.6 °C in 2100 as >67% chance below 2°C throughout century), Current Policies, Delayed transition (2°C but late), Divergent Net Zero (2°C but disorderly), Nationally Determined Contributions (NDCs), Net Zero 2050 (1.4 °C)
-# unique(ngfs$entity) # "net GDP|PPP|median damage|KW panel population-weighted GMT AR6 climate diagnostics Surface Temperature (GSAT) MAGICCv7.5.3|50.0th Percentile", "GDP|PPP|including medium chronic physical risk damage estimate", "Emissions|CO2", "Emissions|CO2|AFOLU", "Emissions|CO2|Energy and Industrial Processes", "Emissions|Kyoto Gases", "Emissions|Kyoto Gases|AFOLU", "Emissions|N2O", 
+# unique(ngfs$entity) # "net GDP|PPP|median damage|KW panel population-weighted GMT AR6 climate diagnostics Surface Temperature (GSAT) MAGICCv7.5.3|50.0th Percentile", "GDP|PPP|including medium chronic physical risk damage estimate", "Emissions|CO2", "Emissions|CO2|AFOLU", "Emissions|CO2|Energy and Industrial Processes", "Emissions|Kyoto Gases", "Emissions|Kyoto Gases|AFOLU", "Emissions|N2O",
 # # "Emissions|N2O|AFOLU", SF6, PFC, NOx, CH4, HFC, "GDP|PPP|Counterfactual without damage", "Population", "Price|Carbon", "Revenue|Government|Tax|Carbon", "Concentration|CO2", "AR6 climate diagnostics|Surface Temperature (GSAT)|MAGICCv7.5.3|50.0th Percentile", "Temperature|Global Mean", "Price|Carbon|SCC", "GDP|PPP|including chronic physical risk damage estimate"
 # # sum(nchar(unique(ngfs$Region)) == 3)
 # unique(ngfs$country) # 180 + World + each model regions (243 regions in total)
 # unique(ngfs$model) # GCAM, MESSAGEix-GLOBIOM, REMIND-MAgPIE, REMIND-MAgPIE 3.0-4.4 IntegratedPhysicalDamages (95th-high), REMIND-MAgPIE 3.0-4.4 IntegratedPhysicalDamages (median)
-# ngfs <- ngfs %>% .[.$scenario %in% c("Below 2°C", "Net Zero 2050") & nchar(.$country) == 3 & .$entity %in% c("net GDP|PPP|median damage|KW panel population-weighted GMT AR6 climate diagnostics Surface Temperature (GSAT) MAGICCv7.5.3|50.0th Percentile", "GDP|PPP|including medium chronic physical risk damage estimate", "Emissions|CO2", "Emissions|CO2|Energy and Industrial Processes", "GDP|PPP|Counterfactual without damage", 
+# ngfs <- ngfs %>% .[.$scenario %in% c("Below 2°C", "Net Zero 2050") & nchar(.$country) == 3 & .$entity %in% c("net GDP|PPP|median damage|KW panel population-weighted GMT AR6 climate diagnostics Surface Temperature (GSAT) MAGICCv7.5.3|50.0th Percentile", "GDP|PPP|including medium chronic physical risk damage estimate", "Emissions|CO2", "Emissions|CO2|Energy and Industrial Processes", "GDP|PPP|Counterfactual without damage",
 #                                                                                        "Population", "Price|Carbon", "Revenue|Government|Tax|Carbon", "Concentration|CO2", "Temperature|Global Mean", "Price|Carbon|SCC", "GDP|PPP|including chronic physical risk damage estimate"),] #  & !grepl("IntegratedPhysicalDamages", .$model)
 # ngfs <- ngfs.bak
 # # Kyoto gases: CO2, CH4, N2O, SF6, HFC, PFC. EU ETS: CO2, N2O, PFC.
@@ -1989,16 +2004,16 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 # # if GCAM, MESSAGE or REMIND (not IntegratedPhysicalDamages)
 # ngfs$entity[ngfs$entity == "GDP|PPP|including medium chronic physical risk damage estimate"] <- "GDPPPP" # could also be net GDP|PPP|median damage|KW panel population-weighted GMT AR6 climate diagnostics Surface Temperature (GSAT) MAGICCv7.5.3|50.0th Percentile
 # # # if REMIND-MAgPIE 3.0-4.4 IntegratedPhysicalDamages (median)
-# # ngfs$entity[ngfs$entity == "GDP|PPP|Counterfactual without damage"] <- "GDPPPP" 
+# # ngfs$entity[ngfs$entity == "GDP|PPP|Counterfactual without damage"] <- "GDPPPP"
 # write.csv(ngfs, "../data/NGFS.csv", row.names = FALSE)
 # ngfs <- read.csv("../data/NGFS.csv")
 # 
-# copy_from_co2_pop <- c("country", "country_map", "gdr_pa_2030", # These three are absolutely needed 
+# copy_from_co2_pop <- c("country", "country_map", "gdr_pa_2030", # These three are absolutely needed
 #                        "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
 # 
 # prepare_ngfs_country <- function(scenario = "Below 2°C", ssps = ngfs, df = co2_pop, keep_from_df = copy_from_co2_pop) {
 #   # Uses country, country_map and adult_ from co2_pop
-#   # TODO: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030 
+#   # TODO: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030
 #   # sum(is.na(ssp2_26_country)) # 1134
 #   # sum(is.na(ssp2_26_country[!ssp2_26_country$code %in% c("SSD", "TWN", "PRK", "FSM"),])) # 0
 #   # setdiff(co2_pop$code, ssp2_26_country$code) # small islands and small countries, Palestine
@@ -2008,13 +2023,13 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 #     twn <- df[df$code == "KOR",]
 #     twn$code <- "TWN"
 #     twn$country <- twn$country_map <- "Taiwan"
-#     for (y in c(2023, seq(2020, 2100, 10))) { 
+#     for (y in c(2023, seq(2020, 2100, 10))) {
 #       twn[[paste0("pop_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$pop[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$pop[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
 #       twn[[paste0("adult_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$adult[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$adult[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
-#     } 
+#     }
 #     df <- rbind(df, twn)
 #   }
-#   ssps <- ssps[ssps$country %in% df$code & !ssps$country %in% c("FSM", "GRD"),] # "SSD", "TWN", "PRK", 
+#   ssps <- ssps[ssps$country %in% df$code & !ssps$country %in% c("FSM", "GRD"),] # "SSD", "TWN", "PRK",
 #   ssp <- data.frame(code = c(unique(ssps$country), "SSD", "TWN", "PRK"))
 #   for (y in 2020:2100) { # Years span 1850:2100
 #     if (sum(ssps$entity == "POP") != 0) ssp[[paste0("pop_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "POP"], ssps$country[ssps$scenario == scenario & ssps$entity == "POP"])[ssp$code]
@@ -2045,17 +2060,17 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 #   return(ssp)
 # }
 # 
-# cs <- prepare_ngfs_country(scenario = "Below 2°C", ssps = ngfs[grepl("GCAM", ngfs$model),]) 
-# cs <- create_var_ssp(df = cs) 
+# cs <- prepare_ngfs_country(scenario = "Below 2°C", ssps = ngfs[grepl("GCAM", ngfs$model),])
+# cs <- create_var_ssp(df = cs)
 # 
 # for (y in years[4]) plot_world_map(paste0("gain_adj_over_gdp_", y), df = cs, breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-#          labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
+#          labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")),
 #          legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in % of GDP)"), #fill_na = T,
-#          save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+#          save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030))
 # for (df in c("cs")) plot_world_map("npv_over_gdp_gcs_adj", df = d(df), breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .03, .1, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf
 #          labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .03, .1, Inf)*100, sep = " to ", return = "levels")), filename = paste0("npv_over_gdp_gcs_adj_", df), # .003, .01, .03
 #          legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
-#          save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+#          save = F) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030))
 # 
 # 
 # 
