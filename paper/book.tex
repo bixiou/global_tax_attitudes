@@ -1,4 +1,3 @@
-% TODO! 6 distrib
 % TODO? un acroynyme tout du long ? e.g. Programme de Diminution des Inégalités et des Gaz à Effet de Serre PRODIGES
 % TODO? résumé en fin de cha des points saillants qui viennent d'être vus, annonce en début de cha des objectifs du chapitr
 % TODO! narration en préface, au début du cœur, du soutien, des premiers pas
@@ -25,6 +24,7 @@
   linkcolor=blue,  % color of toc, list of figs etc.
   citecolor=violet,   % color of links to bibliography
 }
+\usepackage{rotating}
 \usepackage{bm}
 \usepackage{indentfirst}
 \usepackage{tocbibind}
@@ -543,60 +543,101 @@ Par exemple, l'État français pourrait apporter ce financement et rembourser ai
 
 
 
-\chapter{Un transfert massif vers les pays du Sud\label{ch:effets_distributifs}}
+\chapter{Un transfert important vers les pays du Sud\label{ch:effets_distributifs}}
 % Le plan mondial pour le climat : les effets distributifs dans le monde (évolution de la distrib mondiale des revenus + % de gagnants par pays + carte des pays gagnants et perdants)
-% 1.3% redistributed / 71% of winners
 
-% TODO! Pb with using Gütschow et al. (21) + price from SSP_CMIP6: 1. scenarios of GDP pc unrealistic (e.g. 25% annual growth in DRC over 2019-23), 2. GDP is in PPP while price is in MER, 3. emissions are territorial => Underestimation of gains over GDP in low-income countries.
+On l'a vu au Chapitre \ref{ch:coeur}, le Plan mondial pour le climat opérerait une redistribution des personnes avec une empreinte carbone plus élevée que la moyenne mondiale vers celles avec une empreinte carbone plus faible. Dans ce chapitre, je présente des estimations des effets du Plan sur la répartition mondiale des niveaux de vie, la part de personnes gagnant financièrement suite au Plan dans chaque pays, ainsi que des cartes des gains et pertes par pays. La méthodologie employée est expliquée à l'Annexe \ref{ch:methodo}.
+
+\section{La fin de l'extrême pauvreté}
+
+71~\% des humains seraient financièrement gagnants suite au Plan mondial pour le climat. Le Plan impliquerait une redistribution de 1,3~\% du PIB mondial des 29~\% d'humains ayant une empreinte carbone supérieure à la moyenne mondiale vers les 71~\% ayant une empreinte carbone plus faible. L'essentiel % 85%
+de cette redistribution se ferait des 10~\% les plus riches vers les 50~\% les plus pauvres (Table \ref{tab:gcp_ineq}). 
+
+\input{../tables/gcp_ineq.tex}
+
+Quand on trace la distribution mondiale des niveaux de vie, l'effet du Plan est de l'ordre de l'épaisseur du trait (Figure \ref{fig:evol_distr_a}). En effet, pour 99~\% des humains, le gain net serait contenu entre $-$200~\euro{}/mois et 50~\euro{}/mois (Figure \ref{fig:evol_distr_b}). La perte financière serait plus importante pour les individus plus riches, mais elle ne dépasserait jamais 2,5~\% du revenu (Figure \ref{fig:evol_distr_d}). Aussi, l'indice de Gini des niveaux de vie mondial, qui mesure l'inégalité entre 0~\% et 100~\%, ne baisserait que de 2~\%. 
+Pour autant, malgré des effets contenus sur la répartition des revenus dans son ensemble, le Plan changerait la donne pour les humains les plus pauvres. Le niveau de vie ferait plus que doubler pour le milliard d'humains les plus pauvres (Figure \ref{fig:evol_distr_c}). Plus personne ne vivrait dans l'extrême pauvreté (avec moins de 2~\$ par jour). % TODO méthodo
+À l'heure actuelle, le niveau de vie du 9$^\text{è}$ décile (c'est-à-dire le minimum pour faire partie des 10~\% les plus riches) est 54 fois plus élevé que celui du 1$^\text{er}$ décile (le maximum pour faire partie des 10~\% les plus pauvres). Grâce au revenu de base du Plan, ce ratio passerait de 54 à 32. 
+
+Outre l'éradication de l'extrême pauvreté, le Plan réduirait également la pauvreté. Définie au seuil de 7,5\euro{} par jour, celle-ci baisserait de 30~\%. Par ailleurs, plus de la moitié des humains verraient leur niveau de vie augmenter d'au moins 3~\%, et pour un tiers l'amélioration serait d'au moins 10~\%. 
+
+
+% /!\ Données en PPP et non MER
 \begin{figure}[h!]
-  \caption{Gains ou pertes financières suite au Plan mondial pour le climat en 2030.}\label{fig:median_gain_2015}
-  \centerline{\includegraphics[width=.97\paperwidth]{../figures/maps/gain_adj_2030_fr.pdf}} % mean_gain_over_gdp_2019 mean_gain_2030
-\end{figure}
-
-\begin{figure}[b!]
-  \caption{Gains ou pertes financières suite au Plan mondial pour le climat sur le XXI$^\text{e}$ siècle}\label{fig:median_gain_adj}
-  \centerline{
-    \includegraphics[width=\paperwidth]{../figures/maps/npv_over_gdp_gcs_adj_fr.pdf}
-    } % mean_gain_over_gdp_2019
-  {\footnotesize \textit{Note:} La valeur nette actualisée est calculée avec un taux d'actualisation de 4\% sur la période 2020--2100.}
-\end{figure}
-
-\begin{figure}
   \caption{Effet du Plan mondial sur le climat sur la répartition mondiale des niveaux de vie.}\label{fig:evol_distr}
 \begin{subfigure}{.5\textwidth}
   % \caption{Distribution des niveaux de vie avant/après le Plan.}
-  \caption{Distribution avant/après.}
+  \caption{Distribution avant/après.}\label{fig:evol_distr_a}
   \includegraphics[width=\textwidth]{../figures/policies/gcp_rev_distr.pdf}
 \end{subfigure} \quad
 \begin{subfigure}{.5\textwidth}
   % \caption{Variation absolue de niveaux de vie}
-  \caption{Variation absolue}
+  \caption{Variation absolue}\label{fig:evol_distr_b}
   \includegraphics[width=\textwidth]{../figures/policies/gcp_diff_rev.pdf}
 \end{subfigure}
 \\ \quad \\
 \begin{subfigure}{.5\textwidth}
   % \caption{Variation relative de niveaux de vie}
-  \caption{Variation relative}
+  \caption{Variation relative}\label{fig:evol_distr_c}
   \includegraphics[width=\textwidth]{../figures/policies/gcp_var_rev.pdf}
 \end{subfigure} \quad
 \begin{subfigure}{.5\textwidth}
   % \caption{Variation relative de niveaux de vie (zoom sur les plus riches)}
-  \caption{Variation relative (top 50~\%)}
+  \caption{Variation relative (top 50~\%)}\label{fig:evol_distr_d}
   \includegraphics[width=\textwidth]{../figures/policies/gcp_var_rev_rich_only.pdf}
 \end{subfigure}
 {\footnotesize \textit{Note:} Calcul de l'auteur à partir d'un prix à 100 \$/tCO$_\text{2}$ et 10~\% de réduction d'émissions, ce qui donne un revenu de base à 44~\$/mois. Données~: empreinte carbone par percentile de revenus. Source~: Lucas Chancel (World Inequality Database).}
 \end{figure}
 
-\input{../tables/gcp_ineq.tex}
+\section{Une majorité de gagnants dans la plupart des pays}
 
+Si la majorité des humains serait financièrement gagnante suite au Plan, on peut se demander quelle serait la part de gagnants dans chaque pays. La Figure \ref{fig:share_below_global_mean} présente ces chiffres, qui sont équivalents à la proportion d'individus avec une empreinte carbone inférieure à la moyenne mondiale. En Inde par exemple, il y aurait 94~\% de gagnants, tandis qu'il n'y en aurait que 23~\% en France.  
+
+Même si la perte financière pour le Français type serait déjà inférieure à 20\euro{}/mois suite au Plan, le Plan peut être complété par des mesures de redistribution nationale pour faire reposer le coût de la mue écologique sur les plus riches. Dans le Chapitre \ref{ch:premier_pas}, je montre comment une hausse de taxe sur les 1~\% ou 5~\% les plus riches permettrait de financer un transfert qui compenserait le Français ou l'États-unien type, de sorte qu'il ne perde pas financièrement. Étant donné la latitude de chaque pays pour répartir les coûts du Plan au sein de sa population, la part des gagnants par pays est finalement une information moins pertinente que la répartition des gains et des pertes entre pays, présentée ci-après.
 
 \begin{figure}[b!]
   \caption{Parts de gagnants suite au Plan, par pays}\label{fig:share_below_global_mean}
   \centerline{
-    \includegraphics[width=\paperwidth]{../figures/maps/share_below_global_mean.pdf}
+    \includegraphics[width=.8\paperwidth]{../figures/maps/share_below_global_mean.pdf}
     } 
-  {\footnotesize \textit{Note:} Est considéré gagnant tout individu dont l'empreinte carbone est inférieure à la moyenne mondiale. Source~: Lucas Chancel (World Inequality Database).}
+  {\footnotesize \textit{Note:} Est considéré gagnant tout individu dont l'empreinte carbone est inférieure à la moyenne mondiale. Source~: Lucas Chancel (\href{http://wid.world}{wid.world}).}
 \end{figure}
+\begin{figure}[h!]
+  \caption{Gains ou pertes monétaires par pays suite au Plan mondial pour le climat, en 2030.}\label{fig:gain_2030}
+  \centerline{\includegraphics[width=.8\paperwidth]{../figures/maps/gain_adj_2030_fr.pdf}} % mean_gain_over_gdp_2019 mean_gain_2030
+\end{figure}
+
+% Pays gagnants/perdants dans différents scénarios
+\section{Une redistribution Nord--Sud}
+
+Sans surprise, le Plan mondial pour le climat opérerait une redistribution des pays du Nord vers les pays du Sud. Les principaux contributeurs seraient l'Amérique du Nord et des pays de la péninsule arabique~; et les principaux bénéficiaires l'Afrique subsaharienne et l'Asie du Sud. On peut voir les effets du Plan pays par pays sur les Figures \ref{fig:gain_2030} (pour 2030) et \ref{fig:gain_npv} (pour les effets agrégés sur l'ensemble du siècle). On y voit notamment que, grâce au mécanisme de participation évoqué au Chapitre \ref{ch:principes}, des pays à revenus intermédiaires comme la Chine ne sont ni gagnant ni perdant monétairement, par rapport à la situation de référence où la décarbonation s'effectue au même rythme mais sans transferts internationaux. 
+
+Évidemment, certains pays perdants comme l'Arabie Saoudite ou la Russie ne rejoindraient probablement pas le club climatique. J'ai également simulé les effets distributifs du Plan dans différents scénarios où la participation ne serait pas universelle. Les Figures \ref{fig:gain_optimist} et \ref{fig:gain_prudent} présentent les effets du Plan respectivement dans un scénario de participation optimiste et dans un scénario prudent. Comme le montre la Table \ref{tab:scenarios_table_fr}, même dans un scénario prudent (où le club comprendrait uniquement l'UE et les pays non-perdants), 65~\% des émissions mondiales seraient couvertes. Les émissions couvertes monteraient à 76~\% dans un scénario optimiste où la plupart des pays à hauts revenus rejoindraient l'accord. Si ce chiffre peut sembler insuffisant pour un scénario censé être optimiste, notons toutefois que ce scénario est avant tout réaliste, puisqu'il suppose que les États-Unis ne rejoindraient pas le club climatique, mais seulement les États états-uniens structurellement démocrates\footnote{Les États structurellement démocrates sont ceux où le parti démocrate a gagné l'élection de 2020 avec plus de 10 points d'écart.}. Gageons que ces scénarios à participation partielle ne seront valables que dans le court terme, et qu'ils réuniront une masse critique de pays, suffisante pour instaurer une norme sociale mondiale en faveur du club climatique, qui poussera l'ensemble des pays à le rejoindre dans le long terme.
+% TODO! Pb with using Gütschow et al. (21) + price from SSP_CMIP6: 1. scenarios of GDP pc unrealistic (e.g. 25% annual growth in DRC over 2019-23), 2. GDP is in PPP while price is in MER, 3. emissions are territorial => Underestimation of gains over GDP in low-income countries.
+% TODO! short label figures
+
+\begin{sidewaysfigure}[b!]
+  \caption{Gains ou pertes monétaires suite au Plan mondial pour le climat sur le XXI$^\text{e}$ siècle.}\label{fig:gain_npv}
+  \centerline{\includegraphics[width=\paperheight]{../figures/maps/npv_over_gdp_gcs_adj_fr.pdf}
+    } % mean_gain_over_gdp_2019
+  {\footnotesize \textit{Note:} La valeur nette actualisée est calculée avec un taux d'actualisation de 4\% sur la période 2020--2100.}
+\end{sidewaysfigure}
+
+\begin{figure}[h!]
+  \caption{Gains ou pertes monétaires par pays suite au Plan dans un scénario de participation \textit{Optimiste}.}\label{fig:gain_optimist}
+  \centerline{\includegraphics[width=.85\paperwidth]{../figures/maps/Soptimistic_npv_over_gdp_gcs_adj.pdf}} 
+\end{figure}
+\begin{figure}[b!]
+  \caption{Gains ou pertes monétaires par pays suite au Plan dans un scénario de participation \textit{Prudent}.}\label{fig:gain_prudent}
+  \centerline{\includegraphics[width=.85\paperwidth]{../figures/maps/Scautious_npv_over_gdp_gcs_adj.pdf}
+    } 
+\end{figure}
+% \begin{figure}[b!]
+%   \caption{Gains ou pertes monétaires suite au Plan mondial pour le climat sur le XXI$^\text{e}$ siècle}\label{fig:median_gain_adj}
+%   \centerline{\includegraphics[width=.84\paperwidth]{../figures/maps/npv_over_gdp_gcs_adj_fr.pdf}
+%     } % mean_gain_over_gdp_2019
+%   {\footnotesize \textit{Note:} La valeur nette actualisée est calculée avec un taux d'actualisation de 4\% sur la période 2020--2100.}
+% \end{figure}
 
 \chapter{Un pas vers un monde soutenable\label{ch:premier_pas}} % Une des briques d'un monde soutenable
 % Un pas vers un monde soutenable (le Plan n'est pas suffisant, il doit être complémenté d'autres mesures climatiques (nationales, sectorielles), d'autres mesures de redistribution mondiale (impôt sur la fortune), et l'objectif de long terme doit être d'assurer les conditions nécessaires au bien-être à chaque humain)
@@ -1040,8 +1081,6 @@ Prenons l'exemple de l'ETS, c'est-à-dire le marché du carbone européen. Deux 
 
 \appendix
 
-
-
 \chapter{Les détails du Plan\label{ch:details}} 
 % Le plan mondial pour le climat : les détails (implémentation, mécanismes de participation)
 % Novissi/Togo: ipa (2021). Questions jblumenstock@berkeley.edu (incl. ask whether his estimates of income distribution are better than PIP's) https://medium.com/center-for-effective-global-action/using-mobile-phone-and-satellite-data-to-target-emergency-cash-transfers-f0651b2c1f3f Togo 172/192 in GDP pc (nominal or PPP), 130/167 democracy index, 130/180 in corruption. 
@@ -1109,6 +1148,11 @@ Il revient maintenant au public et aux responsables politiques de reprendre cett
 % •	Le Français moyen perdrait 14€/mois au pic, soit une perte de 0,4% du revenu national.
 % •	Le revenu de base sortirait de l’extrême pauvreté les 700 millions vivant sous les 2$/jour.
 % •	Ces estimations ont été faites avec le scénario +2°C central du GIEC, qui implique un prix du carbone d’environ 150$/tCO2 en 2030, 200$ en 2040, 400$ en 2050, et net zéro en 2070.
+
+\chapter{Estimation des effets distributifs du Plan
+}\label{ch:methodo}
+
+% TODO!!
 
 \renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
 \bibliographystyle{plainnaturl_clean} % NCCcomment

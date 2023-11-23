@@ -1846,8 +1846,8 @@ dev.off()
 
 
 ##### Chancel data #####
-wid <- read.dta13("../data/WID_world-pct-em-income.dta")
-wid <- rbind(t(sapply(1:5, function(i) c(pctile = i, wid[1, 2:4]/5))), wid[2:96,])
+wid <- read.dta13("../data/WID_world-pct-em-income.dta") # /!\ PPP €19 estimates, from Chancel email Nov 21, 2023m cd. /data/deprecated/Chancel_read_me
+wid <- rbind(t(sapply(1:5, function(i) c(pctile = i, wid[1, 2:4]/5))), wid[2:96,]) # In 2019 1$ = 0.89€, i.e. 2.15$ = 1.91€
 for (i in 1:4) wid[[i]] <- unlist(wid[[i]])
 mean(wid$emissions)
 
@@ -1866,15 +1866,19 @@ wid$diff_income[is.na(wid$diff_income)] <- sort(wid$post_income - wid$income, de
 wid$diff_income[98:100] <- (wid$post_income - wid$income)[98:100]
 wid$variation_income <- stats::filter(sort((wid$post_income - wid$income)/wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
 wid$variation_income[is.na(wid$variation_income)] <- sort((wid$post_income - wid$income)/wid$income, decreasing = T)[is.na(wid$variation_income)]
+sum(wid$variation_income > 0.03)
+sum(wid$variation_income > 0.1)
+sum(wid$variation_income > 1)
+
 
 # BOOK Figure
 mar <- par()$mar
 mgp <- par()$mgp
 par(mar = c(3.1, 3.1, 0.3, 0.2), mgp = c(2.2, 1, 0)) # width: 342, height: 312
-plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en $/mois)")
+plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en €/mois)")
 lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
 legend("topleft", legend = list("actuel", "suite au Plan"), col = c("red", "darkgreen"), title = "Niveau de vie", lwd = 2, lty = c(1,2))
-plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en $/an)") + grid() + abline(h = 0)
+plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en €/an)") + grid() + abline(h = 0)
 plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
 plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
 
@@ -1894,13 +1898,23 @@ sum(wid$income[1:50])/sum(wid$income) # 8.5%
 sum(wid$post_income[1:50])/sum(wid$post_income) # 9.6%
 sum(wid$income[91:100])/sum(wid$income[1:40]) # 10.4
 sum(wid$post_income[91:100])/sum(wid$post_income[1:40]) # 8.5
+# Poverty
+sum(wid$income < 1.35*365) # 8%
+sum(wid$post_income < 1.35*365) # 0%, 1.35€ = 1.5$
+sum(wid$post_income[wid$income < 7.5*365])/sum(wid$income) # 2.4%
+sum(wid$post_income[wid$post_income < 7.5*365])/sum(wid$post_income) # 1.7%, i.e. -29%
 
-(table_ineq <- cbind("top10" = 100*c(sum(wid$income[91:100])/sum(wid$income), sum(wid$post_income[91:100])/sum(wid$post_income)), "bottom50" = 100*c(sum(wid$income[1:50])/sum(wid$income), sum(wid$post_income[1:50])/sum(wid$post_income)),
-                    "Gini" = 100*c(Gini(wid$income), Gini(wid$post_income)), "D9/D1" = c(wid$income[90]/wid$income[10], wid$post_income[90]/wid$post_income[10]),
-                    "Palma" = c(sum(wid$income[91:100])/sum(wid$income[1:40]), sum(wid$post_income[91:100])/sum(wid$post_income[1:40]))))
+(table_ineq <- cbind("poverty_gap" = 100*c(sum(wid$post_income[wid$income < 7.5*365])/sum(wid$income), sum(wid$post_income[wid$post_income < 7.5*365])/sum(wid$post_income)), "top10" = 100*c(sum(wid$income[91:100])/sum(wid$income), sum(wid$post_income[91:100])/sum(wid$post_income)), "bottom50" = 100*c(sum(wid$income[1:50])/sum(wid$income), sum(wid$post_income[1:50])/sum(wid$post_income)),
+                     "Gini" = 100*c(Gini(wid$income), Gini(wid$post_income)), "D9/D1" = c(wid$income[90]/wid$income[10], wid$post_income[90]/wid$post_income[10])))
 row.names(table_ineq) <- c("Avant", "Après")
 cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", paste(kbl(table_ineq, "latex", caption = "Évolution de l'inégalité mondiale suite au Plan.", position = "b", escape = F, booktabs = T, digits = 1, label = "gcp_ineq", align = 'c', format.args = list(decimal = ","),
-              col.names = c("\\makecell{Top 10~\\%\\\\(part en \\%)}", "\\makecell{Bottom 50~\\%\\\\(part en \\%)}", "\\makecell{Gini (en \\%)}", "\\makecell{D9/D1\\\\Ratio\\\\inter-décile}", "\\makecell{Top 10~\\% sur\\\\Bottom 40~\\%\\\\(ratio des parts)}")), collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") 
+               col.names = c("\\makecell{Étendue de\\\\la pauvreté\\\\à 7,5~\\euro{}/jour\\\\(en \\% du PIB)}", "\\makecell{Top 10~\\%\\\\(part en \\%)}", "\\makecell{Bottom 50~\\%\\\\(part en \\%)}", "\\makecell{Gini\\\\(en \\%)}", "\\makecell{D9/D1\\\\Ratio\\\\inter-décile}")), collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") 
+# (table_ineq <- cbind("top10" = 100*c(sum(wid$income[91:100])/sum(wid$income), sum(wid$post_income[91:100])/sum(wid$post_income)), "bottom50" = 100*c(sum(wid$income[1:50])/sum(wid$income), sum(wid$post_income[1:50])/sum(wid$post_income)),
+#                     "Gini" = 100*c(Gini(wid$income), Gini(wid$post_income)), "D9/D1" = c(wid$income[90]/wid$income[10], wid$post_income[90]/wid$post_income[10]),
+#                     "Palma" = c(sum(wid$income[91:100])/sum(wid$income[1:40]), sum(wid$post_income[91:100])/sum(wid$post_income[1:40]))))
+# row.names(table_ineq) <- c("Avant", "Après")
+# cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", paste(kbl(table_ineq, "latex", caption = "Évolution de l'inégalité mondiale suite au Plan.", position = "b", escape = F, booktabs = T, digits = 1, label = "gcp_ineq", align = 'c', format.args = list(decimal = ","),
+#               col.names = c("\\makecell{Top 10~\\%\\\\(part en \\%)}", "\\makecell{Bottom 50~\\%\\\\(part en \\%)}", "\\makecell{Gini (en \\%)}", "\\makecell{D9/D1\\\\Ratio\\\\inter-décile}", "\\makecell{Top 10~\\% sur\\\\Bottom 40~\\%\\\\(ratio des parts)}")), collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") 
 
 # plot(stats::density(log10(wid$income)), col = "red")
 # lines(stats::density(log10(wid$post_income)), col = "darkgreen")
@@ -1940,6 +1954,9 @@ plot_world_map("winning", df = deciles,  breaks = seq(-0.5, 10.5, 1), format = c
 # write.csv(percentiles, "../data/wid_emissions_percentiles.csv")
 
 percentiles <- read.csv("../data/wid_emissions_percentiles.csv")
+percentiles$share_below_global_mean[no.na(percentiles$code) == "IND"]
+percentiles$share_below_global_mean[no.na(percentiles$code) == "FRA"]
+basic_income - price * percentiles$p50p51[no.na(percentiles$code) == "FRA"]/12 # -18
 
 plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% à ", end = "%", return = "levels")), legend = "Part de gagnants", 
