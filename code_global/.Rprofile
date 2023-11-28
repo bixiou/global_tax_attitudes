@@ -307,17 +307,17 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
   if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
   if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "> \\1", levels[length(levels)]) # sub(" ", "", sep)
   if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "≥ \\1", levels[length(levels)]) # sub(" ", "", sep)
-  levels <- gsub("000 ", ",000 ", gsub("-", "–", levels))
+  levels <- gsub("000 ", ",000 ",  gsub("-", "–", levels))
   vec_agg[is.na(vec)] <- NA
   vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
   if (return == "vec") return(vec_agg)
   else if (return %in% c("levels", "labels")) return(levels)
   else if (return == "values") return(values)
 }
-no.na <- function(vec, num_as_char = T) {
+no.na <- function(vec, num_as_char = T, rep = "na") {
   if (num_as_char) {
-    if (is.numeric(vec) | is.logical(vec)) return(replace_na(as.character(as.vector(vec)), "na"))
-    else return(replace_na(as.vector(vec), "na"))
+    if (is.numeric(vec) | is.logical(vec)) return(replace_na(as.character(as.vector(vec)), rep))
+    else return(replace_na(as.vector(vec), rep))
   } else return(vec)
 }
 decrit <- function(variable, data = e, miss = TRUE, weights = NULL, numbers = FALSE, which = NULL, weight = T) { # TODO!: allow for boolean weights
