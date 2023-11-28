@@ -1369,7 +1369,11 @@ names_fig_gdp <- names(fig_gdp)
 fig_gdp <- array(fig_gdp/18605, dim = c(1, length(fig_gdp)))
 barres(data = fig_gdp, labels = names_fig_gdp, legend = c("GDP"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP")
 barres(data = array(fig_gdp[1,2:10], dim = c(1, 9)), labels = names_fig_gdp[2:10], legend = c("GDP"), sort = FALSE, show_ticks = FALSE, save = T, showLegend = FALSE, file = "../figures/policies/GDP_pc_PPP_few")
-
+fig_gdp_fr <- c("Luxembourg" = 133330, "États-Unis" = 69288, "Pays à hauts revenus" = 54758, "Union Européenne" = 48767, "Chine" = 19338, "Monde" = 18605, "Inde" = 7242, "Afrique subsaharienne" = 4070, "Pays à bas revenus" = 2124, "Rép. Dém. Congo" = 1180, "Burundi" = 775)
+names_fig_gdp_fr <- names(fig_gdp_fr)
+fig_gdp_fr <- array(rev(fig_gdp_fr)/18605, dim = c(1, length(fig_gdp_fr)))
+barres(data = fig_gdp_fr, labels = names_fig_gdp_fr, legend = c("PIB"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP_fr")
+barres(data = array(fig_gdp_fr[1,2:10], dim = c(1, 9)), labels = names_fig_gdp_fr[2:10], legend = c("PIB"), sort = FALSE, show_ticks = FALSE, save = T, showLegend = FALSE, file = "../figures/policies/GDP_pc_PPP_few_fr")
 
 ##### Sandbox #####
 co2_pop$gain_adj_over_gdp_2030[co2_pop$country == "South Africa"]
