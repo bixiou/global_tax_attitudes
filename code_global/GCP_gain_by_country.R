@@ -2,6 +2,7 @@
 years <- c(2005, seq(2010, 2100, 10))
 EU28_countries <- countries_names <- countries_EU <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GBR", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
 EU27_countries <- countries_names_fr <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
+African_countries <- c("AGO", "BDI", "BEN", "BFA", "BWA", "CAF", "CIV", "CMR", "COD", "COG", "COM", "CPV", "DJI", "DZA", "EGY", "ERI", "ETH", "GAB", "GHA", "GIN", "GMB", "GNB", "GNQ", "KEN", "LBR", "LBY", "LSO", "MAR", "MDG", "MLI", "MOZ", "MRT", "MUS", "MWI", "NAM", "NER", "NGA", "RWA", "SDN", "SEN", "SLE", "SOM", "SSD", "SWZ", "TCD", "TGO", "TUN", "TZA", "UGA", "ZAF", "ZMB", "ZWE")
 discount_rate <- .03
 
 pop <- read.csv("../data/future population by age 2022.csv") # https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_PopulationByAge5GroupSex_Medium.zip
@@ -274,7 +275,7 @@ central <- all_countries[df$npv_over_gdp_gcs_adj >= 0 | df$code %in% c("CHN", EU
 # 5. Cautious scenario: EU27 + non-losers. 
 prudent <- all_countries[(df$npv_over_gdp_gcs_adj >= 0) | df$code %in% c("CHN", EU27_countries)]
 # 6. Africa-EU partnership: EU27 + African winners TODO! avoid reliance on image_region_by_code
-africa_EU <- all_countries[(df$npv_over_gdp_gcs_adj >= 0 & image_region_by_code[df$code] %in% c("WAF", "SAF", "RSAF", "NAF", "EAF")) | df$code %in% c(EU27_countries)]
+africa_EU <- all_countries[(df$npv_over_gdp_gcs_adj >= 0 & df$code %in% African_countries) | df$code %in% EU27_countries] # image_region_by_code[df$code] %in% c("WAF", "SAF", "RSAF", "NAF", "EAF")
 scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU")
 scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
 
@@ -366,3 +367,6 @@ for (i in 2:6) {
                  legend = paste0("Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)\nScénario: ", capitalize(gsub("_", " ", scenarios_table_fr$scenario[i]))), #fill_na = T, \n(with 4% discount rate)
                  save = T, parties = scenarios_parties[[scenarios_names[i]]])
 }
+
+
+##### Book figures #####
