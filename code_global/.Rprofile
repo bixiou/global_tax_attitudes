@@ -1412,8 +1412,8 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
   if (along == "country_name" & !alphabetical & exists("countries_names")) {
     if (exists("countries_names_hm") & any(c('High-income','Middle-income') %in% special)) names <- countries_names_hm else names <- countries_names
     levels <- c()
-    for (l in names) if (l %in% Levels(e[[along]])) levels <- c(levels, l)
-  } else levels <- Levels(e[[along]], values = FALSE)
+    for (l in names) if (l %in% Levels(data[[along]], data = data)) levels <- c(levels, l)
+  } else levels <- Levels(data[[along]], data = data, values = FALSE)
   nb_vars <- length(vars)
   if (length(conditions)==1) conditions <- rep(conditions[1], nb_vars)
   up_labels <- c(special, levels)

@@ -1,5 +1,9 @@
 ##### Population data #####
 years <- c(2005, seq(2010, 2100, 10))
+EU28_countries <- countries_names <- countries_EU <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GBR", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
+EU27_countries <- countries_names_fr <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
+discount_rate <- .03
+
 pop <- read.csv("../data/future population by age 2022.csv") # https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_PopulationByAge5GroupSex_Medium.zip
 pop <- pop[, c("Location", "ISO2_code", "ISO3_code", "Time", "AgeGrpStart", "PopTotal")]
 pop <- pop[pop$Time %in% c(2015, 2019, 2023, 2030, years),]
@@ -46,7 +50,7 @@ cp$adult <- 1000 * cp$adult
 cp$pop <- 1000 * cp$pop
 cp$emissions <- cp$footprint
 cp$missing_footprint <- is.na(cp$footprint)
-(sum(cp$adult_2019[is.na(cp$footprint_2019)])/adult_pop_2019) # 7.4% of global footprint data missing
+# (sum(cp$adult_2019[is.na(cp$footprint_2019)])/adult_pop_2019) # 7.4% of global footprint data missing
 cp$emissions[is.na(cp$footprint)] <- cp$territorial[is.na(cp$footprint)] # imputing territorial emissions for those countries
 cp <- cp %>% group_by(code) %>% pivot_wider(id_cols = c("code", "country"),  names_from = year,
                                                       values_from = c("territorial", "footprint", "emissions", "adult", "pop", "gdp_pc", "missing_footprint"), names_glue = "{.value}_{year}") %>% ungroup()
@@ -269,7 +273,7 @@ optimistic <- c(all_countries[df$npv_pa_gcs_adj >= 0 | df$code %in% c("CHN", EU2
 central <- all_countries[df$npv_over_gdp_gcs_adj >= 0 | df$code %in% c("CHN", EU28_countries, "NOR", "CHE", "JPN", "NZL")]
 # 5. Cautious scenario: EU27 + non-losers. 
 prudent <- all_countries[(df$npv_over_gdp_gcs_adj >= 0) | df$code %in% c("CHN", EU27_countries)]
-# 6. Africa-EU partnership: EU27 + African winners
+# 6. Africa-EU partnership: EU27 + African winners TODO! avoid reliance on image_region_by_code
 africa_EU <- all_countries[(df$npv_over_gdp_gcs_adj >= 0 & image_region_by_code[df$code] %in% c("WAF", "SAF", "RSAF", "NAF", "EAF")) | df$code %in% c(EU27_countries)]
 scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU")
 scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
@@ -280,7 +284,7 @@ emissions_tot <- emissions_pc <- c()
 for (y in as.character(2025:2100)) {
   emissions_tot[y] <- sum(df[[paste0("emissions_", y)]], na.rm = T)
   emissions_pc[y] <- wtd.mean(df[[paste0("emissions_pc_", y)]], weights = df[[paste0("pop_", y)]], na.rm = T) }
-EU_gain_adj <- EU_gain_adj_over_gdp <- EU_npv_gain_adj_over_gdp <- list()
+emissions_pa <- EU_gain_adj <- EU_gain_adj_over_gdp <- EU_npv_gain_adj_over_gdp <- list()
 for (s in scenarios_names) {
   emissions_pa[[s]] <- EU_gain_adj[[s]] <- EU_gain_adj_over_gdp[[s]] <- c()
   for (y in as.character(2025:2100)) { # seq(2020, 2100, 10)
@@ -323,7 +327,7 @@ axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
 legend("topleft", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
 
-for (y in years[4]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 100, 200, 300, 500, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+for (y in years[4]) plot_world_map(paste0("gain_adj_", y), df = df, breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 100, 200, 300, 500, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                                    labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 100, 200, 300, 500, Inf), sep = " to ", return = "levels")), 
                                    legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in $ per year)"), #fill_na = T,
                                    save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
@@ -348,11 +352,11 @@ axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
 legend("topleft", legend = c("Émissions de CO2", "Revenu de base", "Prix du carbone (axe de droite)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
 
-for (y in years[4]) plot_world_map(paste0("gain_adj_", y), breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 100, 200, 300, 500, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+for (y in years[4]) plot_world_map(paste0("gain_adj_", y), df = df, breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 100, 200, 300, 500, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                                    labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 100, 200, 300, 500, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_", y, "_fr"),
                                    legend = paste0("Gain net\npar adulte au\nPlan mondial pour le climat\nen ", y, " (en $ par an)"), #fill_na = T,
                                    save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
-plot_world_map("npv_over_gdp_gcs_adj", breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
                legend = "Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)", #fill_na = T, \n(with 4% discount rate)
                save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
