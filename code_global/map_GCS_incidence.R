@@ -1042,17 +1042,17 @@ par(mar = c(2.1, 4.1, 0.1, 4.1))
 plot(years[3:9], basic_income_adj$gea_gea[1:7]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(-5, 53))
 lines(years[3:9], world_emissions$gea_gea[3:9]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
 par(new = T)
-plot(years[3:9], carbon_price$gea_gea[3:9], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+plot(years[3:9], carbon_price$ssp2_26[3:9], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
 mtext("Carbon price ($/tCO2)", side=4, col="blue", line=2.5) 
 axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
 legend("topright", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
 
-# FR
-plot(years[3:9], basic_income_adj$all_countries[1:7]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Revenu de base ($ par mois); Émissions de CO2 (Gt par an)", ylim = c(-5, 53))
+# FR GCP_trajectoires
+plot(years[3:9], basic_income_adj$ssp2_26[as.character(years[3:9])]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Revenu de base ($ par mois); Émissions de CO2 (Gt par an)", ylim = c(-5, 53))
 lines(years[3:9], world_emissions$gea_gea[3:9]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
 par(new = T)
-plot(years[3:9], carbon_price$gea_gea[3:9], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+plot(years[3:9], carbon_price$ssp2_26[3:9], type = 'b', pch = 17, axes = FALSE, ylim = c(-100, 1060), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
 mtext("Prix du carbone ($/tCO2)", side=4, col="blue", line=2.5) 
 axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
@@ -1593,11 +1593,12 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
 total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- share_pooled <- list()
 create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", base_year_downscaling = NULL) { # message is only for ssp2 , region = message_region_by_code
   linear_downscaling <- !is.null(base_year_downscaling)
+  name_df <- deparse(substitute(df))
   years <- if (linear_downscaling) c(2005, seq(2010, 2100, 10)) else 2020:2100
   if (is.null(ssp)) { 
-    ssp_name <- if (deparse(substitute(df)) %in% c("s1", "sh")) "ssp1_19" else { if (deparse(substitute(df)) %in% c("s3", "sl")) "ssp2_26msg" else "ssp2_26" } 
+    ssp_name <- if (name_df %in% c("s1", "sh")) "ssp1_19" else { if (name_df %in% c("s3", "sl")) "ssp2_26msg" else "ssp2_26" } 
   } else ssp_name <- deparse(substitute(ssp))
-  if (!deparse(substitute(df)) %in% c("co2_pop", "s1", "s2", "s3", "sh", "sm", "sl") & is.null(ssp_name)) warning("ssp is not given, ssp2_26 assumed.")
+  if (!name_df %in% c("co2_pop", "s1", "s2", "s3", "sh", "sm", "sl") & is.null(ssp_name)) warning("ssp is not given, ssp2_26 assumed.")
   total_revenues[[ssp_name]] <- average_revenues[[ssp_name]] <- basic_income[[ssp_name]] <- basic_income_adj[[ssp_name]] <- c()
   
   if (!exists("scenarios_parties") & scenario == "all_countries") parties <- df$code
@@ -1688,15 +1689,16 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
     basic_income_adj[[ssp_name]][yr] <- basic_income[[ssp_name]][yr] * (1 + wtd.mean(df_parties[[paste0("participation_rate_", y)]] - df_parties[[paste0("share_basic_income_", y)]], df_parties[[paste0("adult_", y)]]))
     share_pooled[[ssp_name]][yr] <- sum(((basic_income_adj[[ssp_name]][yr] - df_parties[[paste0("revenues_pa_", y)]]) * df_parties[[paste0("adult_", y)]])[df_parties[[paste0("gain_adj_", y)]] > 0])/sum((df_parties[[paste0("revenues_pa_", y)]] * df_parties[[paste0("adult_", y)]])[df_parties[[paste0("gain_adj_", y)]] < 0]) # wtd.mean(df_parties[[paste0("share_revenues_lost_", y)]], df_parties[[paste0("adult_", y)]])
   }
+  # TODO!! remplace ssp_name by df name; streamline fetch of carbon_price; check trajectories with sf
   
   total_revenues[[ssp_name]] <<- total_revenues[[ssp_name]]
   average_revenues[[ssp_name]] <<- average_revenues[[ssp_name]]
   carbon_price[[ssp_name]] <<- carbon_price[[ssp_name]] # carbon_price is just completed between decadal years by interpolation
   
   if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG", "MDV", "MUS")], parties)) == 0) { # , "TWN
-    basic_income[[ssp_name]] <<- basic_income[[ssp_name]] 
-    basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
-    share_pooled[[ssp_name]] <<- share_pooled[[ssp_name]]
+    basic_income[[name_df]] <<- basic_income[[ssp_name]] <<- basic_income[[ssp_name]] 
+    basic_income_adj[[name_df]] <<- basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
+    share_pooled[[name_df]] <<- share_pooled[[ssp_name]] <<- share_pooled[[ssp_name]]
     df <- df_parties
   } else {
     for (v in names(df)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj|^diff_gain_gdr_gcs_adj"), names(df))]) df[[paste0("S", scenario, "_", v)]] <- df_parties[[v]]
@@ -1804,7 +1806,7 @@ world_emissions_pc
 scenarios_features <- data.frame(scenario = capitalize(gsub("_", " ", scenarios_names)), row.names = scenarios_names)
 for (s in scenarios_names) {
   scenarios_features[s, "emissions_covered"] <- sum(df$share_territorial_2019[df$code %in% eval(str2expression(s))]) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
-  scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))]) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023)
+  scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023, na.rm = T)
   scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]/12
   scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
 }
@@ -2080,3 +2082,25 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 # 
 # 
 # 
+
+
+##### Book #####
+## Own calculations: need references / methodological note
+# Ch 2: Domestic Poverty Eradication - PIP
+# Ch 5: moitié de l'humanité < 7$/jour (contredit 8.1)
+# Ch 6.2: recettes = 5% du PIB mondial
+# Fig 6.1: trajectoires - gea_gea
+# Ch 6.4: scénarios - cf. 7.3
+# Ch 7.1: effet sur la distribution mondiale - Chancel
+# Ch 7.2: effet sur les distributions nationales - WID
+# Ch 7.3: effet sur la distribution internationale - sm
+# Ch 8.1: 39% de la population mondiale vit avec moins de 7,5$/j
+# Ch 8.2: chiffrage redistribution nationale
+
+# 7.3: Emissions data (already downscaled) comes from Gütschow et al. (21) while price comes from SSP_CMIP6
+
+# Figures
+# 1: GDP_pc_PPP_few_fr
+# 7.1: gcp_rev_distr, gcp_diff_rev, gcp_var_rev, gcp_var_rev_rich_only
+# 7.2: share_below_global_mean
+# 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scautious_npv_over_gdp_gcs_adj
