@@ -1470,7 +1470,7 @@ ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "
 # matplot(x = years, y = t(possible_scenarios/1e6),  type = c("l"), lty = 1, lwd = c(rep(1, nrow(possible_scenarios)-4), rep(3,4)), col = 1:nrow(possible_scenarios))
 # grid()
 # legend("bottomleft", legend = row.names(possible_scenarios), lty = 1, lwd = c(rep(1, nrow(possible_scenarios)-4), rep(3,4)), col=1:nrow(possible_scenarios))
-# # best matches (1st best 1st): ssp1_19,SSP119IMAGE > ssp2_26msg,SSP119GCAM4 > ssp1_26,SSP226MESGB > ssp1_26,SSP119GCAM4 > ssp1_26,SSP226MESGB > ssp2_26,SSP226AIMCGE
+# # best matches (1st best 1st): ssp1_19,SSP119IMAGE > ssp2_26msg,SSP119GCAM4 > ssp1_26,SSP226MESGB > ssp1_26,SSP119GCAM4 > ssp2_26,SSP226MESGB > ssp2_26,SSP226AIMCGE
 # # highest prices (taking 2040 as ex): ssp1_19 550 > ssp2_26 190 > ssp2_26msg 50 ~ ssp1_26 70
 # # 3 scenarios: high prices - high ambition: ssp1_19,SSP119IMAGE; medium price - medium ambition: ssp2_26,SSP226AIMCGE; low price - medium ambition: ssp2_26msg,SSP119GCAM4 (or ssp1_26,SSP226MESGB but worse match, or ssp1_26,SSP126REMMP to get same SSP but even worse match) 
 # # Why same SSP don't have same emissions trajectories? e.g. ssp2_26 (image) always has lower emissions than ssp2_26msg (which has emissions similar to SSP119GCAM4). 
@@ -1721,6 +1721,7 @@ sh <- create_var_ssp(df = sh) # high prices - high ambition: ssp1_19 (price), SS
 sm <- create_var_ssp(df = sm) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB
 sf <- create_var_ssp(df = sf) # medium price - medium ambition. ssp2_26, SSP226AIMCGE best match for emissions with medium price trajectory ssp2_26
 sl <- create_var_ssp(df = sl) # low price - medium ambition: ssp2_26msg, SSP119GCAM4 (alternative: ssp1_26,SSP226MESGB but worse match for emissions, or ssp1_26,SSP126REMMP to get same SSP but even worse match) 
+# sm: >China neutral<, increasing basic income ~50$ (until 2060) / sf: China winner, plateau of emissions ~40$ (until 2060), lower gains/losses, better fit with price and no problem
 
 share_pooled # 50-60%
 sort(setNames(sm$npv_over_gdp_gcs_adj, sm$code))
@@ -2104,3 +2105,12 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 # 7.1: gcp_rev_distr, gcp_diff_rev, gcp_var_rev, gcp_var_rev_rich_only
 # 7.2: share_below_global_mean
 # 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scautious_npv_over_gdp_gcs_adj
+
+plot(2025:2080, basic_income_adj$ssp2_26[as.character(2025:2080)]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(0, 75))
+lines(2025:2080, emissions_tot[as.character(2025:2080)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
+par(new = T)
+plot(2025:2080, carbon_price$ssp2_26[as.character(2025:2080)], type = 'b', pch = 17, axes = FALSE, ylim = c(0, 750), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+mtext("Carbon price ($/tCO2)", side=4, col="blue", line=2.5) 
+axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
+grid()
+legend("topleft", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
