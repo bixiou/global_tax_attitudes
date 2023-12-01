@@ -123,22 +123,24 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
     ssp[[paste0("gdp_pc_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("pop_", y)]] # /!\ It is in PPP (contrary to old code with IIASA SSPs)
     ssp[[paste0("gdp_pc_over_mean_", y)]] <- ssp[[paste0("gdp_pc_", y)]]/wtd.mean(ssp[[paste0("gdp_pc_", y)]], ssp[[paste0("pop_", y)]], na.rm = T)
   }
-  ssp$gdp_ppp_now <- ssp$gdp_ppp_2023 # TODO? add carbon_price_?
+  ssp$gdp_ppp_now <- ssp$gdp_ppp_2023 
   ssp$gdp_pc_base_year <- ssp$gdp_ppp_pc_2023
   for (v in intersect(keep_from_df, names(df))) ssp[[v]][match.nona(df$code, ssp$code)] <- df[[v]][df$code %in% ssp$code]
   ssp$share_emissions_2023 <- ssp$emissions_2023/sum(ssp$emissions_2023, na.rm = T)
+  ssp$share_territorial_2019[ssp$code == "TWN"] <- ssp$share_emissions_2023[ssp$code == "TWN"]
+  ssp$share_territorial_2019 <- ssp$share_territorial_2019/sum(ssp$share_territorial_2019, na.rm = T)
   return(ssp)
 }
 
 compute_npv <- function(var = "gain_pa_", discount_rate = .03, start = 2030, end = 2100, data = cp, decadal = FALSE) {
-  # /!\ If decadal == T, NPV is computed on 2020-2100. TODO!? Compute it on 2030-2080 (this would make India neutral in Generous EU as the positive part comes from 2020).
+  # /!\ If decadal == T, NPV is computed on 2020-2100. 
   if (decadal) return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/((1+discount_rate)^10)^(i-2)) })))
   else return(rowSums(sapply(start:end, function(i) { return(data[[paste0(var, i)]]/(1+discount_rate)^(i-start)) })))
 }
 compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100) {
   # Uses large_footprint_, optout_right_, revenues_pa_, adult_, gdp_pc_, pop_, pop_, emissions_pa_, carbon_price[[ssp_name]]
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
-  basic_income <- basic_income_adj <- share_pooled <- c()
+  basic_income <- basic_income_adj <- c()
   for (y in start:end) { 
     yr <- as.character(y)
     df[[paste0("participation_rate_", y)]] <- (1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]) * (df$code %in% parties)
@@ -150,7 +152,7 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
       df[[paste0("participation_rate_", y)]] <- (1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]) * (df$code %in% parties)
     } 
     df[[paste0("gain_optout_", y)]] <- df[[paste0("participation_rate_", y)]] * (basic_income[yr] - df[[paste0("revenues_pa_", y)]])
-    # Adjusted to avoid high-income receiving money. Pb: GDP in PPP of Europe is not more than twice the world average 2050-2070.
+    # Adjusted to avoid high-income receiving money. 
     y_bar <- wtd.mean(df[[paste0("gdp_pc_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("pop_", y)]])
     e_bar <- wtd.mean(df[[paste0("emissions_pa_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("adult_", y)]])
     lambda <- pmax(0, pmin(1, (2.2*y_bar - df[[paste0("gdp_pc_", y)]])/((2.2-2)*y_bar))) # lambda = 1 means full basic income, lambda = 0 means basic income is proportional to emissions (if they are below 1.3*average)
@@ -165,26 +167,12 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
     df[[paste0("share_revenues_lost_", y)]] <- ifelse(df[[paste0("revenues_pa_", y)]] > 0, pmax(0, (df[[paste0("revenues_pa_", y)]] - basic_income_adj[yr])/df[[paste0("revenues_pa_", y)]]), 0)
     df[[paste0("share_basic_income_collected_", y)]] <- df[[paste0("revenues_pa_", y)]]/basic_income_adj[yr]
     df[[paste0("basic_income_over_revenues_", y)]] <- basic_income_adj[yr]/df[[paste0("revenues_pa_", y)]]
-    # Alternative policy, called "gcs_pool", where all losers keep the same proportion of revenues they collect
-    share_pooled[yr] <- sum(((basic_income_adj[yr] - df[[paste0("revenues_pa_", y)]]) * df[[paste0("adult_", y)]])[df[[paste0("gain_adj_", y)]] > 0])/(sum((df[[paste0("revenues_pa_", y)]] * df[[paste0("adult_", y)]])[df[[paste0("gain_adj_", y)]] < 0]) + 1e10) # wtd.mean(df[[paste0("share_revenues_lost_", y)]], df[[paste0("adult_", y)]])
-    df[[paste0("gain_pool_", y)]] <- (df[[paste0("gain_adj_", y)]] >= 0) * df[[paste0("gain_adj_", y)]] - (df[[paste0("gain_adj_", y)]] < 0) * share_pooled[yr] * df[[paste0("revenues_pa_", y)]]
-    df[[paste0("gain_pool_over_gdp_", y)]] <- df[[paste0("gain_pool_", y)]]/df[[paste0("gdp_pa_", y)]]
   }
-  
-  # # GDR: find emissions allocations on website and allocate total_revenues[[ssp_name]][yr]. They go only until 2030. Either I recover the GDRs from them (or their code) and apply them here, or I add the per-capita allocation to their code.
-  # df$gain_gdr_2030 <- (carbon_price[[ssp_name]][["2030"]] * df$gdr_pa_2030  - df$revenues_pa_2030)
-  # df$gain_gdr_over_gdp_2030 <- df$gain_gdr_2030/df$gdp_pa_2030
-  # df$diff_gain_gdr_gcs_2030 <- df$gain_gdr_2030 - df$gain_pa_2030
-  # df$diff_gain_gdr_gcs_over_gdp_2030 <- df$diff_gain_gdr_gcs_2030/df$gdp_pa_2030
-  # df$diff_gain_gdr_gcs_adj_2030 <- df$gain_gdr_2030 - df$gain_adj_2030
-  # df$diff_gain_gdr_gcs_adj_over_gdp_2030 <- df$diff_gain_gdr_gcs_adj_2030/df$gdp_pa_2030
   
   df$npv_pa_gcs <- compute_npv("gain_pa_", discount = discount, data = df, decadal = FALSE)
   df$npv_pa_gcs_adj <- compute_npv("gain_adj_", discount = discount, data = df, decadal = FALSE)
   df$npv_over_gdp_gcs <- df$npv_pa_gcs/compute_npv("gdp_pa_", discount = discount, data = df, decadal = FALSE) # this formula corresponds to the % loss in consumption computed in Balanced Growth Equivalent of Stern et al. (07)
   df$npv_over_gdp_gcs_adj <- df$npv_pa_gcs_adj/compute_npv("gdp_pa_", discount = discount, data = df, decadal = FALSE)
-  df$npv_over_gdp_gcs_pool <- compute_npv("gain_pool_", discount = discount, data = df, decadal = FALSE)/compute_npv("gdp_pa_", discount = discount, data = df, decadal = FALSE)
-  df$diff_npv_over_gdp_pool__adj <- df$npv_over_gdp_gcs_pool - df$npv_over_gdp_gcs_adj
   
   return(df)
 }
@@ -229,7 +217,6 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
     yr <- as.character(y)
     basic_income[[ssp_name]][yr] <- wtd.mean(df_parties[[paste0("revenues_pa_", y)]], df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0("adult_", y)]])
     basic_income_adj[[ssp_name]][yr] <- basic_income[[ssp_name]][yr] * (1 + wtd.mean(df_parties[[paste0("participation_rate_", y)]] - df_parties[[paste0("share_basic_income_", y)]], df_parties[[paste0("adult_", y)]]))
-    share_pooled[[ssp_name]][yr] <- sum(((basic_income_adj[[ssp_name]][yr] - df_parties[[paste0("revenues_pa_", y)]]) * df_parties[[paste0("adult_", y)]])[df_parties[[paste0("gain_adj_", y)]] > 0])/sum((df_parties[[paste0("revenues_pa_", y)]] * df_parties[[paste0("adult_", y)]])[df_parties[[paste0("gain_adj_", y)]] < 0]) # wtd.mean(df_parties[[paste0("share_revenues_lost_", y)]], df_parties[[paste0("adult_", y)]])
   }
   
   total_revenues[[ssp_name]] <<- total_revenues[[ssp_name]]
@@ -239,7 +226,6 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG", "MDV", "MUS")], parties)) == 0) { # , "TWN
     basic_income[[name_df]] <<- basic_income[[ssp_name]] <<- basic_income[[ssp_name]] 
     basic_income_adj[[name_df]] <<- basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
-    share_pooled[[name_df]] <<- share_pooled[[ssp_name]] <<- share_pooled[[ssp_name]]
     df <- df_parties
   } else {
     for (v in names(df)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj|^diff_gain_gdr_gcs_adj"), names(df))]) df[[paste0("S", scenario, "_", v)]] <- df_parties[[v]]
@@ -247,7 +233,6 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   }
   basic_income[[scenario]] <<- basic_income[[ssp_name]]
   basic_income_adj[[scenario]] <<- basic_income_adj[[ssp_name]]
-  share_pooled[[scenario]] <<- share_pooled[[ssp_name]]
   return(df)
 }
 
@@ -255,15 +240,13 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
 ##### Instantiation #####
 copy_from_cp <- c("country", "country_map", # These two are absolutely needed 
                        "gdr_pa_2030", "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
-total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- share_pooled <- list()
+total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- list()
 df <- prepare_ssp_country("SSP226MESGB") # sm, SSP2-2.6, temp max: 1.8°C, temp 2100: 1.8°C
 df <- create_var_ssp(df = df) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB
 
 
 
 ##### Scenarios #####
-# /!\ Pb: the price used is the global carbon price, which would induce stronger emission reductions than the proportional share of the carbon budget when participation is not universal (and involves lower average emission than the world).
-# In other words, the scenarios 2-6 are best seen as a carbon tax than an ETS.
 # 1. All: Whole World
 all_countries <- setNames(df$code, df$country)
 # 2. All against OPEC+: World except OPEC+ losers
@@ -274,7 +257,7 @@ optimistic <- c(all_countries[df$npv_pa_gcs_adj >= 0 | df$code %in% c("CHN", EU2
 central <- all_countries[df$npv_over_gdp_gcs_adj >= 0 | df$code %in% c("CHN", EU28_countries, "NOR", "CHE", "JPN", "NZL")]
 # 5. Cautious scenario: EU27 + non-losers. 
 prudent <- all_countries[(df$npv_over_gdp_gcs_adj >= 0) | df$code %in% c("CHN", EU27_countries)]
-# 6. Africa-EU partnership: EU27 + African winners TODO! avoid reliance on image_region_by_code
+# 6. Africa-EU partnership: EU27 + African winners 
 africa_EU <- all_countries[(df$npv_over_gdp_gcs_adj >= 0 & df$code %in% African_countries) | df$code %in% EU27_countries] # image_region_by_code[df$code] %in% c("WAF", "SAF", "RSAF", "NAF", "EAF")
 scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU")
 scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
@@ -295,8 +278,8 @@ for (s in scenarios_names) {
 }
 
 scenarios_features <- data.frame(scenario = capitalize(gsub("_", " ", scenarios_names)), row.names = scenarios_names)
-for (s in scenarios_names) { # share_territorial_2019
-  scenarios_features[s, "emissions_covered"] <- sum(df$share_emissions_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
+for (s in scenarios_names) { 
+  scenarios_features[s, "emissions_covered"] <- sum(df$share_territorial_2019[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
   scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023, na.rm = T)
   scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]/12
   scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
@@ -370,3 +353,10 @@ for (i in 2:6) {
 
 
 ##### Book figures #####
+sum(df$share_territorial_2019[df$code == "CHN"]) # 30%
+sum(df$share_territorial_2019[df$code == "USA"]) # 15%
+sum(df$share_territorial_2019[df$code == "IND"]) # 7%
+sum(df$share_territorial_2019[df$code %in% EU28_countries]) # 9%
+sum(df$share_territorial_2019[df$npv_pa_gcs_adj > 0], na.rm = T) # 19% of global emissions in countries with gain > 0
+sum(df$share_territorial_2019[df$npv_pa_gcs_adj == 0], na.rm = T) # 36% of global emissions in countries with gain == 0
+# TODO! why basic_income_adj spikes in 2074 (and not basic_income)?
