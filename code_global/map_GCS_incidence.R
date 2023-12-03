@@ -1533,7 +1533,7 @@ compute_npv <- function(var = "gain_pa_", discount_rate = .03, start = 2030, end
   if (decadal) return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/((1+discount_rate)^10)^(i-2)) })))
   else return(rowSums(sapply(start:end, function(i) { return(data[[paste0(var, i)]]/(1+discount_rate)^(i-start)) })))
 }
-compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100, linear_downscaling = FALSE, opt_out_at_start = T) {
+compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100, linear_downscaling = FALSE, opt_out_at_start = T, antiredistr_prevention = T, middle_losing_prevention = T) {
   # Uses large_footprint_, optout_right_, revenues_pa_, adult_, gdp_pc_, pop_, pop_, emissions_pa_, carbon_price[[ssp_name]]
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   basic_income <- basic_income_adj <- share_pooled <- total_revenues <- mean_revenues <- basic_income_over_mean_revenues <- c()
@@ -1546,27 +1546,21 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
     # df$footprint_over_mean_start <- (df$footprint_2019/df$adult_2020)/(sum(df$footprint_2019, na.rm = T)/sum(df$adult_2020))
     # df$footprint_over_mean_start[is.na(df$footprint_over_mean_start)] <- (df$emissions_pa_2020/(sum(df$emissions_2020, na.rm = T)/sum(df$adult_2020)))[is.na(df$footprint_over_mean_start)]
     df$footprint_over_mean_start <- (df$emissions_pa_2025/(sum(df$emissions_2025, na.rm = T)/sum(df$adult_2025))) # TODO this hypothesis or the above?
+    # df$intensity_over_mean_start <- ((df$emissions_2025/df$gdp_2025)/(sum(df$emissions_2025, na.rm = T)/sum(df$gdp_2025))) # TODO this hypothesis or the above?
     if (opt_out_at_start) {
-      y_bar <- wtd.mean(df[[paste0("gdp_pc_", y)]], (df$code %in% parties) * df[[paste0("pop_", y)]])
-      e_bar <- wtd.mean(df[[paste0("emissions_pa_", y)]], df$code %in% parties * df[[paste0("adult_", y)]])
-      lambda <- pmax(0, pmin(1, (2.2*y_bar - df[[paste0("gdp_pc_", y)]])/((2.2-2)*y_bar))) # lambda = 1 means full basic income, lambda = 0 means basic income is proportional to emissions (if they are below 1.3*average)
-      lambda[is.na(lambda)] <- 1
-      df[[paste0("share_basic_income_", y)]] <- (df$code %in% parties) * (lambda + pmin(1, df[[paste0("emissions_pa_", y)]]/(1.3*e_bar))*(1-lambda))
-      
-      # low_emissions_ctries <- no.na(df[[paste0("emissions_pa_", y)]] < 1.3*e_bar, rep = FALSE, num_as_char = FALSE)
-      # df[[paste0("gain_adj_", y)]][low_emissions_ctries] <- (basic_income[yr] * df[[paste0("share_basic_income_", y)]] - (df$code %in% parties) * df[[paste0("revenues_pa_", y)]])[low_emissions_ctries]
-      # basic_income_adj[yr] <- basic_income[yr] * (1 + wtd.mean((df$code %in% parties) - df[[paste0("share_basic_income_", y)]], df[[paste0("adult_", y)]]))
-      # df[[paste0("gain_adj_", y)]][lambda == 1 | !low_emissions_ctries] <- ((df$code %in% parties) * (basic_income_adj[yr] - df[[paste0("revenues_pa_", y)]]))[lambda == 1 | !low_emissions_ctries]
-      
+      if (antiredistr_prevention) {
+        y_bar <- wtd.mean(df[[paste0("gdp_pc_", y)]], (df$code %in% parties) * df[[paste0("pop_", y)]])
+        e_bar <- wtd.mean(df[[paste0("emissions_pa_", y)]], df$code %in% parties * df[[paste0("adult_", y)]])
+        lambda <- pmax(0, pmin(1, (2.2*y_bar - df[[paste0("gdp_pc_", y)]])/((2.2-2)*y_bar))) # lambda = 1 means full basic income, lambda = 0 means basic income is proportional to emissions (if they are below 1.3*average)
+        lambda[is.na(lambda)] <- 1
+        df[[paste0("share_basic_income_", y)]] <- (df$code %in% parties) * (lambda + pmin(1, df[[paste0("emissions_pa_", y)]]/(1.3*e_bar))*(1-lambda))
+      } else df[[paste0("share_basic_income_", y)]] <- 1
+
       if (mean_revenues[yr] > 0) {
         temp <- mean_revenues[yr] 
         df[[paste0("income_pa_", y)]] <- pmax(temp, (df[[paste0("optout_right_", y)]] * mean_revenues[yr] * df$footprint_over_mean_start + (1 - df[[paste0("optout_right_", y)]]) * temp * df[[paste0("share_basic_income_", y)]]) * (df$code %in% parties))
+        # df[[paste0("income_pa_", y)]] <- pmax(temp, (df[[paste0("optout_right_", y)]] * mean_revenues[yr] * df$intensity_over_mean_start * (sum(df[[paste0("emissions_", y)]], na.rm = T)/sum(df[[paste0("gdp_", y)]])) * df[[paste0("gdp_pa_", y)]] + (1 - df[[paste0("optout_right_", y)]]) * temp * df[[paste0("share_basic_income_", y)]]) * (df$code %in% parties))
         basic_income[yr] <- mean_revenues[yr] / wtd.mean(df[[paste0("income_pa_", y)]]/mean_revenues[yr], df[[paste0("adult_", y)]], na.rm = T)
-        # df[[paste0("income_over_basic_income_right_", y)]] <- df[[paste0("optout_right_", y)]] * pmax(1, df$footprint_over_mean_start) + (1 - df[[paste0("optout_right_", y)]])
-        # df[[paste0("income_over_mean_revenues_", y)]] <- df[[paste0("income_over_basic_income_", y)]] <- pmax(1, df$footprint_over_mean_start) # credit, income, proceeds, return
-        # basic_income_over_mean_revenue[yr] <- basic_income[yr] / (total_revenues[yr]/(df[[paste0("adult_", y)]] * (df$code %in% parties)))
-        # df[[paste0("income_over_basic_income_", y)]] <- df[[paste0("income_over_mean_revenues_", y)]] * mean_revenues_over_basic_income[yr]
-        # df[[paste0("income_over_mean_revenues_", y)]] <- df[[paste0("income_over_basic_income_right_", y)]] * basic_income_over_mean_revenue[yr]
         while (max_gap(temp, basic_income[yr]) > 1e-6) {# TODO! include the mechanism preventing anti-redistribution at this stage
           df[[paste0("income_pa_", y)]] <- pmax(basic_income[yr], (df[[paste0("optout_right_", y)]] * mean_revenues[yr] * df$footprint_over_mean_start + (1 - df[[paste0("optout_right_", y)]]) * basic_income[yr]) * (df$code %in% parties))
           temp <- basic_income[yr]
@@ -1577,7 +1571,8 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
         basic_income[yr] <- 0
       }
       basic_income_adj[yr] <- basic_income[yr]
-      df[[paste0("participation_rate_", y)]] <- 1 # TODO! check it makes sense (for the mechanism preventing anti-redistribution)
+      # df[[paste0("participation_rate_", y)]] <- 1 
+      if (!middle_losing_prevention) df[[paste0("income_pa_", y)]] <- df[[paste0("share_basic_income_", y)]] * basic_income[yr]
       df[[paste0("gain_adj_", y)]] <- df[[paste0("income_pa_", y)]] - df[[paste0("revenues_pa_", y)]]
     } else {
       df[[paste0("participation_rate_", y)]] <- (1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]) * (df$code %in% parties)
@@ -1588,20 +1583,21 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
         df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pa_", y)]] > basic_income[yr])
         df[[paste0("participation_rate_", y)]] <- (1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]) * (df$code %in% parties)
       }
+      if (!middle_losing_prevention) df[[paste0("participation_rate_", y)]] <- 1
       df[[paste0("gain_optout_", y)]] <- df[[paste0("participation_rate_", y)]] * (basic_income[yr] - df[[paste0("revenues_pa_", y)]]) 
-      # Adjusted to avoid high-income receiving money. Pb: GDP in PPP of Europe is not more than twice the world average 2050-2070.
-      # Pb with old data: 2070 GDP pc PPP of China was larger than Western Europe in View(ssp1_26[,c("region", "gdp_pc_2020", "gdp_pc_2070")]) co2_pop$gdp_pc_2070[co2_pop$country %in% c("China", "Spain", "France", "Nigeria", "Namibia")]
-      # To estimate future emissions and GDP, I made the assumption that emissions_pc/GDPpc evolve in the same way in all big regions. Pb: this assumption was at odd with SSP1, where GDPpc converge across regions. 
-      # => Either I should drop the country-by-country analysis, or I should find better projections of GDP. (EDIT: I found better projections)
-      y_bar <- wtd.mean(df[[paste0("gdp_pc_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("pop_", y)]])
-      e_bar <- wtd.mean(df[[paste0("emissions_pa_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("adult_", y)]])
-      lambda <- pmax(0, pmin(1, (2.2*y_bar - df[[paste0("gdp_pc_", y)]])/((2.2-2)*y_bar))) # lambda = 1 means full basic income, lambda = 0 means basic income is proportional to emissions (if they are below 1.3*average)
-      lambda[is.na(lambda)] <- 1
-      df[[paste0("share_basic_income_", y)]] <- df[[paste0("participation_rate_", y)]] * (lambda + pmin(1, df[[paste0("emissions_pa_", y)]]/(1.3*e_bar))*(1-lambda))
-      df[[paste0("gain_adj_", y)]][no.na(df[[paste0("emissions_pa_", y)]] < 1.3*e_bar, rep = FALSE, num_as_char = FALSE)] <- (basic_income[yr] * df[[paste0("share_basic_income_", y)]] - # TODO! 
-                                                                                                                                df[[paste0("participation_rate_", y)]] * df[[paste0("revenues_pa_", y)]])[no.na(df[[paste0("emissions_pa_", y)]] < 1.3*e_bar, rep = FALSE, num_as_char = FALSE)]
-      basic_income_adj[yr] <- basic_income[yr] * (1 + wtd.mean(df[[paste0("participation_rate_", y)]] - df[[paste0("share_basic_income_", y)]], df[[paste0("adult_", y)]]))
-      df[[paste0("gain_adj_", y)]][lambda == 1 | no.na(df[[paste0("emissions_pa_", y)]] >= 1.3*e_bar, rep = FALSE, num_as_char = FALSE)] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pa_", y)]]))[lambda == 1 | no.na(df[[paste0("emissions_pa_", y)]] >= 1.3*e_bar, rep = FALSE, num_as_char = FALSE)]
+      
+      if (antiredistr_prevention) { # Adjusted to avoid high-income receiving money. Pb: GDP in PPP of Europe is not more than twice the world average 2050-2070.
+        # This has only minor effects, with only Sweden, Switerland and France being concerned at some point, and they always receive >60% of the basic income.
+        y_bar <- wtd.mean(df[[paste0("gdp_pc_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("pop_", y)]])
+        e_bar <- wtd.mean(df[[paste0("emissions_pa_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("adult_", y)]])
+        lambda <- pmax(0, pmin(1, (2.2*y_bar - df[[paste0("gdp_pc_", y)]])/((2.2-2)*y_bar))) # lambda = 1 means full basic income, lambda = 0 means basic income is proportional to emissions (if they are below 1.3*average)
+        lambda[is.na(lambda)] <- 1
+        df[[paste0("share_basic_income_", y)]] <- df[[paste0("participation_rate_", y)]] * (lambda + pmin(1, df[[paste0("emissions_pa_", y)]]/(1.3*e_bar))*(1-lambda))
+        low_emissions_ctries <- no.na(df[[paste0("emissions_pa_", y)]] < 1.3*e_bar, rep = FALSE, num_as_char = FALSE)
+        df[[paste0("gain_adj_", y)]][low_emissions_ctries] <- (basic_income[yr] * df[[paste0("share_basic_income_", y)]] - df[[paste0("participation_rate_", y)]] * df[[paste0("revenues_pa_", y)]])[low_emissions_ctries] # TODO!
+        basic_income_adj[yr] <- basic_income[yr] * (1 + wtd.mean(df[[paste0("participation_rate_", y)]] - df[[paste0("share_basic_income_", y)]], df[[paste0("adult_", y)]]))
+        df[[paste0("gain_adj_", y)]][lambda == 1 | low_emissions_ctries] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pa_", y)]]))[lambda == 1 | low_emissions_ctries]
+      } else df[[paste0("gain_adj_", y)]] <- (basic_income[yr] - df[[paste0("revenues_pa_", y)]]) * df[[paste0("participation_rate_", y)]]
     }
     
     df[[paste0("gain_adj_over_gdp_", y)]] <- df[[paste0("gain_adj_", y)]]/df[[paste0("gdp_pa_", y)]]
