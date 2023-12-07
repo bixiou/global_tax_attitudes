@@ -372,3 +372,5 @@ mean(transfer_over_gdp[as.character(2025:2060)]) # .6%
 mean((transfer_over_gdp/revenues_over_gdp)[as.character(2025:2060)]) # 65%
 plot(2020:2100, revenues_over_gdp, type = 'l')
 plot(2020:2100, transfer_over_gdp, type = 'l')
+
+
