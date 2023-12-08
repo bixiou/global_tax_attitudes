@@ -361,7 +361,7 @@ sum(df$share_territorial_2019[df$npv_pa_gcs_adj > 0], na.rm = T) # 19% of global
 sum(df$share_territorial_2019[df$npv_pa_gcs_adj == 0], na.rm = T) # 36% of global emissions in countries with gain == 0
 # TODO! why basic_income_adj spikes in 2074 (and not basic_income)?
 # TODO!? base the opt out on nominal rather than PPP? So that Russia gets it
-# TODO! replace opt out provision by increase in basic income proportional to excess emissions to global mean at t=0
+# TODO? replace opt out provision by increase in basic income proportional to excess emissions to global mean at t=0?
 
 # 6.2: Recettes en proportion du PIB mondial
 revenues_over_gdp <- total_revenues$ssp2_26/sapply(2020:2100, function(y) sum(df[[paste0("gdp_", y)]]))
