@@ -1548,7 +1548,7 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
     # df$footprint_over_mean_start[is.na(df$footprint_over_mean_start)] <- (df$emissions_pa_2020/(sum(df$emissions_2020, na.rm = T)/sum(df$adult_2020)))[is.na(df$footprint_over_mean_start)]
     df$footprint_over_mean_start <- (df$emissions_pa_2025/(sum(df$emissions_2025, na.rm = T)/sum(df$adult_2025))) # TODO this hypothesis or the above?
     # df$intensity_over_mean_start <- ((df$emissions_2025/df$gdp_2025)/(sum(df$emissions_2025, na.rm = T)/sum(df$gdp_2025))) # TODO this hypothesis or the above?
-    if (opt_out_at_start) {
+    if (opt_out_at_start) { # Opt-out defined in function of excess emissions at t=0
       if (antiredistr_prevention) {
         y_bar <- wtd.mean(df[[paste0("gdp_pc_", y)]], (df$code %in% parties) * df[[paste0("pop_", y)]])
         e_bar <- wtd.mean(df[[paste0("emissions_pa_", y)]], df$code %in% parties * df[[paste0("adult_", y)]])
