@@ -378,3 +378,7 @@ plot(2020:2100, transfer_over_gdp, type = 'l')
 # 262$ pc => 262*1.66 = 435 pa => 435+600 = 1035 pa suite au Plan => 1035/1.66/12 = 52$ pc (*2.38 suite au Plan) => 52*2.7 = 140 $PPP pc 
 # 2.7 PPP conversion factor: 262 GDP pc MER https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=BI-CD&most_recent_value_desc=false
 # 708 GDP pc PPP https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=BI-CD&most_recent_value_desc=false
+
+# A Cadre
+sum(emissions_tot[emissions_tot > 0]) # 933 Mt
+sum(emissions_tot) # 865 Mt
