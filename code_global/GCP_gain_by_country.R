@@ -373,4 +373,8 @@ mean((transfer_over_gdp/revenues_over_gdp)[as.character(2025:2060)]) # 65%
 plot(2020:2100, revenues_over_gdp, type = 'l')
 plot(2020:2100, transfer_over_gdp, type = 'l')
 
-
+# 8.1: Effet sur le Burundi
+(df$pop_2030/df$adult_2030)[df$code == "BDI"] # 1.66
+# 262$ pc => 262*1.66 = 435 pa => 435+600 = 1035 pa suite au Plan => 1035/1.66/12 = 52$ pc (*2.38 suite au Plan) => 52*2.7 = 140 $PPP pc 
+# 2.7 PPP conversion factor: 262 GDP pc MER https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=BI-CD&most_recent_value_desc=false
+# 708 GDP pc PPP https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=BI-CD&most_recent_value_desc=false
