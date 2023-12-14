@@ -1,0 +1,674 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Reviewer #1
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+International Political Economy; Climate Policy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+International Attitudes Toward Global Policies
+\end_layout
+
+\begin_layout Standard
+This study investigates the level and predictors of public support for the
+ Global Climate Scheme which consists of introducing a global carbon pricing
+ mechanism whose revenues would fund a universal basic income.
+ The analysis of survey data from over 20 countries suggests that the policy
+ finds supermajoritarian support in Europe and majority support in the United
+ States.
+ The main conclusion is that the Global Climate Scheme is preferred by a
+ robust majority across countries and that “the expressed preference is
+ sincere”.
+\end_layout
+
+\begin_layout Standard
+1.
+ The results could be very context-dependent because existing conjoint-experimen
+tal research finds that this sensitivity is absent when voters can also
+ select tax plans that would benefit the poor
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+I don't get it.
+ What does 
+\begin_inset Quotes eld
+\end_inset
+
+this sensitivity
+\begin_inset Quotes erd
+\end_inset
+
+ refer to? Also, the GCP benefit the (human) poor.
+ + results on wealth tax show people care about foreign poor.
+\end_layout
+
+\end_inset
+
+ (see Ballard-Rosas et al.
+ 2017 JOP) and because the impact of a policy on the richest individuals
+ does not seem to drive preferences in other policy fields (Bechtel and
+ Liesch 2020 POQ).
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Our results are perfectly compatible with Bechtel and Liesch 2020 who show
+ that people care about poor people.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+We can infer from the paper that people would be indifferent between status
+ quo and a policy that cost them 1k$ and increase income of the poorest
+ by 5k$.
+ Or that a majority would support a policy that doubles the income of the
+ poorest (Americans) and reduce their income by 1k$.
+ This is close to what we find.
+\end_layout
+
+\end_inset
+
+ Not mentioning the fact that other papers have shown an aversion for topmost
+ inequality (e.g.
+ Fisman et al.
+ 2020).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+2.
+ The authors highlight that there is no “significant policy proposal” on
+ the table but that could also be a weakness of the study: did individuals
+ know anything about this somewhat complex policy reform? Relatedly, how
+ plausible is it from the perspective of both mass publics and experts that
+ such a global policy would ever materialize? 
+\end_layout
+
+\begin_layout Standard
+3.
+ There is a significant disconnect between the claims about support for
+ the global climate scheme and the actual survey item meant to elicit preference
+s over such a policy.
+ That item merely asks “at which level(s) do you think public policies to
+ tackle climate change need to be put in place?” (lines 80-81).
+ But asking such a broad and amorphous question does not seem to be informative
+ about the level of support for a rather specific, costly, and strongly
+ redistributive global reform.
+ It could be useful to focus more directly on the studies that are clearly
+ focused on the actual policy question.
+ 
+\end_layout
+
+\begin_layout Standard
+4.
+ Similarly, it remains vague how preferences over dividing a carbon budget
+ relates to the research question/claims.
+ Also, one wonders whether these findings about burden-sharing resonate
+ with existing research on this topic.
+ The SI section A.1.2 is quite eclectic about how it portrays existing research
+ on this topic and that review includes “staff discussion notes”
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+This is an IMF paper
+\end_layout
+
+\end_inset
+
+ papers instead of focusing on high-quality public opinion work published
+ in expert journals.
+ Think of the increasingly large literature on cost aversion and compensation
+ (e.g., Gaikwad et al.
+ 2022 APSR and the literature cited therein).
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Gaikwad et al.
+ 2022 is about how to allocate the revenues of a carbon tax within a country
+ (on particular, between compensation for coal miners vs.
+ other purposes).
+ It has nothing to do with burden-sharing between countries.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+5.
+ A key question is whether the predicted levels of support are plausible,
+ especially since the policy would entail considerable redistribution that
+ would require exceptional and maybe even unprecedented levels of international
+ administrative coordination with respect to both the extraction of resources
+ and their re-allocation.
+ I currently am missing a strategy to address the argument that the high
+ levels of support reflect the fact that many respondents simply discount
+ the reform as being purely speculative, having a close-to-zero probability
+ of ever materializing, and lacking any clear (personal) costs above and
+ beyond that any costs would fall on the very rich and respondents therefore
+ think they would be net beneficiaries.
+ The importance of (personal) costs has been documented in existing experimental
+ global climate policy research and the findings suggest that a moderate
+ increase in personal costs could lead to sizable shifts in public support
+ even if there is a causally identified preference for allocating costs
+ in line with fairness norms such as the ability-to-pay principle (see Bechtel
+ and Scheve 2013 PNAS).
+ This is in some sense consistent with the descriptive patterns report in
+ Figure 2 and it would be helpful to make this explicit and think about
+ possible explanations.
+ Overall, however, it seems that any study intending to generate predicted
+ levels of support for the types of global and unprecedented policies would
+ have to carefully account for cost sensitivities.
+ 
+\end_layout
+
+\begin_layout Standard
+6.
+ This is related to the potential role of the list experiment as an attempt
+ to address social desirability concerns.
+ This problem would be particularly relevant if a policy is highly ethically
+ sensitive or very politicized.
+ But the main concern with the current study would be about the lack of
+ a clear and somewhat attributable cost component.
+ Also, Table 1 does not provide any information about what is being reported
+ here and how the quantities have been estimated which is inconsistent with
+ accepting transparent reporting standards.
+ It is also somewhat misleading to claim that any differences here would
+ indicate (through the wording selected for this table) that these reflect
+ social desirability bias.
+ There could be many alternatives explanations such as interaction effects
+ between the proposed alternatives, e.g., beliefs about the political and
+ economic consequences of pursuing multiple policies simultaneously that
+ are unrelated to social desirability.
+ 
+\end_layout
+
+\begin_layout Standard
+7.
+ It is not obvious how deviating from the standard conjoint design (lines
+ 239-244)
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+prioritization
+\end_layout
+
+\end_inset
+
+ by adding the points component to assess a selection of previously shown
+ profiles improves over existing work.
+ To be clear, there could be a good reason for this design, but one would
+ have to make that reason explicit.
+ Moreover, these results again show that taxing the rich is the overriding
+ concern.
+ Since this finding conflicts with what we know about tax policy preferences
+ (at least in the US, see Ballard et al.
+ 2016 JOP
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+I don't find it: is it Johnston & Ballard, JOP (2016)?
+\end_layout
+
+\end_inset
+
+; Scheve/Stasavage 2022 CPS), one would have to acknowledge this discrepancy
+ which raises questions about the validity of the findings.
+ One could begin exploring this issue by analyzing the results for the US
+ separately although there are obvious limits to what can be realized within
+ the current design framework due to comparability issues.
+ 
+\end_layout
+
+\begin_layout Standard
+8.
+ There is also the issue of effectiveness and financing portion of such
+ a global policy scheme.
+ How plausible is it that taxing the richest would generate sufficient revenue?
+ Moreover, one would want to know more about the mechanisms that explain
+ mass preferences.
+ For example, to what extent is it those who care strongly about addressing
+ global warming who support drastic reforms? 
+\end_layout
+
+\begin_layout Standard
+9.
+ The study connects a wide range of policy fields (tax policy, global climate
+ action, novel decisionmaking bodies, foreign aid, …) and this renders the
+ paper difficult to digest and the main contribution appears (unnecessarily?)
+ somewhat superficial.
+ 
+\end_layout
+
+\begin_layout Standard
+10.
+ Is all the material presented sufficiently original given that Figure 1
+ is taken from an NBER working paper? Also, I am wondering whether the referenci
+ng is correct since NBER working paper 1714 is from 1985 and on “Does Deductibil
+ity Influence Local Taxation”.
+ Instead, Figure 1 seems to come from the “OECD Economics Department Working
+ Paper, 1714.” The figure has also been used in an 2022 op-ed, see: https://cepr.o
+rg/voxeu/columns/fighting-climate-change-international-attitudes-toward-climate-
+policies 
+\end_layout
+
+\begin_layout Standard
+11.
+ Overall, the study and the survey design remains opaque at times.
+ For example, the survey structure seems to have included so many conditions
+ and skip-/assignment logics that it is hard to make sense of the results
+ in terms of experimental conditions and potential order effects.
+ It is also unclear how the Figure A8 results should be interpreted given
+ that it includes a range of policy reforms across multiple issue areas.
+ 
+\end_layout
+
+\begin_layout Standard
+12.
+ Lastly, the title could be more informative about the content of the study.
+ Also, it would be useful to convey the key finding or relationship that
+ is investigated in the study in the title.
+\end_layout
+
+\begin_layout Section
+Reviewer #2
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Behavioral Economics; Experimental Economics; Public studies
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The paper is in many ways a fun and interesting read, but my sense is that
+ it doesn't reach the general interest bar of Nature Sustainability.
+ A main reason behind me reaching that conclusion is that the policies discussed
+ in the papers are generally formulated in very abstract terms.
+ In the demand for redistribution literature one generally observes high
+ agreement to general statements about the importance of things like increased
+ equality and environmental sustainability.
+ However, when policies become more concrete, and when it becomes clear
+ who will actually be impacted, there is generally much less support.
+ There are also often treatment effects from e.g.
+ information present in the abstract, but not for concrete policies.
+ For this reason, the generalizability of findings similar to the ones presented
+ here are limited.
+ This does, in itself, not preclude the paper from being published, but
+ it diminishes its external validity significantly.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+It may be true that support for global redistributive policies would be
+ lower if they were becoming more concrete, but we cannot test that until
+ they enter the public debate.
+ We used all the methods available to us to test whether support for global
+ redistributive policies is genuine.
+ Our paper indicates that they may be supported once they enter the public
+ debate, and is thus the first step to test whether attitudes will change
+ once global redistribution is debated.
+ To us, it is a result in itself that such policies are supported, even
+ if this support might prove transitory.
+ Preventing the publication of such a result on the ground that opinions
+ may change means preventing the publication of any research on attitudes
+ towards global redistributive policies, and more generally any policy that
+ is now currently part of the public debate.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Reviewer #3
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Public policy; Ethics; Environmental economics
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I’m not an expert in several of the disciplines relevant to this paper (namely,
+ quantitative social science and political science involving surveys).
+ I defer to other experts on whether the methods here are correct, including
+ preregistration, etc.
+\end_layout
+
+\begin_layout Standard
+I also partly defer re the paper’s novelty, but if the work here has not
+ already been done elsewhere, then it seems of sufficient novelty to warrant
+ publication in Nature Sustainability.
+\end_layout
+
+\begin_layout Standard
+I advocate for a revise and resubmit based on what I am knowledgeable about,
+ as my impression is that this article provides useful and important new
+ knowledge – with the proviso that the methods are approved by other reviewers,
+ and that other reviewers identify no good reason to doubt it is above the
+ minimum bar of novelty.
+ From a political point of view, it is important to know how many people
+ say they would support different policies, including the GCS policy that
+ is one of the authors’ focal points, and how robust those responses appear
+ to be.
+ From a wellbeing, equity, and poverty alleviation point of view, the authors’
+ numbers check out regarding something on the order of $30/person/month
+ in global carbon revenue would be generated with the magnitude of carbon
+ pricing they consider, which could have important poverty alleviation implicati
+ons if invested in pro-poverty alleviation ways.
+\end_layout
+
+\begin_layout Standard
+At the same time, there were a few questions I had that seemed important
+ to clarify in the text – some important issues are:
+\end_layout
+
+\begin_layout Standard
+1.
+ Do the authors’ poverty calculations tacitly assume that the global poor
+ do not bear any of the costs from large carbon pricing schemes such as
+ GCS, and somehow only receive benefits via the equal per capita distribution
+ of the revenues? If so, this might appear to some readers to be a complication
+ for their poverty calculations, because realistically the poor will bear
+ some of the mitigation costs – instead, the correct focus for poverty calculati
+ons would be the net benefit, ie for a representative individual below the
+ poverty line, we need to know that individual’s net benefit = the carbon
+ dividend they receive minus the additional mitigation cost they bear from
+ the carbon pricing scheme (due to decreased economic growth affecting them,
+ higher fuel and other costs of goods, etc).
+ In other words, if the carbon dividend for those below the poverty line
+ is $30 per person, we then need to subtract from that amount the increased
+ costs for those individuals from higher priced energy, goods, foregone
+ wages etc in order to know how much better off they are on balance under
+ the carbon pricing scheme.
+ Without anticipating this issue, a skeptical reader might worry that these
+ costs turn out to be a high percentage of the benefits from the carbon
+ dividend, thus undermining the reported poverty alleviation benefits.
+\end_layout
+
+\begin_layout Standard
+If the authors have already accounted for mitigation cost in their poverty
+ alleviation calculations, they should state this and briefly explain this
+ in more detail in the text.
+ Currently, the authors seem to say only that “The 700 million people with
+ less than $2/day would be lifted out of extreme poverty, and fossil fuel
+ price increases would cost the typical person in their country a specified
+ amount (see Supplementary Section D).” However, supplementary Section D
+ does not explain anything relevant to this issue (as far as I see), but
+ rather simply explains how different survey respondents in rich countries
+ are told that their own consumption will be decreased by additional mitigation
+ cost in their own rich country.
+\end_layout
+
+\begin_layout Standard
+If I’ve not misunderstood the situation, and the authors have in fact not
+ accounted for the mitigation cost burden for the poor, perhaps a solution
+ is to cite a paper that quantifies that the net benefits will be large
+ for those at the bottom of the income distribution from a scheme like GCS,
+ and thus that the net benefits are large as the benefits for the poorest
+ greatly exceed the mitigation costs.
+ For one specific set of results that does this, in a paper the authors
+ already cite, see Supplementary Figure 4 (especially panel C) of Budolfson
+ et al “Climate action with revenue recycling has benefits for poverty,
+ inequality and well-being”.
+\end_layout
+
+\begin_layout Standard
+2.
+ A further issue is that the authors could be more clear about how many
+ people they claim would be lifted out of poverty by their central GCS scenario.
+ Here is a simple way of explaining one reason why this is important and
+ involves a further complication: even if we ignore the issue in the previous
+ comment and thus focus only on the per capita carbon dividend, by the authors’
+ own lights the carbon dividend is only $1/day (= $30/month).
+ So, if we want to know how many people will be lifted out of poverty, where
+ that means living on more than $2/day, it is not obvious how many people
+ that would be if all we know is that every person will get an additional
+ $1/day? (It depends on how many of the poorest people are close enough
+ to the $2/day line that the extra amount puts them over that threshold.
+ In addition, this illustrates the importance of the issue in the previous
+ comment, since if the net benefit for each person in poverty is less than
+ $1/day, this will also effect how many people are raised for the first
+ time above the $2/day threshold.) The authors’ seem to assert without further
+ analysis that “The 700 million people with less than $2/day would be lifted
+ out of extreme poverty”.
+ (see textbox – note that this quote from the authors most naturally is
+ taken to be saying that *everyone in the world* would be lifted out of
+ extreme poverty, but it is unclear why we should be convinced that is so
+ for the reasons just given.)
+\end_layout
+
+\begin_layout Standard
+The data underlying the Budolfson et al paper referenced above would answer
+ these questions, but for some reason their paper does not seem to have
+ reported those specific numbers anywhere (ie it does not specifically report
+ what % of those below $2/day would be lifted above $2/day in a GCS-like
+ scenario).
+ Perhaps these numbers are available from another published paper, or perhaps
+ Budolfson et al would be willing to provide them if useful.
+\end_layout
+
+\begin_layout Standard
+3.
+ As a side-note, perhaps worth somehow bringing out the subtlety of this
+ a bit: if we change the world so that everyone who was previously living
+ on less than $2/day is now living on $2.50/day, it is not clear that we
+ have really ended extreme poverty (as the $2/day threshold does not mark
+ a deeply precise and dramatic distinction in quality of life)?
+\end_layout
+
+\begin_layout Standard
+4.
+ Within Fig 1 and Supplementary Information Fig S1, the authors say that
+ the GCS scenario divides a 2deg global carbon budget into “tradable country
+ shares”.
+ Can the authors explain explicitly how these “country shares” are determined
+ and thus how this is equivalent to the GCS scenario described in the main
+ text (since the text does not otherwise refer to “country shares” as far
+ as I can see).
+ Eg is each country’s share of the total global permits simply that country’s
+ % of global population? Simply adding that information would be sufficient
+ (if that is correct) – but this isn’t completely clear from the text.
+\end_layout
+
+\begin_layout Standard
+5.
+ The figures in the main text say that “The numbers represent the percentage
+ of somewhat or strong support, after excluding indifferent answers.” Is
+ it a strong custom to report results in this way in this kind of context?
+ It seemed odd to me, as it seemed to inflate the levels of support.
+ (It is also a little opaque to the reader given it is the only way of reporting
+ things in the main text, given that an unknown and arbitrarily large %
+ of the population could be indifferent – eg if 99% are indifferent, and
+ the remaining 1% are all in favor, that would be reported as 100% in favor?).
+\end_layout
+
+\begin_layout Standard
+I defer to the customary norms of how to report things if there is a strong
+ customary norm in favor of reporting the data in the way the authors have.
+ Otherwise I’d prefer the absolute % as reported in SI A3.
+ (The authors could also consider reporting both numbers in the main text
+ together, with the coloring based on one metric, but perhaps add the other
+ in parentheses, eg a question that has a relative % of 84 and absolute
+ % of 64 could be reported as “84 (64)”.)
+\end_layout
+
+\begin_layout Standard
+6.
+ A small issue: I thought GCS should not be described as a “Climate Club”
+ (see textbox pg 8), as in the literature a climate club typically refers
+ to a proper subset of nations that coordinate action together either to
+ benefit themselves directly in some way, or to indirectly benefit themselves
+ by getting other nations to deepen their mitigation efforts? (I don’t think
+ this is anything to worry about in the survey, just could come across as
+ a bit of a distracting misnomer.)
+\end_layout
+
+\begin_layout Standard
+7.
+ Perhaps in the main text the authors should more explicitly situate their
+ contribution relative to Carattini, S., Kallbekken, S.
+ & Orlov, A.
+ How to win public support for a global carbon tax.
+ Nature 565, 289–291 (2019).
+ This doesn’t require any big reframing or revisions, but perhaps just a
+ sentence or two?
+\end_layout
+
+\begin_layout Standard
+8.
+ I thought for a broad audience it could be explained a little more explicitly
+ what a “real-stake petition” is, and same for the other terms in this key
+ sentence: “By employing a list experiment, a real-stake petition, and conjoint
+ analyses, our study indicates genuine and robust support for the GCS among
+ respondents.
+ For example, the conjoint analyses provide evidence that political parties
+ would not lose vote intention by endorsing the GCS.” Explain and connect
+ the dots more explicitly for a broad audience about what these things mean,
+ and how they imply the conclusions the authors claim.
+\end_layout
+
+\begin_layout Standard
+9.
+ Regarding why politicians do not advocate GCS, the authors say “we hypothesized
+ pluralistic ignorance, i.e.
+ that the public and policymakers mistakenly perceive the GCS as unpopular”.
+ I thought a different approach might be for the authors in this article
+ to be more agnostic about the explanation absent much deeper political
+ science analysis, while noting that there are several plausible explanations,
+ including this one? (It seems to require much more argument to advance
+ the authors’ explanation, which is not the focus of the paper here.) Eg
+ a different explanation is that politicians are focused on marginal voters
+ who might be indifferent in the majority, but in some cases would see support
+ of GCS as a reason to veto the candidate whereas failing to support GCS
+ as a main plank in their platform is not seen as a reason not to support
+ the candidate.
+ Other explanations are possible.
+\end_layout
+
+\begin_layout Standard
+10.
+ This doesn’t necessarily require any changes, but wanted to note that the
+ authors say: “A global quota with equal per capita emission rights produces
+ the same distributional outcomes as a global carbon tax that funds a global
+ basic income.” In theory yes, but what about in practice? Some might think
+ that these differ in attractiveness in reality, perhaps due to real-world
+ complications of the sort that are the focus of political economy, administrati
+ve feasibility, etc.
+ (Eg if experts were asked the same survey questions, they might differ
+ in their support for each based on these considerations.)
+\end_layout
+
+\begin_layout Standard
+Thanks to the authors for this excellent contribution.
+\end_layout
+
+\end_body
+\end_document
