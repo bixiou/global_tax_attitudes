@@ -1,0 +1,206 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Dear Dr.
+ Alamanos,
+\end_layout
+
+\begin_layout Standard
+we would like to appeal the rejection decision as it appears to us that
+ reviewers #1 and #2 made substantial errors of fact in their reports:
+\end_layout
+
+\begin_layout Standard
+a.
+ The rejection recommendation of reviewer #2 is based on the mistaken claim
+ that 
+\shape italic
+
+\begin_inset Quotes eld
+\end_inset
+
+the policies discussed in the papers are generally formulated in very abstract
+ terms
+\shape default
+.
+\begin_inset Quotes erd
+\end_inset
+
+ Yet, the policies discussed in the paper are described in great detail
+ to the respondents, as show the Questionnaires in Appendices C and D.
+ In particular, the net cost to the typical fellow citizen (e.g.
+ $85 per month in the U.S.) is specified when describing the Global Climate
+ Scheme (GCS).
+ We also ask incentivized comprehension questions and provide the correct
+ answer that the GCS would benefit the 700 million poorest humans and harm
+ typical fellow citizens.
+ Similarly, the questions on the millionaire tax clearly specifies who will
+ contribute (e.g.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+households with net worth above $5 million
+\begin_inset Quotes erd
+\end_inset
+
+) and how the revenues would be used (
+\begin_inset Quotes eld
+\end_inset
+
+finance infrastructure and public services in low-income countries
+\begin_inset Quotes erd
+\end_inset
+
+).
+ Therefore, the allusion by reviewer #2 that the policies are not 
+\begin_inset Quotes eld
+\end_inset
+
+concrete
+\begin_inset Quotes erd
+\end_inset
+
+ and that it is not 
+\begin_inset Quotes eld
+\end_inset
+
+clear who will actually be impacted
+\begin_inset Quotes erd
+\end_inset
+
+ seems unwarranted.
+\end_layout
+
+\begin_layout Standard
+b.
+ Relatedly, in their point 3, reviewer #1 argues that 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+There is a significant disconnect between the claims about support for the
+ global climate scheme and the actual survey item meant to elicit preferences
+ over such a policy.
+ That item merely asks “at which level(s) do you think public policies to
+ tackle climate change need to be put in place?” (lines 80-81).
+ But asking such a broad and amorphous question does not seem to be informative
+ about the level of support for a rather specific, costly, and strongly
+ redistributive global reform
+\shape default
+.
+\begin_inset Quotes erd
+\end_inset
+
+ Yet, the broad question about the level at which climate policies are needed
+ is 
+\shape italic
+not
+\shape default
+ the question asking support for the GCS.
+ Although it seemed clear to us that the two questions are separate (from
+ the fact that they are treated in different subsections and that the results
+ are exposed in different figures), perhaps this confusion explains the
+ misunderstanding of reviewers #1 and #2.
+ It could be easily addressed by slightly rewording some sentences.
+\end_layout
+
+\begin_layout Standard
+More generally, the reports of reviewers #1 and #2 seem anchored in their
+ priors concerning people's attitudes towards global redistribution.
+ In short, we used the literature's best practice to uncover these attitudes,
+ testing whether the stated support is sincere with a range of methods.
+ In our view, that the results may be counterintuitive even to some experts
+ should be all the more reason to publish them.
+ Let me stress that my previous co-authors and myself were also impressed
+ by the results for the global survey showing massive support for global
+ redistributive policies, and were cautious not to include them in our paper
+ (Dechezleprêtre et al., 2022) for fear that this new result could be explained
+ away by some factors (like a lack of sincerity).
+ We then designed pre-registered complementary surveys to better understand
+ the stated support, and the results confirmed that this support is genuine.
+\end_layout
+
+\begin_layout Standard
+We provide a point-by-point rebuttal to each comment by the three referees
+ in attachment.
+\end_layout
+
+\end_body
+\end_document
