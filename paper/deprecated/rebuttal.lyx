@@ -638,7 +638,7 @@ the lack of a clear and somewhat attributable cost component
 \end_layout
 
 \begin_layout Standard
-Thank you for pointing out that the Table deserves a explanatory note
+Thank you for pointing out that the Table deserves a explanatory caption
 \begin_inset Foot
 status open
 
@@ -654,18 +654,44 @@ We originally thought that Table 1 was self-explanatory in that it showed
 \end_inset
 
 .
- We will add such a note to explain how to read the Table and report the
- method used (currently only in the section Methods).
+ We added the following sentence to the caption of Table 1: 
+\series bold
+
+\begin_inset Quotes eld
+\end_inset
+
+The tacit support for the GCS is estimated by regressing the number of supported
+ policies on the presence of the GCS in the list of policies.
+ The social desirability is estimated as the difference between the tacit
+ and stated support, and it is not significantly different from zero even
+ at a 20% threshold (see Methods).
+\series default
+
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-TODO
+
+\series bold
+Confidence intervals are computed using Monte Carlo simulation with the
+ R package 
+\shape italic
+list
+\shape default
+.
+\series default
+
+\backslash
+cite{imai_multivariate_2011}
 \end_layout
 
 \end_inset
 
 
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -827,18 +853,16 @@ Capping carbon emissions is widely seen as an effective and proven solution
 \begin_layout Standard
 Thank you for suggesting to study the beliefs surrounding the support for
  the GCS.
- We can add a regression table analysing the attitudinal correlates of the
- support for the GCS.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
-\end_layout
-
-\end_inset
-
-
+ We have added regression tables analysing the attitudinal correlates of
+ the support for a global GHG tax and dividend policy (
+\series bold
+Supplementary Tables A5 and A6
+\series default
+).
+ These tables show that an index of caring about global warming is significantly
+ correlated with the support in most countries, with a magnitude as high
+ as trust in the government or believing that climate policies would be
+ effective in reducing emissions.
 \begin_inset Newline newline
 \end_inset
 
@@ -1102,16 +1126,6 @@ Preventing the publication of such a result on the ground that opinions
 \end_inset
 
 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO? remove last sentence? talk about Pros and Cons?
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -1273,28 +1287,35 @@ Thank you for highlighting that we were not giving enough information to
 \end_layout
 
 \begin_layout Standard
+The method to compute the net gain and the PPP adjustment is described in
+ Supplementary Section E (referred to in the sentence preceding the one
+ you cite).
+ However, we did not report the net gain estimation for someone living in
+ extreme poverty: we replaced footnote 10 in Supplementary Material E by
+ the following:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+
+\series bold
 The average carbon footprint of Sub-Saharan Africa is 0.75tCO
 \begin_inset Formula $_{\text{2}}$
 \end_inset
 
- per capita
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
+ per capita (
 \begin_inset CommandInset href
 LatexCommand href
+name "World Bank"
 target "https://www.macrotrends.net/countries/SSF/sub-saharan-africa-/carbon-co2-emissions"
+literal "false"
 
 \end_inset
 
-.
-\end_layout
-
-\end_inset
-
-, and it is even lower for people living in extreme poverty, under one tenth
- of the world average of about 5tCO
+), and it is even lower for people living in extreme poverty, under one
+ tenth of the world average of about 5tCO
 \begin_inset Formula $_{\text{2}}$
 \end_inset
 
@@ -1304,34 +1325,43 @@ target "https://www.macrotrends.net/countries/SSF/sub-saharan-africa-/carbon-co2
  nominal terms.
  In regions with extreme poverty like Sub-Saharan Africa (excluding high-income
  countries), the conversion factor from Market Exchange Rate to Purchasing
- Power Parity (PPP) is 2.4
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-See 
+ Power Parity (PPP) is 2.4 (computed as the 
 \begin_inset CommandInset href
 LatexCommand href
-target "https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=ZF&most_recent_value_desc=false"
+name "ratio"
+target "https://data.worldbank.org/indicator/PA.NUS.PPPC.RF"
+literal "false"
+
+\end_inset
+
+ of the World Bank series relating the GDP per capita of Sub-Saharan Africa
+ in 
+\begin_inset CommandInset href
+LatexCommand href
+name "PPP"
+target "https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=ZG&year_high_desc=true"
+literal "false"
 
 \end_inset
 
  and 
 \begin_inset CommandInset href
 LatexCommand href
-target "https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=ZF&most_recent_value_desc=false"
+name "nominal"
+target "https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=ZG&year_high_desc=true"
+literal "false"
 
 \end_inset
 
-.
-\end_layout
+).
+ Therefore, the net gain for the extreme poor is $65 per month (or $2.13
+ a day) in PPP, enough to lift them out of extreme poverty.
+\series default
 
+\begin_inset Quotes erd
 \end_inset
 
-, so that the net gain is $65 per month (or $2.13 a day) in PPP.
- This is enough to lift out of extreme poverty anyone with less than $2
- a day in PPP (the poverty line is commonly given in PPP).
- 
+ Indeed, the extreme poverty line is defined as $2.15 a day in PPP.
 \end_layout
 
 \begin_layout Standard
@@ -1342,24 +1372,6 @@ Admittedly, the net gain could be lower due to inflation or general equilibrium
  the poorest humans would actualy foster growth in these regions rather
  than reduce GDP compared to a business as usual (BAU) scenario (note that
  there is no international transfers in a BAU scenario).
-\end_layout
-
-\begin_layout Standard
-The method to compute the net gain and the PPP adjustment is described in
- Supplementary Section E (referred to in the sentence preceding the one
- you cite).
- However, we did not report the net gain estimation for someone living in
- extreme poverty: we will add that to the Supplementary Material.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -1439,16 +1451,22 @@ We confirm that everyone in the world would be lifted out of extreme poverty
  if every human received the basic income).
  The confusion stems from the PPP adjustment, which is only mentioned in
  a footnote in Supplementary Section E that you have probably missed.
- We can mention this PPP adjustment more prominently in the text.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
-\end_layout
-
+ We now mention this PPP adjustment more prominently in the text as we added
+ it in the box describing the GCS, which now includes the following: 
+\begin_inset Quotes eld
 \end_inset
 
+The 700 million people with less tha
+\series bold
+n 
+\backslash
+$2/day [in Purchasing Power Parity]
+\series default
+ would be lifted out of extreme poverty
+\begin_inset Quotes erd
+\end_inset
+
+.
  
 \begin_inset Newline newline
 \end_inset
@@ -1541,14 +1559,31 @@ Following the support for the global quota, respondents are asked about
 \end_inset
 
 , but we acknowledge that this may not have been clear.
- We can add some words to clarify this earlier in the text.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
+ We added some words to clarify this earlier in the text.
+ The passage on the global quota now reads: 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+These policies include a global democratic assembly on climate change, a
+ global tax on millionaires to finance low-income countries contingent on
+ their climate action, and a global carbon budget of +2°C divided among
+ countries based on tradable shares (or 
+\begin_inset Quotes eld
+\end_inset
+
+global quota
+\begin_inset Quotes erd
+\end_inset
+
+)
+\series bold
+, with the allocation of country shares  unspecified
+\series default
+.
+\begin_inset Quotes erd
 \end_inset
 
 
@@ -1611,16 +1646,31 @@ the global quota obtains 64% absolute support and 84% relative support
 \end_inset
 
 .
- We can add the absolute level of support for the support for loss and damages
- compensatio, the only other policy (asked with an option for indifference)
- for which we report the relative level of support.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
+ There is only one other policy (asked with an option for indifference)
+ for which we report the relative level of support: loss and damages compensatio
+n.
+ We now also report the absolute level of support as follows: 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Additionally, relative support for loss and damages compensation, as approved
+ in principle at the international climate negotiations in 2022 (
+\begin_inset Quotes eld
+\end_inset
+
+COP27
+\begin_inset Quotes erd
+\end_inset
+
+), ranges from 55% (U.S.) to 81% (Spain
+\series bold
+), with absolute support ranging from 41% to 62%
+\series default
+.
+\begin_inset Quotes erd
 \end_inset
 
 
@@ -1710,7 +1760,7 @@ Carattini et al.
  than just gender and age (also income, diploma, etc.), to test an emissions
  trading system (involving a cap on carbon emissions) rather than a tax,
  and to assess whether the support is genuine.
- We can add these contributions more explicitly
+ We added these contributions more explicitly by adding a parenthesis
 \begin_inset Note Note
 status open
 
@@ -1720,14 +1770,22 @@ and do so in the main text
 
 \end_inset
 
-.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
+ as follows:
 \end_layout
 
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+They find agreement close to 50% in high-income countries for global carbon
+ taxes with international per capita redistribution 
+\series bold
+(but do not examine an emissions cap nor the sincerity of support)
+\series default
+;
+\backslash
+cite{carattini_how_2019}
+\begin_inset Quotes erd
 \end_inset
 
 
@@ -1759,18 +1817,40 @@ TODO
 \begin_layout Standard
 Thank you for pointing out passages in the text that are not clear to a
  broad audience.
- We will make our best effort to improve the wording while respecting the
- length constraint.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
+ We made our best effort to improve the wording while respecting the length
+ constraint, and changed the sentences by adding some words as follows:
+ 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Quotes eld
 \end_inset
 
+By employing a list experiment, a real-stake petition
+\series bold
+ (with the question results communicated to the heads of state)
+\series default
+, and conjoint analyses, our study indicates genuine and robust support
+ for the GCS among respondents.
+ For example, the conjoint analyses provide evidence that political parties
+ would not lose vote intention by endorsing the GCS
+\series bold
+, and that majorities prefer platforms that contain GCS to those that do
+ not
+\series default
+.
+\begin_inset Quotes erd
+\end_inset
 
+ Because the abstract already explains that 
+\begin_inset Quotes eld
+\end_inset
+
+a list experiment shows no evidence of social desirability bias
+\begin_inset Quotes erd
+\end_inset
+
+, we do not specify further this term for the sake of brevity.
 \begin_inset Newline newline
 \end_inset
 
@@ -1842,21 +1922,52 @@ ve feasibility, etc.
 The cited sentence is meant to introduce the two factors that explain the
  different levels of support between the global quota and the carbon tax
  funding a global basic income: framing and difference in the policy properties.
- Admittedly, we only cite the difference in effectiveness as this is the
+ Admittedly, we only cited the difference in effectiveness as this is the
  most prominent difference between a quota (where emissions are fixed) and
  a tax (where they are uncertain).
- We could also reword the sentence to acknowledge that other potential differenc
-es in the perceived features of both policies might play a role.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
+ 
 \end_layout
 
+\begin_layout Standard
+We reworded 
+\begin_inset Quotes eld
+\end_inset
+
+produces the same distributional outcomes
+\begin_inset Quotes erd
+\end_inset
+
+ into 
+\begin_inset Quotes eld
 \end_inset
 
 
+\series bold
+should produce 
+\series default
+(...)
+\begin_inset Quotes erd
+\end_inset
+
+ and we changed 
+\begin_inset Quotes eld
+\end_inset
+
+citizens may find a quota more effective than a tax to reduce emissions
+\begin_inset Quotes erd
+\end_inset
+
+ into: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\series bold
+citizens may prefer a quota, perhaps because they find it more effective
+ than a tax to reduce emissions
+\series default
+, acknowledging that other potential differences in the perceived features
+ of both policies might play a role.
 \begin_inset Newline newline
 \end_inset
 

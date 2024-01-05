@@ -371,7 +371,7 @@ Ideally, how should countries bear the costs of fighting climate change?
 \textit{Strongly disagree; Somewhat disagree; Neither agree nor disagree; Somewhat agree; Strongly agree}
 \item Do you support or oppose establishing a global democratic assembly whose role would be to draft international treaties against climate change? Each adult across the world would have one vote to elect members of the assembly. [\textit{Figures \ref{fig:oecd} and \ref{fig:oecd_absolute}}]
 \\ \textit{Strongly oppose; Somewhat oppose; Neither support nor oppose; Somewhat support; Strongly support}
-\item Imagine the following policy: a global tax on greenhouse gas emissions funding a global basic income. 
+\item \label{q:global_tax_dividend} Imagine the following policy: a global tax on greenhouse gas emissions funding a global basic income. 
 Such a policy would progressively raise the price of fossil fuels (for example, the price of gasoline would increase by [40 cents per gallon] in the first years). Higher prices would encourage people and companies to use less fossil fuels, reducing greenhouse gas emissions. Revenues from the tax would be used to finance a basic income of [\$30] per month to each human adult, thereby lifting the 700 million people who earn less than \$2/day out of extreme poverty. 
 The average [American] person would lose a bit from this policy as they would face [\$130] per month in price increases, which is higher than the [\$30] they would receive.
 
@@ -400,7 +400,9 @@ This would finance infrastructure and public services such as access to drinking
 \clearpage
 \section{Net gains from the Global Climate Scheme}\label{app:gain_gcs}
 
-To specify the GCS, we use the IEA's 2DS scenario \citep{iea_energy_2017}, which is consistent with limiting the global average temperature increase to 2\textdegree{}C with a probability of at least 50\%. The paper by \citet{hood_input_2017} contributing to the Report of the High-Level Commission on Carbon Prices \citep{stern_report_2017} presents a price corridor compatible with this emissions scenario, from which we take the midpoint. The product of these two series provides an estimate of the revenues expected from a global carbon price. We then use the UN median scenario of future population aged over 15 years (\textit{adults}, for short). We derive the basic income that could be paid to all adults by recycling the revenues from the global carbon price: evolving between \$20 and \$30 per month, with a peak in 2030. Accounting for the lower price levels in low-income countries, an additional income of \$30 per month would allow \href{https://data.worldbank.org/indicator/SI.POV.DDAY}{670 million people} to escape extreme poverty, defined with the threshold of \$2.15 per day in purchasing power parity.\footnote{By taking the \href{https://data.worldbank.org/indicator/PA.NUS.PPPC.RF}{ratio} of the World Bank series relating the GDP per capita of Sub-Saharan Africa in \href{https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=ZG&year_high_desc=true}{PPP} and \href{https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=ZG&year_high_desc=true}{nominal}, we obtain the purchasing power of \$1 in this region: \$2.4 in 2019. %See also the price level ratio of PPP conversion factor to market exchange rate.
+To specify the GCS, we use the IEA's 2DS scenario \citep{iea_energy_2017}, which is consistent with limiting the global average temperature increase to 2\textdegree{}C with a probability of at least 50\%. The paper by \citet{hood_input_2017} contributing to the Report of the High-Level Commission on Carbon Prices \citep{stern_report_2017} presents a price corridor compatible with this emissions scenario, from which we take the midpoint. The product of these two series provides an estimate of the revenues expected from a global carbon price. We then use the UN median scenario of future population aged over 15 years (\textit{adults}, for short). We derive the basic income that could be paid to all adults by recycling the revenues from the global carbon price: evolving between \$20 and \$30 per month, with a peak in 2030. Accounting for the lower price levels in low-income countries, an additional income of \$30 per month would allow \href{https://data.worldbank.org/indicator/SI.POV.DDAY}{670 million people} to escape extreme poverty, defined with the threshold of \$2.15 per day in purchasing power parity.%
+\footnote{%By taking the \href{https://data.worldbank.org/indicator/PA.NUS.PPPC.RF}{ratio} of the World Bank series relating the GDP per capita of Sub-Saharan Africa in \href{https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=ZG&year_high_desc=true}{PPP} and \href{https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=ZG&year_high_desc=true}{nominal}, we obtain the purchasing power of \$1 in this region: \$2.4 in 2019. %See also the price level ratio of PPP conversion factor to market exchange rate.
+The average carbon footprint of Sub-Saharan Africa is 0.75tCO$_{\text{2}}$ per capita (\href{https://www.macrotrends.net/countries/SSF/sub-saharan-africa-/carbon-co2-emissions}{World Bank}), and it is even lower for people living in extreme poverty, under one tenth of the world average of about 5tCO$_{\text{2}}$ per capita \citep{chancel_carbon_2015}. Under a GCS with a cash transfer of \$30 per person, if one's emission is one tenth of the world average, their net gain would be \$27 per month in nominal terms. In regions with extreme poverty like Sub-Saharan Africa (excluding high-income countries), the conversion factor from Market Exchange Rate to Purchasing Power Parity (PPP) is 2.4 (computed as the \href{https://data.worldbank.org/indicator/PA.NUS.PPPC.RF}{ratio} of the World Bank series relating the GDP per capita of Sub-Saharan Africa in \href{https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=ZG&year_high_desc=true}{PPP} and \href{https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=ZG&year_high_desc=true}{nominal}). Therefore, the net gain for the extreme poor is \$65 per month (or \$2.13 a day) in PPP, enough to lift them out of extreme poverty.%, defined with the threshold of \$2 a day in PPP. 
 } 
 
 To estimate the increase in fossil fuel expenditures (or ``cost'') in each country by 2030, we make a key assumption concerning the evolution of the carbon footprints per adult: that they will decrease by the same proportion %$\rho$ 
@@ -457,6 +459,25 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
     }
 \end{table}
 
+\begin{table}[h]\label{tab:tax_determinant_hi}
+    \caption[Beliefs correlated with support for a global GHG tax and dividend (HICs)]{Correlation between (\textit{Somewhat} or \textit{Strong}) \textit{support for a global tax on GHG financing a global basic income} (Question \ref{q:global_tax_dividend}) and beliefs in high-income countries.}\vspace{.5cm}
+    \makebox[\textwidth][c]{
+        \scalebox{0.5}{
+        \input{"../tables/global_tax_support_pos_AtC_keepC_hi"}
+        }
+    }            
+        {\footnotesize \textit{Note}: The table shows the results of regressions on standardized variables measuring respondents' beliefs and perceptions. Treatment indicators and individual socioeconomic characteristics are included but not displayed. Robust standard errors are in parentheses; $^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01. See Appendix A-1 of \cite{dechezlepretre_fighting_2022} for variable definitions. }
+\end{table}
+
+\begin{table}[h]\label{tab:tax_determinant_mi}
+    \caption[Beliefs correlated with support for a global GHG tax and dividend (MICs)]{Correlation between (\textit{Somewhat} or \textit{Strong}) \textit{support for a global tax on GHG financing a global basic income} (Question \ref{q:global_tax_dividend}) and beliefs in middle-income countries.}\vspace{.5cm}
+    \makebox[\textwidth][c]{
+        \scalebox{0.5}{
+        \input{"../tables/global_tax_support_pos_AtC_keepC_mi"}
+        }
+    }            
+        {\footnotesize \textit{Note}: The table shows the results of regressions on standardized variables measuring respondents' beliefs and perceptions. Treatment indicators and individual socioeconomic characteristics are included but not displayed. Robust standard errors are in parentheses; $^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01. See Appendix A-1 of \cite{dechezlepretre_fighting_2022} for variable definitions. }
+\end{table}
 
 \clearpage
 \section{Representativeness of the surveys}\label{app:representativeness}
