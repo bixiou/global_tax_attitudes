@@ -343,7 +343,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     variables_support_likert <<- c(variables_other_policies, "national_tax_support", "global_tax_support")
     variables_support_ets2_support <<- names(e)[grepl('ets2', names(e)) & grepl('support', names(e))]
     variables_support_ets2_no <<- names(e)[grepl('ets2_no_', names(e))]
-    variables_petition <<- names(e)[grepl('petition', names(e)) & !grepl('branch_petition|order_', names(e))]
+    variables_petition <<- unique("petition", names(e)[grepl('petition', names(e)) & !grepl('branch_petition|order_', names(e))])
     variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
     variables_problem <<- names(e)[grepl('problem_', names(e))]
     variables_win_lose <<- names(e)[grepl('win_lose', names(e))]

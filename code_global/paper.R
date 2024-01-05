@@ -415,3 +415,46 @@ desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "d
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\6 min}"),
            filename = "attrition_analysis_vote", save_folder = "../tables/EU/", data = c(list(eua), list(eua), list(eua[eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,])), 
            indep_vars = c(quotas_eu, "vote_factor")) 
+
+
+##### App Placebo tests #####
+# desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies_supported", "conjoint_left_ag_b_binary"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
+#            dep.var.labels = c("\\makecell{G+R+C > R+C}", "\\makecell{Support\\G+R+C}", "\\makecell{Signs\\petition}", "\\makecell{Share policies\\supported}", "\\makecell{Conjoint 5\\A+CGS > B}"),
+#            filename = "placebo_tests_eu", save_folder = "../tables/", data = eu, indep_vars = c("branch_list_exp", "branch_petition", "branch_donation", "branch_foreign_aid_preferred", "branch_gcs_field")) 
+# 
+# desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies_supported", "conjoint_left_ag_b_binary"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
+#            dep.var.labels = c("\\makecell{G+R+C > R+C}", "\\makecell{Support\\G+R+C}", "\\makecell{Signs\\petition}", "\\makecell{Share policies\\supported}", "\\makecell{Conjoint 5\\A+CGS > B}"),
+#            filename = "placebo_tests_us1", save_folder = "../tables/", data = us1, indep_vars = c("branch_list_exp", "branch_petition", "branch_donation", "branch_foreign_aid_preferred", "branch_gcs_field")) 
+
+desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies_supported", "conjoint_left_ag_b_binary"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
+           dep.var.labels = c("\\makecell{G+R+C\\\\preferred to\\\\R+C}", "\\makecell{Supports\\\\G+R+C}", "\\makecell{Signs\\\\petition}", "\\makecell{Share of\\\\policies\\\\supported}", "\\makecell{Conjoint 5\\\\A+CGS\\\\preferred to B}"),
+           filename = "placebo_tests", save_folder = "../tables/", data = all, indep_vars = c("branch_list_exp", "branch_petition", "branch_donation")) 
+
+
+##### App Balance analysis #####
+desc_table(dep_vars = c("branch_list_exp_g", "branch_petition == 'nr'", "branch_donation == 'Own nation'", "branch_conjoint_c == 'leftg_right'"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA", "partner"),
+           dep.var.labels = c("\\makecell{List contains: G}", "\\makecell{Branch petition: NR}", "\\makecell{Branch donation: Own nation}", "\\makecell{Branch conjoint 3: with GCS}"),
+           filename = "balance_analysis", save_folder = "../tables/", data = all, indep_vars = c(socio_demos)) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

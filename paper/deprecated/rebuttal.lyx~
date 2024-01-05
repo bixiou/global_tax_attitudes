@@ -85,6 +85,23 @@ for
 International Attitudes Toward Global Policies
 \end_layout
 
+\begin_layout Standard
+Dear reviewers, 
+\end_layout
+
+\begin_layout Standard
+thank you for your constructive feedback, which helped us greatly improve
+ the quality of our paper.
+ Before answering point-by-point to each of the comment, let us stress two
+ things.
+ First, due to word limit, the revised version of our paper is shortened.
+ We cut a bit more than 20% of the original manuscript, mainly in the introducti
+on and discussion.
+ We did not cut any result.
+ Second, the modifications we made to the paper following your comments
+ are highlighted in bold below.
+\end_layout
+
 \begin_layout Section
 Reviewer #1
 \begin_inset Note Note
@@ -101,10 +118,10 @@ International Political Economy; Climate Policy
 
 \begin_layout Standard
 Thank you for your feedback.
- Your thoughtful and constructive comments will play an instrumental role
- in improving the quality of our paper.
+ Your thoughtful and constructive comments played an instrumental role in
+ improving the quality of our paper.
  As a result of your guidance and suggestions, the clarity of the manuscript
- will significantly improve.
+ has significantly improved.
   In the following, we include point-by-point responses to the comments
  raised in your letter, including the many comments that do not call for
  a specific revision.
@@ -112,7 +129,7 @@ Thank you for your feedback.
  we greatly appreciate to be challenged with such depth and to get the opportuni
 ty to clarify our observations.
  As for the comments that call for a specific revision, we always find the
- suggestions useful and we would gladly comply should we revise the paper.
+ suggestions useful and we now gladly comply with them.
 \shape italic
 
 \begin_inset Newline newline
@@ -968,11 +985,26 @@ The survey structure is presented with schemas in Supplementary Section
 
 \begin_layout Standard
 Thank you for pointing out that the survey design remains opaque.
- We will make our best to improve the description of the design.
- For example, we will make clear that the different treatments are independent
- from one another.
- We can also add some balance analyses and placebo tests of the effects
- of each treatment on unrelated outcomes.
+ We made our best to improve the description of the design.
+ In particular, we added in Supplementary Material D that 
+\begin_inset Quotes eld
+\end_inset
+
+
+\series bold
+Each treatment randomization is independent.
+\series default
+
+\begin_inset Quotes erd
+\end_inset
+
+ We also added balance analyses (Supplementary Material I) and placebo tests
+ of the effects of each treatment on unrelated outcomes (Supplementary Material
+ J).
+ They confirm that the randomization was satisfactory, as our branches are
+ balanced and there is no significant effect in the placebo tests.
+ In particular, we do not find effects of earlier treatments on later, unrelated
+ outcomes.
 \end_layout
 
 \begin_layout Standard
@@ -1129,8 +1161,8 @@ Preventing the publication of such a result on the ground that opinions
 \end_layout
 
 \begin_layout Standard
-Finally, we have a different perspective on the question of the generalizability
- of the findings.
+Finally, we share a different perspective on the question of the generalizabilit
+y of the findings.
  By providing evidence on the support for various global redistributive
  policies in 20 countries and using a range of methods to test the sincerity
  of answers, we do think that our results are externally valid.
@@ -1200,11 +1232,10 @@ ons if invested in pro-poverty alleviation ways.
 
 \shape default
 Thank you for your positive feedback.
- Your insighftul comments will help improving the quality of our paper.
+ Your insighftul comments  helped improving the quality of our paper.
  As a result of your guidance and questions, the clarity of the manuscript
- will significantly improve.
- We hope that the next version will address all your comments to your satisfacti
-on.
+ has significantly improved.
+ We hope that the new version addresses all your comments to your satisfaction.
  
 \shape italic
 
@@ -1646,13 +1677,20 @@ the global quota obtains 64% absolute support and 84% relative support
 \end_inset
 
 .
- There is only one other policy (asked with an option for indifference)
- for which we report the relative level of support: loss and damages compensatio
-n.
+ There was only one other policy (loss and damages compensation) for which
+ we reported the relative level of support, but we no longer report it due
+ to length constraint.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+There is only one other policy (asked with an option for indifference) for
+ which we report the relative level of support: loss and damages compensation.
  We now also report the absolute level of support as follows: 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Quotes eld
 \end_inset
 
@@ -1671,6 +1709,11 @@ COP27
 \series default
 .
 \begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
 \end_inset
 
 
@@ -1760,7 +1803,13 @@ Carattini et al.
  than just gender and age (also income, diploma, etc.), to test an emissions
  trading system (involving a cap on carbon emissions) rather than a tax,
  and to assess whether the support is genuine.
- We added these contributions more explicitly by adding a parenthesis
+ Because we already exceed the word limit, we did not make our relative
+ contribution more explicit in the main text.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+We added these contributions more explicitly by adding a parenthesis
 \begin_inset Note Note
 status open
 
@@ -1773,7 +1822,7 @@ and do so in the main text
  as follows:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Quotes eld
 \end_inset
 
@@ -1786,6 +1835,11 @@ They find agreement close to 50% in high-income countries for global carbon
 \backslash
 cite{carattini_how_2019}
 \begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
 \end_inset
 
 
@@ -1817,12 +1871,18 @@ cite{carattini_how_2019}
 \begin_layout Standard
 Thank you for pointing out passages in the text that are not clear to a
  broad audience.
- We made our best effort to improve the wording while respecting the length
+ Because we had to significantly shorten our article, we dropped these sentences.
+ Incidentally, our introduction is now fully understandable by a broad audience.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+We made our best effort to improve the wording while respecting the length
  constraint, and changed the sentences by adding some words as follows:
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Quotes eld
 \end_inset
 
@@ -1850,7 +1910,12 @@ a list experiment shows no evidence of social desirability bias
 \begin_inset Quotes erd
 \end_inset
 
-, we do not specify further this term in the interest of brevity.
+, we do not specify further this term for the sake of brevity.
+\end_layout
+
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
