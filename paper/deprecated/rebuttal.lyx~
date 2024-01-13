@@ -477,7 +477,7 @@ On the contrary, the paper mentioned (Gaikwad et al., 2022) addresses the
  This conjoint analysis paper only reports the effects of some features
  of a (sometimes global) climate policy on the support for it but does not
  report the base level of support for the policy (therefore, it can hardly
- cited to give information on the level of support towards burden-sharing
+ be cited to give information on the level of support towards burden-sharing
  principles).
  The authors communicated to us the average base level on a 10-point scale:
  it is 6.0 in the U.S.
@@ -1003,8 +1003,8 @@ Each treatment randomization is independent.
  J).
  They confirm that the randomization was satisfactory, as our branches are
  balanced and there is no significant effect in the placebo tests.
- In particular, we do not find effects of earlier treatments on later, unrelated
- outcomes.
+ In particular, we do not find effects of earlier treatments on unrelated
+ outcomes arriving later in the survey.
 \end_layout
 
 \begin_layout Standard
@@ -1120,6 +1120,9 @@ formulated in very abstract terms
  The policies we test are well-specified and we even provide an assessment
  of the individual cost of the Global Climate Scheme and the revenues generated
  by a wealth tax.
+ Additionally, we also test respondents' understanding of the distributive
+ properties of the GCS with incentivized questions, and later provide correct
+ answers.
  You seem to believe that the GCS is not a concrete policy (although a variant
  of it has been discussed in international climate negotiations as soon
  as 1990, see Supplementary Section A.2.1) and would have liked that our treatment
