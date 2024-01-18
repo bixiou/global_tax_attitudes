@@ -1099,13 +1099,65 @@ The paper is in many ways a fun and interesting read, but my sense is that
 \end_layout
 
 \begin_layout Standard
+Thank you very much for finding our research interesting and the perceptive
+ comments.
+ We agree that we were too immodest about the generalizability of the findings
+ in the previous version and agree that we here provide one bit of scientific
+ evidence that global policies could be more popular than thought.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 Thank you for finding our paper interesting and for going straight to the
  point of contention.
  We are happy to provide a response to the points you raise, as they relate
  to usual concerns about our results.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
+We see two major issues here: one whether our policies are sufficiently
+ concrete to be understood by subjects in their economic implications (including
+ to themselves) and one on whether our findings generalize in an appropriate
+ way so to make our study relevant enough to public policy.
+ 
+\end_layout
+
+\begin_layout Standard
+First, on whether the policies are concrete enough, we confess that we thought
+ we had formulated the questions in concrete terms and with the cost implication
+s on subjects properly spelt out.
+ To focus on the main policy examined in our study, the wording for the
+ Global Climate Scheme in the questionnaire includes: “
+\series bold
+\shape italic
+Global climate scheme:
+\series default
+ Such a policy would (…) progressively raise the price of fossil fuels (…)
+ 
+\series bold
+The typical [American] would lose out financially [$85] per month
+\series default
+ (as he or she would face [$115] per month in price increases, which is
+ higher than the [$30] they would receive).
+\shape default
+” (p.
+ 58 of Supplementary Material).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 We disagree that the policies discussed are 
 \begin_inset Quotes eld
 \end_inset
@@ -1135,19 +1187,235 @@ s relate to a more concrete policy (presumably the global millionaire tax).
  to more consensual policies like the millionaire tax.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
+As we present respondents with the loss incurred by people in their country,
+ we do not understand how this description is not a concrete policy – as
+ far as survey design goes, at least.
+ (What is more, a variant of the GCS has been discussed in international
+ climate negotiations as soon as 1990, as we detail in Appendix A.2.1).
+ Perhaps you would have liked that our treatments relate to a more attainable
+ policy (presumably the global millionaire tax).
+ To explain further the focus on the GCs, we hypothesized that that it would
+ be less popular than a global millionaire tax, given that it would come
+ with a financial cost for most respondents.
+ Therefore, if the support for a costly policy like the GCS was found to
+ be genuine using our experiments, this result could reasonably be extended
+ to more consensual policies like the millionaire tax.
+\end_layout
+
+\begin_layout Standard
+Second, we very much understand the concern that support for global redistributi
+ve policies may be lower if they were becoming more discussed in policy
+ circles and the general public, that is they “generalize” beyond surveys
+ of current attitudes to other fora in which they are “tested”.
+ We realise we did not manage to describe the contribution to our study
+ well – in a sense, we cannot test more real-worldly fora until such policies
+ enter the public debate.
+ We believed that we used all the methods available to us survey designers
+ to test whether support for global redistributive policies is genuine.
+ These included a list experiment, showing that the support for the GCS
+ does not stem from a social desirability norm; a real-stake petition, showing
+ that majorities are willing to support the GCS knowing that the results
+ will be sent to their head of state's office; and conjoint analyses, revealing
+ that a progressive candidate would not significantly lose voting share
+ by endorsing the GCS in any country, and may even gain (up to 11 p.p.) in
+ voting intention in some countries.
+\end_layout
+
+\begin_layout Standard
+Note that we see this emphasis on probing the unexpected high support for
+ the global policies by all these methods as a contribution of the paper
+ – it is typically absent from major survey studies on environmental policy
+ such as those which find moderate to high support for national carbon taxes
+ and clean energy spending (e.g.
+ Dechezleprêtre et al., 2022).
+ What is more, we see our contribution as a modest indication that such
+ policies may be supported once they enter the public debate, and this would
+ be the first step to test whether attitudes will change once global redistribut
+ion is debated.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 It may be true that support for global redistributive policies would be
- lower if they were becoming more concrete, but we cannot test that until
- they enter the public debate.
+ lower if they were becoming more real, but we cannot test that until they
+ enter the public debate.
  We used all the methods available to us to test whether support for global
  redistributive policies is genuine.
  Our paper indicates that such policies may be supported once they enter
  the public debate, and such a debate would be the first step to test whether
  attitudes will change once global redistribution is debated.
- To us, it is a result in itself that such policies are supported, even
- if this support might prove transitory, and it is useful to document the
- support for policies not prominent in the public debate.
  
+\series bold
+To us, it is a result in itself that such policies are supported, even if
+ this support might prove transitory, and it is useful to document the support
+ for policies not prominent in the public debate.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+(As an aside, we wondered whether the critique of insufficient “generalizability
+” was that our findings do not generalize to similar policies when eliciting
+ support for them.
+ For example, we expect strong majority support in a country such as the
+ Netherlands for a global tax on top incomes (say, over $1 million per year)
+ to finance vaccination campaigns in low-income countries or UN agencies
+ like the World Food Program, even though that specific country or this
+ specific policy were not tested.
+ Yet, we believe that is not the sense in which you worry about “generalizabilit
+y”.)
+\end_layout
+
+\begin_layout Standard
+To improve our presentation regarding these two major points, we made the
+ following changes to the manuscript – noting that the 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+very severe 
+\end_layout
+
+\end_inset
+
+word limit of articles in Nature Sustainability force us to describe justificati
+ons of the design in the Appendices (we know this is rather unusual for
+ social science): 
+\end_layout
+
+\begin_layout Itemize
+We have rewritten a passage describing how concrete we are on describing
+ the main policy, the Global Climate Scheme, which now reads (additions
+ in bold): “
+\shape italic
+We present to respondents a detailed description of the GCS and explain
+ its distributive effects, including specific amounts at stake (as specified
+ in the box below [which details the calculation of the per capita sums
+ involved]
+\series bold
+ and Supplementary Section D
+\series default
+).
+ Furthermore, we assess respondents’ understanding of the GCS with incentivized
+ questions to test their comprehension of the expected financial outcome
+ for typical individuals in their country (loss) and the poorest individuals
+ globally (gain), followed by the provision of correct answer.
+ 
+\series bold
+63% understand the policy will make people in their country poorer, before
+ even we indicate this as the right answer.
+\series default
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+That is, subjects are made aware and we find they seem to understand that
+ the policy will make them personally (slightly) poorer.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Second, we have completely rewritten the discussion – which even if it needs
+ to be very brief due to the word limit acknowledges better the limitations
+ of our approach.
+ It now reads: “
+\shape italic
+We provide some cautious evidence that certain global climate and redistribution
+ policies may be popular in the Global North.
+ We find no evidence for insincerity or underestimation of fellow citizens'
+ support as potential explanations for the scarcity of global policies in
+ the public debate, though support for them might decay once they are debated.
+ New hypotheses could explain the seeming inconsistency of the high support
+ for global policies with their peripheral appearance in the policy sphere:
+ First, policymakers may be unaware that global policies are popular.
+ Second, policymakers may believe that global redistribution is politically
+ infeasible in some key countries.
+ Third, with political discourse focused on the national level, shaped by
+ media and elections, national framing may suppress universalistic values.
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Our analysis provides some cautious evidence that global climate and redistribut
+ion policy instruments may be more popular in the Global North than previously
+ though.
+ Our survey analysis rules out insincerity and underestimation of fellow
+ citizens’ support as potential explanations for the scarcity of global
+ policies in the public debate to the extent possible.
+ Of course, once policies are subject of intense political debate, support
+ for them tends to decay.
+ WeWe conclude with additional hypotheses, to be tested in further work
+ what explains the seeming inconsistency of the high support for global
+ policies we document with their peripheral appearance in the policy sphere:
+ First, policymakers may be unaware that global policies are popular.
+ Second, policymakers may still believe that globally redistributive policies
+ are politically infeasible in some key countries like the U.S.
+ Third, political discourse centrally happens at the national level, shaped
+ by media and national framing may suppress universalistic values.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+To reflect these changes in the abstract, we add words that make clear we
+ merely provide evidence to the claim that such policies may be supported
+ and we point out that costs have been made salient and seem to be understood
+ by our subjects.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+We also point out at the beginning of the introduction that even if public
+ opinion to these policies were favourable, there are obviously other major
+ obstacles to such policies when writing: “Disagreements on burden-sharing
+ and differing priorities among nations often hinder effective collaboration.”
+\end_layout
+
+\end_inset
+
+ We also add to the introduction that “in the wording of the question, subjects
+ are made aware of the cost to themselves of such global redistribution
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
@@ -1161,20 +1429,6 @@ Preventing the publication of such a result on the ground that opinions
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Finally, we share a different perspective on the question of the generalizabilit
-y of the findings.
- By providing evidence on the support for various global redistributive
- policies in 20 countries and using a range of methods to test the sincerity
- of answers, we do think that our results are externally valid.
- For example, we expect strong majority support in a country like the Netherland
-s for a global tax on top incomes (say, over $1 million per year) to finance
- vaccination campaigns in low-income countries or UN agencies like the World
- Food Program, even though that specific country or this specific policy
- were never tested.
- 
 \end_layout
 
 \begin_layout Section
