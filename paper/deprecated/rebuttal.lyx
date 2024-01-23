@@ -92,14 +92,89 @@ Dear reviewers,
 \begin_layout Standard
 thank you for your constructive feedback, which helped us greatly improve
  the quality of our paper.
- Before answering point-by-point to each of the comment, let us stress two
- things.
+ Before answering point-by-point to each of the comments, let us stress
+ two things.
  First, due to word limit, the revised version of our paper is shortened.
  We cut a bit more than 20% of the original manuscript, mainly in the introducti
 on and discussion.
  We did not cut any result.
  Second, the modifications we made to the paper following your comments
  are highlighted in bold below.
+\end_layout
+
+\begin_layout Standard
+As a summary of the many valuable below points, we:
+\end_layout
+
+\begin_layout Itemize
+highlighted that the support for global redistributive policies is context-depen
+dent;
+\end_layout
+
+\begin_layout Itemize
+rewrote the Discussion to better acknowledge the limitations of our survey
+ (in particular, we now write that the support might decay if the policies
+ enter the policy debate);
+\end_layout
+
+\begin_layout Itemize
+clarified that the policy costs are explained to the respondents in the
+ abstract, introduction, and the paragraph on the Global Climate Scheme
+ (GCS);
+\end_layout
+
+\begin_layout Itemize
+added a Supplementary Table A5 regressing the support for the GCS on the
+ comprehension of its effects;
+\end_layout
+
+\begin_layout Itemize
+added an explanatory caption to Table 1;
+\end_layout
+
+\begin_layout Itemize
+added subsections on policy 
+\begin_inset Quotes eld
+\end_inset
+
+Prioritization
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Determinants of support
+\begin_inset Quotes erd
+\end_inset
+
+ in the Methods;
+\end_layout
+
+\begin_layout Itemize
+added Supplementary Tables A6 and A7 on the beliefs underpinning the support
+ for global climate policies;
+\end_layout
+
+\begin_layout Itemize
+added balance analyses (Supplementary Material I) and placebo tests of the
+ effects of each treatment on unrelated outcomes (Supplementary Material
+ J), reported in the Methods subsection 
+\begin_inset Quotes eld
+\end_inset
+
+Data quality
+\begin_inset Quotes erd
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+improved the description of how we estimate that the GCS would eradicate
+ extreme poverty, in particular by specifying that the 2$/day poverty line
+ is in PPP while the basic income of $30/month is expressed in nominal terms.
 \end_layout
 
 \begin_layout Section
@@ -433,20 +508,31 @@ is what prompted us to conduct the research.
 \end_layout
 
 \begin_layout Standard
-To reflect these changes in the manuscript, we 
-\end_layout
+To reflect these changes in the manuscript, we rewrote the discussion section,
+ acknowledging that 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Itemize
-[are more transparent about existing related policies in SI xxx] 
-\end_layout
 
-\begin_layout Itemize
-[make more precise how we tested understanding of the GCS] 
-\end_layout
+\series bold
+\shape italic
+support for
+\series default
+ 
+\shape default
+[global climate and redistributive policies]
+\shape italic
+ 
+\series bold
+might decay once they are debated
+\series default
+\shape default
 
-\begin_layout Itemize
-[rewrote the discussion section, emphasizing the rationale for our design
- again] 
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
 \begin_inset Note Note
 status open
 
@@ -886,18 +972,95 @@ Furthermore, it may well be the case that people find it in their interest
 \end_layout
 
 \begin_layout Standard
-To reflect these points in the manuscript, we have:
+To reflect these points in the manuscript:
 \end_layout
 
 \begin_layout Itemize
-Changed the framing of the introduction and discussion and stressed the
- uprecedentend levels of international coordination required when writing:
- … 
+We stress the uprecedentend levels of international coordination required
+ when writing, we added the following sentence in the introduction: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\series bold
+\shape italic
+Yet international negotiations are not conducive to ambitious global policies
+\series default
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Itemize
-The role of costs now reads: [essentially no change, just change some words
- where we mention it] 
+We make more precise how we tested understanding of the GCS: we added the
+ sentence 
+\begin_inset Quotes eld
+\end_inset
+
+
+\series bold
+\shape italic
+That is, respondents are made aware and we find they understand that the
+ policy will make people in their country poorer.
+\series default
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ in the paragraph on the GCS; we also added this information in a sentence
+ of the abstract, that now reads: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+The GCS is supported by three quarters of Europeans and half of Americans
+\series bold
+, even as they understand the policy's cost to them
+\series default
+.
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+; and we added the following sentence in the introduction: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\series bold
+\shape italic
+In the wording of the question, respondents are made aware of the cost to
+ themselves of such global redistribution
+\series default
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+We have also added a 
+\series bold
+Supplementary Table A5
+\series default
+ that regresses the support for the GCS on the understanding that the policy
+ is costly to people in the respondents' country.
+ The effect is nil in the U.S.
+ and positive (but barely significant) in Europe.
+ Close to zero effects suggest that all respondents are aware that the policy
+ is costly (as we give the correct answer after testing their comprehension)
+ so that their support is all affected in the same way.
+ Small positive effects suggest a positive correlation between attentiveness
+ to the survey and support for the GCS.
 \begin_inset Newline newline
 \end_inset
 
@@ -1077,8 +1240,17 @@ I don't find it: is it Johnston & Ballard, JOP (2016)?
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 We believe this is a minor point.
- In our view, the question on the prioritization of policies is not
+ 
+\end_layout
+
+\end_inset
+
+In our view, the question on the prioritization of policies is not
 \shape italic
  
 \shape default
@@ -1109,9 +1281,9 @@ We use both to get more reliable results, and because we think some readers
 \end_layout
 
 \begin_layout Standard
-The Ballard-Rosa, Martin & Scheve (JOP, 2017) indicates that the marginal
- income tax rates that maximize public support among Americans are lower
- than or approximately equal to comparable existing rates.
+Ballard-Rosa, Martin & Scheve (JoP, 2017) indicates that the marginal income
+ tax rates that maximize public support among Americans are lower than or
+ approximately equal to comparable existing rates.
  However, the authors acknowledge that 
 \begin_inset Quotes eld
 \end_inset
@@ -1123,8 +1295,8 @@ support for higher rates might be more evident with more concrete consequences
 \end_inset
 
 .
- In our case, we always specify where the additional tax would be spent,
- and this may explain the higher support.
+ In our case, we always provide information where the additional tax would
+ be spent, and this may explain the higher support.
  As for Scheve & Stasavage (2022), this paper does not provide survey evidence.
  It highlights three explanations for why we do not observe more wealth
  redistribution: that other issues are more important to citizens, that
@@ -1159,6 +1331,41 @@ We note that the reader can already find the results for the U.S.
  after funding affordable housing, student loan forgiveness and universal
  childcare (not mentioning that wealth taxes would be complementary to these
  policies).
+\end_layout
+
+\begin_layout Standard
+To explain to the readers why we include a prioritization question, we have
+ added a subsection 
+\begin_inset Quotes eld
+\end_inset
+
+Prioritization
+\begin_inset Quotes erd
+\end_inset
+
+ in the Methods, which reads: 
+\series bold
+\shape italic
+
+\begin_inset Quotes eld
+\end_inset
+
+The prioritization (Question 58, Supplementary Figures A29 and A30) allows
+ inferring individual-level preferences for one policy over another.
+ This slightly differs from a conjoint analysis, which only allows inferring
+ individual-level preferences for one platform over another or collective-level
+ preferences for one policy over another.
+ Also, by comparing platforms, conjoint analyses may be subject to interaction
+ effects between policies of a platform (which can be seen as complementary,
+ subsitute, or antagonistic) while the prioritization frames the policies
+ as independent.
+\series default
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
@@ -1184,9 +1391,9 @@ We note that the reader can already find the results for the U.S.
 
 \begin_layout Standard
 Capping and pricing carbon emissions is widely seen as an effective and
- proven solution to reduce carbon emissions (e.g.
- Stern & Stiglitz, 2017; van den Bergh et al., 2020), as exemplified by the
- EU emissions trading system.
+ proven solution to reduce carbon emissions, as exemplified by the EU emissions
+ trading system and the academic literature (e.g.
+ Stern & Stiglitz, 2017; van den Bergh et al., 2020).
  The estimation of the global basic income that the GCS would finance is
  explained in the text box: 
 \shape italic
@@ -1231,13 +1438,41 @@ Thank you for suggesting to study the beliefs surrounding the support for
  We have added regression tables analysing the attitudinal correlates of
  the support for a global GHG tax and dividend policy (
 \series bold
-Supplementary Tables A5 and A6
+Supplementary Tables A6 and A
 \series default
-).
+7).
  These tables show that an index of caring about global warming is significantly
- correlated with the support in most countries, with a magnitude as high
- as trust in the government or believing that climate policies would be
- effective in reducing emissions.
+ correlated with the support in most countries, with a magnitude almost
+ as high as trust in the government or believing that climate policies would
+ be effective in reducing emissions.
+ To highlight these new results, we have added a subsection 
+\begin_inset Quotes eld
+\end_inset
+
+Determinants of support
+\begin_inset Quotes erd
+\end_inset
+
+ in the Methods, which reads: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\series bold
+\shape italic
+Supplementary Section F examines the sociodemographic determinants of support
+ for the GCS as well as the beliefs correlated with the support for a global
+ tax on GHG financing a global basic income.
+ The strongest correlates are political leaning, trust in the government
+ and perceptions that the policy is effective at reducing emissions or in
+ one's self-interest.
+\series default
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
@@ -1352,9 +1587,16 @@ Each treatment randomization is independent.
 \begin_inset Quotes erd
 \end_inset
 
- We also added balance analyses (Supplementary Material I) and placebo tests
- of the effects of each treatment on unrelated outcomes (Supplementary Material
- J).
+ We also added balance analyses (
+\series bold
+Supplementary Material I
+\series default
+) and placebo tests of the effects of each treatment on unrelated outcomes
+ (
+\series bold
+Supplementary Material J
+\series default
+).
  They confirm that the randomization was satisfactory, as our branches are
  balanced and there is no significant effect in the placebo tests.
  In the Data quality paragraph, we now write: 
@@ -1512,7 +1754,7 @@ We see two major issues here: one whether our policies are sufficiently
 \begin_layout Standard
 First, on whether the policies are concrete enough, we confess that we thought
  we had formulated the questions in concrete terms and with the cost implication
-s on subjects properly spelt out.
+s on subjects properly spelled out.
  To focus on the main policy examined in our study, the wording for the
  Global Climate Scheme in the questionnaire includes: “
 \series bold
@@ -1682,8 +1924,8 @@ very severe
 
 \end_inset
 
-word limit of articles in Nature Sustainability force us to describe justificati
-ons of the design in the Appendices (we know this is rather unusual for
+word limit of articles in Nature Sustainability forces us to describe justificat
+ions of the design in the Appendices (we know this is rather unusual for
  social science): 
 \end_layout
 
@@ -1706,8 +1948,8 @@ We present to respondents a detailed description of the GCS and explain
  globally (gain), followed by the provision of correct answer.
  
 \series bold
-63% understand the policy will make people in their country poorer, before
- even we indicate this as the right answer.
+That is, respondents are made aware and we find they understand that the
+ policy will make people in their country poorer.
 \series default
 \shape default
 
@@ -2140,9 +2382,9 @@ We confirm that everyone in the world would be lifted out of extreme poverty
 \begin_inset Quotes eld
 \end_inset
 
-The 700 million people with less tha
+The 700 million people with less than
 \series bold
-n 
+ 
 \backslash
 $2/day [in Purchasing Power Parity]
 \series default
