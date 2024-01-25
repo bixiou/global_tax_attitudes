@@ -55,17 +55,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Comment "% WPcomment" lines, uncomment "% NCCcomment" lines as well as the lines below, replace all citet/citep by cite
 
-\documentclass{nature}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{eurosym}
-% The following allows keeping figures within the text (otherwise nature.cls would ignore them)
-\usepackage{graphicx}
-\makeatletter
-\let\saved@includegraphics\includegraphics
-\AtBeginDocument{\let\includegraphics\saved@includegraphics}
-\renewenvironment*{figure}{\@float{figure}}{\end@float}
-\makeatother
+% \documentclass{nature}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{eurosym}
+% % The following allows keeping figures within the text (otherwise nature.cls would ignore them)
+% \usepackage{graphicx}
+% \makeatletter
+% \let\saved@includegraphics\includegraphics
+% \AtBeginDocument{\let\includegraphics\saved@includegraphics}
+% \renewenvironment*{figure}{\@float{figure}}{\end@float}
+% \makeatother
 
 % Nature guidelines (not NCC!)
 % Sections can only be used in Articles.  Contributions should be organized in the sequence: title, text, methods, references, Supplementary Information line (if any), acknowledgements, interest declaration, corresponding author line, tables, figure legends.
@@ -107,13 +107,13 @@
 %%%%% WORKING PAPER FORMAT %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Comment "% NCCcomment" lines, uncomment "% WPcomment" lines as well as the lines below
-% \documentclass[12pt,english]{article}
+\documentclass[12pt,english]{article}
 % \usepackage[utf8]{inputenc}
 % \usepackage{tgpagella} % Palatino text only
 % \usepackage{mathpazo}  % Palatino math & text
 % \usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
 % \linespread{1.5}
-% \usepackage[super,comma,sort]{natbib} % WPcomment NCCcomment
+\usepackage[super,comma,sort]{natbib} % WPcomment NCCcomment
 % \usepackage[round,sort&compress]{natbib} % NCCcomment
 \usepackage{url} % [hyphens]
 \usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation.
@@ -171,7 +171,7 @@
 \usepackage[anythingbreaks]{breakurl} % for links
 \usepackage{multicol}
 \newsavebox\ltmcbox % For net gain table over two columns
-%\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
+\usepackage[nomarkers,tablesonly]{endfloat} % Tables at the end
 %\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
 \renewcommand{\floatpagefraction}{.99}
 \newenvironment{stretchpars}{\par\setlength{\parfillskip}{0pt}}{\par} % to justify a line
@@ -238,12 +238,13 @@
 \title{International Attitudes Toward Global Policies %\\ Addressing Climate Change and Inequality 
 } 
 
-\author{Adrien Fabre$^{1,2}$, Thomas Douenne$^3$ and Linus Mattauch$^{4,5,6}$} % WPcomment
-% \author{Adrien Fabre\footnote{CNRS, CIRED. E-mail: adrien.fabre@cnrs.fr (corresponding author).}, Thomas Douenne\footnote{University of Amsterdam}\; and Linus Mattauch\footnote{Technical University Berlin, Potsdam Institute for Climate Impact Research -- Member of the Leibniz Association and University of Oxford}~~\thanks{The project %is approved by IRB at Harvard University (IRB21-0137), and 
+% \author{Adrien Fabre$^{1,2}$, Thomas Douenne$^3$ and Linus Mattauch$^{4,5,6}$} % WPcomment
+\author{Adrien Fabre\footnote{CNRS, CIRED. E-mail: adrien.fabre@cnrs.fr (corresponding author).}, Thomas Douenne\footnote{University of Amsterdam}\; and Linus Mattauch\footnote{Technical University Berlin, Potsdam Institute for Climate Impact Research -- Member of the Leibniz Association and University of Oxford}} 
+%~~\thanks{The project %is approved by IRB at Harvard University (IRB21-0137), and 
 % was preregistered in the Open Science Foundation registry (\href{https://osf.io/fy6gd}{osf.io/fy6gd}). \\ We are grateful for financial support from the University of Amsterdam and TU Berlin. Mattauch also thanks the Robert Bosch Foundation. %We are grateful for financial support from the OECD, the French Ministry of Foreign Affairs, the French Conseil d’Analyse Economique and the Spanish Ministry for the Ecological Transition and Demographic Challenge. We also acknowledge support from the Grantham Foundation for the Protection of the Environment and the Economic and Social Research Council through the Centre for Climate Change Economics and Policy. 
 % We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez Chico, and Stefanie Stantcheva for their invaluable inputs for the project. We thank Antonio Bento, Dietmar Fehr, and Auriane Meilland for feedback. We further thank Jakob Niemann, Laura Schepp, Martín Fernández-Sánchez, Samuel Gervais, Samuel Haddad, and Guadalupe Manzo for assistance. Fabre declares that he also serves as president of Global Redistribution Advocates.}} % NCCcomment
 
-% \date{\today} % NCCcomment
+\date{\today} % NCCcomment
 
 \begin{document}
 
@@ -255,14 +256,14 @@
 
 
 % WPcomment
-\begin{affiliations}
-\item Centre National de la Recherche Scientifique
-\item Centre International de Recherches sur l'Environnement et le Développement
-\item University of Amsterdam
-\item Technical University Berlin
-\item Potsdam Institute for Climate Impact Research 
-\item University of Oxford
-\end{affiliations}
+% \begin{affiliations}
+% \item Centre National de la Recherche Scientifique
+% \item Centre International de Recherches sur l'Environnement et le Développement
+% \item University of Amsterdam
+% \item Technical University Berlin
+% \item Potsdam Institute for Climate Impact Research 
+% \item University of Oxford
+% \end{affiliations}
 
 % \begin{small} % NCCcomment
 \begin{abstract}
@@ -400,7 +401,7 @@ from parties that are said to oppose global democracy to parties that supposedly
 
 
 
-\subsection{Data}\label{subsec:data}
+\subsection*{Data}\label{subsec:data}
 
 
 % Stated support for different global policies has been measured in % TD better way to sell these results?
@@ -477,7 +478,7 @@ in 2023 (See \nameref{sec:methods} for details on data collection and data quali
 
 
 
-\subsection{Stated support for global policies}\label{subsec:stated_support}
+\subsection*{Stated support for global policies}\label{subsec:stated_support}
 
 % The results from both the \textit{Global} and \textit{Complementary} surveys demonstrate robust support for global policies across all surveyed countries, with a clear preference for addressing climate action on a global scale over regional, national, or local approaches.
 
@@ -616,7 +617,7 @@ In every country, more people choose higher spending on education or healthcare 
 %   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_no_positive.pdf}} 
 % \end{figure}
 
-\subsection{Robustness and sincerity of support for the GCS}\label{subsec:robustness_sincerity} % TODO!? Reliability of the stated support?
+\subsection*{Robustness and sincerity of support for the GCS}\label{subsec:robustness_sincerity} % TODO!? Reliability of the stated support?
 
 We use several methods to assess the sincerity of the support for the GCS. %: a list experiment, a real-stake petition, conjoint analyses, and the prioritization of policies.  % shortened
 All methods suggest that the support is either completely sincere, or the share of insincere answers is limited. % TODO? remove? 45 w
@@ -800,7 +801,7 @@ these results suggest that the support for the GCS is context-dependent, sensiti
 
 % On the campaign effect: Funk (16) shows that there is a survey bias of 5-6 p.p.: in post-referendum surveys, Swiss people approve left-wing policies 5 pp less. Jenning & Wlezien (18) show that between seven to one month before the election, polls mean absolute error about the result is ~4 p.p. (goes down to ~2pp the days before).
 
-\subsection{Universalistic values}\label{subsec:universalistic}
+\subsection*{Universalistic values}\label{subsec:universalistic}
 % H4: A strong majority is universalist/cosmopolitan (TODO: which word?), even a majority for non-Republican
 % TD It is not obvious how these answers are informative of malleable opinions. So I don't think we should state the hypothesis and sell this as a test.
 %Another hypothesis to explain the discrepancy between the lack of interest for global policies in the public debate despite a strong stated support is that opinions on the topic are weak and malleable. A way to test this is to
@@ -826,7 +827,7 @@ Respondents were automatically enrolled in a lottery with a \$100 prize and had 
 % TODO! put back?
 % Overall, answers to these broad value questions are consistent with half of Americans and three quarters of Europeans supporting global policies like the GCS: people are almost as much willing to give to poor Africans than to poor fellow citizens, find that global issues are among the biggest problems, almost half of them are universalist when they vote, and most of them wish that their diplomats take into account global justice.
 
-\subsection{Second-order Beliefs}\label{subsec:second_order_beliefs}
+\subsection*{Second-order Beliefs}\label{subsec:second_order_beliefs}
 % H3 belief: No pluralistic ignorance
 To explain the strong support for the GCS despite its absence from political platforms and public debate, we hypothesized pluralistic ignorance, i.e. that the public and policymakers mistakenly perceive the GCS as unpopular. 
 % As a result, individuals might conceal their support for such globally redistributive policies, believing that advocating for them would be futile. However, the  % shortened
@@ -893,13 +894,13 @@ We provide some cautious evidence that certain global climate and redistribution
 
 % For warm glow and how to test it, see my 28/6, 30/6,  (2023) emails (elicit beliefs on feasibility/obstacles, ask support for Bridgetown / 100G€ with vs. without saying it may be approved at the COP, redo conjoint analysis without support question before, asking for approval of global redistr. policy costing 50€/month with/without asking for a similar one costing 20€/month before). 
 
-\begin{methods}  % WPcomment
-  % \begin{small} % NCCcomment
+\section*{Methods}\label{sec:methods} % NCCcomment
+% \begin{methods}  % WPcomment
+  \begin{small} % NCCcomment
 %Put methods in here.  If you are going to subsection it, use \subsection commands.  Methods section should be less than 800 words and if it is less than 200 words, it can be incorporated into the main text.
-% \section*{\normalsize Methods}\label{sec:methods} % NCCcomment
-\fakesection{Methods}\label{sec:methods}
+% \fakesection{Methods}\label{sec:methods}
 % \addcontentsline{toc}{section}{Methods}
-\subsection{Data collection.} % WPcomment
+\subsection*{\small Data collection.} % WPcomment
 % \paragraph{\small Data collection.} % NCCcomment
 % The paper relies on two different sets of surveys. The first set of surveys was conducted between March 2021 and March 2022 on 40,680 respondents from 20 countries  (between 1,465 and 2,488 respondents per country). The first U.S. complementary, denoted \textit{US1}, was conducted on 3,000 U.S. respondents between January and March 2023, while the second, \textit{US2}, was conducted on 2,000 respondents between March and April 2023. The \textit{Eu} complementary survey was conducted on 3,000 respondents between February and March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. Stratified quotas ensure that the samples are representative along the dimensions of gender, age (5 brackets), income (4), region (4), education level (3), as well as ethnicity (3) for the U.S. To correct for small remaining imbalances, we apply survey weights throughout the analysis, constructed using the quotas variables as well as the degree of urbanity, and trimmed between 0.25 and 4. Weights make the results fully representative of the country (or of the four European countries combined in the case of results at the European level, where different weights are used). Appendix \ref{app:representativeness} confirms that our samples are representative of the population. % TODO! and urbanity instead of education for OECD, TODO table representativeness
 %\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} % /!\ leave commented
@@ -910,14 +911,14 @@ that our samples closely match population frequencies in high-income countries. 
 % Supplementary Section G confirms that our samples are representative of the population.%\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} % /!\ leave commented
 
 
-\subsection{\small Data quality.} % WPcomment % TODO attrition analysis
+\subsection*{\small Data quality.} % WPcomment % TODO attrition analysis
 % \paragraph{\small Data quality.} % NCCcomment
 The median duration is 28 minutes for the \textit{Global} survey, 14 min for \textit{US1}, 11 min for \textit{US2}, and 20 min for \textit{Eu}. To ensure the best possible data quality, we exclude respondents who fail an attention test or rush through the survey (i.e., answer in less than 11.5 minutes in the \textit{Global} survey, 4 minutes in \textit{US1} or \textit{US2}, 6 minutes in \textit{Eu}). %All the results and analyses use survey weights, defined to make the results fully representative of the country (or of Eu in the case of results at the Eu level) along the quota variables. Weights are trimmed to be between .25 and 4. 
 %\textit{Ex post}, we checked that there were only a few careless response patterns (such as choosing the same answer for all items in a matrix of questions; see Appendix \ref{app:data_quality}). At the end of the survey, we ask whether respondents thought that our survey was politically biased and provide some feedback. 67\% of the respondents found the survey unbiased. 25\% found it left-wing biased, and 8\% found it right-wing biased.
 
 
 
-\subsection{\small Questionnaires and raw results.} % WPcomment
+\subsection*{\small Questionnaires and raw results.} % WPcomment
 % \paragraph{\small Questionnaires and raw results.} % NCCcomment
 % Possible confusion in the questionnaire: people confuse GCS with the four policies together (so support for GCS can suffer from dislike of death penalty), although this confusion is mitigating by the fact that we right after ask about NR; people may answer about revenue-use rather than the whole measure for ETS2 support; people may answer that GCS will or will not have the effects proposed rather than these effects being important or not in their attitude toward GCS; they may answer that it's important that others (not them) get more information; the minimum wage could be reduced at 50% of local median wage.
 The questionnaire and raw results of the \textit{Global} survey can be found in the Appendix of the companion paper, Dechezleprêtre et al. (2022).\cite{dechezlepretre_fighting_2022} %.\cite{dechezlepretre_fighting_2022} the companion paper TODO? put back?
@@ -925,7 +926,7 @@ The raw results are reported in Supplementary Section B %\footnote{Country-speci
 while the surveys' structures and questionnaires are given in Supplementary Sections C and D. The questionnaires are the same as the ones given \textit{ex ante} in the registration plan (\href{https://osf.io/fy6gd}{osf.io/fy6gd}).
 
 
-\subsection{\small Incentives.} % WPcomment
+\subsection*{\small Incentives.} % WPcomment
 % \paragraph{\small Incentives.} % NCCcomment
 To encourage accurate and truthful responses, several questions of the \textit{US1} survey use incentives. For each of the three comprehension questions that follow the policy descriptions, we randomly select and reward three respondents who provide correct answers with a \$50 gift certificate. Similarly, for questions involving estimating support shares for the GCS and NR, three respondents with the closest guesses to the actual values receive a \$50 gift certificate. In the donation lottery question, we randomly select one respondent and split the \$100 prize between the NGO GiveDirectly and the winner according to the winner's choice. In total, our incentives scheme distributes gift certificates (and donations) for a value of \$850. Finally, respondents have an incentive to answer truthfully to the petition question, as they are aware that the results for that question (the share of respondents supporting the policy) will be transmitted to the head of state's office.
 
@@ -934,50 +935,219 @@ To encourage accurate and truthful responses, several questions of the \textit{U
 
 
 
-% Here is a description of a specific method used.  Note that the subsection heading ends with a full stop (period) and that the command is \verb|\subsection{}| not \verb|\subsection**{}|.
-% \subsection{\small Details on sources, methodology and results} % WPcomment
+% Here is a description of a specific method used.  Note that the subsection heading ends with a full stop (period) and that the command is \verb|\subsection*{}| not \verb|\subsection**{}|.
+% \subsection*{\small Details on sources, methodology and results} % WPcomment
 
-\subsection{Support for the GCS} The 95\% confidence intervals are $[52.4\%, 55.9\%]$ in the U.S. and $[74.2\%, 77.2\%]$ in Europe. The average support is computed with survey weights, employing weights based on quota variables, which exclude vote. Another method to reweigh the raw results involves running a regression of the support for the GCS on sociodemographic characteristics (including vote) and multiplying each coefficient by the population frequencies. This alternative approach yields similar figures: 76\% in Europe and 52\% or 53\% in the U.S. (depending on whether individuals who did not disclose their vote are classified as non-voters or excluded). Notably, the average support excluding non-voters is 54\% in the U.S. 
+\subsection*{\small Support for the GCS} The 95\% confidence intervals are $[52.4\%, 55.9\%]$ in the U.S. and $[74.2\%, 77.2\%]$ in Europe. The average support is computed with survey weights, employing weights based on quota variables, which exclude vote. Another method to reweigh the raw results involves running a regression of the support for the GCS on sociodemographic characteristics (including vote) and multiplying each coefficient by the population frequencies. This alternative approach yields similar figures: 76\% in Europe and 52\% or 53\% in the U.S. (depending on whether individuals who did not disclose their vote are classified as non-voters or excluded). Notably, the average support excluding non-voters is 54\% in the U.S. 
 
 Though the level of support for the GCS is significantly lower in swing States (at 51\%) that are key to win U.S. elections, the electoral effect of endorsing the GCS remains non-significantly different from zero (at +1.2 p.p.) in these States. Note that we define swing states as the 8 states with less than 5 p.p. margin of victory in the 2020 election (MI, NV, PA, WI, AZ, GA, NC, FL). The results are robust to using the 3 p.p. threshold (that excludes FL) instead. 
 
-\subsection{Global wealth tax estimates}
+\subsection*{\small Global wealth tax estimates}
 A 2\% tax on net wealth exceeding \$5 million would annually raise \$816 billion, leaving unaffected 99.9\% of the world population. More specifically, it would collect \euro{}5 billion in Spain, \euro{}16 billion in France, £20 billion in the UK, \euro{}44 billion in Germany, \$430 billion in the U.S., and \$1 billion collectively in all low-income countries (28 countries, home to 700 million people). These Figures come from the \href{https://wid.world/world-wealth-tax-simulator/}{WID wealth tax simulator}.\cite{chancel_world_2022}
 
-\subsection{List experiment}
+\subsection*{\small List experiment}
 We utilize the difference-in-means estimator, and confidence intervals are computed using Monte Carlo simulation with the R package \textit{list}.\cite{imai_multivariate_2011}
 
-\subsection{Petition}
+\subsection*{\small Petition}
 Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition.
 
-\subsection{Conjoint analysis}
+\subsection*{\small Conjoint analysis}
 The effects reported in the fourth analyses are the Average Marginal Component Effects.\cite{hainmueller_causal_2014} This method is common in the literature that explores attitudes towards taxation.\cite{bechtel_reforms_2020,ballard-rosa_structure_2017} The policies studied are progressive policies prominent in the country. Except for the category \textit{foreign policy}, which features the GCS 42\% of the time, they are drawn uniformly.
 
-\subsection{Prioritization}
+\subsection*{\small Prioritization}
 The prioritization (Question 58, Supplementary Figures A29 and A30) allows inferring individual-level preferences for one policy over another. This slightly differs from a conjoint analysis, which only allows inferring individual-level preferences for one platform over another or collective-level preferences for one policy over another. Also, by comparing platforms, conjoint analyses may be subject to interaction effects between policies of a platform (which can be seen as complementary, subsitute, or antagonistic) while the prioritization frames the policies as independent.
 
-\subsection{Pros and cons}
+\subsection*{\small Pros and cons}
 Surprisingly, the support for National Redistribution also decreased by 7 p.p. following the closed question about the GCS. This suggests that some individuals may lack attention and confuse the two policies, or that contemplating the pros and cons alters the mood of some people, moving them away from their initial positive impression.
 
-\subsection{Determinants of support}
+\subsection*{\small Determinants of support}
 Supplementary Section F examines the sociodemographic determinants of support for the GCS as well as the beliefs correlated with the support for a global tax on GHG financing a global basic income. The strongest correlates are political leaning, trust in the government and perceptions that the policy is effective at reducing emissions or in one's self-interest.
 
-\subsection{Sources}
+\subsection*{\small Sources}
 Detailed sources for the questionnaires and the figures are given in the \href{https://github.com/bixiou/international_attitudes_toward_global_policies/raw/main/questionnaire/specificities.xlsx}{Supplementary Spreadsheet}.
 
-\subsection{\normalsize Data and code availability}
+\subsection*{\normalsize Data and code availability}
 
 All data and code of the \textit{Complementary} surveys as well as figures of the paper are available on \href{https://github.com/bixiou/international_attitudes_toward_global_policies}{github.com/bixiou/international\_attitudes\_toward\_global\_policies}. Data and code for the \textit{Global} survey will be made public upon publication.
 
-\end{methods} % WPcomment
-% \end{small}  % NCCcomment
+% \end{methods} % WPcomment
+\end{small}  % NCCcomment
 
 \fakesection{Bibliography}\label{sec:bib}
-\bibliographystyle{naturemag_noURL} % nature class works only with style naturemag or naturemag_noURL, and naturemag bugs if there are certain URLs (like .pdf). Also, nature class only works with \cite, not \citet or \citep.  % WPcomment
-% \renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
-% \bibliographystyle{plainnaturl_clean} % NCCcomment
-\bibliography{global_tax_attitudes}
-
+% \bibliographystyle{naturemag_noURL} % nature class works only with style naturemag or naturemag_noURL, and naturemag bugs if there are certain URLs (like .pdf). Also, nature class only works with \cite, not \citet or \citep.  % WPcomment
+% % \renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
+% % \bibliographystyle{plainnaturl_clean} % NCCcomment
+% \bibliography{global_tax_attitudes}
+\begin{thebibliography}{10}
+  \expandafter\ifx\csname url\endcsname\relax
+    \def\url#1{\texttt{#1}}\fi
+  \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+  \providecommand{\bibinfo}[2]{#2}
+  \providecommand{\eprint}[2][]{\url{#2}}
+  
+  \bibitem{dechezlepretre_fighting_2022}
+  \bibinfo{author}{Dechezlepr{\^e}tre, A.} \emph{et~al.}
+  \newblock \bibinfo{title}{Fighting climate change: {{International}} attitudes
+    toward climate policies}.
+  \newblock \emph{\bibinfo{journal}{NBER Working Paper}}
+    \textbf{\bibinfo{volume}{30265}} (\bibinfo{year}{2022}).
+  
+  \bibitem{budolfson_climate_2021}
+  \bibinfo{author}{Budolfson, M.} \emph{et~al.}
+  \newblock \bibinfo{title}{Climate action with revenue recycling has benefits
+    for poverty, inequality and well-being}.
+  \newblock \emph{\bibinfo{journal}{Nature Climate Change}}
+    \textbf{\bibinfo{volume}{11}}, \bibinfo{pages}{1111--1116}
+    (\bibinfo{year}{2021}).
+  
+  \bibitem{franks_mobilizing_2018}
+  \bibinfo{author}{Franks, M.}, \bibinfo{author}{Lessmann, K.},
+    \bibinfo{author}{Jakob, M.}, \bibinfo{author}{Steckel, J.~C.} \&
+    \bibinfo{author}{Edenhofer, O.}
+  \newblock \bibinfo{title}{Mobilizing domestic resources for the {{Agenda}} 2030
+    via carbon pricing}.
+  \newblock \emph{\bibinfo{journal}{Nature Sustainability}}
+    \textbf{\bibinfo{volume}{1}}, \bibinfo{pages}{350--357}
+    (\bibinfo{year}{2018}).
+  
+  \bibitem{dennig_inequality_2015}
+  \bibinfo{author}{Dennig, F.}, \bibinfo{author}{Budolfson, M.~B.},
+    \bibinfo{author}{Fleurbaey, M.}, \bibinfo{author}{Siebert, A.} \&
+    \bibinfo{author}{Socolow, R.~H.}
+  \newblock \bibinfo{title}{Inequality, climate impacts on the future poor, and
+    carbon prices}.
+  \newblock \emph{\bibinfo{journal}{Proceedings of the National Academy of
+    Sciences}} \textbf{\bibinfo{volume}{112}}, \bibinfo{pages}{15827--15832}
+    (\bibinfo{year}{2015}).
+  
+  \bibitem{soergel_combining_2021}
+  \bibinfo{author}{Soergel, B.} \emph{et~al.}
+  \newblock \bibinfo{title}{Combining ambitious climate policies with efforts to
+    eradicate poverty}.
+  \newblock \emph{\bibinfo{journal}{Nature Communications}}
+    \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{2342} (\bibinfo{year}{2021}).
+  
+  \bibitem{bauer_quantification_2020}
+  \bibinfo{author}{Bauer, N.} \emph{et~al.}
+  \newblock \bibinfo{title}{Quantification of an
+    efficiency{\textendash}sovereignty trade-off in climate policy}.
+  \newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{588}},
+    \bibinfo{pages}{261--266} (\bibinfo{year}{2020}).
+  
+  \bibitem{cramton_global_2017}
+  \bibinfo{editor}{Cramton, P.~C.}, \bibinfo{editor}{MacKay, D. J.~C.} \&
+    \bibinfo{editor}{Ockenfels, A.} (eds.) \emph{\bibinfo{title}{Global Carbon
+    Pricing: The Path to Climate Cooperation}} (\bibinfo{publisher}{{MIT Press}},
+    \bibinfo{address}{{Cambridge, MA}}, \bibinfo{year}{2017}).
+  
+  \bibitem{fehr_your_2022}
+  \bibinfo{author}{Fehr, D.}, \bibinfo{author}{Mollerstrom, J.} \&
+    \bibinfo{author}{{Perez-Truglia}, R.}
+  \newblock \bibinfo{title}{Your {{Place}} in the {{World}}: {{Relative Income}}
+    and {{Global Inequality}}}.
+  \newblock \emph{\bibinfo{journal}{American Economic Journal: Economic Policy}}
+    \textbf{\bibinfo{volume}{14}}, \bibinfo{pages}{232--268}
+    (\bibinfo{year}{2022}).
+  
+  \bibitem{kotchen_public_2017}
+  \bibinfo{author}{Kotchen, M.~J.}, \bibinfo{author}{Turk, Z.~M.} \&
+    \bibinfo{author}{Leiserowitz, A.~A.}
+  \newblock \bibinfo{title}{Public willingness to pay for a {{US}} carbon tax and
+    preferences for spending the revenue}.
+  \newblock \emph{\bibinfo{journal}{Environmental Research Letters}}
+    \textbf{\bibinfo{volume}{12}}, \bibinfo{pages}{094012}
+    (\bibinfo{year}{2017}).
+  
+  \bibitem{klenert_making_2018}
+  \bibinfo{author}{Klenert, D.} \emph{et~al.}
+  \newblock \bibinfo{title}{Making carbon pricing work for citizens}.
+  \newblock \emph{\bibinfo{journal}{Nature Climate Change}}
+    \textbf{\bibinfo{volume}{8}}, \bibinfo{pages}{669} (\bibinfo{year}{2018}).
+  
+  \bibitem{douenne_yellow_2022}
+  \bibinfo{author}{Douenne, T.} \& \bibinfo{author}{Fabre, A.}
+  \newblock \bibinfo{title}{Yellow {{Vests}}, {{Pessimistic Beliefs}}, and
+    {{Carbon Tax Aversion}}}.
+  \newblock \emph{\bibinfo{journal}{American Economic Journal: Economic Policy}}
+    (\bibinfo{year}{2022}).
+  
+  \bibitem{carattini_how_2019}
+  \bibinfo{author}{Carattini, S.}, \bibinfo{author}{Kallbekken, S.} \&
+    \bibinfo{author}{Orlov, A.}
+  \newblock \bibinfo{title}{How to win public support for a global carbon tax}.
+  \newblock \emph{\bibinfo{journal}{Nature}} \textbf{\bibinfo{volume}{565}},
+    \bibinfo{pages}{289} (\bibinfo{year}{2019}).
+  
+  \bibitem{issp_international_2019}
+  \bibinfo{author}{ISSP}.
+  \newblock \bibinfo{title}{International {{Social Survey Programme ISSP}} 2019 -
+    {{Social Inequality V}}}  (\bibinfo{year}{2019}).
+  
+  \bibitem{ghassim_public_2022}
+  \bibinfo{author}{Ghassim, F.}, \bibinfo{author}{{Koenig-Archibugi}, M.} \&
+    \bibinfo{author}{Cabrera, L.}
+  \newblock \bibinfo{title}{Public {{Opinion}} on {{Institutional Designs}} for
+    the {{United Nations}}: {{An International Survey Experiment}}}.
+  \newblock \emph{\bibinfo{journal}{International Studies Quarterly}}
+    \textbf{\bibinfo{volume}{66}}, \bibinfo{pages}{sqac027}
+    (\bibinfo{year}{2022}).
+  
+  \bibitem{stern_report_2017}
+  \bibinfo{author}{Stern, N.} \& \bibinfo{author}{Stiglitz, J.~E.}
+  \newblock \bibinfo{title}{Report of the {{High-Level Commission}} on {{Carbon
+    Prices}}}.
+  \newblock \bibinfo{type}{Tech. Rep.}, \bibinfo{institution}{{Carbon Pricing
+    Leadership Coalition}} (\bibinfo{year}{2017}).
+  
+  \bibitem{hainmueller_causal_2014}
+  \bibinfo{author}{Hainmueller, J.}, \bibinfo{author}{Hopkins, D.~J.} \&
+    \bibinfo{author}{Yamamoto, T.}
+  \newblock \bibinfo{title}{Causal {{Inference}} in {{Conjoint Analysis}}:
+    {{Understanding Multidimensional Choices}} via {{Stated Preference
+    Experiments}}}.
+  \newblock \emph{\bibinfo{journal}{Political Analysis}}
+    \textbf{\bibinfo{volume}{22}}, \bibinfo{pages}{1--30} (\bibinfo{year}{2014}).
+  
+  \bibitem{anderson_can_2023}
+  \bibinfo{author}{Anderson, S.}, \bibinfo{author}{Marinescu, I.} \&
+    \bibinfo{author}{Shor, B.}
+  \newblock \bibinfo{title}{Can {{Pigou}} at the {{Polls Stop Us Melting}} the
+    {{Poles}}?}
+  \newblock \emph{\bibinfo{journal}{Journal of the Association of Environmental
+    and Resource Economists}} \textbf{\bibinfo{volume}{10}},
+    \bibinfo{pages}{903--945} (\bibinfo{year}{2023}).
+  
+  \bibitem{chancel_world_2022}
+  \bibinfo{author}{Chancel, L.}, \bibinfo{author}{Piketty, T.},
+    \bibinfo{author}{Saez, E.} \& \bibinfo{author}{Zucman, G.}
+  \newblock \bibinfo{title}{World {{Inequality Report}} 2022}
+    \bibinfo{pages}{236} (\bibinfo{year}{2022}).
+  
+  \bibitem{imai_multivariate_2011}
+  \bibinfo{author}{Imai, K.}
+  \newblock \bibinfo{title}{Multivariate {{Regression Analysis}} for the {{Item
+    Count Technique}}}.
+  \newblock \emph{\bibinfo{journal}{Journal of the American Statistical
+    Association}} \textbf{\bibinfo{volume}{106}}, \bibinfo{pages}{407--416}
+    (\bibinfo{year}{2011}).
+  
+  \bibitem{bechtel_reforms_2020}
+  \bibinfo{author}{Bechtel, M.~M.} \& \bibinfo{author}{Liesch, R.}
+  \newblock \bibinfo{title}{Reforms and {{Redistribution}}: {{Disentangling}} the
+    {{Egoistic}} and {{Sociotropic Origins}} of {{Voter Preferences}}}.
+  \newblock \emph{\bibinfo{journal}{Public Opinion Quarterly}}
+    \textbf{\bibinfo{volume}{84}}, \bibinfo{pages}{1--23} (\bibinfo{year}{2020}).
+  
+  \bibitem{ballard-rosa_structure_2017}
+  \bibinfo{author}{{Ballard-Rosa}, C.}, \bibinfo{author}{Martin, L.} \&
+    \bibinfo{author}{Scheve, K.}
+  \newblock \bibinfo{title}{The {{Structure}} of {{American Income Tax Policy
+    Preferences}}}.
+  \newblock \emph{\bibinfo{journal}{The Journal of Politics}}
+    \textbf{\bibinfo{volume}{79}}, \bibinfo{pages}{1--16} (\bibinfo{year}{2017}).
+  
+  \end{thebibliography}
+  
 % \appendix % NCCcomment
 % \renewcommand{\thetable}{A\arabic{table}}
 % \renewcommand{\thefigure}{A\arabic{figure}}
@@ -993,8 +1163,9 @@ All data and code of the \textit{Complementary} surveys as well as figures of th
 % WPcomment
 %% Here is the endmatter stuff: Supplementary Info, etc.
 %% Use \item's to separate, default label is "Acknowledgements"
-\begin{addendum} % 177 words
- \item We are grateful for financial support from the University of Amsterdam and TU Berlin. Mattauch also thanks the Robert Bosch Foundation. We are grateful for financial support from the OECD, the French Ministry of Foreign Affairs, the French Conseil d'Analyse Economique and the Spanish Ministry for the Ecological Transition and Demographic Challenge. We also acknowledge support from the Grantham Foundation for the Protection of the Environment and the Economic and Social Research Council through the Centre for Climate Change Economics and Policy. 
+% \begin{addendum} % 177 words
+\begin{itemize}
+ \item[Acknowledgements] We are grateful for financial support from the University of Amsterdam and TU Berlin. Mattauch also thanks the Robert Bosch Foundation. We are grateful for financial support from the OECD, the French Ministry of Foreign Affairs, the French Conseil d'Analyse Economique and the Spanish Ministry for the Ecological Transition and Demographic Challenge. We also acknowledge support from the Grantham Foundation for the Protection of the Environment and the Economic and Social Research Council through the Centre for Climate Change Economics and Policy. 
 We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez Chico, and Stefanie Stantcheva for their invaluable inputs for the project. We thank Antonio Bento, Dietmar Fehr, and Auriane Meilland for feedback. We further thank Jakob Niemann, Laura Schepp, Martín Fernández-Sánchez, Samuel Gervais, Samuel Haddad, and Guadalupe Manzo for assistance. 
  \item[Registration] The project is approved by Economics \& Business Ethics Committee (EBEC) at the University of Amsterdam (EB-1113) and %IRB at Harvard University (IRB21-0137), and 
  was preregistered in the Open Science Foundation registry (osf.io/fy6gd).
@@ -1004,7 +1175,8 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
 \item[Keywords] Climate change, global policies, cap-and-trade, perceptions, survey, inequality, wealth tax.
  \item[Correspondence] Correspondence and requests for materials
 should be addressed to Adrien Fabre~(email: adrien.fabre@cnrs.fr).
-\end{addendum}
+% \end{addendum}
+\end{itemize}
 
 %%
 %% TABLES
