@@ -1986,6 +1986,17 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
 # plot(1:100, 100*sort((wid$post_income - wid$income)/wid$income, decreasing = T), col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.02, 0.05), xlab = "Percentile de revenus", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
 
 
+##### 1% of richest billion doubles poorest billion #####
+
+# Check: 1% from top 1G => x? on bottom 1G.
+mean(wid$income[1:12]) # 306€/year: average income of bottom billion
+mean(wid$income[89:100]) # 78k€/year: average income of top billion
+mean(wid$income[1:12])/mean(wid$income[89:100]) # 0.4%
+mean(wid$income[1:20])/mean(wid$income[91:100]) # 1% of the top 10% would double the bottom 20%
+sum(wid$income[1:12])/sum(wid$income[100]) # 1% of the top 1% would double the income of the bottom billion
+
+
+
 ##### Bruckner et al. (22) #####
 country_distr <- read.xlsx("../data/bruckner.xlsx") # /!\ Elasticities are generally > 1, i.e. larger carbon intensities for richer households within a country
 deciles <- data.frame("country" = unique(country_distr$ctry_iso3))
