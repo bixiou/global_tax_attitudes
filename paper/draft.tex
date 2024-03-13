@@ -168,6 +168,8 @@
 \usepackage[export]{adjustbox}
 \usepackage[anythingbreaks]{breakurl} % for links
 \usepackage{multicol}
+\usepackage{lineno}
+\linenumbers
 \newsavebox\ltmcbox % For net gain table over two columns
 %\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
 %\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
@@ -379,6 +381,7 @@ The study relies on two sets of surveys: the \textit{Global} survey and the \tex
 % \end{tabular}
 % \end{table}
 
+\renewcommand{\thetable}{S\arabic{table}}
 \begin{table}[h]
   \caption[Surveys summary]{[For Supplementary Material] Summary of the surveys used in the analysis.}
   % \caption[Surveys summary]{Characteristics of the different surveys.} 
@@ -400,6 +403,8 @@ The study relies on two sets of surveys: the \textit{Global} survey and the \tex
   \hline \\[-1.8ex] 
 \end{tabular}
 \end{table}
+\setcounter{table}{0}
+\renewcommand{\thetable}{\arabic{table}}
 
 \paragraph{Global Survey}
 
@@ -465,6 +470,9 @@ The stated support for the GCS is 54\% in the U.S. and 76\% in Europe,\footnote{
   We describe the GCS to the respondents as a ``climate club'' and we specify its redistributive effects: The 700 million people with less than \$2/day [in Purchasing Power Parity] would be lifted out of extreme poverty, and fossil fuel price increases would cost the typical person in their country a specified amount (see Appendix \ref{subsec:questionnaire_GCS} for details). The monthly median net cost is \$85 in the U.S., \euro{}10 in France, \euro{}25 in Germany, \euro{}5 in Spain, £20 in the UK.
 \end{tcolorbox}
 
+
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
 \begin{figure}[h!]
     \caption[Support for the Global Climate Scheme]{[For Supplementary Material, except first row to be included in Figure \ref{fig:support}] Support for the GCS, NR and the combination of GCS, NR and C. \\(p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:nr_support}, \ref{q:global_tax}, \ref{q:national_tax}, and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)
     }\label{fig:support_binary}
@@ -493,13 +501,16 @@ Consistent with the results of the global survey, a ``tax on millionaires of all
 
 We also assess support for other global policies (Figure \ref{fig:support}). Most policies garner relative majority support in each country, with two exceptions: the ``cancellation of low-income countries' public debt'' and ``a maximum wealth limit'' for each individual. The latter policy obtains relative majority support in Europe but not in the U.S., despite the cap being set at \$10 billion in the U.S. compared to \euro{}/£100 million in Europe. Notably, climate-related policies enjoy significant popularity, with ``high-income countries funding renewable energy in low-income countries'' receiving absolute majority support across all surveyed countries. Additionally, relative support for loss and damages compensation, as approved in principle at the international climate negotiations in 2022 (``COP27''), ranges from 55\% (U.S.) to 81\% (Spain), with absolute support ranging from 41\% to 62\%.
 
+\setcounter{figure}{1}
+\renewcommand{\thefigure}{\arabic{figure}}
 \begin{figure}
   % MAJOR figure
   \caption[Relative support for further global policies]{Relative support for various global policies (percentage of \textit{somewhat} or \textit{strong support}, after excluding \textit{indifferent} answers). (Questions \ref{q:climate_policies} and \ref{q:other_policies}; See Figure \ref{fig:support_likert_positive} for the absolute support.)% $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749, n_\text{US, global/national wealth tax} = 2,000$
   }
   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_share.pdf}}\label{fig:support}
 \end{figure} 
-
+% \setcounter{figure}{2}
+\renewcommand{\thefigure}{S\arabic{figure}}
 
 \subsubsection{Foreign aid}\label{subsubsec:support_foreign_aid} % NCCcomment
 %\paragraph{Foreign aid}
@@ -817,10 +828,10 @@ All data and code of the \textit{Complementary} surveys as well as figures of th
 \bibliography{global_tax_attitudes}
 
 \appendix % NCCcomment
-\renewcommand{\thetable}{A\arabic{table}}
-\renewcommand{\thefigure}{A\arabic{figure}}
-\setcounter{figure}{0}
-\setcounter{table}{0}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{figure}{8}
+\setcounter{table}{1}
 
 \input{literature_review.tex}
 % \clearpage
