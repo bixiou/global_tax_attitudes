@@ -1364,16 +1364,17 @@ sum(c(ssp2_26$adult_2020[ssp2_26$region %in% c("NAF", "WAF", "EAF", "SAF", "RSAF
 # China: 30%, Saudi Arabia + UAE + Afghanistan: 1%, Russia + Iran: 3%
 
 ##### Figure GDP pc PPP #####
-# Data 2021: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?contextual=default&end=2021&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2021&view=bar
-fig_gdp <- c("Luxembourg" = 133330, "United States" = 69288, "High income" = 54758, "European Union" = 48767, "China" = 19338, "World" = 18605, "India" = 7242, "Sub-Saharan Africa" = 4070, "Low income" = 2124, "Congo Dem. Rep." = 1180, "Burundi" = 775)
+# Data 2021: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?contextual=default&end=2022&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN-FR&start=2021&view=bar
+fig_gdp <- c("Luxembourg" = 133330, "United States" = 69288, "High income" = 54758, "European Union" = 48767, "China" = 19338, "World" = 18605, "India" = 7242, "Sub-Saharan Africa" = 4070, "Low income" = 2124, "Congo Dem. Rep." = 1180, "Burundi" = 775) # 2021
+# fig_gdp_w_fr <- c("Luxembourg" = 140614, "United States" = 76327, "High income" = 60806, "European Union" = 54626, "China" = 21483, "World" = 20694, "India" = 8400, "Sub-Saharan Africa" = 4435, "Low income" = 2256, "Congo Dem. Rep." = 1338, "Burundi" = 837) # 2022
 names_fig_gdp <- names(fig_gdp)
 fig_gdp <- array(fig_gdp/18605, dim = c(1, length(fig_gdp)))
 barres(data = fig_gdp, labels = names_fig_gdp, legend = c("GDP"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP")
 barres(data = array(fig_gdp[1,2:10], dim = c(1, 9)), labels = names_fig_gdp[2:10], legend = c("GDP"), sort = FALSE, show_ticks = FALSE, save = T, showLegend = FALSE, file = "../figures/policies/GDP_pc_PPP_few")
-fig_gdp_fr <- c("Luxembourg" = 133330, "États-Unis" = 69288, "Pays à hauts revenus" = 54758, "Union Européenne" = 48767, "Chine" = 19338, "Monde" = 18605, "Inde" = 7242, "Afrique subsaharienne" = 4070, "Pays à bas revenus" = 2124, "Rép. Dém. Congo" = 1180, "Burundi" = 775)
+fig_gdp_fr <- c("États-Unis" = 76327, "Pays à hauts revenus" = 60806, "France" = 55388, "Union Européenne" = 54626, "Chine" = 21483, "Monde" = 20694, "Inde" = 8400, "Afrique subsaharienne" = 4435, "Pays à bas revenus" = 2256, "Rép. Dém. Congo" = 1338, "Burundi" = 837) # 2022
 names_fig_gdp_fr <- names(fig_gdp_fr)
-fig_gdp_fr <- array(rev(fig_gdp_fr)/18605, dim = c(1, length(fig_gdp_fr)))
-barres(data = fig_gdp_fr, labels = names_fig_gdp_fr, legend = c("PIB"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP_fr")
+fig_gdp_fr <- array(rev(fig_gdp_fr)/20694, dim = c(1, length(fig_gdp_fr)))
+barres(data = fig_gdp_fr, labels = names_fig_gdp_fr, legend = c("PIB"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP_fr") # 330*344 px
 barres(data = array(fig_gdp_fr[1,2:10], dim = c(1, 9)), labels = names_fig_gdp_fr[2:10], legend = c("PIB"), sort = FALSE, show_ticks = FALSE, save = T, showLegend = FALSE, file = "../figures/policies/GDP_pc_PPP_few_fr")
 
 ##### Sandbox #####
