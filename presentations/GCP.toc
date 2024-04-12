@@ -1,0 +1,15 @@
+\babel@toc {english}{}\relax 
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Support for the Global Climate Scheme}{19}{0}{1}
+\beamer@subsectionintoc {1}{2}{Stated support}{21}{0}{1}
+\beamer@subsectionintoc {1}{3}{Support for other global policies}{29}{0}{1}
+\beamer@subsectionintoc {1}{4}{Sincerity of the support for the GCS}{34}{0}{1}
+\beamer@subsectionintoc {1}{5}{Second-order beliefs}{42}{0}{1}
+\beamer@subsectionintoc {1}{6}{Universalist values}{44}{0}{1}
+\beamer@subsectionintoc {1}{7}{Wrapping up}{47}{0}{1}
+\beamer@sectionintoc {2}{The Global Climate Plan}{53}{0}{2}
+\beamer@sectionintoc {3}{Appendix}{119}{1}{3}
+\beamer@subsectionintoc {3}{1}{Additional results}{120}{1}{3}
+\beamer@subsectionintoc {3}{2}{Descriptive statistics}{139}{1}{3}
+\beamer@subsectionintoc {3}{3}{Distributive effects of the Global Climate Plan}{147}{1}{3}
+\beamer@subsectionintoc {3}{4}{OECD}{162}{1}{3}
