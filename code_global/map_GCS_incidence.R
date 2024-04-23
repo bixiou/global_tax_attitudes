@@ -2199,3 +2199,12 @@ lines(2025:2080, colSums(df[df$code %in% SSA, paste0("emissions_", 2025:2080)])/
 lines(2025:2080, colSums(df[, paste0("emissions_", 2025:2080)], na.rm = T)/colSums(df[, paste0("adult_", 2025:2080)], na.rm = T), type = 'l', col = 'black', lwd = 2, lty = 1, xlab = "", ylab = "")
 grid() + abline(h = 1:18, col = "gray", lty = 3)
 legend("topright", legend = c("Monde", "Chine", "États-Unis", "Union Européenne", "Inde", "Afrique subsaharienne"), col = c("black", "red", "blue", "darkgreen", "orange", "purple"), lwd = 2, lty = 1:6)
+
+
+##### Course Tsinghua equal pc 2030 target #####
+# Taking -20% over 2019-2030 as 2°C >66% chance, cf. e.g. Robiou du Pont et al. (17)
+target_2030 <- 0.85*sum(co2_pop$emissions_2019)/sum(sm$pop_2030) # 3.37 t p.c.
+(co2_pop$pop_2030*target_2030/co2_pop$emissions_2019)[co2_pop$code == "CHN"]-1 # -47%
+sum(sm$pop_2030[sm$code == "USA"]*target_2030)/co2_pop$emissions_2019[co2_pop$code == "USA"]-1 # -77%
+sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$emissions_2019[co2_pop$code %in% EU27_countries])-1 # -55%
+(co2_pop$pop_2030*target_2030/co2_pop$emissions_2019)[co2_pop$code == "IND"]-1 # +118%
