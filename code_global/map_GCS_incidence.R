@@ -1381,9 +1381,9 @@ barres(data = array(fig_gdp_fr[1,2:10], dim = c(1, 9)), labels = names_fig_gdp_f
 co2_pop$gain_adj_over_gdp_2030[co2_pop$country == "South Africa"]
 co2_pop$gain_adj_2030[co2_pop$country == "South Africa"]/12
 co2_pop$npv_over_gdp_gcs_adj[co2_pop$country == "South Africa"]
-plot_world_map(paste0("Sgenerous_EU_gain_adj_over_gdp_2080"), breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+plot_world_map(paste0("Scautious_gain_adj_over_gdp_2080"), breaks = c(-Inf, -.03, -.02, -.01, -.005, -1e-10, 0, .03, .1, .2, .5, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), 100*c(-Inf, -.03, -.02, -.01, -.005, 0, 0, .03, .1, .2, .5, Inf), sep = " to ", return = "levels")), 
-               legend = paste0("Gains per adult\nfrom the GCP\nin ", 2080, " (in % of GDP)\nScenario: ", capitalize(gsub("_", " ", "generous_EU"))), #fill_na = T,
+               legend = paste0("Gains per adult\nfrom the GCP\nin ", 2080, " (in % of GDP)\nScenario: ", capitalize(gsub("_", " ", "cautious"))), #fill_na = T,
                save = T, na_label = "Non Parties")
 
 for (s in scenarios_names[3]) {
@@ -1768,18 +1768,19 @@ sl <- create_var_ssp(df = sl) # low price - medium ambition: ssp2_26msg, SSP119G
 # sm: >China neutral<, increasing basic income ~50$ (until 2060) / sf: China winner, plateau of emissions ~40$ (until 2060), lower gains/losses, better fit with price and no problem
 # 
 # sum(sm$gain_adj_2030 * sm$adult_2030, na.rm = T)
-# sum(df$Scautious_gain_adj_2030 * df$adult_2030, na.rm = T)
+# sum(df$Scentral_gain_adj_2030 * df$adult_2030, na.rm = T)
 # sm$gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
-# df$Scautious_gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
+df$Scentral_gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
+df$Scautious_gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
 # df$emissions_pa_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]
-# wtd.mean(df$emissions_pa_2030, df$adult_2030 * df$participation_rate_2030 * df$code %in% cautious)
-# # df$Scautious_npv_pa_gcs_adj[sm$code %in% c("CHN", "FRA", "IND", "USA")]
-# # df$Scautious_npv_over_gdp_gcs_adj[sm$code %in% c("CHN", "FRA", "IND", "USA")]
+# wtd.mean(df$emissions_pa_2030, df$adult_2030 * df$participation_rate_2030 * df$code %in% central)
+# # df$Scentral_npv_pa_gcs_adj[sm$code %in% c("CHN", "FRA", "IND", "USA")]
+# # df$Scentral_npv_over_gdp_gcs_adj[sm$code %in% c("CHN", "FRA", "IND", "USA")]
 # sm$participation_rate_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]
 # sm$share_basic_income_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]
 # sm$gdp_pc_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/y_bar
 # lambda[sm$code %in% c("CHN", "FRA", "IND", "USA")]
-# wtd.mean(sm$emissions_pa_2030, sm$adult_2030 * sm$code %in% cautious)
+# wtd.mean(sm$emissions_pa_2030, sm$adult_2030 * sm$code %in% central)
 
 sm$income_pa_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]
 
@@ -1846,13 +1847,13 @@ all_countries <- setNames(df$code, df$country)
 all_but_OPEC <- all_countries[!df$code %in% c("RUS", "KAZ", "SAU", "QAT", "KWT", "ARE", "OMN", "BHR", "MYS")] # NB: Qatar has left OPEC
 # 3. Optimistic scenario: not losers + EU28 + Norway + Switzerland + Canada + Japan + Korea + NZ + U.S. Democratic states 
 optimistic <- c(all_countries[df$npv_pa_gcs_adj >= 0 | df$code %in% c("CHN", EU28_countries, "NOR", "CHE", "CAN", "JPN", "KOR", "NZL")], "Dem USA" = "Dem USA")
-# 4. Cautious scenario: winners + China + EU28 + Norway + Switzerland + Japan + NZ (Before, was 2030 instead of NPV winners)
-cautious <- all_countries[df$npv_over_gdp_gcs_adj > 0 | df$code %in% c("CHN", EU28_countries, "NOR", "CHE", "JPN", "NZL")]
+# 4. Central scenario: winners + China + EU28 + Norway + Switzerland + Japan + NZ (Before, was 2030 instead of NPV winners)
+central <- all_countries[df$npv_over_gdp_gcs_adj > 0 | df$code %in% c("CHN", EU28_countries, "NOR", "CHE", "JPN", "NZL")]
 # 5. Generous EU: EU27 + China + winners. (Before, was EU27 + China + African non-losers + Asia non-losers)
-generous_EU <- all_countries[(df$npv_over_gdp_gcs_adj > 0) | df$code %in% c("CHN", EU27_countries)]
+cautious <- all_countries[(df$npv_over_gdp_gcs_adj > 0) | df$code %in% c("CHN", EU27_countries)]
 # 6. Africa-EU partnership: EU27 + African winners
 africa_EU <- all_countries[(df$npv_over_gdp_gcs_adj >= 0 & image_region_by_code[df$code] %in% c("WAF", "SAF", "RSAF", "NAF", "EAF")) | df$code %in% c(EU27_countries)]
-scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "cautious", "generous_EU", "africa_EU")
+scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "cautious", "africa_EU")
 scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
 
 for (s in scenarios_names) df <- create_var_ssp(df = df, scenario = s)
@@ -1905,9 +1906,9 @@ par(mar = c(2.1, 4.1, 0.1, 4.1))
 plot(c(2025, seq(2030, 2080, 10)), basic_income_adj$all_countries[as.character(c(2025, seq(2030, 2080, 10)))]/12, type = 'b', pch = 16, col = 'darkgreen', lwd = 2, xlab = "", ylab = "基本收入（每月美元）；二氧化碳排放量（每年千兆吨）", ylim = c(-5, 53), family="Microsoft JhengHei")
 # plot(2025:2080, basic_income_adj$all_countries[as.character(2025:2080)]/12, type = 'l', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(-5, 70))
 # lines(2025:2080, basic_income_adj$optimistic[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
-# lines(2025:2080, basic_income_adj$cautious[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
+# lines(2025:2080, basic_income_adj$central[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
 # lines(2025:2080, basic_income_adj$all_but_OPEC[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
-# lines(2025:2080, basic_income_adj$generous_EU[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
+# lines(2025:2080, basic_income_adj$cautious[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
 # lines(2025:2080, basic_income_adj$africa_EU[as.character(2025:2080)]/12, type = 'l', col = 'red', lwd = 2)
 lines(c(2025, seq(2030, 2080, 10)), emissions_tot[as.character(c(2025, seq(2030, 2080, 10)))]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
 # lines(2025:2080, emissions_tot[as.character(2025:2080)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
@@ -2188,7 +2189,7 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 # 1: GDP_pc_PPP_few_fr
 # 7.1: gcp_rev_distr, gcp_diff_rev, gcp_var_rev, gcp_var_rev_rich_only
 # 7.2: share_below_global_mean
-# 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scautious_npv_over_gdp_gcs_adj
+# 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scentral_npv_over_gdp_gcs_adj
 
 plot(2025:2080, basic_income_adj$ssp2_26[as.character(2025:2080)]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(0, 100))
 lines(2025:2080, emissions_tot[as.character(2025:2080)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
