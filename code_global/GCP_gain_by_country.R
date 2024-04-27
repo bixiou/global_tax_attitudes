@@ -49,17 +49,18 @@ country_code <- setNames(co2$country[co2$year == 2019], co2$code[co2$year == 201
 cp$country <- country_code[cp$code]
 cp$adult <- 1000 * cp$adult
 cp$pop <- 1000 * cp$pop
+cp$recipient <- cp$adult + (cp$pop - cp$adult)/2  
 cp$emissions <- cp$footprint
 cp$missing_footprint <- is.na(cp$footprint)
 # (sum(cp$adult_2019[is.na(cp$footprint_2019)])/adult_pop_2019) # 7.4% of global footprint data missing
 cp$emissions[is.na(cp$footprint)] <- cp$territorial[is.na(cp$footprint)] # imputing territorial emissions for those countries
 cp <- cp %>% group_by(code) %>% pivot_wider(id_cols = c("code", "country"),  names_from = year,
-                                                      values_from = c("territorial", "footprint", "emissions", "adult", "pop", "gdp_pc", "missing_footprint"), names_glue = "{.value}_{year}") %>% ungroup()
+                                                      values_from = c("territorial", "footprint", "emissions", "adult", "pop", "recipient", "gdp_pc", "missing_footprint"), names_glue = "{.value}_{year}") %>% ungroup()
 # /!\ Beware, data is valid only in 2015 and 2019 for gdp_pc (and it is in nominal)
 cp$missing_footprint <- cp$missing_footprint_2019
 cp <- cp[, !colnames(cp) %in% c(paste0("missing_footprint_", c(2015, 2019, 2023, years)), paste0("gdp_pc_", years))]
-cp <- cp[!cp$country %in% c("World", "Kosovo", NA), sapply(names(cp), function(v) any(!is.na(cp[[v]])))]
-cp$gdp_2019 <- cp$gdp_pc_2019 * cp$pop_2019
+cp <- cp[!cp$country %in% c("World", "Kosovo", "Aruba", NA), sapply(names(cp), function(v) any(!is.na(cp[[v]])))]
+cp$gdp_2019 <- cp$gdp_pc_2019 * cp$pop_2019 # nominal
 cp$country_map <- cp$country
 cp$country_map[cp$country == "United States"] <- "USA"
 cp$country_map[cp$country == "United Kingdom"] <- "UK"
@@ -81,10 +82,10 @@ carbon_price$ssp2_26 <- setNames(sapply(years, function(y) SSPs[SSPs$MODEL == "I
 rm(SSPs)
 
 ##### Country-downscaled trajectories #####
-ssp_country <- read.csv("../data/PMSSPIE.csv")
+ssp_country <- read.csv("../data/PMSSPIE.csv") # Gütschow et al. (2021) extracted from PMSSPIE_05Feb20.csv, https://zenodo.org/record/3638137
 ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "BASIC", "EU28", "LDC", "NONANNEXI", "UMBRELLA", "MAC"),]
 
-prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = cp, keep_from_df = copy_from_cp) { # GDP is in PPP
+prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = cp, keep_from_df = copy_from_cp) { # GDP is in PPP (no nominal data available)
   if (exists("pop_iso3") & !"TWN" %in% df$code) {
     twn <- df[df$code == "KOR",]
     twn$code <- "TWN"
@@ -92,6 +93,7 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
     for (y in c(2023, seq(2020, 2100, 10))) { 
       twn[[paste0("pop_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$pop[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$pop[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
       twn[[paste0("adult_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$adult[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$adult[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
+      twn[[paste0("recipient_", y)]] <- twn[[paste0("adult_", y)]] + (twn[[paste0("pop_", y)]] - twn[[paste0("adult_", y)]])/2
     } 
     df <- rbind(df, twn)
   }
@@ -108,8 +110,9 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
     # ssp[[paste0("gdp_", y)]][ssp$code == "PRK"] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("gdp_", y - y %% 10)]][df$code == "PRK"], df[[paste0("gdp_", 10*ceiling(y/10))]][df$code == "PRK"])
     # Add South Sudan and Taiwan data
     for (c in c("TWN", "SSD")) ssp[[paste0("pop_", y)]][ssp$code == c] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("pop_", y - y %% 10)]][df$code == c], df[[paste0("pop_", 10*ceiling(y/10))]][df$code == c])
-  }
+  } # Scales up df$adult by ssp$pop/df$pop
   for (y in c(2023, seq(2020, 2100, 10))) ssp[[paste0("adult_", y)]][match.nona(df$code, ssp$code)] <- ssp[[paste0("pop_", y)]][match.nona(df$code, ssp$code)] * (df[[paste0("adult_", y)]]/df[[paste0("pop_", y)]])[df$code %in% ssp$code]
+  for (y in c(2023, seq(2020, 2100, 10))) ssp[[paste0("recipient_", y)]][match.nona(df$code, ssp$code)] <- ssp[[paste0("pop_", y)]][match.nona(df$code, ssp$code)] * (df[[paste0("recipient_", y)]]/df[[paste0("pop_", y)]])[df$code %in% ssp$code]
   for (y in 2020:2100) { # Interpolate adult_ from pop_ and df$adult/df$pop
     y_prev <- 10*floor(y/10)
     y_next <- 10*ceiling(y/10)
@@ -117,10 +120,11 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
     if (y %in% c(2021, 2022)) y_next <- 2023
     lambda <- (y - y_prev)/10
     ssp[[paste0("adult_", y)]] <- ssp[[paste0("pop_", y)]] * ((1 - lambda) * (ssp[[paste0("adult_", y_prev)]]/ssp[[paste0("pop_", y_prev)]]) + lambda * (ssp[[paste0("adult_", y_next)]]/ssp[[paste0("pop_", y_next)]]))
+    ssp[[paste0("recipient_", y)]] <- ssp[[paste0("adult_", y)]] + (ssp[[paste0("pop_", y)]] - ssp[[paste0("adult_", y)]])/2
     ssp[[paste0("emissions_pa_", y)]] <- ssp[[paste0("emissions_", y)]]/ssp[[paste0("adult_", y)]]
-    ssp[[paste0("emissions_pc_", y)]] <- ssp[[paste0("emissions_", y)]]/ ssp[[paste0("pop_", y)]]
-    ssp[[paste0("gdp_pa_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("adult_", y)]] # /!\ It is in PPP (contrary to old code with IIASA SSPs)
-    ssp[[paste0("gdp_pc_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("pop_", y)]] # /!\ It is in PPP (contrary to old code with IIASA SSPs)
+    ssp[[paste0("emissions_pc_", y)]] <- ssp[[paste0("emissions_", y)]]/ssp[[paste0("pop_", y)]]
+    ssp[[paste0("gdp_pa_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("adult_", y)]] # /!\ It is in PPP (contrary to old code with IIASA SSPs), same below
+    ssp[[paste0("gdp_pc_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("pop_", y)]] 
     ssp[[paste0("gdp_pc_over_mean_", y)]] <- ssp[[paste0("gdp_pc_", y)]]/wtd.mean(ssp[[paste0("gdp_pc_", y)]], ssp[[paste0("pop_", y)]], na.rm = T)
   }
   ssp$gdp_ppp_now <- ssp$gdp_ppp_2023 
@@ -137,7 +141,7 @@ compute_npv <- function(var = "gain_pa_", discount_rate = .03, start = 2030, end
   if (decadal) return(rowSums(sapply(2:10, function(i) { return(10*data[[paste0(var, 2000+10*i)]]/((1+discount_rate)^10)^(i-2)) })))
   else return(rowSums(sapply(start:end, function(i) { return(data[[paste0(var, i)]]/(1+discount_rate)^(i-start)) })))
 }
-compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100) {
+compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df", beneficiary = "adult_", discount = .03, ssp_name = "ssp2_26_country", start = 2025, end = 2100) {
   # Uses large_footprint_, optout_right_, revenues_pa_, adult_, gdp_pc_, pop_, pop_, emissions_pa_, carbon_price[[ssp_name]]
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   basic_income <- basic_income_adj <- c()
@@ -147,26 +151,29 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
     temp <- rep(T, nrow(df)) # df$code %in% parties # average_revenues is average emissions_pa * carbon_price while basic_income is adjusted for participation_rate due to opt-out and anti-regressive mechanism
     while (any((temp != df[[paste0("large_footprint_", y)]])[!is.na(df[[paste0("large_footprint_", y)]])])) {
       temp <- df[[paste0("large_footprint_", y)]]
-      basic_income[yr] <- wtd.mean(df[[paste0("revenues_pa_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("adult_", y)]])
-      df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pa_", y)]] > basic_income[yr])
+      basic_income[yr] <- wtd.mean(df[[paste0("revenues_pb_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0(beneficiary, y)]])
+      df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pb_", y)]] > basic_income[yr])
       df[[paste0("participation_rate_", y)]] <- (1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]) * (df$code %in% parties)
     } 
-    df[[paste0("gain_optout_", y)]] <- df[[paste0("participation_rate_", y)]] * (basic_income[yr] - df[[paste0("revenues_pa_", y)]])
+    df[[paste0("gain_optout_", y)]] <- df[[paste0("participation_rate_", y)]] * (basic_income[yr] - df[[paste0("revenues_pb_", y)]])
     # Adjusted to avoid high-income receiving money. 
     y_bar <- wtd.mean(df[[paste0("gdp_pc_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("pop_", y)]])
-    e_bar <- wtd.mean(df[[paste0("emissions_pa_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("adult_", y)]])
+    e_bar <- wtd.mean(df[[paste0("emissions_pc_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0("pop_", y)]]) 
     lambda <- pmax(0, pmin(1, (2.2*y_bar - df[[paste0("gdp_pc_", y)]])/((2.2-2)*y_bar))) # lambda = 1 means full basic income, lambda = 0 means basic income is proportional to emissions (if they are below 1.3*average)
     lambda[is.na(lambda)] <- 1
-    df[[paste0("share_basic_income_", y)]] <- df[[paste0("participation_rate_", y)]] * (lambda + pmin(1, df[[paste0("emissions_pa_", y)]]/(1.3*e_bar))*(1-lambda))
-    df[[paste0("gain_adj_", y)]][no.na(df[[paste0("emissions_pa_", y)]] < 1.3*e_bar, rep = FALSE, num_as_char = FALSE)] <- (basic_income[yr] * df[[paste0("share_basic_income_", y)]] - 
-                                                                                                         df[[paste0("participation_rate_", y)]] * df[[paste0("revenues_pa_", y)]])[no.na(df[[paste0("emissions_pa_", y)]] < 1.3*e_bar, rep = FALSE, num_as_char = FALSE)]
-    basic_income_adj[yr] <- basic_income[yr] * (1 + wtd.mean(df[[paste0("participation_rate_", y)]] - df[[paste0("share_basic_income_", y)]], df[[paste0("adult_", y)]]))
-    df[[paste0("gain_adj_", y)]][lambda == 1 | no.na(df[[paste0("emissions_pa_", y)]] >= 1.3*e_bar, rep = FALSE, num_as_char = FALSE)] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pa_", y)]]))[lambda == 1 | no.na(df[[paste0("emissions_pa_", y)]] >= 1.3*e_bar, rep = FALSE, num_as_char = FALSE)]
+    df[[paste0("share_basic_income_", y)]] <- lambda + pmin(1, df[[paste0("emissions_pc_", y)]]/(1.3*e_bar))*(1-lambda)
+    lower_basic_income_ctries <- lambda < 1 & no.na(df[[paste0("emissions_pc_", y)]] < 1.3*e_bar, rep = FALSE, num_as_char = FALSE)
+    if (y %% 10 == 0) df[[paste0("lower_basic_income_", y)]] <- 1*lower_basic_income_ctries
+    # /!\ Basic income is expressed in pb (per beneficiary) but gain_adj in pa (per adult).
+    basic_income_adj[yr] <- basic_income[yr] * (1 + sum((1 - df[[paste0("share_basic_income_", y)]]) * df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * lower_basic_income_ctries) / sum(df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * !lower_basic_income_ctries))
+    df[[paste0("gain_adj_", y)]][lower_basic_income_ctries] <- (df[[paste0("participation_rate_", y)]] * (basic_income[yr] * df[[paste0("share_basic_income_", y)]] - df[[paste0("revenues_pb_", y)]]))[lower_basic_income_ctries]
+    df[[paste0("gain_adj_", y)]][!lower_basic_income_ctries] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pb_", y)]]))[!lower_basic_income_ctries]
+    df[[paste0("gain_adj_", y)]] <- df[[paste0("gain_adj_", y)]] * df[[paste0(beneficiary, y)]]/df[[paste0("adult_", y)]] 
     df[[paste0("gain_adj_over_gdp_", y)]] <- df[[paste0("gain_adj_", y)]]/df[[paste0("gdp_pa_", y)]]
     
-    df[[paste0("share_revenues_lost_", y)]] <- ifelse(df[[paste0("revenues_pa_", y)]] > 0, pmax(0, (df[[paste0("revenues_pa_", y)]] - basic_income_adj[yr])/df[[paste0("revenues_pa_", y)]]), 0)
-    df[[paste0("share_basic_income_collected_", y)]] <- df[[paste0("revenues_pa_", y)]]/basic_income_adj[yr]
-    df[[paste0("basic_income_over_revenues_", y)]] <- basic_income_adj[yr]/df[[paste0("revenues_pa_", y)]]
+    df[[paste0("share_revenues_lost_", y)]] <- ifelse(df[[paste0("revenues_pb_", y)]] > 0, pmax(0, (df[[paste0("revenues_pb_", y)]] - basic_income_adj[yr])/df[[paste0("revenues_pb_", y)]]), 0)
+    df[[paste0("share_basic_income_collected_", y)]] <- df[[paste0("revenues_pb_", y)]]/basic_income_adj[yr]
+    df[[paste0("basic_income_over_revenues_", y)]] <- basic_income_adj[yr]/df[[paste0("revenues_pb_", y)]]
   }
   
   df$npv_pa_gcs <- compute_npv("gain_pa_", discount = discount, data = df, decadal = FALSE)
@@ -177,8 +184,9 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
   return(df)
 }
 
-create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries") { # message is only for ssp2 , region = message_region_by_code
-  name_df <- deparse(substitute(df))
+create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", beneficiary = "adult_") { # message is only for ssp2 , region = message_region_by_code
+  # beneficiary (of the basic income) can be: adult_ (age >= 15) or recipient_ (where children receive half the amount of adult_)
+  name_df <- deparse(substitute(df)) 
   years <- 2020:2100
   if (is.null(ssp)) { 
     ssp_name <- if (name_df %in% c("s1", "sh")) "ssp1_19" else { if (name_df %in% c("s3", "sl")) "ssp2_26msg" else "ssp2_26" } 
@@ -190,42 +198,53 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   else parties <- scenarios_parties[[scenario]]
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   # split USA for scenario == "optimistic" into Dem USA (the 12 States + DC with Democratic lead > 10 pp) and Non-Dem USA
-  if ("Dem USA" %in% parties) for (y in years) for (v in paste0(c("pop_", "adult_"), y)) df[[v]][df$code == "USA"] <- .3429 * df[[v]][df$code == "USA"]
+  if ("Dem USA" %in% parties) for (y in years) for (v in paste0(c("pop_", "adult_", "recipient_"), y)) df[[v]][df$code == "USA"] <- .3429 * df[[v]][df$code == "USA"]
   
   for (y in years) { # Unadjusted mean gain pa
     yr <- as.character(y)
     y_prev <- as.character(10*floor(y/10))
     y_next <- as.character(10*ceiling(y/10))
+    df[[paste0("emissions_pb_", y)]] <- df[[paste0("emissions_", y)]]/df[[paste0(beneficiary, y)]]
+    df[[paste0("gdp_pb_", y)]] <- df[[paste0("gdp_", y)]]/df[[paste0(beneficiary, y)]]
     lambda <- (y - 10*floor(y/10))/10
     carbon_price[[ssp_name]][yr] <- (1 - lambda) * carbon_price[[ssp_name]][y_prev] + lambda * carbon_price[[ssp_name]][y_next]
-    df[[paste0("revenues_pa_", y)]] <- carbon_price[[ssp_name]][yr] * pmax(0, df[[paste0("emissions_pa_", y)]]) # /12
+    # df[[paste0("revenues_pa_", y)]] <- carbon_price[[ssp_name]][yr] * pmax(0, df[[paste0("emissions_pa_", y)]]) # /12
+    df[[paste0("revenues_pb_", y)]] <- carbon_price[[ssp_name]][yr] * pmax(0, df[[paste0("emissions_pb_", y)]]) # /12
     total_revenues[[ssp_name]][yr] <- carbon_price[[ssp_name]][yr] * sum(df[[paste0("emissions_", y)]], na.rm = T) # ssp[[paste0("emissions_", y)]][ssp$region == "world"]
-    if (total_revenues[[ssp_name]][yr] < 0) df[[paste0("revenues_pa_", y)]] <- 0
+    if (total_revenues[[ssp_name]][yr] < 0) df[[paste0("revenues_pb_", y)]] <- 0
+    df[[paste0("revenues_pa_", y)]] <- df[[paste0("revenues_pb_", y)]] * df[[paste0(beneficiary, y)]]/df[[paste0("adult_", y)]]
     
-    # GCS
-    df[[paste0("gain_pa_", y)]] <- (total_revenues[[ssp_name]][yr]/sum(df[[paste0("adult_", y)]], na.rm = T) - df[[paste0("revenues_pa_", y)]]) # /ssp[[paste0("adult_", y)]][ssp$region == "world"]
-    df[[paste0("gain_over_gdp_", y)]] <- df[[paste0("gain_pa_", y)]]/df[[paste0("gdp_pc_", y)]]    
+    # GCS 
+    # df[[paste0("gain_pa_", y)]] <- (total_revenues[[ssp_name]][yr]/sum(df[[paste0("adult_", y)]], na.rm = T) - df[[paste0("revenues_pa_", y)]]) # /ssp[[paste0("adult_", y)]][ssp$region == "world"]
+    df[[paste0("gain_pb_", y)]] <- (total_revenues[[ssp_name]][yr]/sum(df[[paste0(beneficiary, y)]], na.rm = T) - df[[paste0("revenues_pb_", y)]]) # /ssp[[paste0("adult_", y)]][ssp$region == "world"]
+    df[[paste0("gain_pa_", y)]] <- df[[paste0("gain_pb_", y)]] * df[[paste0(beneficiary, y)]]/df[[paste0("adult_", y)]]
+    df[[paste0("gain_over_gdp_", y)]] <- df[[paste0("gain_pb_", y)]]/df[[paste0("gdp_pb_", y)]]    
     # Adjusted for opt out
     df[[paste0("optout_right_", y)]] <- (full_part_threshold - pmax(opt_out_threshold, pmin(full_part_threshold, df[[paste0("gdp_pc_", y)]] / wtd.mean(df[[paste0("gdp_pc_", y)]], df[[paste0("pop_", y)]]))))/(full_part_threshold - opt_out_threshold)
     # Accounts for non-universal participation
-    average_revenues[[ssp_name]][yr] <- wtd.mean(df[[paste0("revenues_pa_", y)]], df[[paste0("adult_", y)]])
-    df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pa_", y)]] > average_revenues[[ssp_name]][yr])
+    average_revenues[[ssp_name]][yr] <- wtd.mean(df[[paste0("revenues_pb_", y)]], df[[paste0(beneficiary, y)]])
+    df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pb_", y)]] > average_revenues[[ssp_name]][yr])
   }
   
-  df_parties <- compute_gain_given_parties(parties, df = df, return = "df", ssp_name = ssp_name, discount = discount)
+  df_parties <- compute_gain_given_parties(parties, df = df, return = "df", beneficiary = beneficiary, ssp_name = ssp_name, discount = discount)
   for (y in years[years >= 2020]) {
     yr <- as.character(y)
-    basic_income[[ssp_name]][yr] <- wtd.mean(df_parties[[paste0("revenues_pa_", y)]], df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0("adult_", y)]])
-    basic_income_adj[[ssp_name]][yr] <- basic_income[[ssp_name]][yr] * (1 + wtd.mean(df_parties[[paste0("participation_rate_", y)]] - df_parties[[paste0("share_basic_income_", y)]], df_parties[[paste0("adult_", y)]]))
+    basic_income[[ssp_name]][yr] <- wtd.mean(df_parties[[paste0("revenues_pb_", y)]], df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0(beneficiary, y)]])
+    basic_income_pa[[ssp_name]][yr] <- wtd.mean(df_parties[[paste0("revenues_pa_", y)]], df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0("adult_", y)]])
+    if (paste0("lower_basic_income_", y) %in% names(df_parties)) basic_income_adj[[ssp_name]][yr] <- basic_income[[ssp_name]][yr] * (1 + sum((1 - df_parties[[paste0("share_basic_income_", y)]]) * df_parties[[paste0(beneficiary, y)]] * df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0("lower_basic_income_", y)]]) / sum(df_parties[[paste0(beneficiary, y)]] * df_parties[[paste0("participation_rate_", y)]] * (1 - df_parties[[paste0("lower_basic_income_", y)]]))) 
+    if (paste0("lower_basic_income_", y) %in% names(df_parties)) basic_income_adj_pa[[ssp_name]][yr] <- basic_income_adj[[ssp_name]][yr] * sum(df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0(beneficiary, y)]]) / sum(df_parties[[paste0("participation_rate_", y)]] * df_parties[[paste0("adult_", y)]])
   }
+  if ("Dem USA" %in% parties) for (y in years) for (v in paste0(c("pop_", "adult_", "recipient_"), y)) df[[v]][df$code == "USA"] <- df[[v]][df$code == "USA"]/.3429
   
   total_revenues[[ssp_name]] <<- total_revenues[[ssp_name]]
   average_revenues[[ssp_name]] <<- average_revenues[[ssp_name]]
   carbon_price[[ssp_name]] <<- carbon_price[[ssp_name]] # carbon_price is just completed between decadal years by interpolation
   
   if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG", "MDV", "MUS")], parties)) == 0) { # , "TWN
-    basic_income[[name_df]] <<- basic_income[[ssp_name]] <<- basic_income[[ssp_name]] 
-    basic_income_adj[[name_df]] <<- basic_income_adj[[ssp_name]] <<- basic_income_adj[[ssp_name]]
+    basic_income[[name_df]] <<- basic_income[[ssp_name]] 
+    basic_income_adj[[name_df]] <<- basic_income_adj[[ssp_name]] 
+    basic_income_pa[[name_df]] <<- basic_income_pa[[ssp_name]] 
+    basic_income_adj_pa[[name_df]] <<- basic_income_adj_pa[[ssp_name]] 
     df <- df_parties
   } else {
     for (v in names(df)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj|^diff_gain_gdr_gcs_adj"), names(df))]) df[[paste0("S", scenario, "_", v)]] <- df_parties[[v]]
@@ -233,6 +252,8 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   }
   basic_income[[scenario]] <<- basic_income[[ssp_name]]
   basic_income_adj[[scenario]] <<- basic_income_adj[[ssp_name]]
+  basic_income_pa[[scenario]] <<- basic_income_pa[[ssp_name]]
+  basic_income_adj_pa[[scenario]] <<- basic_income_adj_pa[[ssp_name]]
   return(df)
 }
 
@@ -240,11 +261,11 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
 ##### Instantiation #####
 copy_from_cp <- c("country", "country_map", # These two are absolutely needed 
                        "gdr_pa_2030", "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
-total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- list()
+total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- basic_income_pa <- basic_income_adj_pa <- list()
 df <- prepare_ssp_country("SSP226MESGB") # sm, SSP2-2.6, temp max: 1.8°C, temp 2100: 1.8°C
-df <- create_var_ssp(df = df) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB
+df <- create_var_ssp(df = df, beneficiary = "recipient_") # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB  # , beneficiary = "recipient_"
 
-
+df$gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]*euro_per_dollar/12
 
 ##### Scenarios #####
 # 1. All: Whole World
@@ -264,6 +285,8 @@ scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2ex
 
 for (s in scenarios_names) df <- create_var_ssp(df = df, scenario = s)
 
+df$Scentral_gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
+
 emissions_tot <- emissions_pc <- c()
 for (y in as.character(2025:2100)) {
   emissions_tot[y] <- sum(df[[paste0("emissions_", y)]], na.rm = T)
@@ -273,7 +296,7 @@ for (s in scenarios_names) {
   emissions_pa[[s]] <- EU_gain_adj[[s]] <- EU_gain_adj_over_gdp[[s]] <- c()
   for (y in as.character(2025:2100)) { # seq(2020, 2100, 10)
     EU_gain_adj[[s]][y] <- wtd.mean(df[[paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "gain_adj_", y)]], weights = df[[paste0("adult_", y)]] * (df$code %in% EU27_countries))
-    EU_gain_adj_over_gdp[[s]][y] <- EU_gain_adj[[s]][y]/wtd.mean(df[[paste0("gdp_pc_", y)]], weights = df[[paste0("pop_", y)]] * (df$code %in% EU27_countries)) }
+    EU_gain_adj_over_gdp[[s]][y] <- EU_gain_adj[[s]][y]/wtd.mean(df[[paste0("gdp_pa_", y)]], weights = df[[paste0("adult_", y)]] * (df$code %in% EU27_countries)) }
   EU_npv_gain_adj_over_gdp[[s]] <- sum(sapply(2025:2100, function(y) { return(EU_gain_adj[[s]][as.character(y)]/(1+discount_rate)^(y-2025)) }))/sum(sapply(2025:2100, function(y) { return(wtd.mean(df[[paste0("gdp_pa_", y)]], weights = df[[paste0("adult_", y)]] * (df$code %in% EU27_countries))/(1+discount_rate)^(y-2025)) })) 
 }
 
@@ -314,11 +337,11 @@ legend("topleft", legend = c("CO2 emissions", "Basic income", "Carbon price (rig
 for (y in years[4]) plot_world_map(paste0("gain_adj_", y), df = df, breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 100, 200, 300, 500, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                                    labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 100, 200, 300, 500, Inf), sep = " to ", return = "levels")), 
                                    legend = paste0("Gains per adult\nfrom the GCP\nin ", y, " (in $ per year)"), #fill_na = T,
-                                   save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+                                   save = T) # c(min(df$mean_gain_2030), max(df$mean_gain_2030)) 
 plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), # .003, .01, .03
                legend = "Net present value\nof gains per adult\n(in % of GDP)\nfrom the Global Climate Plan", #fill_na = T, \n(with 4% discount rate)
-               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+               save = T) # c(min(df$mean_gain_2030), max(df$mean_gain_2030)) 
 for (s in scenarios_names[2:6]) {
   plot_world_map(paste0("S", s, "_npv_over_gdp_gcs_adj"), df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
                  labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), 
@@ -339,11 +362,11 @@ legend("topleft", legend = c("Émissions de CO2", "Revenu de base", "Prix du car
 for (y in years[4]) plot_world_map(paste0("gain_adj_", y), df = df, breaks = c(-Inf, -1000, -500, -200, -100, -1e-10, 0, 100, 200, 300, 500, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                                    labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -500, -200, -100, 0, 0, 100, 200, 300, 500, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_", y, "_fr"),
                                    legend = paste0("Gain net\npar adulte au\nPlan mondial pour le climat\nen ", y, " (en $ par an)"), #fill_na = T,
-                                   save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+                                   save = T) # c(min(df$mean_gain_2030), max(df$mean_gain_2030)) 
 plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
                legend = "Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)", #fill_na = T, \n(with 4% discount rate)
-               save = T) # c(min(co2_pop$mean_gain_2030), max(co2_pop$mean_gain_2030)) 
+               save = T) # c(min(df$mean_gain_2030), max(df$mean_gain_2030)) 
 for (i in 2:6) {
   plot_world_map(paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"), df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .075, trim = T, # svg, pdf
                  labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.003, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_fr"),

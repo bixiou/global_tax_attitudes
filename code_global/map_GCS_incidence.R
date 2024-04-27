@@ -999,7 +999,14 @@ co2_pop$gdr_pa_2030 <- (co2_pop$emissions_baseline_2030 - co2_pop$rci_2030 * wor
 # }
 # Disaggregated data not available for ssp2_19 or ssp2_26 (only 5 regions instead of 11) and ssp1 is at odd with the assumption that GDPpc or emissions evolve in the same way in all countries (cf. comment in compute_gain_given_parties). 
 # co2_pop <- create_var_ssp(ssp2_26)
+
+
+
 co2_pop <- create_var_ssp(gea_gea, opt_out_threshold = 1.5) # /!\ necessary
+
+
+
+
 View(co2_pop[,grepl("2040", names(co2_pop))])
 View(co2_pop[,grepl("over_mean|country|pop_2020", names(co2_pop))])
 View(gea_gea[,grepl("over_mean|region|pop_2020", names(gea_gea))])
@@ -1509,7 +1516,7 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
     ssp[[paste0("gdp_", y)]][ssp$code == "PRK"] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("gdp_", y - y %% 10)]][df$code == "PRK"], df[[paste0("gdp_", 10*ceiling(y/10))]][df$code == "PRK"])
     # Add South Sudan and Taiwan data
     for (c in c("TWN", "SSD")) ssp[[paste0("pop_", y)]][ssp$code == c] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("pop_", y - y %% 10)]][df$code == c], df[[paste0("pop_", 10*ceiling(y/10))]][df$code == c])
-  }
+  } # Scales up df$adult by ssp$pop/df$pop
   for (y in c(2023, seq(2020, 2100, 10))) ssp[[paste0("adult_", y)]][match.nona(df$code, ssp$code)] <- ssp[[paste0("pop_", y)]][match.nona(df$code, ssp$code)] * (df[[paste0("adult_", y)]]/df[[paste0("pop_", y)]])[df$code %in% ssp$code]
   for (y in 2020:2100) { # Interpolate adult_ from pop_ and df$adult/df$pop
     y_prev <- 10*floor(y/10)
@@ -1754,6 +1761,8 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
 }
 # sm <- create_var_ssp(df = sm) 
 
+## DEPRECATED: use GCP_gain_by_country ##
+# /!\ There are small inconsistencies with pop_ from GCP_gain_by_country because here we call gea_gea to define pop_
 co2_pop.bak2 <- co2_pop
 copy_from_co2_pop <- c("country", "country_map", "gdr_pa_2030", # These three are absolutely needed 
                        "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
@@ -1761,6 +1770,7 @@ sh <- prepare_ssp_country("SSP119IMAGE") # SSP1-1.9, sh, temp max: 1.6°C, temp 
 sf <- prepare_ssp_country("SSP226AIMCGE") # best fit for high prices (incidentally, China wins in this scenario)
 sl <- prepare_ssp_country("SSP119GCAM4")  # SSP1-1.9, sl: scenario low price
 sm <- prepare_ssp_country("SSP226MESGB") # SSP2-2.6, sm, temp max: 1.8°C, temp 2100: 1.8°C
+# sm <- prepare_ssp_country("SSP226MESGB", df = df) 
 sm <- create_var_ssp(df = sm) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB
 sh <- create_var_ssp(df = sh) # high prices - high ambition: ssp1_19 (price), SSP119IMAGE (emissions)
 sf <- create_var_ssp(df = sf) # medium price - medium ambition. ssp2_26, SSP226AIMCGE best match for emissions with medium price trajectory ssp2_26
@@ -1768,10 +1778,13 @@ sl <- create_var_ssp(df = sl) # low price - medium ambition: ssp2_26msg, SSP119G
 # sm: >China neutral<, increasing basic income ~50$ (until 2060) / sf: China winner, plateau of emissions ~40$ (until 2060), lower gains/losses, better fit with price and no problem
 # 
 # sum(sm$gain_adj_2030 * sm$adult_2030, na.rm = T)
+# sum(df$gain_adj_2030 * df$adult_2030, na.rm = T)
 # sum(df$Scentral_gain_adj_2030 * df$adult_2030, na.rm = T)
-# sm$gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
-df$Scentral_gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
-df$Scautious_gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
+sm$gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]/12
+df$gain_adj_2030[df$code %in% c("CHN", "FRA", "IND", "USA")]/12
+sm$gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]*euro_per_dollar/12
+df$Scentral_gain_adj_2030[df$code %in% c("CHN", "FRA", "IND", "USA")]/12
+df$Sprudent_gain_adj_2030[df$code %in% c("CHN", "FRA", "IND", "USA")]/12
 # df$emissions_pa_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]
 # wtd.mean(df$emissions_pa_2030, df$adult_2030 * df$participation_rate_2030 * df$code %in% central)
 # # df$Scentral_npv_pa_gcs_adj[sm$code %in% c("CHN", "FRA", "IND", "USA")]
