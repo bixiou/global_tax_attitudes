@@ -515,7 +515,7 @@ key_gdp("rev_pc")
 # Three most credible are l=4, not PPP, max_reg mean; l=7, PPP, max_reg mean; l=4, PPP, max_reg Inf; l=4, not PPP, max_reg Inf
 # LIC <- pg$code[pg$gdp_pc_2019 < 1085] # closer to the 2021 classification available on World Bank data for which LIC: 700M people
 HIC <- pg$code[pg$gdp_pc_2019 > 13205] # approximately right (63 countries instead of 81 but differences are due to small islands)
-LIC <- c("AFG", "BFA", "BDI", "TCD", "COG", "ERI", "ETH", "GMB", "GIN", "GNB", "PRK", "LBR", "MDG", "MWI", "MLI", "MOZ", "NER", "RWA", "SOM", "SRE", "SDN", "SSD", "SYR", "TGO", "UGA", "YEM", "ZMB") # 2023 official classification. LIC: 650M people
+LIC <- c("AFG", "BFA", "BDI", "TCD", "COG", "ERI", "ETH", "GMB", "GIN", "GNB", "PRK", "LBR", "MDG", "MWI", "MLI", "MOZ", "NER", "RWA", "SOM", "SRE", "SDN", "SSD", "SYR", "TGO", "UGA", "YEM") # 2023 official classification. LIC: 650M people   # New: ZMB no longer LIC!
 SSA <- c("SDN", "AGO", "GIN", "GMB", "GNB", "GNQ", "BDI", "BEN", "BFA", "SEN", "BWA", "CAF", "SLE", "SOM", "SSD", "CIV", "CMR", "COD", "COG", "COM", "LBR", "LSO", "SWZ", "TCD", "TGO", "MLI", "MDG", "DJI", "ERI", "ESH", "ETH", "MWI", "MUS", "MRT", "MOZ", "TZA", "UGA", "ZMB", "ZWE", "NGA", "NER", "NAM", "GHA", "GAB")
 SSA_max_reg_inf <- SSA_max_reg_mean <- LIC_max_reg_inf <- LIC_max_reg_mean <- India_max_reg_inf <- India_max_reg_mean <- array(dimnames = list("line" = c(2, 4, 7), "PPP" = c(T, F)), dim = c(3, 2))
 for (l in c(2, 4, 7)) for (p in c(TRUE, FALSE)) {
@@ -1487,6 +1487,7 @@ ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "
 
 prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) { # GDP is in PPP
   # TODO! Pb: scenarios of GDP pc are unrealistic: 14% annual growth in DRC over 2019-30 (25% over 2019-23 and 8% over 2023-30), 7% over 2030-40, 6% 2040-50. => Underestimation of gains over GDP in low-income countries.
+  # TODO! It's because 2019 is in nominal and >=2020 in PPP, no?
   # Uses country, country_map and adult_ from co2_pop
   # TODO!!: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030 
   # TODO: streamline fetching of carbon_price
@@ -1949,10 +1950,28 @@ emissions_reduction_factor <- 0.9
 price <- 100
 # emissions_reduction_factor <- 0.7
 # price <- 200
+# Without rebound effect
 wid$post_emissions <- wid$emissions * emissions_reduction_factor
 (revenues_pa <- sum(price * wid$post_emissions)/1200) # 44; (0.7, 200) => 68
 wid$post_income <- wid$income + revenues_pa*12 - price * wid$post_emissions # basic income, carbon price
 
+# With rebound effect
+iter <- 0
+wid$post_emissions <- wid$emissions
+post_emissions <- wid$emissions * emissions_reduction_factor
+(revenues_pa <- sum(price * wid$post_emissions)/1200) 
+wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions
+while (max_gap(wid$post_emissions, post_emissions) > 1e-5 & iter < 100) {
+  iter <- iter + 1
+  wid$post_emissions <- post_emissions
+  post_emissions <- interpolate(wid$post_income, wid$income, wid$emissions)
+  post_emissions <- post_emissions * emissions_reduction_factor * sum(wid$emissions)/sum(post_emissions)
+  (revenues_pa <- sum(price * post_emissions)/1200) 
+  wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions
+}
+wid$post_emissions <- post_emissions
+
+sum(post_emissions > sort(wid$emissions))
 # max_gap(sum(wid$income), sum(wid$post_income)) # check that mean income is preserved
 
 wid$diff_income <- stats::filter(sort(wid$post_income - wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
@@ -1966,15 +1985,15 @@ sum(wid$variation_income > 1)
 
 
 # BOOK Figure
-mar <- par()$mar
-mgp <- par()$mgp
-par(mar = c(3.1, 3.1, 0.3, 0.2), mgp = c(2.2, 1, 0)) # width: 342, height: 312
-plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en €/mois)")
-lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
-legend("topleft", legend = list("actuel", "suite au Plan"), col = c("red", "darkgreen"), title = "Niveau de vie", lwd = 2, lty = c(1,2))
-plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en €/an)") + grid() + abline(h = 0)
-plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
-plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
+# mar <- par()$mar
+# mgp <- par()$mgp
+# par(mar = c(3.1, 3.1, 0.3, 0.2), mgp = c(2.2, 1, 0)) # width: 342, height: 312
+# plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en €/mois)")
+# lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
+# legend("topleft", legend = list("actuel", "suite au Plan"), col = c("red", "darkgreen"), title = "Niveau de vie", lwd = 2, lty = c(1,2))
+# plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en €/an)") + grid() + abline(h = 0)
+# plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
+# plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
 
 sum(wid$post_income > wid$income) # 71% of winners
 sum((wid$post_income - wid$income)[wid$post_income > wid$income])/sum(wid$income) # 1.3% redistributed
@@ -2020,12 +2039,12 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
 # plot(1:100, 100*sort((wid$post_income - wid$income)/wid$income, decreasing = T), col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.02, 0.05), xlab = "Percentile de revenus", ylab = "Variation de niveau de vie suite au Plan (en %)") + grid() + abline(h = 0)
 
 
-##### 1% of richest billion doubles poorest billion #####
+##### 1% of richest billion triples poorest billion #####
 
-# Check: 1% from top 1G => x? on bottom 1G.
+# Check: 1% from top 1G => triple bottom 1G.
 mean(wid$income[1:12]) # 306€/year: average income of bottom billion
 mean(wid$income[89:100]) # 78k€/year: average income of top billion
-mean(wid$income[1:12])/mean(wid$income[89:100]) # 0.4%
+mean(wid$income[1:12])/mean(wid$income[89:100]) # 0.4%: 1% from top 1G => triple bottom 1G
 mean(wid$income[1:20])/mean(wid$income[91:100]) # 1% of the top 10% would double the bottom 20%
 sum(wid$income[1:12])/sum(wid$income[100]) # 1% of the top 1% would double the income of the bottom billion
 

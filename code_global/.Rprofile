@@ -276,9 +276,21 @@ positive <- function(vec) {
   else return(100 * sum(!is.na(vec) & vec > 0) / sum(!is.na(vec)))
 }
 
-barycenter <- function(x, x_prev, x_next, y_prev, y_next) {
+barycenter <- function(x, x_prev, x_next, y_prev, y_next) { 
   lambda <- if (x_next == x_prev) 0 else (x - x_prev)/(x_next - x_prev)
   return(((1 - lambda) * y_prev + lambda * y_next))
+}
+interpolate <- function(x, x_vec, y_vec) { # x_vec and y_vec are assumed to be non-decreasing vectors
+  y <- x
+  x_vec <- sort(x_vec)
+  y_vec <- sort(y_vec)
+  for (i in 1:length(x)) {
+     j <- 1
+     while (x[i] > x_vec[j+1] & j < length(x_vec)-1) j <- j+1 
+     if (x[i] < x_vec[j] | x[i] > x_vec[j+1]) warning(paste("x_vec does not contain appropriate values for index", i))
+     y[i] <- barycenter(x[i], x_vec[j], x_vec[j+1], (y_vec)[j], y_vec[j+1])
+  }
+  return(y)
 }
 agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T, return = "vec" # min = 0, max = Inf,
 ) { 
@@ -2020,8 +2032,8 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
 
   if ("Dem USA" %in% parties) {
     us_states <- map_data(map = "state")
-    blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont", "Maryland", "Hawaii")) #  and Alaska missing from the map
-    non_blue_states <- setdiff(us_states$region, blue_states)
+    blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont", "Maryland", "Hawaii")) 
+    non_blue_states <- setdiff(us_states$region, blue_states) #  and Alaska missing from the map
     us_states$region[us_states$region %in% blue_states] <- "USA" #"Dem USA"
     us_states$region[us_states$region %in% non_blue_states] <- "Non-Dem USA"
     world_map$region[world_map$subregion == "Alaska"] <- "Non-Dem USA"

@@ -263,9 +263,9 @@ copy_from_cp <- c("country", "country_map", # These two are absolutely needed
                        "gdr_pa_2030", "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
 total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- basic_income_pa <- basic_income_adj_pa <- list()
 df <- prepare_ssp_country("SSP226MESGB") # sm, SSP2-2.6, temp max: 1.8°C, temp 2100: 1.8°C
-df <- create_var_ssp(df = df, beneficiary = "recipient_") # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB  # , beneficiary = "recipient_"
+df <- create_var_ssp(df = df) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB  # , beneficiary = "recipient_"
 
-df$gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]*euro_per_dollar/12
+# df$gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]*euro_per_dollar/12
 
 ##### Scenarios #####
 # 1. All: Whole World
@@ -300,24 +300,74 @@ for (s in scenarios_names) {
   EU_npv_gain_adj_over_gdp[[s]] <- sum(sapply(2025:2100, function(y) { return(EU_gain_adj[[s]][as.character(y)]/(1+discount_rate)^(y-2025)) }))/sum(sapply(2025:2100, function(y) { return(wtd.mean(df[[paste0("gdp_pa_", y)]], weights = df[[paste0("adult_", y)]] * (df$code %in% EU27_countries))/(1+discount_rate)^(y-2025)) })) 
 }
 
-scenarios_features <- data.frame(scenario = capitalize(gsub("_", " ", scenarios_names)), row.names = scenarios_names)
-for (s in scenarios_names) { 
-  scenarios_features[s, "emissions_covered"] <- sum(df$share_territorial_2019[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
-  scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023, na.rm = T)
-  scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]/12
-  scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
-}
-(scenarios_table <- scenarios_features)
 
-for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_", col)) 1 else 0, "f"), if (grepl("basic_income", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income", col)) "" else "\\%")
-# write.table(scenarios_table, file = "scenarios_table.tex", sep = "\t", row.names = capitalize(gsub("_", " ", scenarios_names)), 
-#             col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 ($/month)}", "\\makecell{EU loss in 2040\\\\(in share of GDP)}"))
-cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the different scenarios.", position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table.tex", row.names = FALSE,  
-              col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", "\\makecell{EU loss in 2040\\\\(share of its GDP)}")), collapse="\n"), file = "../tables/scenarios_table.tex") 
-scenarios_table_fr <- scenarios_table
-scenarios_table_fr$scenario <- c("Tous les pays", "Tous sauf OPEP+", "Optimiste", "Central", "Prudent", "UE + Afrique")
-cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios de club climatique.", position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
-                                                                                                        col.names = c("\\makecell{Scenario\\\\de club}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", "\\makecell{Revenu de base\\\\en 2040\\\\(\\$/mois)}", "\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}")), collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
+# scenarios_features <- data.frame(scenario = capitalize(gsub("_", " ", scenarios_names)), row.names = scenarios_names)
+# for (s in scenarios_names) { 
+#   scenarios_features[s, "emissions_covered"] <- sum(df$share_territorial_2019[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
+#   scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023, na.rm = T)
+#   scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]/12
+#   scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
+# }
+# (scenarios_table <- scenarios_features)
+# 
+# for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_", col)) 1 else 0, "f"), if (grepl("basic_income", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income", col)) "" else "\\%")
+# # write.table(scenarios_table, file = "scenarios_table.tex", sep = "\t", row.names = capitalize(gsub("_", " ", scenarios_names)), 
+# #             col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 ($/month)}", "\\makecell{EU loss in 2040\\\\(in share of GDP)}"))
+# cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the different scenarios.", position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table.tex", row.names = FALSE,  
+#               col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", "\\makecell{EU loss in 2040\\\\(share of its GDP)}")), collapse="\n"), file = "../tables/scenarios_table.tex") 
+# scenarios_table_fr <- scenarios_table
+# scenarios_table_fr$scenario <- c("Tous les pays", "Tous sauf OPEP+", "Optimiste", "Central", "Prudent", "UE + Afrique")
+# cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios de club climatique.", position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
+#           col.names = c("\\makecell{Scenario\\\\de club}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", "\\makecell{Revenu de base\\\\en 2040\\\\(\\$/mois)}", "\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}")), collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
+
+
+##### WID data #####
+wid <- read.dta13("../data/WID_world-pct-em-income.dta") # /!\ PPP €19 estimates, cf. /data/deprecated/Chancel_read_me. File given by Lucas Chancel email Nov 21, 2023
+wid <- rbind(t(sapply(1:5, function(i) c(pctile = i, wid[1, 2:4]/5))), wid[2:96,]) # In 2019 1$ = 0.89€, i.e. 2.15$ = 1.91€
+for (i in 1:4) wid[[i]] <- unlist(wid[[i]])
+
+# emissions_tot["2030"]/emissions_tot["2025"] # 0.91
+# carbon_price$ssp2_26["2030"]*euro_per_dollar # 134
+# emissions_reduction_factor <- 0.9*emissions_tot["2025"]/(mean(wid$emissions)*8e9) # We assume 10% of emissions reductions and rescales total emissions as WID also includes non-CO2 gases.
+emissions_reduction_factor <- 0.9
+price <- 100 
+iter <- 0
+wid$post_emissions <- wid$emissions
+post_emissions <- wid$emissions * emissions_reduction_factor
+(revenues_pa <- sum(price * post_emissions)/1200) # 44€
+wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions # basic income, carbon price
+while (max_gap(wid$post_emissions, post_emissions) > 1e-5 & iter < 100) { # Takes into account the rebound effect: simply remove the loop to neglect it.
+  iter <- iter + 1
+  wid$post_emissions <- post_emissions
+  post_emissions <- interpolate(wid$post_income, wid$income, wid$emissions)
+  post_emissions <- post_emissions * emissions_reduction_factor * sum(wid$emissions)/sum(post_emissions)
+  (revenues_pa <- sum(price * post_emissions)/1200) 
+  wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions
+}
+wid$post_emissions <- post_emissions
+# wid$post_income[1]/wid$income[9]
+
+wid$diff_income <- stats::filter(sort(wid$post_income - wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
+wid$diff_income[is.na(wid$diff_income)] <- sort(wid$post_income - wid$income, decreasing = T)[is.na(wid$diff_income)]
+wid$diff_income[98:100] <- (wid$post_income - wid$income)[98:100]
+wid$variation_income <- stats::filter(sort((wid$post_income - wid$income)/wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
+wid$variation_income[is.na(wid$variation_income)] <- sort((wid$post_income - wid$income)/wid$income, decreasing = T)[is.na(wid$variation_income)]
+
+
+##### Percentiles of emissions by country #####
+# 2019 World average carbon footprint (all gases): 5.97237587 tCO2eq (from wid.world/data)
+# All WID data downloaded from https://wid.world/data/ on Nov 22, 2023
+wid_countries <- read.csv2("../data/wid_all_data/WID_countries.csv", na.strings = c())$alpha2
+percentiles <- data.frame("iso2" = wid_countries[!grepl("-", wid_countries)])
+for (c in percentiles$iso2) {
+  dataC <- read.csv2(paste0("../data/wid_all_data/WID_data_", c, ".csv"))
+  for (i in unique(dataC$percentile[dataC$variable == "lpfghgi999" & dataC$year == 2019])) percentiles[[i]][percentiles$iso2 == c] <- as.numeric(dataC$value[dataC$variable == "lpfghgi999" & dataC$year == 2019 & dataC$percentile == i])
+}
+percentiles$code <- iso2to3[percentiles$iso2]
+percentiles$country_map <- country_names[percentiles$code]
+percentiles$share_below_global_mean <- rowSums(percentiles[, sapply(0:99, function(i) paste0("p", i, "p", i+1))] < 5.97237587) # percentiles$p0p100[percentiles$iso2 == "WO"]
+# write.csv(percentiles, "../data/wid_emissions_percentiles.csv")
+
 
 ##### Plots #####
 # Ch 6, 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scautious_npv_over_gdp_gcs_adj
@@ -376,12 +426,12 @@ for (i in 2:6) {
 
 
 ##### Book figures #####
-sum(df$share_territorial_2019[df$code == "CHN"]) # 30%
-sum(df$share_territorial_2019[df$code == "USA"]) # 15%
-sum(df$share_territorial_2019[df$code == "IND"]) # 7%
-sum(df$share_territorial_2019[df$code %in% EU28_countries]) # 9%
-sum(df$share_territorial_2019[df$npv_pa_gcs_adj > 0], na.rm = T) # 19% of global emissions in countries with gain > 0
-sum(df$share_territorial_2019[df$npv_pa_gcs_adj == 0], na.rm = T) # 36% of global emissions in countries with gain == 0
+# sum(df$share_territorial_2019[df$code == "CHN"]) # 30%
+# sum(df$share_territorial_2019[df$code == "USA"]) # 15%
+# sum(df$share_territorial_2019[df$code == "IND"]) # 7%
+# sum(df$share_territorial_2019[df$code %in% EU28_countries]) # 9%
+# sum(df$share_territorial_2019[df$npv_pa_gcs_adj > 0], na.rm = T) # 19% of global emissions in countries with gain > 0
+# sum(df$share_territorial_2019[df$npv_pa_gcs_adj == 0], na.rm = T) # 36% of global emissions in countries with gain == 0
 # TODO! why basic_income_adj spikes in 2074 (and not basic_income)?
 # TODO!? base the opt out on nominal rather than PPP? So that Russia gets it
 # TODO? replace opt out provision by increase in basic income proportional to excess emissions to global mean at t=0?
@@ -389,12 +439,12 @@ sum(df$share_territorial_2019[df$npv_pa_gcs_adj == 0], na.rm = T) # 36% of globa
 # 6.2: Recettes en proportion du PIB mondial
 revenues_over_gdp <- total_revenues$ssp2_26/sapply(2020:2100, function(y) sum(df[[paste0("gdp_", y)]]))
 transfer_over_gdp <- setNames(sapply(2020:2100, function(y) sum((df[[paste0("gain_adj_", y)]] * df[[paste0("adult_", y)]])[df[[paste0("gain_adj_", y)]] > 0])/sum(df[[paste0("gdp_", y)]])), 2020:2100)
-max(revenues_over_gdp) # 2.3%
-revenues_over_gdp["2030"]
-mean(transfer_over_gdp[as.character(2025:2060)]) # .6%
-mean((transfer_over_gdp/revenues_over_gdp)[as.character(2025:2060)]) # 65%
-plot(2020:2100, revenues_over_gdp, type = 'l')
-plot(2020:2100, transfer_over_gdp, type = 'l')
+# max(revenues_over_gdp) # 2.3%
+# revenues_over_gdp["2030"]
+# mean(transfer_over_gdp[as.character(2025:2060)]) # .6%
+# mean((transfer_over_gdp/revenues_over_gdp)[as.character(2025:2060)]) # 65%
+# plot(2020:2100, revenues_over_gdp, type = 'l')
+# plot(2020:2100, transfer_over_gdp, type = 'l')
 
 # 8.1: Effet sur le Burundi
 (df$pop_2030/df$adult_2030)[df$code == "BDI"] # 1.66
