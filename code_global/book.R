@@ -6,17 +6,17 @@
 ##### Preparing the data #####
 source(".Rprofile")
 source("GCP_gain_by_country.R") # TODO expliquer df
-
+source("domestic_poverty.R") # TODO expliquer p17, w
 
 # NB: GCP = Global Climate Plan = Plan mondial pour le climat et contre l'extrême pauvreté.
 
 ##### Ch 1. Un statu quo insupportable #####
 # Note 12
 euro_per_dollar <- 0.935 # Consulted on 28/04/2024 https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=EUR
-US_GDP_nominal <- 76330 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2021&locations=IN-US-CN&start=2022&view=bar
-US_GDP_PPP <- 64623 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2021&locations=IN-US&start=2022&view=bar
-India_GDP_nominal <- 2410 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2021&locations=IN-US&start=2022&view=bar
-India_GDP_PPP <- 7112 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2021&locations=IN-US&start=2022&view=bar
+US_GDP_nominal <- 76330 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=IN-US-CN&start=2022&view=bar
+US_GDP_PPP <- 64623 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2022&locations=IN-US&start=2022&view=bar
+India_GDP_nominal <- 2410 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=IN-US&start=2022&view=bar
+India_GDP_PPP <- 7112 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2022&locations=IN-US&start=2022&view=bar
 2.15*India_GDP_nominal/India_GDP_PPP # => 2.15$ in the U.S. in 2017 can buy the same as 0.73$ in India in 2022.
 2.15*(US_GDP_nominal/US_GDP_PPP)*India_GDP_nominal/India_GDP_PPP # In 2022, 2.15$ in the U.S. can buy the same as 0.86$ in India.
 2.15*euro_per_dollar # 2.15$ = 2.01€
@@ -56,11 +56,13 @@ euro_per_dollar*6.7 # 6.26€/day: income above which all should be expropriated
 # Note 3
 # The global pet food market size was estimated at USD 103.3 billion in 2023. https://www.grandviewresearch.com/industry-analysis/pet-food-industry
 # Global GDP is $100.88 trillion. https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2022&locations=1W&start=2022&view=bar (consulted on 28/04/2024)
+world_GDP_nominal <- 100.88e12
 
 # Note 4
 euro_per_dollar*7.5 # 7.5$ = 7€
-sum(df$pop_2023[df$gdp_pc_2023 < 7.5*365], na.rm = T) # 625M live in a country with GDP p.c. below $7.5/day
+sum(df$pop_2023[df$gdp_pc_2023 < 7.5*365], na.rm = T) # 624.7M live in a country with GDP p.c. below $7.5/day
 sum(pg$pop_2023[pg$GDPpcPPP < 7.5*365], na.rm = T) # 666M live in a country with GDP p.c. below $7.5/day # TODO: choose this one iff we use pg
+sum(p17$pop_2022[p17$gdp_pc_2022 < 7.5*365], na.rm = T) # 600M
 
 # Note 5 TODO! consistency 8.1
 # 46% of world population live with less than $6.85/day. (consulted on 28/04/2024) https://data.worldbank.org/indicator/SI.POV.UMIC?end=2022&locations=1W&start=2022&view=bar
@@ -86,8 +88,9 @@ sum(pg$pop_2023[pg$GDPpcPPP < 7.5*365], na.rm = T) # 666M live in a country with
 
 
 ##### Interlude: Déroulé du futur politique rêvé #####
-# GDP p.c. of Burundi in 2022: $262 => 38€/month per adult (consulted on 28/04/2024) https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=BI&most_recent_value_desc=false
-262*(df$pop_2022/df$adult_2022)[df$country == "Burundi"]*euro_per_dollar/12 # 38€/month per adult
+# GDP p.c. of Burundi in 2022: $259 => 38€/month per adult https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=BI&start=2022&view=bar (consulted on 29/04/2024)
+Burundi_GDP_pc_nominal <- 259
+Burundi_GDP_pc_nominal*(df$pop_2022/df$adult_2022)[df$country == "Burundi"]*euro_per_dollar/12 # 38€/month per adult
 
 
 ##### Ch. 5 Les grands éléments du Plan #####
@@ -178,7 +181,7 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
         col.names = c("\\makecell{Étendue de\\\\la pauvreté\\\\à 7,5~\\textit{\\texteuro{}}/jour\\\\(en \\% du PIB)}", "\\makecell{Top 10~\\%\\\\(part en \\%)}", "\\makecell{Bottom 50~\\%\\\\(part en \\%)}", 
                       "\\makecell{Gini\\\\(en \\%)}", "\\makecell{D9/D1\\\\Ratio\\\\inter-décile}")), 
         collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") 
-# TODO? définir étendue de la pauvreté à 7€ au lieu de 7.5€ pour être cohérent avec le reste? Pb: elle baisse de 25% au lieu de 30%.
+# TODO!? définir étendue de la pauvreté à 7€ au lieu de 7.5€ pour être cohérent avec le reste? Pb: elle baisse de 25% au lieu de 30%.
 # TODO? repasser les mentions de la pauvreté à 7.5$/jour plutôt que 7€ (pour jouer sur la similarité entre devises)?
 
 min(wid$diff_income[1:99])/12 # -175€/month: maximum average loss for the 99th percentile (only the 100th loses more)
@@ -221,7 +224,7 @@ plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l'
 percentiles$share_below_global_mean[no.na(percentiles$code) == "IND"] # 94% of winners in India
 percentiles$share_below_global_mean[no.na(percentiles$code) == "FRA"] # 23% of winners in France
 revenues_pa - price * percentiles$p50p51[no.na(percentiles$code) == "FRA"]/12 # -18€/month in France. 
-# TODO cost overestimated because it includes all gases => reconcile with -10€/month in other chapters => either remove 10€/m, >don't use Chancel estimate here<, or rescale Chancel to exclude other gases
+# TODO! cost overestimated because it includes all gases => reconcile with -10€/month in other chapters => either remove 10€/m, >don't use Chancel estimate here<, or rescale Chancel to exclude other gases
 
 
 # Figure 6.2 
@@ -235,15 +238,93 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 # sources: https://en.wikipedia.org/wiki/2020_United_States_presidential_election#Results_by_state
 
 
+##### Ch. 7 Un pas vers un monde soutenable #####
+## 7.1 
+euro_per_dollar*Burundi_GDP_pc_nominal*(df$pop_2022/df$adult_2022)[df$country == "Burundi"] # 450€/year: PIB per adult Burundi, cf. Interlude for the source
+df$emissions_pa_2022[df$country == "Burundi"] # 0.1 tCO2/year
+Burundi_GDP_nominal <- 259 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=BI-US&start=2022&view=bar
+Burundi_GDP_PPP <- 708 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2022&locations=BI-US&start=2022&view=bar
+Burundi_new_GDP_pc <- 259*1.03^6 + (df$gain_adj_2028*df$adult_2028/df$pop_2028)[df$country == "Burundi"] # 598$
+euro_per_dollar*50*Burundi_GDP_PPP/Burundi_GDP_nominal # => 50$ basic income = 137$PPP = 130€PPP in Burundi.
+
+# Note 3
+compute_poverty_rate(df = w, threshold = 7.5, growth = 'strong') # 37%: world extreme poverty rate in 2030 after 4.5% annual growth
+compute_poverty_gap(df = w, threshold = 7.5, growth = 'strong')/(world_GDP_nominal*1.045^8) # 2.3% of world GDP: world poverty gap in 2030 after 4.5% annual growth
+
+# Note 4
+sum(wid$income[1:37])/sum(wid$income) # 4.3% Share of bottom 37% in world income
+sum(wid$post_income[1:37])/sum(wid$post_income) # 5.2% Share of bottom 37% in world income after the GCP
+
+# Note 5
+# GDP p.c. PPP of Ukraine https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=UA (consulted on 29/04/2024)
+Ukraine_GDP_2022 <- 10731
+Ukraine_GDP_2021 <- 12949
+Ukraine_GDP_1990 <- 16428
+Ukraine_GDP_2022/Ukraine_GDP_1990-1 # -35%
+Ukraine_GDP_2021/Ukraine_GDP_1990-1 # -21%
+
+# Note 6, Own computations based on "Compensation for atmospheric appropriation", Fanning & Hickel (2023)
+# Cf.  github.com/bixiou/compensation-atmospheric-appropriation. TODO
+
+# Note 8
+# With depreciation of 15% and no tax evasion, a 2% tax above $5 million would collect 1% of the world income. Source: https://wid.world/world-wealth-tax-simulator/
+
+df$gain_adj_2030[df$country == "France"]*euro_per_dollar # 112€ per French adult to be raised
+df$gain_adj_2030[df$country == "France"]*euro_per_dollar/12 # Average loss per French adult: 9.35€/month
+# 3.5% tax on income > 16342€/month (top 1%): raises 120€ per French adult (without behavioral effect). Source: wid.world/data (consulted on 29/04/2024), cf. own computations on ../data/poverty/WID_income.xlsx
+
+(df$gain_adj_2030*df$adult_2022)[df$country == "United States"] # 474G$ to be raised to offset 
+df$gain_adj_2030[df$country == "United States"]/12 # -141$/month: loss to average (compensated) American from GCP
+# Increasing income tax rates 32->33% >315k, 35->40% >400k, 37->50% >600k, 37->60% >5M, integrate with corporate tax and tax capital gains fully
+# => collects 472.6 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
+# The site also shows that taxes would barely increase for the bottom 97%, those with less than $312k/year (tax rate of percentile 96: 31.6->31.9%)
+315000/12 # 26250$/month: threshold of top 3% according to taxjusticenow.org (FYI top 1% threshold: 567k/year = 47k/month)
+
+# (df$gain_adj_2030*df$adult_2022)[df$country == "United States"]*0.97 # 460G$ to be raised to offset 
+# df$gain_adj_2030[df$country == "United States"]*0.97/12 # -137$/month: loss to average (compensated) American from GCP
+# # Increasing income tax rates 32->33% >315k, 35->40% >400k, 37->50% >1M, 37->60% >5M, 37->70% >50M, integrate with corporate tax and tax capital gains fully
+# # => collects 459.4 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
+# # The site also shows that taxes would barely increase for the bottom 97%, those with less than $312k/year (tax rate of percentile 96: 31.6->31.9%)
+# 315000/12 # 26250$/month: threshold of top 3% according to taxjusticenow.org (FYI top 1% threshold: 567k/year = 47k/month)
+
+# (df$gain_adj_2030*df$adult_2022)[df$country == "United States"] # 474G$ to be raised to offset 
+# df$gain_adj_2030[df$country == "United States"]/12 # -141$/month: loss to average (compensated) American from GCP
+# # Increasing income tax rates 35->40% >400k, 35->45% >600k, 37->50% >1M, 37->60% >5M, 37->70% >50M, integrate with corporate tax and tax capital gains fully
+# # => collects 473 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
+# # /!\ The site also shows that taxes would not only increase for the top 1%, e.g. for percentile 98: 30.1->30.9% 
+
+# Note 13
+# 16.3%: world top 1% share of post-tax income in 2022. Source: wid.world/data (consulted on 29/04/2024)
+
+# Table 7.1 
+# Revenue of each row:
+sum((wid$post_income - wid$income)[wid$post_income > wid$income])/sum(wid$post_income) # 1.3% of world GDP transferred from the richest to the poorest by the GCP.
+# 2% tax on wealth > 5M€: 1% of world GDP. Cf. above, Ch. 7, Note 8 https://wid.world/world-wealth-tax-simulator/
+# 6% tax on wealth > 100 M€, 10% > 1 G€: 1.02% of world GDP (based on depreciation of 25% and tax evasion of 20%). Source: https://wid.world/world-wealth-tax-simulator/
+# 12.3% tax on income > 21191€/month (top 0.4%): 1% of 2022 world PPP income (without behavioral effect). Source: wid.world/data (consulted on 29/04/2024), cf. own computations on ../data/poverty/WID_income.xlsx
+# 8.4% tax on income > 11960€/month (top 1%): 1% of 2022 world income. See above. => An additional tax of 15% on income > 10k€ would collect 2% of world income. 
+# 5% tax on income > 6080€/month (top 4%): 1% of 2022 world income. See above.
+# => An additional tax schedule of 5% > 6k€, 12.5% > 10k€, and 25% > 20k€ would collect 3% of world income.
+
+# Cost of each row:
+# GCP: revenue = cost, extreme poverty ended as shown in Ch. 6.1
+# Climate debt: Ch. 7, Note 6.
+# Fossil fuel tax losses: at most / eventually Fuel excise + carbon pricing revenues: 0.8% GDP (world), 1% (OECD), 1.4% (France), 1.7% (Germany) 0.4% (U.S., China), 2.9% (Poland), 
+#                         up to 3.5% in Greece in 2021. Source (sum of three first columns): https://stats.oecd.org/Index.aspx?DataSetCode=REVPOT (consulted on 29/04/2024)
+# Compensation of High-Income Countries' middle class and after decarbonization, maintaining ~1% of world GDP North-South transfer:
+sum((df$gain_adj_2025*df$adult_2025)[df$code %in% HIC])/sum(df$gdp_2025[df$code %in% HIC]) # 1.1%: average loss across high-income countries from the GCP
+# Green investments and negative emissions. Green investments TODO 
+# 0.3-3% of world GDP needed in second half of century for negative emissions, according to Edenhofer et al. (2023), "On the Governance of Carbon Dioxide Removal – A Public Economics Perspective"
+# Improved public services: it is not necessarily 1% of world GDP, but the tax potential is equally discretionary
+
 ##### Ch 8. L’appel pour la redistribution mondiale #####
 # Note 5
-# https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2021&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2021&view=bar
+# https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2022&view=bar
 HIC_GDP_pc_nominal/LIC_GDP_pc_nominal # 66
 # 1% from HIC would double LIC: cf. above, Ch 1, Note 16.
 
-# Note 6
-# With depreciation of 15% and no tax evasion, a 2% tax above $5 million would collect 1% of the world income. Source: https://wid.world/world-wealth-tax-simulator/
-4.56e6/sum(df$adult_2023) # 0.07% of people would be taxed
+# Note 6: cf. above, Ch. 7, Note 8 Source: https://wid.world/world-wealth-tax-simulator/
+4.56e6/sum(df$adult_2023) # 0.07% of people would be taxed, according to https://wid.world/world-wealth-tax-simulator/
 
 # Global GDP is $100.88 trillion. https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2022&locations=1W&start=2022&view=bar (consulted on 28/04/2024)
 
@@ -268,7 +349,7 @@ HIC_GDP_pc_nominal/LIC_GDP_pc_nominal # 66
 
 ##### Annexe A #####
 ## Mécanismes de participation
-# Les dérogations (ou opt out) à la mutualisation des recettes réduiraient le revenu de base de 56 à 47 dollars par mois en 2030 (dans les pays qui n’en bénéficient pas). TODO
+# Les dérogations (ou opt out) à la mutualisation des recettes réduiraient le revenu de base de 56 à 47 dollars par mois en 2030 (dans les pays qui n’en bénéficient pas). TODO!
 
 # Note 5
 # Cf. https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?end=2022&locations=1W-RU-CN&start=2022&view=bar Consulted on 28/04/2024
@@ -281,14 +362,16 @@ emissions_reduction_factor # -10%
 revenues_pa # 44€/month
 
 ## B.4
-sum(emissions_tot[emissions_tot > 0]) # 933 Gt
+sum(emissions_tot[emissions_tot > 0]) # 933 Gt starting in 2025. Adding 35 Gt from 2024, this corresponds to 968 Gt, i.e. ~69% chance of meeting the 2°C target.
+barycenter(1150-(1000-933-35), 900, 1150, 83, 67) # 69% chance. Indeed, 1150 Gt from 2020 => 67% chance; 900 Gt => 83%, according to IPCC (2021), SPM.2. 
 names(emissions_tot)[emissions_tot <= 0][1] # 2079: first year with negative emissions
+sum(emissions_tot) # 865 Mt: Total emissions over 2025-2100.
 
 # Note 8
 ((df$gdp_pc_2030/df$gdp_pc_2019)[df$country == "Democratic Republic of Congo"])^(1/11)-1 # 14% growth over 2019-2030
 ((df$gdp_pc_2030/df$gdp_pc_2020)[df$country == "Democratic Republic of Congo"])^(1/10)-1 # 7.7% growth over 2020-2030
 ((df$gdp_pc_2022/df$gdp_pc_2020)[df$country == "Democratic Republic of Congo"])^(1/2)-1 # 7.4% growth over 2020-2022
-(1338/1103)^(1/2)-1 # observed: 10% over 2020-2022 TODO: remove this argument? https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?end=2022&locations=CD&start=1990&view=chart
+(1338/1103)^(1/2)-1 # observed: 10% over 2020-2022 TODO!: remove this argument? https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?end=2022&locations=CD&start=1990&view=chart
 
 ## Own calculations: need references / methodological note
 # Ch 2: Domestic Poverty Eradication - PIP
@@ -310,6 +393,3 @@ names(emissions_tot)[emissions_tot <= 0][1] # 2079: first year with negative emi
 # 7.2: share_below_global_mean
 # 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scentral_npv_over_gdp_gcs_adj
 
-# TODO: budget carbone de sm? + passage de budget carbone IPCC à now
-
-sum(emissions_tot) # 865 Mt

@@ -34,6 +34,7 @@ GDPpc$code <- GDPpc$Country.Code
 GDPpc <- rbind(data.frame("code" = GDPpc$code, "gdp_pc" = GDPpc$X2015, "year" = 2015), data.frame("code" = GDPpc$code, "gdp_pc" = GDPpc$X2019, "year" = 2019))
 GDPpc$gdp_pc[GDPpc$code %in% c("ERI", "PRK", "SSD", "VEN", "YEM")] <- c(715, 654, 467, 3640, 702) # Impute data from other sources for Eritrea (IMF, 2023), North Korea (IMF, 2021), South Sudan (IMF, 2023), Venezuela (IMF, 2023), Yemen (WB, 2018)
 co2 <- merge(co2, GDPpc)
+# /!\ Beware, gdp_pc_2019 is nominal while gdp_pc_2020:2100 is in PPP!!
 
 
 ##### Merge datasets #####
