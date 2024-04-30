@@ -6,13 +6,14 @@
 ##### Preparing the data #####
 source(".Rprofile")
 source("GCP_gain_by_country.R") # TODO expliquer df
+percentiles <- read.csv("../data/wid_emissions_percentiles.csv")
 source("domestic_poverty.R") # TODO expliquer p17, w
+euro_per_dollar <- 0.935 # Consulted on 28/04/2024 https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=EUR
 
 # NB: GCP = Global Climate Plan = Plan mondial pour le climat et contre l'extrême pauvreté.
 
 ##### Ch 1. Un statu quo insupportable #####
 # Note 12
-euro_per_dollar <- 0.935 # Consulted on 28/04/2024 https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=EUR
 US_GDP_nominal <- 76330 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=IN-US-CN&start=2022&view=bar
 US_GDP_PPP <- 64623 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2022&locations=IN-US&start=2022&view=bar
 India_GDP_nominal <- 2410 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=IN-US&start=2022&view=bar
@@ -31,9 +32,14 @@ world_pop <- 7.95*1e9 # World population https://data.worldbank.org/indicator/SP
 # GDP p.c. of China (12720) and World (12688) in 2022 https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=1W-CN&start=2022&view=bar
 euro_per_dollar*12720/12 # 991€/month 
 
-# Figure 1.1
-# https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?contextual=default&end=2021&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2021&view=bar 
-# TODO
+# Figure 1.1 ../figures/policies/GDP_pc_PPP_fr.pdf
+# GDP pc PPP 2022: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?contextual=default&end=2022&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN-FR&start=2022&view=bar (consulted 29/04/2024)
+fig_gdp_fr <- c("États-Unis" = 76330, "Pays à hauts revenus" = 62326, "France" = 57594, "Union Européenne" = 57286, "Chine" = 21483, 
+                "Monde" = 20964, "Inde" = 8400, "Afrique subsaharienne" = 4435, "Pays à bas revenus" = 2256, "Rép. Dém. Congo" = 1338, "Burundi" = 837) # "Luxembourg" = 146457, 
+names_fig_gdp_fr <- names(fig_gdp_fr)
+fig_gdp_fr <- array(rev(fig_gdp_fr)/fig_gdp_fr["Monde"], dim = c(1, length(fig_gdp_fr)))
+barres(data = fig_gdp_fr, labels = names_fig_gdp_fr, legend = c("PIB"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP_fr") # 330*344 px
+
 
 # Note 16
 # 2022 GDP p.c. (consulted on 28/04/2024) https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=EU-ZG-XD-XM-1W-IN-US-CD-BI-LU-CN&start=2022&view=bar
@@ -79,12 +85,17 @@ sum(p17$pop_2022[p17$gdp_pc_2022 < 7.5*365], na.rm = T) # 600M
 # Note 9 Source: https://ourworldindata.org/contributed-most-global-co2
 
 
-##### Ch. 3 Un Plan largement soutenu #####
+##### Ch. 4 Un Plan largement soutenu #####
 # Global GDP is $100.88 trillion. https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?end=2022&locations=1W&start=2022&view=bar (consulted on 28/04/2024)
 
 # Notes 19 & 20
 # Les montants ont été recalculés plus précisément depuis la préparation du sondage, 
 # ce qui explique que le montant du revenu de base a été ajusté à la hausse par exemple, de même que la perte pour les États-uniens (cf. book, Ch. 5, Note 10).
+
+# The Figures of this Chapter are translated from Fabre, Douenne & Mattauch (2023).
+# Figure 4.1 ../figures/OECD/Heatplot_global_tax_attitudes_share_fr.pdf
+# Figure 4.2 ../figures/FR/gcs_support_positive.pdf
+# Figure 4.3 ../figures/FR/conjoint_left_ag_b_binary_positive.pdf
 
 
 ##### Interlude: Déroulé du futur politique rêvé #####
@@ -94,13 +105,33 @@ Burundi_GDP_pc_nominal*(df$pop_2022/df$adult_2022)[df$country == "Burundi"]*euro
 
 
 ##### Ch. 5 Les grands éléments du Plan #####
-# Figure 5.1
-# TODO emissions_par_region_sm
+## 5.1
+# Figure 5.1 ../figures/policies/emissions_par_region_sm.pdf
+plot(2025:2080, df[df$country == "China", paste0("emissions_pa_", 2025:2080)], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "Émissions de CO2 par adulte (tCO2/an)", ylim = c(0, 17.5))
+lines(2025:2080, df[df$code == "USA", paste0("emissions_pa_", 2025:2080)], type = 'l', col = 'blue', lwd = 2, lty = 3)
+lines(2025:2080, colSums(df[df$code %in% EU27_countries, paste0("emissions_", 2025:2080)])/colSums(df[df$code %in% EU27_countries, paste0("adult_", 2025:2080)]), type = 'l', col = 'darkgreen', lwd = 2, lty = 4, xlab = "", ylab = "")
+lines(2025:2080, df[df$code == "IND", paste0("emissions_pa_", 2025:2080)], type = 'l', col = 'orange', lwd = 2, lty = 5, xlab = "", ylab = "")
+lines(2025:2080, colSums(df[df$code %in% SSA, paste0("emissions_", 2025:2080)])/colSums(df[df$code %in% African_countries, paste0("adult_", 2025:2080)]), type = 'l', col = 'purple', lwd = 2, lty = 6, xlab = "", ylab = "")
+lines(2025:2080, colSums(df[, paste0("emissions_", 2025:2080)], na.rm = T)/colSums(df[, paste0("adult_", 2025:2080)], na.rm = T), type = 'l', col = 'black', lwd = 2, lty = 1, xlab = "", ylab = "")
+grid() + abline(h = 1:18, col = "gray", lty = 3)
+legend("topright", legend = c("Monde", "Chine", "États-Unis", "Union Européenne", "Inde", "Afrique subsaharienne"), col = c("black", "red", "blue", "darkgreen", "orange", "purple"), lwd = 2, lty = 1:6)
+
 
 ## 5.2 
-# Figure 5.2 
-# TODO GCP_trajectoires
-# 50$ 2030-60 => € TODO!
+mean(basic_income_adj$df[as.character(seq(2030, 2060, 10))])*euro_per_dollar/12 # 52€/mois en moyenne sur 2030-2060 (56$/m)
+basic_income_adj$df["2030"]*euro_per_dollar/12 # 44€/mois = 47$/month in 2030
+
+# Figure 5.2 ../figures/policies/GCP_trajectoires.pdf
+par(mar = c(2.1, 3.1, 0.3, 4.1), mgp = c(2.2, 1, 0)) 
+plot(yrs, basic_income_adj$df[as.character(yrs)]*euro_per_dollar/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Revenu de base (€ par mois); Émissions de CO2 (Gt par an)", ylim = c(0, 70))
+lines(yrs, emissions_tot[as.character(yrs)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
+par(new = T)
+plot(yrs, carbon_price$ssp2_26[as.character(yrs)]*euro_per_dollar, type = 'b', pch = 17, axes = FALSE, ylim = c(0, 700), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+mtext("Prix du carbone (€/tCO2)", side=4, col="blue", line=2.5)
+axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
+grid()
+legend("topleft", legend = c("Émissions de CO2", "Revenu de base", "Prix du carbone (axe de droite)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+
 
 # 715M of people live with less than 2$/day (cf. above, Ch. 2, Note 4)
 
@@ -130,17 +161,17 @@ scenarios_features <- data.frame(scenario = capitalize(gsub("_", " ", scenarios_
 for (s in scenarios_names) { 
   scenarios_features[s, "emissions_covered"] <- sum(df$share_territorial_2019[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 0.0318
   scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023, na.rm = T)
-  scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]/12
+  scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]*euro_per_dollar/12
   scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
 }
 (scenarios_table <- scenarios_features)
 
 for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_", col)) 1 else 0, "f"), 
                             if (grepl("basic_income", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income", col)) "" else "\\%")
-cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the different scenarios.", position = "h", escape = F, booktabs = T, align = "c", 
-              linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table.tex", row.names = FALSE,  
-              col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", 
-                            "\\makecell{EU loss in 2040\\\\(share of its GDP)}")), collapse="\n"), file = "../tables/scenarios_table.tex") 
+# cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the different scenarios.", position = "h", escape = F, booktabs = T, align = "c", 
+#               linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table.tex", row.names = FALSE,  
+#               col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", 
+#                             "\\makecell{EU loss in 2040\\\\(share of its GDP)}")), collapse="\n"), file = "../tables/scenarios_table.tex") 
 scenarios_table_fr <- scenarios_table
 scenarios_table_fr$scenario <- c("Tous les pays", "Tous sauf OPEP+", "Optimiste", "Central", "Prudent", "UE + Afrique")
 cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
@@ -148,7 +179,7 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
               position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1),
               label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
         col.names = c("\\makecell{Scenario\\\\de club}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
-                      "\\makecell{Revenu de base\\\\en 2040\\\\(\\$/mois)}", "\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}")), 
+                      "\\makecell{Revenu de base\\\\en 2040\\\\(\\euro{}/mois)}", "\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}")), 
         collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
 
 
@@ -207,18 +238,18 @@ sum(wid$variation_income > 0.1) # 31% experience more than 10% increase in incom
 
 # Figure 6.1
 revenues_pa # 44€/month basic income
-mar <- par()$mar
-mgp <- par()$mgp
+# mar <- par()$mar
+# mgp <- par()$mgp
 par(mar = c(3.1, 3.1, 0.3, 0.2), mgp = c(2.2, 1, 0)) # width: 342, height: 312
-# 6.1a
+# 6.1a ../figures/policies/gcp_rev_distr.pdf
 plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en €/mois)")
 lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
 legend("topleft", legend = list("actuel", "suite au Plan"), col = c("red", "darkgreen"), title = "Niveau de vie", lwd = 2, lty = c(1,2))
-# 6.1b
+# 6.1b ../figures/policies/gcp_diff_rev.pdf
 plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en €/an)") + grid() + abline(h = 0)
-# 6.1c
+# 6.1c ../figures/policies/gcp_var_rev.pdf
 plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
-# 6.1d
+# 6.1d ../figures/policies/gcp_var_rev_rich_only.pdf
 plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
 
 percentiles$share_below_global_mean[no.na(percentiles$code) == "IND"] # 94% of winners in India
@@ -226,16 +257,37 @@ percentiles$share_below_global_mean[no.na(percentiles$code) == "FRA"] # 23% of w
 revenues_pa - price * percentiles$p50p51[no.na(percentiles$code) == "FRA"]/12 # -18€/month in France. 
 # TODO! cost overestimated because it includes all gases => reconcile with -10€/month in other chapters => either remove 10€/m, >don't use Chancel estimate here<, or rescale Chancel to exclude other gases
 
-
-# Figure 6.2 
-plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% à ", end = "%", return = "levels")), legend = "Part de gagnants", 
-               save = T) 
-
 # Note 2
 # States with Democratic margin (e.g. 57%-41%) >15pp at the 2024 presidential election: 13 states + DC
 # California, Illinois, New York, New Jersey, Washington, Massachusetts, Oregon, Connecticut, Delaware, Hawaii, Rhose Island, DC, Vermont, Maryland
 # sources: https://en.wikipedia.org/wiki/2020_United_States_presidential_election#Results_by_state
+
+# Figure 6.2 ../figures/maps/share_below_global_mean.pdf
+plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% à ", end = "%", return = "levels")), legend = "Part de gagnants", 
+               save = T) 
+
+# Figure 6.3 ../figures/maps/gain_adj_2030_fr.pdf
+df$gain_euro_2030 <- df$gain_adj_2030/12
+plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_2030_fr"),
+               legend = paste0("Gain net\npar adulte au\nPlan mondial pour le climat\nen 2030 (en € par mois)"), #fill_na = T,
+               save = T) 
+
+# Figure 6.4 ../figures/maps/npv_over_gdp_gcs_adj_fr.pdf
+plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
+               legend = "Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)", #fill_na = T, \n(with 4% discount rate)
+               save = T)
+
+# Figure 6.5 ../figures/maps/Soptimistic_npv_over_gdp_gcs_adj.pdf
+# Figure 6.6 ../figures/maps/Scentral_npv_over_gdp_gcs_adj.pdf
+for (i in 3:4) {
+  plot_world_map(paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"), df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .075, trim = T, # svg, pdf
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_fr"),
+                 legend = paste0("Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)\nScénario: ", capitalize(gsub("_", " ", scenarios_table_fr$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
+                 save = T, parties = scenarios_parties[[scenarios_names[i]]])
+}
 
 
 ##### Ch. 7 Un pas vers un monde soutenable #####
