@@ -21,7 +21,7 @@ find_pop_share_var <- function(var, df) {
   else return("pop_share_")
 }
 
-compute_poverty_rate <- function(df = p, threshold = 3.44, growth = "optimistic", return = "rate") {
+compute_poverty_rate <- function(df = p, threshold = 3.44, growth = "average", return = "rate") {
   y <- name_var_growth(growth)
   name_poverty_rate <- paste0(y, "poverty_rate_", if (is.numeric(threshold)) round(threshold) else threshold)
   if (is.character(threshold)) threshold <- df[[threshold]]
@@ -32,7 +32,7 @@ compute_poverty_rate <- function(df = p, threshold = 3.44, growth = "optimistic"
 }
 
 # Average poverty gap. unit: 'mean' (in $/day/person), 'sum' (100 times 'mean'), '%' (in % of GDP), 'threshold' (in % of threshold), '$' (in $)
-compute_poverty_gap <- function(df = p, threshold = 2.15, unit = "$", growth = "optimistic") {
+compute_poverty_gap <- function(df = p, threshold = 2.15, unit = "$", growth = "average") {
   y <- name_var_growth(growth)
   if (is.character(threshold)) threshold <- df[[threshold]] 
   poverty_gaps <- sapply(1:100, function(i) { pmax(0, threshold - df[[paste0(y, "_avg_", i)]]) })
@@ -377,6 +377,8 @@ create_p <- function(ppp_year = 2017, pop_iso = pop_iso3, rescale = FALSE) {
   # y makes the assumption of constant growth while Y assumes 6% growth after 2022
   # p <- df # To run compute_distribution_2030, this line is needed to avoid bug (Indeed, urban/rural have been removed otherwise).
   # p <- compute_inequality(var = "bolch", df = p, return = "df")
+  p <- compute_distribution_2030(growth = "now", df = p, name_var = "y_2022")
+  p <- compute_distribution_2030(growth = "average", df = p, growth_rate = 1.03, name_var = "Y3")
   p <- compute_distribution_2030(growth = "strong", df = p, growth_rate = 1.045, name_var = "Y4")
   # df <- p
   
@@ -387,6 +389,8 @@ create_p <- function(ppp_year = 2017, pop_iso = pop_iso3, rescale = FALSE) {
 
 create_world_distribution <- function(df = p17, region = df$country_code) {
   w <- data.frame(country = "World", pop_2022 = sum(df$pop_2022), pop_2030 = sum(df$pop_2030))
+  w <- compute_world_distribution("y_2022", df = df, wdf = w, region = region)
+  w <- compute_world_distribution("Y3", df = df, wdf = w, region = region)
   w <- compute_world_distribution("Y4", df = df, wdf = w, region = region)
   return(w)
 }

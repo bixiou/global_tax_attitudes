@@ -275,11 +275,16 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
 ##### Instantiation #####
 copy_from_cp <- c("country", "country_map", # These two are absolutely needed 
                        "gdr_pa_2030", "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
-total_revenues <- average_revenues <- average_revenues_bis <- basic_income <- basic_income_adj <- basic_income_pa <- basic_income_adj_pa <- list()
+# total_revenues (and average_revenues) do not depend on the scenario: they simply multiply total world emissions by the carbon price (and divide by number of beneficiaries if participation is universal and there is no special provisions like opt out).
+# basic_income takes into account the opt out, basic_income_adj also takes into account the provision to avoid anti-redistributive effects. They are expressed per beneficiary. By default, beneficiary "adult_" so it coincides with basic_income_(adj_)pa.
+total_revenues <- average_revenues <- basic_income <- basic_income_adj <- basic_income_pa <- basic_income_adj_pa <- list()
 df <- prepare_ssp_country("SSP226MESGB") # sm, SSP2-2.6, temp max: 1.8°C, temp 2100: 1.8°C
 df <- create_var_ssp(df = df) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB  # , beneficiary = "recipient_"
 
-# df$gain_adj_2030[sm$code %in% c("CHN", "FRA", "IND", "USA")]*euro_per_dollar/12
+df$gain_euro_2030 <- df$gain_adj_2030*euro_per_dollar/12
+revenues_over_gdp <- total_revenues$ssp2_26/sapply(2020:2100, function(y) sum(df[[paste0("gdp_", y)]]))
+transfer_over_gdp <- setNames(sapply(2020:2100, function(y) sum((df[[paste0("gain_adj_", y)]] * df[[paste0("adult_", y)]])[df[[paste0("gain_adj_", y)]] > 0])/sum(df[[paste0("gdp_", y)]])), 2020:2100)
+
 
 ##### Scenarios #####
 # 1. All: Whole World
@@ -302,7 +307,7 @@ for (s in scenarios_names) df <- create_var_ssp(df = df, scenario = s)
 # df$Scentral_gain_adj_2030[df$code %in% c("CHN", "FRA", "IND", "USA")]/12
 
 emissions_tot <- emissions_pc <- c()
-for (y in as.character(2025:2100)) {
+for (y in as.character(2020:2100)) {
   emissions_tot[y] <- sum(df[[paste0("emissions_", y)]], na.rm = T)
   emissions_pc[y] <- wtd.mean(df[[paste0("emissions_pc_", y)]], weights = df[[paste0("pop_", y)]], na.rm = T) }
 emissions_pa <- EU_gain_adj <- EU_gain_adj_over_gdp <- EU_npv_gain_adj_over_gdp <- list()
@@ -340,11 +345,14 @@ wid <- read.dta13("../data/WID_world-pct-em-income.dta") # /!\ PPP €19 estimat
 wid <- rbind(t(sapply(1:5, function(i) c(pctile = i, wid[1, 2:4]/5))), wid[2:96,]) # In 2019 1$ = 0.89€, i.e. 2.15$ = 1.91€
 for (i in 1:4) wid[[i]] <- unlist(wid[[i]])
 
-# emissions_tot["2030"]/emissions_tot["2025"] # 0.91
-# carbon_price$ssp2_26["2030"]*euro_per_dollar # 134
-# emissions_reduction_factor <- 0.9*emissions_tot["2025"]/(mean(wid$emissions)*8e9) # We assume 10% of emissions reductions and rescales total emissions as WID also includes non-CO2 gases.
+## Hypothesis that matches our main model:
+# emissions_reduction_factor <- emissions_tot["2030"]/emissions_tot["2025"] # 0.91
+# price <- carbon_price$ssp2_26["2030"]*euro_per_dollar # - carbon_price$ssp2_26["2025"]*euro_per_dollar # 134€/t
+# wid$emissions <- wid$emissions * emissions_pc["2025"]/mean(wid$emissions) # Rescaling total emissions as WID also includes non-CO2 gases.
+
+## Simplified hypothesis that yields virtually identical result:
 emissions_reduction_factor <- 0.9
-price <- 100 
+price <- 100
 iter <- 0
 wid$post_emissions <- wid$emissions
 post_emissions <- wid$emissions * emissions_reduction_factor

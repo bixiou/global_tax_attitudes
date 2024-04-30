@@ -7,6 +7,7 @@
 source(".Rprofile")
 source("GCP_gain_by_country.R") # TODO expliquer df
 percentiles <- read.csv("../data/wid_emissions_percentiles.csv")
+ppp_conversion <- read.xlsx("../data/poverty/PPP_conversion.xlsx")
 source("domestic_poverty.R") # TODO expliquer p17, w
 euro_per_dollar <- 0.935 # Consulted on 28/04/2024 https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=EUR
 
@@ -26,8 +27,8 @@ India_GDP_PPP <- 7112 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?e
 # FAO (2023) estimates at 735M the number of undernourished people in 2022.
 # World Bank (consulted 28/04/2024) estimates at 716M the number of people with less than $2.15/day in 2022: 
 # 9% is the extreme poverty rate: https://data.worldbank.org/indicator/SI.POV.DDAY?end=2022&locations=1W&start=2022&view=bar
-world_pop <- 7.95*1e9 # World population https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&locations=1W&start=2022&view=bar
-0.09*global_pop # 715.5M
+world_pop <- 7.95*1e9 # 2022 World population https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&locations=1W&start=2022&view=bar
+0.09*world_pop # 715.5M
 
 # GDP p.c. of China (12720) and World (12688) in 2022 https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=1W-CN&start=2022&view=bar
 euro_per_dollar*12720/12 # 991€/month 
@@ -38,7 +39,7 @@ fig_gdp_fr <- c("États-Unis" = 76330, "Pays à hauts revenus" = 62326, "France"
                 "Monde" = 20964, "Inde" = 8400, "Afrique subsaharienne" = 4435, "Pays à bas revenus" = 2256, "Rép. Dém. Congo" = 1338, "Burundi" = 837) # "Luxembourg" = 146457, 
 names_fig_gdp_fr <- names(fig_gdp_fr)
 fig_gdp_fr <- array(rev(fig_gdp_fr)/fig_gdp_fr["Monde"], dim = c(1, length(fig_gdp_fr)))
-barres(data = fig_gdp_fr, labels = names_fig_gdp_fr, legend = c("PIB"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = T, file = "../figures/policies/GDP_pc_PPP_fr") # 330*344 px
+barres(data = fig_gdp_fr, labels = names_fig_gdp_fr, legend = c("PIB"), sort = FALSE, show_ticks = FALSE, showLegend = FALSE, save = F, file = "../figures/policies/GDP_pc_PPP_fr") # 330*344 px
 
 
 # Note 16
@@ -46,8 +47,8 @@ barres(data = fig_gdp_fr, labels = names_fig_gdp_fr, legend = c("PIB"), sort = F
 HIC_GDP_pc_nominal <- 49607
 LIC_GDP_pc_nominal <- 751
 # 1.24G in High-Income Countries and 704M in Low-Income Countries in 2022, https://data.worldbank.org/indicator/SP.POP.TOTL?end=2022&locations=XM-XD&start=2022&view=bar
-HIC_pop <- 1240 
-LIC_pop <- 704
+(HIC_pop <- ppp_conversion$pop_2022[ppp_conversion$code == "HIC"]) # 1.24G
+(LIC_pop <- ppp_conversion$pop_2022[ppp_conversion$code == "LIC"]) # 704M
 0.01*HIC_GDP_pc_nominal*HIC_pop/(LIC_GDP_pc_nominal*LIC_pop) # 1% of HIC income corresponds to 116% of the combined GDP of LIC.
 # Classification of HIC/LIC consulted on 28/04/2024: https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups
 LIC <- c("AFG", "BFA", "BDI", "TCD", "COG", "ERI", "ETH", "GMB", "GIN", "GNB", "PRK", "LBR", "MDG", "MWI", "MLI", "MOZ", "NER", "RWA", "SOM", "SRE", "SDN", "SSD", "SYR", "TGO", "UGA", "YEM") # 2023 official classification. 
@@ -66,16 +67,20 @@ world_GDP_nominal <- 100.88e12
 
 # Note 4
 euro_per_dollar*7.5 # 7.5$ = 7€
-sum(df$pop_2023[df$gdp_pc_2023 < 7.5*365], na.rm = T) # 624.7M live in a country with GDP p.c. below $7.5/day
-sum(pg$pop_2023[pg$GDPpcPPP < 7.5*365], na.rm = T) # 666M live in a country with GDP p.c. below $7.5/day # TODO: choose this one iff we use pg
-sum(p17$pop_2022[p17$gdp_pc_2022 < 7.5*365], na.rm = T) # 600M
+sum(df$pop_2023[df$gdp_pc_2023 < 365*7/euro_per_dollar], na.rm = T) # 624.7M live in a country with GDP p.c. below $7.5/day
+
 
 # Note 5 TODO! consistency 8.1
 # 46% of world population live with less than $6.85/day. (consulted on 28/04/2024) https://data.worldbank.org/indicator/SI.POV.UMIC?end=2022&locations=1W&start=2022&view=bar
 
 # Note 6
-# World poverty gap at $6.85/day is 21% of $6.85, i.e. $4.17T (consulted on 28/04/2024) https://data.worldbank.org/indicator/SI.POV.UMIC.GP?end=2022&start=2022&view=bar
-0.21*6.85*365*world_pop # $4.17T. TODO! Less than $5.8T announced => use pg
+world_GDP_PPP <- 139.36e12 # $140T: 2022 World GDP in PPP https://data.worldbank.org/indicator/NY.GDP.MKTP.PP.KD?end=2022&locations=1W&start=2022&view=bar (consulted on 30/04/2024)
+compute_poverty_gap(df = w, threshold = 7/euro_per_dollar, growth = "now") # $4.78T: World 7€ poverty gap.
+compute_poverty_gap(df = w, threshold = 7/euro_per_dollar, growth = "now")/world_GDP_PPP # 3.4% of world GDP: World 7€ poverty gap.
+compute_poverty_gap(df = w, threshold = 7/euro_per_dollar, growth = "average")/(world_GDP_PPP*1.03^8) # 2.3% of world GDP: world poverty gap in 2030 after 3% annual growth
+# FYI: # World poverty gap at $6.85/day is 21% of $6.85, i.e. $4.17T (consulted on 28/04/2024) https://data.worldbank.org/indicator/SI.POV.UMIC.GP?end=2022&start=2022&view=bar
+# 0.21*6.85*365*world_pop # $4.17T
+# 0.21*6.85*365*world_pop/world_GDP_PPP # 3%
 
 # Note 7
 # OECD (2023) indicates "aid flows from DAC countries to the group of least developed countries were USD 32 billion" in 2022.
@@ -107,6 +112,7 @@ Burundi_GDP_pc_nominal*(df$pop_2022/df$adult_2022)[df$country == "Burundi"]*euro
 ##### Ch. 5 Les grands éléments du Plan #####
 ## 5.1
 # Figure 5.1 ../figures/policies/emissions_par_region_sm.pdf
+par(mar = c(2.1, 3.1, 0.1, 0.1)) 
 plot(2025:2080, df[df$country == "China", paste0("emissions_pa_", 2025:2080)], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "Émissions de CO2 par adulte (tCO2/an)", ylim = c(0, 17.5))
 lines(2025:2080, df[df$code == "USA", paste0("emissions_pa_", 2025:2080)], type = 'l', col = 'blue', lwd = 2, lty = 3)
 lines(2025:2080, colSums(df[df$code %in% EU27_countries, paste0("emissions_", 2025:2080)])/colSums(df[df$code %in% EU27_countries, paste0("adult_", 2025:2080)]), type = 'l', col = 'darkgreen', lwd = 2, lty = 4, xlab = "", ylab = "")
@@ -118,8 +124,9 @@ legend("topright", legend = c("Monde", "Chine", "États-Unis", "Union Européenn
 
 
 ## 5.2 
-mean(basic_income_adj$df[as.character(seq(2030, 2060, 10))])*euro_per_dollar/12 # 52€/mois en moyenne sur 2030-2060 (56$/m)
 basic_income_adj$df["2030"]*euro_per_dollar/12 # 44€/mois = 47$/month in 2030
+basic_income_adj$df["2040"]*euro_per_dollar/12 # 44€/mois = 47$/month in 2040
+mean(basic_income_adj$df[as.character(seq(2030, 2060, 10))])*euro_per_dollar/12 # 52€/mois en moyenne sur 2030-2060 (56$/m)
 
 # Figure 5.2 ../figures/policies/GCP_trajectoires.pdf
 par(mar = c(2.1, 3.1, 0.3, 4.1), mgp = c(2.2, 1, 0)) 
@@ -133,25 +140,26 @@ grid()
 legend("topleft", legend = c("Émissions de CO2", "Revenu de base", "Prix du carbone (axe de droite)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
 
 
-# 715M of people live with less than 2$/day (cf. above, Ch. 2, Note 4)
+# 715M of people live with less than 2€/day (cf. above, Ch. 1, Note 14)
 
 # Revenues from the GCP: 2% of world GDP in 2030
 max(revenues_over_gdp) # 2.52%
-revenues_over_gdp["2030"] # 2.52% TODO update
+revenues_over_gdp["2030"] # 2.52% 
 plot(2020:2100, revenues_over_gdp, type = 'l')
 plot(2020:2100, transfer_over_gdp, type = 'l')
 
 # International transfers from the GCP: .6% of world GDP in 2030
-mean(transfer_over_gdp[as.character(2025:2060)]) # .6% 
+mean(transfer_over_gdp[as.character(2025:2060)]) # .58% 
 
-# Average French loses 10€/month, average Indian wins 27€/month in 2030.
-df$gain_adj_2030[sm$code %in% c("FRA")]*euro_per_dollar/12
+# Average French loses less than 10€/month, average Indian wins 25€/month in 2030.
+df$gain_euro_2030[df$country == "France"] # -9.35€/month
+df$gain_euro_2030[df$country == "India"] # +24.8€/month
 
 ## 5.3 
 # Emission share by region:
 sum(df$share_territorial_2019[df$code == "CHN"]) # 30%
 sum(df$share_territorial_2019[df$code == "USA"]) # 15%
-sum(df$share_territorial_2019[df$code == "IND"]) # 7%
+sum(df$share_territorial_2019[df$code == "IND"]) # 7.4%
 sum(df$share_territorial_2019[df$code %in% EU28_countries]) # 9%
 sum(df$share_territorial_2019[df$npv_pa_gcs_adj > 0], na.rm = T) # 19% of global emissions in countries with gain > 0
 sum(df$share_territorial_2019[df$npv_pa_gcs_adj == 0], na.rm = T) # 36% of global emissions in countries with gain == 0
@@ -190,17 +198,17 @@ NGN_per_euro <- 0.0007026 # Consulted on 28/04/2024 https://www.xe.com/currencyc
 
 # The government of Haiti estimates at €17 billion the illegitimate debt that France imposed upon it at the independence. 
 # Source: http://preferences-pol.fr/Documents/Haïti.pdf, cf. aussi https://www.cadtm.org/spip.php?page=imprimer&id_article=339
-40*12*4*df$adult_2025[df$country == "Haiti"] # 16G€: cost of a 40€/month basic income to all Haitian adults.
 17e9/(12*4*df$adult_2025[df$country == "Haiti"]) # 44€/month: cost of a basic income to all Haitian adults for 4 years to pay back the €17G debt. TODO choose one or the other
 
 
 ##### Ch 6. Un transfert important vers les pays du Sud ##### 
 ## 6.1
 sum(wid$post_income > wid$income) # 71% of winners
-sum((wid$post_income - wid$income)[wid$post_income > wid$income])/sum(wid$income) # 1.3% redistributed
+(share_redistributed <- sum((wid$post_income - wid$income)[wid$post_income > wid$income]/100)/(revenues_pa*12)) # 40% of GCP revenues redistributed from rich to poor
+share_redistributed*revenues_over_gdp["2030"] # 1% of world GDP redistributed from rich to poor people
 
 # Table 6.1
-(table_ineq <- cbind("poverty_gap" = 100*c(sum(wid$post_income[wid$income < 7.5*365])/sum(wid$income), sum(wid$post_income[wid$post_income < 7.5*365])/sum(wid$post_income)), 
+(table_ineq <- cbind("poverty_gap" = 100*c(sum(wid$post_income[wid$income < 7*365])/sum(wid$income), sum(wid$post_income[wid$post_income < 7*365])/sum(wid$post_income)), 
                      "top10" = 100*c(sum(wid$income[91:100])/sum(wid$income), sum(wid$post_income[91:100])/sum(wid$post_income)), 
                      "bottom50" = 100*c(sum(wid$income[1:50])/sum(wid$income), sum(wid$post_income[1:50])/sum(wid$post_income)),
                      "Gini" = 100*c(Gini(wid$income), Gini(wid$post_income)), 
@@ -209,29 +217,34 @@ row.names(table_ineq) <- c("Avant", "Après")
 cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
   paste(kbl(table_ineq, "latex", caption = "Évolution de l'inégalité mondiale suite au Plan.", 
         position = "b", escape = F, booktabs = T, digits = 1, label = "gcp_ineq", align = 'c', format.args = list(decimal = ","),
-        col.names = c("\\makecell{Étendue de\\\\la pauvreté\\\\à 7,5~\\textit{\\texteuro{}}/jour\\\\(en \\% du PIB)}", "\\makecell{Top 10~\\%\\\\(part en \\%)}", "\\makecell{Bottom 50~\\%\\\\(part en \\%)}", 
+        col.names = c("\\makecell{Étendue de\\\\la pauvreté\\\\à 7~\\textit{\\texteuro{}}/jour\\\\(en \\% du PIB)}", "\\makecell{Top 10~\\%\\\\(part en \\%)}", "\\makecell{Bottom 50~\\%\\\\(part en \\%)}", 
                       "\\makecell{Gini\\\\(en \\%)}", "\\makecell{D9/D1\\\\Ratio\\\\inter-décile}")), 
         collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") 
-# TODO!? définir étendue de la pauvreté à 7€ au lieu de 7.5€ pour être cohérent avec le reste? Pb: elle baisse de 25% au lieu de 30%.
-# TODO? repasser les mentions de la pauvreté à 7.5$/jour plutôt que 7€ (pour jouer sur la similarité entre devises)?
 
+basic_income_adj$df["2030"]*euro_per_dollar/12 # 44€/month: amount of the basic income under universal participation
+revenues_pa # 44€/month We match the basic income of our other model.
 min(wid$diff_income[1:99])/12 # -175€/month: maximum average loss for the 99th percentile (only the 100th loses more)
 max(wid$diff_income)/12 # 37€/month: maximum gain.* 
 min(wid$variation_income) # -2.4%: maximum average loss per percentile.
 sum(wid$post_income[1:12])/sum(wid$income[1:12]) # 2.4: factor by which the income of the poorest billion is multiplied.*
 # *Gains for the poor are underestimated because the carbon price is nominal but the income data is in PPP. 
-#  This effect is arguably larger than the increase in emissions from low-income people due to the basic income (which is not modeled).
 # WID overestimates poverty, because it relies on tax administration data that does not account for informal work and auto-production (cf. Prydz et al. 2022).
 # On the contrary, it is the purpose of PIP (World Bank) data to accurately measure poverty, and PIP finds a 9% extreme poverty rate. 
-# The $2.15 World Bank threshold corresponds to €1.5 in WID, as both yield 9% of extreme poverty. 
-sum(wid$income < 1.2*365) # 8% live in extreme poverty TODO? Use higher carbon price, e.g. 110€ - 48€/m? Or 114€ - 50€/m. Then threshold of 1.5€ works to get 9%. Maximum loss becomes 3%.
-sum(wid$post_income < 1.2*365) # 0%
-# We can also understand more directly that the GCP would eradicate extreme poverty. The gain in nominal terms of the GCP is at least 1.22€/day for the first 9 percentiles (the extreme poor):
-(revenues_pa*12 - min(wid$post_emissions[1:9]) * 100)/365 # 1.22
-# To the extent that 1.22€ in nominal terms equals at least 2€ in PPP, even someone with 0 income would be lifted out of extreme poverty (defined at 2€/day) by the GCP.
+# According to the World Bank, 9% of the world population live in extreme poverty. 
+# The gain in nominal terms of the GCP is at least 1.22€/day for the first 9 percentiles (the extreme poor):
+(min_gain_for_extreme_poor <- (revenues_pa*12 - min(wid$post_emissions[1:9]) * 100)/365) # 1.22 € (nominal)
+# To the extent that 1.22€ in nominal terms equals at least 2€ in PPP, even someone with 0 income would be lifted out of extreme poverty (defined at 2€/day) by the GCP. TODO PPP conversion
+# As shown below, 1.22€ in nominal terms equals 3.17€ in PPP over Low-Income Countries and 2.12 €PPP in D.R.C. 
+# => ERADICATION OF EXTREME POVERTY
+LIC_GDP_nominal <- 751 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=XM&start=2022&view=bar (consulted on 30/04/2024)
+LIC_GDP_PPP <- 1949 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2022&locations=XM&start=2022&view=bar (consulted on 30/04/2024)
+(min_gain_for_extreme_poor)*LIC_GDP_PPP/LIC_GDP_nominal # 3.39 €PPP: minimum gain from the GCP in LIC (assuming the same PPP conversion factor in all LIC, average of LIC PPP factors) 
+ppp_conversion$country[ppp_conversion$code %in% LIC][which.min(no.na(ppp_conversion$PPP_conversion_2022[ppp_conversion$code %in% LIC]))] # LIC with highest prices: DRC
+(min_gain_for_extreme_poor)*min(ppp_conversion$PPP_conversion_2022[ppp_conversion$code %in% LIC], na.rm = T) # 2.12 €PPP: minimum gain from the GCP in D.R.C., the LIC with the highest prices. 
 
-# Fall in poverty gap of 30%
-(sum(wid$post_income[wid$post_income < 7.5*365])/sum(wid$post_income))/(sum(wid$post_income[wid$income < 7.5*365])/sum(wid$income))-1 # -30%
+# Fall in poverty gap of 25%
+(sum(wid$post_income[wid$post_income < 7*365])/sum(wid$post_income))/(sum(wid$post_income[wid$income < 7*365])/sum(wid$income))-1 # -25%
+# (sum(wid$post_income[wid$post_income < 7.5*365])/sum(wid$post_income))/(sum(wid$post_income[wid$income < 7.5*365])/sum(wid$income))-1 # Even -30% with the 7.5€/day threshold
 
 sum(wid$variation_income > 0.03) # 54% experience more than 3% increase in income
 sum(wid$variation_income > 0.1) # 31% experience more than 10% increase in income
@@ -241,12 +254,13 @@ revenues_pa # 44€/month basic income
 # mar <- par()$mar
 # mgp <- par()$mgp
 par(mar = c(3.1, 3.1, 0.3, 0.2), mgp = c(2.2, 1, 0)) # width: 342, height: 312
-# 6.1a ../figures/policies/gcp_rev_distr.pdf
+# 6.1a ../figures/policies/gcp_rev_distr.pdf 337x322
 plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en €/mois)")
 lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
 legend("topleft", legend = list("actuel", "suite au Plan"), col = c("red", "darkgreen"), title = "Niveau de vie", lwd = 2, lty = c(1,2))
 # 6.1b ../figures/policies/gcp_diff_rev.pdf
-plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en €/an)") + grid() + abline(h = 0)
+plot(1:100, wid$diff_income/12, col = "purple", lwd = 2, ylim = c(-200, 50), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en €/mois)") + grid() + abline(h = 0)
+# plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en €/an)") + grid() + abline(h = 0)
 # 6.1c ../figures/policies/gcp_var_rev.pdf
 plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
 # 6.1d ../figures/policies/gcp_var_rev_rich_only.pdf
@@ -254,8 +268,7 @@ plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l'
 
 percentiles$share_below_global_mean[no.na(percentiles$code) == "IND"] # 94% of winners in India
 percentiles$share_below_global_mean[no.na(percentiles$code) == "FRA"] # 23% of winners in France
-revenues_pa - price * percentiles$p50p51[no.na(percentiles$code) == "FRA"]/12 # -18€/month in France. 
-# TODO! cost overestimated because it includes all gases => reconcile with -10€/month in other chapters => either remove 10€/m, >don't use Chancel estimate here<, or rescale Chancel to exclude other gases
+df$gain_euro_2030[df$code == "FRA"] # -10.004€/month for the average French 
 
 # Note 2
 # States with Democratic margin (e.g. 57%-41%) >15pp at the 2024 presidential election: 13 states + DC
@@ -264,11 +277,10 @@ revenues_pa - price * percentiles$p50p51[no.na(percentiles$code) == "FRA"]/12 # 
 
 # Figure 6.2 ../figures/maps/share_below_global_mean.pdf
 plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% à ", end = "%", return = "levels")), legend = "Part de gagnants", 
+               labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% à ", end = "%", return = "levels")), legend = "Part de gagnants\nsuite au\nPlan mondial pour le climat", 
                save = T) 
 
 # Figure 6.3 ../figures/maps/gain_adj_2030_fr.pdf
-df$gain_euro_2030 <- df$gain_adj_2030/12
 plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_2030_fr"),
                legend = paste0("Gain net\npar adulte au\nPlan mondial pour le climat\nen 2030 (en € par mois)"), #fill_na = T,
@@ -300,8 +312,8 @@ Burundi_new_GDP_pc <- 259*1.03^6 + (df$gain_adj_2028*df$adult_2028/df$pop_2028)[
 euro_per_dollar*50*Burundi_GDP_PPP/Burundi_GDP_nominal # => 50$ basic income = 137$PPP = 130€PPP in Burundi.
 
 # Note 3
-compute_poverty_rate(df = w, threshold = 7.5, growth = 'strong') # 37%: world extreme poverty rate in 2030 after 4.5% annual growth
-compute_poverty_gap(df = w, threshold = 7.5, growth = 'strong')/(world_GDP_nominal*1.045^8) # 2.3% of world GDP: world poverty gap in 2030 after 4.5% annual growth
+compute_poverty_rate(df = w, threshold = 7.5, growth = "strong") # 37%: world extreme poverty rate in 2030 after 4.5% annual growth
+compute_poverty_gap(df = w, threshold = 7.5, growth = "strong")/(world_GDP_nominal*1.045^8) # 2.3% of world GDP: world poverty gap in 2030 after 4.5% annual growth
 
 # Note 4
 sum(wid$income[1:37])/sum(wid$income) # 4.3% Share of bottom 37% in world income
@@ -350,7 +362,7 @@ df$gain_adj_2030[df$country == "United States"]/12 # -141$/month: loss to averag
 
 # Table 7.1 
 # Revenue of each row:
-sum((wid$post_income - wid$income)[wid$post_income > wid$income])/sum(wid$post_income) # 1.3% of world GDP transferred from the richest to the poorest by the GCP.
+share_redistributed*revenues_over_gdp["2030"] # 1% of world GDP redistributed from rich to poor people, cf. above Ch. 6.1
 # 2% tax on wealth > 5M€: 1% of world GDP. Cf. above, Ch. 7, Note 8 https://wid.world/world-wealth-tax-simulator/
 # 6% tax on wealth > 100 M€, 10% > 1 G€: 1.02% of world GDP (based on depreciation of 25% and tax evasion of 20%). Source: https://wid.world/world-wealth-tax-simulator/
 # 12.3% tax on income > 21191€/month (top 0.4%): 1% of 2022 world PPP income (without behavioral effect). Source: wid.world/data (consulted on 29/04/2024), cf. own computations on ../data/poverty/WID_income.xlsx
@@ -401,7 +413,9 @@ HIC_GDP_pc_nominal/LIC_GDP_pc_nominal # 66
 
 ##### Annexe A #####
 ## Mécanismes de participation
-# Les dérogations (ou opt out) à la mutualisation des recettes réduiraient le revenu de base de 56 à 47 dollars par mois en 2030 (dans les pays qui n’en bénéficient pas). TODO!
+# Les dérogations (ou opt out) à la mutualisation des recettes réduiraient le revenu de base de 56 à 47 dollars par mois en 2030 (dans les pays qui n’en bénéficient pas). TODO
+average_revenues$ssp2_26["2030"]*euro_per_dollar/12 # 54€
+basic_income$df["2030"]*euro_per_dollar/12 # 44€
 
 # Note 5
 # Cf. https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?end=2022&locations=1W-RU-CN&start=2022&view=bar Consulted on 28/04/2024
@@ -420,10 +434,7 @@ names(emissions_tot)[emissions_tot <= 0][1] # 2079: first year with negative emi
 sum(emissions_tot) # 865 Mt: Total emissions over 2025-2100.
 
 # Note 8
-((df$gdp_pc_2030/df$gdp_pc_2019)[df$country == "Democratic Republic of Congo"])^(1/11)-1 # 14% growth over 2019-2030
 ((df$gdp_pc_2030/df$gdp_pc_2020)[df$country == "Democratic Republic of Congo"])^(1/10)-1 # 7.7% growth over 2020-2030
-((df$gdp_pc_2022/df$gdp_pc_2020)[df$country == "Democratic Republic of Congo"])^(1/2)-1 # 7.4% growth over 2020-2022
-(1338/1103)^(1/2)-1 # observed: 10% over 2020-2022 TODO!: remove this argument? https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD?end=2022&locations=CD&start=1990&view=chart
 
 ## Own calculations: need references / methodological note
 # Ch 2: Domestic Poverty Eradication - PIP
