@@ -514,8 +514,8 @@ key_gdp("rev_pc")
 # SSA gets more when using PPP. Gets most with line at 4. For lines at 2 and 4, gets more if max_reg = mean; for line at 7, gets more if max_reg = Inf.
 # Three most credible are l=4, not PPP, max_reg mean; l=7, PPP, max_reg mean; l=4, PPP, max_reg Inf; l=4, not PPP, max_reg Inf
 # LIC <- pg$code[pg$gdp_pc_2019 < 1085] # closer to the 2021 classification available on World Bank data for which LIC: 700M people
-HIC <- pg$code[pg$gdp_pc_2019 > 13205] # approximately right (63 countries instead of 81 but differences are due to small islands)
-LIC <- c("AFG", "BFA", "BDI", "TCD", "COG", "ERI", "ETH", "GMB", "GIN", "GNB", "PRK", "LBR", "MDG", "MWI", "MLI", "MOZ", "NER", "RWA", "SOM", "SRE", "SDN", "SSD", "SYR", "TGO", "UGA", "YEM") # 2023 official classification. LIC: 650M people   # New: ZMB no longer LIC!
+HIC <- pg$code[pg$gdp_pc_2019 > 13205] # approximately right (63 countries instead of 81 but differences are due to small islands)  
+LIC <- c("AFG", "BFA", "BDI", "TCD", "COD", "ERI", "ETH", "GMB", "GIN", "GNB", "PRK", "LBR", "MDG", "MWI", "MLI", "MOZ", "NER", "RWA", "SOM", "SRE", "SDN", "SSD", "SYR", "TGO", "UGA", "YEM") # 2023 official classification. LIC: 650M people " # New: ZMB no longer LIC!
 # SSA <- c("SDN", "AGO", "GIN", "GMB", "GNB", "GNQ", "BDI", "BEN", "BFA", "SEN", "BWA", "CAF", "SLE", "SOM", "SSD", "CIV", "CMR", "COD", "COG", "COM", "LBR", "LSO", "SWZ", "TCD", "TGO", "MLI", "MDG", "DJI", "ERI", "ESH", "ETH", "MWI", "MUS", "MRT", "MOZ", "TZA", "UGA", "ZMB", "ZWE", "NGA", "NER", "NAM", "GHA", "GAB") # old
 SSA <- c("SDN", "AGO", "GIN", "GMB", "GNB", "GNQ", "BDI", "BEN", "BFA", "SEN", "BWA", "CAF", "SLE", "SOM", "SSD", "CIV", "CMR", "COD", "COG", "COM", "LBR", "LSO", "SWZ", "TCD", "TGO", "MLI", "MDG", "DJI", "ERI", "ESH", "ETH", "MWI", "MUS", "MRT", "MOZ", "TZA", "UGA", "ZMB", "ZWE", "NGA", "NER", "NAM", "GHA", "GAB", "RWA", "ZAF")
 SSA_max_reg_inf <- SSA_max_reg_mean <- LIC_max_reg_inf <- LIC_max_reg_mean <- India_max_reg_inf <- India_max_reg_mean <- array(dimnames = list("line" = c(2, 4, 7), "PPP" = c(T, F)), dim = c(3, 2))

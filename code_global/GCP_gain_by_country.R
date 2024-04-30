@@ -81,7 +81,7 @@ cp$share_territorial_2019 <- cp$territorial_2019/sum(cp$territorial_2019)
 ##### Loads Carbon price from SSP2-2.6 #####
 SSPs <- read.csv("../data/SSPs.csv") # https://secure.iiasa.ac.at/web-apps/ene/SspDb/download/iam_v2/SSP_IAM_V2_201811.csv.zip
 if (!exists("carbon_price")) carbon_price <- list() # Prices coincide in all regions after 2030, is between 119 (REF) - 150 (OECD) for 2030 (Asia: 144) and 0 (LAM, REF) - 38 (MAF) - 47 (Asia) - 55 (OECD) for 2020
-carbon_price$ssp2_26 <- setNames(sapply(years, function(y) SSPs[SSPs$MODEL == "IMAGE" & SSPs$SCENARIO == "SSP2-26" & SSPs$VARIABLE == "Price|Carbon" & SSPs$REGION == "R5.2ASIA", paste0("X", y)]), years) 
+carbon_price$ssp2_26 <- setNames(sapply(years, function(y) SSPs[SSPs$MODEL == "IMAGE" & SSPs$SCENARIO == "SSP2-26" & SSPs$VARIABLE == "Price|Carbon" & SSPs$REGION == "R5.2ASIA", paste0("X", y)]), years) # "US$2005/t CO2"
 rm(SSPs)
 
 ##### Country-downscaled trajectories #####
@@ -345,10 +345,11 @@ wid <- read.dta13("../data/WID_world-pct-em-income.dta") # /!\ PPP €19 estimat
 wid <- rbind(t(sapply(1:5, function(i) c(pctile = i, wid[1, 2:4]/5))), wid[2:96,]) # In 2019 1$ = 0.89€, i.e. 2.15$ = 1.91€
 for (i in 1:4) wid[[i]] <- unlist(wid[[i]])
 
-## Hypothesis that matches our main model:
+# ## Hypothesis that matches our main model:
 # emissions_reduction_factor <- emissions_tot["2030"]/emissions_tot["2025"] # 0.91
 # price <- carbon_price$ssp2_26["2030"]*euro_per_dollar # - carbon_price$ssp2_26["2025"]*euro_per_dollar # 134€/t
 # wid$emissions <- wid$emissions * emissions_pc["2025"]/mean(wid$emissions) # Rescaling total emissions as WID also includes non-CO2 gases.
+# # wid$income <- wid$income*wtd.mean(df$gdp_pc_2025, df$pop_2025)/mean(wid$income) # Unused
 
 ## Simplified hypothesis that yields virtually identical result:
 emissions_reduction_factor <- 0.9
@@ -356,7 +357,7 @@ price <- 100
 iter <- 0
 wid$post_emissions <- wid$emissions
 post_emissions <- wid$emissions * emissions_reduction_factor
-(revenues_pa <- sum(price * post_emissions)/1200) # 44€
+(revenues_pa <- sum(price * post_emissions)/1200) # 43€
 wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions # basic income, carbon price
 while (max_gap(wid$post_emissions, post_emissions) > 1e-5 & iter < 100) { # Takes into account the rebound effect: simply remove the loop to neglect it.
   iter <- iter + 1

@@ -378,8 +378,8 @@ create_p <- function(ppp_year = 2017, pop_iso = pop_iso3, rescale = FALSE) {
   # p <- df # To run compute_distribution_2030, this line is needed to avoid bug (Indeed, urban/rural have been removed otherwise).
   # p <- compute_inequality(var = "bolch", df = p, return = "df")
   p <- compute_distribution_2030(growth = "now", df = p, name_var = "y_2022")
-  p <- compute_distribution_2030(growth = "average", df = p, growth_rate = 1.03, name_var = "Y3")
-  p <- compute_distribution_2030(growth = "strong", df = p, growth_rate = 1.045, name_var = "Y4")
+  p <- compute_distribution_2030(growth = "average", df = p, growth_rate = 1.035, name_var = "Y3")
+  # p <- compute_distribution_2030(growth = "strong", df = p, growth_rate = 1.045, name_var = "Y4")
   # df <- p
   
   p <- p[(!p$country_code %in% c("CHN", "IDN", "IND")) | p$reporting_level == "national",]
@@ -391,7 +391,7 @@ create_world_distribution <- function(df = p17, region = df$country_code) {
   w <- data.frame(country = "World", pop_2022 = sum(df$pop_2022), pop_2030 = sum(df$pop_2030))
   w <- compute_world_distribution("y_2022", df = df, wdf = w, region = region)
   w <- compute_world_distribution("Y3", df = df, wdf = w, region = region)
-  w <- compute_world_distribution("Y4", df = df, wdf = w, region = region)
+  # w <- compute_world_distribution("Y4", df = df, wdf = w, region = region)
   return(w)
 }
 
