@@ -423,7 +423,7 @@ HIC_GDP_pc_nominal/LIC_GDP_pc_nominal # 66
 # Brunei (20k, 8.9% of labor force), Libye (168k, 7.3%), Qatar (117k, 5.8%), Norway (150k, 5%), Kuwait (114k, 4.8%), Arabie Saoudite (444k, 2.8%), Irak (189k, 1.7%), Angola (227k, 1.5%) 
 
 # Global labor force TODO
-# luxe et tourisme représentent à eux deux 6 % du PIB français TODO
+# luxe et tourisme représentent à eux deux 6 % du PIB français. Source: https://www.letemps.ch/economie/luxe-redore-blason-leconomie-francaise TODO
 
 
 ##### Annexe A #####
