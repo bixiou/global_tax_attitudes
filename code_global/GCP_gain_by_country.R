@@ -4,7 +4,7 @@ EU28_countries <- countries_names <- countries_EU <- c("AUT", "BEL", "BGR", "CYP
 EU27_countries <- countries_names_fr <- c("AUT", "BEL", "BGR", "CYP", "CZE", "DEU", "DNK", "ESP", "EST", "FIN", "FRA", "GRC", "HRV", "HUN", "IRL", "ITA", "LTU", "LUX", "LVA", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "SWE")
 African_countries <- c("AGO", "BDI", "BEN", "BFA", "BWA", "CAF", "CIV", "CMR", "COD", "COG", "COM", "CPV", "DJI", "DZA", "EGY", "ERI", "ETH", "GAB", "GHA", "GIN", "GMB", "GNB", "GNQ", "KEN", "LBR", "LBY", "LSO", "MAR", "MDG", "MLI", "MOZ", "MRT", "MUS", "MWI", "NAM", "NER", "NGA", "RWA", "SDN", "SEN", "SLE", "SOM", "SSD", "SWZ", "TCD", "TGO", "TUN", "TZA", "UGA", "ZAF", "ZMB", "ZWE")
 discount_rate <- .03
-euro_per_dollar <- 0.935 
+euro_per_dollar <- 0.94
 yrs <- c(2025, seq(2030, 2080, 10))
 
 pop <- read.csv("../data/future population by age 2022.csv") # https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_PopulationByAge5GroupSex_Medium.zip
@@ -345,19 +345,12 @@ wid <- read.dta13("../data/WID_world-pct-em-income.dta") # /!\ PPP €19 estimat
 wid <- rbind(t(sapply(1:5, function(i) c(pctile = i, wid[1, 2:4]/5))), wid[2:96,]) # In 2019 1$ = 0.89€, i.e. 2.15$ = 1.91€
 for (i in 1:4) wid[[i]] <- unlist(wid[[i]])
 
-# ## Hypothesis that matches our main model:
-# emissions_reduction_factor <- emissions_tot["2030"]/emissions_tot["2025"] # 0.91
-# price <- carbon_price$ssp2_26["2030"]*euro_per_dollar # - carbon_price$ssp2_26["2025"]*euro_per_dollar # 134€/t
-# wid$emissions <- wid$emissions * emissions_pc["2025"]/mean(wid$emissions) # Rescaling total emissions as WID also includes non-CO2 gases.
-# # wid$income <- wid$income*wtd.mean(df$gdp_pc_2025, df$pop_2025)/mean(wid$income) # Unused
-
-## Simplified hypothesis that yields virtually identical result:
-emissions_reduction_factor <- 0.9
-price <- 100
+emissions_reduction_factor <- emissions_tot["2030"]/emissions_tot["2025"] # 0.91
+price <- 100*euro_per_dollar
 iter <- 0
 wid$post_emissions <- wid$emissions
 post_emissions <- wid$emissions * emissions_reduction_factor
-(revenues_pa <- sum(price * post_emissions)/1200) # 43€
+(revenues_pa <- sum(price * post_emissions)/1200) # 42€
 wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions # basic income, carbon price
 while (max_gap(wid$post_emissions, post_emissions) > 1e-5 & iter < 100) { # Takes into account the rebound effect: simply remove the loop to neglect it.
   iter <- iter + 1
@@ -368,7 +361,6 @@ while (max_gap(wid$post_emissions, post_emissions) > 1e-5 & iter < 100) { # Take
   wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions
 }
 wid$post_emissions <- post_emissions
-# wid$post_income[1]/wid$income[9]
 
 wid$diff_income <- stats::filter(sort(wid$post_income - wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
 wid$diff_income[is.na(wid$diff_income)] <- sort(wid$post_income - wid$income, decreasing = T)[is.na(wid$diff_income)]

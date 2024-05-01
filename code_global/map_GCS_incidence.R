@@ -1947,22 +1947,23 @@ wid <- rbind(t(sapply(1:5, function(i) c(pctile = i, wid[1, 2:4]/5))), wid[2:96,
 for (i in 1:4) wid[[i]] <- unlist(wid[[i]])
 mean(wid$emissions)
 
-emissions_reduction_factor <- 0.9
-price <- 100
+# ## Hypothesis that matches our main model:
+# wid$emissions <- wid$emissions * emissions_pc["2025"]/mean(wid$emissions) # Rescaling total emissions as WID also includes non-CO2 gases.
+# emissions_reduction_factor <- emissions_tot["2030"]/emissions_tot["2025"] # 0.91
+# price <- carbon_price$ssp2_26["2030"]*euro_per_dollar # - carbon_price$ssp2_26["2025"]*euro_per_dollar # 134€/t
+# # wid$income <- wid$income*wtd.mean(df$gdp_pc_2030, df$pop_2030)/mean(wid$income) # Unused
+
+## Simplified hypothesis that yields virtually identical result (unless we rescale GDP or emissions):
+emissions_reduction_factor <- emissions_tot["2030"]/emissions_tot["2025"] # 0.91
+price <- 100*euro_per_dollar
+iter <- 0
 # emissions_reduction_factor <- 0.7
 # price <- 200
-# Without rebound effect
-wid$post_emissions <- wid$emissions * emissions_reduction_factor
-(revenues_pa <- sum(price * wid$post_emissions)/1200) # 44; (0.7, 200) => 68
-wid$post_income <- wid$income + revenues_pa*12 - price * wid$post_emissions # basic income, carbon price
-
-# With rebound effect
-iter <- 0
 wid$post_emissions <- wid$emissions
 post_emissions <- wid$emissions * emissions_reduction_factor
-(revenues_pa <- sum(price * wid$post_emissions)/1200) 
-wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions
-while (max_gap(wid$post_emissions, post_emissions) > 1e-5 & iter < 100) {
+(revenues_pa <- sum(price * post_emissions)/1200) # 42€
+wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions # basic income, carbon price
+while (max_gap(wid$post_emissions, post_emissions) > 1e-5 & iter < 100) { # Takes into account the rebound effect: simply remove the loop to neglect it.
   iter <- iter + 1
   wid$post_emissions <- post_emissions
   post_emissions <- interpolate(wid$post_income, wid$income, wid$emissions)
@@ -1971,18 +1972,23 @@ while (max_gap(wid$post_emissions, post_emissions) > 1e-5 & iter < 100) {
   wid$post_income <- wid$income + revenues_pa*12 - price * post_emissions
 }
 wid$post_emissions <- post_emissions
-
-sum(post_emissions > sort(wid$emissions))
-# max_gap(sum(wid$income), sum(wid$post_income)) # check that mean income is preserved
+# wid$post_income[1]/wid$income[9]
 
 wid$diff_income <- stats::filter(sort(wid$post_income - wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
 wid$diff_income[is.na(wid$diff_income)] <- sort(wid$post_income - wid$income, decreasing = T)[is.na(wid$diff_income)]
 wid$diff_income[98:100] <- (wid$post_income - wid$income)[98:100]
 wid$variation_income <- stats::filter(sort((wid$post_income - wid$income)/wid$income, decreasing = T), filter = c(.1, .2, .4, .2, .1))
 wid$variation_income[is.na(wid$variation_income)] <- sort((wid$post_income - wid$income)/wid$income, decreasing = T)[is.na(wid$variation_income)]
-sum(wid$variation_income > 0.03)
-sum(wid$variation_income > 0.1)
-sum(wid$variation_income > 1)
+
+revenues_pa*12/mean(wid$income) # Revenues as share of world GDP
+
+# Three different dataset: WID, PIP, Gütschow
+# Poverty gap is computed from WID (Table ineq) and PIP () => best to combine PIP with GDP data as we do => 2% PG in 2030
+# Poverty rate is computed from WID (used to compute transfer from rich to poor) and PIP => PIP more accurate to measure poverty rate => 40% PR in 2030
+# Revenue raised is computed from WID (interpersonal transfer) and Gütschow
+# NEED at least 40€ of RDB to eradicate poverty
+# => We necessarily have an inconsistency between ineq Table (where it is by chance if we find PG identical to PIP),
+#    rich->poor transfer (where we should rely on PIP percentiles) and total revenue raised (which relies on Gütschow)
 
 
 # BOOK Figure
