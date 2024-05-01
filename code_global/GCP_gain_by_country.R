@@ -188,6 +188,7 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
   return(df)
 }
 
+# TODO compute emissions 3°C trajectory for non parties
 create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", beneficiary = "adult_") { # message is only for ssp2 , region = message_region_by_code
   # beneficiary (of the basic income) can be: adult_ (age >= 15) or recipient_ (where children receive half the amount of adult_)
   name_df <- deparse(substitute(df)) 

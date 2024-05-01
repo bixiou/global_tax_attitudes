@@ -2,7 +2,7 @@
 # Un Plan mondial pour le climat et contre l'extrême pauvreté #
 #                       Adrien Fabre                          #
 #                 2024, adrien.fabre@cnrs.fr                  #
-
+# TODO! mention in book
 ##### Preparing the data #####
 source(".Rprofile")
 source("GCP_gain_by_country.R") # TODO expliquer df
@@ -104,6 +104,9 @@ compute_poverty_gap(df = w, threshold = 7.5, growth = "average")/(world_GDP_PPP*
 # Figure 4.1 ../figures/OECD/Heatplot_global_tax_attitudes_share_fr.pdf
 # Figure 4.2 ../figures/FR/gcs_support_positive.pdf
 # Figure 4.3 ../figures/FR/conjoint_left_ag_b_binary_positive.pdf
+
+# Note 24
+# The true figures are 2.21 - 1.49 = .724 in the EU (vs. .757 of direct support) and 1.67 - 1.15 = .524 in the U.S. (vs. .542 of direct support).
 
 
 ##### Interlude: Déroulé du futur politique rêvé #####
