@@ -1,8 +1,12 @@
+
+
+## /!\ NOT MAINTAINED HERE, maintained in www/plan_mondial_climat ##
+
 ####                  REPLICATION FILE FOR                 ####
 # Un Plan mondial pour le climat et contre l'extrême pauvreté #
 #                       Adrien Fabre                          #
 #                 2024, adrien.fabre@cnrs.fr                  #
-# TODO! mention in book
+
 ##### Preparing the data #####
 source(".Rprofile")
 source("GCP_gain_by_country.R") # TODO expliquer df
@@ -76,7 +80,7 @@ compute_poverty_rate(w, threshold = 7.5, growth = "now") # 48% live with less th
 
 # Note 6
 world_GDP_PPP <- 139.36e12 # $140T: 2022 World GDP in PPP https://data.worldbank.org/indicator/NY.GDP.MKTP.PP.KD?end=2022&locations=1W&start=2022&view=bar (consulted on 30/04/2024)
-compute_poverty_gap(df = w, threshold = 7.5, growth = "now") # $4.73T: World 7.5$ = 7€ poverty gap.
+compute_poverty_gap(df = w, threshold = 7.5, growth = "now") # $4.80T: World 7.5$ = 7€ poverty gap.
 compute_poverty_gap(df = w, threshold = 7.5, growth = "now")/world_GDP_PPP # 3.4% of world GDP: World 7€ poverty gap. 
 # World growth over 2002-2022: 3.4% per year
 (139.36/71.9)^(1/20)-1 # https://data.worldbank.org/indicator/NY.GDP.MKTP.PP.KD?end=2022&locations=1W&start=1990&view=chart (consulted on 01/05/2024)
@@ -134,7 +138,7 @@ basic_income_adj$df["2030"]*euro_per_dollar/12 # 44€/mois = 47$/month in 2030
 basic_income_adj$df["2040"]*euro_per_dollar/12 # 44€/mois = 47$/month in 2040
 mean(basic_income_adj$df[as.character(seq(2030, 2060, 10))])*euro_per_dollar/12 # 53€/mois en moyenne sur 2030-2060 (56$/m)
 
-# Figure 5.2 ../figures/policies/GCP_trajectoires.pdf TODO
+# Figure 5.2 ../figures/policies/GCP_trajectoires.pdf 
 par(mar = c(2.1, 3.1, 0.3, 4.1), mgp = c(2.2, 1, 0)) 
 plot(yrs, basic_income_adj$df[as.character(yrs)]*euro_per_dollar/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Revenu de base (€ par mois); Émissions de CO2 (Gt par an)", ylim = c(0, 70))
 lines(yrs, emissions_tot[as.character(yrs)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
@@ -165,7 +169,7 @@ df$gain_euro_2030[df$country == "India"] # +24.9/month
 # Emission share by region:
 sum(df$share_territorial_2019[df$code == "CHN"]) # 30%
 sum(df$share_territorial_2019[df$code == "USA"]) # 15%
-sum(df$share_territorial_2019[df$code == "IND"]) # 7.4%
+sum(df$share_territorial_2019[df$code == "IND"]) # 7.3%
 sum(df$share_territorial_2019[df$code %in% EU28_countries]) # 9%
 sum(df$share_territorial_2019[df$npv_pa_gcs_adj > 0], na.rm = T) # 19% of global emissions in countries with gain > 0
 sum(df$share_territorial_2019[df$npv_pa_gcs_adj == 0], na.rm = T) # 36% of global emissions in countries with gain == 0
@@ -177,11 +181,13 @@ for (s in scenarios_names) {
   scenarios_features[s, "pop_covered"] <- (sum(df$pop_2023[df$code %in% eval(str2expression(s))], na.rm = T) + ("Dem USA" %in% eval(str2expression(s)) & !"USA" %in% eval(str2expression(s))) * 117*1e6)/sum(df$pop_2023, na.rm = T)
   scenarios_features[s, "basic_income_2040"] <- basic_income_adj[[s]]["2040"]*euro_per_dollar/12
   scenarios_features[s, "EU_loss_adj_over_gdp_2040"] <- -EU_gain_adj_over_gdp[[s]]["2040"]
+  net_emissions_2020_2100_s <- sum(df[, paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "emissions_", 2020:2100)]) # scenarios_features[s, "net_emissions_2020_2100"] TODO: check that 2.7°C = 2.76Tt over 2020-2100 and 1.8°C = 1.05Tt
+  scenarios_features[s, "temperature_2100"] <- barycenter(sum(df[, paste0(if (s == "all_countries") "" else paste0("S", s, "_"), "emissions_", 2020:2100)]), sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 }
 (scenarios_table <- scenarios_features)
 
-for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_", col)) 1 else 0, "f"), 
-                            if (grepl("basic_income", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income", col)) "" else "\\%")
+for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_|temperature", col)) 1 else 0, "f"), 
+                            if (grepl("basic_income|temperature", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income|temperature", col)) "" else "\\%")
 # cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the different scenarios.", position = "h", escape = F, booktabs = T, align = "c", 
 #               linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table.tex", row.names = FALSE,  
 #               col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", 
@@ -189,11 +195,12 @@ for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scen
 scenarios_table_fr <- scenarios_table
 scenarios_table_fr$scenario <- c("Tous les pays", "Tous sauf OPEP+", "Optimiste", "Central", "Prudent", "UE + Afrique")
 cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
-    paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios de club climatique.", 
+    paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios d'union climatique.", 
               position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1),
               label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
-        col.names = c("\\makecell{Scenario\\\\de club}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
-                      "\\makecell{Revenu de base\\\\en 2040\\\\(\\euro{}/mois)}", "\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}")), 
+        col.names = c("\\makecell{Scenario\\\\d'union}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
+                      "\\makecell{Revenu\\\\de base\\\\en 2040\\\\(\\euro{}/mois)}", "\\makecell{Coût pour l'UE\\\\en 2040\\\\(en fraction\\\\de son PIB)}", #"\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}", 
+                      "\\makecell{Hausse de la\\\\température\\\\en 2100\\\\(en \\textdegree{}C)}")), 
         collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
 
 
@@ -227,14 +234,10 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
         position = "t", escape = F, booktabs = T, digits = 1, label = "gcp_ineq", align = 'c', format.args = list(decimal = ","),
         col.names = c("\\makecell{Étendue de\\\\la pauvreté\\\\à 7~\\textit{\\texteuro{}}/jour\\\\(en \\% du PIB)}", "\\makecell{Top 10~\\%\\\\(part en \\%)}", "\\makecell{Bottom 50~\\%\\\\(part en \\%)}", 
                       "\\makecell{Gini\\\\(en \\%)}", "\\makecell{D9/D1\\\\Ratio\\\\inter-décile}")), 
-        collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") # TODO
+        collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") 
 
-# # price*mean(wid$post_emissions)/mean(wid$income) # 2.8% of world GDP raised
-# (share_redistributed <- sum((wid$post_income - wid$income)[wid$post_income > wid$income]/100)/(revenues_pa*12)) # 40% of GCP revenues redistributed from rich to poor
-# (rich_to_poor <- share_redistributed*revenues_over_gdp["2030"]) # 1% of world GDP redistributed from rich to poor people (rescaled to perfectly match the other model)
-# 
 basic_income_adj$df["2030"]*euro_per_dollar/12 # 44€/month: amount of the basic income under universal participation
-revenues_pa # 44€/month We match the basic income of our other model. TODO doesn't match
+revenues_pa # 42€/month Consistent with the basic income of our other model. 
 min(wid$diff_income[1:99])/12 # -168€/month: maximum average loss for the 99th percentile (only the 100th loses more)
 max(wid$diff_income)/12 # 36€/month: maximum gain.* 
 min(wid$variation_income) # -2.3%: maximum average loss per percentile.
@@ -246,7 +249,7 @@ sum(wid$post_income[1:12])/sum(wid$income[1:12]) # 2.4: factor by which the inco
 # According to the World Bank, 9% of the world population live in extreme poverty. 
 # The gain in nominal terms of the GCP is at least 1.15€/day for the first 9 percentiles (the extreme poor):
 (min_gain_for_extreme_poor <- (revenues_pa*12 - min(wid$post_emissions[1:9]) * 100)/365) # 1.15 € (nominal)
-# To the extent that 1.15€ in nominal terms equals at least 2€ in PPP, even someone with 0 income would be lifted out of extreme poverty (defined at 2€/day) by the GCP. TODO PPP conversion
+# To the extent that 1.15€ in nominal terms equals at least 2€ in PPP, even someone with 0 income would be lifted out of extreme poverty (defined at 2€/day) by the GCP.
 # As shown below, 1.15€ in nominal terms equals 3€ in PPP over Low-Income Countries and 2 €PPP in D.R.C. 
 # => ERADICATION OF EXTREME POVERTY
 LIC_GDP_nominal <- 751 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=XM&start=2022&view=bar (consulted on 30/04/2024)
@@ -258,11 +261,11 @@ ppp_conversion$country[ppp_conversion$code %in% LIC][which.min(no.na(ppp_convers
 # Fall in poverty gap of 25%
 (sum(wid$post_income[wid$post_income < 7*365])/sum(wid$post_income))/(sum(wid$post_income[wid$income < 7*365])/sum(wid$income))-1 # -25%
 
-sum(wid$variation_income > 0.03) # 54% experience more than 3% increase in income
+sum(wid$variation_income > 0.03) # 53% experience more than 3% increase in income
 sum(wid$variation_income > 0.1) # 31% experience more than 10% increase in income
 
 # Figure 6.1
-revenues_pa # 43€/month basic income
+revenues_pa # 42€/month basic income
 # mar <- par()$mar
 # mgp <- par()$mgp
 par(mar = c(3.1, 3.1, 0.3, 0.2), mgp = c(2.2, 1, 0)) # width: 338, height: 322
@@ -316,7 +319,7 @@ for (i in 3:4) {
 
 ##### Ch. 7 Un pas vers un monde soutenable #####
 ## 7.1 
-euro_per_dollar*Burundi_GDP_pc_nominal*(df$pop_2022/df$adult_2022)[df$country == "Burundi"] # 450€/year: PIB per adult Burundi, cf. Interlude for the source
+euro_per_dollar*Burundi_GDP_pc_nominal*(df$pop_2022/df$adult_2022)[df$country == "Burundi"] # 454€/year: PIB per adult Burundi, cf. Interlude for the source
 df$emissions_pa_2022[df$country == "Burundi"] # 0.1 tCO2/year
 Burundi_GDP_nominal <- 259 # https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2022&locations=BI-US&start=2022&view=bar
 Burundi_GDP_PPP <- 708 # https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?end=2022&locations=BI-US&start=2022&view=bar
@@ -325,14 +328,14 @@ Burundi_new_GDP_pc/Burundi_GDP_nominal # x2.4: factor by which Burundi's GDP pc 
 Burundi_new_GDP_pc*euro_per_dollar/12 # 48 €/mois: new GDP pa
 Burundi_new_GDP_pc*euro_per_dollar*Burundi_GDP_PPP/Burundi_GDP_nominal/12 # => 131€PPP in Burundi.
 
-# Note 3
-compute_poverty_rate(df = w, threshold = 7.5, growth = "average") # 40%: world poverty rate in 2030 after 3.5% annual growth TODO
+# Note 3 (Recall that 7.5$ ~ 7€)
+compute_poverty_rate(df = w, threshold = 7.5, growth = "average") # 40%: world poverty rate in 2030 after 3.5% annual growth
 compute_poverty_gap(df = w, threshold = 7.5, growth = "average")/(world_GDP_PPP*1.035^8) # 2.1% of world GDP: world poverty gap in 2030 after 3.5% annual growth
 
 # Note 4
-(sum(wid$post_income[1:40])/sum(wid$post_income) - sum(wid$income[1:40])/sum(wid$income)) # 0.8% transferred to (originally) poor
-sum(wid$income[1:40])/sum(wid$income) # 5.1% Share of bottom 40% in world income TODO
-sum(wid$post_income[1:40])/sum(wid$post_income) # 5.9% Share of bottom 40% in world income after the GCP 
+(sum(wid$post_income[1:40])/sum(wid$post_income) - sum(wid$income[1:40])/sum(wid$income)) # 0.9% transferred to (originally) poor
+sum(wid$income[1:40])/sum(wid$income) # 5.1% Share of bottom 40% in world income 
+sum(wid$post_income[1:40])/sum(wid$post_income) # 6.0% Share of bottom 40% in world income after the GCP 
 
 # Note 5
 # GDP p.c. PPP of Ukraine https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=UA (consulted on 29/04/2024)
@@ -352,25 +355,12 @@ df$gain_adj_2030[df$country == "France"]*euro_per_dollar # 113€ per French adu
 df$gain_adj_2030[df$country == "France"]*euro_per_dollar/12 # Average loss per French adult: 9.35€/month
 # 3.5% tax on income > 16342€/month (top 1%): raises 120€ per French adult (without behavioral effect). Source: wid.world/data (consulted on 29/04/2024), cf. own computations on ../data/poverty/WID_income.xlsx
 
-(df$gain_adj_2030*df$adult_2022)[df$country == "United States"] # 474G$ to be raised to offset 
+(df$gain_adj_2030*df$adult_2022)[df$country == "United States"]/1e9 # 474G$ to be raised to offset 
 df$gain_adj_2030[df$country == "United States"]/12 # -141$/month: loss to average (compensated) American from GCP
 # Increasing income tax rates 32->33% >315k, 35->40% >400k, 37->50% >600k, 37->60% >5M, integrate with corporate tax and tax capital gains fully
 # => collects 472.6 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
 # The site also shows that taxes would barely increase for the bottom 97%, those with less than $312k/year (tax rate of percentile 96: 31.6->31.9%)
 315000/12 # 26250$/month: threshold of top 3% according to taxjusticenow.org (FYI top 1% threshold: 567k/year = 47k/month)
-
-# (df$gain_adj_2030*df$adult_2022)[df$country == "United States"]*0.97 # 460G$ to be raised to offset 
-# df$gain_adj_2030[df$country == "United States"]*0.97/12 # -137$/month: loss to average (compensated) American from GCP
-# # Increasing income tax rates 32->33% >315k, 35->40% >400k, 37->50% >1M, 37->60% >5M, 37->70% >50M, integrate with corporate tax and tax capital gains fully
-# # => collects 459.4 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
-# # The site also shows that taxes would barely increase for the bottom 97%, those with less than $312k/year (tax rate of percentile 96: 31.6->31.9%)
-# 315000/12 # 26250$/month: threshold of top 3% according to taxjusticenow.org (FYI top 1% threshold: 567k/year = 47k/month)
-
-# (df$gain_adj_2030*df$adult_2022)[df$country == "United States"] # 474G$ to be raised to offset 
-# df$gain_adj_2030[df$country == "United States"]/12 # -141$/month: loss to average (compensated) American from GCP
-# # Increasing income tax rates 35->40% >400k, 35->45% >600k, 37->50% >1M, 37->60% >5M, 37->70% >50M, integrate with corporate tax and tax capital gains fully
-# # => collects 473 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
-# # /!\ The site also shows that taxes would not only increase for the top 1%, e.g. for percentile 98: 30.1->30.9% 
 
 # Note 13
 # 16.3%: world top 1% share of post-tax income in 2022. Source: wid.world/data (consulted on 29/04/2024)
@@ -428,7 +418,7 @@ HIC_GDP_pc_nominal/LIC_GDP_pc_nominal # 66
 
 ##### Annexe A #####
 ## Mécanismes de participation
-# Les dérogations (ou opt out) à la mutualisation des recettes réduiraient le revenu de base de 56 à 47 dollars par mois en 2030 (dans les pays qui n’en bénéficient pas). TODO
+# Les dérogations (ou opt out) à la mutualisation des recettes réduiraient le revenu de base de 54 à 44€ par mois en 2030 (dans les pays qui n’en bénéficient pas). 
 average_revenues$ssp2_26["2030"]*euro_per_dollar/12 # 54€
 basic_income$df["2030"]*euro_per_dollar/12 # 44€
 
@@ -445,31 +435,11 @@ emissions_tot["2030"]/emissions_tot["2025"] # 0.91
 revenues_pa # 42€/month
 
 ## B.4
-sum(emissions_tot[emissions_tot > 0 & as.numeric(names(emissions_tot)) >= 2025]) # 934 Gt starting in 2025. Adding 35 Gt from 2024, this corresponds to 969 Gt, i.e. ~69% chance of meeting the 2°C target.
+sum(emissions_tot[emissions_tot > 0 & as.numeric(names(emissions_tot)) >= 2025])/1e9 # 934 Gt starting in 2025. Adding 35 Gt from 2024, this corresponds to 969 Gt, i.e. ~69% chance of meeting the 2°C target.
 sum(emissions_tot[emissions_tot > 0]/1e9) # 1113 Gt from 2020.
 barycenter(sum(emissions_tot[emissions_tot > 0]/1e9), 900, 1150, 83, 67) # 69% chance. Indeed, 1113 Gt from 2020 => 67% chance; 900 Gt => 83%, according to IPCC (2021), SPM.2. 
 names(emissions_tot)[emissions_tot <= 0][1] # 2079: first year with negative emissions
-sum(emissions_tot[as.numeric(names(emissions_tot)) >= 2025]) # 866 Mt: Total emissions over 2025-2100.
+sum(emissions_tot[as.numeric(names(emissions_tot)) >= 2025])/1e9 # 866 Gt: Total emissions over 2025-2100.
 
 # Note 8
 ((df$gdp_pc_2030/df$gdp_pc_2020)[df$country == "Democratic Republic of Congo"])^(1/10)-1 # 7.7% growth over 2020-2030
-
-## Own calculations: need references / methodological note
-# Ch 2: Domestic Poverty Eradication - PIP
-# Ch 5: moitié de l'humanité < 7$/jour (contredit 8.1)
-# Ch 6.2: recettes = 5% du PIB mondial
-# Fig 6.1: trajectoires - gea_gea
-# Ch 6.4: scénarios - cf. 7.3
-# Ch 7.1: effet sur la distribution mondiale - Chancel
-# Ch 7.2: effet sur les distributions nationales - WID
-# Ch 7.3: effet sur la distribution internationale - sm
-# Ch 8.1: 39% de la population mondiale vit avec moins de 7,5$/j
-# Ch 8.2: chiffrage redistribution nationale
-
-# 7.3: Emissions data (already downscaled) comes from Gütschow et al. (21) while price comes from SSP_CMIP6
-
-# Figures
-# 1: GDP_pc_PPP_few_fr
-# 7.1: gcp_rev_distr, gcp_diff_rev, gcp_var_rev, gcp_var_rev_rich_only
-# 7.2: share_below_global_mean
-# 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scentral_npv_over_gdp_gcs_adj

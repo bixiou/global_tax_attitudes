@@ -184,12 +184,11 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
   df$npv_pa_gcs_adj <- compute_npv("gain_adj_", discount = discount, data = df, decadal = FALSE)
   df$npv_over_gdp_gcs <- df$npv_pa_gcs/compute_npv("gdp_pa_", discount = discount, data = df, decadal = FALSE) # this formula corresponds to the % loss in consumption computed in Balanced Growth Equivalent of Stern et al. (07)
   df$npv_over_gdp_gcs_adj <- df$npv_pa_gcs_adj/compute_npv("gdp_pa_", discount = discount, data = df, decadal = FALSE)
-  
+
   return(df)
 }
 
-# TODO compute emissions 3°C trajectory for non parties
-create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", beneficiary = "adult_") { # message is only for ssp2 , region = message_region_by_code
+create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount = .03, opt_out_threshold = 1.5, full_part_threshold = 2, scenario = "all_countries", beneficiary = "adult_", BAU = bau) { # message is only for ssp2 , region = message_region_by_code
   # beneficiary (of the basic income) can be: adult_ (age >= 15) or recipient_ (where children receive half the amount of adult_)
   name_df <- deparse(substitute(df)) 
   years <- 2020:2100
@@ -255,13 +254,27 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   average_revenues[[ssp_name]] <<- average_revenues[[ssp_name]]
   carbon_price[[ssp_name]] <<- carbon_price[[ssp_name]] # carbon_price is just completed between decadal years by interpolation
   
-  if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG", "MDV", "MUS")], parties)) == 0) { # , "TWN
+  if (length(setdiff(df$code[!df$code %in% c("ABW", "HKG", "MDV", "MUS")], parties)) == 0) { # If universal participation , "TWN"
     basic_income[[name_df]] <<- basic_income[[ssp_name]] 
     basic_income_adj[[name_df]] <<- basic_income_adj[[ssp_name]] 
     basic_income_pa[[name_df]] <<- basic_income_pa[[ssp_name]] 
     basic_income_adj_pa[[name_df]] <<- basic_income_adj_pa[[ssp_name]] 
     df <- df_parties
   } else {
+    if (!is.null(BAU)) {
+      for (t in c("", "pa_", "pc_")) for (y in 2020:2100) {
+        v <- paste0("emissions_", t, y)
+        if (v %in% intersect(names(df), names(BAU))) {
+          df[[paste0("S", scenario, "_", v)]] <- df[[v]]
+          df[[paste0("S", scenario, "_", v)]][!df$code %in% parties] <- BAU[[v]][!df$code %in% parties] 
+          if ("Dem USA" %in% parties) {
+            if (t == "") df[[paste0("S", scenario, "_", v)]][df$code == "USA"] <- .2149 * df[[v]][df$code == "USA"] + (1-.2149) * BAU[[v]][df$code == "USA"]
+            else if (t == "pa_") df[[paste0("S", scenario, "_", v)]][df$code == "USA"] <- df[[paste0("S", scenario, "_emissions_", y)]][df$code == "USA"]/df[[paste0("adult_", y)]][df$code == "USA"]
+            else if (t == "pc_") df[[paste0("S", scenario, "_", v)]][df$code == "USA"] <- df[[paste0("S", scenario, "_emissions_", y)]][df$code == "USA"]/df[[paste0("pop_", y)]][df$code == "USA"]
+          }
+        }
+      }
+    }
     for (v in names(df)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj|^diff_gain_gdr_gcs_adj"), names(df))]) df[[paste0("S", scenario, "_", v)]] <- df_parties[[v]]
     for (v in names(df)[grepl(c("^gain_adj_|^gain_adj_over_gdp_|^npv_pa_gcs_adj|^npv_over_gdp_gcs_adj"), names(df))]) df[[paste0("S", scenario, "_", v)]][!df$code %in% parties] <- NA
   }
@@ -279,6 +292,8 @@ copy_from_cp <- c("country", "country_map", # These two are absolutely needed
 # total_revenues (and average_revenues) do not depend on the scenario: they simply multiply total world emissions by the carbon price (and divide by number of beneficiaries if participation is universal and there is no special provisions like opt out).
 # basic_income takes into account the opt out, basic_income_adj also takes into account the provision to avoid anti-redistributive effects. They are expressed per beneficiary. By default, beneficiary "adult_" so it coincides with basic_income_(adj_)pa.
 total_revenues <- average_revenues <- basic_income <- basic_income_adj <- basic_income_pa <- basic_income_adj_pa <- list()
+bau <- prepare_ssp_country("SSP245MESGB") # SSP2-4.5, temp 2100: 2.7°C, AR6 WGI SPM https://www.carbone4.com/publication-scenarios-ssp-adaptation
+bau <- create_var_ssp(df = bau) # 
 df <- prepare_ssp_country("SSP226MESGB") # sm, SSP2-2.6, temp max: 1.8°C, temp 2100: 1.8°C
 df <- create_var_ssp(df = df) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB  # , beneficiary = "recipient_"
 

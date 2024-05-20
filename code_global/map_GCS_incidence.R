@@ -1462,7 +1462,7 @@ View(ar[ar$Model == "GCAM 5.3" & ar$Scenario == "SSP_SSP2" & ar$Variable == "Emi
 # unique(ssp_country$scenario) # SSP119IMAGE and SSP226MESGB are the best as they correspond to illustrative marker scenario of respective SSP1 and 2
 # unique(paste(ssp_country$entity, ssp_country$unit)) # GDPPPP (M 2011 $ (International, Geary–Khamis)) POP (k) CO2 (Gg = kt OR Mt) CH4 (Gg OR Mt) N2O FGASES FGASESAR4 KYOTOGHG KYOTOGHGAR4
 # names(ssp_country)
-# ssp_country <- ssp_country %>% .[.$scenario %in% c("SSP119IMAGE", "SSP226MESGB", "SSP119GCAM4", "SSP226AIMCGE") & .$source != "SSPIAMIE",]
+# ssp_country <- ssp_country %>% .[.$scenario %in% c("SSP119IMAGE", "SSP226MESGB", "SSP119GCAM4", "SSP226AIMCGE", "SSP245MESGB") & .$source != "SSPIAMIE",]
 # ssp_country <- write.csv(ssp_country, "../data/PMSSPIE.csv", row.names = FALSE)
 ssp_country <- read.csv("../data/PMSSPIE.csv")
 # unique(ssp_country$source) # PMSSPIEMISC: gdp, pop; PMSSPIE: emissions; SSPIAMIE: unharmonized (useless)
@@ -1983,11 +1983,11 @@ wid$variation_income[is.na(wid$variation_income)] <- sort((wid$post_income - wid
 revenues_pa*12/mean(wid$income) # Revenues as share of world GDP
 
 # Three different dataset: WID, PIP, Gütschow
-# Poverty gap is computed from WID (Table ineq) and PIP () => best to combine PIP with GDP data as we do => 2% PG in 2030
-# Poverty rate is computed from WID (used to compute transfer from rich to poor) and PIP => PIP more accurate to measure poverty rate => 40% PR in 2030
-# Revenue raised is computed from WID (interpersonal transfer) and Gütschow
+# Poverty gap is computed from WID (Table ineq) and PIP (7.1 note 3) => best to combine PIP with GDP data as we do => 2% PG in 2030
+# Poverty rate is computed from WID (6.1, used to compute transfer from rich to poor) and PIP (7.1 note 3) => PIP more accurate to measure poverty rate => 40% PR in 2030
+# Revenue raised is computed from WID (revenues_pa) and Gütschow (5.2)
 # NEED at least 40€ of RDB to eradicate poverty
-# => We necessarily have an inconsistency between ineq Table (where it is by chance if we find PG identical to PIP),
+# => We necessarily have an inconsistency between ineq Table (where it is by chance that we find PG identical to PIP),
 #    rich->poor transfer (where we should rely on PIP percentiles) and total revenue raised (which relies on Gütschow)
 
 
@@ -2274,3 +2274,17 @@ sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$
 # 40€/an à chaque Haïtien
 # 44€ pour gain par personne
 # (indirectement) -10€ par Français
+
+
+# (df$gain_adj_2030*df$adult_2022)[df$country == "United States"]*0.97 # 460G$ to be raised to offset 
+# df$gain_adj_2030[df$country == "United States"]*0.97/12 # -137$/month: loss to average (compensated) American from GCP
+# # Increasing income tax rates 32->33% >315k, 35->40% >400k, 37->50% >1M, 37->60% >5M, 37->70% >50M, integrate with corporate tax and tax capital gains fully
+# # => collects 459.4 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
+# # The site also shows that taxes would barely increase for the bottom 97%, those with less than $312k/year (tax rate of percentile 96: 31.6->31.9%)
+# 315000/12 # 26250$/month: threshold of top 3% according to taxjusticenow.org (FYI top 1% threshold: 567k/year = 47k/month)
+
+# (df$gain_adj_2030*df$adult_2022)[df$country == "United States"] # 474G$ to be raised to offset 
+# df$gain_adj_2030[df$country == "United States"]/12 # -141$/month: loss to average (compensated) American from GCP
+# # Increasing income tax rates 35->40% >400k, 35->45% >600k, 37->50% >1M, 37->60% >5M, 37->70% >50M, integrate with corporate tax and tax capital gains fully
+# # => collects 473 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
+# # /!\ The site also shows that taxes would not only increase for the top 1%, e.g. for percentile 98: 30.1->30.9% 
