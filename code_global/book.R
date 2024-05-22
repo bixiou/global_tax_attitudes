@@ -92,7 +92,9 @@ compute_poverty_gap(df = w, threshold = 7.5, growth = "average")/(world_GDP_PPP*
 # Table 1 (in OECD, 2023) shows DAC total aid flows are $204G = 0.36 of their GNI => 0.06% of their GNI is for aid to LDCs. *DAC: Development Assistance Committee
 0.36*32/204 # 0.056% of DAC countries' GNI to LDCs
 
-# Note 8 TODO 2 à 5% de leur PIB
+# Note 8 2 à 5% de leur PIB
+share_HIC_in_world_GDP <- 64.39/139.36 # https://data.worldbank.org/indicator/NY.GDP.MKTP.PP.KD?end=2022&locations=XD-1W&start=2022&view=bar (consulted on 21/05/2024)
+compute_poverty_gap(df = w, threshold = 7.5, growth = "average")/(world_GDP_PPP*1.035^8)/share_HIC_in_world_GDP # 4.5%
 
 # Note 9 Source: https://ourworldindata.org/contributed-most-global-co2
 
