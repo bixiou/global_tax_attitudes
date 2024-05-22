@@ -200,7 +200,7 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
     paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios d'union climatique.", 
               position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1),
               label = "scenarios_table_fr", row.names = FALSE,  format.args = list(decimal = ","),
-        col.names = c("\\makecell{Scenario\\\\d'union}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
+        col.names = c("\\makecell{Scénario\\\\d'union}", "\\makecell{Émissions\\\\mondiales\\\\couvertes}", "\\makecell{Population\\\\mondiale\\\\couverte}", 
                       "\\makecell{Revenu\\\\de base\\\\en 2040\\\\(\\euro{}/mois)}", "\\makecell{Coût pour l'UE\\\\en 2040\\\\(en fraction\\\\de son PIB)}", #"\\makecell{Contribution de l'UE\\\\en 2040\\\\(fraction de son PIB)}", 
                       "\\makecell{Hausse de la\\\\température\\\\en 2100\\\\(en \\textdegree{}C)}")), 
         collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table_fr.tex") 
