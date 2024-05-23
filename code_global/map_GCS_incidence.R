@@ -1303,17 +1303,27 @@ co2_pop$npv_over_gdp_gcs_adj[co2_pop$country == "Colombia"]
 
 ##### 60% of emissions #####
 co2_pop$share_territorial_2019 <- co2_pop$territorial_2019/sum(co2_pop$territorial_2019)
-cumulative_emissions <- function(variable_gain = "mean_gain_over_gdp_2019", variable_share = "share_emissions_2019") {
-  order_by_gain <- order(-co2_pop[[variable_gain]]) 
-  emissions_ordered_by_gain <- setNames(co2_pop[[variable_share]], co2_pop$country)[order_by_gain]
-  (cumul_emissions <- setNames(sapply(1:204, function(i) sum(emissions_ordered_by_gain[1:i])), names(emissions_ordered_by_gain)))
-  return(round(cbind(share = co2_pop[[variable_share]][order_by_gain], cumul = cumul_emissions, gain = co2_pop$mean_gain_2030[order_by_gain]), 3))
+co2_pop$emissions_pc_2019 <- co2_pop$emissions_2019/co2_pop$pop_2019
+cumulative_emissions <- function(var = "cumulative_average_pc", variable_order = "emissions_pc_2019", decreasing_order = T, variable_share = "share_emissions_2019", variable_pop = "pop_2019", data = co2_pop) {
+  order_by_var <- order(data[[variable_order]], decreasing = decreasing_order) 
+  emissions_ordered <- setNames(data[[variable_share]], data$country)[order_by_var]
+  (cumul_emissions <- setNames(sapply(1:204, function(i) sum(emissions_ordered[1:i])), names(emissions_ordered)))
+  data$cumulative_average_pc <- data$cumul_pop <- NA
+  if (var == "cumulative_average_pc") for (i in 1:length(order_by_var)) data$cumulative_average_pc[order_by_var[i]] <- sum((data[[variable_order]] * data[[variable_pop]])[order_by_var[1:i]])/sum(data[[variable_pop]][order_by_var[1:i]])
+  for (i in 1:length(order_by_var)) data$cumul_pop[order_by_var[i]] <- sum(data[[variable_pop]][order_by_var[1:i]])/sum(data[[variable_pop]])
+  return(round(cbind(share = data[[variable_share]][order_by_var], cumul = cumul_emissions, var = data[[var]][order_by_var], var_over_max = data[[var]][order_by_var]/max(data[[var]][order_by_var]), cumul_pop = data$cumul_pop[order_by_var]), 3))
 }
 
-cumulative_emissions("mean_gain_over_gdp_2019")
-cumulative_emissions("mean_gain_2030") 
-cumulative_emissions("mean_gain_over_gdp_2019", "territorial_2019")
-cumulative_emissions("mean_gain_2030", "territorial_2019") 
+cumulative_emissions(var = "cumulative_average_pc", variable_order = "emissions_pc_2019", decreasing_order = FALSE)
+emissions_tot/emissions_tot["2020"]
+footprint_pc <- c()
+for (s in scenarios_names) footprint_pc[s] <- sum(co2_pop$emissions_2019[co2_pop$code %in% scenarios_parties[[s]]])/sum(co2_pop$pop_2019[co2_pop$code %in% scenarios_parties[[s]]])
+footprint_pc/wtd.mean(co2_pop$emissions_pc_2019, co2_pop$pop_2019)
+
+cumulative_emissions(var = "mean_gain_2030", variable_order = "mean_gain_2030", variable_share = "share_emissions_2019") 
+cumulative_emissions(var = "mean_gain_2030", variable_order = "mean_gain_over_gdp_2019", variable_share = "share_emissions_2019")
+cumulative_emissions(var = "mean_gain_2030", variable_order = "mean_gain_2030", variable_share = "territorial_2019") 
+cumulative_emissions(var = "mean_gain_2030", variable_order = "mean_gain_over_gdp_2019", variable_share = "territorial_2019")
 # footprint
 sum(co2_pop$share_emissions_2019[co2_pop$mean_gain_2030 > 0 | co2_pop$code %in% c("CHN", EU28_countries)]) # exactly 60%
 sum(co2_pop$share_emissions_2019[co2_pop$code %in% c("CHN", "IND", "USA", EU28_countries)]) # 62.4%
