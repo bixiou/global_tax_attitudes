@@ -190,12 +190,22 @@ for (s in scenarios_names) {
 
 for (col in names(scenarios_features)[2:length(names(scenarios_features))]) scenarios_table[, col] <- paste0(sprintf(paste0("%.", if (grepl("EU_|temperature", col)) 1 else 0, "f"), 
                             if (grepl("basic_income|temperature", col)) scenarios_features[, col] else 100*scenarios_features[, col]), if (grepl("basic_income|temperature", col)) "" else "\\%")
+# Old
 # cat(paste(kbl(scenarios_table, "latex", caption = "Main features of the different scenarios.", position = "h", escape = F, booktabs = T, align = "c", 
 #               linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1), label = "scenarios_table.tex", row.names = FALSE,  
 #               col.names = c("Scenario", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic income\\\\in 2040 (\\$/month)}", 
 #                             "\\makecell{EU loss in 2040\\\\(share of its GDP)}")), collapse="\n"), file = "../tables/scenarios_table.tex") 
+# English:
+cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
+         paste(kbl(scenarios_table, "latex", caption = "Main features of different scenarios of climate union.", 
+                   position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1),
+                   label = "scenarios_table", row.names = FALSE,  format.args = list(decimal = ","),
+                   col.names = c("\\makecell{Union\\\\scenario}", "\\makecell{Emissions\\\\covered}", "\\makecell{Population\\\\covered}", "\\makecell{Basic\\\\income\\\\in 2040\\\\(\\euro{}/month)}", 
+                                 "\\makecell{EU loss\\\\in 2040\\\\(share of\\\\its GDP)}", "\\makecell{Temperature\\\\increase\\\\in 2100\\\\(in \\textdegree{}C)}")),
+               collapse="\n"), fixed = T), fixed = T), file = "../tables/scenarios_table.tex") 
 scenarios_table_fr <- scenarios_table
 scenarios_table_fr$scenario <- c("Tous les pays", "Tous sauf OPEP+", "Optimiste", "Central", "Prudent", "UE + Afrique")
+# French
 cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
     paste(kbl(scenarios_table_fr, "latex", caption = "Principales caractéristiques des différents scénarios d'union climatique.", 
               position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(scenarios_table)-1), digits = c(0, 0, 0, 1),
@@ -238,6 +248,15 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
                       "\\makecell{Gini\\\\(en \\%)}", "\\makecell{D9/D1\\\\Ratio\\\\inter-décile}")), 
         collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq.tex") 
 
+# English
+row.names(table_ineq) <- c("Before", "After")
+cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
+                                                 paste(kbl(table_ineq, "latex", caption = "Evolution of global inequality following the Plan.", 
+                                                           position = "t", escape = F, booktabs = T, digits = 1, label = "gcp_ineq", align = 'c', format.args = list(decimal = ","),
+                                                           col.names = c("\\makecell{Poverty gap\\\\at \\textit{\\texteuro{}}7/day\\\\(in \\% of GDP)}", "\\makecell{Top 10\\%\\\\(share in \\%)}", "\\makecell{Bottom 50\\%\\\\(share in \\%)}", 
+                                                                         "\\makecell{Gini\\\\(en \\%)}", "\\makecell{D9/D1\\\\Interdecile\\\\ratio}")), 
+                                                       collapse="\n"), fixed = T), fixed = T), file = "../tables/gcp_ineq_en.tex") 
+
 basic_income_adj$df["2030"]*euro_per_dollar/12 # 44€/month: amount of the basic income under universal participation
 revenues_pa # 42€/month Consistent with the basic income of our other model. 
 min(wid$diff_income[1:99])/12 # -168€/month: maximum average loss for the 99th percentile (only the 100th loses more)
@@ -271,6 +290,7 @@ revenues_pa # 42€/month basic income
 # mar <- par()$mar
 # mgp <- par()$mgp
 par(mar = c(3.1, 3.1, 0.3, 0.2), mgp = c(2.2, 1, 0)) # width: 338, height: 322
+# French
 # 6.1a ../figures/policies/gcp_rev_distr.pdf 
 plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile de niveau de vie", ylab = "Niveau de vie (en €/mois)")
 lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
@@ -283,6 +303,19 @@ plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l'
 # 6.1d ../figures/policies/gcp_var_rev_rich_only.pdf
 plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en %)") + grid() + abline(h = 0)
 
+# English
+# 6.1a ../figures/policies/gcp_rev_distr_en.pdf
+plot(1:100, wid$income/12, col = "red", lwd = 2, type = 'l', ylim = c(0, 8e4/12), xlab = "Percentile of living standard", ylab = "Standard of living (in €/mois)")
+lines(1:100, wid$post_income/12, col = "darkgreen", lwd = 2, type = 'l', lty = 2) + grid()
+legend("topleft", legend = list("current one", "following the Plan"), col = c("red", "darkgreen"), title = "Standard of living", lwd = 2, lty = c(1,2))
+# 6.1b ../figures/policies/gcp_diff_rev_en.pdf
+plot(1:100, wid$diff_income/12, col = "purple", lwd = 2, ylim = c(-200, 50), type = 'l', xlab = "Percentile of living standard", ylab = "Variation of living standard (in €/mois)") + grid() + abline(h = 0)
+# plot(1:100, wid$diff_income, col = "purple", lwd = 2, ylim = c(-2000, 500), type = 'l', xlab = "Percentile de niveau de vie", ylab = "Variation de niveau de vie (en €/an)") + grid() + abline(h = 0)
+# 6.1c ../figures/policies/gcp_var_rev_en.pdf
+plot(1:100, 100*pmin(6, wid$variation_income), col = "blue", lwd = 2, type = 'l', ylim = 100*c(0, 2.2), xlab = "Percentile of living standard", ylab = "Variation of living standard (in %)") + grid() + abline(h = 0)
+# 6.1d ../figures/policies/gcp_var_rev_rich_only_en.pdf
+plot(40:100, 100*wid$variation_income[40:100], col = "blue", lwd = 2, type = 'l', ylim = 100*c(-0.024, 0.048), xlab = "Percentile of living standard", ylab = "Variation of living standard (in %)") + grid() + abline(h = 0)
+
 percentiles$share_below_global_mean[no.na(percentiles$code) == "IND"] # 94% of winners in India
 percentiles$share_below_global_mean[no.na(percentiles$code) == "FRA"] # 23% of winners in France
 df$gain_euro_2030[df$code == "FRA"] # -9.4€/month for the average French 
@@ -292,6 +325,7 @@ df$gain_euro_2030[df$code == "FRA"] # -9.4€/month for the average French
 # California, Illinois, New York, New Jersey, Washington, Massachusetts, Oregon, Connecticut, Delaware, Hawaii, Rhose Island, DC, Vermont, Maryland
 # sources: https://en.wikipedia.org/wiki/2020_United_States_presidential_election#Results_by_state
 
+# French
 # Figure 6.2 ../figures/maps/share_below_global_mean.pdf 1297x626, then cropped using https://pdfresizer.com/crop
 plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% à ", end = "%", return = "levels")), legend = "Part de gagnants\nsuite au\nPlan mondial pour le climat", 
@@ -299,22 +333,49 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 
 # Figure 6.3 ../figures/maps/gain_adj_2030_fr.pdf
 plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
-               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_2030_fr"),
-               legend = paste0("Gain net\npar adulte au\nPlan mondial pour le climat\nen 2030 (en € par mois)"), #fill_na = T,
-               save = F) 
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " à ", return = "levels")), filename = paste0("gain_adj_2030_fr"),
+               legend = paste0("Gain net\npar adulte suite au\nPlan mondial pour le climat\nen 2030 (en € par mois)"), #fill_na = T,
+               save = T) 
 
 # Figure 6.4 ../figures/maps/npv_over_gdp_gcs_adj_fr.pdf
 plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
-               legend = "Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)", #fill_na = T, \n(with 4% discount rate)
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " à ", return = "levels")), filename = "npv_over_gdp_gcs_adj_fr",
+               legend = "Gains nets suite au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)", #fill_na = T, \n(with 4% discount rate)
+               save = T)
+
+# Figure 6.5 ../figures/maps/Soptimistic_npv_over_gdp_gcs_adj_fr.pdf
+# Figure 6.6 ../figures/maps/Scentral_npv_over_gdp_gcs_adj_fr.pdf
+for (i in 3:4) {
+  plot_world_map(paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"), df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .075, trim = T, # svg, pdf
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " à ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_fr"),
+                 legend = paste0("Gains nets suite au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)\nScénario: ", capitalize(gsub("_", " ", scenarios_table_fr$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
+                 save = T, parties = scenarios_parties[[scenarios_names[i]]])
+}
+
+# English
+# Figure 6.2 ../figures/maps/share_below_global_mean_en.pdf 1297x626, then cropped using https://pdfresizer.com/crop
+plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$country_map),],  breaks = c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), format = c('png', 'pdf'), legend_x = .09, trim = T, filename = "share_below_global_mean_en",
+               labels = sub("≤", "<", agg_thresholds(c(1), c(-Inf, 1, 15, 30, 50, 70, 90, 99, Inf), sep = "% to ", end = "%", return = "levels")), legend = "Share of winners\nfollowing the\nGlobal Climate Plan",
+               save = F)
+
+# Figure 6.3 ../figures/maps/gain_adj_2030.pdf
+plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " to ", return = "levels")), filename = paste0("gain_adj_2030"),
+               legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Plan\nin 2030 (in € per month)"), #fill_na = T,
+               save = F)
+
+# Figure 6.4 ../figures/maps/npv_over_gdp_gcs_adj.pdf
+plot_world_map("npv_over_gdp_gcs_adj", df = df, breaks = c(-Inf, -.02, -.01, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = "npv_over_gdp_gcs_adj",
+               legend = "Net gain per adult\nfollowing the\nGlobal Climate Plan\naggregated over the century\n(in % of GDP)", #fill_na = T, \n(with 4% discount rate)
                save = F)
 
 # Figure 6.5 ../figures/maps/Soptimistic_npv_over_gdp_gcs_adj.pdf
 # Figure 6.6 ../figures/maps/Scentral_npv_over_gdp_gcs_adj.pdf
 for (i in 3:4) {
   plot_world_map(paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"), df = df, breaks = c(-Inf, -.02, -.01, -.003, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .075, trim = T, # svg, pdf
-                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj_fr"),
-                 legend = paste0("Gains nets au\nPlan mondial pour le climat\nagrégés sur le siècle\n(en % du PIB)\nScénario: ", capitalize(gsub("_", " ", scenarios_table_fr$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), filename = paste0("S", scenarios_names[i], "_npv_over_gdp_gcs_adj"),
+                 legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Plan\naggregated over the century\n(in % of GDP)\nScenario: ", capitalize(gsub("_", " ", scenarios_table$scenario[i]))), #fill_na = T, \n(with 3% discount rate)
                  save = F, parties = scenarios_parties[[scenarios_names[i]]])
 }
 
