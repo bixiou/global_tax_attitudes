@@ -697,7 +697,7 @@ Pour résumer, les enquêtes d'opinion révèlent un soutien majoritaire large e
 
 Si la population soutient ce Plan, c'est parce qu'il est équitable et mondial, donc effectif pour mettre fin au changement climatique. Ce n'était pas le cas de la taxe carbone française à laquelle se sont opposés les Gilets jaunes, et dont on a clairement mesuré le rejet dans les enquêtes d'opinion. En d'autres termes, la plupart des gens sont préoccupés par le climat, et disposés à soutenir une solution pour peu qu'elle soit juste et effective. 
 Pour en savoir plus sur ces enquêtes% (lire le questionnaire, les méthodes précises et les résultats complets)
-, je renvoie le lecteur à l'article académique intitulé \textit{International Attitudes Toward Global Policies}, que j'ai co-écrit avec Thomas Douenne et Linus Mattauch. 
+, je renvoie le lecteur à l'article académique intitulé \href{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4448523}{\textit{International Attitudes Toward Global Policies}}, que j'ai co-écrit avec Thomas Douenne et Linus Mattauch. 
 
 \chapter*{\textit{Déroulé du futur politique rêvé}}\label{ch:narr_reve}
 \addcontentsline{toc}{chapter}{\nameref{ch:narr_reve}} 
@@ -1341,7 +1341,8 @@ Nous sommes un groupe divers d'organisations de la société civile, d'universit
 
 \section{L'Initiative Citoyenne Européenne}
 
-Alors que je finalise ce livre, je découvre que le parti Volt vient de déposer une Initiative Citoyenne Européenne, appelant l'Union Européenne à renforcer sa politique climatique, notamment en promouvant à l'échelle mondiale une union climatique similaire au Plan mondial pour le climat. Si un million de signatures sont récoltées, la Commission européenne devra se positionner sur cette initiative. Je vous invite à la signer sur~: \href{https://citizens-initiative.europa.eu/initiatives/details/2024/000005_fr}{bit.ly/ICEclimat}.
+Alors que je finalise ce livre, je découvre qu'une Initiative Citoyenne Européenne vient d'être déposée. %que le parti Volt vient de déposer une Initiative Citoyenne Européenne, 
+Elle appelle l'Union Européenne à renforcer sa politique climatique, notamment en promouvant à l'échelle mondiale une union climatique similaire au Plan mondial pour le climat. Si un million de signatures sont récoltées, la Commission européenne devra se positionner sur cette initiative. Je vous invite à la signer sur~: \href{https://citizens-initiative.europa.eu/initiatives/details/2024/000005_fr}{bit.ly/ICEclimat}.
 
 \chapter{Postface}
 
@@ -1689,6 +1690,7 @@ En particulier, le budget d'émissions de la première phase permettant de maint
 % Une interprétation plus lâche % autre terme que "souple"? lâche?
 % pourrait être utilisée si on considère qu'un objectif plus strict ne peut être atteint (compte tenu des émissions actuelles de 41 GtCO$_\text{2}$ par an). Par exemple, d'autres interprétations pourraient consister à limiter le réchauffement climatique à +2\textdegree{}C avec une probabilité de 83~\% (ce qui implique un budget de 900 GtCO$_\text{2}$ à partir de 2020) ou avec une probabilité de 67~\% (1150 GtCO$_\text{2}$). 
 
+\paragraph{Participation non universelle}
 Si certains pays ne participent pas au Plan, le budget carbone du Plan serait ajusté à la baisse sur la base d'un droit d'émission égal pour chaque adulte humain (en cohérence avec le principe de laisser les mêmes droits d'émission aux pays non participants).
 
 \paragraph{Gouvernance} 
@@ -1783,7 +1785,7 @@ J'estime la proportion de gagnants conformément à la métrique de gain fiscal 
 
 Malheureusement, je n'ai pas encore accès à un modèle qui permet de simuler l'effet d'une tarification uniforme au niveau mondial sur les émissions de chaque pays. J'utilise donc deux jeux de données~: l'un pour le prix du carbone et l'autre pour les trajectoires nationales. Pour les trajectoires nationales d'émissions, de population et de PIB par habitant, j'utilise le scénario SSP2-2.6 du modèle couplé énergie-climat MESSAGE-GLOBIOM\footnote{En effet, c'est le modèle de référence pour ce scénario, cf. \cite{fricko_marker_2017}.}, fourni par \cite{gutschow_country-resolved_2021}. Ce scénario correspond au sentier socio-économique central utilisé par le GIEC (SSP 2), couplé avec un réchauffement limité à +1,8\textdegree{}C (la trajectoire RCP 2.6, avec des émissions de 934~GtCO$_\text{2}$ entre 2025 et net-zéro en 2079). Pour calculer la population adulte, je multiplie la trajectoire de population par la proportion de personnes âgées de 15 ans ou plus d'après les projections de l'ONU. Enfin, je complète les données manquantes manuellement (notamment pour Taïwan et la Corée du Nord). Les données précédentes ne contenant pas de prix du carbone, j'utilise le scénario de prix du modèle IMAGE (fourni par l'IIASA)\footnote{J'utilise le scénario du modèle IMAGE plutôt que de MESSAGE car le prix est environ quatre fois plus faible dans ce dernier, or je préfère une approche conservatrice qui surestime potentiellement les coûts. 
 % Les prix varient de 20~\% suivant les régions du modèle en 2030 avant de coïncider à partir de 2040, j'utilise donc le prix pour l'Asie, qui est proche de la moyenne des régions.% DONE remove?
-} correspondant au scénario SSP2-2.6. J'utilise le même prix du carbone pour les scénarios avec participation non universelle. 
+} correspondant au scénario SSP2-2.6. En première approximation, j'utilise le même prix du carbone pour les scénarios avec participation non universelle. Dans la réalité, le prix serait plus faible dès lors que l'union climatique a une empreinte carbone par personne plus faible que la moyenne mondiale. Mes simulations avec participation non universelle conduisent ainsi à surestimer les transferts internationaux et à sous-estimer le prix carbone et les émissions, surtout durant les premières années du Plan.
 
 Le gain net d'un pays correspond à la moyenne des gains fiscaux de sa population~: il s'agit des recettes reçues (a priori en revenu de base) moins le prix du carbone payé. Ce gain net monétaire ne tient pas compte des dégâts du changement climatique subis ou évités ni d'effets macroéconomiques (sur la croissance, les prix ou les revenus du pétrole, etc.). Il correspond au gain net par rapport à une situation sans transferts internationaux mais avec un prix du carbone identique (ainsi que des émissions et des PIB identiques)\footnote{Je calcule le gain net pour chaque année entre 2025 et 2100. 
 % J'interpole linéairement le prix pour les années hors dizaines. 
