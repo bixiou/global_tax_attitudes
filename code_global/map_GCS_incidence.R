@@ -2298,3 +2298,6 @@ sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$
 # # Increasing income tax rates 35->40% >400k, 35->45% >600k, 37->50% >1M, 37->60% >5M, 37->70% >50M, integrate with corporate tax and tax capital gains fully
 # # => collects 473 G$ in 2019. Source: taxjusticenow.org (consulted on 29/04/2024)
 # # /!\ The site also shows that taxes would not only increase for the top 1%, e.g. for percentile 98: 30.1->30.9% 
+
+
+##### Realistic scenarios #####
