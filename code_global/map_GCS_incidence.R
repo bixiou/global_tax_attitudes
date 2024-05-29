@@ -2300,4 +2300,169 @@ sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$
 # # /!\ The site also shows that taxes would not only increase for the top 1%, e.g. for percentile 98: 30.1->30.9% 
 
 
-##### Realistic scenarios #####
+##### Realistic scenario #####
+# Approach: To assess the net gain from the GCP, I take as counterfactual a scenario with the same emissions allowances but no carbon trading, so different location of emissions.
+# Counterfactual: Each country's emissions is capped by the equal pc allocation. Carbon price is higher than the international GCP one for high emitters and zero of low ones.
+#                 National price times emissions reductions gives an upper bound of true cost as they were undertaken because their cost was lower than the national price.
+#                 GCP price is zero in first phase so a lower bound of true cost for high emitters. In second phase, we don't know if (multiplied by emissions reductions) it under- or over-estimate true costs.
+# GCP: Countries trade emissions permits. The net gain compared to counterfactual is equal to: 
+#      G = P_GCP*(R - E_GCP) - C*(E_cf - E_GCP) = Price_carbon_GCP*(Rights - Emissions(P_GCP)) - (Cost_of_abatement_GCP*Abatement_GCP - Cost_of_abatement_cf*Abatement_counterfactual) = P_GCP*(R - E(P_GCP)) - C*((BAU-E(P_GCP)) - (BAU-E(P_cf))) with C = weighted average of Cost_of_abatement_cf/GCP
+#      Only P doesn't depend on the country. High emitters <=> R = E(P_cf) < E(P_GCP). 
+#      In the first phase, P = 10, P_GCP ~ P_cf => G ~ P*(R-E) for low-emitter (as E_GCP ~ E_cf = BAU < R /!\ this approx doesn't hold, but I can do proper computations) and C > P for high emitters* => G > 0 for all countries. (*otherwise they wouldn't trade i.e. their emissions would be < R)
+#      In the second phase, C is about the same in every country (and lower for countries with easy-to-abate emissions), with C < P. Hence G > 0 <=> R > E (low emitter).
+#                           For high emitters, E_cf = R => G = (P_GCP - C)*(R - E) < 0. For low emitters, E_cf < R => -C*(E_cf - E_GCP) > -C*(R - E_GCP) => G > (P_GCP - C)*(R - E_GCP) > 0.  
+# Pb: to estimate G, I need an estimate of C. As a first approximation, I can take C = h*P_GCP (e.g. h=1/2). Hence I get in 2nd phase: Hypothesis = (1-h)*P_GCP*(R - E_GCP) = G for higher emitters and H < G for lower emitters.
+# => I can compute P_1st_phase(h) = P such that NPV(G) = 0 for China.
+# Hypotheses: E_GCP, P_GCP from Gütschow 1.8°C; E_cf = Contract & Converge in 2050 from van den Ven BAU to min{E_BAU; R = equal p.c. 1.8°C}.
+# 1. Compare E_BAU with R for major countries and Climate Union, find date at which both cross.
+# 2. Assume h = 1/2 and P_1 = 10. Compute G for major countries.
+# 3. Compute P_1(h).
+
+# 0. Prepare data from van de Ven et al. (2023)
+years_v <- seq(2020, 2100, 10) # Could start in 2010
+vdv <- read.csv("../data/van_de_Ven2023/global_ite2_allmodels.csv")
+# Select variables
+vdv <- vdv[vdv$Model == "TIAM_Grantham", ] # Closest to reality in 2024 compared to the others: "GCAM-PR 5.3", "GEMINI-E3 7.0" (the one with Policy Cost variables), "MUSE", "TIAM_Grantham" # TODO: try GEMINI
+vdv <- vdv[vdv$Scenario == "CP_EI", ] # Current policies. Others are: Baseline, NDC_EI, NDC_LTT, baseline.
+vdv <- vdv[vdv$Variable %in% c("Emissions|CO2|Energy and Industrial Processes", "Population", "Price|Carbon", "GDP|PPP"),] # Absent: , "Emissions|CO2", "Temperature|Global Mean", "GDP|MER", "Policy Cost|Equivalent Variation", "Policy Cost|GDP Loss", "Policy Cost|Consumption Loss"), ]  # Emissions Mt, GDP G$_2010, Pop M
+vdv <- vdv[, c("Region", "Variable", paste0("X", years_v))]
+for (v in paste0("X", years_v)) vdv[[v]] <- as.numeric(vdv[[v]])
+unique(vdv$Region) # "AFR", "AUS", "CAN", "CHI", "CSA", "EEU", "FSU", "IND", "JPN", "MEA", "MEX", "ODA", "SKO", "USA", "WEU", "World"
+vdv$Variable[vdv$Variable == "Emissions|CO2|Energy and Industrial Processes"] <- "emissions_bau"
+vdv$Variable[vdv$Variable == "Price|Carbon"] <- "price"
+vdv$Variable[vdv$Variable == "Population"] <- "pop"
+vdv$Variable[vdv$Variable == "GDP|PPP"] <- "gdp"
+v <- vdv %>% pivot_longer(cols = starts_with("X"), names_to = "Year", values_to = "Value") %>% mutate(Year = gsub("X", "", Year)) %>%
+  unite("Variable_Year", Variable, Year, sep = "_") %>% pivot_wider(names_from = "Variable_Year", values_from = "Value")
+names(v)[1] <- "region"
+# Create union
+regions_union <- c("AFR", "CHI", "CSA", "IND", "MEX", "ODA", "EEU", "WEU", "JPN", "SKO") 
+v$union <- v$region %in% regions_union
+temp <- v[v$region == "World", ]
+temp$region <- "union"
+for (y in years_v) {
+  temp[[paste0("emissions_bau_", y)]] <- sum(v[[paste0("emissions_bau_", y)]][v$union == T])
+  temp[[paste0("pop_", y)]] <- sum(v[[paste0("pop_", y)]][v$union == T])
+  temp[[paste0("gdp_", y)]] <- sum(v[[paste0("gdp_", y)]][v$union == T])
+  temp[[paste0("price_", y)]] <- wtd.mean(v[[paste0("price_", y)]][v$union == T], v[[paste0("pop_", y)]][v$union == T])
+}
+v <- rbind(v, temp)  
+# Create per capita variables
+for (y in years_v) v[[paste0("emissions_bau_pc_", y)]] <- v[[paste0("emissions_bau_", y)]]/v[[paste0("pop_", y)]]
+for (y in years_v) v[[paste0("gdp_pc_", y)]] <- v[[paste0("gdp_", y)]]/v[[paste0("pop_", y)]]
+for (y in years_v) v[[paste0("rights_pc_", y)]] <- emissions_pc[as.character(y)]
+for (y in years_v) v[[paste0("pop_", y)]] <- 1e6 * v[[paste0("pop_", y)]]
+# Add GCP
+sm$region_tiam <- c("ODA", "AFR", "EEU", "MEA", "CSA", "FSU", "AUS", "WEU", "FSU", "AFR", "WEU", "AFR", "AFR", "ODA", "EEU", "MEA", "CSA", "EEU", "FSU", "CSA", "CSA", "CSA", "CSA", "MEA", "ODA", "AFR", "AFR", "CAN", "WEU", "CSA", "CHI", "AFR", "AFR", "AFR", "AFR", "CSA", "AFR", "AFR", "CSA", "CSA", "EEU", "EEU", "WEU", "AFR", "WEU", "CSA", "AFR", "CSA", "AFR", "AFR", "WEU", "EEU", "AFR", "WEU", "AUS", "WEU", "AFR", "WEU", "FSU", "AFR", "AFR", "AFR", "AFR", "AFR", "WEU", "CSA", "CSA", "AUS", "CSA", "EEU", "CSA", "WEU", "ODA", "IND", "WEU", "MEA", "MEA", "WEU", "MEA", "WEU", "CSA", "MEA", "JPN", "FSU", "AFR", "FSU", "ODA", "SKO", "MEA", "ODA", "MEA", "AFR", "AFR", "ODA", "AFR", "WEU", "WEU", "WEU", "AFR", "WEU", "AFR", "ODA", "MEX", "AUS", "AFR", "WEU", "ODA", "AUS", "ODA", "AFR", "AFR", "AFR", "AFR", "ODA", "AFR", "AFR", "AFR", "CSA", "WEU", "WEU", "ODA", "AUS", "MEA", "ODA", "CSA", "CSA", "ODA", "ODA", "EEU", "WEU", "CSA", "MEA", "EEU", "FSU", "AFR", "MEA", "AFR", "AFR", "ODA", "AUS", "AFR", "CSA", "AFR", "EEU", "AFR", "CSA", "EEU", "EEU", "WEU", "AFR", "MEA", "AFR", "AFR", "ODA", "FSU", "FSU", "ODA", "CSA", "AFR", "MEA", "CHI", "AFR", "AFR", "FSU", "CSA", "USA", "FSU", "CSA", "ODA", "AUS", "AUS", "MEA", "AFR", "AFR", "AFR", "ODA")
+v$rights_pc_2040[v$region == "union"]/v$emissions_bau_pc_2040[v$region == "union"] # 113%
+v$rights_pc_2050[v$region == "union"]/v$emissions_bau_pc_2050[v$region == "union"] # 95%
+convergence_year <- 2048
+for (y in years_v) {
+  correction_gcp_y <- pmin(v[[paste0("rights_pc_", y)]][v$region == "union"], v[[paste0("emissions_bau_pc_", y)]][v$region == "union"])/wtd.mean(sm[[paste0("emissions_pc_", y)]][sm$region_tiam %in% regions_union], sm[[paste0("pop_", y)]][sm$region_tiam %in% regions_union])
+  for (r in unique(sm$region_tiam)) v[[paste0("emissions_gcp_pc_", y)]][v$region == r] <- correction_gcp_y * wtd.mean(sm[[paste0("emissions_pc_", y)]][sm$region_tiam == r], sm[[paste0("pop_", y)]][sm$region_tiam == r])
+  v[[paste0("emissions_gcp_pc_", y)]][v$region == "union"] <- wtd.mean(v[[paste0("emissions_gcp_pc_", y)]][v$union == T], v[[paste0("pop_", y)]][v$union == T])
+  v[[paste0("emissions_cf_pc_", y)]] <- pmin(v[[paste0("emissions_bau_pc_", y)]], v[[paste0("rights_pc_", y)]])
+  if (y < convergence_year) v[[paste0("emissions_cf_pc_", y)]] <- barycenter(y, 2020, convergence_year, v[[paste0("emissions_bau_pc_", y)]], v[[paste0("emissions_cf_pc_", y)]])
+}
+
+# 1. ../figures/BAU_equal_pc: Compare E_BAU with R for major countries and Climate Union, find date at which both cross.
+par(mar = c(2.1, 3.1, 0.1, 0.1), mgp = c(2.2, 1, 0)) 
+plot(years_v, v[v$region == "WEU", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'darkgreen', lwd = 2, lty = 3, xlab = "", ylab = "CO2 emissions per capita (tCO2/year)", ylim = c(0, 7.5))
+lines(years_v, v[v$region == "union", paste0("rights_pc_", years_v)], type = 'l', col = 'black', lwd = 4, lty = 9, xlab = "", ylab = "")
+lines(years_v, v[v$region == "union", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'black', lwd = 4, lty = 1, xlab = "", ylab = "")
+lines(years_v, v[v$region == "CHI", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "")
+lines(years_v, v[v$region == "IND", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'orange', lwd = 2, lty = 4, xlab = "", ylab = "")
+lines(years_v, v[v$region == "CSA", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'blue', lwd = 2, lty = 5)
+lines(years_v, v[v$region == "ODA", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'purple', lwd = 2, lty = 6, xlab = "", ylab = "")
+lines(years_v, v[v$region == "AFR", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'yellow', lwd = 2, lty = 7, xlab = "", ylab = "")
+lines(years_v, v[v$region == "EEU", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'green', lwd = 2, lty = 8, xlab = "", ylab = "")
+lines(years_v, v[v$region == "JPN", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'cyan', lwd = 2, lty = 8, xlab = "", ylab = "")
+# lines(years_v, v[v$region == "USA", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'darkblue', lwd = 2, lty = 9, xlab = "", ylab = "")
+# lines(years_v, v[v$region == "FSU", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'darkred', lwd = 2, lty = 10, xlab = "", ylab = "")
+lines(years_v, v[v$region == "World", paste0("emissions_bau_pc_", years_v)], type = 'l', col = 'grey', lwd = 4, lty = 1, xlab = "", ylab = "")
+grid() 
+legend("topright", legend = c("World", "Equal p.c.", "Climate Union", "China", "Western Europe", "India", "South America", "Other Developing Asia", "Africa", "Eastern Europe", "Japan"), col = c("grey", "black", "black", "red", "darkgreen", "orange", "blue", "purple", "yellow", "green", "cyan"), lwd = c(4, 4, 4,  rep(2, 9)), lty = c(1, 9, 1:9))
+# PB: EU has emissions below union average from 2040 => India, ODA, CSA then have incentives to quit the union as they become large emitters
+# PB: EU & China will decrease their ambition by purchasing emissions rights, which may only fuel corrupted African govts => worst-case: no reduction in poverty nor in emissions
+# => 1. Need to ensure money is well spent; 2. that carbon budget is lower than in the sum of enhanced NDCs; 3. that countries won't exit.
+# 3. Penalty in case of domestic repeal of climate laws. Receiving payments, including from wealth tax, conditional on implementing ETS. More redistributive allocation of rights.
+
+
+# 2. Assume h = 1/2 and P_1 = 10. Compute G for major countries. 
+# /!\  in first phase, _bau and _gcp are comparable for AFR but not for IND (although they should)
+# PB: E_GCP is wrong because it should match equal p.c. for the union, yet is lower.
+# TODO: sum paid and received should be equal even in first phase
+compute_net_gain <- function(h = .5, price_1 = 10, convergence_price = T, price_2 = carbon_price$ssp2_26msg, year_converge = convergence_year, df = v, discount_rate = .03) { # 
+  price <- price_2
+  for (y in years_v) {
+    if (y < year_converge) price[as.character(y)] <- if (convergence_price) barycenter(y, 2020, 10*ceiling(convergence_year/10), price_1, carbon_price$ssp2_26msg[as.character(10*ceiling(convergence_year/10))]) else price_1
+    contributor_y <- 1*(v[[paste0("emissions_gcp_pc_", y)]] > v[[paste0("rights_pc_", y)]])
+    revenues_y <- price[as.character(y)] * sum(pmax(0, v[[paste0("emissions_gcp_pc_", y)]] - v[[paste0("rights_pc_", y)]]) * v[[paste0("pop_", y)]] * v$union, na.rm = T)
+    transfer_pt_y <- revenues_y/sum(pmax(0, v[[paste0("rights_pc_", y)]] - v[[paste0("emissions_gcp_pc_", y)]]) * v[[paste0("pop_", y)]] * v$union, na.rm = T)
+    df[[paste0("gain_pc_", y)]] <- (price[as.character(y)] * contributor_y + transfer_pt_y * (1-contributor_y)) * (v[[paste0("rights_pc_", y)]] - v[[paste0("emissions_gcp_pc_", y)]]) - 
+      h*price_2[as.character(y)] * (v[[paste0("emissions_cf_pc_", y)]] - v[[paste0("emissions_gcp_pc_", y)]]) # /!\ Beware, it's not the same price on the left- and right-hand side in 1st period (left is pre-agreed price_1 while right is abatement cost h*price_2)
+  }
+  df$npv_gain <- rowSums(sapply(2:8, function(i) { return(10*df[[paste0("gain_pc_", 2000+10*i)]]/((1+discount_rate)^10)^(i-2)) }))
+  return(df)
+}
+v <- compute_net_gain()
+View(v[, grepl("region|gain", names(v))])
+
+sum(v$emissions_bau_2030[v$region %in% c("EEU", "WEU")])/sum(v$emissions_bau_2020[v$region %in% c("EEU", "WEU")]) # -38.5% (target: -40%; my guess: -34%)
+sum(v$emissions_bau_2040[v$region %in% c("EEU", "WEU")])/sum(v$emissions_bau_2020[v$region %in% c("EEU", "WEU")]) # -70% (target: -86.6%)
+
+# PB: /!\ Gütschow (with which I model GCP) implies lower emissions than 1.BAU-2.equal_pc, although it should not.
+par(mar = c(2.1, 3.1, 0.1, 0.1), mgp = c(2.2, 1, 0)) 
+plot( years_v[1:7], v[v$region == "WEU", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'darkgreen', lwd = 2, lty = 1, xlab = "", ylab = "CO2 emissions per capita (tCO2/year)", ylim = c(0, 7.5))
+lines( years_v[1:7], v[v$region == "WEU", paste0("emissions_cf_pc_",  years_v[1:7])], type = 'l', col = 'darkgreen', lwd = 2, lty = 2, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "union", paste0("rights_pc_",  years_v[1:7])], type = 'l', col = 'black', lwd = 2, lty = 3, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "union", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'black', lwd = 4, lty = 1, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "union", paste0("emissions_cf_pc_",  years_v[1:7])], type = 'l', col = 'black', lwd = 4, lty = 2, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "union", paste0("emissions_bau_pc_",  years_v[1:7])], type = 'l', col = 'black', lwd = 2, lty = 6, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "CHI", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'red', lwd = 2, lty = 1, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "CHI", paste0("emissions_cf_pc_",  years_v[1:7])], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "IND", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'orange', lwd = 2, lty = 1, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "IND", paste0("emissions_cf_pc_",  years_v[1:7])], type = 'l', col = 'orange', lwd = 2, lty = 2, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "CSA", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'blue', lwd = 2, lty = 1)
+lines( years_v[1:7], v[v$region == "CSA", paste0("emissions_cf_pc_",  years_v[1:7])], type = 'l', col = 'blue', lwd = 2, lty = 2)
+lines( years_v[1:7], v[v$region == "AFR", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'yellow', lwd = 2, lty = 1, xlab = "", ylab = "")
+lines( years_v[1:7], v[v$region == "AFR", paste0("emissions_cf_pc_",  years_v[1:7])], type = 'l', col = 'yellow', lwd = 2, lty = 2, xlab = "", ylab = "")
+# lines( years_v[1:7], v[v$region == "EEU", paste0("emissions_bau_pc_",  years_v[1:7])], type = 'l', col = 'green', lwd = 2, lty = 8, xlab = "", ylab = "")
+# lines( years_v[1:7], v[v$region == "EEU", paste0("emissions_bau_pc_",  years_v[1:7])], type = 'l', col = 'green', lwd = 2, lty = 8, xlab = "", ylab = "")
+# lines( years_v[1:7], v[v$region == "JPN", paste0("emissions_bau_pc_",  years_v[1:7])], type = 'l', col = 'cyan', lwd = 2, lty = 8, xlab = "", ylab = "")
+# lines( years_v[1:7], v[v$region == "USA", paste0("emissions_bau_pc_",  years_v[1:7])], type = 'l', col = 'darkblue', lwd = 2, lty = 9, xlab = "", ylab = "")
+# lines( years_v[1:7], v[v$region == "FSU", paste0("emissions_bau_pc_",  years_v[1:7])], type = 'l', col = 'darkred', lwd = 2, lty = 10, xlab = "", ylab = "")
+# lines( years_v[1:7], v[v$region == "World", paste0("emissions_bau_pc_",  years_v[1:7])], type = 'l', col = 'grey', lwd = 4, lty = 1, xlab = "", ylab = "")
+grid() 
+legend("topright", legend = c("Climate Union: GCP", "Climate Union: counterfactual", "Climate Union: equal p.c.", "Climate Union: BAU", "China", "Western Europe", "India", "South America", "Africa"), col = c("black", "black", "black", "black", "red", "darkgreen", "orange", "blue", "yellow"), lwd = c(4, 4, rep(2, 7)), lty = c(1, 2, 3, 6, 1, 1, 1, 1, 1))
+
+
+# 3. Compute P_1(h).
+price_China_neutral <- function(h, price_2 = carbon_price$ssp2_26msg, year_converge = convergence_year, convergence_price = FALSE, df = v, discount_rate = .03) {
+  npv_china <- function(p) {
+    v <- compute_net_gain(h, price_1 = p, price_2 = price_2, year_converge = year_converge, convergence_price = convergence_price, df = df, discount_rate = discount_rate)
+    return(v$npv_gain[v$region == "CHI"])
+  }
+  if (npv_china(0) < 0) return(-1)
+  else return(uniroot(npv_china, c(0, 1000), tol = 0.1)$root)
+}
+# If abatement cost is 80% of carbon_price$ssp2_26msg, a price of at most 7$/t would make China better off (NPV at 3% discount).
+setNames(sapply(seq(0, 1, 0.1), price_China_neutral), paste0(seq(0, 100, 10), "%")) 
+
+# => Overlap of China and India being better off is too thin, China should have more rights to the detriment of Africa.
+# => Carbon price floor proportional to GDP pc
+
+# TODO
+# GEMINI-E3; https://www.i2am-paris.eu/detailed_model_doc/gemini_e3
+# adjusted rights
+# equal cumulative pc 
+# different scenarios of union
+# footprint
+
+
+
+
+
+
+
+
