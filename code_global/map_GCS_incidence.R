@@ -2323,7 +2323,7 @@ years_v <- seq(2020, 2100, 10) # Could start in 2010
 vdv <- read.csv("../data/van_de_Ven2023/global_ite2_allmodels.csv")
 # Select variables
 vdv <- vdv[vdv$Model == "TIAM_Grantham", ] # Closest to reality in 2024 compared to the others: "GCAM-PR 5.3", "GEMINI-E3 7.0" (the one with Policy Cost variables), "MUSE", "TIAM_Grantham" # TODO: try GEMINI
-vdv <- vdv[vdv$Scenario == "CP_EI", ] # Current policies. Others are: Baseline, NDC_EI, NDC_LTT, baseline.
+vdv <- vdv[vdv$Scenario == "CP_EI", ] # Current policies. Others are: Baseline, NDC_EI, NDC_LTT, CP_EI, baseline.
 vdv <- vdv[vdv$Variable %in% c("Emissions|CO2|Energy and Industrial Processes", "Population", "Price|Carbon", "GDP|PPP"),] # Absent: , "Emissions|CO2", "Temperature|Global Mean", "GDP|MER", "Policy Cost|Equivalent Variation", "Policy Cost|GDP Loss", "Policy Cost|Consumption Loss"), ]  # Emissions Mt, GDP G$_2010, Pop M
 vdv <- vdv[, c("Region", "Variable", paste0("X", years_v))]
 for (v in paste0("X", years_v)) vdv[[v]] <- as.numeric(vdv[[v]])
@@ -2336,7 +2336,7 @@ v <- vdv %>% pivot_longer(cols = starts_with("X"), names_to = "Year", values_to 
   unite("Variable_Year", Variable, Year, sep = "_") %>% pivot_wider(names_from = "Variable_Year", values_from = "Value")
 names(v)[1] <- "region"
 # Create union
-regions_union <- c("AFR", "CHI", "CSA", "IND", "MEX", "ODA", "EEU", "WEU", "JPN", "SKO") 
+regions_union <- c("AFR", "CHI", "IND", "CSA", "MEX", "ODA", "EEU", "WEU", "JPN", "SKO") 
 v$union <- v$region %in% regions_union
 temp <- v[v$region == "World", ]
 temp$region <- "union"
@@ -2364,6 +2364,15 @@ for (y in years_v) {
   v[[paste0("emissions_cf_pc_", y)]] <- pmin(v[[paste0("emissions_bau_pc_", y)]], v[[paste0("rights_pc_", y)]])
   if (y < convergence_year) v[[paste0("emissions_cf_pc_", y)]] <- barycenter(y, 2020, convergence_year, v[[paste0("emissions_bau_pc_", y)]], v[[paste0("emissions_cf_pc_", y)]])
 }
+# China trajectory from He et al. (2022). I take the scenario 2°C target path as counterfactual (Table 5), as it is the realistic one compatible with net-zero in 2060.
+v$emissions_target_2020[v$region == "CHI"] <- 10
+v$emissions_target_2025[v$region == "CHI"] <- 10.5
+v$emissions_target_2030[v$region == "CHI"] <- 10.5
+v$emissions_target_2035[v$region == "CHI"] <- 9.4
+v$emissions_target_2040[v$region == "CHI"] <- 7.3
+v$emissions_target_2045[v$region == "CHI"] <- 4.9
+v$emissions_target_2050[v$region == "CHI"] <- 2.9
+
 
 # 1. ../figures/BAU_equal_pc: Compare E_BAU with R for major countries and Climate Union, find date at which both cross.
 par(mar = c(2.1, 3.1, 0.1, 0.1), mgp = c(2.2, 1, 0)) 
@@ -2450,15 +2459,17 @@ price_China_neutral <- function(h, price_2 = carbon_price$ssp2_26msg, year_conve
 setNames(sapply(seq(0, 1, 0.1), price_China_neutral), paste0(seq(0, 100, 10), "%")) 
 
 # => Overlap of China and India being better off is too thin, China should have more rights to the detriment of Africa.
-# => Carbon price floor proportional to GDP pc
+# => Carbon price floor proportional to GDP pc at beginning, converging (while increasing for all countries) to carbon price
+# => For countries with excess emissions and GDP = (1+x)*world_GDP (x < 1), emissions rights = footprint*(1-x) + equal_pc*x, i.e. price paid to World multiplied by x.
+
 
 # TODO
 # GEMINI-E3; https://www.i2am-paris.eu/detailed_model_doc/gemini_e3
 # adjusted rights
 # equal cumulative pc 
-# different scenarios of union
-# footprint
-
+# different scenarios of union => In any case (without highest emitters), curves cross around 2050
+# footprint => China emissions -12% 
+# NDC LTT => hot hair until net zero
 
 
 
