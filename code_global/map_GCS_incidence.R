@@ -2318,6 +2318,10 @@ sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$
 # 2. Assume h = 1/2 and P_1 = 10. Compute G for major countries.
 # 3. Compute P_1(h).
 
+# emissions_bau: emissions-based, current policies (and after 2030, same reduction rate in emissions intensity) according to van de Ven et al. (2023)
+# emissions_cf: rights-based, starts at BAU and converges in 2048 at min(BAU, equal p.c.)
+# emissions_gcp: emissions-based, emissions GCP (from other model, incl. opt-out) scaled to min(BAU, equal p.c.) for the whole union
+
 # 0. Prepare data from van de Ven et al. (2023)
 years_v <- seq(2020, 2100, 10) # Could start in 2010
 vdv <- read.csv("../data/van_de_Ven2023/global_ite2_allmodels.csv")
@@ -2364,7 +2368,7 @@ for (y in years_v) {
   v[[paste0("emissions_cf_pc_", y)]] <- pmin(v[[paste0("emissions_bau_pc_", y)]], v[[paste0("rights_pc_", y)]])
   if (y < convergence_year) v[[paste0("emissions_cf_pc_", y)]] <- barycenter(y, 2020, convergence_year, v[[paste0("emissions_bau_pc_", y)]], v[[paste0("emissions_cf_pc_", y)]])
 }
-# China trajectory from He et al. (2022). I take the scenario 2°C target path as counterfactual (Table 5), as it is the realistic one compatible with net-zero in 2060.
+# China trajectory from He et al. (2022). I take the scenario 2°C target path as counterfactual (Table 5), as it is the realistic one compatible with net-zero in 2060: converges to equal p.c. in 2050, gives less rights than GCP, though coincides over 2030-35: perfect!
 v$emissions_target_2020[v$region == "CHI"] <- 10
 v$emissions_target_2025[v$region == "CHI"] <- 10.5
 v$emissions_target_2030[v$region == "CHI"] <- 10.5
@@ -2372,6 +2376,8 @@ v$emissions_target_2035[v$region == "CHI"] <- 9.4
 v$emissions_target_2040[v$region == "CHI"] <- 7.3
 v$emissions_target_2045[v$region == "CHI"] <- 4.9
 v$emissions_target_2050[v$region == "CHI"] <- 2.9
+for (y in seq(2025, 2045, 10)) v[[paste0("pop_", y)]] <- (v[[paste0("pop_", y-5)]] + v[[paste0("pop_", y+5)]])/2
+for (y in seq(2020, 2050, 5)) v[[paste0("emissions_target_pc_", y)]][v$region == "CHI"] <- 1e9*(v[[paste0("emissions_target_", y)]]/v[[paste0("pop_", y)]])[v$region == "CHI"]
 
 
 # 1. ../figures/BAU_equal_pc: Compare E_BAU with R for major countries and Climate Union, find date at which both cross.
@@ -2430,6 +2436,7 @@ lines( years_v[1:7], v[v$region == "union", paste0("emissions_cf_pc_",  years_v[
 lines( years_v[1:7], v[v$region == "union", paste0("emissions_bau_pc_",  years_v[1:7])], type = 'l', col = 'black', lwd = 2, lty = 6, xlab = "", ylab = "")
 lines( years_v[1:7], v[v$region == "CHI", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'red', lwd = 2, lty = 1, xlab = "", ylab = "")
 lines( years_v[1:7], v[v$region == "CHI", paste0("emissions_cf_pc_",  years_v[1:7])], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "")
+# lines( seq(2020, 2050, 5), v[v$region == "CHI", paste0("emissions_target_pc_",  seq(2020, 2050, 5))], type = 'l', col = 'red', lwd = 2, lty = 3, xlab = "", ylab = "")
 lines( years_v[1:7], v[v$region == "IND", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'orange', lwd = 2, lty = 1, xlab = "", ylab = "")
 lines( years_v[1:7], v[v$region == "IND", paste0("emissions_cf_pc_",  years_v[1:7])], type = 'l', col = 'orange', lwd = 2, lty = 2, xlab = "", ylab = "")
 lines( years_v[1:7], v[v$region == "CSA", paste0("emissions_gcp_pc_",  years_v[1:7])], type = 'l', col = 'blue', lwd = 2, lty = 1)
@@ -2472,8 +2479,8 @@ setNames(sapply(seq(0, 1, 0.1), price_China_neutral), paste0(seq(0, 100, 10), "%
 # NDC LTT => hot hair until net zero
 
 
-
-
+# => Give EU, China the scenario 2°C target path; India their BAU; ODA, CSA their 2030 level; AFR, JPN equal p.c. Compute their carbon budgets, compare with equal p.c. 
+# Table of carbon budgets by region: BAU, target, equal p.c., remaining budget for cumulative equal p.c. since 90 in 1.8°C
 
 
 
