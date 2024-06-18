@@ -1420,6 +1420,7 @@ heatmap_plot <- function(data, type = "full", p.mat = NULL, proportion = T, perc
 }
 heatmap_table <- function(vars, labels = vars, data = e, along = "country_name", special = c(), conditions = c("", ">= 1", "/"), on_control = FALSE, alphabetical = T, export_xls = T, filename = "", sort = FALSE, folder = NULL, weights = T, remove_na = T, transpose = FALSE) {
   # The condition must work with the form: "data$var cond", e.g. "> 0", "%in% c('a', 'b')" work
+  # /!\ We exclude NA before computing the stat. TODO: allow to not exclude NAs
   e <- data
   if (on_control) e <- e[e$treatment=="None",]
   if (missing(folder)) folder <- automatic_folder(along, data)
