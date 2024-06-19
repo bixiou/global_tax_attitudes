@@ -161,13 +161,15 @@ compute_npv <- function(var = "gain_pa_", discount_rate = .03, start = 2030, end
 compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df", beneficiary = "adult_", discount = .03, 
                                        ssp_name = "ssp2_26_country", start = 2025, end = 2100, max_gain = Inf, full_part_threshold = 2) {
   # Uses large_footprint_, optout_right_, revenues_pa_, adult_, gdp_pc_, pop_, pop_, emissions_pa_, carbon_price[[ssp_name]]
+  max_gain_as_fraction <- max_gain
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   basic_income <- basic_income_adj <- c()
   for (y in start:end) { 
+    if (max_gain_as_fraction < 1) max_gain <- max_gain_as_fraction*df[[paste0("gdp_pb_", y)]]
     yr <- as.character(y)
     df[[paste0("participation_rate_", y)]] <- (1 - df[[paste0("large_footprint_", y)]] * df[[paste0("optout_right_", y)]]) * (df$code %in% parties)
     temp <- rep(T, nrow(df)) # df$code %in% parties # average_revenues is average emissions_pa * carbon_price while basic_income is adjusted for participation_rate due to opt-out and anti-regressive mechanism
-    while (any((temp != df[[paste0("large_footprint_", y)]])[!is.na(df[[paste0("large_footprint_", y)]])])) {
+    while (any((temp != df[[paste0("large_footprint_", y)]])[!is.na(df[[paste0("large_footprint_", y)]])])) { # TODO? move after capping (to have consistent basic_income)
       temp <- df[[paste0("large_footprint_", y)]]
       basic_income[yr] <- wtd.mean(df[[paste0("revenues_pb_", y)]], df[[paste0("participation_rate_", y)]] * df[[paste0(beneficiary, y)]])
       basic_income[yr] <- basic_income[yr] + wtd.mean(pmax(0, basic_income[yr] - df[[paste0("revenues_pb_", y)]] - max_gain), df[[paste0("participation_rate_", y)]] * df[[paste0(beneficiary, y)]])
@@ -189,23 +191,23 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
     basic_income_adjusted <- basic_income[yr] * (1 + sum((1 - df[[paste0("share_basic_income_", y)]]) * df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * lower_basic_income_ctries) / sum(df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * !lower_basic_income_ctries))
     
     # Capping basic_income_adj at max_gain TODO: make sure that high-income countries still do not receive money
-    # high_income <- df[[paste0("gdp_pc_", y)]] > full_part_threshold*y_bar
+    high_income <- df[[paste0("gdp_pc_", y)]] > full_part_threshold*y_bar
     excess_revenue <- sum(pmax(0, basic_income_adjusted - df[[paste0("revenues_pb_", y)]] - max_gain) * df[[paste0(beneficiary, y)]])
     temp <- rep(F, nrow(df))
-    above_max_gain_ctries <- (basic_income_adjusted - df[[paste0("revenues_pb_", y)]] > max_gain)
-    basic_income_adj[yr] <- basic_income_adjusted + excess_revenue/sum(df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * (!lower_basic_income_ctries) * (!above_max_gain_ctries)) #  * (!high_income)
+    above_max_gain_ctries <- (df[[paste0("participation_rate_", y)]] * (basic_income_adjusted - df[[paste0("revenues_pb_", y)]]) > max_gain)
+    basic_income_adj[yr] <- basic_income_adjusted + excess_revenue/sum(df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * (!lower_basic_income_ctries) * (!above_max_gain_ctries) * (!high_income))
     while (any(temp != above_max_gain_ctries)) { # Prevents the increased (due to capping) basic income to make some marginal countries' gain_adj exceeding the cap
       temp <- above_max_gain_ctries
-      above_max_gain_ctries <- (basic_income_adj[yr] - df[[paste0("revenues_pb_", y)]] > max_gain)
+      above_max_gain_ctries <- (df[[paste0("participation_rate_", y)]] * (basic_income_adjusted - df[[paste0("revenues_pb_", y)]]) > max_gain)
       excess_revenue <- excess_revenue - sum(pmax(0, max_gain - (basic_income_adjusted - df[[paste0("revenues_pb_", y)]])) * df[[paste0(beneficiary, y)]] * above_max_gain_ctries * (!temp))
-      basic_income_adj[yr] <- basic_income_adjusted + excess_revenue/sum(df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * (!lower_basic_income_ctries) * (!above_max_gain_ctries)) #  * (!high_income)
+      basic_income_adj[yr] <- basic_income_adjusted + excess_revenue/sum(df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * (!lower_basic_income_ctries) * (!above_max_gain_ctries) * (!high_income))
     }
     
     df[[paste0("gain_adj_", y)]][lower_basic_income_ctries] <- (df[[paste0("participation_rate_", y)]] * (basic_income[yr] * df[[paste0("share_basic_income_", y)]] - df[[paste0("revenues_pb_", y)]]))[lower_basic_income_ctries]
-    # df[[paste0("gain_adj_", y)]][!lower_basic_income_ctries] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adjusted - df[[paste0("revenues_pb_", y)]]))[!lower_basic_income_ctries]
-    # df[[paste0("gain_adj_", y)]][!high_income] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pb_", y)]]))[!high_income]
-    df[[paste0("gain_adj_", y)]][!lower_basic_income_ctries] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pb_", y)]]))[!lower_basic_income_ctries]
-    if (max_gain < Inf) df[[paste0("gain_adj_", y)]][above_max_gain_ctries] <- max_gain
+    df[[paste0("gain_adj_", y)]][!lower_basic_income_ctries] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adjusted - df[[paste0("revenues_pb_", y)]]))[!lower_basic_income_ctries]
+    df[[paste0("gain_adj_", y)]][!high_income] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pb_", y)]]))[!high_income]
+    # df[[paste0("gain_adj_", y)]][!lower_basic_income_ctries] <- (df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pb_", y)]]))[!lower_basic_income_ctries]
+    if (all(max_gain < Inf)) df[[paste0("gain_adj_", y)]][above_max_gain_ctries] <- max_gain[above_max_gain_ctries]
     # df[[paste0("gain_adj_", y)]] <- pmin(max_gain, df[[paste0("participation_rate_", y)]] * (basic_income_adj[yr] - df[[paste0("revenues_pb_", y)]]))
     df[[paste0("gain_adj_", y)]] <- df[[paste0("gain_adj_", y)]] * df[[paste0(beneficiary, y)]]/df[[paste0("adult_", y)]] 
     df[[paste0("gain_adj_over_gdp_", y)]] <- df[[paste0("gain_adj_", y)]]/df[[paste0("gdp_pa_", y)]]

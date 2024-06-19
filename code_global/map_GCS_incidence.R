@@ -2603,8 +2603,8 @@ v$cumulative_rights <- v$rights - v$carbon_debt_1990_2029/1e9
 # sum(carbon_budgets[!v$region %in% c(regions_rich, "World", "union"), "rights"])
 
 sum(df$carbon_debt_1990_2029, na.rm = T)
-
-alt <- create_var_ssp(df = df, opt_out_threshold = 1, full_part_threshold = 1.5, max_gain = 365)
+{
+alt <- create_var_ssp(df = df, opt_out_threshold = 1, full_part_threshold = 1.3, max_gain = .04)
 sum(alt$adult_2030 * alt$gain_adj_2030)
 alt$region_tiam <- c("ODA", "AFR", "EEU", "MEA", "CSA", "FSU", "AUS", "WEU", "FSU", "AFR", "WEU", "AFR", "AFR", "ODA", "EEU", "MEA", "CSA", "EEU", "FSU", "CSA", "CSA", "CSA", "CSA", "MEA", "ODA", "AFR", "AFR", "CAN", "WEU", "CSA", 
                     "CHI", "AFR", "AFR", "AFR", "AFR", "CSA", "AFR", "AFR", "CSA", "CSA", "EEU", "EEU", "WEU", "AFR", "WEU", "CSA", "AFR", "CSA", "AFR", "AFR", "WEU", "EEU", "AFR", "WEU", "AUS", "WEU", "AFR", "WEU", "FSU", "AFR", 
@@ -2618,10 +2618,15 @@ v$rights_gcp_alt[v$region == "union"] <- sum(alt$rights_gcp[alt$region_tiam %in%
 v$rights_gcp_alt[v$region == "World"] <- sum(alt$rights_gcp)/1e9
 
 (carbon_budgets <- as.data.frame(round(v[,c(types, "rights_gcp", "rights_gcp_alt")]), row.names = v$region))
-
+}
 # TODO: how rights_gcp(_alt) depend on the union
 
+sum(alt$gdp_pb_2030[alt$code == "COD"])
+sum(alt$gain_adj_2030[alt$code == "COD"])
 
+
+# high-income: rights
+# otherwise low footprint: emissions*x + rights*(1-x) / high footprint: rights + excess_emissions * excess_rights (from low footprint)
 
 
 
