@@ -2694,3 +2694,10 @@ grid()
 legend("topright", legend = c("Proposal, union allowances", "NDC", "Equal p.c.", "Current policies", "China", "Western Europe", "India, Other LMIC Asia", "South America", "Africa"), col = c("black", "black", "black", "black", "red", "darkgreen", "orange", "blue", "cyan"), lwd = c(4, 2, 3, 3, rep(2, 5)), lty = c(1, 2, 3, 6, 1, 1, 1, 1, 1))
 
 
+par(mar = c(2.1, 3.1, 0.1, 0.1), mgp = c(2.2, 1, 0)) 
+plot(seq(2025, 2050, 5), v[v$region == "CHI", paste0("emissions_target_pc_",  seq(2025, 2050, 5))], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "CO2 emissions per capita (tCO2/year)", ylim = c(0, 7), xlim = c(2025, 2060))
+lines( years_v[2:7], v[v$region == "CHI", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'red', lwd = 2, lty = 1, xlab = "", ylab = "")
+grid() 
+legend("topright", legend = c("Proposal, union allowances", "2°C decarbonization pathway"), col = "red", lwd = 2, lty = 1:2)
+
+
