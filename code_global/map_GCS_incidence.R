@@ -1508,59 +1508,60 @@ compute_carbon_debt <- function(start = 1990, end = 2029, df = sm) {
   return(df)
 }
 
-prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) { # GDP is in PPP
-  # TODO! Pb: scenarios of GDP pc are unrealistic: 14% annual growth in DRC over 2019-30 (25% over 2019-23 and 8% over 2023-30), 7% over 2030-40, 6% 2040-50. => Underestimation of gains over GDP in low-income countries.
-  # TODO! It's because 2019 is in nominal and >=2020 in PPP, no?
-  # Uses country, country_map and adult_ from co2_pop
-  # TODO!!: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030 
-  # TODO: streamline fetching of carbon_price
-  # sum(is.na(ssp2_26_country)) # 1134
-  # sum(is.na(ssp2_26_country[!ssp2_26_country$code %in% c("SSD", "TWN", "PRK", "FSM"),])) # 0
-  # setdiff(co2_pop$code, ssp2_26_country$code) # small islands and small countries, Palestine
-  # setdiff(ssp2_26_country$code, co2_pop$code) # Taiwan, Hong Kong
-  # Add Taiwan data
-  if (exists("pop_iso3") & !"TWN" %in% df$code) {
-    twn <- df[df$code == "KOR",]
-    twn$code <- "TWN"
-    twn$country <- twn$country_map <- "Taiwan"
-    for (y in c(2023, seq(2020, 2100, 10))) { 
-      twn[[paste0("pop_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$pop[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$pop[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
-      twn[[paste0("adult_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$adult[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$adult[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
-    } 
-    df <- rbind(df, twn)
-  }
-  ssps <- ssps[ssps$country %in% df$code & !ssps$country %in% c("FSM", "GRD"),] # "SSD", "TWN", "PRK", 
-  ssp <- data.frame(code = unique(ssps$country))
-  for (y in 1990:2100) { # Years span 1850:2100
-    ssp[[paste0("pop_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "POP"], ssps$country[ssps$scenario == scenario & ssps$entity == "POP"])[ssp$code]
-    ssp[[paste0("gdp_", y)]] <- 1e6 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "GDPPPP"], ssps$country[ssps$scenario == scenario & ssps$entity == "GDPPPP"])[ssp$code]  # /!\ It is in PPP (contrary to old code with IIASA SSPs)
-    ssp[[paste0("emissions_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "CO2"], ssps$country[ssps$scenario == scenario & ssps$entity == "CO2"])[ssp$code]
-    # Add North Korea data
-    if (y >= 2020) ssp[[paste0("emissions_", y)]][ssp$code == "PRK"] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("emissions_", y - y %% 10)]][df$code == "PRK"], df[[paste0("emissions_", 10*ceiling(y/10))]][df$code == "PRK"])
-    if (y >= 2020) ssp[[paste0("gdp_", y)]][ssp$code == "PRK"] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("gdp_", y - y %% 10)]][df$code == "PRK"], df[[paste0("gdp_", 10*ceiling(y/10))]][df$code == "PRK"])
-    # Add South Sudan and Taiwan data
-    if (y >= 2020) for (c in c("TWN", "SSD")) ssp[[paste0("pop_", y)]][ssp$code == c] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("pop_", y - y %% 10)]][df$code == c], df[[paste0("pop_", 10*ceiling(y/10))]][df$code == c])
-  } # Scales up df$adult by ssp$pop/df$pop
-  for (y in c(2023, seq(2020, 2100, 10))) ssp[[paste0("adult_", y)]][match.nona(df$code, ssp$code)] <- ssp[[paste0("pop_", y)]][match.nona(df$code, ssp$code)] * (df[[paste0("adult_", y)]]/df[[paste0("pop_", y)]])[df$code %in% ssp$code]
-  for (y in 2020:2100) { # Interpolate adult_ from pop_ and df$adult/df$pop
-    y_prev <- 10*floor(y/10)
-    y_next <- 10*ceiling(y/10)
-    if (y > 2023 & y < 2030) y_prev <- 2023
-    if (y %in% c(2021, 2022)) y_next <- 2023
-    lambda <- (y - y_prev)/10
-    ssp[[paste0("adult_", y)]] <- ssp[[paste0("pop_", y)]] * ((1 - lambda) * (ssp[[paste0("adult_", y_prev)]]/ssp[[paste0("pop_", y_prev)]]) + lambda * (ssp[[paste0("adult_", y_next)]]/ssp[[paste0("pop_", y_next)]]))
-    ssp[[paste0("emissions_pa_", y)]] <- ssp[[paste0("emissions_", y)]]/ssp[[paste0("adult_", y)]]
-    ssp[[paste0("emissions_pc_", y)]] <- ssp[[paste0("emissions_", y)]]/ ssp[[paste0("pop_", y)]]
-    ssp[[paste0("gdp_pa_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("adult_", y)]] # /!\ It is in PPP (contrary to old code with IIASA SSPs)
-    ssp[[paste0("gdp_pc_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("pop_", y)]] # /!\ It is in PPP (contrary to old code with IIASA SSPs)
-    ssp[[paste0("gdp_pc_over_mean_", y)]] <- ssp[[paste0("gdp_pc_", y)]]/wtd.mean(ssp[[paste0("gdp_pc_", y)]], ssp[[paste0("pop_", y)]], na.rm = T)
-  }
-  ssp$gdp_ppp_now <- ssp$gdp_ppp_2023 # TODO? add carbon_price_?
-  ssp$gdp_pc_base_year <- ssp$gdp_ppp_pc_2023
-  for (v in intersect(keep_from_df, names(df))) ssp[[v]][match.nona(df$code, ssp$code)] <- df[[v]][df$code %in% ssp$code]
-  ssp <- compute_carbon_debt(start = 1990, end = 2029)
-  return(ssp)
-}
+# prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df = co2_pop, keep_from_df = copy_from_co2_pop) { # GDP is in PPP
+#   # TODO! Pb: scenarios of GDP pc are unrealistic: 14% annual growth in DRC over 2019-30 (25% over 2019-23 and 8% over 2023-30), 7% over 2030-40, 6% 2040-50. => Underestimation of gains over GDP in low-income countries.
+#   # TODO! It's because 2019 is in nominal and >=2020 in PPP, no?
+#   # Uses country, country_map and adult_ from co2_pop
+#   # TODO!!: streamline creation of co2_pop for this purpose, perhaps also keeping emissions_baseline_2030, rci_2030, territorial_2019, footprint_2019, missing_footprint, gdp_pc_2019 (not PPP), share_territorial_2019, median_gain_2015, mean_gain_2030, gdp_ppp_now,gdr_pa_2030_cerc, gdr_pa_2030 
+#   # TODO: streamline fetching of carbon_price
+#   # sum(is.na(ssp2_26_country)) # 1134
+#   # sum(is.na(ssp2_26_country[!ssp2_26_country$code %in% c("SSD", "TWN", "PRK", "FSM"),])) # 0
+#   # setdiff(co2_pop$code, ssp2_26_country$code) # small islands and small countries, Palestine
+#   # setdiff(ssp2_26_country$code, co2_pop$code) # Taiwan, Hong Kong
+#   # Add Taiwan data
+#   if (exists("pop_iso3") & !"TWN" %in% df$code) {
+#     twn <- df[df$code == "KOR",]
+#     twn$code <- "TWN"
+#     twn$country <- twn$country_map <- "Taiwan"
+#     for (y in c(2023, seq(2020, 2100, 10))) { 
+#       twn[[paste0("pop_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$pop[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$pop[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
+#       twn[[paste0("adult_", y)]] <- 1e3 * barycenter(y, y - y %% 10, 10*ceiling(y/10), pop_iso3$adult[pop_iso3$year == y - y %% 10 & pop_iso3$code == "TWN"], pop_iso3$adult[pop_iso3$year == 10*ceiling(y/10) & pop_iso3$code == "TWN"])
+#     } 
+#     df <- rbind(df, twn)
+#   }
+#   ssps <- ssps[ssps$country %in% df$code & !ssps$country %in% c("FSM", "GRD"),] # "SSD", "TWN", "PRK", 
+#   ssp <- data.frame(code = unique(ssps$country))
+#   for (y in 1990:2100) { # Years span 1850:2100
+#     ssp[[paste0("pop_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "POP"], ssps$country[ssps$scenario == scenario & ssps$entity == "POP"])[ssp$code]
+#     ssp[[paste0("gdp_", y)]] <- 1e6 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "GDPPPP"], ssps$country[ssps$scenario == scenario & ssps$entity == "GDPPPP"])[ssp$code]  # /!\ It is in PPP (contrary to old code with IIASA SSPs)
+#     ssp[[paste0("emissions_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "CO2"], ssps$country[ssps$scenario == scenario & ssps$entity == "CO2"])[ssp$code]
+#     # Add North Korea data
+#     if (y >= 2020) ssp[[paste0("emissions_", y)]][ssp$code == "PRK"] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("emissions_", y - y %% 10)]][df$code == "PRK"], df[[paste0("emissions_", 10*ceiling(y/10))]][df$code == "PRK"])
+#     if (y >= 2020) ssp[[paste0("gdp_", y)]][ssp$code == "PRK"] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("gdp_", y - y %% 10)]][df$code == "PRK"], df[[paste0("gdp_", 10*ceiling(y/10))]][df$code == "PRK"])
+#     # Add South Sudan and Taiwan data
+#     if (y >= 2020) for (c in c("TWN", "SSD")) ssp[[paste0("pop_", y)]][ssp$code == c] <- barycenter(y, y - y %% 10, 10*ceiling(y/10), df[[paste0("pop_", y - y %% 10)]][df$code == c], df[[paste0("pop_", 10*ceiling(y/10))]][df$code == c])
+#   } # Scales up df$adult by ssp$pop/df$pop
+#   for (y in c(2023, seq(2020, 2100, 10))) ssp[[paste0("adult_", y)]][match.nona(df$code, ssp$code)] <- ssp[[paste0("pop_", y)]][match.nona(df$code, ssp$code)] * (df[[paste0("adult_", y)]]/df[[paste0("pop_", y)]])[df$code %in% ssp$code]
+#   for (y in 2020:2100) { # Interpolate adult_ from pop_ and df$adult/df$pop
+#     y_prev <- 10*floor(y/10)
+#     y_next <- 10*ceiling(y/10)
+#     if (y > 2023 & y < 2030) y_prev <- 2023
+#     if (y %in% c(2021, 2022)) y_next <- 2023
+#     lambda <- (y - y_prev)/10
+#     ssp[[paste0("adult_", y)]] <- ssp[[paste0("pop_", y)]] * ((1 - lambda) * (ssp[[paste0("adult_", y_prev)]]/ssp[[paste0("pop_", y_prev)]]) + lambda * (ssp[[paste0("adult_", y_next)]]/ssp[[paste0("pop_", y_next)]]))
+#     ssp[[paste0("emissions_pa_", y)]] <- ssp[[paste0("emissions_", y)]]/ssp[[paste0("adult_", y)]]
+#     ssp[[paste0("emissions_pc_", y)]] <- ssp[[paste0("emissions_", y)]]/ ssp[[paste0("pop_", y)]]
+#     ssp[[paste0("gdp_pa_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("adult_", y)]] # /!\ It is in PPP (contrary to old code with IIASA SSPs)
+#     ssp[[paste0("gdp_pc_", y)]] <- ssp[[paste0("gdp_", y)]]/ssp[[paste0("pop_", y)]] # /!\ It is in PPP (contrary to old code with IIASA SSPs)
+#     ssp[[paste0("gdp_pc_over_mean_", y)]] <- ssp[[paste0("gdp_pc_", y)]]/wtd.mean(ssp[[paste0("gdp_pc_", y)]], ssp[[paste0("pop_", y)]], na.rm = T)
+#   }
+#   ssp$gdp_ppp_now <- ssp$gdp_ppp_2023 # TODO? add carbon_price_?
+#   ssp$gdp_pc_base_year <- ssp$gdp_ppp_pc_2023
+#   for (v in intersect(keep_from_df, names(df))) ssp[[v]][match.nona(df$code, ssp$code)] <- df[[v]][df$code %in% ssp$code]
+#   ssp <- compute_carbon_debt(start = 1990, end = 2029)
+#   ssp <- compute_carbon_debt(start = 1990, end = 2024)
+#   return(ssp)
+# }
 
 
 compute_npv <- function(var = "gain_pa_", discount_rate = .03, start = 2030, end = 2100, data = co2_pop, decadal = FALSE) {
@@ -2584,7 +2585,7 @@ regions_correction <- v$region %in% regions_union & !v$region %in% regions_rich
   sum(pmax(0, v[regions_correction, "emissions_bau"] - v[regions_correction, "rights"])))
 
 factor_grandfathering <- .66
-for (y in seq(2020, 2080, 10)) {
+for (y in seq(2020, 2080, 10)) { # TODO!
   v[[paste0("emissions_formula_", y)]] <- pmin(v[[paste0("emissions_bau_", y)]], v[[paste0("rights_", y)]]) 
   v[[paste0("emissions_formula_", y)]][regions_correction] <- (v[[paste0("rights_", y)]] + factor_grandfathering*factor_correcting_excess_bau*(
     v[[paste0("emissions_bau_", y)]] - v[[paste0("rights_", y)]]))[regions_correction]
@@ -2596,6 +2597,9 @@ for (t in types) if (all(paste0(t, "_", seq(2030, 2080, 10)) %in% names(v))) {
 v[v$region == "World", c("emissions_target", "emissions_formula")] <- colSums(v[1:15, c("emissions_target", "emissions_formula")])
 v[v$region == "union", c("emissions_target", "emissions_formula")] <- colSums(v[v$region %in% regions_union, c("emissions_target", "emissions_formula")])
 v$cumulative_rights <- v$rights - v$carbon_debt_1990_2029/1e9
+v$cumulative_rights_30_future <- 754*v$pop_2030/v$pop_2030[v$region == "World"]
+v$cumulative_rights_30 <- v$cumulative_rights_30_future - v$carbon_debt_1990_2029/1e9
+setNames(v$cumulative_rights_30_future, v$region)
 
 for (y in seq(2020, 2080, 10)) {
   # v[[paste0("rights_proposed_", y)]] <- v[[paste0("rights_", y)]]

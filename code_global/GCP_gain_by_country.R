@@ -150,6 +150,7 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
   ssp$share_territorial_2019[ssp$code == "TWN"] <- ssp$share_emissions_2023[ssp$code == "TWN"]
   ssp$share_territorial_2019 <- ssp$share_territorial_2019/sum(ssp$share_territorial_2019, na.rm = T)
   ssp <- compute_carbon_debt(start = 1990, end = 2029, df = ssp)
+  ssp <- compute_carbon_debt(start = 1990, end = 2024, df = ssp)
   return(ssp)
 }
 
