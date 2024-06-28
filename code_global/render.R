@@ -78,6 +78,7 @@ labels_vars <- c(
   "gcs_support_branch_petition_gcs" = "(Comparable) support for the GCS",
   "nr_support_branch_petition_nr" = "(Comparable) support for NR",
   "gcs_support_100" = "Support for the GCS",
+  "gcs_support_90" = "Support for a Global Climate Scheme at $90/tCO2",
   "gcs_support_neg" = "Support for the GCS",
   "nr_support" = "National redistribution scheme (NR)",
   "nr_support_100" = "Support for NR",
@@ -434,6 +435,7 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
 heatmaps_defs <- list(
   "conjoint_r" = list(vars = "conjoint_r"), 
   "ets2_oppose" = list(vars = "ets2_oppose", conditions = ">= 1"),
+  "few_main" = list(vars = c("gcs_support_90", "global_tax_support", "global_tax_more_30p", "climate_mitigation_support", "foreign_aid_raise_support"), sort = FALSE), 
   "conjoint_left_ag_b_binary" = list(vars = "conjoint_left_ag_b_binary", conditions = c(">= 1")), 
   "global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1"), nb_digits = 0),
   "global_tax_sharing" = list(vars = c("global_tax_sharing"), conditions = c(">= 1")),
@@ -770,6 +772,7 @@ heatmap_multiple(heatmaps_defs[c("support_binary")], weights = T)
 heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint_ab_all")], weights = T) 
 heatmap_wrapper(vars = heatmaps_defs$main$vars, data = all, labels = heatmaps_defs$main$labels, name = "main_by_vote", along = "continent_vote", conditions = "/", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = T) 
 heatmap_wrapper(vars = heatmaps_defs$main_all$vars, data = all, labels = heatmaps_defs$main_all$labels, name = "main_all_by_vote", along = "continent_vote", conditions = "/", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = F, weights = T) 
+heatmap_multiple(heatmaps_defs[c("few_main")], weights = T) 
 
 # heatmaps_defs <- fill_heatmaps(c("conjoint_a_binary"), list())
 # heatmap_multiple(heatmaps = heatmaps_defs)
