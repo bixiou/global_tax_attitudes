@@ -1517,7 +1517,8 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
         if (cond == "/") {
           binary_rows <- which(rowMeans(neg)==0)
           temp[binary_rows,] <- pos[binary_rows,]
-          row.names(temp)[binary_rows] <- paste0(row.names(temp)[binary_rows], "*") }
+          row.names(temp)[binary_rows] <- paste0(row.names(temp)[binary_rows], "*")
+        }
         for (i in 1:length(vars)) if (is.logical(data[[vars[i]]])) temp[i, ] <- pos[i, ]
       } else {  temp <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = cond, on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights) }
       if (!missing(labels_along) & length(labels_along) == ncol(temp)) colnames(temp) <- labels_along

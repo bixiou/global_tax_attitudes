@@ -2602,23 +2602,25 @@ v$cumulative_rights_30 <- v$cumulative_rights_30_future - v$carbon_debt_1990_202
 setNames(v$cumulative_rights_30_future, v$region)
 
 for (y in seq(2020, 2080, 10)) {
-  # v[[paste0("rights_proposed_", y)]] <- v[[paste0("rights_", y)]]
   v[[paste0("rights_proposed_", y)]][v$region == "CHI"] <- v[[paste0("emissions_target_", y)]][v$region == "CHI"]
   v[[paste0("rights_proposed_", y)]][v$region == "WEU"] <- v[[paste0("emissions_ndc_", y)]][v$region == "WEU"]
   
-  # v[[paste0("rights_proposed_", y)]][!v$region %in% c("AFR", "CHI", "WEU")] <- (v[[paste0("emissions_target_", y)]]*v$rights/v$emissions_target)[!v$region %in% c("AFR", "CHI", "WEU")]
-  v[[paste0("rights_proposed_", y)]][!v$region %in% c("AFR", "CHI", "WEU")] <- (v[[paste0("emissions_formula_", y)]]*1e9*v$rights/
-                   (5*rowSums(v[, paste0("emissions_formula_", c(2030, 2080))]) + 10*rowSums(v[, paste0("emissions_formula_", seq(2040, 2070, 10))])))[!v$region %in% c("AFR", "CHI", "WEU")]
+  # v[[paste0("rights_proposed_", y)]][!v$region %in% c("AFR", "CHI", "WEU")] <- (v[[paste0("emissions_formula_", y)]]*1e9*v$rights/
+  #                                                                                 (5*rowSums(v[, paste0("emissions_formula_", c(2030, 2080))]) + 10*rowSums(v[, paste0("emissions_formula_", seq(2040, 2070, 10))])))[!v$region %in% c("AFR", "CHI", "WEU")]
+  v[[paste0("rights_proposed_", y)]][!v$region %in% c("CHI", "WEU")] <- (v[[paste0("emissions_formula_", y)]]*1e9*v$cumulative_rights_30_future/
+                   (5*rowSums(v[, paste0("emissions_formula_", c(2030, 2080))]) + 10*rowSums(v[, paste0("emissions_formula_", seq(2040, 2070, 10))])))[!v$region %in% c("CHI", "WEU")]
 }
 # manual adjustments:
 v$rights_proposed_2050[v$region %in% c("CSA", "IND", "ODA")] <- v$rights_proposed_2050[v$region %in% c("CSA", "IND", "ODA")] + .5*v$rights_proposed_2080[v$region %in% c("CSA", "IND", "ODA")]
 v$rights_proposed_2080[v$region %in% c("CSA", "IND", "ODA")] <- 0
-for (y in seq(2020, 2080, 10)) v[[paste0("rights_proposed_", y)]][v$region == "AFR"] <- v[[paste0("rights_proposed_", y)]][v$region == "union"] - sum(v[[paste0("rights_proposed_", y)]][v$region %in% setdiff(regions_union,  "AFR")])
-v$rights_proposed_2050[v$region == "AFR"] <- v$rights_proposed_2050[v$region == "AFR"] - 1e9
-v$rights_proposed_2060[v$region == "AFR"] <- v$rights_proposed_2060[v$region == "AFR"] - 13e8
-v$rights_proposed_2040[v$region == "AFR"] <- v$rights_proposed_2040[v$region == "AFR"] + 4e8 # 3e8
-v$rights_proposed_2070[v$region == "AFR"] <- v$rights_proposed_2070[v$region == "AFR"] + 1e9
-v$rights_proposed_2030[v$region == "AFR"] <- v$rights_proposed_2030[v$region == "AFR"] + 2e9
+# for (y in seq(2020, 2080, 10)) v[[paste0("rights_proposed_", y)]][v$region == "AFR"] <- v[[paste0("rights_proposed_", y)]][v$region == "union"] - sum(v[[paste0("rights_proposed_", y)]][v$region %in% setdiff(regions_union,  "AFR")])
+v$rights_proposed_2050[v$region == "AFR"] <- v$rights_proposed_2050[v$region == "AFR"] + 3e8
+v$rights_proposed_2030[v$region == "AFR"] <- v$rights_proposed_2030[v$region == "AFR"] - 6e8
+# v$rights_proposed_2050[v$region == "AFR"] <- v$rights_proposed_2050[v$region == "AFR"] - 1e9
+# v$rights_proposed_2060[v$region == "AFR"] <- v$rights_proposed_2060[v$region == "AFR"] - 13e8
+# v$rights_proposed_2040[v$region == "AFR"] <- v$rights_proposed_2040[v$region == "AFR"] + 3e8 
+# v$rights_proposed_2070[v$region == "AFR"] <- v$rights_proposed_2070[v$region == "AFR"] + 1e9
+# v$rights_proposed_2030[v$region == "AFR"] <- v$rights_proposed_2030[v$region == "AFR"] + 2e9
 v$rights_proposed_2050[v$region == "IND"] <- v$rights_proposed_2050[v$region == "IND"] + 5e8
 v$rights_proposed_2060[v$region == "IND"] <- v$rights_proposed_2060[v$region == "IND"] + 5e8
 v$rights_proposed_2070[v$region == "IND"] <- v$rights_proposed_2070[v$region == "IND"] - 5e8
@@ -2634,7 +2636,7 @@ v$rights_proposed[v$region == "union"] <- sum(v$rights_proposed[v$region %in% re
 for (r in v$region) for (y in seq(2020, 2080, 10)) v[[paste0("rights_proposed_pc_", y)]] <- v[[paste0("rights_proposed_", y)]]/v[[paste0("pop_", y)]]
 for (r in v$region) for (y in seq(2020, 2080, 10)) v[[paste0("emissions_ndc_pc_", y)]] <- v[[paste0("emissions_ndc_", y)]]/v[[paste0("pop_", y)]]
 
-(carbon_budgets <- as.data.frame(round(v[,c(types, "rights_gcp")]), row.names = v$region))
+(carbon_budgets <- as.data.frame(round(v[,c(types, "cumulative_rights_30_future", "rights_gcp")]), row.names = v$region))
 
 # sum(carbon_budgets[v$region %in% regions_rich, "emissions_bau"])
 # sum(carbon_budgets[v$region %in% regions_rich, "rights"])
@@ -2657,7 +2659,7 @@ v$rights_gcp_alt[v$region == "union"] <- sum(alt$rights_gcp[alt$region_tiam %in%
 v$rights_gcp_alt[v$region == "World"] <- sum(alt$rights_gcp)/1e9
 v$gcp_cumulative <- .8*v$rights_gcp_alt + .13*v$cumulative_rights
 
-(carbon_budgets <- as.data.frame(round(v[,c(types, "gcp_cumulative", "rights_gcp", "rights_gcp_alt")]), row.names = v$region))
+(carbon_budgets <- as.data.frame(round(v[,c(types, "cumulative_rights_30_future", "gcp_cumulative", "rights_gcp", "rights_gcp_alt")]), row.names = v$region))
 }
 # TODO: how rights_gcp(_alt) depend on the union
 
