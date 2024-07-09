@@ -2707,3 +2707,8 @@ grid()
 legend("topright", legend = c("Proposal, union allowances", "2°C decarbonization pathway"), col = "red", lwd = 2, lty = 1:2)
 
 
+##### Poll COP #####
+cop <- read.csv("../data/climate_negotiators.csv")
+View(cop)
+View(cop[cop$Progress %in% c(21, 100) | cop$RecipientEmail == "Recipient Email",c("RecipientLastName", "RecipientEmail", "Q13_1", "Q13_2", "Q16", "country", "Q11", "Q7", "Q8_15", "Q15_15", "Q23", "Q9", "Q10", "Q13")])
+median(as.numeric(gsub("+|°C", "", cop$Q23)), na.rm = T) # +2.1°C
