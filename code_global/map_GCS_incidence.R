@@ -2712,3 +2712,31 @@ cop <- read.csv("../data/climate_negotiators.csv")
 View(cop)
 View(cop[cop$Progress %in% c(21, 100) | cop$RecipientEmail == "Recipient Email",c("RecipientLastName", "RecipientEmail", "Q13_1", "Q13_2", "Q16", "country", "Q11", "Q7", "Q8_15", "Q15_15", "Q23", "Q9", "Q10", "Q13")])
 median(as.numeric(gsub("+|°C", "", cop$Q23)), na.rm = T) # +2.1°C
+
+
+##### "Nature" comment #####
+# Billionaire tax
+
+# Carbon price at $10
+gdp_pc_nominal <- read.csv("../data/gdp_pc_nominal.csv") # Current $ https://data.worldbank.org/indicator/NY.GDP.PCAP.CD Jul 7, 2024 API_NY.GDP.PCAP.CD_DS2_en_csv_v2_739905
+gdp_pc_nominal$code <- gdp_pc_nominal$Country.Code
+gdp_pc_nominal <- data.frame("code" = gdp_pc_nominal$code, "gdp_pc_nom_2023" = gdp_pc_nominal$X2023)
+gdp_pc_nominal$gdp_pc_nom_2023[gdp_pc_nominal$code %in% c("ERI", "PRK", "SSD", "VEN", "YEM")] <- c(715, 654, 467, 3640, 702) # Impute data from other sources for Eritrea (IMF, 2023), North Korea (IMF, 2021), South Sudan (IMF, 2023), Venezuela (IMF, 2023), Yemen (WB, 2018)
+df <- merge(df, gdp_pc_nominal, all.x = T)
+
+factor_gdp_carbon <- .002
+world_transfers_carbon_tax_pa <- factor_gdp_carbon*sum(df$gdp_pc_nom_2023 * df$pop_2023, na.rm = T)/sum(df$adult_2023[!is.na(df$gdp_pc_nom_2023)])
+df$net_gain_carbon_pc <- world_transfers_carbon_tax_pa*df$adult_2023/df$pop_2023 - factor_gdp_carbon*df$gdp_pc_nom_2023
+df$revenues_carbon_pc <- -10*df$emissions_pc_2023/df$net_gain_carbon_pc
+df$enough_carbon_tax <- df$revenues_carbon_pc > 1
+setNames(df$revenues_carbon_pc, df$country)[!df$enough_carbon_tax & df$net_gain_carbon_pc < 0] # CH, Ireland: country where carbon tax is not sufficient to finance .1% of GDP
+sum(df$net_gain_carbon_pc * df$pop_2023, na.rm = T)/1e9
+sum((df$net_gain_carbon_pc * df$pop_2023)[df$net_gain_carbon_pc > 0], na.rm = T)/1e9 # 94G€
+
+# FTT: Pekanov & Schratzenstaller (2019) p. 47
+
+# Aviation tax: Keen et al. (12) p. 32
+
+# Maritime levy: $40/t => $15G globally, Mundaca et al. (21)
+#                $100/t => $92G, 51% for mitigation & adaptation, 33% to decarbonize shipping, 16% to administrative costs https://lloydslist.com/LL1136097/Marshall-Islands-demands-$100-tax-on-shipping-emissions
+#                net gain by country (including general eq effects): Dequiedt et al. (24), Table 7
