@@ -2715,19 +2715,11 @@ median(as.numeric(gsub("+|°C", "", cop$Q23)), na.rm = T) # +2.1°C
 
 
 ##### "Nature" comment #####
-# Total revenue: 1549G
-551+356+327+223+92
-# Total transfer: +94+212+110+
-
-
-# Billionaire tax: 551G
-billionaire_tax_revenue <- 551*1e9
-
-df$recipient_share <- df$pop_2023 * pmax(0, wtd.mean(df$gdp_pc_nom_2023, df$pop_2023) - df$gdp_pc_nom_2023) # TODO? per adult?
-df$recipient_share <- df$recipient_share/sum(df$recipient_share, na.rm = T)
-
-# df$net_gain_billionaire_tax_pc <- billionaire_tax_revenue/sum(df$pop_2025, na.rm = T)
-df$net_gain_billionaire_tax_pc <- billionaire_tax_revenue*df$recipient_share/df$pop_2023 # TODO remove cost
+# Total revenue: 1860G
+850+356+327+223+104 # wealth + carbon + FTT + Aviation + Maritime 
+# Total transfer: 973G (52%)
+590+94+207+106+53 # 1050 - interactions between taxes
+# To increase transfer: redistribute per capita instead of per adult; lower threshold_recipient_world_average; increase wealth tax rate
 
 
 # Carbon price at $10: 356G in revenue (94G in int'l transfer)
@@ -2749,7 +2741,38 @@ world_transfers_carbon_tax_pa*sum(df$adult_2023)/1e9 # 213G
 sum((df$net_gain_carbon_pc * df$pop_2023)[df$net_gain_carbon_pc > 0], na.rm = T)/1e9 # 94G
 
 
-# FTT: 327G (212G) Pekanov & Schratzenstaller (2019) p. 47
+# Billionaire tax: 708G (575G)
+# Contrary to the other taxes, revenues are not rebated proportionally to adult population, but to countries with GDP pc lower than world average, in proportion to the gap to this world average.
+# Data from WID (@laposte.net), in current USD. TODO: update data once it's online and stabilized.
+tax_rate <- .03
+tax_threshold <- 1e8
+evasion <- .2 # We assume no effect on asset prices.
+wealth <- read.csv("../data/wealth_tax_wid.csv") # /!\ wealth_above_threshold is total, not marginal wealth. E.g. someone with 150M will have wealth_above_threshold = 150M, not 50M, for threshold = 100M.
+names(wealth) <- c("n", "iso2", "year", "threshold", "gdp", "national_wealth", "wealth_above_threshold", "headcount_above_threshold", "threshold_constant_2023", "headcount_at_bracket", "wealth_at_bracket")
+wealth$code <- iso2to3[wealth$iso2]
+for (c in setdiff(unique(wealth$code), NA)) df$wealth_100M_2022[df$code == c] <- wealth$wealth_above_threshold[wealth$threshold == tax_threshold & wealth$year == 2022 & no.na(wealth$code) == c] - tax_threshold * wealth$headcount_above_threshold[wealth$threshold == tax_threshold & wealth$year == 2022 & no.na(wealth$code) == c]
+df$country[no.na(df$wealth_100M_2022) < 0] # /!\ pb with Egypt data
+df$wealth_100M_2022[df$wealth_100M_2022 < 0] <- NA
+df$wealth_tax_revenue <- tax_rate*(1 - evasion)*df$wealth_100M_2022
+sum(df$wealth_tax_revenue, na.rm = T)/1e9 # 807G (higher than Zucman's 511G because he accounts for taxes already paid - here, we simulate an additional rather than a top-up tax. Also, he considers a 2% over all wealth, while I consider 2% marginal over threshold)
+sort(setNames(df$wealth_100M_2022, df$country)[!is.na(df$wealth_100M_2022)])
+
+df$wealth_tax_revenue_pc <- df$wealth_tax_revenue/df$pop_2022
+reg_wealth <- lm(log10(wealth_tax_revenue_pc) ~ log10(gdp_pc_nom_2023), data = df, weights = pop_2022)
+df$wealth_tax_revenue_pc[is.na(df$wealth_tax_revenue_pc)] <- 10^predict(reg_wealth, data.frame(gdp_pc_nom_2023 = df$gdp_pc_nom_2023[is.na(df$wealth_tax_revenue_pc)]))
+plot(log10(df$gdp_pc_nom_2023), log10(df$wealth_tax_revenue_pc)) 
+
+threshold_recipient_world_average <- 1.67 # Lower threshold implies more North-South transfers but makes China lose
+df$recipient_share <- df$adult_2022 * pmax(0, threshold_recipient_world_average * wtd.mean(df$gdp_pc_nom_2023, df$pop_2023) - df$gdp_pc_nom_2023) 
+df$recipient_share <- df$recipient_share/sum(df$recipient_share, na.rm = T)
+
+# df$net_gain_billionaire_tax_pc <- billionaire_tax_revenue/sum
+(billionaire_tax_revenue <- sum(df$wealth_tax_revenue_pc * df$pop_2022, na.rm = T)) # 850G
+df$net_gain_billionaire_tax_pc <- billionaire_tax_revenue*df$recipient_share/df$pop_2022 - df$wealth_tax_revenue_pc
+sum((df$net_gain_billionaire_tax_pc * df$pop_2022)[df$net_gain_billionaire_tax_pc > 0], na.rm = T)/1e9 # 590G
+
+
+# FTT: 327G (207G) Pekanov & Schratzenstaller (2019) p. 47
 df$ftt <- NA
 df$ftt[df$code == "USA"] <- 72570
 df$ftt[df$code == "AUT"] <- 1280
@@ -2785,8 +2808,9 @@ df$ftt[is.na(df$ftt)] <- (326887 - sum(df$ftt, na.rm = T)) * df$gdp_2017[is.na(d
 df$ftt <- df$ftt*1e6
 wtd.mean(df$ftt/df$gdp_2017, df$gdp_2017)
 df$ftt_pc <- df$ftt/df$pop_2017
-df$net_gain_ftt_pc <- wtd.mean(df$ftt_pc, df$pop_2017) - df$ftt_pc
-sum((df$net_gain_ftt_pc * df$pop_2017)[df$net_gain_ftt_pc > 0], na.rm = T)/1e9 # TODO? per adult?
+df$ftt_pa <- df$ftt/df$adult_2020
+df$net_gain_ftt_pc <- wtd.mean(df$ftt_pa, df$adult_2020)*df$adult_2020/df$pop_2017 - df$ftt_pc
+sum((df$net_gain_ftt_pc * df$pop_2017)[df$net_gain_ftt_pc > 0], na.rm = T)/1e9 # 207G
 
 
 # Aviation tax: 223G (110G) Also Keen et al. (12) p. 32; https://theicct.org/taxing-aviation-for-loss-and-damage-caused-by-climate-change-feb24/
@@ -2803,20 +2827,59 @@ aviation <- merge(aviation, aviation_adj_tourism)
 df <- merge(df, aviation, all.x = T)
 df$emissions_pc_aviation[is.na(df$emissions_pc_aviation)] <- (sum(df$pop_2018, na.rm = T)*aviation$emissions_pc_aviation[aviation$code == "OWID_WRL"] - sum(df$emissions_pc_aviation * df$pop_2018, na.rm = T)) / sum(df$pop_2018[is.na(df$emissions_pc_aviation)], na.rm = T)
 df$emissions_pc_aviation <- df$emissions_pc_aviation/1e3
+df$emissions_pa_aviation <- df$emissions_pc_aviation*df$pop_2018/df$adult_2020
 # /!\ Problem: in data where emissions are adjusted for tourism, the total of country emissions is above the world emissions (itself above world emissions without adjustment), while it should be lower as some countries are missing. => I use unadjusted data.
 # df$emissions_pc_aviation_adj_tourism[is.na(df$emissions_pc_aviation_adj_tourism)] <- (sum(df$pop_2018, na.rm = T)*aviation$emissions_pc_aviation_adj_tourism[aviation$code == "OWID_WRL"] - sum(df$emissions_pc_aviation_adj_tourism * df$pop_2018, na.rm = T)) / sum(df$pop_2018[is.na(df$emissions_pc_aviation_adj_tourism)], na.rm = T)
-df$net_gain_aviation_pc <- carbon_price*factor_price_aviation * (wtd.mean(df$emissions_pc_aviation, df$pop_2018) - df$emissions_pc_aviation)
+df$net_gain_aviation_pc <- carbon_price*factor_price_aviation * (wtd.mean(df$emissions_pa_aviation, df$adult_2020)*df$adult_2020/df$pop_2018 - df$emissions_pc_aviation)
 carbon_price*factor_price_aviation * sum(df$emissions_pc_aviation * df$pop_2018, na.rm = T)/1e9 # 223G
-sum((df$net_gain_aviation_pc * df$pop_2018)[df$net_gain_aviation_pc > 0], na.rm = T)/1e9 # 110G # TODO? per adult?
+sum((df$net_gain_aviation_pc * df$pop_2018)[df$net_gain_aviation_pc > 0], na.rm = T)/1e9 # 106G 
 
 
-# Maritime levy: $40/t => $15G globally, Mundaca et al. (21)
+# Maritime levy: 104G (55G) $40/t => $15G globally, Mundaca et al. (21)
 #                $100/t => $92G, 51% for mitigation & adaptation, 33% to decarbonize shipping, 16% to administrative costs https://lloydslist.com/LL1136097/Marshall-Islands-demands-$100-tax-on-shipping-emissions
 #                net gain by country (including general eq effects): Dequiedt et al. (24), Table 7
-# TODO
+# Data from Dequiedt (mail from edouard.mien@ferdi.fr): 2018 CO2 emissions from shipping (departure country) after a $40/t tax (in their model, emissions are only reduced by 2% after the tax). I take the average of min and max value they provide.
+maritime <- read.xlsx("../data/emissions_shipping_Dequiedt_2024.xlsx")
+df <- merge(df, maritime[c(1,5)], all.x = T)
+df$net_gain_maritime_pc <- carbon_price*((sum(df$emissions_maritime_mean, na.rm = T)/sum(df$adult_2020[!is.na(df$emissions_maritime_mean)], na.rm = T))*df$adult_2020/df$pop_2018 - df$emissions_maritime_mean/df$pop_2018)
+carbon_price*sum(df$emissions_maritime_mean, na.rm = T)/1e9 # 104G
+sum((df$net_gain_maritime_pc * df$pop_2018)[df$net_gain_maritime_pc > 0], na.rm = T)/1e9 # 53G
 
 
 # Combination
-df$net_gain_all_taxes_pc <- df$net_gain_billionaire_tax_pc + df$net_gain_carbon_pc + df$net_gain_ftt_pc + df$net_gain_aviation_pc #+ df$net_gain_maritime_pc
-# Total transfer: 897G
-sum((df$net_gain_all_taxes_pc * df$pop_2025)[df$net_gain_all_taxes_pc > 0], na.rm = T)/1e9 # 993G
+df$net_gain_all_taxes_pc <- df$net_gain_billionaire_tax_pc + df$net_gain_carbon_pc + df$net_gain_ftt_pc + df$net_gain_aviation_pc + df$net_gain_maritime_pc
+df$net_gain_over_gdp_all_taxes <- df$net_gain_all_taxes_pc/df$gdp_pc_nom_2023
+# Total transfer: 874G
+sum((df$net_gain_all_taxes_pc * df$pop_2025)[df$net_gain_all_taxes_pc > 0], na.rm = T)/1e9 # 973G
+df$code[is.na(df$net_gain_all_taxes_pc)] # "AFG" "BTN" "CUB" "HKG" "PRK" "QAT" "SSD" "SYR" "TWN" / QAT missing due to carbon & billionaire, themselves due to pop_2017/23 TODO: add pop for QAT
+
+df$net_gain_all_taxes_pc[df$code == "USA"]
+
+# Corporate tax: Change minimum rate from 15% to 21% in Pillar 2 with no carve-out: 286G https://www.taxobservatory.eu/fr/base-de-donn%C3%A9es/the-tax-deficit-simulator/ https://www.parisschoolofeconomics.eu/IMG/pdf/duflo_developmentinthexxicentury_pse.pdf
+
+
+# Maps
+plot_world_map("net_gain_over_gdp_all_taxes", df = df, breaks = c(-Inf, -.02, -.015, -.01, -.005, -.001, 0.001, .01, .05, .1, .25, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.015, -.01, -.005, -.001, 0.001, .01, .05, .1, .25, Inf)*100, sep = "% to ", end = "%", return = "levels")), 
+               legend = "Net gain\nfrom new taxes\n(in % of GDP)", 
+               save = T)
+
+plot_world_map("net_gain_all_taxes_pc", df = df, breaks = c(-Inf, -1000, -300, -100, -12, 12, 80, 160, 240, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -300, -100, -12, 12, 80, 160, 240, Inf), sep = " to ", end = "", return = "levels")), 
+               legend = "Net gain\nper capita\nfrom new taxes\n(in $/year)", 
+               save = T)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

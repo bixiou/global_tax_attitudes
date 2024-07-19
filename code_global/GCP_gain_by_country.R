@@ -16,8 +16,8 @@ pop_adult_iso3 <- aggregate(adult ~ year + code, data = pop_adult, FUN = sum)
 names(pop) <- c("country", "ISO2_code", "code", "year", "AgeGrpStart", "pop")
 pop_iso3 <- aggregate(pop ~ year + code, data = pop, FUN = sum)
 pop_iso3 <- merge(pop_iso3, pop_adult_iso3)
-# iso2to3 <- setNames(pop$code, pop$ISO2_code)
-# iso2to3["NA"] <- "NAM"
+iso2to3 <- setNames(pop$code, pop$ISO2_code)
+iso2to3["NA"] <- "NAM"
 
 
 ##### CO2 emissions data #####
