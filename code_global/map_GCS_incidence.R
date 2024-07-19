@@ -2712,3 +2712,111 @@ cop <- read.csv("../data/climate_negotiators.csv")
 View(cop)
 View(cop[cop$Progress %in% c(21, 100) | cop$RecipientEmail == "Recipient Email",c("RecipientLastName", "RecipientEmail", "Q13_1", "Q13_2", "Q16", "country", "Q11", "Q7", "Q8_15", "Q15_15", "Q23", "Q9", "Q10", "Q13")])
 median(as.numeric(gsub("+|°C", "", cop$Q23)), na.rm = T) # +2.1°C
+
+
+##### "Nature" comment #####
+# Total revenue: 1549G
+551+356+327+223+92
+# Total transfer: +94+212+110+
+
+
+# Billionaire tax: 551G
+billionaire_tax_revenue <- 551*1e9
+
+df$recipient_share <- df$pop_2023 * pmax(0, wtd.mean(df$gdp_pc_nom_2023, df$pop_2023) - df$gdp_pc_nom_2023) # TODO? per adult?
+df$recipient_share <- df$recipient_share/sum(df$recipient_share, na.rm = T)
+
+# df$net_gain_billionaire_tax_pc <- billionaire_tax_revenue/sum(df$pop_2025, na.rm = T)
+df$net_gain_billionaire_tax_pc <- billionaire_tax_revenue*df$recipient_share/df$pop_2023 # TODO remove cost
+
+
+# Carbon price at $10: 356G in revenue (94G in int'l transfer)
+gdp_pc_nominal <- read.csv("../data/gdp_pc_nominal.csv") # Current $ https://data.worldbank.org/indicator/NY.GDP.PCAP.CD Jul 7, 2024 API_NY.GDP.PCAP.CD_DS2_en_csv_v2_739905
+gdp_pc_nominal$code <- gdp_pc_nominal$Country.Code
+gdp_pc_nominal <- data.frame("code" = gdp_pc_nominal$code, "gdp_pc_nom_2023" = gdp_pc_nominal$X2023)
+gdp_pc_nominal$gdp_pc_nom_2023[gdp_pc_nominal$code %in% c("ERI", "PRK", "SSD", "VEN", "YEM")] <- c(715, 654, 467, 3640, 702) # Impute data from other sources for Eritrea (IMF, 2023), North Korea (IMF, 2021), South Sudan (IMF, 2023), Venezuela (IMF, 2023), Yemen (WB, 2018)
+df <- merge(df, gdp_pc_nominal, all.x = T)
+
+factor_gdp_carbon <- .002
+world_transfers_carbon_tax_pa <- factor_gdp_carbon*sum(df$gdp_pc_nom_2023 * df$pop_2023, na.rm = T)/sum(df$adult_2023[!is.na(df$gdp_pc_nom_2023)])
+df$net_gain_carbon_pc <- world_transfers_carbon_tax_pa*df$adult_2023/df$pop_2023 - factor_gdp_carbon*df$gdp_pc_nom_2023
+df$revenues_carbon_pc <- -10*df$emissions_pc_2023/df$net_gain_carbon_pc
+df$enough_carbon_tax <- df$revenues_carbon_pc > 1
+setNames(df$revenues_carbon_pc, df$country)[!df$enough_carbon_tax & df$net_gain_carbon_pc < 0] # CH, Ireland: country where carbon tax is not sufficient to finance .1% of GDP
+sum(df$net_gain_carbon_pc * df$pop_2023, na.rm = T)/1e9
+10*sum(df$emissions_2023)/1e9 # 356G
+world_transfers_carbon_tax_pa*sum(df$adult_2023)/1e9 # 213G
+sum((df$net_gain_carbon_pc * df$pop_2023)[df$net_gain_carbon_pc > 0], na.rm = T)/1e9 # 94G
+
+
+# FTT: 327G (212G) Pekanov & Schratzenstaller (2019) p. 47
+df$ftt <- NA
+df$ftt[df$code == "USA"] <- 72570
+df$ftt[df$code == "AUT"] <- 1280
+df$ftt[df$code == "BEL"] <- 1586
+df$ftt[df$code == "BGR"] <- 154
+df$ftt[df$code == "CZE"] <- 496
+df$ftt[df$code == "DNK"] <- 3468
+df$ftt[df$code == "FIN"] <- 838
+df$ftt[df$code == "FRA"] <- 9994
+df$ftt[df$code == "DEU"] <- 10002
+df$ftt[df$code == "GRC"] <- 391
+df$ftt[df$code == "HUN"] <- 344
+df$ftt[df$code == "IRL"] <- 655
+df$ftt[df$code == "ITA"] <- 4000
+df$ftt[df$code == "LVA"] <- 71
+df$ftt[df$code == "LTU"] <- 92
+df$ftt[df$code == "LUX"] <- 1155
+df$ftt[df$code == "NLD"] <- 3962
+df$ftt[df$code == "POL"] <- 1206
+df$ftt[df$code == "PRT"] <- 461
+df$ftt[df$code == "ROU"] <- 458
+df$ftt[df$code == "SLV"] <- 234
+df$ftt[df$code == "ESP"] <- 3280
+df$ftt[df$code == "SWE"] <- 2208
+df$ftt[df$code == "GBR"] <- 75657
+df$ftt[df$code == "JPN"] <- 19988
+df$ftt[df$code == "AUS"] <- 5940
+df$ftt[df$code == "HKG"] <- 13008 # use CHN instead of HKG? Rather no, this leads to 12k in IND
+df$ftt[df$code == "SGP"] <- 15272
+df$ftt[df$code == "CHE"] <- 5659
+sum(df$ftt, na.rm = T) # For country with missing data, we assume the same GDP PPP share of FTT revenue: .1% (this gives a world average of .3%, a bit lower than the paper's .43% computed with nominal GDP)
+df$ftt[is.na(df$ftt)] <- (326887 - sum(df$ftt, na.rm = T)) * df$gdp_2017[is.na(df$ftt)]/sum(df$gdp_2017[is.na(df$ftt)], na.rm = T)
+df$ftt <- df$ftt*1e6
+wtd.mean(df$ftt/df$gdp_2017, df$gdp_2017)
+df$ftt_pc <- df$ftt/df$pop_2017
+df$net_gain_ftt_pc <- wtd.mean(df$ftt_pc, df$pop_2017) - df$ftt_pc
+sum((df$net_gain_ftt_pc * df$pop_2017)[df$net_gain_ftt_pc > 0], na.rm = T)/1e9 # TODO? per adult?
+
+
+# Aviation tax: 223G (110G) Also Keen et al. (12) p. 32; https://theicct.org/taxing-aviation-for-loss-and-damage-caused-by-climate-change-feb24/
+#   Data used: Graver et al. (ICCT, 2018) https://theicct.org/publication/co2-emissions-from-commercial-aviation-2018/ recovered from https://ourworldindata.org/grapher/per-capita-co2-aviation
+#   Based on GWP*100, global warming potential of aviation over 100 years, accounting for non-CO2 effects like contrails, is 3 times the warming caused by its CO2 emissions only (Lee et al., 21).
+#   Hence, aviation should be taxed at 3 times the rate of other sectors, i.e. $300/t. Given total emissions of 747 Mt (in 2018), this yields $224G.
+carbon_price <- 100
+factor_price_aviation <- 3
+aviation <- read.csv("../data/per-capita-co2-aviation.csv")[,c(2,4)] # 2018 data. World average: 97.86
+aviation_adj_tourism <- read.csv("../data/per-capita-co2-aviation-adjusted.csv")[,c(2,4)] # 2018 data. World average: 102.77
+names(aviation) <- c("code", "emissions_pc_aviation")
+names(aviation_adj_tourism) <- c("code", "emissions_pc_aviation_adj_tourism")
+aviation <- merge(aviation, aviation_adj_tourism)
+df <- merge(df, aviation, all.x = T)
+df$emissions_pc_aviation[is.na(df$emissions_pc_aviation)] <- (sum(df$pop_2018, na.rm = T)*aviation$emissions_pc_aviation[aviation$code == "OWID_WRL"] - sum(df$emissions_pc_aviation * df$pop_2018, na.rm = T)) / sum(df$pop_2018[is.na(df$emissions_pc_aviation)], na.rm = T)
+df$emissions_pc_aviation <- df$emissions_pc_aviation/1e3
+# /!\ Problem: in data where emissions are adjusted for tourism, the total of country emissions is above the world emissions (itself above world emissions without adjustment), while it should be lower as some countries are missing. => I use unadjusted data.
+# df$emissions_pc_aviation_adj_tourism[is.na(df$emissions_pc_aviation_adj_tourism)] <- (sum(df$pop_2018, na.rm = T)*aviation$emissions_pc_aviation_adj_tourism[aviation$code == "OWID_WRL"] - sum(df$emissions_pc_aviation_adj_tourism * df$pop_2018, na.rm = T)) / sum(df$pop_2018[is.na(df$emissions_pc_aviation_adj_tourism)], na.rm = T)
+df$net_gain_aviation_pc <- carbon_price*factor_price_aviation * (wtd.mean(df$emissions_pc_aviation, df$pop_2018) - df$emissions_pc_aviation)
+carbon_price*factor_price_aviation * sum(df$emissions_pc_aviation * df$pop_2018, na.rm = T)/1e9 # 223G
+sum((df$net_gain_aviation_pc * df$pop_2018)[df$net_gain_aviation_pc > 0], na.rm = T)/1e9 # 110G # TODO? per adult?
+
+
+# Maritime levy: $40/t => $15G globally, Mundaca et al. (21)
+#                $100/t => $92G, 51% for mitigation & adaptation, 33% to decarbonize shipping, 16% to administrative costs https://lloydslist.com/LL1136097/Marshall-Islands-demands-$100-tax-on-shipping-emissions
+#                net gain by country (including general eq effects): Dequiedt et al. (24), Table 7
+# TODO
+
+
+# Combination
+df$net_gain_all_taxes_pc <- df$net_gain_billionaire_tax_pc + df$net_gain_carbon_pc + df$net_gain_ftt_pc + df$net_gain_aviation_pc #+ df$net_gain_maritime_pc
+# Total transfer: 897G
+sum((df$net_gain_all_taxes_pc * df$pop_2025)[df$net_gain_all_taxes_pc > 0], na.rm = T)/1e9 # 993G
