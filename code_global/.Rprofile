@@ -2005,7 +2005,7 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
 #
-plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE,
+plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL,
                            breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, negative_stripes = FALSE) {
   if (!is.null(parties)) {
     if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
@@ -2050,10 +2050,10 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   df <- merge(df, df_na, all = T)
   df$group <- cut(df$mean, breaks = breaks, labels = labels)
   
-  if (!continuous) {
+  if (!continuous) {      
+    if (is.null(colors)) colors <- setNames(c(color(length(breaks)-1, rev_color = rev_color), "#7F7F7F"), c(rev(labels), na_label))
     if (negative_stripes) {
       pattern <- setNames(c(rep("none", ceiling((length(breaks)-1)/2)), rep("stripe", floor((length(breaks)-1)/2)), "none"), c(rev(labels), na_label))
-      colors <- setNames(c(color(length(breaks)-1, rev_color = rev_color), "#7F7F7F"), c(rev(labels), na_label))
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + 
           geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + 
           expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + 
@@ -2064,7 +2064,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
     } else {
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + 
          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + 
-         scale_fill_manual(name = legend, drop = FALSE, values = color(length(breaks)-1, rev_color = rev_color), labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
+         scale_fill_manual(name = legend, drop = FALSE, values = colors[1:(length(colors)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
     }} else {
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + 
          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + 

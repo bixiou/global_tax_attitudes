@@ -833,6 +833,28 @@ Les progrès dans ces infrastructures sont fulgurants. Lancé en 2009, le systè
 Plusieurs problèmes ont entaché Aadhaar \citep{dreze_aadhaar_2017}, mais on peut tirer des leçons de ces échecs pour ne pas les reproduire \citep{gelb_digital_2019,muralidharan_identity_2023}. En effet, les modalités qui fonctionnent sont désormais mieux connues. Par exemple, la meilleure pratique consiste à utiliser les protocoles open-source pour l'identification biométrique (\href{https://mosip.io}{MOSIP}) plutôt que des logiciels propriétaires.}, pour un coût d'à peine 1~\euro{} par personne enregistrée. Ce déploiement de l'identité biométrique est désormais répliqué ailleurs. % PNON Quand les projets en Afrique coûte en général entre 5 et 10~\euro{} par personne enregistrée, Aadhaar n'a coûté que 1\euro{} par personne\footnote{Cf. \cite{world_bank_state_2017}}.
 En particulier, le programme \textit{Identification for Development} de la Banque mondiale finance des systèmes d'identification dans 57 pays parmi les plus pauvres\footnote{Cf. \cite{world_bank_state_2017,world_bank_benin_2020,world_bank_identification_2022}.}, dans le but de <<~garantir à tous une identité juridique~>> conformément à l'Objectif de développement durable n\textdegree{}~16.9. Cette identification permet ensuite d'offrir de nombreux services, et pourrait être utilisée pour le revenu de base. En Inde, Aadhaar est lié aux comptes bancaires et déjà utilisé pour distribuer des prestations sociales. De son côté, le Togo a mis sur pied en moins de deux semaines un transfert monétaire sur mobile à destination d'un million de personnes\footnote{Cf. \cite{ipa_togos_2021}.}, pour compenser les pertes de revenus des travailleurs informels dans les zones confinées lors de la pandémie de COVID. 
 
+% Vérifier l'identité grâce à une combinaison de méthodes, reposant sur une toile de confiance établie sans intervention d'agents.
+% Inscription par internet, avec (+: obligatoire):
+% + nom, prénom, lieu de résidence
+% + numéro de téléphone (pouvant être partagé, dans ce cas indiquer lien familial ou autre)
+% ? IMEI de l'appareil
+% - email (institutionnel si possible)
+% - pièce d'identité
+% - compte en banque
+% - compte réseau social
+% + vidéo avec parole (et la pièce d'identité si la personne en a une)
+% - localisation GPS
+% => obtention d'un identifiant et d'un score de fiabilité (= unicité)
+% - liens familiaux (identifiants des parents, enfants, frères et sœurs)
+% - pour les jumeaux ou frères/sœurs qui se ressemblent, vidéo de la fratrie
+% Lors d'un doute sur la fiabilité (par ex qq'un sans famille, avec qq'un qui lui ressemble dans une localité proche):
+%   - localisation GPS activée en continu des comptes suspectés d'être une même personne
+%   - suspension du versement du revenu de base
+%   - convocation à un bureau pour prendre iris, photo (et empreintes?)
+% Le revenu de base est versé sur le compte en banque enregistré ou à défaut, sur le numéro de tel. Pour en changer, le mot de passe + vidéo du visage sont requis.
+% ENJEUX: confidentialité et protection des données; 
+% => Pourquoi pas verser une monnaie de singe ? Ou mieux, ne payer que les conversions de la monnaie de singe en devises, pour réduire le coût du RdB?
+
 Bien que le défi technique demeure, il semble pouvoir être relevé par une combinaison appropriée d'infrastructures existantes et nouvelles, adaptée aux besoins spécifiques de chaque région. 
 
 \paragraph{Haïti comme premier test}
@@ -1417,7 +1439,7 @@ ou de pêche seraient vendus aux enchères, et les recettes distribuées à part
 \section*{\normalsize Les émissions ne vont-elles pas augmenter si on double les revenus des plus pauvres~?}\label{q:emissions}
 \addcontentsline{toc}{section}{\nameref{q:emissions}}
 
-Si on ne faisait que redistribuer les revenus, les émissions augmenteraient, car les plus modestes consacrent une plus grande part de leurs revenus à la consommation de biens carbonés que les plus aisés. Et encore, la hausse serait assez limitée. \cite{sager_income_2019} estime qu'une égalisation complète des revenus des États-uniens (à revenu moyen constant) augmenteraient leurs émissions de gaz à effet de serre de 2~\%. De même, \cite{oswald_global_2021} trouvent qu'avec une égalisation quasi-complète des revenus des humains (ramenant le revenu maximal à deux fois le revenu minimal), la consommation d'énergie augmenterait de 7~\%. 
+Si on ne faisait que redistribuer les revenus, les émissions augmenteraient, car les plus modestes consacrent une plus grande part de leurs revenus à la consommation de biens carbonés que les plus aisés. Et encore, la hausse serait assez limitée. \cite{sager_income_2019} estime qu'une égalisation complète des revenus des États-uniens (à revenu moyen constant) augmenteraient leurs émissions de gaz à effet de serre de 2~\%. De même, \cite{oswald_global_2021} trouvent qu'avec une égalisation quasi-complète des revenus des humains (ramenant le revenu maximal à deux fois le revenu minimal), la consommation d'énergie augmenterait de 7~\%. % TODO cite Millward-Hopkins & Oswald (2021)
 Mais, par construction, le Plan mondial pour le climat plafonnerait les émissions selon une trajectoire baissière. Ainsi, les émissions ne pourraient que baisser. La hausse spectaculaire de la consommation (donc des émissions) des plus pauvres serait plus que compensée par la baisse de la consommation des plus riches et par la décarbonation (c'est-à-dire la baisse des émissions liées à un niveau de consommation donné).
 
 \section*{\normalsize Ce système ne profite-t-il pas aux plus riches, en leur permettant d'acheter un droit à polluer~?}\label{q:riches}
@@ -1808,3 +1830,25 @@ en particulier 350.org, ACT Alliance, Attac, CASCA, CCL France, CCL Europe, CESR
 % L'UE régule midstream: dépôts pétroliers pour l'ETS2 (entre raffinerie et pompe) ou installations pour ETS1. Pourquoi pas upstream? Car on se repose sur l'administration des droits d'accise existante, qui fonctionne bien.
 
 % PNON Alors pourquoi les pays n'agissent pas? Après mes multiples échanges, une des raisons est la suivante. Il y a trop peu de personnes qui travaillent sur ces sujets dans l'administration et dans les négociations climatiques. Ces gens-là font déjà avancer les choses, nouent des partenariats, avancent pas à pas pour changer les règles du système financier. Ils sont déjà occupés par leurs projets en cours, et il y a déjà de multiples recommandations de rapports officiels qui seraient utiles de mettre en œuvre. Tous ces efforts sont extrêmement ralentis, voire empêchés, par la défense de l'intérêt national de la part de nombreuses parties prenantes. En outre, un projet comme celui-ci leur paraît trop ambitieux car il rompt avec l'ordinaire incrémental de leurs actions. Pour résoudre ces obstacles, je pense que les pays du monde entier devraient rassembler un ou deux milliers d'universitaires travaillant sur ces sujets dans un réseau, et les faire travailler directement dans leurs ministères. Crucialement, les universitaires ne travailleraient pas nécessairement pour leur pays d'origine, favorisant ainsi les échanges d'information et l'émergence d'une vision commune (plutôt que nationale). En effet, les universitaires ont l'habitude de collaborer en transcendant les frontières et les institutions, contrairement aux ministères. De mon côté, ce sont trois passés à la prestigieuse université Tsinghua, à Pékin, qui m'ont permis de comprendre les contraintes et les ambitions de la Chine dans les négociations climatiques. Par ailleurs, les négociations internationales ne devraient pas se tenir à huis clos, mais être enregistrées et diffusées. Aussi, il devrait y avoir plus de discussions en parallèle, grâce à une délégation plus grande de la part des ministres, de sorte qu'on puisse avancer sur plusieurs fronts en même temps, plutôt que de focaliser les négociations sur un seul sujet (en ce moment, les MDBs).
+
+% LASER TALK / FAQ / Répondre aux contre-arguments
+
+% 1. Les Français d'abord: Il faut commencer par aider les Français avant de se soucier des gens loin de nous. Il y a déjà des gens qui n'arrivent pas à se nourrir en France, et on n'arrive déjà pas à les aider. Commençons par balayer devant notre porte.
+% => L'un n'empêche pas l'autre. Dans ce qu'on propose, seul un tiers finance l'étranger. La solidarité entre pays est 100 fois faible que au sein d'un pays. 
+%    C'est dans notre intérêt de le faire, pour pacifier le monde, éviter les conflits liés aux famines, qui ont des répercussions jusque chez nous, avec l'afflux de migrants.
+%    L'Occident a une dette morale envers les pays du Sud à cause du CC. 
+
+% 2. Pourquoi verser de l'argent à des dictateurs corrompus qui tuent leur population ?
+% => Il faut un audit des comptes par une institution internationale où chaque pays est représentée, et un système de paiement au sein des administrations qui permet une traçabilité. Lutter contre la corruption nécessite des moyens.
+%    Les fonds ne seront pas versés si ces conditions ne sont pas remplies.
+
+% 3. Ça n'arrivera pas.
+% => Lula propose un ISF mondial au G20. Des diplomates de nombreux pays sont d'accord. 
+%    80% de la population est d'accord.
+
+% 4. C'est déjà difficile de boucler nos fins de mois, on pense d'abord à nous.
+% => Seuls les gens possédant plus de 5M€ paieront, soit 0.1% de la population.
+
+% 5. Les riches partiront si on les taxe et ça réduira le PIB.
+% => On ne taxera qu'à partir de 5M€, et au taux de seulement 2%. Les chiffres montrent que très peu de riches partent en pratique. On peut encore réduire les départs avec une exit tax.
+%    Si c'est mondial, ils n'auront pas d'endroit où aller.
