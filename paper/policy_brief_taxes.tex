@@ -80,7 +80,7 @@
 \title{Revenues and transfers from global taxes %\\ Technical Note
 } 
 
-\author{\textcolor{white}{Adrien Fabre\footnote{\textcolor{black}{The author is Adrien Fabre, CNRS researcher in economics at CIRED. E-mail: adrien.fabre@cnrs.fr.}}}
+\author{\textcolor{white}{Adrien Fabre\footnote{\textcolor{black}{Corresponding author: adrien.fabre@cnrs.fr.}}}
 %\footnote{CNRS researcher in economics at CIRED. E-mail: adrien.fabre@cnrs.fr.}
 } 
 % \author{Global Redistribution Advocates\footnote{The author is Adrien Fabre, CNRS researcher in economics at CIRED. E-mail: adrien.fabre@cnrs.fr.}} 
@@ -92,38 +92,37 @@
 \begin{document}
 
 \maketitle
-\tikz [remember picture, overlay] %
-\node [shift={(5.5cm,-1.5cm)}] at (current page.north west) % north west
-[anchor=north west] % north west
-{\href{http://global-redistribution-advocates.org}{\includegraphics[height=1.3cm]{../figures/policies/logo_full_white_bg}}};
+% \tikz [remember picture, overlay] %
+% \node [shift={(5.5cm,-1.5cm)}] at (current page.north west) % north west
+% [anchor=north west] % north west
+% {\href{http://global-redistribution-advocates.org}{\includegraphics[height=1.3cm]{../figures/policies/logo_full_white_bg}}};
 
 
-\section{Summary}\label{sec:intro}
-
-We estimate the tax revenues and their allocation by country, from five global taxes: a tax on wealth above \$100 million, a small carbon tax, % carbon tax is the only one whose transfers are based on GDP
-a financial transaction tax, a tax on  maritime fuel and one on aviation fuel. \$1.9 trillion is collected (1.8\% of the world GDP). For most taxes, revenues are returned to each country in proportion to their adult population (except for the wealth tax, which finances poorer countries more). The combination of these taxes and transfers entail \$1 trillion in North--South transfers.
-% 850+356+327+223+104 # wealth + carbon + FTT + Aviation + Maritime 
-% # Total transfer: 973G (52%)
-% 590+94+207+106+53 # 1050 - interactions between taxes
-
-% Act now
-% benefit > cost
-% map
-% public guarantees, soft loans
-% 2nd best: coordinated CBAMs
+% \section{Summary}\label{sec:intro}
+\begin{abstract}
+  We estimate the revenues by country from six global taxes: a tax on wealth above \$100 million, a small carbon tax, a higher minimum corporate income tax, % carbon tax is the only one whose transfers are based on GDP
+  a financial transaction tax, a tax on maritime fuel and one on aviation fuel. \$2.1 trillion would be collected. % (2\% of the world GDP). 
+  %
+  We further estimate international transfers that could be financed.  %according to the proposed allocation of revenues between countries. 
+  Namely, we reallocate 1\% of each country's GNI to all countries in proportion to their adult population, and one half of the wealth tax to countries with a per capita GNI lower than twice the world average, in proportion to their distance to this threshold. The combination of these taxes and transfers entail \$766 billion in North--South transfers.  
+\end{abstract}
 
 \begin{figure}[h!] 
-    \caption{Net tax gain from the combination of new global taxes and transfers, by country.}\label{fig:gain_taxes}
-    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/net_gain_over_gdp_all_taxes.pdf}} 
+    \caption{International transfers to be financed by new global taxes.}\label{fig:gain_both_taxes}
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/net_gain_over_gdp_both_taxes.pdf}} 
 \end{figure}
 
 \clearpage
 \begin{table}[!h]
-  \caption{\label{tab:revenue_transfers}Net tax gain and revenues collected from global taxes (in \% of GDP).}
+  \caption{\label{tab:transfers_gain}Global taxes: international transfers, budget gain, revenues collected (\% of GNI).}
   \makebox[\textwidth][c]{
-  \input{../tables/revenue_transfers.tex} % add \midrule after World
-} \end{table}
+  \input{../tables/transfers_gain.tex} % add \midrule after World
+} 
+{\footnotesize \textit{Note:} Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
+}
+\end{table}
 \clearpage
+
 
 \section{Tax on ultra-high wealth}\label{sec:wealth}
 
@@ -134,7 +133,7 @@ We simulate a 3\% tax on all individual wealth in excess of \$100 million. For e
 
 The World Inequality Lab offers an \href{https://wid.world/world-wealth-tax-simulator/}{online simulator} to estimate the revenue collected by a custom wealth tax in each world region. Building on this work, we disaggregate the revenue estimates at the country level. Courtesy of Félix Bajard, we obtained the simulator's underlying data for 50 countries covering 95\% of global wealth tax revenue. To impute missing data, we predict the taxable base from a linear regression of the log of taxable base on the log of nominal GDP per capita, weighted by country population. 
 
-Following \cite{zucman_blueprint_2024}, we assume 20\% of tax evasion and no effect of asset prices. We assume that the revenue from the global wealth tax would be channeled into a fund to finance sustainable development. We further assume that countries with a per capita GDP exceeding below a threshold would not receive any funding. We fix this eligibility threshold at 167\% of the world average per capita GDP, or \$22,231 per year. Finally, eligible countries receive a transfer per adult proportional to the difference between the threshold and their GDP per capita.
+Following \cite{zucman_blueprint_2024}, we assume 20\% of tax evasion. We also conservatively assume that asset prices would decline by 10\%. Half of the revenue from the global wealth tax would not be retained domestically but channeled into a fund to finance sustainable development. This fund would return revenues to countries with a per capita GNI below a threshold. We fix this eligibility threshold at twice the world average per capita GNI, or \$26,885 per year (in nominal terms). Finally, eligible countries receive a transfer per adult proportional to the difference between the threshold and their GNI per capita.
 
 
 \section{Financial Transactions Tax}\label{sec:ftt}
@@ -144,25 +143,34 @@ Following \cite{zucman_blueprint_2024}, we assume 20\% of tax evasion and no eff
 \cite{pekanov_global_2019} provide estimates at the global level and for 18 high-income countries. We allocate the global revenue that does not originate from these 18 countries to remaining countries, in proportion to their GDP. 22\% of world revenues would be collected in these remaining countries, with a revenue amounting to 0.1\% of their GDP (vs. 0.56\% of GDP for the 18 high-income countries).
 % In these remaining countries, the FTT collects 22\% of the world total, and 0.1\% of these countries' GDP (vs. 0.56\% of GDP in the 18 high-income countries).
 
-Finally, we assume that all collected revenues are returned to countries in proportion to their adult population.
 
 \section{Carbon price}\label{sec:carbon}
 
-We model simulate the international transfers that a \$10/tCO$_\text{2}$ carbon price could finance. At the global level, and neglecting behavioral responses, 0.34\% of the world nominal GDP would be collected. Contrary to the other taxes studied here, the revenues of the carbon price are not entirely pooled at the global level. Instead, we assume that 0.2\% of each country's nominal GDP would be pooled and rebated to all countries in proportion to their adult population. With some exceptions (such as Ireland and Switzerland), the carbon price revenues would cover more than the transfer owed to the rest of the world, leaving revenues for domestic spending even in high-income countries.
-
-\section{Aviation fuel levy}\label{sec:wealth}
-
-Using data from \cite{graver_co2_2018},\footnote{We use the data unadjusted for tourism.} we estimate the revenues from a tax on all flights (domestic and international) and allocate global revenues to countries in proportion to their adult population. Due to complex climate effects such as contrails, aviation the global warming potential of aviation (GWP*$_\text{100}$) is 3 times the warming caused by its CO$_\text{2}$ emissions \citep{lee_contribution_2021}. To fully account for all effects on global warming, the carbon levy on aviation should be multiplied by that factor. Therefore, we simulate a \$300/tCO$_\text{2}$ tax on aviation fuel, comparable to the \$100/tCO$_\text{2}$ tax on maritime fuel detailed below. Again, we return the revenue to each country in proportion to their adult population. We use the 2018 data without adjusting for the expected increase in air traffic, and without adjusting for the decrease in traffic that would follow the tax.\footnote{More generally, we do not adjust for inflation or changes in volumes throughout this technical note. Estimates are only provided to get the orders of magnitude and cannot be very precise.}
+We model simulate the international transfers a \$10/tCO$_\text{2}$ carbon price. At the global level, and neglecting behavioral responses, 0.33\% of the world nominal GDP would be collected. 
+%Contrary to the other taxes studied here, the revenues of the carbon price are not entirely pooled at the global level. Instead, we assume that 0.2\% of each country's nominal GDP would be pooled and rebated to all countries in proportion to their adult population. With some exceptions (such as Ireland and Switzerland), the carbon price revenues would cover more than the transfer owed to the rest of the world, leaving revenues for domestic spending even in high-income countries.
 
 \section{Maritime fuel levy}\label{sec:wealth}
 
-We simulate the revenues of a \$100/tCO$_\text{2}$ levy on maritime fuel, returned to each country in proportion to their adult population. The emissions from shipping by country are given by the simple average between the minimum and maximum estimates of \citet{dequiedt_navigating_2024}, who graciously provided the data. 
+We simulate the revenues of a \$100/tCO$_\text{2}$ levy on maritime fuel. The emissions from shipping by country are given by the simple average between the minimum and maximum estimates of \citet{dequiedt_navigating_2024}, who graciously provided the data. 
+
+\section{Aviation fuel levy}\label{sec:wealth}
+
+Using data from \cite{graver_co2_2018},\footnote{We use the data unadjusted for tourism.} we estimate the revenues from a tax on all flights (domestic and international). Due to complex climate effects such as contrails, aviation the global warming potential of aviation (GWP*$_\text{100}$) is 3 times the warming caused by its CO$_\text{2}$ emissions \citep{lee_contribution_2021}. To fully account for all effects on global warming, the carbon levy on aviation should be multiplied by that factor. Therefore, we simulate a \$300/tCO$_\text{2}$ tax on aviation fuel, comparable to the \$100/tCO$_\text{2}$ tax on maritime fuel. We use the 2018 data without adjusting for the expected increase in air traffic, and without adjusting for the decrease in traffic that would follow the tax.\footnote{More generally, we do not adjust for inflation or changes in volumes throughout this technical note. Figures are only provided to get ballpark estimates and cannot be very precise.}
+
+\section{Higher minimum corporate income tax}
+
+We estimate extra revenue by country if the internationally agreed minimum rate on corporate income tax was raised from 15\% to 21\%, with no carve-out. We use data from the \href{https://www.taxobservatory.eu/fr/base-de-donn%C3%A9es/the-tax-deficit-simulator/}{tax deficit simulator} from the EU Tax Observatory. These estimates are available for 45 countries (from OECD and the G20). We impute missing data only for three high-income countries (Iceland, Israel, New Zealand) and conservatively assume no extra revenue for other (developing) countries with missing data.
 
 \quad \\ \quad 
 
-\textit{We are here to feed the public debate on global redistribution. We welcome counter-proposals, criticisms and suggestions concerning our policy brief (including pull requests). Feel free to engage the discussion on \href{https://github.com/bixiou/global_tax_attitudes/issues}{github}. }
+\textit{Our figures are fully reproducible from our data and code, openly availably on\\ \href{https://github.com/bixiou/global_tax_attitudes/code_global/new_taxes.R}{github.com/bixiou/global\_tax\_attitudes/code\_global/new\_taxes.R}. We are here to feed the public debate on global redistribution. We welcome counter-proposals, criticisms and suggestions concerning (including pull requests).  }
 
 \clearpage
+
+\begin{figure}[h!] 
+    \caption{Net gain for state budgets from new taxes and international transfers (revenue plus net transfer).}\label{fig:budget_gain_both_taxes}
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/budget_gain_over_gdp_both_taxes.pdf}} 
+\end{figure}
 % {\footnotesize
 % \begingroup
 % \setstretch{.5}

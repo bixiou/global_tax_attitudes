@@ -2715,10 +2715,11 @@ median(as.numeric(gsub("+|°C", "", cop$Q23)), na.rm = T) # +2.1°C
 
 
 ##### "Nature" comment #####
-# Total revenue: 1860G
-765+356+327+223+104 # wealth + carbon + FTT + Aviation + Maritime 
-# Total transfer: 973G (52%)
-590+94+207+106+53 # 1050 - interactions between taxes
+# Total revenue: 2061G
+765+356+327+223+104+286 # wealth + carbon + FTT + Aviation + Maritime + Corporate income tax
+# Total transfer from GNI tax and fund: 766G
+# Total transfer from taxes: 912G (44%)
+515+94+207+106+53+0 # 975 - interactions between taxes
 # To increase transfer: redistribute per capita instead of per adult; lower threshold_recipient_world_average; increase wealth tax rate
 
 
@@ -2731,6 +2732,8 @@ median(as.numeric(gsub("+|°C", "", cop$Q23)), na.rm = T) # +2.1°C
 # aid_received <- WDI(indicator = "DT.ODA.ODAT.GN.ZS", latest = 1)
 # aid_provided <- WDI(indicator = "DC.ODA.TOTL.CD", latest = 1)
 gni_pc <- WDI(indicator = "NY.GNP.PCAP.CD", latest = 1)
+write.csv(gni_pc, "../data/gni_pc.csv")
+gni_pc <- read.csv("../data/gni_pc.csv")
 gni_pc <- data.frame("code" = gni_pc$iso3c, "gni_pc_nom_2023" = gni_pc$NY.GNP.PCAP.CD)
 df <- merge(df, gni_pc, all.x = T)
 df$gni_nom_2023 <- df$gni_pc_nom_2023 * df$pop_2023
@@ -2743,7 +2746,6 @@ gdp_pc_nominal$gdp_pc_nom_2023[gdp_pc_nominal$code %in% c("ERI", "PRK", "SSD", "
 df <- merge(df, gdp_pc_nominal, all.x = T)
 df$gdp_nom_2023 <- df$gdp_pc_nom_2023 * df$pop_2023
 
-{
 factor_gdp_carbon <- .002
 carbon_price <- 10 #/euro_per_dollar
 world_transfers_carbon_tax_pa <- factor_gdp_carbon*sum(df$gni_nom_2023, na.rm = T)/sum(df$adult_2023[!is.na(df$gni_pc_nom_2023)])
@@ -2753,11 +2755,11 @@ df$enough_carbon_tax <- df$revenues_carbon_pc > 1
 setNames(df$revenues_carbon_pc, df$country)[!df$enough_carbon_tax & df$net_gain_carbon_pc < 0] # CH, Ireland: country where carbon tax is not sufficient to finance .1% of GDP
 sum(df$net_gain_carbon_pc * df$pop_2023, na.rm = T)/1e9
 carbon_price*sum(df$emissions_2023)/1e9 # 356G
-world_transfers_carbon_tax_pa*sum(df$adult_2023)/1e9 # 213G
+world_transfers_carbon_tax_pa*sum(df$adult_2023)/1e9 # 214G
 sum((df$net_gain_carbon_pc * df$pop_2023)[df$net_gain_carbon_pc > 0], na.rm = T)/1e9 # 94G
-sum(df$emissions_pc_2023 * df$pop_2023 * 10, na.rm = T)/sum(df$gni_nom_2023, na.rm = T) # 0.34%
+sum(df$emissions_pc_2023 * df$pop_2023 * 10, na.rm = T)/sum(df$gni_nom_2023, na.rm = T) # 0.33%
 
-# Billionaire tax: 708G (575G)
+# Billionaire tax: 765G (515G)
 # Contrary to the other taxes, revenues are not rebated proportionally to adult population, but to countries with GDP pc lower than world average, in proportion to the gap to this world average.
 # Data from WID (@laposte.net), in current USD. TODO: update data once it's online and stabilized.
 tax_rate <- .03
@@ -2770,7 +2772,7 @@ for (c in setdiff(unique(wealth$code), NA)) df$wealth_100M_2022[df$code == c] <-
 df$country[no.na(df$wealth_100M_2022) < 0] # /!\ pb with Egypt data
 df$wealth_100M_2022[df$wealth_100M_2022 < 0] <- NA
 df$wealth_tax_revenue <- tax_rate*evasion_depreciation*df$wealth_100M_2022
-sum(df$wealth_tax_revenue, na.rm = T)/1e9 # 807G (higher than Zucman's 511G because he accounts for taxes already paid - here, we simulate an additional rather than a top-up tax. Also, he considers a 2% over all wealth, while I consider 2% marginal over threshold)
+sum(df$wealth_tax_revenue, na.rm = T)/1e9 # 726G (higher than Zucman's 511G because he accounts for taxes already paid - here, we simulate an additional rather than a top-up tax. Also, he considers a 3% over all wealth, while I consider 3% marginal over threshold)
 sort(setNames(df$wealth_100M_2022, df$country)[!is.na(df$wealth_100M_2022)])
 
 df$wealth_tax_revenue_pc <- df$wealth_tax_revenue/df$pop_2022
@@ -2778,14 +2780,14 @@ reg_wealth <- lm(log10(wealth_tax_revenue_pc) ~ log10(gni_pc_nom_2023), data = d
 df$wealth_tax_revenue_pc[is.na(df$wealth_tax_revenue_pc)] <- 10^predict(reg_wealth, data.frame(gni_pc_nom_2023 = df$gni_pc_nom_2023[is.na(df$wealth_tax_revenue_pc)]))
 plot(log10(df$gni_pc_nom_2023), log10(df$wealth_tax_revenue_pc)) 
 
-threshold_recipient_world_average <- 1.67 # Lower threshold implies more North-South transfers but makes China lose
-df$recipient_share <- df$adult_2022 * pmax(0, threshold_recipient_world_average * wtd.mean(df$gni_pc_nom_2023, df$pop_2023) - df$gni_pc_nom_2023) 
+threshold_recipient_world_average <- 2 # Lower threshold implies more North-South transfers but makes China lose
+df$recipient_share <- df$adult_2022 * pmax(0, threshold_recipient_world_average * wtd.mean(df$gni_pc_nom_2023, df$pop_2023) - df$gni_pc_nom_2023) # To make Russia < .1%, replace 2*world_average by 30e3
 df$recipient_share <- df$recipient_share/sum(df$recipient_share, na.rm = T)
 
 # df$net_gain_billionaire_tax_pc <- billionaire_tax_revenue/sum
-(billionaire_tax_revenue <- sum(df$wealth_tax_revenue_pc * df$pop_2022, na.rm = T)) # 850G
+(billionaire_tax_revenue <- sum(df$wealth_tax_revenue_pc * df$pop_2022, na.rm = T)) # 765G
 df$net_gain_billionaire_tax_pc <- billionaire_tax_revenue*df$recipient_share/df$pop_2022 - df$wealth_tax_revenue_pc
-sum((df$net_gain_billionaire_tax_pc * df$pop_2022)[df$net_gain_billionaire_tax_pc > 0], na.rm = T)/1e9 # 590G
+sum((df$net_gain_billionaire_tax_pc * df$pop_2022)[df$net_gain_billionaire_tax_pc > 0], na.rm = T)/1e9 # 515G
 sum(df$wealth_tax_revenue, na.rm = T)/billionaire_tax_revenue # 95% from non-missing data
 
 
@@ -2845,7 +2847,7 @@ aviation_adj_tourism <- read.csv("../data/per-capita-co2-aviation-adjusted.csv")
 names(aviation) <- c("code", "emissions_pc_aviation")
 names(aviation_adj_tourism) <- c("code", "emissions_pc_aviation_adj_tourism")
 aviation <- merge(aviation, aviation_adj_tourism)
-df <- merge(df, aviation, all.x = T)
+df <- merge(df[, names(df) != "emissions_pc_aviation"], aviation, all.x = T)
 df$emissions_pc_aviation[is.na(df$emissions_pc_aviation)] <- (sum(df$pop_2018, na.rm = T)*aviation$emissions_pc_aviation[aviation$code == "OWID_WRL"] - sum(df$emissions_pc_aviation * df$pop_2018, na.rm = T)) / sum(df$pop_2018[is.na(df$emissions_pc_aviation)], na.rm = T)
 df$emissions_pc_aviation <- df$emissions_pc_aviation/1e3
 df$emissions_pa_aviation <- df$emissions_pc_aviation*df$pop_2018/df$adult_2020
@@ -2861,7 +2863,7 @@ sum((df$net_gain_aviation_pc * df$pop_2018)[df$net_gain_aviation_pc > 0], na.rm 
 #                net gain by country (including general eq effects): Dequiedt et al. (24), Table 7
 # Data from Dequiedt (mail from edouard.mien@ferdi.fr): 2018 CO2 emissions from shipping (departure country) after a $40/t tax (in their model, emissions are only reduced by 2% after the tax). I take the average of min and max value they provide.
 maritime <- read.xlsx("../data/emissions_shipping_Dequiedt_2024.xlsx")
-df <- merge(df, maritime[c(1,5)], all.x = T)
+df <- merge(df[, names(df) != "emissions_maritime_mean"], maritime[c(1,5)], all.x = T)
 df$net_gain_maritime_pc <- carbon_price*factor_price_maritime*((sum(df$emissions_maritime_mean, na.rm = T)/sum(df$adult_2020[!is.na(df$emissions_maritime_mean)], na.rm = T))*df$adult_2020/df$pop_2018 - df$emissions_maritime_mean/df$pop_2018)
 carbon_price*factor_price_maritime*sum(df$emissions_maritime_mean, na.rm = T)/1e9 # 104G
 sum((df$net_gain_maritime_pc * df$pop_2018)[df$net_gain_maritime_pc > 0], na.rm = T)/1e9 # 53G
@@ -2870,23 +2872,24 @@ sum((df$net_gain_maritime_pc * df$pop_2018)[df$net_gain_maritime_pc > 0], na.rm 
 # Combination
 df$net_gain_all_taxes_pc <- df$net_gain_billionaire_tax_pc + df$net_gain_carbon_pc + df$net_gain_ftt_pc + df$net_gain_aviation_pc + df$net_gain_maritime_pc
 df$net_gain_over_gdp_all_taxes <- df$net_gain_all_taxes_pc/df$gni_pc_nom_2023
-# Total transfer: 973G
-sum((df$net_gain_all_taxes_pc * df$pop_2025)[df$net_gain_all_taxes_pc > 0], na.rm = T)/1e9 # 973G
-df$code[is.na(df$net_gain_all_taxes_pc)] # "AFG" "BTN" "CUB" "HKG" "PRK" "QAT" "SSD" "SYR" "TWN" / QAT missing due to carbon & billionaire, themselves due to pop_2017/23 TODO: add pop for QAT
+# Total transfer: 912G
+sum((df$net_gain_all_taxes_pc * df$pop_2025)[df$net_gain_all_taxes_pc > 0], na.rm = T)/1e9 # 912G
+df$code[is.na(df$net_gain_all_taxes_pc)] #  "HKG" "PRK" "SSD" "TWN"
 
 df$net_gain_all_taxes_pc[df$code == "USA"]
 
-# table_taxes <- cbind("net_gain" = df$net_gain_all_taxes_pc, "wealth" = df$wealth_tax_revenue_pc, "ftt" = df$ftt_pc, "carbon" = carbon_price*df$emissions_pc_2023, "maritime" = carbon_price*factor_price_maritime*df$emissions_maritime_mean/df$pop_2018, 
-#                       "aviation" = carbon_price*factor_price_aviation*df$emissions_pc_aviation, "pop" = df$pop_2023*df$gni_pc_nom_2023)/df$gni_pc_nom_2023
-# row.names(table_taxes) <- df$country 
-# row.names(table_taxes)[row.names(table_taxes) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
-# (table_taxes <- rbind("World" = colSums(sweep(table_taxes, 1, df$pop_2023*df$gni_pc_nom_2023/(sum(df$pop_2023*df$gni_pc_nom_2023, na.rm = T)), `*`), na.rm = TRUE),
-#   table_taxes[order(-table_taxes[,1]),]))
-# cat(paste(kbl(100*table_taxes[no.na(table_taxes[,7] > 35e6, F, F), 1:6], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).", 
-#               position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, rep(2, 5)), linesep = rep("", nrow(table_taxes)-1), longtable = F, label = "revenue_transfers", align = 'c', 
-#               col.names = c("\\makecell{Net gain\\\\from taxes\\\\\\& transfers}", "\\makecell{Wealth Tax\\\\(3\\% above\\\\100M)}", "\\makecell{Financial\\\\Transactions\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/tCO$_\\text{2}$)}", 
-#                             "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/tCO$_\\text{2}$)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/tCO$_\\text{2}$)}")), collapse="\n"), file = "../tables/revenue_transfers.tex") 
-# 
+table_taxes <- cbind("net_gain" = df$net_gain_all_taxes_pc, "wealth" = df$wealth_tax_revenue_pc, "ftt" = df$ftt_pc, "carbon" = carbon_price*df$emissions_pc_2023, 
+                     "maritime" = carbon_price*factor_price_maritime*df$emissions_maritime_mean/df$pop_2018, "aviation" = carbon_price*factor_price_aviation*df$emissions_pc_aviation, 
+                     "pop" = df$pop_2023*df$gni_pc_nom_2023) / df$gni_pc_nom_2023
+row.names(table_taxes) <- df$country
+row.names(table_taxes)[row.names(table_taxes) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
+(table_taxes <- rbind("World" = colSums(sweep(table_taxes, 1, df$pop_2023*df$gni_pc_nom_2023/(sum(df$pop_2023*df$gni_pc_nom_2023, na.rm = T)), `*`), na.rm = TRUE),
+  table_taxes[order(-table_taxes[,1]),]))
+cat(paste(kbl(100*table_taxes[no.na(table_taxes[,7] > 35e6, F, F), 1:6], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
+              position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, rep(2, 5)), linesep = rep("", nrow(table_taxes)-1), longtable = F, label = "revenue_transfers", align = 'c',
+              col.names = c("\\makecell{Net gain\\\\from taxes\\\\\\& transfers}", "\\makecell{Wealth Tax\\\\(3\\% above\\\\100M)}", "\\makecell{Financial\\\\Transactions\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/tCO$_\\text{2}$)}",
+                            "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/tCO$_\\text{2}$)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/tCO$_\\text{2}$)}")), collapse="\n"), file = "../tables/revenue_transfers.tex")
+
 
 # Corporate tax: Change minimum rate from 15% to 21% in Pillar 2 with no carve-out: 286G https://www.taxobservatory.eu/fr/base-de-donn%C3%A9es/the-tax-deficit-simulator/ https://www.parisschoolofeconomics.eu/IMG/pdf/duflo_developmentinthexxicentury_pse.pdf
 cit <- read.csv2("../data/cit.csv")
@@ -2900,50 +2903,42 @@ df$cit_revenue_pc[is.na(df$cit_revenue_pc)] <- 0
 # TODO! Explain incidence != net tax gain
 
 # Maps
-# plot_world_map("net_gain_over_gdp_all_taxes", df = df, breaks = c(-Inf, -.02, -.015, -.01, -.005, -.001, 0.001, .01, .05, .1, .25, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
-#                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.015, -.01, -.005, -.001, 0.001, .01, .05, .1, .25, Inf)*100, sep = "% to ", end = "%", return = "levels")), 
-#                legend = "Net gain\nfrom new taxes\n(in % of GDP)", 
-#                save = T)
-# 
-# plot_world_map("net_gain_over_gdp_all_taxes", df = df, breaks = c(-.03, -.02, -.001, 0.001, .02, .05, .1, .25, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
-#                labels = sub("≤", "<", agg_thresholds(c(0), c(-.03, -.02, -.001, 0.001, .02, .05, .1, .25, Inf)*100, sep = "% to ", end = "%", return = "levels")), 
-#                legend = "Net gain\nfrom new taxes\n(in % of GDP)", colors = color(11)[1:9],
-#                save = T)
-# 
-# plot_world_map("net_gain_all_taxes_pc", df = df, breaks = c(-Inf, -1000, -300, -100, -12, 12, 80, 160, 240, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
-#                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -300, -100, -12, 12, 80, 160, 240, Inf), sep = " to ", end = "", return = "levels")), 
-#                legend = "Net gain\nper capita\nfrom new taxes\n(in $/year)", 
-#                save = T)
+plot_world_map("net_gain_over_gdp_all_taxes", df = df, breaks = c(-Inf, -.02, -.015, -.01, -.005, -.001, 0.001, .01, .05, .1, .25, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.015, -.01, -.005, -.001, 0.001, .01, .05, .1, .25, Inf)*100, sep = "% to ", end = "%", return = "levels")),
+               legend = "Net gain\nfrom new taxes\n(in % of GDP)",
+               save = T)
+
+plot_world_map("net_gain_over_gdp_all_taxes", df = df, breaks = c(-.03, -.02, -.001, 0.001, .02, .05, .1, .25, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-.03, -.02, -.001, 0.001, .02, .05, .1, .25, Inf)*100, sep = "% to ", end = "%", return = "levels")),
+               legend = "Net gain\nfrom new taxes\n(in % of GDP)", colors = color(11)[1:9],
+               save = T)
+
+plot_world_map("net_gain_all_taxes_pc", df = df, breaks = c(-Inf, -1000, -300, -100, -12, 12, 80, 160, 240, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -1000, -300, -100, -12, 12, 80, 160, 240, Inf), sep = " to ", end = "", return = "levels")),
+               legend = "Net gain\nper capita\nfrom new taxes\n(in $/year)",
+               save = T)
 
 
 # Non-wealth GDP tax:
-factor_gdp_tax <- .01 # TODO Complete with existing ODA to arrive at 1 trillion
+factor_gdp_tax <- .01 
 world_transfers_gdp_tax_pa <- factor_gdp_tax*sum(df$gni_nom_2023, na.rm = T)/sum(df$adult_2023[!is.na(df$gni_pc_nom_2023)])
 df$net_gain_gdp_tax_pc <- world_transfers_gdp_tax_pa*df$adult_2023/df$pop_2023 - factor_gdp_tax*df$gni_pc_nom_2023
 df$net_gain_over_gdp_gdp_tax <- df$net_gain_gdp_tax_pc/df$gni_pc_nom_2023
-world_transfers_gdp_tax_pa*sum(df$adult_2023)/1e9 # 1067G
+world_transfers_gdp_tax_pa*sum(df$adult_2023)/1e9 # 1072G
 sum((df$net_gain_gdp_tax_pc * df$pop_2023)[df$net_gain_gdp_tax_pc > 0], na.rm = T)/1e9 # 471G
-
-
-# Combination wealth and GDP tax
-threshold_recipient_world_average <- 2 # Lower threshold implies more North-South transfers but makes China lose
-df$recipient_share <- df$adult_2022 * pmax(0, threshold_recipient_world_average * wtd.mean(df$gni_pc_nom_2023, df$pop_2023) - df$gni_pc_nom_2023) # To make Russia < .1%, replace 2*world_average by 30e3
-df$recipient_share <- df$recipient_share/sum(df$recipient_share, na.rm = T)
 
 share_LD <- .5
 # df$net_gain_both_taxes_pc <- share_LD*df$net_gain_billionaire_tax_pc + (1-share_LD)*(billionaire_tax_revenue*(df$adult_2023/sum(df$adult_2023))/df$pop_2023 - df$wealth_tax_revenue_pc) + df$net_gain_gdp_tax_pc
-df$net_gain_both_taxes_pc <- share_LD*(billionaire_tax_revenue*df$recipient_share/df$pop_2022 - df$wealth_tax_revenue_pc) + df$net_gain_gdp_tax_pc
 # df$net_gain_both_taxes_pc <- share_LD*(sum(df$gni_nom_2023, na.rm = T)*df$recipient_share/df$pop_2022 - df$gni_pc_nom_2023) + df$net_gain_gdp_tax_pc
+df$net_gain_both_taxes_pc <- share_LD*(billionaire_tax_revenue*df$recipient_share/df$pop_2022 - df$wealth_tax_revenue_pc) + df$net_gain_gdp_tax_pc
 df$net_gain_over_gdp_both_taxes <- df$net_gain_both_taxes_pc/df$gni_pc_nom_2023
-print(sum((df$net_gain_both_taxes_pc * df$pop_2030)[df$net_gain_both_taxes_pc > 0], na.rm = T)/1e9) # 1015G
-print(df$net_gain_over_gdp_both_taxes[df$code == "CHN"]) # .01/.5 works
-print(df$net_gain_over_gdp_both_taxes[df$code == "RUS"])
+print(sum((df$net_gain_both_taxes_pc * df$pop_2030)[df$net_gain_both_taxes_pc > 0], na.rm = T)/1e9) # 766G
+print(df$net_gain_over_gdp_both_taxes[df$code == "CHN"]) # -.00096 with .01/.5 
+print(df$net_gain_over_gdp_both_taxes[df$code == "RUS"]) # -.0011
 
 df$revenues_all_taxes_pc <- df$wealth_tax_revenue_pc + df$ftt_pc + carbon_price*(df$emissions_pc_2023 + factor_price_maritime*df$emissions_maritime_mean/df$pop_2018 + factor_price_aviation*df$emissions_pc_aviation) + df$cit_revenue_pc
 df$enough_both_tax <- df$revenues_all_taxes_pc > -df$net_gain_both_taxes_pc
 setNames(df$revenues_all_taxes_pc/-df$net_gain_both_taxes_pc, df$country)[!no.na(df$enough_both_tax, F, T)] 
-
-}
 
 sort(setNames(df$net_gain_over_gdp_both_taxes, df$country), decreasing = T)
 
