@@ -104,19 +104,20 @@
   a financial transaction tax, a tax on maritime fuel and one on aviation fuel. \$2.1 trillion would be collected. % (2\% of the world GDP). 
   %
   We further estimate international transfers that could be financed.  %according to the proposed allocation of revenues between countries. 
-  Namely, we reallocate 1\% of each country's GNI to all countries in proportion to their adult population, and one half of the wealth tax to countries with a per capita GNI lower than twice the world average, in proportion to their distance to this threshold. The combination of these taxes and transfers entail \$766 billion in North--South transfers.  
+  Namely, we reallocate 1\% of each country's GNI to all countries in proportion to their %adult 
+  population, and one half of the wealth tax to countries with a per capita GNI lower than twice the world average, in proportion to their distance to this threshold. The combination of these taxes and transfers entail \$766 billion in North--South transfers.  
 \end{abstract}
 
 \begin{figure}[h!] 
     \caption{International transfers to be financed by new global taxes.}\label{fig:gain_both_taxes}
-    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/net_gain_over_gdp_both_taxes.pdf}} 
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/net_gain_over_gdp_both_taxes_pop.pdf}} 
 \end{figure}
 
 \clearpage
 \begin{table}[!h]
   \caption{\label{tab:transfers_gain}Global taxes: international transfers, budget gain, revenues collected (\% of GNI).}
   \makebox[\textwidth][c]{
-  \input{../tables/transfers_gain.tex} % add \midrule after World
+  \input{../tables/transfers_gain_pop.tex} % add \midrule after World
 } 
 {\footnotesize \textit{Note:} Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
 }
@@ -133,7 +134,8 @@ We simulate a 3\% tax on all individual wealth in excess of \$100 million. For e
 
 The World Inequality Lab offers an \href{https://wid.world/world-wealth-tax-simulator/}{online simulator} to estimate the revenue collected by a custom wealth tax in each world region. Building on this work, we disaggregate the revenue estimates at the country level. Courtesy of Félix Bajard, we obtained the simulator's underlying data for 50 countries covering 95\% of global wealth tax revenue. To impute missing data, we predict the taxable base from a linear regression of the log of taxable base on the log of nominal GDP per capita, weighted by country population. 
 
-Following \cite{zucman_blueprint_2024}, we assume 20\% of tax evasion. We also conservatively assume that asset prices would decline by 10\%. Half of the revenue from the global wealth tax would not be retained domestically but channeled into a fund to finance sustainable development. This fund would return revenues to countries with a per capita GNI below a threshold. We fix this eligibility threshold at twice the world average per capita GNI, or \$26,885 per year (in nominal terms). Finally, eligible countries receive a transfer per adult proportional to the difference between the threshold and their GNI per capita.
+Following \cite{zucman_blueprint_2024}, we assume 20\% of tax evasion. We also conservatively assume that asset prices would decline by 10\%. Half of the revenue from the global wealth tax would not be retained domestically but channeled into a fund to finance sustainable development. This fund would return revenues to countries with a per capita GNI below a threshold. We fix this eligibility threshold at twice the world average per capita GNI, or \$26,885 per year (in nominal terms). Finally, eligible countries receive a transfer per person %adult 
+proportional to the difference between the threshold and their GNI per capita.
 
 
 \section{Financial Transactions Tax}\label{sec:ftt}
