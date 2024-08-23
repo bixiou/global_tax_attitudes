@@ -1,5 +1,6 @@
 % /!\ No footnote for NCC or NS.
 % TODO! exact sample size (n) for each experimental group/condition; For null hypothesis testing, the test statistic (e.g. F, t, r) with confidence intervals, effect sizes, degrees of freedom and P value noted; 
+% TODO! cite new Ghassim; Robeyns; Ferreira et al 24
 % TODO! p-value in Table (given that we remove the mention of .13 in the text)
 % TODO! Ipsos (2023)
 % TODO! Add SM on European results to SM
@@ -419,7 +420,7 @@ and beliefs about the support of others, reported in two boxes. % (\ref{subsec:s
 The study relies on two sets of surveys: the \textit{Global} survey and the \textit{Main} surveys. % Table \ref{tab:survey_summary}).
 
 \begin{figure}[h!]
-  \caption{Main surveys' structure}\label{fig:flow_simple}
+  \caption[Main surveys' structure]{Main surveys' structure. Cf. also Figure \ref{fig:flow_combined} for the treatment branches.}\label{fig:flow_simple}
   \makebox[\textwidth][c]{\includegraphics[width=.58\textwidth]{../questionnaire/survey_flow-simple.pdf}} 
 \end{figure}
 
@@ -494,7 +495,7 @@ More detail on data collection is given in Section \nameref{sec:methods}. The qu
 \subsection{Global support}\label{subsubsec:global_support}
 
 The Global survey shows strong support for climate policies enacted at the global level (Figure \ref{fig:oecd}). %, reproduced from \citealp{dechezlepretre_fighting_2022}). 
-When asked ``At which level(s) do you think public policies to tackle climate change need to be put in place?'', 70\% (in the U.S.) to 94\% (in Japan) choose the global level. The next most popular choice is the federal or continental level, favored by 52\% of Americans and less than half of European respondents. Local policies receive the least support. This preference for climate policies implemented at the global scale is in line with the literature\cite{beiser-mcgrath_could_2019} and consistent with individuals' concerns for the fairness and effectiveness of such policies, which have been identified as two of the three key determinants of support, besides self-interest.\citep{klenert_making_2018,douenne_yellow_2022,dechezlepretre_fighting_2022}
+When asked ``At which level(s) do you think public policies to tackle climate change need to be put in place?'', 70\% (in the U.S.) to 94\% (in Japan) choose the global level. The next most popular choice is the federal or continental level, favored by 52\% of Americans and less than half of European respondents. Local policies receive the least support. This preference for climate policies implemented at the global scale is in line with the literature\cite{beiser-mcgrath_could_2019} and consistent with individuals' concerns for the fairness and effectiveness of such policies, which have been identified as two of the three key determinants of support, besides self-interest.\citep{klenert_making_2018,douenne_yellow_2022,dechezlepretre_fighting_2022} It could also stem from conditional cooperation, although previous studies indicate that the support for climate policies does not depend on climate action abroad.\citep{aklin_prisoners_2020,tingley_conditional_2014}
 
 
 \begin{figure}[h!]
@@ -635,15 +636,15 @@ Our last two analyses  make respondents choose between two random platforms. In 
 
 % Except for the category \textit{foreign policy}, which features the GCS 42\% of the time, the policies are prominent progressive policies and they are drawn uniformly. % except for tax1: .35 vs. tax2: .4 in EU. 
 In the UK, Germany, and France, a platform is about 9 to 13 p.p. more likely to be preferred if it includes the GCS rather than no foreign policy. %\footnote{This is the Average Marginal Component Effect.\cite{hainmueller_causal_2014}} 
-This effect is between 1 and 4 p.p. and no longer significant in the U.S. and in Spain. Moreover, a platform that includes a global tax on millionaires rather than no foreign policy is 5 to 13 p.p. more likely to be preferred in all countries (the effect is significant and at least 9 p.p. in all countries but Spain). 
+This effect is between 1 and 4 p.p. and no longer significant in the U.S. (among non-Republicans) and in Spain. Moreover, a platform that includes a global tax on millionaires rather than no foreign policy is 5 to 13 p.p. more likely to be preferred in all countries (the effect is significant and at least 9 p.p. in all countries but Spain). 
 % Moreover, a platform that includes a global tax on millionaires rather that no foreign policy is 9 to 13 percentage points (p.p.) more likely to be preferred in all countries but Spain (not significant, at +5 p.p.). 
-Similarly, a global democratic assembly on climate change has a significant effect of 8 to 12 p.p. in the U.S., Germany, and France. 
+Similarly, a global democratic assembly on climate change has a significant effect of 8 to 12 p.p. in the U.S. (among non-Republicans), Germany, and France. 
 %In each country, a platform is more likely to be preferred if it includes the GCS rather than no foreign policy. This effect is significant in France, Germany and the UK, where a platform is about 10 p.p. more likely to be preferred. 
 These effects are large, and not far from the effects of the policies most influential on the platforms, which range between 15 and 18 p.p. in most countries (and 27 p.p. in Spain), and all relate to improved public services (in particular healthcare, housing, and education).
 \end{stretchpars}
  
 \begin{figure}[h] 
-  \caption[Preferences for various policies in political platforms]{[For Supplementary Material] Effects of the presence of a policy (rather than none from this domain) in a random platform on the likelihood that it is preferred to another random platform. (See English translations in Figure \ref{fig:ca_r_en}; Question \ref{q:conjoint_r}%; in the U.S., asked only to non-Republicans.
+  \caption[Preferences for various policies in political platforms]{[For Supplementary Material] Effects of the presence of a policy (rather than none from this domain) in a random platform on the likelihood that it is preferred to another random platform. (See non-translated versions in Figure \ref{fig:ca_r_en}; Question \ref{q:conjoint_r}%; in the U.S., asked only to non-Republicans.
   )}\label{fig:ca_r}
   \begin{subfigure}{\textwidth}
     \subcaption{U.S. (Asked only to non-Republicans)}
@@ -651,18 +652,18 @@ These effects are large, and not far from the effects of the policies most influ
   \end{subfigure}
   \begin{subfigure}{\textwidth}
     \subcaption{France}
-    \includegraphics[width=\textwidth]{../figures/FR/ca_r.png}
+    \includegraphics[width=\textwidth]{../figures/FR/ca_r_en.png}
   \end{subfigure}
 \end{figure}%
 \clearpage
 \begin{figure}[h!]\ContinuedFloat % if bugs try b! instead of h!
   \begin{subfigure}{\textwidth}
     \subcaption{Germany}
-    \includegraphics[width=\textwidth]{../figures/DE/ca_r.png}
+    \includegraphics[width=\textwidth]{../figures/DE/ca_r_en.png}
   \end{subfigure}
   \begin{subfigure}{\textwidth}
     \subcaption{Spain}
-    \includegraphics[width=\textwidth]{../figures/ES/ca_r.png}
+    \includegraphics[width=\textwidth]{../figures/ES/ca_r_en.png}
   \end{subfigure}
   \begin{subfigure}{\textwidth}
     \subcaption{UK}
@@ -672,8 +673,8 @@ These effects are large, and not far from the effects of the policies most influ
 \end{figure}
 \clearpage 
 \noindent 
-The fifth analysis draws random platforms similarly, except that candidate A's platform always contains the GCS while B's includes no foreign policy. In this case, A is chosen by 60\% in Europe %($n$ = 3,000) 
-and 58\% in the U.S. (Figure \ref{fig:conjoint_left_ag_b}). %($n$ = 2,218). 
+The fifth analysis draws random platforms similarly, except that candidate A's platform always contains the GCS while B's includes no foreign policy. In this case, A is chosen by 60\% of Europeans %($n$ = 3,000) 
+and 58\% of non-Republican Americans (Figure \ref{fig:conjoint_left_ag_b}). %($n$ = 2,218). 
 Overall, taking the U.S. as an example, our conjoint analyses indicate that a candidate at the Democratic primary would have more chances to obtain the nomination by endorsing the GCS, and this endorsement would not penalize her or him at the presidential election. This result reminds the finding that 12\% of Germans shift their voting intention from SPD and CDU/CSU to the Greens and the Left when they are told that the latter parties support global democracy.\citep{ghassim_who_2020}
 
 
@@ -724,7 +725,7 @@ Analyzing keywords in the responses (automatically translated into English), the
 
 In the \textit{US2} survey, we divided the sample into four random branches. Two branches were presented the pros and cons questions (either in open or closed format) \textit{before} being asked about their support for the GCS or NR. Another branch received information on the actual level of support for the GCS and NR (estimated in \textit{US1}, see box p. \pageref{subsec:second_order_beliefs}), %Section \ref{subsec:second_order_beliefs}), 
 and one control group received none of these treatments. % TODO? Clarify that the information was also before the support? Write here (rather than in second-order beliefs) that ``Consistent with Americans correctly perceiving the levels of support for the GCS or NR, providing information on the actual level has no substantial effect on their support.''
-The objective of the ``pros and cons treatment'' was to simulate a ``campaign effect'', which refers to the shift in opinion resulting from media coverage of the proposal. To conservatively estimate the effect of a (potentially negative) campaign, we intentionally included more cons (6) than pros (3). Interestingly, the support for the GCS decreased by 11 p.p. after respondents viewed a list of its pros and cons. %\footnote{Surprisingly, the support for National Redistribution also decreased by 7 p.p. following the closed question about the GCS. This suggests that some individuals may lack attention and confuse the two policies, or that contemplating the pros and cons alters the mood of some people, moving them away from their initial positive impression.} 
+The objective of the ``pros and cons treatment'' was to mimic a ``campaign effect'', which refers to the shift in opinion resulting from media coverage of the proposal. To conservatively estimate the effect of a (potentially negative) campaign, we intentionally included more cons (6) than pros (3). Interestingly, the support for the GCS decreased by 11 p.p. after respondents viewed a list of its pros and cons. %\footnote{Surprisingly, the support for National Redistribution also decreased by 7 p.p. following the closed question about the GCS. This suggests that some individuals may lack attention and confuse the two policies, or that contemplating the pros and cons alters the mood of some people, moving them away from their initial positive impression.} 
 Notably, the support also decreased by 7 p.p. after respondents were asked to consider the pros and cons in an open-ended question. Despite some significant effects of pondering the pros and cons, approximately half of the Americans express support for the GCS across all treatment branches (see Table \ref{tab:branch_gcs}). Although support remains significant, % relatively high (it would remain majoritarian in Europe if similar effects were observed)
 these results suggest that the public success of the GCS would be sensitive to the content of the debate about it, and subject to the discourse adopted by interest groups. %  TODO? support for the GCS is context-dependent
 
@@ -756,7 +757,7 @@ Finally, consistent with Americans accurately perceiving the levels of support f
 \subsubsection{Global wealth tax}\label{subsubsec:support_global_wealth_tax}
 %\paragraph{Global wealth tax}
 
-Consistent with the results of the global survey, a ``tax on millionaires of all countries to finance low-income countries'' garners absolute majority support of over 67\% in each country, only 5 p.p. lower than a national millionaires tax overall (Figure \ref{fig:support}). In random subsamples, we inquire about respondents' preferences regarding the redistribution of revenues from a global tax on individual wealth exceeding \$5 million, after providing information on the revenue raised by such a tax in their country compared to low-income countries. 
+Consistent with the results of the Global survey, a ``tax on millionaires of all countries to finance low-income countries'' garners relative support of over 69\% in each country, only 5 p.p. lower than a national millionaires tax overall (Figure \ref{fig:support}). In random subsamples, we inquire about respondents' preferences regarding the redistribution of revenues from a global tax on individual wealth exceeding \$5 million, after providing information on the revenue raised by such a tax in their country compared to low-income countries. 
 % \footnote{A 2\% tax on net wealth exceeding \$5 million would annually raise \$816 billion, leaving unaffected 99.9\% of the world population. More specifically, it would collect \euro{}5 billion in Spain, \euro{}16 billion in France, £20 billion in the UK, \euro{}44 billion in Germany, \$430 billion in the U.S., and \$1 billion collectively in all low-income countries (28 countries, home to 700 million people).%Figures come from \citet{chancel_world_2022}, the \href{https://wid.world/world-wealth-tax-simulator/}{WID wealth tax simulator}, and the World Bank. % TODO: do they?
 % } 
 We ask certain respondents ($n$ = 1,283) what percentage of global tax revenues should be pooled to finance low-income countries. In each country, at least 88\% of respondents indicate a positive amount, with an average of one-third %ranging from 30\% (Germany) to 36\% (U.S., France) 
@@ -773,7 +774,8 @@ We ask certain respondents ($n$ = 1,283) what percentage of global tax revenues 
 \subsubsection{Other global policies}\label{subsubsec:support_other_global_policies} % NCCcomment
 %\paragraph{Other global policies}
 
-We also assess support for other global policies (Figure \ref{fig:support}). Most policies garner relative majority support in each country, with two exceptions: the ``cancellation of low-income countries' public debt'' and ``a maximum wealth limit'' for each individual. The latter policy obtains relative majority support in Europe but not in the U.S., despite the cap being set at \$10 billion in the U.S. compared to \euro{}/£100 million in Europe. Notably, climate-related policies enjoy significant popularity, with ``high-income countries funding renewable energy in low-income countries'' receiving absolute majority support across all surveyed countries. Additionally, relative support for loss and damages compensation, as approved in principle at the international climate negotiations in 2022 (``COP27''), ranges from 55\% (U.S.) to 81\% (Spain), with absolute support ranging from 41\% to 62\%.
+We also assess support for other global policies (Figure \ref{fig:support}). Most policies garner relative majority support in each country, with two exceptions: the ``cancellation of low-income countries' public debt'' and ``a maximum wealth limit'' for each individual. % In US pilot (n=86), 36% relative support to cap wealth at 100M (67% in Eu)
+The latter policy obtains relative majority support in Europe but not in the U.S., despite the cap being set at \$10 billion in the U.S. compared to \euro{}/£100 million in Europe. Notably, climate-related policies enjoy significant popularity, with ``high-income countries funding renewable energy in low-income countries'' receiving absolute majority support across all surveyed countries. Additionally, relative support for loss and damages compensation, as approved in principle at the international climate negotiations in 2022 (``COP27''), ranges from 55\% (U.S.) to 81\% (Spain), with absolute support ranging from 41\% to 62\%.
 
 \setcounter{figure}{2}
 \renewcommand{\thefigure}{\arabic{figure}}
@@ -889,8 +891,8 @@ draw attention to global policies in the public debate and contribute to their i
 % The paper relies on two different sets of surveys. The first set of surveys was conducted between March 2021 and March 2022 on 40,680 respondents from 20 countries  (between 1,465 and 2,488 respondents per country). The first U.S. complementary, denoted \textit{US1}, was conducted on 3,000 U.S. respondents between January and March 2023, while the second, \textit{US2}, was conducted on 2,000 respondents between March and April 2023. The \textit{Eu} complementary survey was conducted on 3,000 respondents between February and March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. Stratified quotas ensure that the samples are representative along the dimensions of gender, age (5 brackets), income (4), region (4), education level (3), as well as ethnicity (3) for the U.S. To correct for small remaining imbalances, we apply survey weights throughout the analysis, constructed using the quotas variables as well as the degree of urbanity, and trimmed between 0.25 and 4. Weights make the results fully representative of the country (or of the four European countries combined in the case of results at the European level, where different weights are used). Appendix \ref{app:representativeness} confirms that our samples are representative of the population. % TODO! and urbanity instead of education for OECD, TODO table representativeness
 %\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} 
 
-The paper utilizes two sets of surveys: the \textit{Global} survey and the \textit{Main} surveys. The \textit{Main} surveys consist of two U.S. surveys, \textit{US1} and \textit{US2}, and one European survey, \textit{Eu}. The \textit{Global} survey was conducted from March 2021 to March 2022 on 40,680 respondents from 20 countries (with 1,465 to 2,488 respondents per country). \textit{US1} collected responses from 3,000 respondents between January and March 2023, while \textit{US2} gathered data from 2,000 respondents between March and April 2023. \textit{Eu} included 3,000 respondents and was conducted from February to March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. To ensure representative samples, we employed stratified quotas based on gender, age (5 brackets), income (4), region (4), education level (3), and ethnicity (3) for the U.S. We also incorporated survey weights throughout the analysis to account for any remaining imbalances. These weights were constructed using the quota variables as well as the degree of urbanity, and trimmed between 0.25 and 4. By applying weights, the results are fully representative of the respective countries along the above mentioned dimensions. %. 
-Results at the European level apply different weights which ensure  representativeness of the combined four European countries. Appendix \ref{app:representativeness} shows how our samples compare to actual population frequencies. % confirms that our samples are representative of the population. %\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} 
+The paper utilizes two sets of surveys: the \textit{Global} survey and the \textit{Main} surveys. The \textit{Main} surveys consist of two U.S. surveys, \textit{US1} and \textit{US2}, and one European survey, \textit{Eu}. The \textit{Global} survey was conducted from March 2021 to March 2022 on 40,680 respondents from 20 countries (with 1,465 to 2,488 respondents per country). \textit{US1} collected responses from 3,000 respondents between January and March 2023, while \textit{US2} gathered data from 2,000 respondents between March and April 2023. \textit{Eu} included 3,000 respondents and was conducted from February to March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. To ensure representative samples, we employed stratified quotas based on gender, age (5 brackets), income (4), region (4), education level (3), and ethnicity (3) for the U.S. We also incorporated survey weights throughout the analysis to account for any remaining imbalances. These weights were constructed using the quota variables as well as the degree of urbanity, and trimmed between 0.25 and 4. Stratified quotas followed by reweighting is the usual method to reduce selection bias from opt-in online panels, when better sampling methods (such as compulsory participation of random dwellings) are unavailable.\cite{scherpenzeel_how_2010} By applying weights, the results are fully representative of the respective countries along the above mentioned dimensions. %. 
+Results at the European level apply different weights which ensure  representativeness of the combined four European countries. Appendix \ref{app:representativeness} shows how our samples compare to actual population frequencies. Our samples match well actual frequencies, except for some imbalance on vote in the U.S. (which does not affect our results, as show the results reweighted by vote in the below section \textit{Support for the GCS}). % confirms that our samples are representative of the population. %\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} 
 % TODO? that our samples closely match population frequencies in high-income countries. In middle-income countries, the samples are only representative of the online population (young, graduated and urban people are over-represented).
 Appendix \ref{app:balance} shows that the treatment branches are balanced. Appendix \ref{app:placebo} runs placebo tests of the effects of each treatment on unrelated outcomes. We do not find effects of earlier treatments on unrelated outcomes arriving later in the survey.
 
@@ -898,7 +900,8 @@ Appendix \ref{app:balance} shows that the treatment branches are balanced. Appen
 % \subsection*{\small Data quality.} % WPcomment % TODO attrition analysis
 \paragraph{\small Data quality.} % NCCcomment
 The median duration is 28 minutes for the \textit{Global} survey, 14 min for \textit{US1}, 11 min for \textit{US2}, and 20 min for \textit{Eu}. To ensure the best possible data quality, we exclude respondents who fail an attention test or rush through the survey (i.e., answer in less than 11.5 minutes in the \textit{Global} survey, 4 minutes in \textit{US1} or \textit{US2}, 6 minutes in \textit{Eu}). %All the results and analyses use survey weights, defined to make the results fully representative of the country (or of Eu in the case of results at the Eu level) along the quota variables. Weights are trimmed to be between .25 and 4. 
-%\textit{Ex post}, we checked that there were only a few careless response patterns (such as choosing the same answer for all items in a matrix of questions; see Appendix \ref{app:data_quality}). At the end of the survey, we ask whether respondents thought that our survey was politically biased and provide some feedback. 67\% of the respondents found the survey unbiased. 25\% found it left-wing biased, and 8\% found it right-wing biased.
+%\textit{Ex post}, we checked that there were only a few careless response patterns (such as choosing the same answer for all items in a matrix of questions; see Appendix \ref{app:data_quality}). 
+At the end of the survey, we ask whether respondents thought that our survey was politically biased and provide some feedback. 67\% of the respondents found the survey unbiased. 25\% found it left-wing biased, and 8\% found it right-wing biased.
 
 
 
@@ -916,7 +919,7 @@ To encourage accurate and truthful responses, several questions of the \textit{U
 %To encourage respondents to answer accurately and truthfully, several questions of the \textit{US1} survey use incentives. For each of the three comprehension questions that follow the policies' descriptions, we reward three (randomly drawn) respondents with the correct answer with a \$50 gift certificate. For each of the questions asking respondents to guess the share of support for the GCS and NR, we reward three people who are closest to the true value with a \$50 gift certificate. For the donation lottery question, we randomly draw one respondent and split the \$100 prize between the NGO GiveDirectly and the winner according to the winner's choice. In total, our incentives scheme distributes gift certificates (and donation) for a value of \$850. Finally, respondents have an incentive to answer truthfully to the petition question, given that they know that the results to that question (the share of respondents supporting the policy) will be transmitted to the U.S. President's office.
 
 \paragraph{\small Absolute vs. relative support.}
-In most questions, support or opposition for a policy is asked using a 5-Likert scale, with \textit{Indifferent} as the middle option and compulsory response. We call \textit{absolute support} the share of \textit{Somewhat} or \textit{Strong support}. We generally favor the notion of \textit{relative support}, which reports the share of support after excluding \textit{Indifferent} answers.
+In most questions, support or opposition for a policy is asked using a 5-Likert scale, with \textit{Indifferent} as the middle option and compulsory response. We call \textit{absolute support} the share of \textit{Somewhat} or \textit{Strong support}. We generally favor the notion of \textit{relative support}, which reports the share of support after excluding \textit{Indifferent} answers. Indeed, the \textit{relative support} is better suited to assess whether there is more people in favor vs. against a policy.
 
 \paragraph{\small Support for the GCS.} 
 The 95\% confidence intervals are $[52.4\%, 55.9\%]$ in the U.S. and $[74.2\%, 77.2\%]$ in Europe. The average support is computed with survey weights, employing weights based on quota variables, which exclude vote. Another method to reweigh the raw results involves running a regression of the support for the GCS on sociodemographic characteristics (including vote) and multiplying each coefficient by the population frequencies. This alternative approach yields similar figures: 76\% in Europe and 52\% or 53\% in the U.S. (depending on whether individuals who did not disclose their vote are classified as non-voters or excluded). Notably, the average support excluding non-voters is 54\% in the U.S. 
@@ -953,6 +956,17 @@ A 2\% tax on net wealth exceeding \$5 million would annually raise \$816 billion
 % \paragraph{\small Swing states.}
 % We define swing states as the 8 states with less than 5 p.p. margin of victory in the 2020 election (MI, NV, PA, WI, AZ, GA, NC, FL). The results are robust to using the 3 p.p. threshold (that excludes FL) instead.
 % Here is a description of a specific method used.  Note that the subsection heading ends with a full stop (period) and that the command is \verb|\subsection{}| not \verb|\subsection**{}|.
+
+\paragraph{\small Design choices.}
+
+As Global survey results indicated strong support for global redistributive policies worldwide, we conducted our Main surveys to test the robustness of these results. %We selected five high-income countries based on their size and their level of support for global redistributive policies observed in the Global survey. 
+Among the eight largest high-income countries, we selected the five ones with a relatively low level of support for global redistributive policies as observed in the Global survey. We also focus on the GCS as its costs are less concentrated on the very rich, compared to other global redistributive policies, so we expect lower (or less genuine) support. By selecting countries that would lose from global redistribution, are less supportive than others, and focusing on less consensual policies, we aimed at conservatively assessing the level of support of world citizens for global redistribution. 
+
+We split the U.S. survey into two waves to test the effect on the support of providing the information on the actual support, and merged the \textit{Eu} survey in one wave to get larger sample sizes and more power in the analyses. 
+
+To select the policies tested, we spanned three key areas for global redistribution: climate change, inequality, and global governance. We selected policies that are either on the agenda of international negotiations (international transfers for mitigation; adaptation; or loss and damages; cancellation of public debt; reform of voting rights at the UN or IMF; global wealth tax) or advocated by prominent NGOs or scholars (global asset registry; limits on wealth; democratic climate governance; global minimum wage; fair trade; carbon pricing; increased foreign aid).
+
+
 
 \section*{\normalsize Data and code availability}
 
