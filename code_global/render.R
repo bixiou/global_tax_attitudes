@@ -294,6 +294,8 @@ labels_vars <- c(
   "branch_gcsfield" = "Treatment: Open-ended field on GCS pros & cons",
   "branch_gcsimportant" = "Treatment: Closed questions on GCS pros & cons", 
   "branch_gcsinfo" = "Treatment: Info on actual support for GCS and NR",
+  "waveUS1" = "Wave: \\textit{US1}",
+  "waveUS2" = "Wave: \\textit{US2}",
   "(Intercept)" = "Constant"
 )
 for (v in c(variables_gcs_field_names, variables_poverty_field_names, "gcs_field_empty", "poverty_field_empty")) labels_vars[v] <-sub("dont", "don't", gsub("_", " ", gsub(".*_field_", "", v)))
@@ -768,6 +770,7 @@ heatmap_multiple(heatmaps_defs[c("gcs_field_contains", "poverty_field_contains",
 heatmap_multiple(heatmaps_defs[c("universalism")], weights = T) 
 heatmap_multiple(heatmaps_defs[c("main")], weights = T) 
 heatmap_multiple(heatmaps_defs[c("main_all")], weights = T) 
+heatmap_multiple(heatmaps_defs[c("main_all")], weights = F, data = alla, name = "main_alla") 
 heatmap_multiple(heatmaps_defs[c("support_binary")], weights = T) 
 heatmap_multiple(heatmaps_defs[c("conjoint_ab", "conjoint_ab_all")], weights = T) 
 heatmap_wrapper(vars = heatmaps_defs$main$vars, data = all, labels = heatmaps_defs$main$labels, name = "main_by_vote", along = "continent_vote", conditions = "/", folder = "../figures/country_comparison/", sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, trim = T, weights = T) 

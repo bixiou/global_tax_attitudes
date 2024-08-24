@@ -553,7 +553,7 @@ Appendix \ref{app:determinants} examines the sociodemographic determinants of su
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{S\arabic{figure}}
 \begin{figure}[h!]
-    \caption[Support for the Global Climate Scheme]{[For Supplementary Material, except first row to be included in Figure \ref{fig:support}] Support for the GCS, NR and the combination of GCS, NR and C. \\(p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:nr_support}, \ref{q:global_tax}, \ref{q:national_tax}, and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)
+    \caption[Support for the Global Climate Scheme]{[For Supplementary Material, except first row to be included in Figure \ref{fig:support}] Support for the GCS, NR and the combination of GCS, NR and C (\textit{Yes}/\textit{No} questions). \\(p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:nr_support}, \ref{q:global_tax}, \ref{q:national_tax}, and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)
     }\label{fig:support_binary}
     \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/support_binary_positive.pdf}} 
 \end{figure}
@@ -766,7 +766,9 @@ We ask certain respondents ($n$ = 1,283) what percentage of global tax revenues 
 
 \begin{figure}
     \centering 
-    \caption[Preferred share of wealth tax for low-income countries]{[For Supplementary Material] Percent of global wealth tax that should finance low-income countries (\textit{mean}). (Question \ref{q:global_tax_global_share})} % TODO? n
+    \caption[Preferred share of wealth tax for low-income countries]{[For Supplementary Material] Percent of global wealth tax that should finance low-income countries (\textit{mean}). \\ ``Imagine a wealth tax on households with net worth above [\$]5 million, enacted in all countries around the world.  
+    (\dots)  \\
+    What percentage should be pooled to finance low-income countries (instead of retained in the country's national budget)?'' (Question \ref{q:global_tax_global_share})} % TODO? n
     \includegraphics[width=1\textwidth]{../figures/country_comparison/global_tax_global_share_mean.pdf} \label{fig:global_share_mean}
 \end{figure}
 
@@ -894,7 +896,7 @@ draw attention to global policies in the public debate and contribute to their i
 The paper utilizes two sets of surveys: the \textit{Global} survey and the \textit{Main} surveys. The \textit{Main} surveys consist of two U.S. surveys, \textit{US1} and \textit{US2}, and one European survey, \textit{Eu}. The \textit{Global} survey was conducted from March 2021 to March 2022 on 40,680 respondents from 20 countries (with 1,465 to 2,488 respondents per country). \textit{US1} collected responses from 3,000 respondents between January and March 2023, while \textit{US2} gathered data from 2,000 respondents between March and April 2023. \textit{Eu} included 3,000 respondents and was conducted from February to March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. To ensure representative samples, we employed stratified quotas based on gender, age (5 brackets), income (4), region (4), education level (3), and ethnicity (3) for the U.S. We also incorporated survey weights throughout the analysis to account for any remaining imbalances. These weights were constructed using the quota variables as well as the degree of urbanity, and trimmed between 0.25 and 4. Stratified quotas followed by reweighting is the usual method to reduce selection bias from opt-in online panels, when better sampling methods (such as compulsory participation of random dwellings) are unavailable.\cite{scherpenzeel_how_2010} By applying weights, the results are fully representative of the respective countries along the above mentioned dimensions. %. 
 Results at the European level apply different weights which ensure  representativeness of the combined four European countries. Appendix \ref{app:representativeness} shows how our samples compare to actual population frequencies. Our samples match well actual frequencies, except for some imbalance on vote in the U.S. (which does not affect our results, as show the results reweighted by vote in the below section \textit{Support for the GCS}). % confirms that our samples are representative of the population. %\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} 
 % TODO? that our samples closely match population frequencies in high-income countries. In middle-income countries, the samples are only representative of the online population (young, graduated and urban people are over-represented).
-Appendix \ref{app:balance} shows that the treatment branches are balanced. Appendix \ref{app:placebo} runs placebo tests of the effects of each treatment on unrelated outcomes. We do not find effects of earlier treatments on unrelated outcomes arriving later in the survey.
+Appendix \ref{app:balance} shows that the treatment branches are balanced. Appendix \ref{app:placebo} runs placebo tests of the effects of each treatment on unrelated outcomes. We do not find effects of earlier treatments on unrelated outcomes arriving later in the survey. Appendix \ref{app:extended} shows that our results are robust to including inattentive respondents.
 
 
 % \subsection*{\small Data quality.} % WPcomment % TODO attrition analysis
@@ -927,9 +929,12 @@ The 95\% confidence intervals are $[52.4\%, 55.9\%]$ in the U.S. and $[74.2\%, 7
 Though the level of support for the GCS is significantly lower in swing States (at 51\%) that are key to win U.S. elections, the electoral effect of endorsing the GCS remains non-significantly different from zero (at +1.2 p.p.) in these States. Note that we define swing states as the 8 states with less than 5 p.p. margin of victory in the 2020 election (MI, NV, PA, WI, AZ, GA, NC, FL). The results are robust to using the 3 p.p. threshold (that excludes FL) instead. 
 
 \paragraph{\small List experiment.}
+The question reads: ``Beware, this question is quite unusual. Among the policies below, \textbf{how many} do you support?'' The list of policies randomly varies across respondents, and includes a subset of GCS, NR (National Redistribution scheme), C (``Coal exit'' in the U.S., ``Thermal insulation plan'' in Europe) and O (``Marriage only for opposite-sex couples in the U.S.'', ``Death penalty for major crimes'' in Europe). There are four branches: GCS/NR/C/O; GCS/C/O; NR/C/O; C/O. To estimate the tacit average support for the GCS and NR, we regress the number of supported policies on indicators that the list includes GCS and NR.
 We utilize the difference-in-means estimator, and confidence intervals are computed using Monte Carlo simulation with the R package \textit{list}.\citep{imai_multivariate_2011}
 
 \paragraph{\small Petition.}
+The respondent is randomly assigned a branch where the petition relates to the GCS or the National Redistribution scheme. The question reads: ``Would you be willing to sign a petition for the [Global climate / National redistribution] scheme? \\ As soon as the survey is complete, we will send the results to [the U.S. President's office], informing him what share of American people are willing to endorse the [Global climate / National redistribution] scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)''. 
+
 Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition.
 
 \paragraph{\small Conjoint analyses.}
@@ -964,7 +969,7 @@ Among the eight largest high-income countries, we selected the five ones with a 
 
 We split the U.S. survey into two waves to test the effect on the support of providing the information on the actual support, and merged the \textit{Eu} survey in one wave to get larger sample sizes and more power in the analyses. 
 
-To select the policies tested, we spanned three key areas for global redistribution: climate change, inequality, and global governance. We selected policies that are either on the agenda of international negotiations (international transfers for mitigation; adaptation; or loss and damages; cancellation of public debt; reform of voting rights at the UN or IMF; global wealth tax) or advocated by prominent NGOs or scholars (global asset registry; limits on wealth; democratic climate governance; global minimum wage; fair trade; carbon pricing; increased foreign aid).
+To select the policies tested, we spanned three key areas for global redistribution: climate change, inequality, and global governance. We selected policies that are either on the agenda of international negotiations (international transfers for mitigation; adaptation; or loss and damages; cancellation of public debt; reform of voting rights at the UN or IMF; global wealth tax) or advocated by prominent NGOs or scholars (global asset registry;\citep{icrict_roadmap_2020} limits on wealth;\citep{robeyns_limitarianism_2024,piketty_brief_2022} democratic climate governance;\citep{dryzek_global_2011} global minimum wage;\citep{palley_financial_2013} fair trade;\citep{hickel_divide_2017} carbon pricing;\citep{cramton_global_2017} increased foreign aid\citep{concord_aid_2019}).
 
 
 

@@ -1253,7 +1253,7 @@ e <- eu <- prepare(country = "EU", weighting = T)
 e <- us2 <- prepare(country = "US2", weighting = T, define_var_lists = FALSE)
 
 us <- merge(us1, us2, all = T)
-e <- all <- merge(us, eu, all = T)
+e <- all <- 
 
 # variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
 us1a <- prepare(country = "US1", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]

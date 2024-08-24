@@ -444,13 +444,90 @@ desc_table(dep_vars = c("branch_list_exp_g", "branch_petition == 'nr'", "branch_
            filename = "balance_analysis", save_folder = "../tables/", data = all, indep_vars = c(socio_demos)) 
 
 
+##### App Extended sample #####
+# Preparation
+e <- merge(merge(us1a, us2a, all = T), eua, all = T)
+e <- e[e$stayed == T,]
+nrow(e)
+1-nrow(all)/nrow(e) # 14%
+e$gcs_support_neg <- 2*e$gcs_support - 1
+for (v in variables_support_likert) {
+  if (v %in% names(e)) {
+    temp <-  temp <- 2 * (e[[v]] %in% text_support[5]) + (e[[v]] %in% text_support[4]) - (e[[v]] %in% text_support[2]) - 2 * (e[[v]] %in% text_support[1])
+    temp[is.na(e[[v]])] <- NA
+    e[[v]] <- as.item(temp, labels = structure(c(-2:2), names = c("Strongly oppose","Somewhat oppose","Indifferent","Somewhat support","Strongly support")), missing.values=c(NA), annotation=Label(e[[v]])) 
+  } }
+e$global_tax_sharing_original <- e$global_tax_sharing
+e$global_tax_sharing <- NA
+e$global_tax_sharing[grepl("whole wealth tax financing national budgets", e$global_tax_sharing_original)] <- FALSE
+e$global_tax_sharing[grepl("half of it financing low-income countries", e$global_tax_sharing_original)] <- T
+e$foreign_aid_raise_support_original <- e$foreign_aid_raise_support
+temp <- -1 * grepl("reduce", e$foreign_aid_raise_support) + 1*grepl("condition", e$foreign_aid_raise_support) + 2*grepl("increase", e$foreign_aid_raise_support)
+e$foreign_aid_raise_support <- as.item(temp, labels = structure(-1:2, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))     
+e$group_defended_original <- e$group_defended
+temp <- 0*grepl("myself", e$group_defended) + 1*grepl("relatives", e$group_defended) + 2*grepl("town|State", e$group_defended) + 3*grepl("religion", e$group_defended) + 4*grepl("Americans", e$group_defended) + 5*grepl("European", e$group_defended) + 6*grepl("Humans", e$group_defended) + 7*grepl("animals", e$group_defended)
+e$group_defended <- as.item(temp, labels = structure(0:7, names = c("Family and self", "Relatives", "Region, U.S. State or town", "Culture or religion", "Fellow citizens", "Europeans", "Humans", "Sentient beings")), annotation = Label(e$group_defended))
+e$group_defended[is.na(e$group_defended_original)] <- NA
+e$universalist <- e$group_defended > 5
+e$conjoint_left_ag_b_binary <- e$conjoint_left_ag_b == "A"
+
+for (v in intersect(names(e), c(variables_conjoint))) {
+  e[[v]] <- sub(".* (.*)", "\\1", e[[v]])
+  e[[v]][e[[v]] == "them"] <- "None"
+  if (v %in% variables_conjoint_c) e[[v]][e[[v]] %in% c("Democrat", "A")] <- "Left"
+  if (v %in% variables_conjoint_c) e[[v]][e[[v]] %in% c("Republican", "B")] <- "Right"
+  if (v %in% variables_conjoint_c) e$conjoint_c[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "Left" 
+  if (v %in% variables_conjoint_c) e$conjoint_c_none[!is.na(e[[v]])] <- e[[v]][!is.na(e[[v]])] == "None"
+  if (v %in% variables_conjoint_c) e$branch_conjoint_c[!is.na(e[[v]])] <- sub("conjoint_", "", v)
+}
+e$branch_c_gcs <- grepl("g_", e$branch_conjoint_c)
+e$weight <- 1
+
+e$branch_list_exp[!is.na(e$list_exp_l)] <- "l"
+e$branch_list_exp[!is.na(e$list_exp_rgl)] <- "rgl"
+e$branch_list_exp[!is.na(e$list_exp_gl)] <- "gl"
+e$branch_list_exp[!is.na(e$list_exp_rl)] <- "rl"
+e$branch_list_exp_g <- grepl("g", e$branch_list_exp)
+e$branch_list_exp_r <- grepl("r", e$branch_list_exp)
+for (v in c("l", "rl", "gl", "rgl")) e$list_exp[no.na(e$branch_list_exp) == v] <- e[[paste0("list_exp_", v)]][no.na(e$branch_list_exp) == v]
+
+# Plot of main results
+heatmap_multiple(heatmaps_defs[c("main_all")], weights = F, data = e, name = "main_alla") 
+heatmap_multiple(heatmaps_defs[c("conjoint_left_ag_b_binary")], weights = F, data = e, name = "conjoint_left_ag_b_binary_alla") 
+
+same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), along.levels = c("United States", names(countries_eu)[1:4]), share_na_remove = 1,
+                    data = e[e$conjoint_c_none == F & e$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
+                    filename = "conjoint_c_wo_none_alla", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+summary(lm(list_exp ~ branch_list_exp_g*continent, data = e))
+fit.list_ <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + mean(e$branch_list_exp_r == T), data = e, method = "lm")
+fit.direct_ <- glm(as.character(gcs_support) == 'Yes' ~ continent, data = e[e$wave != "US2",], family = binomial("logit"))
+(avg.pred.social.desirability_ <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE, level = .8))
+
+summary(lm(list_exp ~ branch_list_exp_g, data = e[e$continent == "Europe",], weights = weight))
+fit.list_eu_ <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(e$branch_list_exp_r == T, e$wave == "EU"), data = e[e$continent == "Europe",], method = "lm")
+fit.direct_eu_ <- glm(as.character(gcs_support) == 'Yes' ~ 1, data = e[e$continent == "Europe",], family = binomial("logit"))
+(avg.pred.social.desirability_eu_ <- predict(fit.list_eu, direct.glm = fit.direct_eu, se.fit = TRUE, level = .8)) 
+
+summary(lm(list_exp ~ branch_list_exp_g, data = e[e$continent == "U.S.",], weights = weight))
+fit.list_us_ <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mean(e$branch_list_exp_r == T, e$wave == "US1"), data = e[e$continent == "U.S.",], method = "lm")
+fit.direct_us_ <- glm(as.character(gcs_support) == 'Yes' ~ 1, data = e[e$wave == "US1",], family = binomial("logit"))
+(avg.pred.social.desirability_us_ <- predict(fit.list_us, direct.glm = fit.direct_us, se.fit = TRUE, level = .8)) 
+
+same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g"), share_na_remove = 0.5,
+                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
+                    filename = "reg_list_exp_g_alla", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
+                    add_lines = list(c(11, paste("\\hline  \\\\[-1.8ex] \\textit{Support for GCS} &", round(mean(e$gcs_support[e$wave != "US2"]), 3), " & ", round(wtd.mean(e$gcs_support, weights = e$wave == "US1"), 3), " & ", round(wtd.mean(e$gcs_support, weights = e$wave == "EU"), 3), "\\\\")),
+                                     c(12, paste("\\textit{Social desirability bias} & \\textit{$", round(avg.pred.social.desirability_$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_us_$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_eu_$fit[3,1], 3),  "$}\\\\")),
+                                     c(13, paste("\\textit{80\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability_$fit[3,2], 2), ";", round(avg.pred.social.desirability_$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us_$fit[3,2], 2), ";", round(avg.pred.social.desirability_us_$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu_$fit[3,2], 2), ";", round(avg.pred.social.desirability_eu_$fit[3,3], 2), "]$}\\\\"))))
 
 
+##### App block-ordering effects #####
 
-
-
-
-
+desc_table(dep_vars = c("universalist", "nationalist", "egoistic"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
+          dep.var.caption = "Group defended when voting",
+           dep.var.labels = c("Humans \\textit{or} Sentient beings", "Fellow citizens", "Family and self"),
+           filename = "ordering_us", save_folder = "../tables/", data = all[all$wave != "EU",], indep_vars = c("wave")) 
 
 
 

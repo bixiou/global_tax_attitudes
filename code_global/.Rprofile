@@ -560,8 +560,9 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   means <- c()
   for (i in seq_along(dep_vars)) {
     df <- if (is.data.frame(data)) data else data[[i]]
-    if (is.null(weights)) weight <- rep(1, nrow(df))
-    if (is.character(weights) & !is.data.frame(data)) weight <- df[[weights]]
+    if (is.null(weights)) weight_vec <- rep(1, nrow(df))
+    else weight_vec <- weights
+    if (is.character(weights) & !is.data.frame(data)) weight_vec <- df[[weights]]
     if (is.character(indep_vars_included[[i]])) indep_vars_included[[i]] <- indep_vars %in% indep_vars_included[[i]]
     formula_i <- as.formula(paste(dep_vars[i], "~", paste("(", indep_vars[indep_vars_included[[i]] & covariates_with_several_values(data = df, covariates = indep_vars)], ")", collapse = ' + ')))
     if (logit[i]) {
@@ -571,18 +572,18 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
       SEs[[i]] <- logit_margin_i[,2]
     }
     else {
-      models[[i]] <- lm(formula_i, data = df, weights = weight)
+      models[[i]] <- lm(formula_i, data = df, weights = weight_vec)
       coefs[[i]] <- models[[i]]$coefficients
       if (robust_SE) SEs[[i]] <- coeftest(models[[i]], vcov = vcovHC(models[[i]], "HC1"))[,2]
       else SEs[[i]] <- summary(models[[i]])$coefficients[,2]
     }
     if (print_regs) print(summary(models[[i]]))
     if (mean_control==FALSE){
-      means[i] <- round(wtd.mean(eval(parse(text = paste( "df$", parse(text = dep_vars[i]), sep=""))), weights = weight, na.rm = T), d = digits)
+      means[i] <- round(wtd.mean(eval(parse(text = paste( "df$", parse(text = dep_vars[i]), sep=""))), weights = weight_vec, na.rm = T), d = digits)
       mean_text <- "Mean"
     } else {
-      # means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$treatment=='None']", sep=""))), weights = weights[df$treatment=='None'], na.rm = T), d = digits)
-      means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$branch_gcs=='nothing']", sep=""))), weights = weight[df$branch_gcs=='nothing'], na.rm = T), d = digits)
+      # means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$treatment=='None']", sep=""))), weights = weight_vec[df$treatment=='None'], na.rm = T), d = digits)
+      means[i] <- round(wtd.mean(eval(parse(text = paste( "(df$", parse(text = dep_vars[i]), ")[df$branch_gcs=='nothing']", sep=""))), weights = weight_vec[df$branch_gcs=='nothing'], na.rm = T), d = digits)
       mean_text <- "Control group mean"
     }
   }
