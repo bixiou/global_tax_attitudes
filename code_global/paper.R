@@ -522,7 +522,7 @@ same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported
                                      c(13, paste("\\textit{80\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability_$fit[3,2], 2), ";", round(avg.pred.social.desirability_$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us_$fit[3,2], 2), ";", round(avg.pred.social.desirability_us_$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu_$fit[3,2], 2), ";", round(avg.pred.social.desirability_eu_$fit[3,3], 2), "]$}\\\\"))))
 
 
-##### App block-ordering effects #####
+##### App questionnaire framing #####
 
 desc_table(dep_vars = c("universalist", "nationalist", "egoistic"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
           dep.var.caption = "Group defended when voting",
