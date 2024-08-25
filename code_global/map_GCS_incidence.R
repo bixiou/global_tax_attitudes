@@ -1498,7 +1498,7 @@ ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "
 
 compute_carbon_debt <- function(start = 1990, end = 2029, df = sm) {
   # /!\ We replace NA by 0
-  if (start != end) df[[paste0("emissions_", start, "_", end)]] <- rowSums(sm[, paste0("emissions_", start:end)])
+  if (start != end) df[[paste0("emissions_", start, "_", end)]] <- rowSums(df[, paste0("emissions_", start:end)])
   df[[paste0("carbon_debt_", start, "_", end)]] <- 0
   for (y in start:end) {
     df[[paste0("carbon_debt_", start, "_", end)]] <- df[[paste0("carbon_debt_", start, "_", end)]] + df[[paste0("emissions_", y)]] - 

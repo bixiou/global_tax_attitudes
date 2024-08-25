@@ -72,12 +72,17 @@
 \usepackage[export]{adjustbox}
 \usepackage[anythingbreaks]{breakurl} % for links
 \usepackage{multicol}
+
+\usepackage{abstract}
+\addto\captionsenglish{\renewcommand{\abstractname}{}}    % clear the title
+\renewcommand{\absnamepos}{empty} % originally center
 \newsavebox\ltmcbox % For net gain table over two columns
 %\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
 %\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
 \renewcommand{\floatpagefraction}{.9}
 
-\title{Revenues and transfers from global taxes %\\ Technical Note
+\title{%Revenues and transfers from global taxes %\\ Technical Note
+Supplementary Material \\ \textit{Finding a consensus towards global climate justice}
 } 
 
 \author{\textcolor{white}{Adrien Fabre\footnote{\textcolor{black}{Corresponding author: adrien.fabre@cnrs.fr.}}}
@@ -115,11 +120,22 @@
 
 \clearpage
 \begin{table}[!h]
-  \caption{\label{tab:transfers_gain}Global taxes: international transfers, budget gain, revenues collected (\% of GNI).}
+  \caption{\label{tab:transfers_gain}Global taxes: international transfers, budget gain, revenues collected (\% of GNI). }
   \makebox[\textwidth][c]{
   \input{../tables/transfers_gain_pop.tex} % add \midrule after World
 } 
-{\footnotesize \textit{Note:} Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
+{\footnotesize \textit{Note:}  Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
+}
+\end{table}
+\clearpage
+
+\begin{table}[!h]
+  \vspace{-1cm}
+  \caption{\label{tab:transfers_balance}Comparison of population vs. adult pop. entitlement; carbon balance (\% of GNI). }
+  \makebox[\textwidth][c]{
+  \input{../tables/transfers_gain_pop_adult_balance.tex} % add \midrule after World
+} 
+{\footnotesize \textit{Note:} Budget gain denotes the country net entitlements, i.e. the revenue it collects plus the net international transfer. International transfers denotes the country net entitlements minus taxes paid in the country. The carbon balance is separated from the tax proposals, it corresponds to the carbon credit or debt over 1990--2024, priced at \$100/tCO$_\text{2}$. For example, a country with excess emissions compared to the world average accumulates a carbon debt. % Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
 }
 \end{table}
 \clearpage
@@ -148,7 +164,7 @@ proportional to the difference between the threshold and their GNI per capita.
 
 \section{Carbon price}\label{sec:carbon}
 
-We model simulate the international transfers a \$10/tCO$_\text{2}$ carbon price. At the global level, and neglecting behavioral responses, 0.33\% of the world nominal GDP would be collected. 
+We model simulate the international transfers a \$100/tCO$_\text{2}$ carbon price. At the global level, and neglecting behavioral responses, 0.33\% of the world nominal GDP would be collected. 
 %Contrary to the other taxes studied here, the revenues of the carbon price are not entirely pooled at the global level. Instead, we assume that 0.2\% of each country's nominal GDP would be pooled and rebated to all countries in proportion to their adult population. With some exceptions (such as Ireland and Switzerland), the carbon price revenues would cover more than the transfer owed to the rest of the world, leaving revenues for domestic spending even in high-income countries.
 
 \section{Maritime fuel levy}\label{sec:wealth}
@@ -163,11 +179,16 @@ Using data from \cite{graver_co2_2018},\footnote{We use the data unadjusted for 
 
 We estimate extra revenue by country if the internationally agreed minimum rate on corporate income tax was raised from 15\% to 21\%, with no carve-out. We use data from the \href{https://www.taxobservatory.eu/fr/base-de-donn%C3%A9es/the-tax-deficit-simulator/}{tax deficit simulator} from the EU Tax Observatory. These estimates are available for 45 countries (from OECD and the G20). We impute missing data only for three high-income countries (Iceland, Israel, New Zealand) and conservatively assume no extra revenue for other (developing) countries with missing data.
 
+\section{Carbon balance}
+
+On top of (and not included in) the proposed new taxes, we compute historical responsibilites for climate change. We define a carbon balance as the sum of a country's excess emissions compared to the world average, each year between 1990 and 2024, priced at \$100/tCO$_\text{2}$. We report the carbon balance over nominal GNI in 2025 country-by-country in Table \ref{tab:transfers_balance}.
+
 \quad \\ \quad 
+
+\clearpage
 
 \textit{Our figures are fully reproducible from our data and code, openly availably on\\ \href{https://github.com/bixiou/global_tax_attitudes/code_global/new_taxes.R}{github.com/bixiou/global\_tax\_attitudes/code\_global/new\_taxes.R}. We are here to feed the public debate on global redistribution. We welcome counter-proposals, criticisms and suggestions concerning (including pull requests).  }
 
-\clearpage
 
 \begin{figure}[h!] 
     \caption{Net gain for state budgets from new taxes and international transfers (revenue plus net transfer).}\label{fig:budget_gain_both_taxes}

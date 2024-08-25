@@ -85,11 +85,11 @@ carbon_price$ssp2_26 <- setNames(sapply(years, function(y) SSPs[SSPs$MODEL == "I
 rm(SSPs)
 
 ##### Country-downscaled trajectories #####
-ssp_country <- read.csv("../data/PMSSPIE.csv") # Gütschow et al. (2021) extracted from PMSSPIE_05Feb20.csv, https://zenodo.org/record/3638137
+ssp_country <- read.csv("../data/PMSSPIE.csv") # Gütschow et al. (2021) extracted from PMSSPIE_05Feb20.csv, https://zenodo.org/record/3638137 # Territorial CO2 emissions from non-LULUCF sectors
 ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "BASIC", "EU28", "LDC", "NONANNEXI", "UMBRELLA", "MAC"),]
 
 
-compute_carbon_debt <- function(start = 1990, end = 2029, df = df) {
+compute_carbon_debt <- function(start = 1990, end = 2029, df = df) { # in tCO2: sum_y emissions_y - pop_share_y * global_emissions_y
   # /!\ We replace NA by 0
   if (start != end) df[[paste0("emissions_", start, "_", end)]] <- rowSums(df[, paste0("emissions_", start:end)])
   df[[paste0("carbon_debt_", start, "_", end)]] <- 0
@@ -118,6 +118,7 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
   for (y in 1990:2100) { # Years span 1850:2100
     ssp[[paste0("pop_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "POP"], ssps$country[ssps$scenario == scenario & ssps$entity == "POP"])[ssp$code]
     ssp[[paste0("gdp_", y)]] <- 1e6 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "GDPPPP"], ssps$country[ssps$scenario == scenario & ssps$entity == "GDPPPP"])[ssp$code]  # /!\ It is in PPP (contrary to old code with IIASA SSPs)
+    # Territorial CO2 emissions from non-LULUCF sectors
     ssp[[paste0("emissions_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "CO2"], ssps$country[ssps$scenario == scenario & ssps$entity == "CO2"])[ssp$code]
     # Add North Korea data
     if (y >= 2020) ssp[[paste0("emissions_", y)]][ssp$code == "PRK"] <- ssp[[paste0("emissions_", y)]][ssp$code == "BLR"] # Using Belarus, a country with similar 2022 fossil emissions from https://en.wikipedia.org/wiki/List_of_countries_by_carbon_dioxide_emissions
