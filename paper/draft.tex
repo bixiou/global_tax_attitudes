@@ -138,10 +138,20 @@
 \usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
 % \linespread{1.5}
 \usepackage[super,compress]{natbib} % WPcomment
+\usepackage{bibunits} % To get multiple bibliography
 % \usepackage[round,sort&compress]{natbib} % NCCcomment
 \usepackage{url} % [hyphens]
-\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation.
-\usepackage[pagebackref]{hyperref}
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation. 
+\usepackage[pagebackref]{hyperref} 
+
+% Lines below required to make pagebackref compatible with bibunits
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\Hy@backout{\@auxout}{\@mainaux}{}{\fail}
+\patchcmd\Hy@backout{\@auxout}{\@mainaux}{}{\fail} %yes twice the same line
+\makeatother
+
+% \usepackage{hyperref}
 % \usepackage{multibib} % incompatible with backref
 \hypersetup{
   colorlinks=true, % breaklinks=true,
@@ -200,6 +210,13 @@
 \renewcommand{\floatpagefraction}{.99}
 \newenvironment{stretchpars}{\par\setlength{\parfillskip}{0pt}}{\par} % to justify a line
 
+\newcommand\citeR[1]{\citeauthor{#1} (\citeyear{#1})}
+\newcommand\citeRt[1]{\citeauthor{#1} (\citeyear{#1})}
+\newcommand\citeRp[1]{(\citeauthor{#1} \citeyear{#1})}
+\newcommand\citeRalp[1]{\citeauthor{#1} \citeyear{#1}}
+\defaultbibliographystyle{unsrtnat}
+\defaultbibliography{global_tax_attitudes}
+
 % % Getting landscape page and page number/footer on bottom of page (instead of to the left)
 % \fancypagestyle{mylandscape}{
 % \fancyhf{} %Clears the header/footer
@@ -252,10 +269,12 @@
 } 
 
 % \author{Adrien Fabre$^{1,2}$, Thomas Douenne$^3$ and Linus Mattauch$^{4,5,6}$} % WPcomment
-\author{Adrien Fabre\footnote{CNRS, CIRED. E-mail: adrien.fabre@cnrs.fr (corresponding author).}, Thomas Douenne\footnote{University of Amsterdam}\; and Linus Mattauch\footnote{Technical University Berlin, Potsdam Institute for Climate Impact Research -- Member of the Leibniz Association and University of Oxford}~~\thanks{The project is approved by Economics \& Business Ethics Committee (EBEC) at the University of Amsterdam (EB-1113) and %is approved by IRB at Harvard University (IRB21-0137), and 
-was preregistered in the Open Science Foundation registry (\href{https://osf.io/fy6gd}{osf.io/fy6gd}). \\ We are grateful for financial support from the University of Amsterdam and TU Berlin. Mattauch also thanks the Robert Bosch Foundation. %We are grateful for financial support from the OECD, the French Ministry of Foreign Affairs, the French Conseil d’Analyse Economique and the Spanish Ministry for the Ecological Transition and Demographic Challenge. We also acknowledge support from the Grantham Foundation for the Protection of the Environment and the Economic and Social Research Council through the Centre for Climate Change Economics and Policy. 
-We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez Chico, and Stefanie Stantcheva for their invaluable inputs for the project. We thank Auriane Meilland for feedback. %We further thank Jakob Niemann, Laura Schepp, Martín Fernández-Sánchez, Samuel Gervais, Samuel Haddad, and Guadalupe Manzo for assistance. Fabre declares that he also serves as president of Global Redistribution Advocates. % TODO! put back
-}} % NCCcomment
+\author{Adrien Fabre\footnote{CNRS, CIRED. E-mail: adrien.fabre@cnrs.fr (corresponding author).}, Thomas Douenne\footnote{University of Amsterdam}\; and Linus Mattauch\footnote{Technical University Berlin, Potsdam Institute for Climate Impact Research -- Member of the Leibniz Association and University of Oxford}
+% ~~\thanks{The project is approved by Economics \& Business Ethics Committee (EBEC) at the University of Amsterdam (EB-1113) and %is approved by IRB at Harvard University (IRB21-0137), and 
+% was preregistered in the Open Science Foundation registry (\href{https://osf.io/fy6gd}{osf.io/fy6gd}). \\ We are grateful for financial support from the University of Amsterdam and TU Berlin. Mattauch also thanks the Robert Bosch Foundation. %We are grateful for financial support from the OECD, the French Ministry of Foreign Affairs, the French Conseil d’Analyse Economique and the Spanish Ministry for the Ecological Transition and Demographic Challenge. We also acknowledge support from the Grantham Foundation for the Protection of the Environment and the Economic and Social Research Council through the Centre for Climate Change Economics and Policy. 
+% We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez Chico, and Stefanie Stantcheva for their invaluable inputs for the project. We thank Auriane Meilland for feedback. %We further thank Jakob Niemann, Laura Schepp, Martín Fernández-Sánchez, Samuel Gervais, Samuel Haddad, and Guadalupe Manzo for assistance. Fabre declares that he also serves as president of Global Redistribution Advocates. % TODO! put back
+% }
+} % NCCcomment
 
 \date{\today} % NCCcomment
 
@@ -282,15 +301,15 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
 \begin{abstract}
   %A global carbon price funding a global basic income, called the ``Global Climate Scheme'' (GCS), would be an effective and progressive way to combat climate change and poverty. Yet, such policy is mostly absent from political platforms and the policy debate. Recent surveys on 40,680 respondents in 20 countries covering 72\% of global CO$_\text{2}$ emissions document majority support for this and other global policies. Using a complementary survey on 8,000 respondents in the U.S., France, Germany, Spain and the UK, we test several hypotheses that could reconcile strong stated support with a lack of salience of these issues. The complementary analyses show that the stated support is mostly sincere, as a list experiment shows no evidence of social desirability bias, majorities are willing to sign a real-stake petition, and global redistributive policies rank high in the prioritization of policies. Conjoint analyses reveal that a progressive candidate would not significantly lose voting share by endorsing the GCS in any country, and may even gain 11 p.p. in France. Likewise, a platform is more likely to be preferred if it contains the GCS or a global tax on millionaires. Accurate beliefs about the level of support for the GCS dismisses the hypothesis of pluralistic ignorance of the support. Universalistic attitudes are confirmed in more general questions, including an incentivized donation. In sum, our findings indicate that global policies are genuinely supported by a majority of the population. Public opinion is therefore not the reason that they do not prominently enter political debates.
 
-  We document majority support for policies entailing global redistribution and climate mitigation. Surveys on 40,680 respondents in 20 countries show strong stated support for an effective way to jointly combat climate change and poverty: a global carbon price funding a global basic income, called the ``Global Climate Scheme'' (GCS). Through our main surveys on 8,000 respondents in the U.S., France, Germany, Spain, and the UK, we test several hypotheses that could reconcile strong stated support with a lack of salience in policy circles. 
-  The GCS is supported by three quarters of Europeans and half of Americans, even as they understand the policy's cost to them. Using different experiments, we show that the support for the GCS is sincere and that electoral candidates could win votes by endorsing it. More generally, we document widespread support for other globally redistributive policies, such as a wealth tax funding low-income countries or increased foreign aid. In sum, we provide evidence that global policies are genuinely supported by majorities, even in wealthy nations that would bear the burden.
+  We document majority support for policies entailing global redistribution and climate mitigation. Surveys on 40,680 respondents in 20 countries show strong stated support for a global carbon price funding equal cash transfers, called the ``Global Climate Scheme'' (GCS). Through our main surveys on 8,000 respondents in the U.S., France, Germany, Spain, and the UK, we test several hypotheses that could reconcile strong stated support with scarce occurrences in public debates. 
+  Three quarters of Europeans and half of Americans support the GCS, even as they understand the policy's cost to them. Using different experiments, we show that the support for the GCS is sincere and that electoral candidates could win votes by endorsing it. More generally, we document widespread support for other globally redistributive policies, such as increased foreign aid or a wealth tax funding low-income countries. In sum, global policies are genuinely supported by majorities, even in wealthy, contributing countries.
   % A list experiment shows no evidence of social desirability bias, majorities are willing to sign a real-stake petition, and global redistribution ranks high in the prioritization of policies. Conjoint analyses reveal that a platform is more likely to be preferred if it contains the GCS or a global tax on millionaires. Universalistic attitudes are confirmed by an incentivized donation. In sum, our findings indicate that global policies are genuinely supported by a majority of the population. Public opinion is therefore not the reason that they do not prominently enter political debates.
 \end{abstract}
 % Conf submissions: AFSE, EAERE, JMA, AFEP, Earth System governance, Philo Éco
 % \end{small} % NCCcomment
 % TODO add results 66% willing to adopt sustainable behavior under conditions
 
-\textbf{JEL codes:} P48, Q58, H23, Q54 % NCCcomment
+% \textbf{JEL codes:} P48, Q58, H23, Q54 % NCCcomment
 % Q54 Climate • Natural Disasters and Their Management • Global Warming
 % Q58 Government Policy (Q is Environmental econ)
 % D78 Positive Analysis of Policy Formulation and Implementation
@@ -299,13 +318,14 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
 % H41 Public Goods
 % H54 Infrastructures • Other Public Investment and Capital Stock
 
-\textbf{Keywords:} Climate change, global policies, cap-and-trade, attitudes, survey.%, inequality, wealth tax. % NCCcomment
+% \textbf{Keywords:} Climate change, global policies, cap-and-trade, attitudes, survey.%, inequality, wealth tax. % NCCcomment
 
 \tableofcontents
 
 \onehalfspacing % NCCcomment
 
 %\clearpage
+\begin{bibunit}
 
 \section{Introduction}% NCCcomment
 % TODO!? Now at 62? 
@@ -610,7 +630,7 @@ Hence, we do not find a social desirability bias in our study.
 % H1: Petition: Small effect against GCS: -4pp
 We ask respondents whether they are willing to sign a petition in support of either the GCS or NR policy. We inform them that the petition results will be sent to the head of state's office, highlighting the proportion of fellow citizens endorsing the respective scheme. Even when framed as a petition that might have real stakes, both policies continue to receive majority support. In the U.S., we find no significant difference between the support in the %real-stake 
 petitions and the simple questions (GCS: $p=.30$; NR: $p=.76$). %\footnote{Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition.} 
-In Europe, the petition leads to a comparable lower support for both the GCS (7 p.p., $p=10^{-5}$) and NR (4 p.p., $p = .008$). While some European respondents are unwilling to sign a petition for policies they are expected to support, this effect is not specific to the GCS, and the overall willingness to sign a %real-stake 
+In Europe, the petition leads to a comparable lower support for both the GCS (7 p.p., $p=10^{-5}$) and NR (4 p.p., $p = .008$). While some European respondents are unwilling to sign a petition for policies they are expected to support, this phenomenon is not specific to the GCS, and the overall willingness to sign a %real-stake 
 petition remains strong, with 69\% expressing support for the GCS and 67\% for NR.
 
 \subsubsection{Conjoint analyses}\label{subsubsec:conjoint} % Addresses acquiescence bias  % NCCcomment
@@ -804,11 +824,11 @@ The latter policy obtains relative majority support in Europe but not in the U.S
 \renewcommand{\thefigure}{\arabic{figure}}
 \begin{figure}
   % MAJOR figure
-  \caption[Relative support for further global policies]{Relative support for various global policies (percentage of \textit{somewhat} or \textit{strong support}, after excluding \textit{indifferent} answers). (Questions \ref{q:climate_policies} and \ref{q:other_policies}; See Figure \ref{fig:support_likert_positive} for the absolute support.)% $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749, n_\text{US, global/national wealth tax} = 2,000$
+  \caption[Relative support for other global policies]{Relative support for various global policies (percentage of \textit{somewhat} or \textit{strong support}, after excluding \textit{indifferent} answers). (Questions \ref{q:climate_policies} and \ref{q:other_policies}; See Figure \ref{fig:support_likert_positive} for the absolute support.)% $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749, n_\text{US, global/national wealth tax} = 2,000$
   }
   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_share.pdf}}\label{fig:support}
 \end{figure} 
-% \setcounter{figure}{2}
+\setcounter{figure}{5}
 \renewcommand{\thefigure}{S\arabic{figure}}
 
 \subsubsection{Foreign aid}\label{subsubsec:support_foreign_aid} % NCCcomment
@@ -862,10 +882,13 @@ Finally, we conduct a lottery experiment to elicit universalistic values. Respon
 \end{figure}
 
 \section{Discussion} % Summary, conclusion
+
+% TODO! The discussion section must include a transparent discussion of limitations
+
 % TODO? give less space to OECD paper?
 Our point of departure are recent surveys conducted %by \citet{dechezlepretre_fighting_2022} 
 in 20 of the largest countries% \citep{dechezlepretre_fighting_2022}
-, as they reveal robust majority support for global redistributive and climate policies, even in high-income countries that would financially lose from them. The results from the Main surveys conducted in the U.S. and four European countries %presented here 
+, as they reveal strong majority support for global redistributive and climate policies, even in high-income countries that would financially lose from them. The results from the Main surveys conducted in the U.S. and four European countries %presented here 
 reinforce these findings. We find strong support for global taxes on the wealthiest individuals, as well as majority support for our main policy of interest -- the Global Climate Scheme (GCS). The GCS encompasses carbon pricing at a global level through an emissions trading system, accompanied by a global basic income funded by the scheme's revenues. Additional experiments, such as a list experiment and a real-stake petition, demonstrate that the support for the GCS is real. 
 Such genuine support is further substantiated by the prioritization of the GCS over prominent national climate policies and aligned with a significant portion of the population holding universalistic values rather than nationalistic or egoistic ones. Moreover, the conjoint analyses indicate that a progressive candidate would not lose voting shares by endorsing the GCS, and may even gain 11 p.p. in voting shares in France. Similarly, a candidate endorsing the GCS would gain votes in a U.S. Democratic primary, while in Europe, a progressive platform that includes the GCS would be preferred over one that does not.
 
@@ -910,6 +933,17 @@ draw attention to global policies in the public debate and contribute to their i
 \section*{\normalsize Methods}\label{sec:methods} % NCCcomment
 \addcontentsline{toc}{section}{\nameref{sec:methods}}
 % \subsection{Data collection.} % WPcomment
+
+% TODO!!
+% If your manuscript reports the results of research with human participants, the Methods section should start with a statement:
+% a)	confirming that your research complies with all relevant ethical regulations; 
+% b)	naming the board and institution that approved the study protocol; 
+% c)	confirming that informed consent was obtained from all human participants (or exemption of informed consent was provided by the committee that reviewed the study, along with the rationale);
+% d)	disclosing information on participant compensation;
+% e)	indicating whether any, all, or none of your studies were preregistered. + date/link/deviations/ 
+% No statistical methods were used to pre-determine sample sizes but our sample sizes are [similar to/larger than] those reported in previous publications (ref x,y,z).
+% the Methods section must include a statement on randomization and whether blinding was used
+
 \paragraph{\small Data collection.} % NCCcomment
 % The paper relies on two different sets of surveys. The first set of surveys was conducted between March 2021 and March 2022 on 40,680 respondents from 20 countries  (between 1,465 and 2,488 respondents per country). The first U.S. complementary, denoted \textit{US1}, was conducted on 3,000 U.S. respondents between January and March 2023, while the second, \textit{US2}, was conducted on 2,000 respondents between March and April 2023. The \textit{Eu} complementary survey was conducted on 3,000 respondents between February and March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. Stratified quotas ensure that the samples are representative along the dimensions of gender, age (5 brackets), income (4), region (4), education level (3), as well as ethnicity (3) for the U.S. To correct for small remaining imbalances, we apply survey weights throughout the analysis, constructed using the quotas variables as well as the degree of urbanity, and trimmed between 0.25 and 4. Weights make the results fully representative of the country (or of the four European countries combined in the case of results at the European level, where different weights are used). Appendix \ref{app:representativeness} confirms that our samples are representative of the population. % TODO! and urbanity instead of education for OECD, TODO table representativeness
 %\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} 
@@ -917,7 +951,7 @@ draw attention to global policies in the public debate and contribute to their i
 The paper utilizes two sets of surveys: the \textit{Global} survey and the \textit{Main} surveys. The \textit{Main} surveys consist of two U.S. surveys, \textit{US1} and \textit{US2}, and one European survey, \textit{Eu}. The \textit{Global} survey was conducted from March 2021 to March 2022 on 40,680 respondents from 20 countries (with 1,465 to 2,488 respondents per country). \textit{US1} collected responses from 3,000 respondents between January and March 2023, while \textit{US2} gathered data from 2,000 respondents between March and April 2023. \textit{Eu} included 3,000 respondents and was conducted from February to March 2023. We used the survey companies \emph{Dynata} and \emph{Respondi}. To ensure representative samples, we employed stratified quotas based on gender, age (5 brackets), income (4), region (4), education level (3), and ethnicity (3) for the U.S. We also incorporated survey weights throughout the analysis to account for any remaining imbalances. These weights were constructed using the quota variables as well as the degree of urbanity, and trimmed between 0.25 and 4. Stratified quotas followed by reweighting is the usual method to reduce selection bias from opt-in online panels, when better sampling methods (such as compulsory participation of random dwellings) are unavailable.\cite{scherpenzeel_how_2010} By applying weights, the results are fully representative of the respective countries along the above mentioned dimensions. %. 
 Results at the European level apply different weights which ensure  representativeness of the combined four European countries. Appendix \ref{app:representativeness} shows how our samples compare to actual population frequencies. Our samples match well actual frequencies, except for some imbalance on vote in the U.S. (which does not affect our results, as show the results reweighted by vote in the below section \textit{Support for the GCS}). % confirms that our samples are representative of the population. %\footnote{We trim weights so that no respondent receives a weight below 0.25 or above 4. Overall, trimming changes the weights for xx\% of the respondents.} 
 % TODO? that our samples closely match population frequencies in high-income countries. In middle-income countries, the samples are only representative of the online population (young, graduated and urban people are over-represented).
-Appendix \ref{app:balance} shows that the treatment branches are balanced. Appendix \ref{app:placebo} runs placebo tests of the effects of each treatment on unrelated outcomes. We do not find effects of earlier treatments on unrelated outcomes arriving later in the survey. Appendix \ref{app:extended} shows that our results are robust to including inattentive respondents.
+Appendix \ref{app:balance} shows that the treatment branches are balanced. Appendix \ref{app:placebo} runs placebo tests of the effects of each treatment on unrelated outcomes. We do not find effects of earlier treatments on unrelated outcomes arriving later in the survey. Appendix \ref{app:extended} shows that our results are unchanged when including inattentive respondents.
 
 
 % \subsection*{\small Data quality.} % WPcomment % TODO attrition analysis
@@ -947,9 +981,9 @@ In most questions, support or opposition for a policy is asked using a 5-Likert 
 \paragraph{\small Support for the GCS.} 
 The 95\% confidence intervals are $[52.4\%, 55.9\%]$ in the U.S. and $[74.2\%, 77.2\%]$ in Europe. The average support is computed with survey weights, employing weights based on quota variables, which exclude vote. Another method to reweigh the raw results involves running a regression of the support for the GCS on sociodemographic characteristics (including vote) and multiplying each coefficient by the population frequencies. This alternative approach yields similar figures: 76\% in Europe and 52\% or 53\% in the U.S. (depending on whether individuals who did not disclose their vote are classified as non-voters or excluded). Notably, the average support excluding non-voters is 54\% in the U.S. 
 
-Though the level of support for the GCS is significantly lower in swing States (at 51\%) that are key to win U.S. elections, the electoral effect of endorsing the GCS remains non-significantly different from zero (at +1.2 p.p.) in these States. Note that we define swing states as the 8 states with less than 5 p.p. margin of victory in the 2020 election (MI, NV, PA, WI, AZ, GA, NC, FL). The results are robust to using the 3 p.p. threshold (that excludes FL) instead. 
+Though the level of support for the GCS is significantly lower in swing States (at 51\%) that are key to win U.S. elections, the electoral effect of endorsing the GCS remains non-significantly different from zero (at +1.2 p.p.) in these States. Note that we define swing states as the 8 states with less than 5 p.p. margin of victory in the 2020 election (MI, NV, PA, WI, AZ, GA, NC, FL). The results are unchanged if we use the 3 p.p. threshold (that excludes FL) instead. 
 
-\paragraph{\small List experiment.}
+\paragraph{\small List experiment.} % TODO! report Bayes Factors or equivalence tests for the null result
 List experiments have been used to reveal social desirability bias, silencing either racism in the Southern U.S.\citep{kuklinski_racial_1997} or opposition to the invasion of Ukraine in Russia.\citep{chapkovski_solid_2022} % TODO? remove?
 In our case, the question reads: ``Beware, this question is quite unusual. Among the policies below, \textbf{how many} do you support?'' The list of policies randomly varies across respondents, and includes a subset of GCS, NR (National Redistribution scheme), C (``Coal exit'' in the U.S., ``Thermal insulation plan'' in Europe) and O (``Marriage only for opposite-sex couples in the U.S.'', ``Death penalty for major crimes'' in Europe). There are four branches: GCS/NR/C/O; GCS/C/O; NR/C/O; C/O. To estimate the tacit average support for the GCS and NR, we regress the number of supported policies on indicators that the list includes GCS and NR.
 We utilize the difference-in-means estimator, and confidence intervals are computed using Monte Carlo simulation with the R package \textit{list}.\citep{imai_multivariate_2011}
@@ -1001,27 +1035,52 @@ To select the policies tested, we spanned three key areas for global redistribut
 
 \section*{\normalsize Data and code availability}
 
-All data and code of the \textit{Main} surveys as well as figures of the paper are available on \\ \href{https://github.com/bixiou/international_attitudes_toward_global_policies}{github.com/bixiou/global\_tax\_attitudes}. Data and code for the \textit{Global} survey will be made public upon publication. % TODO! Repository DOI: \href{https://zenodo.org/doi/10.5281/zenodo.11202245}{10.5281/zenodo.11202245}.
+All data and code of the \textit{Main} surveys as well as figures of the paper are available on \\ \href{https://github.com/bixiou/international_attitudes_toward_global_policies}{github.com/bixiou/global\_tax\_attitudes}. Data and code for the \textit{Global} survey will be made public upon publication. % TODO!! Repository DOI: \href{https://zenodo.org/doi/10.5281/zenodo.11202245}{10.5281/zenodo.11202245}.
+
+\section*{\normalsize Acknowledgements}
+
+The project is approved by Economics \& Business Ethics Committee (EBEC) at the University of Amsterdam (EB-1113) and %is approved by IRB at Harvard University (IRB21-0137), and 
+was preregistered in the Open Science Foundation registry (\href{https://osf.io/fy6gd}{osf.io/fy6gd}). \\ We are grateful for financial support from the University of Amsterdam and TU Berlin. Mattauch also thanks the Robert Bosch Foundation. %We are grateful for financial support from the OECD, the French Ministry of Foreign Affairs, the French Conseil d’Analyse Economique and the Spanish Ministry for the Ecological Transition and Demographic Challenge. We also acknowledge support from the Grantham Foundation for the Protection of the Environment and the Economic and Social Research Council through the Centre for Climate Change Economics and Policy. 
+We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez Chico, and Stefanie Stantcheva for their invaluable inputs for the project. We thank Auriane Meilland for feedback. %We further thank Jakob Niemann, Laura Schepp, Martín Fernández-Sánchez, Samuel Gervais, Samuel Haddad, and Guadalupe Manzo for assistance. Fabre declares that he also serves as president of Global Redistribution Advocates. % TODO! put back
+
+\section*{Author Contributions} A.F. collected and analysed the data, and drafted the questionnaire and the paper. T.D. and L.M. substantially revised the questionnaire and paper, and contributed to the conception and redaction.
+
+\section*{Competing interests} Fabre declares that he also serves as president of Global Redistribution Advocates. % TODO!? maintain?
+
+% TODO! Tables and Figures legend here
+
+% TODO!! don't cite Rajan, African Union, UN, ICRICT, Concord
+% TODO!! Figures must be uploaded individually, one figure per file.
+% TODO!! Move Figures to Extended Data figures (maximum 10): add S46, 25, 31? Tables S1, S2?
 
 % \end{methods} % WPcomment
 \end{small}  % NCCcomment
 
 % \bibliographystyle{naturemag_noURL} % nature class works only with style naturemag or naturemag_noURL, and naturemag bugs if there are certain URLs (like .pdf). Also, nature class only works with \cite, not \citet or \citep.  % WPcomment
 \renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
-\bibliographystyle{unsrtnat} % NCCcomment
-\bibliography{global_tax_attitudes}
+% \bibliographystyle{unsrtnat} % NCCcomment
+% \bibliography{global_tax_attitudes}
+
+\putbib
+\end{bibunit}
+
+\begin{bibunit}[plainnaturl_clean]
 
 \appendix % NCCcomment
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
 \setcounter{figure}{8}
-\setcounter{table}{1}
+\setcounter{table}{0}
 
 \input{literature_review.tex}
 % \clearpage
 % \section{Raw results% from the complementary surveys
 % }\label{app:raw_results}
 \input{app} 
+
+\renewcommand{\url}[1]{\href{#1}{Link}} 
+\putbib
+\end{bibunit}
 
 \clearpage
 \listoftables

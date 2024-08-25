@@ -197,6 +197,11 @@
 \renewcommand{\floatpagefraction}{.99}
 \newenvironment{stretchpars}{\par\setlength{\parfillskip}{0pt}}{\par} % to justify a line
 
+\newcommand\citeR[1]{\citeauthor{#1} (\citeyear{#1})}
+\newcommand\citeRt[1]{\citeauthor{#1} (\citeyear{#1})}
+\newcommand\citeRp[1]{(\citeauthor{#1} \citeyear{#1})}
+\newcommand\citeRalp[1]{\citeauthor{#1} \citeyear{#1}}
+
 % % Getting landscape page and page number/footer on bottom of page (instead of to the left)
 % \fancypagestyle{mylandscape}{
 % \fancyhf{} %Clears the header/footer
