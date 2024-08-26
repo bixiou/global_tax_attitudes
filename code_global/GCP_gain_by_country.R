@@ -88,15 +88,16 @@ rm(SSPs)
 ssp_country <- read.csv("../data/PMSSPIE.csv") # Gütschow et al. (2021) extracted from PMSSPIE_05Feb20.csv, https://zenodo.org/record/3638137 # Territorial CO2 emissions from non-LULUCF sectors
 ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "BASIC", "EU28", "LDC", "NONANNEXI", "UMBRELLA", "MAC"),]
 
-
-compute_carbon_debt <- function(start = 1990, end = 2029, df = df) { # in tCO2: sum_y emissions_y - pop_share_y * global_emissions_y
+compute_carbon_debt <- function(start = 1990, end = 2029, df = sm, discounted = FALSE) {
+  # When discounted == $, we 
   # /!\ We replace NA by 0
   if (start != end) df[[paste0("emissions_", start, "_", end)]] <- rowSums(df[, paste0("emissions_", start:end)])
-  df[[paste0("carbon_debt_", start, "_", end)]] <- 0
+  name_var <- paste0("carbon_debt_", if (discounted) "discounted_" else "", start, "_", end)
+  df[[name_var]] <- 0
   for (y in start:end) {
-    df[[paste0("carbon_debt_", start, "_", end)]] <- df[[paste0("carbon_debt_", start, "_", end)]] + df[[paste0("emissions_", y)]] - 
-      df[[paste0("pop_", y)]]*sum(df[[paste0("emissions_", y)]][!is.na(df[[paste0("pop_", y)]])], na.rm = T)/sum(df[[paste0("pop_", y)]][!is.na(df[[paste0("emissions_", y)]])], na.rm = T)
-    df[[paste0("carbon_debt_", start, "_", end)]][is.na(df[[paste0("carbon_debt_", start, "_", end)]])] <- 0
+    df[[name_var]] <- df[[name_var]] + (sum(df[[paste0("gdp_", y)]], na.rm = T)/sum(df[[paste0("gdp_", end)]], na.rm = T))^discounted * (df[[paste0("emissions_", y)]] - 
+           df[[paste0("pop_", y)]]*sum(df[[paste0("emissions_", y)]][!is.na(df[[paste0("pop_", y)]])], na.rm = T)/sum(df[[paste0("pop_", y)]][!is.na(df[[paste0("emissions_", y)]])], na.rm = T))
+    df[[name_var]][is.na(df[[name_var]])] <- 0
   }
   return(df)
 }
@@ -115,7 +116,7 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
   }
   ssps <- ssps[ssps$country %in% df$code & !ssps$country %in% c("FSM", "GRD"),] # "SSD", "TWN", "PRK", 
   ssp <- data.frame(code = unique(ssps$country))
-  for (y in 1990:2100) { # Years span 1850:2100
+  for (y in 1850:2100) { # Years span 1850:2100
     ssp[[paste0("pop_", y)]] <- 1e3 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "POP"], ssps$country[ssps$scenario == scenario & ssps$entity == "POP"])[ssp$code]
     ssp[[paste0("gdp_", y)]] <- 1e6 * setNames(ssps[[paste0("X", y)]][ssps$scenario == scenario & ssps$entity == "GDPPPP"], ssps$country[ssps$scenario == scenario & ssps$entity == "GDPPPP"])[ssp$code]  # /!\ It is in PPP (contrary to old code with IIASA SSPs)
     # Territorial CO2 emissions from non-LULUCF sectors
@@ -150,8 +151,13 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
   ssp$share_emissions_2023 <- ssp$emissions_2023/sum(ssp$emissions_2023, na.rm = T)
   ssp$share_territorial_2019[ssp$code == "TWN"] <- ssp$share_emissions_2023[ssp$code == "TWN"]
   ssp$share_territorial_2019 <- ssp$share_territorial_2019/sum(ssp$share_territorial_2019, na.rm = T)
-  ssp <- compute_carbon_debt(start = 1990, end = 2029, df = ssp)
-  ssp <- compute_carbon_debt(start = 1990, end = 2024, df = ssp)
+  ssp <- compute_carbon_debt(start = 1990, end = 2029, df = ssp, discounted = FALSE)
+  ssp <- compute_carbon_debt(start = 1990, end = 2024, df = ssp, discounted = FALSE)
+  ssp <- compute_carbon_debt(start = 1850, end = 2024, df = ssp, discounted = FALSE)
+  ssp <- compute_carbon_debt(start = 1960, end = 2024, df = ssp, discounted = FALSE)
+  ssp <- compute_carbon_debt(start = 1990, end = 2024, df = ssp, discounted = T)
+  ssp <- compute_carbon_debt(start = 1850, end = 2024, df = ssp, discounted = T)
+  ssp <- compute_carbon_debt(start = 1960, end = 2024, df = ssp, discounted = T)
   return(ssp)
 }
 

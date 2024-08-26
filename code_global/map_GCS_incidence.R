@@ -1496,14 +1496,15 @@ ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "
 # # Why same SSP don't have same emissions trajectories? e.g. ssp2_26 (image) always has lower emissions than ssp2_26msg (which has emissions similar to SSP119GCAM4). 
 # # => See WA conv with Thomas Bossy: The different IAMs don't agree on absorption/decay of CO2 (hence divergences in emisssions for a given concentration pathway) + differ on LULUCF emissions.
 
-compute_carbon_debt <- function(start = 1990, end = 2029, df = sm) {
+compute_carbon_debt <- function(start = 1990, end = 2029, df = sm, unit = "tCO2") {
   # /!\ We replace NA by 0
   if (start != end) df[[paste0("emissions_", start, "_", end)]] <- rowSums(df[, paste0("emissions_", start:end)])
-  df[[paste0("carbon_debt_", start, "_", end)]] <- 0
+  name_var <- paste0("carbon_debt_", if (unit == "$") "$" else "", start, "_", end)
+  df[[name_var]] <- 0
   for (y in start:end) {
-    df[[paste0("carbon_debt_", start, "_", end)]] <- df[[paste0("carbon_debt_", start, "_", end)]] + df[[paste0("emissions_", y)]] - 
-      df[[paste0("pop_", y)]]*sum(df[[paste0("emissions_", y)]][!is.na(df[[paste0("pop_", y)]])], na.rm = T)/sum(df[[paste0("pop_", y)]][!is.na(df[[paste0("emissions_", y)]])], na.rm = T)
-    df[[paste0("carbon_debt_", start, "_", end)]][is.na(df[[paste0("carbon_debt_", start, "_", end)]])] <- 0
+    df[[name_var]] <- df[[name_var]] + (sum(df[[paste0("gdp_", y)]], na.rm = T)/sum(df[[paste0("gdp_", end)]], na.rm = T))^(unit == "$") * (df[[paste0("emissions_", y)]] - 
+      df[[paste0("pop_", y)]]*sum(df[[paste0("emissions_", y)]][!is.na(df[[paste0("pop_", y)]])], na.rm = T)/sum(df[[paste0("pop_", y)]][!is.na(df[[paste0("emissions_", y)]])], na.rm = T))
+    df[[name_var]][is.na(df[[name_var]])] <- 0
   }
   return(df)
 }
