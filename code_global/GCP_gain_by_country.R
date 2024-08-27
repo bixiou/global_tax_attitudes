@@ -89,7 +89,7 @@ ssp_country <- read.csv("../data/PMSSPIE.csv") # Gütschow et al. (2021) extract
 ssp_country <- ssp_country %>% .[!.$country %in% c("EARTH", "ANNEXI", "AOSIS", "BASIC", "EU28", "LDC", "NONANNEXI", "UMBRELLA", "MAC"),]
 
 compute_carbon_debt <- function(start = 1990, end = 2029, df = sm, discounted = FALSE) {
-  # When discounted == $, we 
+  # When discounted, we discount emissions at t by world GDP at t over world GDP at end. But it makes no sense to discount, one should use the current year.
   # /!\ We replace NA by 0
   if (start != end) df[[paste0("emissions_", start, "_", end)]] <- rowSums(df[, paste0("emissions_", start:end)])
   name_var <- paste0("carbon_debt_", if (discounted) "discounted_" else "", start, "_", end)
@@ -151,13 +151,10 @@ prepare_ssp_country <- function(scenario = "SSP226MESGB", ssps = ssp_country, df
   ssp$share_emissions_2023 <- ssp$emissions_2023/sum(ssp$emissions_2023, na.rm = T)
   ssp$share_territorial_2019[ssp$code == "TWN"] <- ssp$share_emissions_2023[ssp$code == "TWN"]
   ssp$share_territorial_2019 <- ssp$share_territorial_2019/sum(ssp$share_territorial_2019, na.rm = T)
-  ssp <- compute_carbon_debt(start = 1990, end = 2029, df = ssp, discounted = FALSE)
-  ssp <- compute_carbon_debt(start = 1990, end = 2024, df = ssp, discounted = FALSE)
-  ssp <- compute_carbon_debt(start = 1850, end = 2024, df = ssp, discounted = FALSE)
-  ssp <- compute_carbon_debt(start = 1960, end = 2024, df = ssp, discounted = FALSE)
-  ssp <- compute_carbon_debt(start = 1990, end = 2024, df = ssp, discounted = T)
-  ssp <- compute_carbon_debt(start = 1850, end = 2024, df = ssp, discounted = T)
-  ssp <- compute_carbon_debt(start = 1960, end = 2024, df = ssp, discounted = T)
+  ssp <- compute_carbon_debt(start = 1990, end = 2029, df = ssp)
+  ssp <- compute_carbon_debt(start = 1990, end = 2024, df = ssp)
+  ssp <- compute_carbon_debt(start = 1850, end = 2024, df = ssp)
+  ssp <- compute_carbon_debt(start = 1960, end = 2024, df = ssp)
   return(ssp)
 }
 

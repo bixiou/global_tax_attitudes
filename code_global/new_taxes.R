@@ -235,11 +235,12 @@ cat(paste(kbl(100*table_pop[no.na(table_pop[,5] > 35e6, F, F), 1:4], "latex", #c
 ##### With carbon debt #####
 sort(setNames(df$carbon_debt_1990_2024 * 10 / df$gdp_2025, df$country))
 sort(setNames(df$carbon_debt_1990_2024 * 10 / df$gni_nom_2023, df$country))
-price_past_emissions <- 185
+annualized_scc <- 0.035*185
 
 table_pop_balance <- cbind("transfer_pop" = df$net_gain_both_taxes_pc_pop, "transfer" = df$net_gain_both_taxes_pc, "budget_gain_pop" = df$budget_gain_both_taxes_pc_pop, 
-                   "budget_gain" = df$budget_gain_both_taxes_pc, "carbon_balance" = -df$carbon_debt_1990_2024 * price_past_emissions / df$pop_2025, 
-                   "carbon_balance_discounted" = -df$carbon_debt_discounted_1990_2024 * price_past_emissions / df$pop_2025, "carbon_balance_1850" = -df$carbon_debt_discounted_1850_2024 * price_past_emissions / df$pop_2025, #"carbon_balance_1960" = -df$carbon_debt_1960_2024 * price_past_emissions / df$pop_2025, 
+                   "budget_gain" = df$budget_gain_both_taxes_pc, "transfer_carbon" = df$net_gain_both_taxes_pc_pop - df$carbon_debt_1990_2024 * annualized_scc / df$pop_2025, 
+                   # "carbon_balance" = -df$carbon_debt_1990_2024 * annualized_scc / df$pop_2025, 
+                   # "carbon_balance_1850" = -df$carbon_debt_discounted_1850_2024 * annualized_scc / df$pop_2025, #"carbon_balance_1960" = -df$carbon_debt_1960_2024 * annualized_scc / df$pop_2025, 
                    "pop" = df$pop_2023*df$gni_pc_nom_2023) / df$gni_pc_nom_2023
 row.names(table_pop_balance) <- df$country
 row.names(table_pop_balance)[row.names(table_pop_balance) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
@@ -247,8 +248,9 @@ table_pop_balance <- table_pop_balance[order(-table_pop_balance[,1]),]
 cat(paste(kbl(100*table_pop_balance[no.na(table_pop_balance[,ncol(table_pop_balance)] > 35e6, F, F), 1:(ncol(table_pop_balance)-1)], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
               position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(rep(1, 4), rep(0, 4)), linesep = rep("", nrow(table_pop_balance)-1), longtable = F, label = "transfers_gain_pop_adult", align = 'c',
               col.names = c("\\makecell{Int'l\\\\transfers\\\\(population)}", "\\makecell{Int'l\\\\transfers\\\\(adult)}", "\\makecell{Budget\\\\gain\\\\(population)}", 
-                            "\\makecell{Budget\\\\gain\\\\(adult)}", "\\makecell{CO$_\\text{2}$ balance\\\\\\$185/tCO$_\\text{2}$\\\\1990-2024}",
-                            "\\makecell{CO$_\\text{2}$ balance\\\\discounted\\\\1990-2024}", "\\makecell{CO$_\\text{2}$ balance\\\\discounted\\\\1850-2024}"
+                            "\\makecell{Budget\\\\gain\\\\(adult)}", "\\makecell{Int'l transfers\\\\incl. carbon balance\\\\(population)}"
+                            # "\\makecell{CO$_\\text{2}$ balance\\\\\\$185/tCO$_\\text{2}$\\\\1990-2024}",
+                            # "\\makecell{CO$_\\text{2}$ balance\\\\discounted\\\\1990-2024}", "\\makecell{CO$_\\text{2}$ balance\\\\discounted\\\\1850-2024}"
                             )), collapse="\n"), 
     file = "../tables/transfers_gain_pop_adult_balance.tex")
 
