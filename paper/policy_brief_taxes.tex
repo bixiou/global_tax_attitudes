@@ -41,6 +41,7 @@
 \usepackage{tikz}
 \usepackage{gensymb}
 \usepackage{textcomp}
+\usepackage{bibentry} % to use nobibliography
 
 \usepackage{tabulary}
 \usepackage{tabularx}
@@ -135,7 +136,7 @@ Supplementary Material \\ \textit{Finding a consensus towards global climate jus
   \makebox[\textwidth][c]{
   \input{../tables/transfers_gain_pop_adult_balance.tex} % add \midrule after World
 } 
-{\footnotesize \textit{Note:} Budget gain denotes the country net entitlements, i.e. the revenue it collects plus the net international transfer. International transfers denotes the country net entitlements minus taxes paid in the country. The carbon balance is separated from the tax proposals, it corresponds to the carbon credit or debt over 1990--2024, priced at \$185/tCO$_\text{2}$. For example, a country with excess emissions compared to the world average accumulates a carbon debt. % Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
+{\footnotesize \textit{Note:} Budget gain denotes the country net entitlements, i.e. the revenue it collects plus the net international transfer. International transfers denotes the country net entitlements minus taxes paid in the country. The carbon balance is separated from the tax proposals, it corresponds to the carbon credit or debt over 1850--2024 (or 1990--2024), priced at \$185/tCO$_\text{2}$ and annualized at 3.5\%. For example, a country with excess emissions compared to the world average accumulates a carbon debt. % Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
 }
 \end{table}
 \clearpage
@@ -181,15 +182,14 @@ We estimate extra revenue by country if the internationally agreed minimum rate 
 
 \section{Carbon balance}
 
-On top of the proposed new taxes, we compute historical responsibilites for climate change. We define a carbon balance as the sum of a country's excess emissions compared to the world average, each year between 1990 and 2024, priced at $p=$ \$185/tCO$_\text{2}$ (which corresponds to the social cost of carbon according to \citealp{rennert_comprehensive_2022}). Denoting $e_t^c$ the emissions of country $c$ in year $t$, and $\pi_t^c$ its share of the world population at $t$, its carbon balance $B_c$ is: $ B_c = p \cdot \sum_{t=1990}^{2024} e_t^c - \pi_t^c \cdot \sum_c e_t^c \text{.}$ 
+On top of the proposed new taxes, we compute historical responsibilites for climate change. We define a carbon balance as the sum of a country's excess emissions compared to the world average, each year between 1850 and 2024, priced at $p=$ \$185/tCO$_\text{2}$ (which corresponds to the social cost of carbon according to \citealp{rennert_comprehensive_2022}). 
 % We report the carbon balance over nominal GNI in 2025 country-by-country in Table \ref{tab:transfers_balance}.
-In Table \ref{tab:transfers_balance}, we report 
-
-\quad \\ \quad 
+In Table \ref{tab:transfers_balance}, we report the carbon balance annualized at a risk-adjusted discount rate of $r =$ 3.5\%. Denoting $e_t^c$ the emissions of country $c$ in year $t$, and $\pi_t^c$ its share of the world population at $t$, its annualized carbon balance over nominal GNI, $B_c$, is: $ B_c = r \cdot p \cdot \sum_{t=1850}^{2024} e_t^c - \pi_t^c \cdot \sum_c e_t^c / \text{GNI}_c^{2023}\text{.}$ Our computations are based on historical CO$_\text{2}$ emissions excluding LULUCF sector \citep{gutschow_country-resolved_2021}.
 
 \clearpage
 
-\textit{Our figures are fully reproducible from our data and code, openly availably on\\ \href{https://github.com/bixiou/global_tax_attitudes/code_global/new_taxes.R}{github.com/bixiou/global\_tax\_attitudes/code\_global/new\_taxes.R}. We are here to feed the public debate on global redistribution. We welcome counter-proposals, criticisms and suggestions concerning (including pull requests).  }
+\textit{Our figures are fully reproducible from our data and code, openly availably on\\ \href{https://github.com/bixiou/global_tax_attitudes/code_global/new_taxes.R}{github.com/bixiou/global\_tax\_attitudes/code\_global/new\_taxes.R}. %We are here to feed the public debate on global redistribution. We welcome counter-proposals, criticisms and suggestions concerning (including pull requests).  
+}
 
 
 \begin{figure}[h!] 
@@ -201,8 +201,15 @@ In Table \ref{tab:transfers_balance}, we report
 % \setstretch{.5}
 % \titleformat*{\section}{\fontsize{11pt}{14pt}\bfseries\selectfont}
 \renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
+\renewcommand\bibname{\small Bibliography}
+\footnotesize
 \bibliographystyle{plainnaturl_clean} % NCCcomment
 \bibliography{global_tax_attitudes}
+% \hphantom{\vphantom{
+%     \begin{minipage}{\textwidth}
+%         \bibliography{global_tax_attitudes}
+%     \end{minipage}
+% }}
 % \endgroup }
 
 \end{document}
