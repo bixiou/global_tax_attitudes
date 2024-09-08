@@ -1,19 +1,19 @@
 % /!\ No footnote for NCC or NS.
 % TODO! exact sample size (n) for each experimental group/condition; For null hypothesis testing, the test statistic (e.g. F, t, r) with confidence intervals, effect sizes, degrees of freedom and P value noted; 
 % TODO! cite new Ghassim; Robeyns; Ferreira et al 24
-% TODO! p-value in Table (given that we remove the mention of .13 in the text)
+% DONE p-value in Table (given that we remove the mention of .13 in the text)
 % TODO! Ipsos (2023)
-% TODO! Add SM on European results to SM
-% TODO!! TODO? cite Dannenberg, Underdal, leiserowitz
+% bof Add SM on European results to SM
+% bof TODO? cite Dannenberg, Underdal, leiserowitz
 % TODO! table campaign effect => after revision
 % TODO! cite Bloodworth & Callegari => after revision
-% TODO! more raw results, sources (cf. app.tex) => after revision?
+% bof more raw results, sources (cf. app.tex) => after revision?
 % TODO! add variables names to questionnaire => after revision
 % TODO! cite Young-Brun et al. (23) => after revision
 % TODO! Cite Patriotic Millionaires (24) that millionaires want wealth tax? => after revision
 % TODO! Cite Leiserowitz or new survey that >50% are concerned about CC for all humans, not only their family/nation
 % TODO! Cite Focus2030 (2017): 40% agree / 19% disagree of French that "fighting poverty in developing countries should be one of the priorities of the European Union." https://focus2030.org/Combating-poverty-in-the-world-a-priority-for-the-European-Union; French think it's HIC's responsibility to help LIC https://focus2030.org/Which-actors-are-responsible-for-helping-people-in-developing-countries; 27% of French have taken into account development in their vote https://focus2030.org/27-of-French-people-have-already-directed-their-votes-according-to-development; contact del@ucl.ac.uk
-% TODO! faire la distinction entre aide au développement (unilatérale, discrétionnaire, instrument d'influence) et redistribution mondiale (multilatérale, rights/rule-based, financement dédié), et vérifier l'hypothèse que les gens préfèrent la redistribution mondiale (bémol : on l'avait pas pre-registered).
+% DONE faire la distinction entre aide au développement (unilatérale, discrétionnaire, instrument d'influence) et redistribution mondiale (multilatérale, rights/rule-based, financement dédié), et vérifier l'hypothèse que les gens préfèrent la redistribution mondiale (bémol : on l'avait pas pre-registered).
 
 % Words in text outside boxes: 4955; boxes: 665; outside text: 370
 
@@ -210,10 +210,10 @@
 \renewcommand{\floatpagefraction}{.99}
 \newenvironment{stretchpars}{\par\setlength{\parfillskip}{0pt}}{\par} % to justify a line
 
-\newcommand\citeR[1]{\citeauthor{#1} (\citeyear{#1})}
-\newcommand\citeRt[1]{\citeauthor{#1} (\citeyear{#1})}
-\newcommand\citeRp[1]{(\citeauthor{#1} \citeyear{#1})}
-\newcommand\citeRalp[1]{\citeauthor{#1} \citeyear{#1}}
+\newcommand\citeR[1]{\citeauthor{#1}~(\citeyear{#1})}
+\newcommand\citeRt[1]{\citeauthor{#1}~(\citeyear{#1})}
+\newcommand\citeRp[1]{(\citeauthor{#1}~\citeyear{#1})}
+\newcommand\citeRalp[1]{\citeauthor{#1}~\citeyear{#1}}
 \defaultbibliographystyle{unsrtnat}
 \defaultbibliography{global_tax_attitudes}
 
@@ -365,7 +365,7 @@ etc.
 A key condition for implementing global policies has remained largely unaddressed: the support of citizens. Using a Global survey on 40,680 respondents from 20 high- and middle-income countries, we reveal substantial support for those policies, especially global climate policies and a global tax on the wealthiest aimed at financing low-income countries (other questions from this survey are analyzed in a companion paper\cite{dechezlepretre_fighting_nodate}). Interestingly, even in wealthy nations that would bear a significant burden, majorities of citizens express support for such globally redistributive policies. To better understand public support for global policies in high-income countries, we conduct our Main surveys among 8,000 respondents from France, Germany, Spain, the UK, and the U.S. 
 
 % By studying in depth the support for global policies, we are making an ambitious shift in the methodological approach of attitudinal surveys. In general, academic surveys focus on studying effect sizes of some treatment on political attitudes, or the socio-demographic factors that correlate with attitudes.\cite{kuziemko_how_2015,douenne_yellow_2022} The magnitude of support for a given proposal is often regarded as problematic to estimate satisfactorily. %unsuitable for satisfactory estimation. 
-% The measure of support is usually left to non-academic pollsters, who rarely apply all the academic best practices: transparency, representative sampling, neutral and precise wording of questions, comparison with existing literature, use of multiple questions and complementary methods to correctly interpret the results. Although estimating the extent of support is challenging, this question seems too important not to be addressed using scientific methods. Absent large scale measurements of public opinion like referenda, surveys remain the best method to assess support or opposition to given policies. In this paper, after a worldwide assessment in the Global survey, we use our Main surveys to carefully measure the support for global policies in Western countries. We inquire the support for various policies, approach the question from diverse angles, and run a battery of pre-registered tests to check whether stated support estimates are reliable.
+% The measure of support is usually left to non-academic pollsters, who rarely apply all the academic best practices: transparency, representative sampling, neutral and precise wording of questions, comparison with existing literature, use of multiple questions and complementary methods to correctly interpret the results. Although estimating the extent of support is challenging, this question seems too important not to be addressed using scientific methods. Absent large scale measurements of public opinion like referenda, surveys remain the best method to assess support or opposition to given policies. In this paper, after a worldwide assessment in the global survey, we use our main surveys to carefully measure the support for global policies in Western countries. We inquire the support for various policies, approach the question from diverse angles, and run a battery of pre-registered tests to check whether stated support estimates are reliable.
 
 The focus of the Main surveys is a specific policy aimed at addressing both climate change and poverty, referred to as the ``Global Climate Scheme'' (GCS). It implements a cap on carbon emissions to limit global warming below 2\textdegree{}C. The emission rights are auctioned each year to polluting firms and fund a global basic income, alleviating extreme poverty. 
 This archetypal policy exposes respondents to the key trade-off between the benefits and costs of globally redistributive climate policies, as respondents are made aware of the cost that the GCS entails for their country's people. 
