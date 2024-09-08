@@ -653,7 +653,7 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
   return(several_values)
 }
 same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = setA, data = all, data_list = NULL, along = "country3", along.levels = Levels(along, data), weights = "weight",
-                                covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, constant_instead_mean = T,
+                                covariate.labels = NULL, nolabel = FALSE, include.total = FALSE, add_lines = NULL, mean_above = T, only_mean = FALSE, constant_instead_mean = T, report = NULL,
                                 mean_control = T, dep.var.label = dep.var, logit = FALSE, robust_SE = T, atmean = T, keep = NULL, display_mean = FALSE, share_na_remove = 0.01,
                                 omit = c("Constant", "Gender: Other", "econ_leaningPNR"), print_regs = FALSE, no.space = T, filename = dep.var, omit.note = FALSE, dep_var_labels = NULL,
                                 folder = "../tables/regs_countries/", digits= 3, model.numbers = T, replace_endAB = NULL) {
@@ -665,7 +665,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
     dep.var <- sub("index_", "index_c_", dep.var)
     covariates <- gsub("index_", "index_c_", covariates)
     if (!missing(keep)) keep <- gsub("index_", "index_c_", keep) }
-  models <- coefs <- SEs <- list()
+  models <- coefs <- SEs <- ps <- list()
   means <- c()
   if (is.null(data_list)) data_list <- c(list(data), lapply(along.levels, function(j) return(data[data[[along]] == j, ])))
   for (j in c(0:(length(data_list)-1))) {
@@ -679,11 +679,13 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
       logit_margin_i <- logitmfx(formula_i, data = data_i, robust = robust_SE, atmean = atmean)$mfxest # TODO! weights with logit; NB: logitmfx computes White/robust SE when robust_SE == T
       coefs[[i]] <- logit_margin_i[,1]
       SEs[[i]] <- logit_margin_i[,2]
+      ps[[i]] <- logit_margin_i[,4]
     } else {
       models[[i]] <- lm(formula_i, data = data_i, weights = data_i[[weights]])
       coefs[[i]] <- models[[i]]$coefficients
       if (robust_SE) SEs[[i]] <- coeftest(models[[i]], vcov = vcovHC(models[[i]], "HC1"))[,2]
       else SEs[[i]] <- summary(models[[i]])$coefficients[,2]
+      ps[[i]] <- summary(models[[i]])$coefficients[,4]
     }
     if (print_regs) print(summary(models[[i]]))
     if (constant_instead_mean & (include.total | j > 0)) means <- c(means, round(coefs[[i]][["(Intercept)"]], digits))
@@ -700,10 +702,10 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
   dep.var.caption <- ifelse(missing(dep.var.caption), ifelse(exists("labels_vars") && dep.var %in% names(labels_vars), labels_vars[dep.var], gsub("_", "\\_", dep.var, fixed = T)), dep.var.caption)
   
   table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers, 
-                                                                                covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], add.lines = if (display_mean) list(c(mean_text, means)) else NULL,
-                                                                                dep.var.labels = if (is.null(dep_var_labels)) {if (include.total) c("All", along.levels) else along.levels} else dep_var_labels, 
-                                                                                dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), 
-                                                                                omit.table.layout = if (omit.note) "n" else NULL, keep=keep, omit = omit, no.space = no.space)))
+        covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], p = ps[-1], add.lines = if (display_mean) list(c(mean_text, means)) else NULL,
+        dep.var.labels = if (is.null(dep_var_labels)) {if (include.total) c("All", along.levels) else along.levels} else dep_var_labels, 
+        dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), report = report,
+        omit.table.layout = if (omit.note) "n" else NULL, keep=keep, omit = omit, no.space = no.space)))
   
   if (!missing(replace_endAB) & length(table) != 50) warning(paste0("Wrong specification for replacement of the last lines: table of length ", length(table)))
   if (!missing(replace_endAB) & length(table) == 50) table <- c(table[1:43], replace_endAB)
