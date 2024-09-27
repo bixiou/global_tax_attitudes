@@ -642,6 +642,7 @@ For example, say a first subsample faces the list of policies A, B, and C, while
 % List experiments have been used to reveal social desirability bias, silencing either racism in the Southern U.S.\citep{kuklinski_racial_1997} or opposition to the invasion of Ukraine in Russia.\citep{chapkovski_solid_2022} % TODO? remove?
 In our case, as shown in Table \ref{tab:list_exp}, the tacit support for the GCS measured through the list experiment is not significantly lower than the direct stated support. %\footnote{We utilize the difference-in-means estimator, and confidence intervals are computed using Monte Carlo simulation with the R package \textit{list}.\citep{imai_multivariate_2011}} 
 Hence, we do not find a social desirability bias in our study.
+% TODO? p-value?
 
 % The tacit support for the GCS measured through the list experiment is as high as  the direct question in Eu but significantly lower by 5 p.p. in the U.S. This may be the sign of a social norm pushing some Americans to state that they support the GCS although they secretly do not. Still, if there is a social norm in favor of the GCS, there is a similar norm in favor of the National Redistribution Scheme, as the gap between the tacit and direct support for it is comparable (at 6 p.p.). %However, two observations qualify this interpretation. First, the gap between the tacit and direct support for the National Redistribution Scheme is comparable (at 7 p.p.) though we did not expect such a social norm in the case of the national redistribution, as the 95\% who would benefit from it should not feel ashamed to oppose a policy that would benefit them. Second, while we tested the questionnaire on random people in cafés, we noticed that some were confused by the question of the list experiment (asking how many policies from the list they supported), upset with the conservative societal policy (``Marriage only for opposite-sex couples in the U.S.'', ``Death penalty for major crimes'' in Europe), to the point that they did not answer attentively.
 
@@ -661,8 +662,12 @@ Hence, we do not find a social desirability bias in our study.
 
 % H1: Petition: Small effect against GCS: -4pp
 We ask respondents whether they are willing to sign a petition in support of either the GCS or NR policy. We inform them that the petition results will be sent to the head of state's office, highlighting the proportion of fellow citizens endorsing the respective scheme. Even when framed as a petition that might have real stakes, both policies continue to receive majority support. In the U.S., we find no significant difference between the support in the %real-stake 
-petitions and the simple questions (GCS: $p=.30$; NR: $p=.76$). %\footnote{Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition.} 
-In Europe, the petition leads to a comparable lower support for both the GCS (7 p.p., $p=10^{-5}$) and NR (4 p.p., $p = .008$). While some European respondents are unwilling to sign a petition for policies they are expected to support, this phenomenon is not specific to the GCS, and the overall willingness to sign a %real-stake 
+petitions and the simple questions (GCS: $-$.02, t(3,044)=1.0, p=.30, 95\% CI=[$-$.05, .02]; NR: $-$.01, t(2,952)=.3, p=.76, 95\% CI=[$-$.04, .03]). 
+%(GCS: $p=.30$; NR: $p=.76$). 
+%\footnote{Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition.} 
+In Europe, the petition leads to a comparable lower support for both the GCS ($-$7 p.p., t(3,018)=4.4, p=$10^{-5}$, 95\% CI=[$-$.10, $-$.04]) and NR ($-$4 p.p., t(2,953)=2.6, p=.008, 95\% CI=[$-$.08, $-$.01]). 
+%(7 p.p., $p=10^{-5}$) and NR (4 p.p., $p = .008$). 
+While some European respondents are unwilling to sign a petition for policies they are expected to support, this phenomenon is not specific to the GCS, and the overall willingness to sign a %real-stake 
 petition remains strong, with 69\% expressing support for the GCS and 67\% for NR.
 
 \subsubsection{Conjoint analyses}\label{subsubsec:conjoint} % Addresses acquiescence bias  % NCCcomment
@@ -703,7 +708,7 @@ In the third analysis, we present two random branches of the sample with hypothe
 
 Our last two analyses make respondents choose between two random platforms. In Europe, respondents are prompted to imagine that a left or center-left coalition will win the next election and asked what platform they would prefer that coalition to have campaigned on. In the U.S., the question is framed as a hypothetical duel in a Democratic primary, and asked only to non-Republicans ($n$ = 2,218), i.e. the respondents who declare as political affiliation \textit{Democrat}, \textit{Independent}, \textit{Non-Affiliated} or \textit{Other}. 
 
-In the fourth analysis, a policy (or an absence of policy) is randomly drawn for each platform in each of five categories: \textit{economic issues}, \textit{societal issues}, \textit{climate policy}, \textit{tax system}, \textit{foreign policy} (Figure \ref{fig:ca_r}). 
+In the fourth analysis, a policy (or an absence of policy) is randomly drawn for each platform in each of five categories: \textit{economic issues}, \textit{societal issues}, \textit{climate policy}, \textit{tax system}, \textit{foreign policy} (Figure \ref{fig:ca_r}, Table \ref{tab:amce}). 
 % Except for the category \textit{foreign policy}, which features the GCS 42\% of the time, the policies are prominent progressive policies and they are drawn uniformly. % except for tax1: .35 vs. tax2: .4 in EU. 
 In the UK, Germany, and France, a platform is about 9 to 13 p.p. more likely to be preferred if it includes the GCS rather than no foreign policy. %\footnote{This is the Average Marginal Component Effect.\cite{hainmueller_causal_2014}} 
 This effect is between 1 and 4 p.p. and no longer significant in the U.S. (among non-Republicans) and in Spain. Moreover, a platform that includes a global tax on millionaires rather than no foreign policy is 5 to 13 p.p. more likely to be preferred in all countries (the effect is significant and at least 9 p.p. in all countries but Spain). 
@@ -801,7 +806,7 @@ Analyzing keywords in the responses (automatically translated into English), the
 In the \textit{US2} survey, we divided the sample into four random branches. Two branches were presented the pros and cons questions (either in open or closed format) \textit{before} being asked about their support for the GCS or NR. Another branch received information on the actual level of support for the GCS and NR (estimated in \textit{US1}, see box p. \pageref{subsec:second_order_beliefs}), %Section \ref{subsec:second_order_beliefs}), 
 and one control group received none of these treatments. % TODO? Clarify that the information was also before the support? Write here (rather than in second-order beliefs) that ``Consistent with Americans correctly perceiving the levels of support for the GCS or NR, providing information on the actual level has no substantial effect on their support.''
 The objective of the ``pros and cons treatment'' was to mimic a ``campaign effect'', which refers to the shift in opinion resulting from media coverage of the proposal.\citep{anderson_can_2023} To conservatively estimate the effect of a (potentially negative) campaign, we intentionally included more cons (6) than pros (3). Interestingly, the support for the GCS decreased by 11 p.p. after respondents viewed a list of its pros and cons. %\footnote{Surprisingly, the support for National Redistribution also decreased by 7 p.p. following the closed question about the GCS. This suggests that some individuals may lack attention and confuse the two policies, or that contemplating the pros and cons alters the mood of some people, moving them away from their initial positive impression.} 
-Notably, the support also decreased by 7 p.p. after respondents were asked to consider the pros and cons in an open-ended question. Despite some significant effects of pondering the pros and cons, approximately half of the Americans express support for the GCS across all treatment branches (see Table \ref{tab:branch_gcs}). Although support remains significant, % relatively high (it would remain majoritarian in Europe if similar effects were observed)
+Notably, the support also decreased by 7 p.p. (t(1,996)=$-$2.3, p=.02, 95\% CI=[$-$.13, $-$.01]) after respondents were asked to consider the pros and cons in an open-ended question. Despite some significant effects of pondering the pros and cons, approximately half of the Americans express support for the GCS across all treatment branches (see Table \ref{tab:branch_gcs}). Although support remains significant, % relatively high (it would remain majoritarian in Europe if similar effects were observed)
 these results suggest that the public success of the GCS would be sensitive to the content of the debate about it, and oriented by the discourse adopted by interest groups. %  TODO? support for the GCS is context-dependent
 
 % where respondents are prompted to think about the advantages and drawbacks of the policy before making a decision
@@ -820,7 +825,7 @@ To explain the strong support for the GCS despite its absence from political pla
 
 In the case of Americans, their beliefs about the level of support for the GCS are relatively accurate (Figure \ref{fig:belief}). The mean perceived support is 52\% (with quartiles of 36\%, 52\%, and 68\%), which closely aligns with the actual support of 54\%. Europeans, on the other hand, underestimate the support by 17 p.p. Nonetheless, 65\% of them correctly estimate that the GCS garners majority support, and the mean perceived support is 59\% (and quartiles of 43\%, 61\%, and 74\%), compared to the actual support of 76\%. % TODO? cut below?
 Second-order beliefs are equally accurate for NR in the U.S. and similarly underestimated in Europe. %, with mean (resp. quartiles) perceived support of 54.7\% (resp. 40, 55, 71\%, $n$ = 3,000) vs. 56\%.
-Finally, consistent with Americans accurately perceiving the levels of support for the GCS or NR, providing information on the actual level had no significant effect on their support in the \textit{US2} survey. % Consistent with Americans correctly perceiving the levels of support for the GCS or NR, providing information on the actual level has no substantial effect on their support.
+Finally, consistent with Americans accurately perceiving the levels of support for the GCS or NR, providing information on the actual level had no significant effect on their support in the \textit{US2} survey (effect=.025, t(1,998)=1.1, p=.26, 95\% CI=[$-$.02, .07]). % Consistent with Americans correctly perceiving the levels of support for the GCS or NR, providing information on the actual level has no substantial effect on their support.
 \end{tcolorbox}
 
 % \begin{figure}[h!]
@@ -1028,7 +1033,7 @@ We utilize the difference-in-means estimator, and confidence intervals are compu
 \paragraph{\small Petition.}
 The respondent is randomly assigned a branch where the petition relates to the GCS or the National Redistribution scheme. The question reads: ``Would you be willing to sign a petition for the [Global climate / National redistribution] scheme? \\ As soon as the survey is complete, we will send the results to [the U.S. President's office], informing him what share of [American] people are willing to endorse the [Global climate / National redistribution] scheme. (You will NOT be asked to sign, only your answer here is required and remains anonymous.)''. 
 
-Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition.
+Paired weighted \textit{t}-tests are conducted to test the equality in support for a policy among respondents who were questioned about the policy in the petition. 
 
 \paragraph{\small Conjoint analyses.}
 The first conjoint analysis suggests that the GCS is supported independently of being complemented by the National Redistribution Scheme and a national climate policy (``Coal exit'' in the U.S., ``Thermal insulation plan'' in Europe, denoted C). Indeed, 54\% of %($n$ = 3,000) 
@@ -1121,8 +1126,9 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
 % Which of these candidates would you vote for? \textit{A; B; None of them} \\
 % ~[FR: second round of presidential; DE, ES, UK: two favorite candidates in one's constituency]
 } % Beware, this question is quite unusual. \\ Among the policies below, how many do you support?  \\ Coal exit, Marriage only for opposite-sex couples 
-  \makebox[\textwidth][c]{\input{../tables/country_comparison/conjoint_c_wo_none_p.tex}}\label{tab:conjoint_c}
-  {\footnotesize \textit{Note:} Simple OLS model. P-values are reported in parentheses. The 14\% of \textit{None of them} answers have been excluded from the regression samples. GCS has no significant influence on them. $^{*}p<0.1$; $^{**} p<0.05$; $^{***} p<0.01$. 
+  \makebox[\textwidth][c]{\input{../tables/country_comparison/conjoint_c_wo_none_stats.tex}}\label{tab:conjoint_c}
+  {\footnotesize \textit{Note:} Simple OLS model. %P-values are reported in parentheses. 
+  The 14\% of \textit{None of them} answers have been excluded from the regression samples. GCS has no significant influence on them. $^{*}p<0.1$; $^{**} p<0.05$; $^{***} p<0.01$. 
   }
 \end{table}
 
@@ -1160,6 +1166,8 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
   \caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality. (Question \ref{q:donation})\hfill (Back~to~Section~\ref{subsec:universalistic})} \label{tab:donation}
   \makebox[\textwidth][c]{\input{../tables/continents/donation_interaction.tex}}
 \end{table}
+
+\input{../tables/amce.tex}
 
 \begin{figure}[h!]
     \caption[Support for the Global Climate Scheme]{[For Supplementary Material] Support for the GCS, NR and the combination of GCS, NR and C (\textit{Yes}/\textit{No} questions). \\(p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:nr_support}, \ref{q:global_tax}, \ref{q:national_tax}, and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)

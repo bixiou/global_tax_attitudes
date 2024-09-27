@@ -2,8 +2,8 @@
 # TODO complete
 # support_binary_positive
 decrit("gcs_support", us1)
-binconf(sum(us1$weight[us1$gcs_support == 'Yes']), nrow(us1), alpha = 0.05)
-binconf(sum(eu$weight[eu$gcs_support == 'Yes']), nrow(eu), alpha = 0.05)
+binconf(sum(us1$weight[us1$gcs_support == T]), nrow(us1), alpha = 0.05)
+binconf(sum(eu$weight[eu$gcs_support == T]), nrow(eu), alpha = 0.05)
 decrit("gcs_support", eu)
 decrit("nr_support", us1)
 decrit("nr_support", eu)
@@ -131,6 +131,7 @@ same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported
                     add_lines = list(c(11, paste("\\hline  \\\\[-1.8ex] \\textit{Support for GCS} &", round(wtd.mean(all$gcs_support[all$wave != "US2"], weights = all$weight[all$wave != "US2"]), 3), " & ", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), " & ", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "\\\\")),
                                      c(12, paste("\\textit{Social desirability bias} & \\textit{$", round(avg.pred.social.desirability$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_us$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_eu$fit[3,1], 3),  "$}\\\\")),
                                      c(13, paste("\\textit{80\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us$fit[3,2], 2), ";", round(avg.pred.social.desirability_us$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu$fit[3,2], 2), ";", round(avg.pred.social.desirability_eu$fit[3,3], 2), "]$}\\\\"))))
+# TODO!! t, p
 
 # /!\ Weighted list experiment regression is not supported (yet) for the multi-item design.
 # fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
@@ -181,11 +182,19 @@ same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported
 wtd.t.test(us1$gcs_support, us1$petition_gcs, weight=us1$weight, drops = "") # rejects equality (p=.046)
 t.test(us1$gcs_support, us1$petition_gcs, paired = T) # rejects equality (p=.016)
 t.test(us1$gcs_support, us1$petition_gcs, paired = F) # rejects equality (p=.019)
-decrit("petition_gcs", us1)
-wtd.t.test(us1$gcs_support[us1$branch_petition == "gcs"], us1$petition_gcs[us1$branch_petition == "gcs"], weight=us1$weight[us1$branch_petition == "gcs"]) # cannot reject equality (p=.30)
-wtd.t.test(us1$nr_support[us1$branch_petition == "nr"], us1$petition_nr[us1$branch_petition == "nr"], weight=us1$weight[us1$branch_petition == "nr"]) # cannot reject equality (p=.76)
-wtd.t.test(eu$gcs_support[eu$branch_petition == "gcs"], eu$petition_gcs[eu$branch_petition == "gcs"], weight=eu$weight[eu$branch_petition == "gcs"]) # rejects equality (p=1e-5)
-wtd.t.test(eu$nr_support[eu$branch_petition == "nr"], eu$petition_nr[eu$branch_petition == "nr"], weight=eu$weight[eu$branch_petition == "nr"]) # rejects equality (p=.01)
+decrit("petition_gcs", us1) # TODO!!
+(temp <- wtd.t.test(us1$petition_gcs[us1$branch_petition == "gcs"], us1$gcs_support[us1$branch_petition == "gcs"], weight=us1$weight[us1$branch_petition == "gcs"])) # cannot reject equality (p=.30)
+CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
+binconf(sum(us1$weight[us1$petition_gcs & us1$branch_petition == "gcs"]), sum(us1$weight[us1$branch_petition == "gcs"]), alpha = 0.05)
+(temp <- wtd.t.test(us1$petition_nr[us1$branch_petition == "nr"], us1$nr_support[us1$branch_petition == "nr"], weight=us1$weight[us1$branch_petition == "nr"])) # cannot reject equality (p=.76)
+CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
+binconf(sum(us1$weight[us1$petition_nr & us1$branch_petition == "nr"]), sum(us1$weight[us1$branch_petition == "nr"]), alpha = 0.05)
+(temp <- wtd.t.test(eu$petition_gcs[eu$branch_petition == "gcs"], eu$gcs_support[eu$branch_petition == "gcs"], weight=eu$weight[eu$branch_petition == "gcs"])) # rejects equality (p=1e-5)
+CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
+binconf(sum(eu$weight[eu$petition_gcs & eu$branch_petition == "gcs"]), sum(eu$weight[eu$branch_petition == "gcs"]), alpha = 0.05)
+(temp <- wtd.t.test(eu$petition_nr[eu$branch_petition == "nr"], eu$nr_support[eu$branch_petition == "nr"], weight=eu$weight[eu$branch_petition == "nr"])) # rejects equality (p=.01)
+CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
+binconf(sum(eu$weight[eu$petition_nr & eu$branch_petition == "nr"]), sum(eu$weight[eu$branch_petition == "nr"]), alpha = 0.05)
 decrit("petition_gcs", eu)
 decrit("petition_nr", eu)
 
@@ -225,7 +234,19 @@ same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progr
 same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), 
                     data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
                     filename = "conjoint_c_wo_none_p", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, p_instead_SE = T)
+
+summary(lm(conjoint_c ~ branch_c_gcs, all[all$conjoint_c_none == F ,], weights = weight))
+CI(0.02756, 0.01333, 5200)
 summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F,], weights = weight)) # p-value: .13
+CI(0.02860, 0.01900, 2617)
+summary(lm(conjoint_c ~ branch_c_gcs, eu[eu$conjoint_c_none == F & eu$country == "FR",], weights = weight))
+CI(0.11175, 0.03956, 603)
+summary(lm(conjoint_c ~ branch_c_gcs, eu[eu$conjoint_c_none == F & eu$country == "DE",], weights = weight))
+CI(0.01504, 0.03203, 811)
+summary(lm(conjoint_c ~ branch_c_gcs, eu[eu$conjoint_c_none == F & eu$country == "UK",], weights = weight))
+CI(0.007872, 0.038831, 659)
+summary(lm(conjoint_c ~ branch_c_gcs, eu[eu$conjoint_c_none == F & eu$country == "ES",], weights = weight))
+CI(-0.01477, 0.03772, 502)
 summary(lm(gcs_support ~ swing_state, us1, weights = weight)) # .012, n=693
 summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state == T,], weights = weight)) # .012, n=693
 summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state_3pp == T,], weights = weight)) # .006, n=509
@@ -259,6 +280,28 @@ amce$UK$estimates$foreignpolicy # 1: .09, 2: .13, 3: .07
 amce$ES$estimates$foreignpolicy # 1: .04, 2: .05, 3:-.01
 amce$DE$estimates$foreignpolicy # 1: .09, 2: .09, 3: .10
 amce$us1$estimates$Foreignpolicy #1: .01, 2: .09, 3: .08
+
+table_effects_amce <- matrix(NA, nrow = 15, ncol = 5, dimnames = list(paste0(countries, "; ", c(rep("Global Climate Plan", 5), rep("Global Millionaire Tax", 5), rep("Global Democratic Assembly on Climate Change", 5))), 
+                              c("Effect", "N", "t", "p", "CI")))
+for (i in 1:5) {
+  indices <- if (i == 5) c(9, 11, 10) else 8:10
+  temp <- summary(amce[[if (i == 5) "us1" else countries[i]]])
+  table_effects_amce[c(i, i+5, i+10), "Effect"] <- paste0(round(temp$amce$Estimate[indices], 2), temp$amce$` `[indices])
+  table_effects_amce[c(i, i+5, i+10), "N"] <- rep(temp$samplesize_estimates, 3)
+  table_effects_amce[c(i, i+5, i+10), "t"] <- round(temp$amce$`z value`[indices], 2)
+  table_effects_amce[c(i, i+5, i+10), "p"] <- round(temp$amce$`Pr(>|z|)`[indices], 3)
+  table_effects_amce[c(i, i+5, i+10), "CI"] <- CI(temp$amce$Estimate[indices], temp$amce$`Std. Err`[indices], rep(temp$samplesize_estimates, 3), print = T)
+} 
+summary(amce$FR)$amce$`Pr(>|z|)`[8] # 0.00047
+table_effects_amce[1, "p"] <- "$5\\cdot 10^{-4}$"
+cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
+   paste(kbl(table_effects_amce, "latex", caption = "Average Marginal Component Effects of global policies.", 
+             position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(table_effects_amce)-1), 
+             label = "amce", row.names = T,  format.args = list(decimal = ","),
+             col.names = c("Effect", "Obs.", "t", "P-value", "95\\% C.I.")), # "Country; Policy", 
+         collapse="\n"), fixed = T), fixed = T), file = "../tables/amce.tex") 
+
+
 
 # Multiple hypotheses testing
 pvalues_treatment <- list() # adjusted for multiple testing
@@ -322,11 +365,16 @@ decrit("points_foreign2_tax_rich", data = eu, which = eu$country == 'UK') # mean
 
 ##### Pros and cons #####
 decrit(all$gcs_field_pro | all$gcs_field_con, all)
-summary(lm(gcs_support ~ branch_gcs, us2, weights = weight))
+reg_pros_cons <- lm(gcs_support ~ branch_gcs, us2, weights = weight)
+summary(reg_pros_cons)
+confint(reg_pros_cons)
 summary(lm(nr_support ~ branch_gcs, us2, weights = weight))
 desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
            dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, 
            add_lines = list(c(18, "Includes controls &  & \\checkmark &  & \\checkmark \\\\")))
+reg_info_support <- lm(gcs_support ~ info_support, data = us2, weights = weight)
+summary(reg_info_support)
+confint(reg_info_support)
 
 
 ##### Second-order beliefs ##### 

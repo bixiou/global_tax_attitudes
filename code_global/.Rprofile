@@ -234,6 +234,11 @@ d <- function(str, alt_data = eu, alt_var = "country") {
 n <- function(var) { as.numeric(as.vector(var)) }
 #' NSPs <- function(QID) { length(V(QID)[V(QID) == "NSP (Je ne veux pas répondre)"])/length(V(QID)) }
 #' nsps <- function(id) { length(v(id)[v(id) == "NSP (Je ne veux pas répondre)"])/length(v(id)) }
+CI <- function(estimate, SE, N = NULL, level = 0.95, print = FALSE, digits = 2) { 
+  margin <- if (is.null(N)) qnorm(1-(1-level)/2) * SE else qt(1-(1-level)/2, df = N) * SE
+  ci <- estimate + if (length(margin) > 1) matrix(margin, nrow = length(margin))%*%c(-1, 1) else margin*c(-1, 1)
+  if (print) ci <- paste0("[", round(if (is.matrix(ci)) ci[,1] else ci[1], digits), "; ", round(if (is.matrix(ci)) ci[,2] else ci[2], digits), "]")
+  return(ci) }
 match.nona <- function(v, t) {return(as.vector(na.omit(match(v, t))))} # returns match(v, t) purged from NAs, i.e. the (first) position of v elements (that are in t) in t (screened/ordered from v), cf. below
 # so df$foo[match.nona(db$bar, df$bar)] <- db$foo[db$bar %in% df$bar] replaces elements of df$foo such that df$bar is in db$bar by corresponding db$foo
 Label <- function(var) {
@@ -668,6 +673,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
   models <- coefs <- SEs <- ps <- list()
   means <- c()
   if (is.null(data_list)) data_list <- c(list(data), lapply(along.levels, function(j) return(data[data[[along]] == j, ])))
+  if (p_instead_SE) warning("p is interpreted as SE, hence stars may be missing. TODO: fix this bug.")
   for (j in c(0:(length(data_list)-1))) {
     data_i <- data_list[[j+1]]
     covariates_i <- covariates[sapply(covariates, function(v) { mean(is.na(data_i[[v]])) <= share_na_remove })]
@@ -707,7 +713,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
         dep.var.labels = if (is.null(dep_var_labels)) {if (include.total) c("All", along.levels) else along.levels} else dep_var_labels, 
         dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), report = report,
         omit.table.layout = if (omit.note) "n" else NULL, keep=keep, omit = omit, no.space = no.space)))
-  
+
   if (!missing(replace_endAB) & length(table) != 50) warning(paste0("Wrong specification for replacement of the last lines: table of length ", length(table)))
   if (!missing(replace_endAB) & length(table) == 50) table <- c(table[1:43], replace_endAB)
   table <- table_mean_lines_save(table, omit = omit, mean_above = mean_above, only_mean = only_mean, indep_labels = covariate_labels, indep_vars = covariates, add_lines = add_lines, file_path = file_path, oecd_latex = FALSE, nb_columns = length(along.levels) + include.total)
