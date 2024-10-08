@@ -332,7 +332,7 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
                save = F) 
 
 # Figure 6.3 ../figures/maps/gain_adj_2030_fr.pdf
-plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('png', 'pdf'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
+plot_world_map("gain_euro_2030", df = df, breaks = c(-Inf, -150, -100, -50, -10, -1e-10, 0, 10, 20, 30, 40, Inf), format = c('svg'), legend_x = .07, trim = T, # svg, pdf 12*c(-Inf, -70, -30, -20, -10, -.1/12, .1/12, 5, 10, 15, 20, Inf)
                labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -150, -100, -50, -10, 0, 0, 10, 20, 30, 40, Inf), sep = " à ", return = "levels")), filename = paste0("gain_adj_2030_fr"),
                legend = paste0("Gain net\npar adulte suite au\nPlan mondial pour le climat\nen 2030 (en € par mois)"), #fill_na = T,
                save = T) 
