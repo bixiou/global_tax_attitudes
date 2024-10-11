@@ -51,6 +51,7 @@ reg_wealth <- lm(log10(global_wealth_tax_revenue_pc) ~ log10(gni_pc_nom_2023), d
 df$global_wealth_tax_revenue_pc[is.na(df$global_wealth_tax_revenue_pc)] <- 10^predict(reg_wealth, data.frame(gni_pc_nom_2023 = df$gni_pc_nom_2023[is.na(df$global_wealth_tax_revenue_pc)]))
 (billionaire_tax_revenue <- sum(df$global_wealth_tax_revenue_pc * df$pop_2022, na.rm = T)) # 765G
 sum(df$global_wealth_tax_revenue, na.rm = T)/billionaire_tax_revenue # 95% from non-missing data
+df$global_wealth_tax_revenue[is.na(df$global_wealth_tax_revenue)] <- (df$global_wealth_tax_revenue_pc * df$pop_2022)[is.na(df$global_wealth_tax_revenue)]
 
 
 ## National wealth tax
@@ -62,6 +63,7 @@ df$national_wealth_tax_revenue_pc <- df$national_wealth_tax_revenue/df$pop_2022
 # Impute missing wealth data using GNI pc
 reg_wealth <- lm(log10(national_wealth_tax_revenue_pc) ~ log10(gni_pc_nom_2023), data = df, weights = pop_2022)
 df$national_wealth_tax_revenue_pc[is.na(df$national_wealth_tax_revenue_pc)] <- 10^predict(reg_wealth, data.frame(gni_pc_nom_2023 = df$gni_pc_nom_2023[is.na(df$national_wealth_tax_revenue_pc)]))
+df$national_wealth_tax_revenue[is.na(df$national_wealth_tax_revenue)] <- (df$national_wealth_tax_revenue_pc * df$pop_2022)[is.na(df$national_wealth_tax_revenue)]
 
 # Remove revenues collected from global wealth tax
 # df$national_wealth_tax_revenue_pc <- df$national_wealth_tax_revenue_pc - df$global_wealth_tax_revenue_pc

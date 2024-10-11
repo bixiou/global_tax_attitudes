@@ -362,7 +362,8 @@ central <- all_countries[df$npv_over_gdp_gcs_adj >= 0 | df$code %in% c("CHN", EU
 prudent <- all_countries[(df$npv_over_gdp_gcs_adj >= 0) | df$code %in% c("CHN", EU27_countries)]
 # 6. Africa-EU partnership: EU27 + African winners 
 africa_EU <- all_countries[(df$npv_over_gdp_gcs_adj >= 0 & df$code %in% African_countries) | df$code %in% EU27_countries] # image_region_by_code[df$code] %in% c("WAF", "SAF", "RSAF", "NAF", "EAF")
-scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU")
+south <- all_countries[df$code[!df$contributing]]
+scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU", "South") # TODO! manage South
 scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
 
 for (s in scenarios_names) df <- create_var_ssp(df = df, scenario = s)
