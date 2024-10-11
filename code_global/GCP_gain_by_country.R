@@ -454,8 +454,6 @@ wid$variation_income[is.na(wid$variation_income)] <- sort((wid$post_income - wid
 # 7.2: share_below_global_mean
 # 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scentral_npv_over_gdp_gcs_adj
 
-
-
 # ##### Plots #####
 # # Ch 6, 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scautious_npv_over_gdp_gcs_adj
 # # EN GCS_adj_trajectories
