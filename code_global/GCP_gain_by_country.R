@@ -169,6 +169,7 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
   max_gain_as_fraction <- max_gain
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   basic_income <- basic_income_adj <- c()
+  if (!any(df[[paste0("large_footprint_", start)]] * (df[[paste0("optout_right_", y)]] < 1) * (df$code %in% parties))) warning("/!\\ Error: All countries opt out, there is no international transfer.")
   for (y in start:end) { 
     if (max_gain_as_fraction < 1) max_gain <- max_gain_as_fraction*df[[paste0("gdp_pb_", y)]]
     else max_gain <- rep(max_gain_as_fraction, nrow(df))
@@ -200,7 +201,7 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
     high_income <- df[[paste0("gdp_pc_", y)]] > opt_out_threshold*y_bar
     excess_revenue <- sum(pmax(0, basic_income_adjusted - df[[paste0("revenues_pb_", y)]] - max_gain) * df[[paste0(beneficiary, y)]])
     temp <- rep(F, nrow(df))
-    above_max_gain_ctries <- (df[[paste0("participation_rate_", y)]] * (basic_income_adjusted - df[[paste0("revenues_pb_", y)]]) > max_gain)
+    above_max_gain_ctries <- df[[paste0("participation_rate_", y)]] * (basic_income_adjusted - df[[paste0("revenues_pb_", y)]]) > max_gain
     basic_income_adj[yr] <- basic_income_adjusted + excess_revenue/sum(df[[paste0(beneficiary, y)]] * df[[paste0("participation_rate_", y)]] * (!lower_basic_income_ctries) * (!above_max_gain_ctries) * (!high_income))
     while (any(temp != above_max_gain_ctries)) { # Prevents the increased (due to capping) basic income to make some marginal countries' gain_adj exceeding the cap
       temp <- above_max_gain_ctries
@@ -275,7 +276,7 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
     # Accounts for non-universal participation
     average_revenues[[ssp_name]][yr] <- wtd.mean(df[[paste0("revenues_pb_", y)]], df[[paste0(beneficiary, y)]])
     df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pb_", y)]] > average_revenues[[ssp_name]][yr])
-    
+
     # Complete the handling of "Dem USA" (cannot be done at once as we need USA number of beneficiary but Dem USA revenues_pb in #GCS)
     if ("Dem USA" %in% parties) for (v in paste0(c("pop_", "adult_", "recipient_"), y)) df[[v]][df$code == "USA"] <- .3429 * df[[v]][df$code == "USA"]
     if ("Dem USA" %in% parties) for (v in paste0(c("gdp_pb_", "gdp_pa_"), y)) df[[v]][df$code == "USA"] <- (.4082/.3429) * df[[v]][df$code == "USA"] # TODO source
@@ -332,7 +333,6 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
   return(df)
 }
 
-
 ##### Instantiation #####
 copy_from_cp <- c("country", "country_map", # These two are absolutely needed 
                        "gdr_pa_2030", "emissions_baseline_2030", "rci_2030", "territorial_2019", "footprint_2019", "missing_footprint", "gdp_pc_2019", "share_territorial_2019", "median_gain_2015", "mean_gain_2030", "gdp_ppp_now", "gdr_pa_2030_cerc")
@@ -362,8 +362,8 @@ central <- all_countries[df$npv_over_gdp_gcs_adj >= 0 | df$code %in% c("CHN", EU
 prudent <- all_countries[(df$npv_over_gdp_gcs_adj >= 0) | df$code %in% c("CHN", EU27_countries)]
 # 6. Africa-EU partnership: EU27 + African winners 
 africa_EU <- all_countries[(df$npv_over_gdp_gcs_adj >= 0 & df$code %in% African_countries) | df$code %in% EU27_countries] # image_region_by_code[df$code] %in% c("WAF", "SAF", "RSAF", "NAF", "EAF")
-south <- all_countries[df$code[!df$contributing]]
-scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU", "South") # TODO! manage South
+# South <- all_countries[!df$contributing & df$npv_over_gdp_gcs_adj > 0]
+scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU") # manage , "South"
 scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
 
 for (s in scenarios_names) df <- create_var_ssp(df = df, scenario = s)
