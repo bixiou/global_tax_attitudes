@@ -2266,14 +2266,18 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 # 7.2: share_below_global_mean
 # 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scentral_npv_over_gdp_gcs_adj
 
-plot(2025:2080, basic_income_adj$ssp2_26[as.character(2025:2080)]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(0, 100))
-lines(2025:2080, emissions_tot[as.character(2025:2080)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
+plot(yrs, basic_income_adj$df[as.character(yrs)]*euro_per_dollar/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Revenu de base (€ par mois); Émissions de CO2 (Gt par an)", ylim = c(0, 70))
+lines(yrs, emissions_tot[as.character(yrs)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
 par(new = T)
-plot(2025:2080, carbon_price$ssp2_26[as.character(2025:2080)], type = 'b', pch = 17, axes = FALSE, ylim = c(0, 750), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+plot(yrs, carbon_price$ssp2_26[as.character(yrs)]*euro_per_dollar, type = 'b', pch = 17, axes = FALSE, ylim = c(0, 700), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+# plot(2025:2080, basic_income_adj$ssp2_26[as.character(2025:2080)]/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(0, 100))
+# lines(2025:2080, emissions_tot[as.character(2025:2080)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
+# par(new = T)
+# plot(2025:2080, carbon_price$ssp2_26[as.character(2025:2080)], type = 'b', pch = 17, axes = FALSE, ylim = c(0, 750), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
 mtext("Carbon price ($/tCO2)", side=4, col="blue", line=2.5) 
 axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
-legend("topleft", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+legend("topleft", legend = c("CO2 emissions", "Basic income", "Carbon price (right axis)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(15, 16, 17))
 
 mar <- par()$mar
 par(mar = c(2.1, 4.1, 0.1, 4.1))
