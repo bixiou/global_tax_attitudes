@@ -2266,7 +2266,7 @@ plot_world_map("share_below_global_mean", df = percentiles[!is.na(percentiles$co
 # 7.2: share_below_global_mean
 # 7.3: gain_adj_2030_fr, npv_over_gdp_gcs_adj_fr, Soptimistic_npv_over_gdp_gcs_adj, Scentral_npv_over_gdp_gcs_adj
 
-plot(yrs, basic_income_adj$df[as.character(yrs)]*euro_per_dollar/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Revenu de base (€ par mois); Émissions de CO2 (Gt par an)", ylim = c(0, 70))
+plot(yrs, basic_income_adj$df[as.character(yrs)]*euro_per_dollar/12, type = 'b', col = 'darkgreen', lwd = 2, xlab = "", ylab = "Basic income ($ per month); CO2 emissions (Gt per year)", ylim = c(0, 70))
 lines(yrs, emissions_tot[as.character(yrs)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2)
 par(new = T)
 plot(yrs, carbon_price$ssp2_26[as.character(yrs)]*euro_per_dollar, type = 'b', pch = 17, axes = FALSE, ylim = c(0, 700), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
