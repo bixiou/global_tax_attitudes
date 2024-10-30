@@ -149,7 +149,7 @@ plot(yrs, carbon_price$ssp2_26[as.character(yrs)]*euro_per_dollar, type = 'b', p
 mtext("Prix du carbone (€/tCO2)", side=4, col="blue", line=2.5)
 axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
 grid()
-legend("topleft", legend = c("Émissions de CO2", "Revenu de base", "Prix du carbone (axe de droite)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(16, 15, 17))
+legend("topleft", legend = c("Émissions de CO2", "Revenu de base", "Prix du carbone (axe de droite)"), col = c("red", "darkgreen", "blue"), lwd = 2, lty = c(1,1,2), pch = c(15, 16, 17))
 
 
 # 715M of people live with less than 2€/day (cf. above, Ch. 1, Note 14)
