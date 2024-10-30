@@ -102,7 +102,7 @@ package("readstata13")
 #' package("AER")
 #' package("ivmodel")
 #' package("rattle")
-#' package("data.table")
+#' package("data.table") # %between%
 #' package("reshape2")
 #' # package("rddtools") # not available
 #' # package("rddapp") # not available
