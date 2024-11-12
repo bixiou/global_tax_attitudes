@@ -394,6 +394,18 @@ for (c in countries) {
 labels_vars_country$US["foreign_aid_no_nation_first"] <- "Charity begins at home: there is already a lot to do to support the American people in need"
 labels_vars_country$FR["gcs_support"] <- "Plan mondial pour le climat"
 labels_vars_country$FR["conjoint_left_ag_b_binary"] <- "Programme aléatoire : A+Plan préféré à B"
+labels_vars_country$FR["global_tax_global_share"] <- "Part préférée de l'ISF mondial pour les pays pauvres (en %)"
+labels_vars_country$FR["climate_compensation_support"] <- "Paiements des pays du Nord indemnisant les pays du Sud pour les dégâts causés par le changement climatique"
+labels_vars_country$FR["climate_mitigation_support"] <- "Paiements des pays du Nord des énergies renouvelables dans les pays du Sud"
+labels_vars_country$FR["climate_adaptation_support"] <- "Paiements des pays du Nord de 100 milliards $/an pour aider\nles pays du Sud à s'adapter au changement climatique"
+labels_vars_country$FR["debt_cancellation_support"] <- "Annulation de la dette publique des pays à faibles revenus"
+labels_vars_country$FR["remove_tariffs_support"] <- "Suppression des droits de douane sur les importations en provenance des pays pauvres"
+labels_vars_country$FR["democratise_un_imf_support"] <- "Démocratisation des institutions internationales (ONU, FMI):\ndroit de vote d'un pays proportionnel à sa population"
+labels_vars_country$FR["global_min_wage_support"] <- "Instauration d'un salaire minimum dans tous les pays égal à 50% du salaire médian local"
+labels_vars_country$FR["global_register_support"] <- "Lutte contre l'évasion fiscale avec un registre mondial répertoriant qui possède quoi"
+labels_vars_country$FR["cap_wealth_support"] <- "Limite maximale de patrimoine à 100 millions € (Eu) /\n 10 milliards $ (U.S.)  pour chaque humain"
+labels_vars_country$FR["national_tax_support"] <- "Taxe nationale sur les millionnaires finançant les services publics"
+labels_vars_country$FR["global_tax_support"] <- "Taxe mondiale sur les millionnaires finançant les pays à faible revenu"
 
 fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, conditions = c("", ">= 1", "/"), sort = FALSE, percent = FALSE, proportion = NULL, nb_digits = NULL, labels = labels_vars) {
   # list_var_list can be NULL, a named list of vectors of variables, a named list of type heatmaps_defs, or a list of names of (existing) vectors of variables (with or without the prefix 'variables_')
@@ -738,10 +750,15 @@ e <- all
 
 # Plots in French
 # barres_multiple(barres = fill_barres("conjoint_left_ag_b_binary", list("gcs_support" = list(rev = T, rev_color = F)), country= "FR", along = "country_name"),  folder = paste0("../figures/FR/")) 
-heatmaps_defs_fr <- fill_heatmaps(c(), list("conjoint_left_ag_b_binary" = list(vars = "conjoint_left_ag_b_binary", conditions = c(">= 1")), 
-                                            "gcs_support" = list(vars = "gcs_support", conditions = ">= 1")), labels = labels_vars_country$FR)
 e$country_name_fr <- case_when(e$country_name == "United States" ~ "États-Unis", e$country_name == "France"  ~ "France", e$country_name == "Germany" ~ "Allemagne", e$country_name == "Spain" ~ "Espagne", e$country_name == "United Kingdom" ~ "Royaume-Uni")
+heatmaps_defs_fr <- fill_heatmaps(c(), list(#"conjoint_left_ag_b_binary" = list(vars = "conjoint_left_ag_b_binary", conditions = c(">= 1")), 
+                                            #"gcs_support" = list(vars = "gcs_support", conditions = ">= 1"),
+                                            #"support_likert" = list(vars = variables_support_likert, conditions = "/")#,
+                                            "support_likert_few" = list(vars = variables_support_likert[c(1:4,9:11)], conditions = "/")#,
+                                            #"global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1"), nb_digits = 0)
+                                            ), labels = labels_vars_country$FR)
 heatmap_multiple(heatmaps_defs_fr, along = "country_name_fr", folder = "../figures/FR/")
+
 
 
 ##### Heatmaps #####

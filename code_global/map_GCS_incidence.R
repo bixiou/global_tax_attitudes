@@ -2299,6 +2299,30 @@ lines(2025:2080, colSums(df[, paste0("emissions_", 2025:2080)], na.rm = T)/colSu
 grid() + abline(h = 1:18, col = "gray", lty = 3)
 legend("topright", legend = c("Monde", "Chine", "États-Unis", "Union Européenne", "Inde", "Afrique subsaharienne"), col = c("black", "red", "blue", "darkgreen", "orange", "purple"), lwd = 2, lty = 1:6)
 
+plot_world_map("gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.01, -1e-10, 0, .01, .02, .05, .1, Inf), format = c('pdf'), legend_x = .07, trim = T, 
+               labels =  sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.01, 0, 0, .01, .02, .05, .1, Inf)*100, sep = "% à ", end = "%", return = "levels")), filename = "gain_adj_over_gdp_2030_fr",
+               legend = paste0("Gain net\npar adulte suite au\nPlan mondial pour le climat\nen 2030 (en % du PIB)"), colors = color(11)[c(1:10)],
+               save = T) 
+
+plot(yrs, emissions_tot[as.character(yrs)]/1e9, type = 'b', pch = 15, col = 'red', lwd = 2, xlab = "", ylab = "Revenu de base (€ par mois); Émissions de CO2 (Gt par an)", ylim = c(0, 70))
+lines(yrs, basic_income_adj$df[as.character(yrs)]*euro_per_dollar/12, type = 'b', col = 'darkgreen', lwd = 2)
+par(new = T)
+plot(yrs, carbon_price$ssp2_26[as.character(yrs)]*euro_per_dollar, type = 'b', pch = 17, axes = FALSE, ylim = c(0, 700), col = 'blue', lwd = 2, lty = 2, xlab = "", ylab = "")
+mtext("Prix du carbone (€/tCO2)", side=4, col="blue", line=2.5)
+axis(4, ylim=c(0, 750), col="blue", col.axis="blue")
+grid()
+legend("topleft", legend = c("Émissions de CO2", "Prix du carbone (axe de droite)", "Revenu de base"), text.col = c("black", "black", "black"),  col = c("red", "blue", "darkgreen"), lwd = 2, lty = c(1,2,1), pch = c(15, 17, 16))
+
+plot_world_map("net_gain_over_gdp_both_taxes_pop", df = df, breaks = c(-.015, -.005, -.0015, 0.0015, .005, .02, .05, .1, .2, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, filename = "net_gain_over_gdp_both_taxes_pop_fr",
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-.015, -.005, -.0015, 0.0015, .005, .02, .05, .1, .2, Inf)*100, sep = "% to ", end = "%", return = "levels")),
+               legend = "Transferts\ninternationaux\ngrâce aux nouvelles taxes\n(en % du RNB)", colors = color(13)[1:11],
+               save = T)
+
+plot_world_map("budget_gain_over_gdp_both_taxes_pop", df = df, breaks = c(-Inf, 0, .01, .025, .05, .1, .2, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, filename = "budget_gain_over_gdp_both_taxes_pop_fr",
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, 0, .01, .025, .05, .1, .2, Inf)*100, sep = "% to ", end = "%", return = "levels")), colors = color(13)[c(1:6,8,9)], 
+               legend = "Gain budgétaire\ngrâce aux nouvelles taxes\n(en % du RNB)", 
+               save = T)
+
 
 ##### Course Tsinghua equal pc 2030 target #####
 # Taking -20% over 2019-2030 as 2°C >66% chance, cf. e.g. Robiou du Pont et al. (17)
