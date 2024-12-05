@@ -728,7 +728,8 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     if ("foreign_aid_raise_support" %in% names(e)) {
       e$foreign_aid_raise_support_original <- e$foreign_aid_raise_support
       temp <- -1 * grepl("reduce", e$foreign_aid_raise_support) + 1*grepl("condition", e$foreign_aid_raise_support) + 2*grepl("increase", e$foreign_aid_raise_support)
-      e$foreign_aid_raise_support <- as.item(temp, labels = structure(-1:2, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))     
+      e$foreign_aid_raise_support <- as.item(temp, labels = structure(-1:2, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support)) 
+      e$foreign_aid_raise_support_no_null <- as.item(temp-.5, labels = structure(-1:2-.5, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))     
       e$foreign_aid_reduce_support <- as.item(-temp, labels = structure(-2:1, names = rev(c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased"))), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))
     }
     for (v in intersect(names(e), variables_foreign_aid_no)) e[[v]][e$foreign_aid_raise_support > 0] <- NA
@@ -1253,7 +1254,7 @@ e <- eu <- prepare(country = "EU", weighting = T)
 e <- us2 <- prepare(country = "US2", weighting = T, define_var_lists = FALSE)
 
 us <- merge(us1, us2, all = T)
-e <- all <- 
+e <- all <- merge(us, eu, all = T)
 
 # variables_include <- c("finished", "excluded", "duration", "attention_test", "progress", "dropout", "valid", "finished_attentive", "education_original", "gender", "age", "income", "owner", "female", "income_factor", "treatment", "urban_category", "region") 
 us1a <- prepare(country = "US1", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)#[, variables_include]

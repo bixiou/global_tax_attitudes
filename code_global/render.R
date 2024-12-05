@@ -166,6 +166,7 @@ labels_vars <- c(
   "foreign_aid_reduce_how_income_tax" = "Lower personal income tax rates",
   "foreign_aid_reduce_how_deficit" = "Lower public deficit",
   "foreign_aid_raise_support" = "[Country]'s foreign aid should be increased",
+  "foreign_aid_raise_support_no_null" = "[Country]'s foreign aid should be increased",
   "foreign_aid_condition_human_rights" = "That recipient countries comply with climate targets and human rights",
   "foreign_aid_condition_fight_migration" = "That recipient countries cooperate to fight illegal migrations",
   "foreign_aid_condition_all_high_income" = "That other high-income countries also increase their foreign aid",
@@ -331,6 +332,7 @@ labels_vars_short_html <- c(
   "conjoint_left_ag_b_binary" = "Random program <b>A+GCS</b> vs. B",
   "conjoint_r" = "Random program <b>with GCS</b> vs. without",
   "foreign_aid_raise_support" = "Should [Country]'s foreign aid be increased?",
+  "foreign_aid_raise_support_no_null" = "Should [Country]'s foreign aid be increased?",
   "problem_inequality" = "Income inequality in [Country]",
   "problem_climate" = "Climate change",
   "problem_poverty" = "Global poverty",
@@ -449,7 +451,7 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
 heatmaps_defs <- list(
   "conjoint_r" = list(vars = "conjoint_r"), 
   "ets2_oppose" = list(vars = "ets2_oppose", conditions = ">= 1"),
-  "few_main" = list(vars = c("gcs_support_90", "global_tax_support", "global_tax_more_30p", "climate_mitigation_support", "foreign_aid_raise_support"), sort = FALSE), 
+  "few_main" = list(vars = c("gcs_support_90", "global_tax_support", "global_tax_more_30p", "climate_mitigation_support", "foreign_aid_raise_support_no_null"), sort = FALSE), 
   "conjoint_left_ag_b_binary" = list(vars = "conjoint_left_ag_b_binary", conditions = c(">= 1")), 
   "global_tax_global_share" = list(vars = c("global_tax_global_share"), conditions = c("", ">= 1"), nb_digits = 0),
   "global_tax_sharing" = list(vars = c("global_tax_sharing"), conditions = c(">= 1")),
@@ -500,8 +502,8 @@ heatmaps_defs <- list(
   "share_policies_supported" = list(vars = c("share_policies_supported"), conditions = c("")),
   "support_match" = list(vars = c("petition_matches_support", "conjoint_a_matches_support"), conditions = c(">= 1")),
   "universalism" = list(vars = c("universalist", "nationalist", "egoistic", "negotiation_only_country", "negotiation_country_respecting", "negotiation_global_before", "problem_climate", "problem_poverty", "problem_inequality"), conditions = c(">= 1")),
-  "main" = list(vars = c("gcs_support_neg", "global_tax_support", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support", "universalist"), conditions = c("/")),
-  "main_all" = list(vars = c("gcs_support_neg", "global_tax_support", "global_tax_sharing", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support", "universalist"), conditions = c("/")),
+  "main" = list(vars = c("gcs_support_neg", "global_tax_support", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support_no_null", "universalist"), conditions = c("/")),
+  "main_all" = list(vars = c("gcs_support_neg", "global_tax_support", "global_tax_sharing", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support_no_null", "universalist"), conditions = c("/")),
   "support_likert_plus" = list(vars = c("gcs_support", variables_support_likert[10:11], "global_tax_more_30p", variables_support_likert[c(3:1,4:9)]), conditions = c("/"))
 )
 
