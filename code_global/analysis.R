@@ -309,7 +309,8 @@ summary(lm(gcs_support ~ branch_gcs, data = merge(us2, us2p, all = T)))
 summary(lm(nr_support ~ branch_gcs, data = e, weights = weight))
 summary(lm(gcs_support ~ branch_gcs * political_affiliation, data = e))
 summary(lm(gcs_support ~ branch_gcs * (political_affiliation == "Republican"), data = e))
-desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
+summary(lm(gcs_support ~ branch_gcs * (political_affiliation == "Democrat"), data = e))
+.desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
               dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, 
               add_lines = list(c(18, "Includes controls &  & \\checkmark &  & \\checkmark \\\\")))
 

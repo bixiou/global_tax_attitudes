@@ -52,6 +52,23 @@ for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_
 # taxes
 for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_income_tax | d(c)$foreign_aid_reduce_how_wealthy | d(c)$foreign_aid_reduce_how_corporations), d(c)$weight), 3)))
 
+min_indifferent <- 1
+max_indifferent <- 0
+for (v in variables_support_likert) for (c in countries) {
+  share_indifferent_vc <- wtd.mean(d(c)[["climate_compensation_support"]] == 0, d(c)$weight)
+  if (share_indifferent_vc < min_indifferent) min_indifferent <- share_indifferent_vc
+  if (share_indifferent_vc > max_indifferent) max_indifferent <- share_indifferent_vc
+}
+min_indifferent # 21%
+max_indifferent # 27%
+
+share_indifferent <- matrix(NA, dimnames = list(variables_support_likert, countries), nrow = 11, ncol = 5)
+for (v in variables_support_likert) for (c in countries) share_indifferent[v,c] <- wtd.mean(d(c)[[v]] == 0, d(c)$weight)
+round(quantile(share_indifferent, c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
+# 0%   5%  25%   50%  75%  95%  100% 
+# 0.10 0.11 0.19 0.25 0.32 0.37 0.40
+
+
 # all/foreign_aid_condition
 
 ##### List experiment #####
