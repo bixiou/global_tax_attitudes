@@ -281,4 +281,7 @@ cat(paste(kbl(100*table_pop_balance[no.na(table_pop_balance[,ncol(table_pop_bala
                             )), collapse="\n"), 
     file = "../tables/transfers_gain_pop_adult_balance.tex")
 
-
+LDCs <- c("AGO", "AFG", "BGD", "BTN", "BFA", "BDI", "KHM", "CAF", "TCD", "COM", "COG", "DJI", "ERI", "ETH", "GMB", "GIN", "GNB", "LSO", "LBR", "MDG", "MWI", "MLI", "MRT", "MOZ", "NER", "RWA", "STP", "SEN", "SLE", "SOM", "SSD", "SDN", "TGO", "TZA", "UGA", "VUT", "YEM", "ZMB", "TUV", "TLS", "LAO", "MMR", "NEP")
+sum(df$pop_2025[df$code %in% LDCs])/1e9 # 1G
+sum(df$net_gain_both_taxes_pc * df$pop_2025 * df$code %in% LDCs, na.rm = T) / 1e9 # 148G€ transfer to LDCs
+sum(df$net_gain_both_taxes_pc_pop * df$pop_2025 * df$code %in% LDCs, na.rm = T) / 1e9 # 159G€ transfer to LDCs
