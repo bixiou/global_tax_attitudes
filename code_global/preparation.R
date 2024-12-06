@@ -343,7 +343,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
     variables_support_likert <<- c(variables_other_policies, "national_tax_support", "global_tax_support")
     variables_support_ets2_support <<- names(e)[grepl('ets2', names(e)) & grepl('support', names(e))]
     variables_support_ets2_no <<- names(e)[grepl('ets2_no_', names(e))]
-    variables_petition <<- unique("petition", names(e)[grepl('petition', names(e)) & !grepl('branch_petition|order_', names(e))])
+    variables_petition <<- c("petition", "petition_gcs", "petition_nr") # unique("petition", names(e)[grepl('petition', names(e)) & !grepl('branch_petition|order_', names(e))])
     variables_gcs_important <<- names(e)[grepl('gcs_important', names(e))]
     variables_problem <<- names(e)[grepl('problem_', names(e))]
     variables_win_lose <<- names(e)[grepl('win_lose', names(e))]
@@ -729,7 +729,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       e$foreign_aid_raise_support_original <- e$foreign_aid_raise_support
       temp <- -1 * grepl("reduce", e$foreign_aid_raise_support) + 1*grepl("condition", e$foreign_aid_raise_support) + 2*grepl("increase", e$foreign_aid_raise_support)
       e$foreign_aid_raise_support <- as.item(temp, labels = structure(-1:2, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support)) 
-      e$foreign_aid_raise_support_no_null <- as.item(temp-.5, labels = structure(-1:2-.5, names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))     
+      e$foreign_aid_raise_support_no_null <- as.item(2*(temp-.5), labels = structure(2*(-1:2-.5), names = c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased")), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))     
       e$foreign_aid_reduce_support <- as.item(-temp, labels = structure(-2:1, names = rev(c("No, should be reduced", "No, should remain stable", "Yes, but at some conditions", "Yes, should be increased"))), missing.values = NA, annotation = Label(e$foreign_aid_raise_support))
     }
     for (v in intersect(names(e), variables_foreign_aid_no)) e[[v]][e$foreign_aid_raise_support > 0] <- NA

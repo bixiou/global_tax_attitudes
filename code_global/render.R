@@ -504,7 +504,8 @@ heatmaps_defs <- list(
   "universalism" = list(vars = c("universalist", "nationalist", "egoistic", "negotiation_only_country", "negotiation_country_respecting", "negotiation_global_before", "problem_climate", "problem_poverty", "problem_inequality"), conditions = c(">= 1")),
   "main" = list(vars = c("gcs_support_neg", "global_tax_support", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support_no_null", "universalist"), conditions = c("/")),
   "main_all" = list(vars = c("gcs_support_neg", "global_tax_support", "global_tax_sharing", "cap_wealth_support", "climate_mitigation_support", "foreign_aid_raise_support_no_null", "universalist"), conditions = c("/")),
-  "support_likert_plus" = list(vars = c("gcs_support", variables_support_likert[10:11], "global_tax_more_30p", variables_support_likert[c(3:1,4:9)]), conditions = c("/"))
+  "support_likert_plus" = list(vars = c("gcs_support", variables_support_likert[10:11], "global_tax_more_30p", variables_support_likert[c(3:1,4:9)]), conditions = c("/")),
+  "support_likert_all" = list(vars = c("gcs_support", variables_support_likert[10:11], "global_tax_more_30p", "foreign_aid_raise_support_no_null", variables_support_likert[c(3:1,4:9)]), conditions = c("/"))
 )
 
 ##### vars_heatmaps #####
@@ -709,8 +710,9 @@ heatmap_multiple(heatmaps_defs[c("foreign_aid_amount", "foreign_aid_more")])
 heatmap_multiple(heatmaps_defs[c("foreign_aid_no_less_all")])
 heatmap_multiple(heatmaps_defs[c("support_likert_gcs")])
 # heatmaps_defs$support_likert_plus$labels[4] <- expression("Preferred share of global wealth tax for low-income countries: ">=" 30%*")
-heatmaps_defs$support_likert_plus$labels[4] <- "Preferred share of global wealth tax\nfor low-income countries: 30% or more"
-heatmap_multiple(heatmaps_defs[c("support_likert_plus")])
+heatmaps_defs$support_likert_plus$labels[4] <- heatmaps_defs$support_likert_all$labels[4] <- "Preferred share of global wealth tax\nfor low-income countries: 30% or more"
+heatmaps_defs$support_likert_all$labels[5] <- "[Country]'s foreign aid should be increased*"
+heatmap_multiple(heatmaps_defs[c("support_likert_plus", "support_likert_all")])
 # text(-5, 10, expression("Preferred share of global wealth tax\nfor low-income countries: ">=" 30%*"))
 heatmap_multiple(heatmaps_defs[c("global_tax_global_share", "global_tax_sharing")])
 
