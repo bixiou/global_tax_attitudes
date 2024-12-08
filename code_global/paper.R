@@ -68,9 +68,14 @@ round(quantile(share_indifferent, c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2
 # 0%   5%  25%   50%  75%  95%  100% 
 # 0.10 0.11 0.19 0.25 0.32 0.37 0.40
 
-share_indifferent_briefing <- matrix(NA, dimnames = list(variables_support_likert, countries), nrow = 11, ncol = 5)
-for (v in variables_support_likert) for (c in countries) share_indifferent_briefing[v,c] <- wtd.mean(d(c)[[v]] == 0, d(c)$weight)
-round(quantile(share_indifferent_briefing, c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
+share_indifferent_oecd <- readRDS("../data/share_indifferent_oecd.rds")
+round(quantile(share_indifferent_oecd, c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
+# 0%   5%   25%  50%  75%  95%  100% 
+# 0.11 0.15 0.21 0.27 0.33 0.40 0.48 
+
+round(quantile(c(share_indifferent_oecd[c(1,2,4),], share_indifferent[10:11,]), c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
+# 0%   5%   25%  50%  75%  95%  100% 
+# 0.10 0.11 0.15 0.20 0.26 0.32 0.37 
 
 # all/foreign_aid_condition
 
