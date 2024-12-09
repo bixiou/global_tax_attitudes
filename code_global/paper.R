@@ -360,12 +360,6 @@ decrit("conjoint_left_ag_b_binary", us1, weight = F)
 wtd.t.test(eu$conjoint_left_ag_b_binary[eu$country=='UK'], .5, weight = eu$weight_country[eu$country=='UK'])
 wtd.t.test(eu$conjoint_left_ag_b_binary[eu$country=='ES'], .5, weight = eu$weight_country[eu$country=='ES'])
 
-# Conjoint 5
-same_reg_subsamples(dep.var = "conjoint_d", dep.var.caption = "Prefers the platform", covariates = c("branch_c_gcs"), 
-                    data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "conjoint_d", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
-
-
 
 ##### Prioritization #####
 (mean_points <- sort(setNames(sapply(variables_points_us, function(v) round(wtd.mean(all[[v]], na.rm = T, weights = all$weight), 1)), unname(policies.names.us[sub("points_(.*[0-9]).*", "\\1", variables_points_us), "US"])))) # GCS 9th, tax 4th, assembly 10, trillion inv 5, coal 13, ban ICE 15
