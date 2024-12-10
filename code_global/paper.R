@@ -25,6 +25,8 @@ heatmap_multiple(heatmaps_defs["support_likert_all"])
 
 
 ##### List experiment #####
+
+# Table 1: tables/continents/reg_list_exp_g.tex
 summary(lm(list_exp ~ branch_list_exp_g*continent, data = all, weights = all$weight))
 fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
 fit.direct <- glm(as.character(gcs_support) == 'Yes' ~ continent, data = all[all$wave != "US2",], weights = weight, family = binomial("logit"))
@@ -49,24 +51,29 @@ same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported
 
 
 ##### Petition ##### 
-wtd.t.test(us1$gcs_support, us1$petition_gcs, weight=us1$weight, drops = "") # rejects equality (p=.046)
-t.test(us1$gcs_support, us1$petition_gcs, paired = T) # rejects equality (p=.016)
-t.test(us1$gcs_support, us1$petition_gcs, paired = F) # rejects equality (p=.019)
-decrit("petition_gcs", us1) # TODO!!
-(temp <- wtd.t.test(us1$petition_gcs[us1$branch_petition == "gcs"], us1$gcs_support[us1$branch_petition == "gcs"], weight=us1$weight[us1$branch_petition == "gcs"])) # cannot reject equality (p=.30)
+(temp <- wtd.t.test(us1$petition_gcs[us1$branch_petition == "gcs"], us1$gcs_support[us1$branch_petition == "gcs"], 
+                    weight=us1$weight[us1$branch_petition == "gcs"])) # cannot reject equality (p=.30)
 CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
 binconf(sum(us1$weight[us1$petition_gcs & us1$branch_petition == "gcs"]), sum(us1$weight[us1$branch_petition == "gcs"]), alpha = 0.05)
-(temp <- wtd.t.test(us1$petition_nr[us1$branch_petition == "nr"], us1$nr_support[us1$branch_petition == "nr"], weight=us1$weight[us1$branch_petition == "nr"])) # cannot reject equality (p=.76)
+(temp <- wtd.t.test(us1$petition_nr[us1$branch_petition == "nr"], us1$nr_support[us1$branch_petition == "nr"], 
+                    weight=us1$weight[us1$branch_petition == "nr"])) # cannot reject equality (p=.76)
 CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
 binconf(sum(us1$weight[us1$petition_nr & us1$branch_petition == "nr"]), sum(us1$weight[us1$branch_petition == "nr"]), alpha = 0.05)
-(temp <- wtd.t.test(eu$petition_gcs[eu$branch_petition == "gcs"], eu$gcs_support[eu$branch_petition == "gcs"], weight=eu$weight[eu$branch_petition == "gcs"])) # rejects equality (p=1e-5)
+(temp <- wtd.t.test(eu$petition_gcs[eu$branch_petition == "gcs"], eu$gcs_support[eu$branch_petition == "gcs"], 
+                    weight=eu$weight[eu$branch_petition == "gcs"])) # rejects equality (7pp, p=1e-5)
 CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
 binconf(sum(eu$weight[eu$petition_gcs & eu$branch_petition == "gcs"]), sum(eu$weight[eu$branch_petition == "gcs"]), alpha = 0.05)
-(temp <- wtd.t.test(eu$petition_nr[eu$branch_petition == "nr"], eu$nr_support[eu$branch_petition == "nr"], weight=eu$weight[eu$branch_petition == "nr"])) # rejects equality (p=.01)
+(temp <- wtd.t.test(eu$petition_nr[eu$branch_petition == "nr"], eu$nr_support[eu$branch_petition == "nr"], 
+                    weight=eu$weight[eu$branch_petition == "nr"])) # rejects equality (4pp, p=.008)
 CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
 binconf(sum(eu$weight[eu$petition_nr & eu$branch_petition == "nr"]), sum(eu$weight[eu$branch_petition == "nr"]), alpha = 0.05)
-decrit("petition_gcs", eu)
-decrit("petition_nr", eu)
+
+decrit("petition_gcs", eu) # 69%
+decrit("petition_nr", eu) # 67%
+# wtd.t.test(us1$gcs_support, us1$petition_gcs, weight=us1$weight, drops = "") # rejects equality (p=.046)
+# t.test(us1$gcs_support, us1$petition_gcs, paired = T) # rejects equality (p=.016)
+# t.test(us1$gcs_support, us1$petition_gcs, paired = F) # rejects equality (p=.019)
+# decrit("petition_gcs", us1) # 51%
 
 
 ##### Conjoint analyses #####

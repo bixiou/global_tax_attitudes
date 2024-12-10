@@ -5,6 +5,7 @@ Adrien's/
 *.tmp
 *.RDataTmp
 *.RDataTmp1
+*.RDataTmp2
 *.RData
 *.RData.bak
 *.Rhistory
