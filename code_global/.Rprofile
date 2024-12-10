@@ -31,7 +31,7 @@ if (!is.element("iatgen", installed.packages()[,1])) {
   # devtools::install_github("iatgen/iatgen")
 } else library(iatgen)
 package("ggplot2")
-if (!is.element("ggalt", installed.packages()[,1])) { devtools::install_github("eliocamp/ggalt@new-coord-proj") 
+if (!is.element("ggalt", installed.packages()[,1])) { devtools::install_github("eliocamp/ggalt@new-coord-proj")
 } else package("ggalt") # maps
 package("janitor") # heatmaps
 package("ggdist") # nice confidence intervals in regression plots
@@ -107,7 +107,44 @@ package("readstata13")
 #' # package("rddtools") # not available
 #' # package("rddapp") # not available
 #' package("mets")
-package("stargazer") # To fix the bug with is.na() on R 4.2, run the code below from https://gist.github.com/alexeyknorre/b0780836f4cec04d41a863a683f91b53
+# package("stargazer")
+# if (exists("fixed_stargazer")) {
+#   library(stargazer, lib.loc = .libPaths()[2])
+# } else { # To fix the bug with is.na() on R 4.2, run the code below from https://gist.github.com/alexeyknorre/b0780836f4cec04d41a863a683f91b53
+#   temp <- getwd()
+#   setwd(.libPaths()[1])
+#   # detach("package:stargazer", unload=T)
+#   remove.packages("stargazer")
+#   download.file("https://cran.r-project.org/src/contrib/stargazer_5.2.3.tar.gz", destfile = "stargazer_5.2.3.tar.gz")
+#   untar("stargazer_5.2.3.tar.gz") # If it doesn't work, re-open RStudio in administrator mode
+#   stargazer_src <- readLines("stargazer/R/stargazer-internal.R")
+#   stargazer_src[1990] <- stargazer_src[1995]
+#   stargazer_src[1995] <- ""
+#   writeLines(stargazer_src, con="stargazer/R/stargazer-internal.R")
+#   install.packages("stargazer", repos = NULL, type="source")
+#   library(stargazer, lib.loc = .libPaths()[2])
+#   rm(stargazer_src)
+#   setwd(temp)
+#   fixed_stargazer <- T
+# }
+if (!is.element("stargazer", installed.packages()[,1]) || packageVersion("stargazer") != "5.2.3.42") {
+  temp <- getwd()
+  setwd(.libPaths()[2])
+  tryCatch({  detach("package:stargazer", unload=T)}, error = function(cond) { print("This is just a warning: stargazer not loaded yet.") } )
+  tryCatch({  remove.packages("stargazer")}, error = function(cond) { print("This is just a warning: stargazer not found.") } )
+  download.file("https://cran.r-project.org/src/contrib/stargazer_5.2.3.tar.gz", destfile = "stargazer_5.2.3.tar.gz")
+  untar("stargazer_5.2.3.tar.gz") # If it doesn't work, re-open RStudio in administrator mode
+  stargazer_src <- readLines("stargazer/R/stargazer-internal.R")
+  stargazer_src[1990] <- stargazer_src[1995]
+  stargazer_src[1995] <- ""
+  writeLines(stargazer_src, con="stargazer/R/stargazer-internal.R")
+  stargazer_description <- readLines("stargazer/DESCRIPTION")
+  stargazer_description[4] <- "Version: 5.2.3.42"
+  writeLines(stargazer_description, con="stargazer/DESCRIPTION")
+  install.packages("stargazer", repos = NULL, type="source")
+  setwd(temp)
+}
+library(stargazer)
 # temp <- getwd()
 # setwd(.libPaths()[2])
 # detach("package:stargazer",unload=T)
@@ -139,6 +176,8 @@ package("ergm") # wtd.median
 #' # remove.packages("corrplot")
 #' # package("prettydoc")
 #' # package("seriation")
+package("tm") # must be loaded after memisc; used for wordcloud
+package("wordcloud")
 package("RColorBrewer")
 package("corrplot") #, github = 'taiyun')#, version = "0.88") # 0.92 installed: is that an issue?
 #' package("psy")
@@ -169,8 +208,6 @@ package("quanteda") # stopwords
 #' package("tidytext")
 #' package("modelsummary")
 package("dplR") # latexify, used in table_mean_lines_save
-package("tm") # must be loaded before memisc; used for wordcloud
-package("wordcloud")
 package("Hmisc")
 package("readxl")
 #' package("ggpubr")
@@ -182,7 +219,7 @@ package("readxl")
 #' package("descr")
 package("knitr") # plot_crop, representativeness_table
 options(knitr.kable.NA = '')
-package("kableExtra") # add_header_above in 
+package("kableExtra") # add_header_above in
 package("WDI") # World Development Indicators
 package("wbstats") # World Bank
 # package("rootSolve")
@@ -234,7 +271,7 @@ d <- function(str, alt_data = eu, alt_var = "country") {
 n <- function(var) { as.numeric(as.vector(var)) }
 #' NSPs <- function(QID) { length(V(QID)[V(QID) == "NSP (Je ne veux pas répondre)"])/length(V(QID)) }
 #' nsps <- function(id) { length(v(id)[v(id) == "NSP (Je ne veux pas répondre)"])/length(v(id)) }
-CI <- function(estimate, SE, N = NULL, level = 0.95, print = FALSE, digits = 2) { 
+CI <- function(estimate, SE, N = NULL, level = 0.95, print = FALSE, digits = 2) {
   margin <- if (is.null(N)) qnorm(1-(1-level)/2) * SE else qt(1-(1-level)/2, df = N) * SE
   ci <- estimate + if (length(margin) > 1) matrix(margin, nrow = length(margin))%*%c(-1, 1) else margin*c(-1, 1)
   if (print) ci <- paste0("[", round(if (is.matrix(ci)) ci[,1] else ci[1], digits), "; ", round(if (is.matrix(ci)) ci[,2] else ci[2], digits), "]")
@@ -286,7 +323,7 @@ positive <- function(vec) {
   else return(100 * sum(!is.na(vec) & vec > 0) / sum(!is.na(vec)))
 }
 
-barycenter <- function(x, x_prev, x_next, y_prev, y_next) { 
+barycenter <- function(x, x_prev, x_next, y_prev, y_next) {
   lambda <- if (x_next == x_prev) 0 else (x - x_prev)/(x_next - x_prev)
   return(((1 - lambda) * y_prev + lambda * y_next))
 }
@@ -296,14 +333,14 @@ interpolate <- function(x, x_vec, y_vec) { # x_vec and y_vec are assumed to be n
   y_vec <- sort(y_vec)
   for (i in 1:length(x)) {
     j <- 1
-    while (x[i] > x_vec[j+1] & j < length(x_vec)-1) j <- j+1 
+    while (x[i] > x_vec[j+1] & j < length(x_vec)-1) j <- j+1
     if (x[i] < x_vec[j] | x[i] > x_vec[j+1]) warning(paste("x_vec does not contain appropriate values for index", i))
     y[i] <- barycenter(x[i], x_vec[j], x_vec[j+1], (y_vec)[j], y_vec[j+1])
   }
   return(y)
 }
 agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T, return = "vec" # min = 0, max = Inf,
-) { 
+) {
   # strict_ineq_lower == T means intervals 50,60 are of type ];] while == F means [;[.
   # shift = 1 (with strict_ineq_lower == T) means levels ]50;60] will be displayed as "[begin]51[sep]60[end]".
   # thresholds <- c(min, thresholds, max)
@@ -474,7 +511,7 @@ Levels <- function(variable, data = e, miss = TRUE, numbers = FALSE, values = TR
 export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, dta_file = NULL, csv_file = NULL, rds_file = NULL, keep = NULL, omit = NULL, folder = "../data/") {
   if (missing(keep)) keep <- 1:length(data)
   if (!missing(omit)) keep <- setdiff(keep, omit)
-  
+
   if (stata) {
     data_stata <- janitor::clean_names(eval(data))
     names_stata <- c()
@@ -496,7 +533,7 @@ export_codebook <- function(data, file = "../data/codebook.csv", stata = TRUE, d
     }
     if (!missing(csv_file)) write.csv(data_stata[,keep], paste0(folder, csv_file, ".csv"))
     if (!missing(rds_file)) saveRDS(data_stata[,keep], file = paste0(folder, rds_file, ".rds"))
-    
+
     codebook <- data.frame(names(data), names_stata, sapply(names(data), function(n) return(Label(data[[n]]))), sapply(names(data), function(n) { Levels(data[[n]], concatenate = T) } ))
     names(codebook) <- c("Variable", "Variable Stata", "Label", "Levels")
   } else {
@@ -599,7 +636,7 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
     if (!is.data.frame(data)) data <- data[[1]]
     model_total <- lm(as.formula(paste(dep_vars[1], "~", paste("(", indep_vars[covariates_with_several_values(data = data, covariates = indep_vars)], ")", collapse = ' + '))), data = data)
     indep_labels <- create_covariate_labels(names(model_total$coefficients)[-1], regressors_names = labels_vars, keep = keep, omit = "Constant")
-    
+
     # i_max <- max_i <- 0
     # for (i in seq_along(models)) {
     #   if (length(models[[i]]$coefficients) > max_i) {
@@ -611,9 +648,9 @@ desc_table <- function(dep_vars, filename = NULL, data = e, indep_vars = control
   }
   if (only_mean) mean_above <- T
   table <- do.call(stargazer, c(models, list(out=file_path, header=F, model.numbers = model.numbers,
-                                             covariate.labels = if (nolabel) NULL else gsub("\\{", "{", gsub("\\}", "}", gsub("\\$", "$", gsub("\\textbackslash ", "\\", latexify(indep_labels, doublebackslash = FALSE), fixed = T), fixed = T), fixed = T), fixed = T), 
+                                             covariate.labels = if (nolabel) NULL else gsub("\\{", "{", gsub("\\}", "}", gsub("\\$", "$", gsub("\\textbackslash ", "\\", latexify(indep_labels, doublebackslash = FALSE), fixed = T), fixed = T), fixed = T), fixed = T),
                                              add.lines = if (!"\\QConstant\\E" %in% keep) list(c(mean_text, means)) else NULL,
-                                             coef = coefs, se = SEs, 
+                                             coef = coefs, se = SEs,
                                              dep.var.labels = dep.var.labels, dep.var.caption = dep.var.caption, dep.var.labels.include = dep.var.labels.include,
                                              multicolumn = multicolumn, float = F, keep.stat = c("n", "rsq"), omit.table.layout = "n", keep=keep, no.space = no.space
   )))
@@ -706,11 +743,11 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
   if (!nolabel & !missing(covariate.labels)) covariate_labels <- covariate.labels
   if (is.null(keep)) keep <- c(c(covariates)[!covariates %in% omit], if (any(c("(Intercept)", "Intercept", "Constant") %in% omit)) NULL else "Constant")
   dep.var.caption <- ifelse(missing(dep.var.caption), ifelse(exists("labels_vars") && dep.var %in% names(labels_vars), labels_vars[dep.var], gsub("_", "\\_", dep.var, fixed = T)), dep.var.caption)
-  
-  table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers, 
-        covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], #p = ps[-1], 
+
+  table <- do.call(stargazer, c(if (include.total) models else models[-1], list(out=NULL, header=F, model.numbers = model.numbers,
+        covariate.labels = covariate_labels, coef = if (include.total) coefs else coefs[-1], se = if (include.total) SEs else SEs[-1], #p = ps[-1],
         add.lines = if (display_mean) list(c(mean_text, means)) else NULL,
-        dep.var.labels = if (is.null(dep_var_labels)) {if (include.total) c("All", along.levels) else along.levels} else dep_var_labels, 
+        dep.var.labels = if (is.null(dep_var_labels)) {if (include.total) c("All", along.levels) else along.levels} else dep_var_labels,
         dep.var.caption = dep.var.caption, multicolumn = F, float = F, keep.stat = c("n", "rsq"), report = report,
         omit.table.layout = if (omit.note) "n" else NULL, keep=keep, omit = omit, no.space = no.space)))
 
@@ -1265,11 +1302,11 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     values <- matrix(values, ncol=length(hover))
   }
   if (!(display_values)) values <- replace(values, T, '')
-  
+
   bars <- plot_ly(x = data[1,], y = labels, type = 'bar', orientation = 'h', text = values[,1], textposition = 'auto',
                   error_x = list(visible = error_margin, array=qnorm(1-0.05/2)*sqrt(data[1,]*(1-data[1,])/(N-1)), color = color_margin), # sort=FALSE,
                   hoverinfo = hovers[,1], name=legend[1], marker = list(color = color[1], line = list(color = 'white'))) %>% # , width = 0
-    
+
     plotly::layout(xaxis = list(title = "",
                                 showgrid = show_ticks,
                                 showline = FALSE,
@@ -1308,7 +1345,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
     # showlegend = (showLegend & !((("Yes" %in% legend) | ("Oui" %in% legend)) & (length(legend)<4)))) %>%
     showlegend = showLegend # (showLegend & !(setequal(legend, c('Yes', 'No', 'PNR')) | setequal(legend, c('Oui', 'Non', 'NSP')) | setequal(legend, c('Yes', 'No')) | setequal(legend, c('Oui', 'Non'))))
     ) %>%
-    
+
     # labeling the y-axis
     add_annotations(xref = 'paper', yref = 'y', x = share_labels - 0.01, y = labels,
                     xanchor = 'right',
@@ -1334,7 +1371,7 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
                                        font = list(family = font, size = 16, color = 'black'),
                                        showarrow = FALSE) } # %>%
   }
-  
+
   # print(nrow(data))
   # print(hover)
   # print(nrow(hovers))
@@ -1468,10 +1505,10 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     } else if (c %in% c('middle-income', 'Middle-income', 'Middle income')) { df_c <- e[which(!high_income[e$country]),]
     } else if (c %in% c('Europe', 'Europe4')) { df_c <- e[e$continent == "Europe",]
     } else if (c %in% countries) { df_c <- e[e$country == c,]
-    } else if (c %in% c("Eu", "Eu4", "EU4", "EU")) { df_c <- e[e$continent == "Eu4",] 
+    } else if (c %in% c("Eu", "Eu4", "EU4", "EU")) { df_c <- e[e$continent == "Eu4",]
     } else if (c %in% countries_names) { df_c <- e[e$country_name == c,] }
     for (v in 1:nb_vars) {
-      if (vars[v] %in% c("gcs_support", "nr_support", "gcs_support_100")) { 
+      if (vars[v] %in% c("gcs_support", "nr_support", "gcs_support_100")) {
         temp <- df_c
         df_c <- df_c[df_c$wave != "US2",] }
       var_c <- df_c[[vars[v]]][!is.na(df_c[[vars[v]]])]
@@ -1505,7 +1542,7 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
   if (is.null(folder)) folder <- automatic_folder(along, data)
   if (is.null(width)) width <- ifelse(length(labels) <= 3, 1000, ifelse(length(labels) <= 8, 1550, 1770)) # TODO! more precise than <= 3 vs. > 3
   if (is.null(height)) height <- ifelse(length(labels) <= 3, 163, ifelse(length(labels) <= 8, 400, 600))
-  
+
   for (cond in conditions) {
     filename <- paste(sub("variables_", "", name),
                       case_when(cond == "" ~ "mean",
@@ -1519,11 +1556,11 @@ heatmap_wrapper <- function(vars, labels = vars, name = deparse(substitute(vars)
                                 cond == "== 2" ~ "max",
                                 cond == "== -2" ~ "min",
                                 cond == "-" ~ "difference",
-                                cond == "/" ~ "share", # uses >0 for binary data (detected as neg=0) 
+                                cond == "/" ~ "share", # uses >0 for binary data (detected as neg=0)
                                 cond == "//" ~ "share_strict", # to use when no one gave a negative answer though it was an option
                                 TRUE ~ "unknown"), sep = "_")
     tryCatch({
-      if (cond %in% c("/", "-", "//")) { 
+      if (cond %in% c("/", "-", "//")) {
         pos <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = ">= 1", on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights)
         neg <- heatmap_table(vars = vars, labels = labels, data = data, along = along, special = special, conditions = "<= -1", on_control = on_control, alphabetical = alphabetical, sort = FALSE, weights = weights)
         if (cond == "-") temp <- pos - neg else temp <- pos / (pos + neg)
@@ -1565,13 +1602,13 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
     }
     tbl
   }
-  
+
   #Find no. of vars (all; row; col) for use in subsequent code
   n.row.vars <- length(row.vars)
   n.col.vars <- length(col.vars)
   n.vars <- n.row.vars + n.col.vars
-  
-  
+
+
   #Check to make sure all user-supplied arguments have valid values
   stopifnot(as.integer(dec.places) == dec.places, dec.places > -1)
   #type: see next section of code
@@ -1580,17 +1617,17 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
   stopifnot(is.logical(addmargins))
   stopifnot(is.logical(subtotals))
   stopifnot(n.vars>=1)
-  
+
   #Convert supplied table type(s) into full text string (e.g. "f" becomes "frequency")
   #If invalid type supplied, failed match gives user automatic error message
   types <- NULL
   choices <- c("frequency", "row.pct", "column.pct", "joint.pct", "total.pct")
   for (tp in type) types <- c(types, match.arg(tp, choices))
   type <- types
-  
+
   #If no type supplied, default to 'frequency + total' for univariate tables and to
   #'frequency' for multi-dimenstional tables
-  
+
   #For univariate table....
   if (n.vars == 1) {
     if (is.null(type)) {
@@ -1606,26 +1643,26 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
     # default = frequency count
     type <- "frequency"
   }
-  
-  
-  
+
+
+
   #Check for integrity of requested analysis and adjust values of function arguments as required
-  
+
   if ((addmargins==FALSE) & (subtotals==FALSE)) {
     warning("WARNING: Request to suppress subtotals (subtotals=FALSE) ignored because no margins requested (addmargins=FALSE)")
     subtotals <- TRUE
   }
-  
+
   if ((n.vars>1) & (length(type)>1) & (addmargins==TRUE)) {
     warning("WARNING: Only row totals added when more than one table type requested")
     #Code lower down selecting type of margin implements this...
   }
-  
+
   if ((length(type)>1) & (subtotals==FALSE)) {
     warning("WARNING: Can only request supply one table type if requesting suppression of subtotals; suppression of subtotals not executed")
     subtotals <- TRUE
   }
-  
+
   if ((length(type)==1) & (subtotals==FALSE)) {
     choices <- c("frequency", "row.pct", "column.pct", "joint.pct", "total.pct")
     tp <- match.arg(type, choices)
@@ -1634,11 +1671,11 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
       subtotals<- TRUE
     }
   }
-  
+
   if ((n.vars > 2) & (n.col.vars>1) & (subtotals==FALSE))
     warning("WARNING: suppression of subtotals assumes only 1 col var; table flattened accordingly")
-  
-  
+
+
   if ( (subtotals==FALSE) & (n.vars>2) )  {
     #If subtotals not required AND total table vars > 2
     #Reassign all but last col.var as row vars
@@ -1651,7 +1688,7 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
       n.col.vars <- 1
     }
   }
-  
+
   #If dec.places not set by user, set to 2 unlesss only one table of type frequency requested,
   #in which case set to 0.  [Leaves user with possibility of having frequency tables with > 0 dp]
   if (is.null(dec.places)) {
@@ -1661,12 +1698,12 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
       dec.places <-2
     }
   }
-  
+
   #Take the original input data, whatever form originally supplied in,
   #convert into table format using requested row and col vars, and save as 'tbl'
-  
+
   args <- list(...)
-  
+
   if (length(args) > 1) {
     if (!all(sapply(args, is.factor)))
       stop("If more than one argument is passed then all must be factors")
@@ -1716,10 +1753,10 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
       stop("first argument must be either factors or a table object")
     }
   }
-  
+
   #Convert supplied table style into full text string (e.g. "l" becomes "long")
   style <- match.arg(style, c("long", "wide"))
-  
+
   #Extract row and col names to be used in creating 'tbl' from supplied input data
   nms <- names(dimnames(tbl))
   z <- length(nms)
@@ -1739,15 +1776,15 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
     col.vars <- z
     row.vars <- (1:z)[-col.vars]
   }
-  
+
   #Take the original input data, converted into table format using supplied row and col vars (tbl)
   #and create a second version (Crosstab) which stores results as percentages if a percentage table type is requested.
   if (type[1] == "frequency")
     Crosstab <- tbl
   else
     Crosstab <- mk.pcnt.tbl(tbl, type[1])
-  
-  
+
+
   #If multiple table types requested, create and add these to
   if (length(type) > 1) {
     tbldat <- as.data.frame.table(Crosstab)
@@ -1772,13 +1809,13 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
     Crosstab <- xtabs(Freq ~ ., data = tbldat)
     names(dimnames(Crosstab))[z - 1] <- ""
   }
-  
-  
+
+
   #Add margins if required, adding only those margins appropriate to user request
   if (addmargins==TRUE) {
-    
+
     vars <- c(row.vars,col.vars)
-    
+
     if (length(type)==1) {
       if (type=="row.pct")
       { Crosstab <- addmargins(Crosstab,margin=c(vars[n.vars]))
@@ -1801,34 +1838,34 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
         }
       }
     }
-    
+
     #If more than one table type requested, only adding row totals makes any sense...
     if (length(type)>1) {
       Crosstab <- addmargins(Crosstab,margin=c(vars[n.vars]))
       tbl <- addmargins(tbl,margin=c(vars[n.vars]))
     }
-    
+
   }
-  
-  
+
+
   #If subtotals not required, and total vars > 2, create dataframe version of table, with relevent
   #subtotal rows / cols dropped [Subtotals only present in tables with > 2 cross-classified vars]
   t1 <- NULL
   if ( (subtotals==FALSE) & (n.vars>2) )  {
-    
+
     #Create version of Crosstab in ftable format
     t1 <- Crosstab
     t1 <- ftable(t1,row.vars=row.vars,col.vars=col.vars)
-    
+
     #Convert to a dataframe
     t1 <- as.data.frame(format(t1),stringsAsFactors=FALSE)
-    
+
     #Remove backslashes from category names AND colnames
     t1 <- apply(t1[,],2, function(x) gsub("\"","",x))
     #Remove preceding and trailing spaces from category names to enable accurate capture of 'sum' rows/cols
     #[Use of grep might extrac category labels with 'sum' as part of a longer one or two word string...]
     t1 <- apply(t1,2,function(x) gsub("[[:space:]]*$","",gsub("^[[:space:]]*","",x)))
-    
+
     #Reshape dataframe to that variable and category labels display as required
     #(a) Move col category names down one row; and move col variable name one column to right
     t1[2,(n.row.vars+1):ncol(t1)] <- t1[1,(n.row.vars+1):ncol(t1)]
@@ -1836,7 +1873,7 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
     t1[1,(n.row.vars+2)] <- t1[2,(n.row.vars+1)]
     #(b) Drop the now redundant column separating the row.var labels from the table data + col.var labels
     t1 <- t1[,-(n.row.vars+1)]
-    
+
     #In 'lab', assign category labels for each variable to all rows (to allow identification of sub-totals)
     lab <- t1[,1:n.row.vars]
     for (c in 1:n.row.vars) {
@@ -1844,26 +1881,26 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
         if (lab[r,c]=="") lab[r,c] <- lab[r-1,c]
       }
     }
-    
+
     lab <- (apply(lab[,1:n.row.vars],2,function(x) x=="Sum"))
     lab <- apply(lab,1,sum)
     #Filter out rows of dataframe containing subtotals
-    
+
     t1 <- t1[((lab==0) | (lab==n.row.vars)),]
-    
+
     #Move the 'Sum' label associated with last row to the first column; in the process
     #setting the final row labels associated with other row variables to ""
     t1[nrow(t1),1] <- "Sum"
     t1[nrow(t1),(2:n.row.vars)] <- ""
-    
+
     #set row and column names to NULL
     rownames(t1) <- NULL
     colnames(t1) <- NULL
-    
+
   }
-  
-  
-  
+
+
+
   #Create output object 'result' [class: Crosstab]
   result <- NULL
   #(a) record of argument values used to produce tabular output
@@ -1875,27 +1912,27 @@ Crosstab <- function (..., dec.places = NULL, type = NULL, style = "wide", row.v
   result$percentages <- percentages
   result$addmargins <- addmargins
   result$subtotals <- subtotals
-  
+
   #(b) tabular output [3 variants]
   result$table <- tbl  #Stores original cross-tab frequency counts without margins [class: table]
   result$Crosstab <- Crosstab #Stores cross-tab in table format using requested style(frequency/pct) and table margins (on/off)
   #[class: table]
   result$Crosstab.nosub <- t1  #Crosstab with subtotals suppressed [class: dataframe; or NULL if no subtotals suppressed]
   class(result) <- "Crosstab"
-  
+
   #Return 'result' as output of function
   result
-  
+
 }
 
 print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) {
-  
+
   row.vars <- x$row.vars
   col.vars <- x$col.vars
   n.row.vars <- length(row.vars)
   n.col.vars <- length(col.vars)
   n.vars <- n.row.vars + n.col.vars
-  
+
   if (length(x$type)>1) {
     z<-length(names(dimnames(x$Crosstab)))
     if (x$style=="long") {
@@ -1904,7 +1941,7 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
       col.vars<-c(z,col.vars)
     }
   }
-  
+
   if (n.vars==1) {
     if (length(x$type)==1) {
       tmp <- data.frame(round(x$Crosstab,x$dec.places))
@@ -1914,48 +1951,48 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
       print(round(x$Crosstab,x$dec.places))
     }
   }
-  
-  
+
+
   #If table has only 2 dimensions, or subtotals required for >2 dimensional table,
   #print table using ftable() on x$Crosstab
   if ((n.vars == 2) | ((subtotals==TRUE) & (n.vars>2))) {
-    
+
     tbl <- ftable(x$Crosstab,row.vars=row.vars,col.vars=col.vars)
-    
+
     if (!all(as.integer(tbl)==as.numeric(tbl))) tbl <- round(tbl,dec.places)
     print(tbl,...)
-    
+
   }
-  
+
   #If subtotals NOT required AND > 2 dimensions, print table using write.table() on x$Crosstab.nosub
   if ((subtotals==FALSE) & (n.vars>2))  {
-    
+
     t1 <- x$Crosstab.nosub
-    
+
     #Convert numbers to required decimal places, right aligned
     width <- max( nchar(t1[1,]), nchar(t1[2,]), 7 )
     dec.places <- x$dec.places
     number.format <- paste("%",width,".",dec.places,"f",sep="")
     t1[3:nrow(t1),((n.row.vars+1):ncol(t1))] <- sprintf(number.format,as.numeric(t1[3:nrow(t1),((n.row.vars+1):ncol(t1))]))
-    
+
     #Adjust column variable label to same width as numbers, left aligned, padding with trailing spaces as required
     col.var.format <- paste("%-",width,"s",sep="")
     t1[1,(n.row.vars+1):ncol(t1)] <- sprintf(col.var.format,t1[1,(n.row.vars+1):ncol(t1)])
     #Adjust column category labels to same width as numbers, right aligned, padding with preceding spaces as required
     col.cat.format <- paste("%",width,"s",sep="")
     t1[2,(n.row.vars+1):ncol(t1)] <- sprintf(col.cat.format,t1[2,(n.row.vars+1):ncol(t1)])
-    
+
     #Adjust row labels so that each column is of fixed width, using trailing spaces as required
     for (i in 1:n.row.vars) {
       width <- max(nchar(t1[,i])) + 2
       row.lab.format <- paste("%-",width,"s",sep="")
       t1[,i] <- sprintf(row.lab.format,t1[,i])
     }
-    
+
     write.table(t1,quote=FALSE,col.names=FALSE,row.names=FALSE)
-    
+
   }
-  
+
 }
 
 # inflate_for_miss <- function(v) return(c(v[1:(length(v)-1)]/(1-v[length(v)]), v[length(v)]))
@@ -2028,7 +2065,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   # df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2))) # For oecd_climate
   df_countries <- df$country_map
   df <- data.frame(country_map = df_countries, mean = as.vector(table))
-  
+
   if (condition != "") {
     if (is.null(breaks)) breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
     if (is.null(labels)) labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
@@ -2041,48 +2078,48 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
     if (is.null(limits)) limits <- c(-2, 2)
   }
   if (continuous) df$mean <- pmax(pmin(df$mean, limits[2]), limits[1])
-  
+
   world_map <- map_data(map = "world")
   world_map <- world_map[world_map$region != "Antarctica",] #
   world_map <- world_map[!world_map$region %in% c("Antarctica", "American Samoa", "Micronesia", "Guam", "Niue", "Pitcairn Islands", "Cook Islands", "Tonga", "Kiribati", "Marshall Islands", "French Polynesia", "Fiji", "Samoa", "Wallis and Futuna", "Vanuatu"),]
   # world_map$region <- iso.alpha(world_map$region)
-  
+
   if ("Dem USA" %in% parties) {
     us_states <- map_data(map = "state")
-    blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont", "Maryland", "Hawaii")) 
+    blue_states <- tolower(c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont", "Maryland", "Hawaii"))
     non_blue_states <- setdiff(us_states$region, blue_states) #  and Alaska missing from the map
     us_states$region[us_states$region %in% blue_states] <- "USA" #"Dem USA"
     us_states$region[us_states$region %in% non_blue_states] <- "Non-Dem USA"
     world_map$region[world_map$subregion == "Alaska"] <- "Non-Dem USA"
     world_map <- world_map[world_map$region != "USA",] # | world_map$subregion == "Alaska",]
-    world_map <- merge_maps(world_map, us_states) 
+    world_map <- merge_maps(world_map, us_states)
   }
-  
+
   df_na <- data.frame(country_map = setdiff(world_map$region, df_countries), mean = if (fill_na) breaks[2] else NA)
   df <- merge(df, df_na, all = T)
   df$group <- cut(df$mean, breaks = breaks, labels = labels)
-  
-  if (!continuous) {      
+
+  if (!continuous) {
     if (is.null(colors)) colors <- setNames(c(color(length(breaks)-1, rev_color = rev_color), "#7F7F7F"), c(rev(labels), na_label))
     if (negative_stripes) {
       pattern <- setNames(c(rep("none", ceiling((length(breaks)-1)/2)), rep("stripe", floor((length(breaks)-1)/2)), "none"), c(rev(labels), na_label))
-      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + 
-          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + 
-          expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + 
+      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) +
+          expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
           scale_fill_manual(name = legend, drop = FALSE, values = colors, labels = c(rev(labels), na_label)) +
-          geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = fct_rev(group)), pattern_fill = "black", fill = NA, show.legend=TRUE, 
+          geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = fct_rev(group)), pattern_fill = "black", fill = NA, show.legend=TRUE,
                            pattern_size = 0.01, pattern_density = 0.05, pattern_angle = 45, pattern_spacing = 0.015) +
           scale_pattern_manual(name = legend, values = pattern, drop = FALSE, labels = c(rev(labels), na_label)) + guides(fill = "none", pattern = guide_legend(override.aes = list(fill = colors))))
     } else {
-      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + 
-         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + 
+      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
          scale_fill_manual(name = legend, drop = FALSE, values = colors[1:(length(colors)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
     }} else {
-      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + 
-         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) + 
+      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
          scale_fill_gradientn(name = legend, limits = limits, colours = color(9, rev_color = !rev_color))) # scale_fill_manual(palette = "RdBu", limits = limits, direction = 1, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
     }
-  
+
   print(plot)
   if (save) for (f in format) save_plot(plot, filename = ifelse(!is.null(filename), filename, ifelse(continuous, paste0(var, "_cont"), ifelse(negative_stripes, paste0(var, "_stripes"), var))), folder = '../figures/maps/', width = width, height = height, format = f, trim = trim)
   # return(plot)
@@ -2105,10 +2142,10 @@ merge_maps <- function(map1, map2) {
 # #   temp$country_map <- s
 # #   df <- rbind(df, temp)
 # # }
-# 
+#
 # # df_map <- data.frame(country_map = df$country_map, mean = df$gain_adj_over_gdp_2050) # mean = as.vector(table))
 # df$group <- cut(df$gain_adj_over_gdp_2040, breaks = c(-Inf, -1.2, -.8, -.4, 0, .4, .8, 1.2, Inf), labels = c("< -1.2", "-1.2 - -0.8", "-0.8 - -0.4", "-0.4 - 0", "0 - 0.4", "0.4 - 0.8", "0.8 - 1.2", "> 1.2"))
-# 
+#
 # us_states <- map_data(map = "state") # tolower
 # blue_states <- c("California", "Illinois", "New York", "New Jersey", "Washington", "Massachusetts", "Oregon", "Connecticut", "Delaware", "Rhode Island", "District of Columbia", "Vermont", "Hawaii") #  and Alaska missing from the map
 # non_blue_states <- setdiff(us_states$region, blue_states)
@@ -2130,8 +2167,8 @@ merge_maps <- function(map1, map2) {
 # # world_map <- spChFIDs(world_map, row.names(world_map)) # Requires maptools:: or mappoly::merge_maps or rgdal::spRbind
 # # world_map <- world_map %>% st_as_sf(coords = c("long", "lat"), crs = 4326) %>% st_transform(crs = 3310)
 # world_map <- merge_maps(world_map, us_states)
-# 
-# 
+#
+#
 # test <- ne_states(country = 'United States of America', returnclass = 'sf') %>% mutate(admin = ifelse(name %in% blue_states, "Dem USA", "Non-Dem USA")) %>%  group_by(admin) %>%  dplyr::summarize(geometry = st_union(geometry)) #%>%
 #   ggplot() +
 #   geom_sf(aes(fill = democrat), color = NA) +
@@ -2139,14 +2176,14 @@ merge_maps <- function(map1, map2) {
 #   coord_sf(xlim = c(-180, -60)) +
 #   theme_void() +
 #   theme(legend.position = 'none')
-# 
+#
 # temp <- ne_countries(returnclass = 'sf')
-# 
-#   
+#
+#
 # ne_states() %>% ggplot() +
 #   scale_fill_manual(values = c('red3', 'blue2'))
-# 
-# 
+#
+#
 # us_states <- maps::map("state", plot = FALSE, exact = FALSE, fill = TRUE) %>% st_as_sf()
 # world_map <- map_data(map = "world")
 # world_map$region[world_map$subregion == "Alaska"] <- "Non-Dem USA"
@@ -2155,53 +2192,53 @@ merge_maps <- function(map1, map2) {
 # names(world_map)[5] <- "ID"
 # world_map <- world_map[, c(1:5)]
 # world_map <- world_map %>% st_as_sf()
-# 
+#
 # us_state <- maps::map("state", plot = FALSE, exact = FALSE, fill = TRUE)
 # IDs <- sapply(strsplit(us_state$names, ":"), function(x) x[1])
 # us_state <- map2SpatialPolygons(us_state, IDs=IDs, proj4string=CRS("+proj=longlat +datum=WGS84"))
 # us_state <- merge(us_state, us_regions, by.x = "", )
 # names(us_states)
 # world_map <- raster::aggregate(world_map, "region")
-# 
+#
 # states <- getData("GADM", country = "USA", level = 1) %>% st_as_sf() %>% st_transform(crs = 3310)
-# 
-# 
+#
+#
 # ggplot(non_blue_usa) +
 #   geom_sf(aes(fill = value)) +
 #   geom_sf_text(aes(label = region), check_overlap = T)+
 #   scale_fill_viridis_c()
-# 
+#
 # megakotas <- states %>%
 #   left_join(y = rownames_to_column(co2_pop, var = "State"), by = c("NAME_1" = "State")) %>%
 #   mutate(State = fct_collapse(NAME_1, Megakotas = c("North Dakota", "South Dakota"))) %>%
 #   # group_by(State) %>%  summarise(Murder = sum(Murder)) %>%
 #   st_simplify(dTolerance = 1000)
-# 
+#
 # world_map <- world_map %>% st_as_sf() %>% st_transform(crs = 3310) %>% st_simplify(dTolerance = 1000)
-# 
+#
 # us_coord <- map_data("state")
 # blue_states_coord <- map("state", regions = blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%  base::as.data.frame() %>%  sort_points(y = "y", x = "x") %>%  mutate(region = "Dem USA")
 # non_blue_states_coord <- map("state", regions = non_blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%  as.data.frame() %>%  sort_points(y = "y", x = "x") %>%  mutate(region = "Non-Dem USA")
 # names(blue_states_coord) <- names(non_blue_states_coord) <- c("long", "lat", "region")
 # world_map <- world_map[world_map$region != "USA",]
 # world_map <- merge_maps(world_map, non_blue_states_coord)
-# 
+#
 # world_map <- world_map %>%
 #   add_rownames("region") %>%
 #   mutate(region = replace(tolower(region), tolower(region) %in% c("north dakota", "south dakota"),
 #                           "megakotas")) %>%
 #   group_by(region) %>%
 #   mutate_all(sum)
-# 
+#
 # df <- rbind(co2_pop, co2_pop[co2_pop$code]
-# 
+#
 # ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map) + #coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) + #geom_sf() + #devtools::install_github("eliocamp/ggalt@new-coord-proj") update ggplot2 xlim = c(162, 178.5) for mercator
 #   geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(0.05, .29)) + # coord_fixed() +
 #   # geom_map(data = as.data.frame(list(ID = "Non-Dem USA", group = "0.4 - 0.8")), map = us_states, color = 'green', size = 0) +
 #   # geom_map(data = df, map = world_map, color = 'green', size = 0) +
 #   scale_fill_manual(name = "mean", drop = FALSE, values = color(8), labels = paste("a", 1:8)) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
-# 
-# 
+#
+#
 # ggplot(mapping = aes(map_id=country_map, fill = group)) +
 #   geom_map(data = df[!df$code %in% c("USA", "Dem USA", "Non-Dem USA"),],
 #            map = world_map, size = 0.15, color = "#ffffff") +
@@ -2210,25 +2247,25 @@ merge_maps <- function(map1, map2) {
 #   expand_limits(x = world_map$long, y = world_map$lat) +
 #   scale_fill_manual(name = "mean", drop = FALSE, values = color(8), labels = paste("a", 1:8)) +
 #   theme_void() + theme(legend.position = c(0.05, .29))
-# 
+#
 # plot_world_map("gain_adj_over_gdp_2050", condition = "", df = df, save = FALSE, breaks = NULL, labels = NULL, legend = NULL, limits = NULL, parties = NULL)
-# 
+#
 # us_states <- map_data("state")
 # states_data <- data.frame(region = ifelse(us_states$region %in% non_blue_states, "Non-Dem USA", "Dem USA"), long = c(us_states$x), lat = c(us_states$y))
 # states_sf <- st_as_sf(us_states, coords = c("long", "lat"), crs = 4326)
-# 
+#
 # ggplot() +
 #   geom_sf(data = states_sf, aes(fill = region, group = region), color = "black") +
 #   scale_fill_manual(values = c("A" = "lightblue", "B" = "white")) +
 #   coord_sf(crs = st_crs(4326)) +
 #   theme_void()
-# 
+#
 # us_coord <- map_data("state")
 # non_blue_coord <- map("state", regions = non_blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
 #   as.data.frame() %>%   sort_points(y = "y", x = "x") %>% mutate(region = "Non-Dem USA")
 # blue_coord <- map("state", regions = blue_states, boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
 #   as.data.frame() %>%   sort_points(y = "y", x = "x") %>% mutate(region = "Dem USA")
-# 
+#
 # us_regions <- data.frame(list(state = unique(us_states$region)))
 # # us_regions$region <- ifelse(us_regions$state %in% blue_states, "Dem USA", us_regions$state)
 # us_regions$value <- runif(49)
@@ -2236,7 +2273,7 @@ merge_maps <- function(map1, map2) {
 # us_regions$region <- us_regions$state
 # us_regions$region[grepl("Non-Dem USA", us_regions$region)] <- "Non-Dem USA"
 # # us_regions <- add_rownames(us_regions, "region")
-# 
+#
 # ggplot(mapping = aes(map_id=region, fill = value)) +
 #   geom_map(data = us_regions[us_regions$region != "Non-Dem USA",],
 #            map = blue_coord, size = 0.15, color = "#ffffff") +
@@ -2245,20 +2282,20 @@ merge_maps <- function(map1, map2) {
 #   expand_limits(x = us_coord$long, y = us_coord$lat) +
 #   scale_fill_continuous(low = 'thistle2', high = 'darkred', guide = 'colorbar') +
 #   labs(x=NULL, y=NULL)
-# 
+#
 # us_coord <- map_data("state")
 # megakotas_coord <- map("state", regions = non_blue_states,
 #                        boundary = TRUE, interior = FALSE, plot = FALSE)[c("x", "y")] %>%
 #   as.data.frame() %>%
 #   sort_points(y = "y", x = "x") %>%
 #   mutate(region = "dakota")
-# 
+#
 # us_regions$value <- runif(49)
 # us_regions$area <- us_regions$region
 # us_regions$region <- us_regions$state
 # us_regions$region[grepl("dakota", us_regions$region)] <- "dakota"
 # # us_regions <- add_rownames(us_regions, "region")
-# 
+#
 # ggplot(mapping = aes(map_id=region, fill = value)) +
 #   geom_map(data = us_regions[us_regions$region != "dakota",],
 #            map = us_coord, size = 0.15, color = "#ffffff") +
@@ -2370,13 +2407,13 @@ mean_ci_along_regressions <- function(regs, along, labels, df = e, origin = 'oth
           warning(paste("Covariate", l, "is absent from regression, replaced by NA."))
           regmxf <- rbind(regmxf, rep(NA, ncol(regmxf)))
           row.names(regmxf)[length(row.names(regmxf))] <- l }
-        
+
         coefs <- origin_value + c(0, regmxf[names_levels[2:k],1])
-        
+
         # SEs <- c(0, regmxf[names_levels[2:k],2])
         # z <- qnorm(1-(1-confidence)/2)
         # CI <- cbind(coefs - z*SEs, coefs + z*SEs) # CIs approximated using Standard Errors of logitmargin(...)$mfxest. Pb: no CI for omitted variable.
-        
+
         n <- length(reg$fitted.values)
         t <- qt(1-(1-confidence)/2, n)
         sigma <- sqrt(wtd.mean((reg$y - reg$fitted.values)^2)) #, weights = data_s$weight)) TODO: handle weight for logit_margin (uncommenting this would only work when there is no missing value so that length(data_s$weight)==length(reg$y))
@@ -2465,7 +2502,7 @@ mean_ci <- function(along, outcome_vars = outcomes, outcomes = paste0(outcome_va
   #   names(mean_ci)[which(names(mean_ci) == "along")] <- "temp"
   #   names(mean_ci)[which(names(mean_ci) == "y")] <- "along"
   #   names(mean_ci)[which(names(mean_ci) == "temp")] <- "y"  }
-  
+
   if (exists("countries_names")) {
     if (all(Levels(mean_ci$along)==sort(countries_names))) mean_ci$along <- factor(mean_ci$along, levels = countries_names)
     if (all(Levels(mean_ci$y)==sort(countries_names))) mean_ci$y <- factor(mean_ci$y, levels = rev(countries_names))
@@ -2496,13 +2533,13 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
   } else if (missing(name)) name <- "temp"
   name <- sub("rev(", "", sub(")", "", sub("country_name", "country", name, fixed = T), fixed = T), fixed = T)
   if (print_name) print(name) # TODO: name with subsamples
-  
+
   if (missing(folder) & deparse(substitute(df)) %in% tolower(countries)) folder <- paste0("../figures/", toupper(deparse(substitute(df))), "/")
-  
+
   if (missing(mean_ci)) mean_ci <- mean_ci(along = along, outcome_vars = vars, outcomes = outcomes, covariates = covariates, subsamples = subsamples, conditions = conditions, invert_y_along = invert_y_along, df = df, labels = labels, factor_along = factor_along,
                                            origin = origin, logit = logit, weight = weight, atmean = atmean, logit_margin = logit_margin, confidence = confidence, order_y = order_y, order_along = order_along,
                                            names_levels = names_levels, labels_along = labels_along, levels_along = levels_along, heterogeneity_condition = heterogeneity_condition, print_regs = return_mean_ci)
-  
+
   #  if (missing(mean_ci)) {
   #    mean_ci <- bind_rows((lapply(vars, heterogeneity_mean_CI, heterogeneity_group = along, df=df, weight = weight, along_labels = along_labels, country_heterogeneity = country_heterogeneity, heterogeneity_condition = heterogeneity_condition, condition = condition, confidence = confidence)))
   #    mean_ci$y <- factor(mean_ci$y, levels = vars, labels = labels) }
@@ -2515,14 +2552,14 @@ plot_along <- function(along, mean_ci = NULL, vars = outcomes, outcomes = paste0
   #    names(mean_ci)[which(names(mean_ci) == "variable")] <- "policy" # TODO: generalize this by rewriting heterogeneity_mean_CI
   #    names(mean_ci)[which(names(mean_ci) == "country")] <- "y"
   # }
-  
+
   if (plot_origin_line) {
     origins <- mean_ci$mean[mean_ci$along == levels_along[1]]
     names(origins) <- mean_ci$y[mean_ci$along == names_levels[1]]
   } else origins <- c()
   if (to_percent) mean_ci[,c("mean", "CI_low", "CI_high")] <- 100*mean_ci[,c("mean", "CI_low", "CI_high")]
   if (color_RdBu) colors <- sub("#F7F7F7", "#FFED6F", color(length(Levels(df[[along]])), rev_color = T)) # , grey_replaces_last = T, grey = T
-  
+
   plot <- ggplot(mean_ci) + sapply(origins, function(xint) geom_vline(aes(xintercept = xint), linetype = "longdash", color = "grey")) + # For plot, we need mean_ci (cols: mean, CI_low,high, variable, along), legend_x, legend_y. For save, we need: name, folder, width, height.
     geom_pointrange( aes(x = mean, y = y, color = along, xmin = CI_low, xmax = CI_high), position = position_dodge(width = .5)) +
     labs(x = legend_x, y = legend_y, color="") + theme_minimal() + theme(legend.title = element_blank(), legend.position = ifelse(legend_top, "top", "right")) +
@@ -2598,7 +2635,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     df <- d(country_list[i])
     k <- country_list[i]
     c <- sub("[0-9p]+", "", toupper(k))
-    
+
     labels[[k]] <- "Sample size"
     pop[[k]] <- ""
     sample[[k]] <- sample_weighted[[k]] <- prettyNum(nrow(df), big.mark = ",")
@@ -2619,7 +2656,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     if (weighted) names(sample_weighted[[k]]) <- labels[[k]]
     rows <- label_operator(rows, labels[[k]])
   }
-  
+
   variables <- unique(gsub("(.*):.*", "\\1", rows))
   order_rows <- c()
   for (v in variables) for (i in 1:length(rows)) order_rows <- c(order_rows, if (v == sub("(.*):.*", "\\1", rows[i])) i else NULL)
@@ -2630,7 +2667,7 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
     if (non_weighted) table[[paste0(k, "_sample")]] <- sample[[k]][rows]
     if (weighted) table[[paste0(k, "_sample_weighted")]] <- sample_weighted[[k]][rows]
   }
-  
+
   table <- table[!multi_grepl(omit, row.names(table)),]
   if (return_table) return(table)
   else export_representativeness_table(table = table, country_list = country_list, weighted = weighted, non_weighted = non_weighted, filename = if (all) paste0(filename, "_all") else filename, folder = folder, abbr = abbr)
@@ -2639,26 +2676,26 @@ representativeness_table <- function(country_list, weighted = T, non_weighted = 
 export_representativeness_table <- function(table, country_list, weighted = T, non_weighted = T, filename = NULL, folder = "../tables/sample_composition", abbr = NULL) {
   header <- c("", rep((1 + weighted + non_weighted), length(country_list)))
   names(header) <- c("", country_list)
-  
+
   line_sep <- c()
   for (i in 2:nrow(table)) {
     previous <- substr(row.names(table)[i-1], 1, 5)
     current <- substr(row.names(table)[i], 1, 5)
     line_sep <- c(line_sep, if (previous == current) "" else "\\addlinespace")
   }
-  
+
   row.names(table) <- gsub("_", "\\_", row.names(table), fixed = T)
   if (is.null(abbr)) abbr <- length(country_list) > 3
   latex_output <- kbl(table, "latex", caption = NULL, position = "b", escape = F, booktabs = T,
                       col.names = rep(c("Pop.", if (non_weighted) {if (abbr) "Sam." else ("Sample")}, if (weighted) {if (abbr) "\\makecell{Wght.\\\\sam.}" else "\\makecell{Weighted\\\\sample}"}), length(country_list)),
                       linesep = line_sep) %>% add_header_above(header)
-  
+
   if (is.null(filename)) filename <- paste(country_list, collapse = "_")
   if (filename == "_all") filename <- paste0(paste(country_list, collapse = "_"), "_all")
   cat(paste(latex_output, collapse="\n"), file = paste0(folder, filename, ".tex"))
 }
 
-reweighted_estimate <- function(predicted_var = NULL, country = "EU", weights = FALSE, verbose = FALSE, omit = c()) { 
+reweighted_estimate <- function(predicted_var = NULL, country = "EU", weights = FALSE, verbose = FALSE, omit = c()) {
   # Regresses predicted_var on 'levels_quotas[[country]]' and predicts the value based on population frequencies in 'pop_freq'.
   # If is.null(predicted_var), returns instead the vector of population frequencies with which to multiply the vector of coefficients of the regression.
   e <- d(country)
@@ -2680,7 +2717,7 @@ reweighted_estimate <- function(predicted_var = NULL, country = "EU", weights = 
     if (Levels(e[[c_name]])[1] %in% c("TRUE / FALSE / NA", "TRUE / FALSE")) freq_vec[paste0(new_c, "TRUE")] <- freq_pop[[c]][[1]]
     else for (i in intersect(Levels(e[[c_name]]), levels_quotas[[c]])) freq_vec[paste0(new_c, i)] <- freq_pop[[c]][[i]]
   }
-  
+
   if (is.null(predicted_var)) return(freq_vec)
   else {
     formula_reg <- reg_formula(predicted_var, covariates[!multi_grepl(omit, covariates)])
@@ -2689,7 +2726,7 @@ reweighted_estimate <- function(predicted_var = NULL, country = "EU", weights = 
     if (verbose) {
       print(paste("Share of observations in regression:", length(reg$fitted.values)/nrow(e)))
       print("Levels without a coefficient:")
-      print(setdiff(names(freq_vec), names(reg$coefficients)))    
+      print(setdiff(names(freq_vec), names(reg$coefficients)))
     }
     if (length(setdiff(names(reg$coefficients), names(freq_vec))) > 0) {
       warning(paste("Coefficients not taken into account:", paste(setdiff(names(reg$coefficients), names(freq_vec)), collapse = "; ")))
