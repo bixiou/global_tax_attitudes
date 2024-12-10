@@ -252,6 +252,52 @@ desc_table(dep_vars = "list_exp", filename = "US1/reg_list_exp", dep.var.labels 
 # i, g, ir, gr, igr: 123456
 # i, ig, ir, gr, igr: 123456
 
+# TODO!! t, p
+
+# /!\ Weighted list experiment regression is not supported (yet) for the multi-item design.
+# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
+# fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_ict', J = 2, data = all, method = "lm", multi.condition = "level")
+# (avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
+
+# Code copied from https://github.com/SensitiveQuestions/list/blob/master/R/ictreg.R, line ~5030
+# logistic <- function(object) exp(object)/(1+exp(object))
+# fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
+# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all[all$wave != "US2",], weights = weight, family = binomial("logit"))
+# # summary(lm(gcs_support == 'Yes' ~ 1, data = all[all$wave != "US2",], weights = weight))
+# # fit.list <- fit.list_eu
+# # fit.direct <- fit.direct_eu
+# 
+# beta <- fit.list$par.treat ## was coef(object)[1:nPar]
+# var.beta <- vcov(fit.list)[1:length(fit.list$coef.names), 1:length(fit.list$coef.names)]
+# xvar.direct <- model.matrix(as.formula(paste("~", c(fit.list$call$formula[[3]]))), fit.direct$data)
+# n.draws <- 1000
+# draws.list <- mvrnorm(n = n.draws, mu = beta, Sigma = var.beta/1.5^2) # /1.5^2 simulates a higher efficiency, as if ML estimator was used. Equality cannot be rejected with 90% confidence.
+# draws.direct <- mvrnorm(n = n.draws, mu = coef(fit.direct), Sigma = vcov(fit.direct))
+# pred.list.mean <- pred.direct.mean <- pred.diff.mean <- rep(NA, n.draws)
+# for (d in 1:n.draws) {
+#   par.g <- draws.list[d, ]
+#   # if (object$method == "lm")
+#     pred.list <- fit.list$x %*% par.g
+#   # else
+#   #   pred.list <- logistic(fit.list$x %*% par.g)
+# 
+#   pred.direct <- logistic(fit.list$x %*% draws.direct[d,])
+# 
+#   # pred.list.mean[d] <- mean(pred.list) # This is the original code, it doesn't include weights
+#   # pred.direct.mean[d] <- mean(pred.direct)
+#   pred.list.mean[d] <- wtd.mean(pred.list, weights = fit.list$weights)
+#   pred.direct.mean[d] <- wtd.mean(pred.direct, weights = fit.list$weights)
+#   pred.diff.mean[d] <- pred.list.mean[d] - pred.direct.mean[d]
+# 
+# }
+# (est.diff <- mean(pred.diff.mean))
+# (se.diff <- sd(pred.diff.mean))
+# mean(pred.list.mean)
+# mean(pred.direct.mean)
+# level <- .9
+# (ci.upper.diff <- est.diff + qt(1-(1-level)/2, df = nrow(fit.list$x)) * se.diff) # .007 (EU: .01)
+# (ci.lower.diff <- est.diff - qt(1-(1-level)/2, df = nrow(fit.list$x)) * se.diff) # -.06 (EU: -.075)
+
 
 ##### Conjoint analysis #####
 # a

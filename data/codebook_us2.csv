@@ -1,0 +1,1818 @@
+Variable,Label,Levels
+date,date: Start Date,[string variable]
+date_end,date_end: End Date,[string variable]
+status_response,status_response: Response Type,IP Address
+ip,ip: NA,TRUE / FALSE / NA
+progress,progress: Progress,100
+time,time: Duration (in seconds),[string variable]
+terminated,terminated: Finished,True
+date_recored,date_recored: Recorded Date,[string variable]
+ID_qualtrics,ID_qualtrics: NA,TRUE / FALSE / NA
+name,name: Recipient Last Name,NA
+firstname,firstname: Recipient First Name,NA
+mmail,mmail: Recipient Email,NA
+ref,ref: External Data Reference,NA
+lat,lat: NA,TRUE / FALSE / NA
+long,long: NA,TRUE / FALSE / NA
+distr,distr: Distribution Channel,anonymous
+lang,lang: User Language,EN / ES
+consent,"consent: Welcome to this survey!
+
+
+
+This survey is anonymous and is conducted for research purposes on a representative sample of 2,000 American people.
+
+ 
+It takes 10 to 15 min to complete.
+
+ 
+
+The survey contains lotteries and awards for those who get the correct answer to some understanding questions.
+
+If you are attentive and lucky, you can win up to $150 in points. (See terms and conditions).
+ 
+
+Please answer every question carefully.
+
+ 
+
+Do you agree to participate in the survey?",Yes
+gender,gender: What is your gender?,Man / Woman / Other
+age_exact,age_exact: How old are you?,< 18 / 18-20 / 21-24 / 25-29 / 30-34 / 35-39 / 40-44 / 45-49 / 50-54 / 55-59 / 60-64 / 65-69 / 70-74 / 75-79 / 80-84 / 85-89 / 90-99 / 100+
+zipcode,zipcode: What is your ZIP code?,min: 1062 / max: 99950
+couple,couple: Do you live with your partner (if you have one)?,PNR / No / Yes
+hh_size,"hh_size: How many people are in your household? 
+The household includes: you, the members of your family who live with you, and your dependents.",1 / 2 / 3 / 4 / 5
+race_white,race_white: What race or ethnicity do you identify with? (Multiple answers are possible) - White,TRUE / FALSE
+race_black,race_black: What race or ethnicity do you identify with? (Multiple answers are possible) - Black or African American,TRUE / FALSE
+race_hispanic,race_hispanic: What race or ethnicity do you identify with? (Multiple answers are possible) - Hispanic,TRUE / FALSE
+race_asian,race_asian: What race or ethnicity do you identify with? (Multiple answers are possible) - Asian,TRUE / FALSE
+race_native,race_native: What race or ethnicity do you identify with? (Multiple answers are possible) - American Indian or Alaskan Native,TRUE / FALSE
+race_hawaii,race_hawaii: What race or ethnicity do you identify with? (Multiple answers are possible) - Native Hawaiian or Pacific Islander,TRUE / FALSE
+race_other,race_other: What race or ethnicity do you identify with? (Multiple answers are possible) - Other,NA / Other
+race_pnr,race_pnr: What race or ethnicity do you identify with? (Multiple answers are possible) - Prefer not to say,TRUE / FALSE
+income,"income: What is the annual gross income of your household (before taxes)?
+
+This includes all income: wages, self-employment earnings, Social Security benefits, pensions, investment income, welfare payments, and income from other sources.",< 20k / 20-35k / 35-42k / 42-50k / 50-65k / 65-82k / 82-103k / 103-130k / 130-145k / 145-165k / 165-250k / > 250k
+education,"education: What is the highest level of education you have completed? /! For EU, the values don't correspond to the responses. To see the correspondence between values and responses in each country, cf. specificities.xlsx$Education",3.3 / 3.2 / 7-8 / 4-5 / 6 / 3.1 / 2 / 0-1
+employment_status,employment_status: What is your employment status?,Inactive / Part-time employed / Retired / Unemployed / Full-time employed / Self-employed / Student
+home_tenant,home_tenant: Are you a homeowner or a tenant? (Multiple answers are possible) - Tenant,TRUE / FALSE
+home_owner,home_owner: Are you a homeowner or a tenant? (Multiple answers are possible) - Owner,TRUE / FALSE
+home_landlord,home_landlord: Are you a homeowner or a tenant? (Multiple answers are possible) - Landlord renting out property,TRUE / FALSE
+home_hosted,home_hosted: Are you a homeowner or a tenant? (Multiple answers are possible) - Hosted free of charge,TRUE / FALSE
+wealth_couple,"wealth_couple: What is the estimated value of your household's assets (in U.S. dollars)?
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth $300,000 and you have $100,000 left to repay on your mortgage, your assets are $200,000.
+I estimate my household's assets net of debt to be:","Between $4,000 and $120,000 / Less than $0 (I have a net debt) / NA / Close to $0 / More than $380,000 / Between $120,000 and $380,000"
+wealth_single,"wealth_single: What is the estimated value of your assets (in U.S. dollars)? 
+
+Include here all your possessions (home, car, savings, etc.) net of debt. For example, if you own a house worth $300,000 and you have $100,000 left to repay on your mortgage, your assets are $200,000. 
+
+I estimate my assets net of debt to be:","NA / Less than $0 (I have a net debt) / Close to $0 / Between $60,000 and $190,000 / More than $190,000 / Between $4,000 and $60,000"
+Q112_First,Q112_First: Timing - First Click,[string variable]
+Q112_Last,Q112_Last: Timing - Last Click,[string variable]
+duration_gcs,duration_gcs: Timing - Page Submit,min: 0.04 / max: 50.987
+Q112_Click,Q112_Click: Timing - Click Count,[string variable]
+gcs_win_lose,"gcs_win_lose: Who would win or lose financially in the Global climate scheme? 
+Three respondents with the expected answer will get $50 in points.","Typical win, poorest lose / Typical lose, poorest lose / Typical lose, poorest win / Typical win, poorest win"
+Q111_First,Q111_First: Timing - First Click,[string variable]
+Q111_Last,Q111_Last: Timing - Last Click,[string variable]
+duration_nr,duration_nr: Timing - Page Submit,min: 0.025 / max: 61.956
+Q111_Click,Q111_Click: Timing - Click Count,[string variable]
+nr_win_lose,"nr_win_lose: Who would win or lose financially in the National redistribution? 
+Three respondents with the expected answer will get $50 in points.","Typical win, richest lose / Typical lose, richest win / Typical win, richest win / Typical lose, richest lose"
+Q110_First,Q110_First: Timing - First Click,[string variable]
+Q110_Last,Q110_Last: Timing - Last Click,[string variable]
+duration_both,duration_both: Timing - Page Submit,min: 0.032 / max: 21.714
+Q110_Click,Q110_Click: Timing - Click Count,[string variable]
+both_win_lose,"both_win_lose: If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical American be financially affected?Three respondents with the expected answer will get $50 in points.",Lose / Win / Unaffected
+Q60_First,Q60_First: Timing - First Click,[string variable]
+Q60_Last,Q60_Last: Timing - Last Click,[string variable]
+duration_gcs_perception,duration_gcs_perception: Timing - Page Submit,min: 0.06 / max: 775.898
+Q60_Click,Q60_Click: Timing - Click Count,[string variable]
+gcs_important_limit_CC,"gcs_important_limit_CC: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would succeed in limiting climate change.",Not at all important / Not so important / Quite important / Very important
+gcs_important_hurt_economy,"gcs_important_hurt_economy: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would hurt the U.S. economy.",Not at all important / Not so important / Quite important / Very important
+gcs_important_hurt_me,"gcs_important_hurt_me: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would penalize my household.",Not at all important / Not so important / Quite important / Very important
+gcs_important_change_lifestyles,"gcs_important_change_lifestyles: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would make people change their lifestyle.",Not at all important / Not so important / Quite important / Very important
+gcs_important_reduce_poverty,"gcs_important_reduce_poverty: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would reduce poverty in low-income countries.",Not at all important / Not so important / Quite important / Very important
+gcs_important_hurt_poor,"gcs_important_hurt_poor: When determining your support or opposition to the Global climate scheme, which points are important to you? - It might be detrimental to some poor countries.",Not at all important / Not so important / Quite important / Very important
+gcs_important_foster_cooperation,"gcs_important_foster_cooperation: When determining your support or opposition to the Global climate scheme, which points are important to you? - It could foster global cooperation.",Not at all important / Not so important / Quite important / Very important
+gcs_important_fuel_corruption,"gcs_important_fuel_corruption: When determining your support or opposition to the Global climate scheme, which points are important to you? - It could fuel corruption in low-income countries.",Not at all important / Not so important / Quite important / Very important
+gcs_important_fuel_fraud,"gcs_important_fuel_fraud: When determining your support or opposition to the Global climate scheme, which points are important to you? - It could be subject to fraud.",Not at all important / Not so important / Quite important / Very important
+gcs_important_difficult_enact,"gcs_important_difficult_enact: When determining your support or opposition to the Global climate scheme, which points are important to you? - It would be technically difficult to put in place.",Not at all important / Not so important / Quite important / Very important
+gcs_important_having_info,"gcs_important_having_info: When determining your support or opposition to the Global climate scheme, which points are important to you? - Having enough information on this scheme and its consequences.",Not at all important / Not so important / Quite important / Very important
+gcs_field,"gcs_field: When thinking about the Global climate scheme, what comes to your mind?
+
+Please list pros and cons of the Global climate scheme.",[string variable]
+gcs_support,gcs_support: Do you support the Global climate scheme?,PNR / No / Yes
+nr_support,nr_support: Do you support the National redistribution scheme?,PNR / No / Yes
+global_tax_support,"global_tax_support: Do you support or oppose a tax on millionaires of all countries to finance low-income countries?
+
+Such tax would finance infrastructure and public services such as access to drinking water, healthcare, and education.",Strongly oppose / Somewhat oppose / Indifferent / Somewhat support / Strongly support
+national_tax_support,national_tax_support: Do you support or oppose a tax on millionaires in the U.S. to finance affordable housing and universal childcare/pre-K?,Strongly oppose / Somewhat oppose / Indifferent / Somewhat support / Strongly support
+global_tax_global_share,"global_tax_global_share: Imagine a wealth tax on households with net worth above $5 million, enacted in all countries around the world.
+
+In the U.S., the tax revenues collected would amount to $430 billion per year (that is, 2% of U.S. GDP), while it would amount to $1 billion in all low-income countries taken together (28 countries, home to 700 million people, most of them in Africa).
+
+Each country would retain part of the revenues it collects, and the remaining part would be pooled at the global level to finance infrastructure and public services in low-income countries.
+
+ 
+
+What percentage should be pooled to finance low-income countries (instead of retained in the country's national budget)? - Percent of global wealth tax that should go to low-income countries",0 / 10 / 20 / 30 / 40 / 50 / 60 / 70 / 80 / 90 / 100
+global_tax_sharing,global_tax_sharing: T/F/NA Prefers to allocate half of global wealth tax to low-income countries rather than keeping all in collector country's national budgets. NA if the question is not asked (cf. branch_global_tax).,TRUE / FALSE / NA
+attention_test,"attention_test: Please select ""A little"" (this is a test to see if you are paying attention).",A little
+foreign_aid_belief,"foreign_aid_belief: From your best guess, what percentage of U.S. government spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?
+
+
+
+For your information, government spending totals 38% of U.S. GDP, it includes federal, State and local government spending, and apart from foreign aid, it covers the following items: defense, social security (retirement pensions), health (including Medicare and Medicaid), welfare benefits (including food stamps and EITC), education, roads, justice, other programs and federal agencies (including in energy, science...).",< 0.1% / 0.1 to 0.2 / 0.3 to 0.5 / 0.6 to 1 / 1.1 to 1.7 / 1.8 to 2.6 / 2.7 to 4 / 4.1 to 6 / 6.1 to 9 / 9.1 to 13 / 13.1 to 25 / > 25%
+foreign_aid_preferred_no_info,"foreign_aid_preferred_no_info: If you could choose the government spending, what percentage would you allocate to foreign aid?",< 0.1% / 0.1 to 0.2 / 0.3 to 0.5 / 0.6 to 1 / 1.1 to 1.7 / 1.8 to 2.6 / 2.7 to 4 / 4.1 to 6 / 6.1 to 9 / 9.1 to 13 / 13.1 to 25 / > 25%
+foreign_aid_preferred_info,"foreign_aid_preferred_info: Actually, 0.4% of the U.S. government spending is allocated to foreign aid.
+
+
+
+If you could choose the government spending, what percentage would you allocate to foreign aid?",< 0.1% / 0.1 to 0.2 / 0.3 to 0.5 / 0.6 to 1 / 1.1 to 1.7 / 1.8 to 2.6 / 2.7 to 4 / 4.1 to 6 / 6.1 to 9 / 9.1 to 13 / 13.1 to 25 / > 25%
+foreign_aid_raise_how_defense,"foreign_aid_raise_how_defense: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on defense",TRUE / FALSE / NA
+foreign_aid_raise_how_pensions,"foreign_aid_raise_how_pensions: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on retirement pensions",TRUE / FALSE / NA
+foreign_aid_raise_how_healthcare,"foreign_aid_raise_how_healthcare: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on healthcare (Medicare and Medicaid)",TRUE / FALSE / NA
+foreign_aid_raise_how_welfare,"foreign_aid_raise_how_welfare: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on welfare benefits (like EITC or food stamps)",TRUE / FALSE / NA
+foreign_aid_raise_how_education,"foreign_aid_raise_how_education: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on education",TRUE / FALSE / NA
+foreign_aid_raise_how_other,"foreign_aid_raise_how_other: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Lower spending on other programs and federal agencies",TRUE / FALSE / NA
+foreign_aid_raise_how_wealthy,"foreign_aid_raise_how_wealthy: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher taxes on the wealthiest",TRUE / FALSE / NA
+foreign_aid_raise_how_corporations,"foreign_aid_raise_how_corporations: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher corporate income tax rate",TRUE / FALSE / NA
+foreign_aid_raise_how_income_tax,"foreign_aid_raise_how_income_tax: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher personal income tax rates",TRUE / FALSE / NA
+foreign_aid_raise_how_deficit,"foreign_aid_raise_how_deficit: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Higher public deficit",TRUE / FALSE / NA
+foreign_aid_raise_how_order_defense,"foreign_aid_raise_how_order_defense: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Lower spending on defense",5 / 3 / NA / 4 / 2 / 1
+foreign_aid_raise_how_order_pensions,"foreign_aid_raise_how_order_pensions: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Lower spending on retirement pensions",1 / NA / 2 / 5 / 4 / 3
+foreign_aid_raise_how_order_healthcare,"foreign_aid_raise_how_order_healthcare: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Lower spending on healthcare (Medicare and Medicaid)",2 / 5 / NA / 1 / 3 / 4
+foreign_aid_raise_how_order_welfare,"foreign_aid_raise_how_order_welfare: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Lower spending on welfare benefits (like EITC or food stamps)",4 / NA / 3 / 1 / 2 / 5
+foreign_aid_raise_how_order_education,"foreign_aid_raise_how_order_education: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Lower spending on education",3 / 2 / NA / 5 / 4 / 1
+foreign_aid_raise_how_order_other,"foreign_aid_raise_how_order_other: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Lower spending on other programs and federal agencies",6 / NA
+foreign_aid_raise_how_order_wealthy,"foreign_aid_raise_how_order_wealthy: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Higher taxes on the wealthiest",10 / 7 / NA
+foreign_aid_raise_how_order_corporations,"foreign_aid_raise_how_order_corporations: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Higher corporate income tax rate",9 / 8 / NA
+foreign_aid_raise_how_order_income_tax,"foreign_aid_raise_how_order_income_tax: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Higher personal income tax rates",8 / 9 / NA
+foreign_aid_raise_how_order_deficit,"foreign_aid_raise_how_order_deficit: Your previous answer shows that you would like to increase U.S. foreign aid.
+
+How would you like to finance such increase in foreign aid? (Multiple answers possible) - Display Order - Higher public deficit",7 / 10 / NA
+foreign_aid_reduce_how_defense,"foreign_aid_reduce_how_defense: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on defense",TRUE / FALSE / NA
+foreign_aid_reduce_how_pensions,"foreign_aid_reduce_how_pensions: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on retirement pensions",TRUE / FALSE / NA
+foreign_aid_reduce_how_healthcare,"foreign_aid_reduce_how_healthcare: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on healthcare (Medicare and Medicaid)",TRUE / FALSE / NA
+foreign_aid_reduce_how_welfare,"foreign_aid_reduce_how_welfare: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on welfare benefits (like EITC or food stamps)",TRUE / FALSE / NA
+foreign_aid_reduce_how_education,"foreign_aid_reduce_how_education: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on education",TRUE / FALSE / NA
+foreign_aid_reduce_how_other,"foreign_aid_reduce_how_other: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Higher spending on other programs and federal agencies",TRUE / FALSE / NA
+foreign_aid_reduce_how_wealthy,"foreign_aid_reduce_how_wealthy: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower taxes on the wealthiest",TRUE / FALSE / NA
+foreign_aid_reduce_how_corporations,"foreign_aid_reduce_how_corporations: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower corporate income tax rate",TRUE / FALSE / NA
+foreign_aid_reduce_how_income_tax,"foreign_aid_reduce_how_income_tax: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower personal income tax rates",TRUE / FALSE / NA
+foreign_aid_reduce_how_deficit,"foreign_aid_reduce_how_deficit: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Lower public deficit",TRUE / FALSE / NA
+foreign_aid_reduce_how_order_defense,"foreign_aid_reduce_how_order_defense: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Higher spending on defense",NA / 2 / 4 / 3 / 5 / 1
+foreign_aid_reduce_how_order_pensions,"foreign_aid_reduce_how_order_pensions: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Higher spending on retirement pensions",NA / 1 / 3 / 5 / 2 / 4
+foreign_aid_reduce_how_order_healthcare,"foreign_aid_reduce_how_order_healthcare: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Higher spending on healthcare (Medicare and Medicaid)",NA / 5 / 1 / 2 / 3 / 4
+foreign_aid_reduce_how_order_welfare,"foreign_aid_reduce_how_order_welfare: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Higher spending on welfare benefits (like EITC or food stamps)",NA / 4 / 3 / 5 / 1 / 2
+foreign_aid_reduce_how_order_education,"foreign_aid_reduce_how_order_education: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Higher spending on education",NA / 3 / 2 / 5 / 1 / 4
+foreign_aid_reduce_how_order_other,"foreign_aid_reduce_how_order_other: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Higher spending on other programs and federal agencies",NA / 6
+foreign_aid_reduce_how_order_wealthy,"foreign_aid_reduce_how_order_wealthy: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Lower taxes on the wealthiest",NA / 10 / 7
+foreign_aid_reduce_how_order_corporations,"foreign_aid_reduce_how_order_corporations: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Lower corporate income tax rate",NA / 9 / 8
+foreign_aid_reduce_how_order_income_tax,"foreign_aid_reduce_how_order_income_tax: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Lower personal income tax rates",NA / 8 / 9
+foreign_aid_reduce_how_order_deficit,"foreign_aid_reduce_how_order_deficit: Your previous answer shows that you would like to reduce U.S. foreign aid.
+
+How would you like to use the freed budget? (Multiple answers possible) - Display Order - Lower public deficit",NA / 7 / 10
+Q59_First,Q59_First: Timing - First Click,NA
+Q59_Last,Q59_Last: Timing - Last Click,NA
+not_asked_duration_other_policies,not_asked_duration_other_policies: Timing - Page Submit,NA
+Q59_Click,Q59_Click: Timing - Click Count,NA
+not_asked_climate_compensation_support,"not_asked_climate_compensation_support: The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - Payments from high-income countries to compensate low-income countries for climate damages",NA
+not_asked_climate_mitigation_support,"not_asked_climate_mitigation_support: The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - High-income countries funding renewable energy in low-income countries",NA
+not_asked_climate_adaptation_support,"not_asked_climate_adaptation_support: The following policies are discussed  at international negotiations on how to deal with climate change. 
+
+Do you support or oppose the following policies? - High-income countries contributing $100 billion per year to help low-income countries adapt to climate change",NA
+not_asked_debt_cancellation_support,not_asked_debt_cancellation_support: Do you support or oppose the following global policies? - Cancellation of low-income countries' public debt,NA
+not_asked_democratise_un_imf_support,"not_asked_democratise_un_imf_support: Do you support or oppose the following global policies? - Democratise international institutions (UN, IMF) by making a country's voting right proportional to its population",NA
+not_asked_remove_tariffs_support,not_asked_remove_tariffs_support: Do you support or oppose the following global policies? - Removing tariffs on imports from low-income countries,NA
+not_asked_global_min_wage_support,not_asked_global_min_wage_support: Do you support or oppose the following global policies? - A minimum wage in all countries at 50% of local median wage,NA
+not_asked_global_register_support,not_asked_global_register_support: Do you support or oppose the following global policies? - Fight tax evasion by creating a global financial register to record ownership of all assets,NA
+not_asked_cap_wealth_support,not_asked_cap_wealth_support: Do you support or oppose the following global policies? - A maximum wealth limit of $100 million,NA
+not_asked_foreign_aid_raise_support,"not_asked_foreign_aid_raise_support: Currently, 0.4% of U.S. government spending (that is, 0.2% of U.S. GDP) is spent on foreign aid to reduce poverty in low-income countries.
+
+Do you support the U.S. transferring more money to low-income countries?",NA
+not_asked_foreign_aid_condition_human_rights,not_asked_foreign_aid_condition_human_rights: What conditions should be required for the U.S. to increase its foreign aid? (Multiple answers possible) - Selected Choice - That recipient countries comply with climate targets and human rights.,TRUE / FALSE
+not_asked_foreign_aid_condition_fight_migration,not_asked_foreign_aid_condition_fight_migration: What conditions should be required for the U.S. to increase its foreign aid? (Multiple answers possible) - Selected Choice - That recipient countries cooperate to fight illegal migrations.,TRUE / FALSE
+not_asked_foreign_aid_condition_all_high_income,not_asked_foreign_aid_condition_all_high_income: What conditions should be required for the U.S. to increase its foreign aid? (Multiple answers possible) - Selected Choice - That other high-income countries also increase their foreign aid.,TRUE / FALSE
+not_asked_foreign_aid_condition_tax_rich,not_asked_foreign_aid_condition_tax_rich: What conditions should be required for the U.S. to increase its foreign aid? (Multiple answers possible) - Selected Choice - That this is financed by increased taxes on millionaires.,TRUE / FALSE
+not_asked_foreign_aid_condition_no_diversion,not_asked_foreign_aid_condition_no_diversion: What conditions should be required for the U.S. to increase its foreign aid? (Multiple answers possible) - Selected Choice - That we can be sure the aid reaches people in need and money is not diverted.,TRUE / FALSE
+not_asked_foreign_aid_condition_other_choice,not_asked_foreign_aid_condition_other_choice: What conditions should be required for the U.S. to increase its foreign aid? (Multiple answers possible) - Selected Choice - Other:,TRUE / FALSE
+not_asked_foreign_aid_condition_other,not_asked_foreign_aid_condition_other: What conditions should be required for the U.S. to increase its foreign aid? (Multiple answers possible) - Other: - Text,NA
+not_asked_foreign_aid_no_ineffective,not_asked_foreign_aid_no_ineffective: Why do you oppose the U.S. increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid perpetuates poverty as it makes people feel less responsible for themselves.,TRUE / FALSE
+not_asked_foreign_aid_no_diversion,not_asked_foreign_aid_no_diversion: Why do you oppose the U.S. increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid is not effective as most of it is diverted.,TRUE / FALSE
+not_asked_foreign_aid_no_pressure,not_asked_foreign_aid_no_pressure: Why do you oppose the U.S. increasing its foreign aid? (Multiple answers possible) - Selected Choice - Aid is a pressure tactic for high-income countries that prevents low-income countries from developing freely.,TRUE / FALSE
+not_asked_foreign_aid_no_not_our_role,not_asked_foreign_aid_no_not_our_role: Why do you oppose the U.S. increasing its foreign aid? (Multiple answers possible) - Selected Choice - The U.S. is not responsible for what happens in other countries.,TRUE / FALSE
+not_asked_foreign_aid_no_nation_first,not_asked_foreign_aid_no_nation_first: Why do you oppose the U.S. increasing its foreign aid? (Multiple answers possible) - Selected Choice - Charity begins at home: there is already a lot to do to support the American people in need.,TRUE / FALSE
+not_asked_foreign_aid_no_other_choice,not_asked_foreign_aid_no_other_choice: Why do you oppose the U.S. increasing its foreign aid? (Multiple answers possible) - Selected Choice - Other:,TRUE / FALSE
+not_asked_foreign_aid_no_other,not_asked_foreign_aid_no_other: Why do you oppose the U.S. increasing its foreign aid? (Multiple answers possible) - Other: - Text,NA
+donation_charities,donation_charities: How much did you give to charities in 2022?,0 / 1 – 100 / 101 – 500 / 501 – 1000 / 1001 – 5000 / > 5000
+interested_politics,interested_politics: To what extent are you interested in politics?,Not at all / A little / Moderately / A lot / A great deal
+involvement_govt,"involvement_govt: Where would you rate yourself on a scale of 1 to 5, where 1 means you think the government should do only those things necessary to provide the most basic government functions, and 5 means you think the government should take active steps in every area it can to try and improve the lives of its citizens? - Desired involvement of government",5 / 2 / 3 / 4 / 1
+left_right,"left_right: On economic policy matters, where do you see yourself on a scale of 1 to 5, where 1 is Left (favoring equality and government interventions) and 5 is Right (favoring free competition and little government intervention)? - Left (1) to Right (5) on economic issues",1 / 3 / 5 / 4 / 2
+vote_participation,vote_participation: Did you vote in the 2020 U.S. presidential election?,Yes / No / No right to vote / Prefer not to say
+vote_us_voters,vote_us_voters: Which candidate did you vote for in the 2020 U.S. presidential election?,Biden / Prefer not to say / NA / Trump / Jorgensen / Hawkins
+vote_us_non_voters,"vote_us_non_voters: Even if you did not vote in the 2020 U.S. presidential election, please indicate the candidate that you were most likely to
+have voted for or who represents your views more closely.",NA / Biden / Trump / Prefer not to say / Hawkins / Jorgensen
+political_affiliation,"political_affiliation: What do you consider to be your political affiliation, as of today?",Democrat / Independent / Other / Republican / Non-Affiliated
+problem_inequality,problem_inequality: To what extent do you think the following issues are a problem? - Income inequality in the U.S.,"Not an issue / Not a priority / Already addressed / Important, should do more / Most pressing issue"
+problem_climate,problem_climate: To what extent do you think the following issues are a problem? - Climate change,"Not an issue / Not a priority / Already addressed / Important, should do more / Most pressing issue"
+problem_poverty,problem_poverty: To what extent do you think the following issues are a problem? - Global poverty,"Not an issue / Not a priority / Already addressed / Important, should do more / Most pressing issue"
+group_defended,group_defended: What group do you defend when you vote?,"Family and self / Relatives / Region, U.S. State or town / Culture or religion / Fellow citizens / Europeans / Humans / Sentient beings"
+Q58_First,Q58_First: Timing - First Click,[string variable]
+Q58_Last,Q58_Last: Timing - Last Click,[string variable]
+duration_feedback,duration_feedback: Timing - Page Submit,min: 0.084 / max: 17.349
+Q58_Click,Q58_Click: Timing - Click Count,[string variable]
+comment_field,"comment_field: The survey is nearing completion. You can now enter any comments, thoughts or suggestions in the field below.",[string variable]
+poverty_field,"poverty_field: According to you, what should high-income countries do to fight extreme poverty in low-income countries?",[string variable]
+survey_biased,,"No / Yes, right / Yes, left"
+interview,"interview: Lastly, are you interested to be interviewed by a researcher (through videoconferencing) for 30 min? 
+This is totally optional and will not be rewarded.",No / Yes
+iat_rp1,"iat_rp1: National
+
+
+
+
+ Global
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Instructions: Place your left and right index fingers on the E and I keys. At the top of the screen are 2 categories. In the task, words and/or images appear in the middle of the screen. 
+
+When the word/image belongs to the category on the left, press the E key as fast as you can. When it belongs to the category on the right, press the I key as fast as you can. If you make an error, a red X will appear. Correct errors by hitting the other key.
+
+
+
+
+Please try to go as fast as you can while making as few errors as possible.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 1 of 7
+
+
+
+
+x",NA
+iat_rp2,"iat_rp2: Unfair
+
+
+
+
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Now, the categories have changed, but the rules remain the same. Please try to go as fast as you can while making as few errors as possible. Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 2 of 7
+
+
+
+
+x",NA
+iat_rp3,"iat_rp3: National
+	or
+	Unfair
+
+
+
+
+	Global
+	or
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Now the four categories you saw separately will appear together. Remember, each word/image fits in only one of the four categories. The label/item colors may help you identify the appropriate category.
+
+
+
+
+Use the E key for the two categories on the left and the I key for the two categories on the right. Again, try to go as fast as possible without making mistakes. Correct errors by hitting the other key. Practice this combination now. 
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 3 of 7
+
+
+
+
+x",NA
+iat_rp4,"iat_rp4: National
+	or
+	Unfair
+
+
+
+
+	Global
+	or
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Please continue the task as you were just doing it. Again, try to go as fast as possible without making mistakes.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 4 of 7
+
+
+
+
+x",NA
+iat_rp5,"iat_rp5: Global
+
+
+
+
+	National
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Notice the categories from before have switched sides. Please practice this new configuration now. Remember to try to go as fast as you can while making as few errors as possible. Correct errors by hitting the other key. 
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 5 of 7
+
+
+
+
+x",NA
+iat_rp6,"iat_rp6: Global
+	or
+	Unfair
+
+
+
+
+	National
+	or
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Notice the four categories have been combined again, but in a new configuration. Please practice this combination now, and remember to go as fast as you can while making as few mistakes as possible.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 6 of 7
+
+
+
+
+x",NA
+iat_rp7,"iat_rp7: Global
+	or
+	Unfair
+
+
+
+
+	National
+	or
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Please continue the task as you were just doing it, and remember to go as fast as you can while making as few mistakes as possible.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 7 of 7
+
+
+
+
+x",NA
+iat_rn1,"iat_rn1: National
+
+
+
+
+ Global
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Instructions: Place your left and right index fingers on the E and I keys. At the top of the screen are 2 categories. In the task, words and/or images appear in the middle of the screen. 
+
+When the word/image belongs to the category on the left, press the E key as fast as you can. When it belongs to the category on the right, press the I key as fast as you can. If you make an error, a red X will appear. Correct errors by hitting the other key.
+
+
+
+
+Please try to go as fast as you can while making as few errors as possible.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 1 of 7
+
+
+
+
+x",NA
+iat_rn2,"iat_rn2: Fair
+
+
+
+
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Now, the categories have changed, but the rules remain the same. Please try to go as fast as you can while making as few errors as possible. Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 2 of 7
+
+
+
+
+x",NA
+iat_rn3,"iat_rn3: National
+	or
+	Fair
+
+
+
+
+	Global
+	or
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Now the four categories you saw separately will appear together. Remember, each word/image fits in only one of the four categories. The label/item colors may help you identify the appropriate category.
+
+
+
+
+Use the E key for the two categories on the left and the I key for the two categories on the right. Again, try to go as fast as possible without making mistakes. Correct errors by hitting the other key. Practice this combination now. 
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 3 of 7
+
+
+
+
+x",NA
+iat_rn4,"iat_rn4: National
+	or
+	Fair
+
+
+
+
+	Global
+	or
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Please continue the task as you were just doing it. Again, try to go as fast as possible without making mistakes.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 4 of 7
+
+
+
+
+x",NA
+iat_rn5,"iat_rn5: Global
+
+
+
+
+	National
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Notice the categories from before have switched sides. Please practice this new configuration now. Remember to try to go as fast as you can while making as few errors as possible. Correct errors by hitting the other key. 
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 5 of 7
+
+
+
+
+x",NA
+iat_rn6,"iat_rn6: Global
+	or
+	Fair
+
+
+
+
+	National
+	or
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Notice the four categories have been combined again, but in a new configuration. Please practice this combination now, and remember to go as fast as you can while making as few mistakes as possible.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 6 of 7
+
+
+
+
+x",NA
+iat_rn7,"iat_rn7: Global
+	or
+	Fair
+
+
+
+
+	National
+	or
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Please continue the task as you were just doing it, and remember to go as fast as you can while making as few mistakes as possible.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 7 of 7
+
+
+
+
+x",NA
+iat_lp1,"iat_lp1: Global
+
+
+
+
+ National
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Instructions: Place your left and right index fingers on the E and I keys. At the top of the screen are 2 categories. In the task, words and/or images appear in the middle of the screen. 
+
+When the word/image belongs to the category on the left, press the E key as fast as you can. When it belongs to the category on the right, press the I key as fast as you can. If you make an error, a red X will appear. Correct errors by hitting the other key.
+
+
+
+
+Please try to go as fast as you can while making as few errors as possible.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 1 of 7
+
+
+
+
+x",NA
+iat_lp2,"iat_lp2: Fair
+
+
+
+
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Now, the categories have changed, but the rules remain the same. Please try to go as fast as you can while making as few errors as possible. Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 2 of 7
+
+
+
+
+x",NA
+iat_lp3,"iat_lp3: Global
+	or
+	Fair
+
+
+
+
+	National
+	or
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Now the four categories you saw separately will appear together. Remember, each word/image fits in only one of the four categories. The label/item colors may help you identify the appropriate category.
+
+
+
+
+Use the E key for the two categories on the left and the I key for the two categories on the right. Again, try to go as fast as possible without making mistakes. Correct errors by hitting the other key. Practice this combination now. 
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 3 of 7
+
+
+
+
+x",NA
+iat_lp4,"iat_lp4: Global
+	or
+	Fair
+
+
+
+
+	National
+	or
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Please continue the task as you were just doing it. Again, try to go as fast as possible without making mistakes.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 4 of 7
+
+
+
+
+x",NA
+iat_lp5,"iat_lp5: National
+
+
+
+
+	Global
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Notice the categories from before have switched sides. Please practice this new configuration now. Remember to try to go as fast as you can while making as few errors as possible. Correct errors by hitting the other key. 
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 5 of 7
+
+
+
+
+x",NA
+iat_lp6,"iat_lp6: National
+	or
+	Fair
+
+
+
+
+	Global
+	or
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Notice the four categories have been combined again, but in a new configuration. Please practice this combination now, and remember to go as fast as you can while making as few mistakes as possible.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 6 of 7
+
+
+
+
+x",NA
+iat_lp7,"iat_lp7: National
+	or
+	Fair
+
+
+
+
+	Global
+	or
+	Unfair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Please continue the task as you were just doing it, and remember to go as fast as you can while making as few mistakes as possible.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 7 of 7
+
+
+
+
+x",NA
+iat_ln1,"iat_ln1: Global
+
+
+
+
+ National
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Instructions: Place your left and right index fingers on the E and I keys. At the top of the screen are 2 categories. In the task, words and/or images appear in the middle of the screen. 
+
+When the word/image belongs to the category on the left, press the E key as fast as you can. When it belongs to the category on the right, press the I key as fast as you can. If you make an error, a red X will appear. Correct errors by hitting the other key.
+
+
+
+
+Please try to go as fast as you can while making as few errors as possible.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 1 of 7
+
+
+
+
+x",NA
+iat_ln2,"iat_ln2: Unfair
+
+
+
+
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Now, the categories have changed, but the rules remain the same. Please try to go as fast as you can while making as few errors as possible. Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 2 of 7
+
+
+
+
+x",NA
+iat_ln3,"iat_ln3: Global
+	or
+	Unfair
+
+
+
+
+	National
+	or
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Now the four categories you saw separately will appear together. Remember, each word/image fits in only one of the four categories. The label/item colors may help you identify the appropriate category.
+
+
+
+
+Use the E key for the two categories on the left and the I key for the two categories on the right. Again, try to go as fast as possible without making mistakes. Correct errors by hitting the other key. Practice this combination now. 
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 3 of 7
+
+
+
+
+x",NA
+iat_ln4,"iat_ln4: Global
+	or
+	Unfair
+
+
+
+
+	National
+	or
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Please continue the task as you were just doing it. Again, try to go as fast as possible without making mistakes.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 4 of 7
+
+
+
+
+x",NA
+iat_ln5,"iat_ln5: National
+
+
+
+
+	Global
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Notice the categories from before have switched sides. Please practice this new configuration now. Remember to try to go as fast as you can while making as few errors as possible. Correct errors by hitting the other key. 
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 5 of 7
+
+
+
+
+x",NA
+iat_ln6,"iat_ln6: National
+	or
+	Unfair
+
+
+
+
+	Global
+	or
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Notice the four categories have been combined again, but in a new configuration. Please practice this combination now, and remember to go as fast as you can while making as few mistakes as possible.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 6 of 7
+
+
+
+
+x",NA
+iat_ln7,"iat_ln7: National
+	or
+	Unfair
+
+
+
+
+	Global
+	or
+	Fair
+
+
+
+
+
+
++
+
+
+
+Loading all the content...
+
+
+
+
+This should take less than 1 minute
+
+
+
+Please continue the task as you were just doing it, and remember to go as fast as you can while making as few mistakes as possible.  Correct errors by hitting the other key.
+
+
+
+
+When you are ready, please press the [Space] bar to begin.
+
+
+
+
+Part 7 of 7
+
+
+
+
+x",NA
+finished,finished: Finished,1
+excluded,excluded: Q_TerminateFlag,NA
+duration,duration: Q_TotalDuration,min: 4 / max: 4029.717
+click_reminder,click_reminder: click_reminder,1 / NA
+PID,PID: NA,TRUE / FALSE / NA
+urban_category,"urban_category: [1-4] Computed from the zipcode. NA indicates an unrecognized zipcode. For FR/DE/ES, Eurostat's degree of urbanization (1: Cities, 2: Towns and suburbs, 3: Rural). For the UK we use another classification that tends to classify zipcodes as more rural than Eurostat (cf. zipcodes.R). For the US, recoded from RUCA codes (1: Metropolitan core (RUCA 1, 73% pop), 2: Metro non-core (2-3), 3: Micropolitan or Small town (< 50k, 4-9), 4: Rural (10)).",1 / 2 / 3 / 4
+region,region: region,South / Northeast / Midwest / West / NA
+info_support,info_support: info_support,0 / 1
+feedback,feedback: feedback,2 / 0 / 1
+click_details,click_details: click_details,1 / 0
+language,language: Q_Language,EN / ES
+qvc,qvc: qvc,97916_05f9b11c
+qvq,qvq: qvq,97916
+qvq1,qvq1: qvq1,97916
+qvq2,qvq2: qvq2,97916
+qvs,qvs: qvs,97916
+ID,ID: NA,TRUE / FALSE / NA
+wealth_separate,wealth_separate: FL_134 - Block Randomizer - Display Order - Wealthtax(separate),NA / 1
+wealth_pooled,wealth_pooled: FL_134 - Block Randomizer - Display Order - Wealthtax(pooled),1 / NA
+order_iat1,order_iat1: FL_143 - Block Randomizer - Display Order - ShowBlock:IAT1-CompatibleFirst[TargetAonRightwithPos],NA
+order_iat2,order_iat2: FL_143 - Block Randomizer - Display Order - ShowBlock:IAT2-IncompatibleFirst[TargetAonRightwithNeg],NA
+order_iat3,order_iat3: FL_143 - Block Randomizer - Display Order - ShowBlock:IAT3-CompatibleFirst[TargetAonLeftwithPos],NA
+order_iat4,order_iat4: FL_143 - Block Randomizer - Display Order - ShowBlock:IAT4-IncompatibleFirst[TargetAonLeftwithNeg],NA
+branch_gcs_info,,TRUE / FALSE
+order_60,order_60: Global Climate Scheme (incl. perceptions) - Display Order - Q60,1
+order_263,order_263: Global Climate Scheme (incl. perceptions) - Display Order - Q263,5
+order_107,order_107: Global Climate Scheme (incl. perceptions) - Display Order - Q107,2
+branch_gcs_nothing,,TRUE / FALSE
+branch_gcs_field,,TRUE / FALSE
+branch_gcs_important,,TRUE / FALSE
+order_262,order_262: Global Climate Scheme (incl. perceptions) - Display Order - Q262,4
+order_global_tax,order_global_tax: Wealth tax (separate) - Display Order - Q276,NA / 2 / 1
+order_national_tax,order_national_tax: Wealth tax (separate) - Display Order - Q277,NA / 1 / 2
+order_wealth_pooled_279,order_wealth_pooled_279: Wealth tax (pooled) - Display Order - Q279,NA / 1
+order_wealth_pooled_278,order_wealth_pooled_278: Wealth tax (pooled) - Display Order - Q278,1 / NA
+order_foreign_aid_56,order_foreign_aid_56: Foreign aid (randomized) - Display Order - Q56,NA / 1
+order_foreign_aid_57,order_foreign_aid_57: Foreign aid (randomized) - Display Order - Q57,1 / NA
+global_tax_sharing_original,"global_tax_sharing: Imagine a wealth tax on households with net worth above $5 million, enacted in all countries around the world.
+
+In the U.S., the tax revenues collected would amount to $430 billion per year (that is, 2% of U.S. GDP), while it would amount to $1 billion in all low-income countries taken together (28 countries, home to 700 million people, most of them in Africa).
+
+
+Which of the following options would you prefer?","NA / The whole wealth tax financing national budgets in each country. For example, in the U.S., it could finance affordable housing and universal childcare/pre-K. / Half of the wealth tax financing national budgets in each country, half of it financing low-income countries. For example, it could finance universal childcare/pre-K in the U.S. and access to drinking water, healthcare, and education in Africa."
+branch_global_tax,branch_global_tax: global_first/national_first/sharing/global_share/NA Way to ask the preference for funding low-income countries through a global tax on the rich: either separately the support for a national and a global tax on millionaires (with either the global or national question asked first); whether to allocate half or none of the global tax to low-income countries; the 'global_share' in 0 to 100%.,global_share / sharing / national_first / global_first
+global_tax_more_30p,global_tax_more_30p: Wants at least 30% of global wealth tax revenues to fund low-income countries (defined from global_tax_global_share).,TRUE / FALSE / NA
+global_tax_more_10p,global_tax_more_10p: Wants at least 10% of global wealth tax revenues to fund low-income countries (defined from global_tax_global_share).,TRUE / FALSE / NA
+global_tax_more_half,global_tax_more_half: Wants at least half of global wealth tax revenues to fund low-income countries (defined from global_tax_global_share).,TRUE / FALSE / NA
+attentive,,TRUE / FALSE
+wave,,US2
+country_name,,United States
+country,,US
+continent,,U.S.
+woman,,TRUE / FALSE
+man,,TRUE / FALSE
+age,age_exact: How old are you?,18-24 / 25-34 / 35-49 / 50-64 / 65+
+age_factor,,18-24 / 25-34 / 35-49 / 50-64 / 65+
+race,race: White only/Hispanic/Black/Other. True proportions: .601/.185/.134/.08,White only / Black / Hispanic / Other
+income_original,"income: What is the annual gross income of your household (before taxes)?
+
+This includes all income: wages, self-employment earnings, Social Security benefits, pensions, investment income, welfare payments, and income from other sources.","between $65,001 and $82,000 / less than $20,000 / between $35,001 and $42,000 / between $20,001 and $35,000 / between $50,001 and $65,000 / between $165,001 and $250,000 / between $82,001 and $103,000 / between $103,001 and $130,000 / between $42,001 and $50,000 / more than $250,000 / between $130,001 and $145,000 / between $145,001 and $165,000"
+income_decile,"income_decile: [1-10] Decile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10
+income_quartile,"income_quartile: [1-4] Quartile of income. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4
+income_factor,"income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",1 / 2 / 3 / 4
+income_character,"income_factor: 1/2/3/4 Quartile of income, as a factor rather than a numeric vector. For US, this is total household income and for EU, equivalised disposable income (i.e. total income divided by the household's number of consumption units).",Q2 / Q1 / Q4 / Q3
+urbanity,,Cities / Towns and suburbs / Rural
+urban,urban: T/F urban_category == 1: Cities (EU) or Core metropolitan (US).,TRUE / FALSE / NA
+education_original,education: What is the highest level of education you have completed?,"Some college, no degree / Regular high school diploma/GED or alternative credential / Master’s degree or above (MA, MS, MEng, MEd, MSW, MBA, MD, DDS, DVM, LLB, JD, PhD) / 2-year college degree or associates degree (for example: AA, AS) / Bachelor's degree (for example: BA, BS) / Some high school / Eigth grade / Primary school or less"
+diploma,"diploma: 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.",Below upper secondary / Upper secondary / Post secondary
+post_secondary,"post_secondary: Has a post-secondary degree (at least two years after highschool, i.e. Associate degree, BA, BS, etc.).",TRUE / FALSE
+diploma_25_64,"diploma_25_64: 0: Not 25-64 if age is not within 25-64 (missing value) / 1: Below upper secondary (ISCED 0-2) / 2: Upper secondary (ISCED 3) / 3: Post secondary (ISCED 4-8), recoded from education.",Not 25-64 / Below upper secondary / Upper secondary / Post secondary
+employment_agg,"employment_agg: Not working (Inactive or Unemployed) / Student / Retired / Employed (full-time, part-time, or self-employed). Built from employment_status.",Not working / Retired / Student / Working
+inactive,,TRUE / FALSE
+employment,"employment: T/F/NA indicator that the respondent is employed (employment_agg == Working), NA if s-he is above 65.",TRUE / FALSE
+employment_18_64,"employment_18_64: 65+ / Inactive (Inactive, Student or Retired) / Unemployed / Employed (full-time, part-time, or self-employed). Built from employment_status.",Inactive / Employed / 65+ / Unemployed
+wealth,wealth: Quintile of wealth (from wealth_couple and wealth_single).,PNR / Q1 / Q2 / Q3 / Q4 / Q5
+wealth_factor,,Q1 / Q2 / Q3 / Q4 / Q5
+owner,owner: Owner or Landlord renting out property to: Are you a homeowner or a tenant?,TRUE / FALSE
+duration_agg,duration: Q_TotalDuration,< 10 / 10 – 15 / 15 – 20 / 20 – 25 / 25 – 30 / > 30
+vote,vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs.,Left / PNR/Non-voter / Center-right or Right / Far right
+vote_all,"vote_all: What the respondent has voted or would have voted in the last election, combining vote_[country]_voters and vote_[country]_non_voters.",Biden / Prefer not to say / Trump / Jorgensen / Hawkins
+vote_agg,"vote_agg: What the respondent has voted or would have voted in the last election, lumping minor candidates (with less than 5% of $vote) into 'Other'. Build from $vote that combines $vote_[country]_voters and $vote_[country]_non_voters.",Biden / Prefer not to say / Trump / Other
+vote_factor,vote: Left / Center-right or Right / Far right / PNR/Non-voter Classification of vote_[country]_voters into three blocs.,Left / Center-right or Right / PNR/Non-voter
+voted,voted: Has voted in last election: Yes to vote_participation.,TRUE / FALSE
+continent_vote,,U.S. Left / U.S. PNR/Non-voter / U.S. Right
+vote_us,vote_us: Biden / Trump / Other/Non-voter / PNR/No right. True proportions: .342/.313/.333/.0,Biden / PNR/no right / Other/Non-voter / Trump
+vote3,vote3: Abstention/PNR/Other / Biden / Trump Vote at 2020 presidential election,Biden / Abstention/PNR/Other / Trump
+vote3_factor,,Biden / Abstention/PNR/Other / Trump
+vote_Biden,,TRUE / FALSE
+vote_not_Biden,,TRUE / FALSE
+swing_state_3pp,"swing_state: T/F Lives in one of the 7 States with less than 3 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC).",TRUE / FALSE
+swing_state_5pp,"swing_state_5pp: T/F Lives in one of the 8 States with less than 5 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC, FL).",TRUE / FALSE
+democratic_state,democratic_state: T/F States with Democratic margin (e.g. 57%-41%) by >15pp: California + Illinois + New York + New Jersey + Washington + Massachusetts + Oregon + Connecticut + Delaware + Hawaii + Rhose Island + DC + Vermont + Maryland,TRUE / FALSE
+swing_state,"swing_state_5pp: T/F Lives in one of the 8 States with less than 5 p.p. margin from the tipping point at the 2020 Presidential election (MI, NV, PA, WI, AZ, GA, NC, FL).",TRUE / FALSE
+branch_gcs_perception,,nothing / field / important / info
+branch_foreign_aid_preferred,branch_foreign_aid_preferred: Info/No info Whether the info on the actual amount of foreign aid was given before asking the preferred amount.,Info / No info
+info_foreign_aid,info_foreign_aid: T/F Whether the info on the actual amount of foreign aid was given before asking the preferred amount.,TRUE / FALSE
+foreign_aid_preferred,"foreign_aid_preferred: 0/.15/.4/.8/1.4/2.2/3.35/5/7.5/11/19/30 Amount of preferred foreign aid (mean of interval in % of nation's public spending). Depending on info_foreign_aid, info on actual amount is randomly given or not beforehand.",< 0.1% / 0.1 to 0.2 / 0.3 to 0.5 / 0.6 to 1 / 1.1 to 1.7 / 1.8 to 2.6 / 2.7 to 4 / 4.1 to 6 / 6.1 to 9 / 9.1 to 13 / 13.1 to 25 / > 25%
+foreign_aid_belief_original,"foreign_aid_belief: From your best guess, what percentage of U.S. government spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?
+
+
+
+For your information, government spending totals 38% of U.S. GDP, it includes federal, State and local government spending, and apart from foreign aid, it covers the following items: defense, social security (retirement pensions), health (including Medicare and Medicaid), welfare benefits (including food stamps and EITC), education, roads, justice, other programs and federal agencies (including in energy, science...).",4.1% to 6% / 6.1% to 9% / 2.7% to 4% / 0.1% to 0.2% / More than 25% / Less than 0.1% / 13.1% to 25% / 0.3% to 0.5% / 1.8% to 2.6% / 0.6% to 1.0% / 1.1% to 1.7% / 9.1% to 13%
+foreign_aid_preferred_no_info_original,"foreign_aid_preferred_no_info: If you could choose the government spending, what percentage would you allocate to foreign aid?",NA / 0.6% to 1.0% / 0.1% to 0.2% / 0.3% to 0.5% / 4.1% to 6% / 9.1% to 13% / 6.1% to 9% / 2.7% to 4% / More than 25% / 1.8% to 2.6% / Less than 0.1% / 1.1% to 1.7% / 13.1% to 25%
+foreign_aid_preferred_info_original,"foreign_aid_preferred_info: Actually, 0.4% of the U.S. government spending is allocated to foreign aid.
+
+
+
+If you could choose the government spending, what percentage would you allocate to foreign aid?",4.1% to 6% / NA / 0.6% to 1.0% / 1.8% to 2.6% / Less than 0.1% / 0.3% to 0.5% / 2.7% to 4% / 1.1% to 1.7% / 0.1% to 0.2% / 6.1% to 9% / 13.1% to 25% / More than 25% / 9.1% to 13%
+foreign_aid_preferred_original,"foreign_aid_preferred: 0/.15/.4/.8/1.4/2.2/3.35/5/7.5/11/19/30 Amount of preferred foreign aid (mean of interval in % of nation's public spending). Depending on info_foreign_aid, info on actual amount is randomly given or not beforehand.",4.1% to 6% / 0.6% to 1.0% / 0.1% to 0.2% / 1.8% to 2.6% / 0.3% to 0.5% / 9.1% to 13% / Less than 0.1% / 6.1% to 9% / 2.7% to 4% / 1.1% to 1.7% / More than 25% / 13.1% to 25%
+foreign_aid_more_less,"foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.",Less: -1 / Same: 0 / More: 1
+foreign_aid_more_less_no_info,"foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.",Less: -1 / Same: 0 / More: 1
+foreign_aid_more_less_info,"foreign_aid_more_less: -1: Less / 0: Same / 1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.",Less: -1 / Same: 0 / More: 1
+foreign_aid_no_less_info,,TRUE / FALSE / NA
+foreign_aid_no_less_no_info,,TRUE / FALSE / NA
+foreign_aid_less_more_info,"foreign_aid_more_less: 1: Less / 0: Same / -1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.",More: -1 / Same: 0 / Less: 1
+foreign_aid_less_more_no_info,"foreign_aid_more_less: 1: Less / 0: Same / -1: More. Whether the respondent wants more or less foreign aid than now. Depending on info_foreign_aid = T or F, current aid is taken as the actual or the believed one.",More: -1 / Same: 0 / Less: 1
+foreign_aid_actual,"foreign_aid_actual: [Constant] Actual amount of foreign aid in the country, in proportion of public spending.",0.4
+gcs_win_lose_original,"gcs_win_lose: Who would win or lose financially in the Global climate scheme? 
+Three respondents with the expected answer will get $50 in points.",Typical Americans would win and the 700 million poorest humans would lose. / Typical Americans would lose and the 700 million poorest humans would lose. / Typical Americans would lose and the 700 million poorest humans would win. / Typical Americans would win and the 700 million poorest humans would win.
+nr_win_lose_original,"nr_win_lose: Who would win or lose financially in the National redistribution? 
+Three respondents with the expected answer will get $50 in points.",Typical Americans would win and the richest Americans would lose. / Typical Americans would lose and the richest Americans would win. / Typical Americans would win and the richest Americans would win. / Typical Americans would lose and the richest Americans would lose.
+both_win_lose_original,"both_win_lose: If both the Global climate scheme and the National redistribution scheme are implemented, how would a typical American be financially affected?Three respondents with the expected answer will get $50 in points.",A typical American would lose out financially. / A typical American would gain financially. / A typical American would neither gain nor lose.
+nr_understood,"nr_understood: T/F Correct answer to nr_win_lose (in national redistribution, typical people win, richest lose).",TRUE / FALSE
+gcs_understood,"gcs_understood: T/F Correct answer to gcs_win_lose (in global climate scheme, typical high-income win, 700M poorest lose).",TRUE / FALSE
+both_understood,"both_understood: T/F Correct answer to both_win_lose (in national redistribution + global climate scheme combined, typical people in high-income countries are unaffected).",TRUE / FALSE
+score_understood,score_understood: [0-3] Number correct answers to understanding questions (nr/gcs/both_understood).,0 / 1 / 2 / 3
+z_score_understood,z_score_understood: Normalized score_understood.,-1.707 / -0.768 / 0.171 / 1.111
+gcs_support_100,,0 / 100
+nr_support_100,,0 / 100
+branch_iat,branch_iat: LN/LP/RN/RP/NA Branch of the Implicit Association Test (Left vs. Right & Positive vs. Negative). NA for those without IAT (because their device is a phone or their language Spanish).,NA
+branch_gcs,"branch_gcs: info/nothing/field/important Whether gcs/nr_support is preceded by the info on the actual support, nothing, gcs_field or variables_gcs_important.",nothing / field / important / info
+group_defended_original,group_defended: What group do you defend when you vote?,My State / Humans / Americans / Sentient beings (humans and animals) / My family and myself / People sharing my culture or religion / My relatives and/or colleagues / My town / NA
+nationalist,nationalist: T/F Defends one's nation / fellow citizens when one votes (cf. group_defended).,TRUE / FALSE
+egoistic,egoistic: T/F Defends one's self and family when one votes (cf. group_defended).,TRUE / FALSE
+universalist,universalist: T/F Defends humans or sentient beings (humans and animals) when one votes (cf. group_defended).,TRUE / FALSE
+group_defended_agg,"group_defended_agg: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; where 'Fellow citizens or Europeans' gathers [Country] and Europeans; and where 'Humans or sentient beings' gathers Humans and Sentient beings (humans or animals)",Family and self / Group of related people / Fellow citizens or Europeans / Humans or sentient beings
+group_defended_agg5,"group_defended_agg5: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion; where 'Fellow citizens or Europeans' gathers [Country] and Europeans",Family and self / Group of related people / Fellow citizens or Europeans / Humans / Sentient beings
+group_defended_agg6,"group_defended_agg6: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion.",Family and self / Group of related people / Fellow citizens / Europeans / Humans / Sentient beings
+group_defended_agg2,"group_defended_agg2: Group defended when one votes, where 'Group of related people' gathers My relatives and/or colleagues, My town, My State/region, People sharing my culture or religion, and Europeans.",Family and self / Group of related people / Fellow citizens / Humans / Sentient beings
+donation_charities_original,donation_charities: How much did you give to charities in 2022?,"Between $101 and $500. / I did not make donations to charities last year. / Less than $100. / Between $501 and $1,000. / Between $1,001 and $5,000. / More than $5,000."
+survey_biased_yes,survey_biased_yes: T/F Finds the survey biased (survey_biased != No),TRUE / FALSE
+survey_biased_left,"survey_biased_left: T/F Finds the survey left-wing biased (survey_biased == Yes, left)",TRUE / FALSE
+survey_biased_right,"survey_biased_right: T/F Finds the survey right-wing biased (survey_biased == Yes, right)",TRUE / FALSE
+branch_poverty_field,,TRUE / FALSE
+gcs_field_english,gcs_field_english: gcs_field translated to English.,[string variable]
+gcs_field_pro,,TRUE / FALSE / NA
+gcs_field_con,,TRUE / FALSE / NA
+gcs_field_support,,TRUE / FALSE / NA
+gcs_field_oppose,,TRUE / FALSE / NA
+gcs_field_dont_know,,TRUE / FALSE / NA
+gcs_field_unclassifiable,,TRUE / FALSE / NA
+gcs_field_misunderstands_gcs,,TRUE / FALSE / NA
+gcs_field_climate_denier,,TRUE / FALSE / NA
+gcs_field_environment,,TRUE / FALSE / NA
+gcs_field_tax_redistribution,,TRUE / FALSE / NA
+gcs_field_copy_paste,,TRUE / FALSE / NA
+gcs_field_misunderstands_question,,TRUE / FALSE / NA
+gcs_field_difficult_agreement,,TRUE / FALSE / NA
+gcs_field_difficult_implement,,TRUE / FALSE / NA
+gcs_field_cost,,TRUE / FALSE / NA
+gcs_field_poorest_humans,,TRUE / FALSE / NA
+length_gcs_field_english,length_gcs_field_english: Number of characters in gcs_field_english,min: 0 / max: 730
+gcs_field_empty,,TRUE / FALSE / NA
+gcs_field_contains_pro,gcs_field_contains_pro: T/F gcs_field_english contains: pro |pro:|pros |pros:,TRUE / FALSE / NA
+gcs_field_contains_con,gcs_field_contains_con: T/F gcs_field_english contains: con |con: |cons |cons: ,TRUE / FALSE / NA
+gcs_field_contains_world,gcs_field_contains_world: T/F gcs_field_english contains: international|world|countr|global,TRUE / FALSE / NA
+gcs_field_contains_environment,gcs_field_contains_environment: T/F gcs_field_english contains: climat|environment|animal|emission|natur,TRUE / FALSE / NA
+gcs_field_contains_cost,gcs_field_contains_cost: T/F gcs_field_english contains: cost|expensive|higher price|85|inflation,TRUE / FALSE / NA
+gcs_field_contains_poorest,gcs_field_contains_poorest: T/F gcs_field_english contains: poor|low-income|700|poverty,TRUE / FALSE / NA
+gcs_field_contains_tax,gcs_field_contains_tax: T/F gcs_field_english contains: tax,TRUE / FALSE / NA
+gcs_field_contains_redistribution,gcs_field_contains_redistribution: T/F gcs_field_english contains: rich|redistribu,TRUE / FALSE / NA
+gcs_field_contains_implementation,gcs_field_contains_implementation: T/F gcs_field_english contains: implement|enforce|polic|monitor,TRUE / FALSE / NA
+gcs_field_contains_agreement,gcs_field_contains_agreement: T/F gcs_field_english contains: agree|accept|participat,TRUE / FALSE / NA
+gcs_field_contains_justice,gcs_field_contains_justice: T/F gcs_field_english contains: justice|equal|fair|low-income,TRUE / FALSE / NA
+gcs_field_contains_awareness,gcs_field_contains_awareness: T/F gcs_field_english contains: aware|educat,TRUE / FALSE / NA
+gcs_field_contains_socialism,gcs_field_contains_socialism: T/F gcs_field_english contains: socialis|communis,TRUE / FALSE / NA
+gcs_field_contains_bureaucracy,gcs_field_contains_bureaucracy: T/F gcs_field_english contains: bureaucra|administr,TRUE / FALSE / NA
+gcs_field_contains_migration,gcs_field_contains_migration: T/F gcs_field_english contains: migra,TRUE / FALSE / NA
+gcs_field_contains_children,gcs_field_contains_children: T/F gcs_field_english contains: child,TRUE / FALSE / NA
+poverty_field_give_money,,TRUE / FALSE / NA
+poverty_field_education,,TRUE / FALSE / NA
+poverty_field_food,,TRUE / FALSE / NA
+poverty_field_jobs,,TRUE / FALSE / NA
+poverty_field_unspecified_aid,,TRUE / FALSE / NA
+poverty_field_against_help,,TRUE / FALSE / NA
+poverty_field_tax,,TRUE / FALSE / NA
+poverty_field_other,,TRUE / FALSE / NA
+poverty_field_dont_know,,TRUE / FALSE / NA
+length_poverty_field,length_poverty_field_english: Number of characters in poverty_field_english,min: 0 / max: 1362
+poverty_field_empty,,TRUE / FALSE / NA
+poverty_field_contains_justice,poverty_field_contains_justice: T/F poverty_field_english contains: justice|poor|equalit|fair|low-income,TRUE / FALSE / NA
+poverty_field_contains_education,poverty_field_contains_education: T/F poverty_field_english contains: train|teach|educat,TRUE / FALSE / NA
+poverty_field_contains_corruption,poverty_field_contains_corruption: T/F poverty_field_english contains: ruler|leader|democracy|corrupt,TRUE / FALSE / NA
+poverty_field_contains_money,poverty_field_contains_money: T/F poverty_field_english contains: money|financ,TRUE / FALSE / NA
+poverty_field_contains_help,poverty_field_contains_help: T/F poverty_field_english contains: help|aid,TRUE / FALSE / NA
+poverty_field_contains_job,poverty_field_contains_job: T/F poverty_field_english contains: job,TRUE / FALSE / NA
+poverty_field_contains_tax,poverty_field_contains_tax: T/F poverty_field_english contains: tax,TRUE / FALSE / NA
+poverty_field_contains_health,poverty_field_contains_health: T/F poverty_field_english contains: health|medic,TRUE / FALSE / NA
+poverty_field_contains_food,poverty_field_contains_food: T/F poverty_field_english contains: food,TRUE / FALSE / NA
+poverty_field_contains_world,poverty_field_contains_world: T/F poverty_field_english contains: international|world|global,TRUE / FALSE / NA
+poverty_field_contains_wage,poverty_field_contains_wage: T/F poverty_field_english contains: wage,TRUE / FALSE / NA
+comment_field_english,comment_field_english: comment_field translated to English.,[string variable]
+comment_field_good,comment_field_good: good - Feeling or opinion the respondent expressed about the survey in comment_field.,TRUE / FALSE / NA
+comment_field_bad,comment_field_bad: bad - Feeling or opinion the respondent expressed about the survey in comment_field.,TRUE / FALSE / NA
+comment_field_bias,comment_field_bias: bias - Feeling or opinion the respondent expressed about the survey in comment_field.,TRUE / FALSE / NA
+comment_field_problem,comment_field_problem: problem - Feeling or opinion the respondent expressed about the survey in comment_field.,TRUE / FALSE / NA
+dislike_comment_field,dislike_comment_field: T/F The respondent didn't sur survey: comment_field either says the survey is bad or biased.,TRUE / FALSE
+critic_comment_field,"critic_comment_field: T/F The answer to comment_field is critical: either mentions an issue, says that the survey is bad or biased.",TRUE / FALSE
+treated_comment_field,treated_comment_field: T/F comment_field has been treated/recoded. N,TRUE / FALSE
+comment_field_contains_long,comment_field_contains_long: T/F comment_field_english contains:  long,TRUE / FALSE
+comment_field_contains_good,comment_field_contains_good: T/F comment_field_english contains: good|Good|excellent|enjoy|interesting,TRUE / FALSE
+comment_field_contains_thanks,comment_field_contains_thanks: T/F comment_field_english contains: thank|Thank,TRUE / FALSE
+comment_field_contains_learned,comment_field_contains_learned: T/F comment_field_english contains: learnt|learn,TRUE / FALSE
+comment_field_contains_bias,comment_field_contains_bias: T/F comment_field_english contains: bias,TRUE / FALSE
+non_empty_comment_field,"non_empty_comment_field: The respondent left a feedback comment, i.e. comment_field is not NA.",TRUE / FALSE
+share_policies_supported,share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent.,0 / 0.25 / 0.5 / 0.75 / 1
+spread_problem,spread_problem: Spread between max and min value in the respondent's answers to the matrix problem,0 / 1 / 2 / 3 / 4
+all_same_problem,all_same_problem: T/F Indicator that all answers to the matrix problem are identical.,TRUE / FALSE
+spread_gcs_important,spread_gcs_important: Spread between max and min value in the respondent's answers to the matrix gcs_important,-Inf / 0 / 1 / 2 / 3 / 4
+all_same_gcs_important,all_same_gcs_important: T/F Indicator that all answers to the matrix gcs_important are identical.,TRUE / FALSE
+mean_spread,"mean_spread: Mean spread between max and min value in the respondent's answers to the matrices (averaged over the matrices: problem, gcs_important). -Inf indicates that all answers were NA.",-Inf / 0 / 0.5 / 1 / 1.5 / 2 / 2.5 / 3 / 3.5 / 4
+share_all_same,"mean_spread: Share of matrices to which all respondent's answers are identical (among matrices: problem, gcs_important).",0 / 0.5 / 1
+share_policies_supported_agg,share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent.,0 / 0.01 – 0.25 / 0.26 – 0.5 / 0.51 – 0.75 / 0.76 – 0.99 / 1
+foreign_aid_belief_agg,"foreign_aid_belief: From your best guess, what percentage of U.S. government spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?
+
+
+
+For your information, government spending totals 38% of U.S. GDP, it includes federal, State and local government spending, and apart from foreign aid, it covers the following items: defense, social security (retirement pensions), health (including Medicare and Medicaid), welfare benefits (including food stamps and EITC), education, roads, justice, other programs and federal agencies (including in energy, science...).",≤ 0.2 / 0.3 – 0.5 / 0.6 – 1 / 1.1 – 1.7 / 1.8 – 2.6 / 2.7 – 6 / > 6
+foreign_aid_preferred_no_info_agg,"foreign_aid_preferred_no_info: If you could choose the government spending, what percentage would you allocate to foreign aid?",≤ 0.2 / 0.3 – 0.5 / 0.6 – 1 / 1.1 – 1.7 / 1.8 – 2.6 / 2.7 – 6 / > 6
+foreign_aid_preferred_info_agg,"foreign_aid_preferred_info: Actually, 0.4% of the U.S. government spending is allocated to foreign aid.
+
+
+
+If you could choose the government spending, what percentage would you allocate to foreign aid?",≤ 0.2 / 0.3 – 0.5 / 0.6 – 1 / 1.1 – 1.7 / 1.8 – 2.6 / 2.7 – 6 / > 6
+foreign_aid_preferred_agg,"foreign_aid_preferred: 0/.15/.4/.8/1.4/2.2/3.35/5/7.5/11/19/30 Amount of preferred foreign aid (mean of interval in % of nation's public spending). Depending on info_foreign_aid, info on actual amount is randomly given or not beforehand.",≤ 0.2 / 0.3 – 0.5 / 0.6 – 1 / 1.1 – 1.7 / 1.8 – 2.6 / 2.7 – 6 / > 6
+wrong_language,wrong_language: T/F The language does not correspond to the respondent's country (including Spanish in the U.S.).,TRUE / FALSE
+n,,[string variable]
+weight,,min: 0.25 / max: 4
+weight_all,,min: 0.25 / max: 4
+weight_vote,,min: 0.25 / max: 4
+weight_country,,min: 0.25 / max: 4
+failed_test,failed_test: Failed the attention_test,TRUE / FALSE
+valid,valid: Respondents that has not been screened out due to speed or failure to the attention test.,TRUE / FALSE
+dropout,dropout: Respondent who did not complete the survey though was not excluded.,TRUE / FALSE
+dropout_late,"dropout: Respondent who did not complete the survey though was not excluded, and who dropped out after the socio-demographic questions.",TRUE / FALSE
+finished_attentive,finished_attentive: Respondent completed the survey and did not fail the attention test.,TRUE / FALSE
+stayed,stayed: T/F quotas are allowed and do not drop out,TRUE / FALSE
