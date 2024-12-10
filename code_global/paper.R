@@ -1,140 +1,32 @@
-##### Stated support #####
-# TODO complete
-# support_binary_positive
-decrit("gcs_support", us1)
-binconf(sum(us1$weight[us1$gcs_support == T]), nrow(us1), alpha = 0.05)
-binconf(sum(eu$weight[eu$gcs_support == T]), nrow(eu), alpha = 0.05)
-decrit("gcs_support", eu)
-decrit("nr_support", us1)
-decrit("nr_support", eu)
-reweighted_estimate("gcs_support", "EU") # 76
-reweighted_estimate("gcs_support", "US1") # 53 Assigns a weight 0 to vote_us = PNR/No right
-reweighted_estimate("gcs_support", "US1", omit = "vote_us") # 52 Uses all observations and still reweight for vote using e$vote
-decrit("gcs_support", us1, which = us1$voted)
-decrit("gcs_understood", all)
-same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "Supports the Global Climate Scheme", covariates = c("gcs_understood"), covariate.labels = "\\makecell{With GCS, typical\\\\~[country] people lose\\\\and poorest humans win}",
-                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T, 
-                    filename = "gcs_support_understood", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
-same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "Supports the Global Climate Scheme", covariates = variables_understood[c(2,1,3)], covariate.labels = "\\makecell{With GCS, typical\\\\~[country] people lose\\\\and poorest humans win}",# c("gcs_understood"),
-                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T, 
-                    filename = "gcs_support_understood_all", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+##### Prepare data and figures #####
+# source("preparation.R")
+# source("render.R")
+# save.image(".RData")
 
+##### Load prepared data #####
+load(".RData")
 
-# Global wealth tax
-# global_tax_sharing_positive, global_tax_global_share_positive, global_tax_global_share_share TODO! combine them
-decrit(us2$global_tax_support > 0, us2)
-decrit(eu$global_tax_support > 0, eu, which = eu$country == 'FR')
-decrit(eu$global_tax_support > 0, eu, which = eu$country == 'DE')
-decrit(eu$global_tax_support > 0, eu, which = eu$country == 'ES')
-decrit(eu$global_tax_support > 0, eu, which = eu$country == 'UK') 
-decrit(all$global_tax_support > 0, all) 
-decrit(all$national_tax_support > 0, all)
-decrit(us2$global_tax_support > 0, us2, which = us2$global_tax_support != 0) 
-decrit(us2$national_tax_support > 0, us2, which = us2$national_tax_support != 0) 
-decrit("global_tax_support", us2)
-decrit("national_tax_support", eu)
-decrit("global_tax_global_share", all, weight = F)
-decrit("global_tax_global_share", us2) # 41
-decrit(us2$global_tax_global_share > 0)
-wtd.mean(eu$global_tax_global_share[eu$country == 'UK'] > 0, weights = eu$weight_country[eu$country == 'UK'])
-decrit("global_tax_sharing", all, weight = F)
-decrit("global_tax_sharing", us2) # 65% Yes
-decrit("global_tax_support", eu, which = eu$country == "FR", weights = eu$weight_country)
+# Figure 1: questionnaire/survey_flow-simple.pdf
 
-# Other global policies
-# support_likert_positive, support_likert_share
-# support_likert_positive, global_policies_mean, global_policies_positive, global_policies_share
+##### Global support #####
+# Figure 2: figures/OECD/Heatplot_global_tax_attitudes_share.pdf, cf. code at https://doi.org/10.3886/E208254V1
 
-# Foreign aid 
-decrit("foreign_aid_raise_support", all)
-# healthcare, education
-for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education), d(c)$weight), 3)))
-# taxes
-for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_income_tax | d(c)$foreign_aid_reduce_how_wealthy | d(c)$foreign_aid_reduce_how_corporations), d(c)$weight), 3)))
+##### Stated support for the Global Climate Scheme #####
+# box The Global Climate Scheme
+# median loss from GCS in 2030 (LCU): cf. questionnaire/specificities.xlsx:Figures (line 6)
 
-min_indifferent <- 1
-max_indifferent <- 0
-for (v in variables_support_likert) for (c in countries) {
-  share_indifferent_vc <- wtd.mean(d(c)[["climate_compensation_support"]] == 0, d(c)$weight)
-  if (share_indifferent_vc < min_indifferent) min_indifferent <- share_indifferent_vc
-  if (share_indifferent_vc > max_indifferent) max_indifferent <- share_indifferent_vc
-}
-min_indifferent # 21%
-max_indifferent # 27%
+decrit("gcs_support", us1) # 54% of Americans support the GCS
+decrit("gcs_support", eu) # 76% of Europeans support the GCS
+decrit("nr_support", eu) # 73%
 
-share_indifferent <- matrix(NA, dimnames = list(variables_support_likert, countries), nrow = 11, ncol = 5)
-for (v in variables_support_likert) for (c in countries) share_indifferent[v,c] <- wtd.mean(d(c)[[v]] == 0, d(c)$weight)
-round(quantile(share_indifferent, c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
-# 0%   5%  25%   50%  75%  95%  100% 
-# 0.10 0.11 0.19 0.25 0.32 0.37 0.40
+# Figure 3: figures/country_comparison/support_likert_all_share.pdf
+heatmaps_defs$support_likert_all$labels[5] <- "[Country]'s foreign aid should be increased*"
+heatmap_multiple(heatmaps_defs["support_likert_all"])
 
-share_indifferent_oecd <- readRDS("../data/share_indifferent_oecd.rds")
-round(quantile(share_indifferent_oecd, c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
-# 0%   5%   25%  50%  75%  95%  100% 
-# 0.11 0.15 0.21 0.27 0.33 0.40 0.48 
-
-round(quantile(c(share_indifferent_oecd[c(1,2,4),], share_indifferent[10:11,]), c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
-# 0%   5%   25%  50%  75%  95%  100% 
-# 0.10 0.11 0.15 0.20 0.26 0.32 0.37 
-
-# all/foreign_aid_condition
 
 ##### List experiment #####
-# same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
-#                     data = all, along = "continent", nolabel = F, include.total = FALSE, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
-#                     filename = "reg_list_exp", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
-#                     add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
-#                                      c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
-# 
-# same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
-#                     data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-#                     filename = "reg_list_exp_all", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
-#                     add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(all$gcs_support, weights = all$weight), 3), "} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
-#                                      c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(all$nr_support, weights = all$weight), 3), "} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
-# 
-# all$list_exp_0 <- all$list_exp == 0
-# same_reg_subsamples(dep.var = "list_exp_0", dep.var.caption = "No supported policies", covariates = c("branch_list_exp_g", "branch_list_exp_r", "branch_list_exp_g:branch_list_exp_r"), 
-#                     data = all, along = "continent", nolabel = F, include.total = FALSE, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-#                     filename = "reg_list_exp_0", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
-#                     add_lines = list(c(11, paste("\\textit{(Support for GCS)} & \\textit{", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "}\\\\")),
-#                                      c(14, paste("\\textit{(Support for NR)} & \\textit{", round(wtd.mean(us1$nr_support, weights = us1$weight), 3), "} & \\textit{", round(wtd.mean(eu$nr_support, weights = eu$weight), 3), "}\\\\"))))
-# 
-# # TODO! Find a test that works for the combined list experiment branch_list_exp_g:branch_list_exp_r. Mail sent to Blair & Imai 
-# # From Blair & Imai (12) /!\ TODO! Read the paper to understand whether "lm" method (yielding the same as lm regression) or the default "ml" is preferable
-# fit.list_no_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-# fit.list_r <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
-# fit.direct <- glm(gcs_support == 'Yes' ~ 1, data = all, family = binomial("logit"))
-# (avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-# (avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-# 
-# fit.list_no_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "U.S." & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-# fit.list_r_US <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "U.S." & all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
-# fit.direct_US <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "U.S.",], family = binomial("logit"))
-# (avg.pred.social.desirability_no_r_US <- predict(fit.list_no_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # -.06 95% CI: (-.15, .03)
-# (avg.pred.social.desirability_r_US <- predict(fit.list_r_US, direct.glm = fit.direct_US, se.fit = TRUE)) # .004 95% CI: (-.12, .13)
-# 
-# fit.list_no_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2, data = all[all$continent == "Europe" & all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-# fit.list_r_Eu <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 3, data = all[all$continent == "Europe" & all$branch_list_exp_r == T,], weights = 'weight', method = "ml")
-# fit.direct_Eu <- glm(gcs_support == 'Yes' ~ 1, data = all[all$continent == "Europe",], family = binomial("logit"))
-# (avg.pred.social.desirability_no_r_Eu <- predict(fit.list_no_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # .01 95% CI: (-.07, .09)
-# (avg.pred.social.desirability_r_Eu <- predict(fit.list_r_Eu, direct.glm = fit.direct_Eu, se.fit = TRUE)) # -.10 95% CI: (-.17, -.03)
-# 
-# fit.list_no_r <- ictreg(list_exp ~ continent, treat = c('branch_list_exp_g'), J = 2, data = all[all$branch_list_exp_r == F,], weights = 'weight', method = "lm")
-# fit.list_r <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 3, data = all[all$branch_list_exp_r == T,], weights = 'weight', method = "lm")
-# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
-# (avg.pred.social.desirability_no_r <- predict(fit.list_no_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-# (avg.pred.social.desirability_r <- predict(fit.list_r, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-# plot(avg.pred.social.desirability_no_r)
-# plot(avg.pred.social.desirability_r)
 
-# Good ones here
-# Using ml is advised because the estimator is more efficient, i.e. has tighter CIs. But Graeme Blair wrote in an email "you can use the linear model".
-# Using 80% CIs instead of the more common 95% may be a way to address the lower efficiency (which increases the SE by ~46% according to Blair (11, Figure 2), vs. 1.96/1.28=1+53% for taking 80% instead of 95% CIs)
-# The estimates, SE, CIs and test (list == direct) do not depend on J if lm is used (I've checked the R code). 
-# On the contrary, ml depends on J and cannot be used for our design (with a varying J).
-# The lm model applying to a varying J is unbiased to the extent that the four branches are balanced (which they are almost perfectly).
-# Also, contrary to the other models, the linear model (coefficient) has a clear interpretation.
-# The difference test works by Monte Carlo (cf. below): by computing the difference of 10k draws of direct & indirect support (using their respective normal distributions) and computing the differences' mean and standard deviation.
+# Table 1: tables/continents/reg_list_exp_g.tex
 summary(lm(list_exp ~ branch_list_exp_g*continent, data = all, weights = all$weight))
 fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
 fit.direct <- glm(as.character(gcs_support) == 'Yes' ~ continent, data = all[all$wave != "US2",], weights = weight, family = binomial("logit"))
@@ -156,72 +48,32 @@ same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported
                     add_lines = list(c(11, paste("\\hline  \\\\[-1.8ex] \\textit{Support for GCS} &", round(wtd.mean(all$gcs_support[all$wave != "US2"], weights = all$weight[all$wave != "US2"]), 3), " & ", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), " & ", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "\\\\")),
                                      c(12, paste("\\textit{Social desirability bias} & \\textit{$", round(avg.pred.social.desirability$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_us$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_eu$fit[3,1], 3),  "$}\\\\")),
                                      c(13, paste("\\textit{80\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us$fit[3,2], 2), ";", round(avg.pred.social.desirability_us$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu$fit[3,2], 2), ";", round(avg.pred.social.desirability_eu$fit[3,3], 2), "]$}\\\\"))))
-# TODO!! t, p
-
-# /!\ Weighted list experiment regression is not supported (yet) for the multi-item design.
-# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all, family = binomial("logit"))
-# fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_ict', J = 2, data = all, method = "lm", multi.condition = "level")
-# (avg.pred.social.desirability <- predict(fit.list, direct.glm = fit.direct, se.fit = TRUE)) # -.066 95% CI: (-.12, -.02)
-
-# Code copied from https://github.com/SensitiveQuestions/list/blob/master/R/ictreg.R, line ~5030
-# logistic <- function(object) exp(object)/(1+exp(object))
-# fit.list <- ictreg(list_exp ~ continent, treat = 'branch_list_exp_g', J = 2 + wtd.mean(all$branch_list_exp_r == T, all$weight), data = all, weights = 'weight', method = "lm")
-# fit.direct <- glm(gcs_support == 'Yes' ~ continent, data = all[all$wave != "US2",], weights = weight, family = binomial("logit"))
-# # summary(lm(gcs_support == 'Yes' ~ 1, data = all[all$wave != "US2",], weights = weight))
-# # fit.list <- fit.list_eu
-# # fit.direct <- fit.direct_eu
-# 
-# beta <- fit.list$par.treat ## was coef(object)[1:nPar]
-# var.beta <- vcov(fit.list)[1:length(fit.list$coef.names), 1:length(fit.list$coef.names)]
-# xvar.direct <- model.matrix(as.formula(paste("~", c(fit.list$call$formula[[3]]))), fit.direct$data)
-# n.draws <- 1000
-# draws.list <- mvrnorm(n = n.draws, mu = beta, Sigma = var.beta/1.5^2) # /1.5^2 simulates a higher efficiency, as if ML estimator was used. Equality cannot be rejected with 90% confidence.
-# draws.direct <- mvrnorm(n = n.draws, mu = coef(fit.direct), Sigma = vcov(fit.direct))
-# pred.list.mean <- pred.direct.mean <- pred.diff.mean <- rep(NA, n.draws)
-# for (d in 1:n.draws) {
-#   par.g <- draws.list[d, ]
-#   # if (object$method == "lm")
-#     pred.list <- fit.list$x %*% par.g
-#   # else
-#   #   pred.list <- logistic(fit.list$x %*% par.g)
-# 
-#   pred.direct <- logistic(fit.list$x %*% draws.direct[d,])
-# 
-#   # pred.list.mean[d] <- mean(pred.list) # This is the original code, it doesn't include weights
-#   # pred.direct.mean[d] <- mean(pred.direct)
-#   pred.list.mean[d] <- wtd.mean(pred.list, weights = fit.list$weights)
-#   pred.direct.mean[d] <- wtd.mean(pred.direct, weights = fit.list$weights)
-#   pred.diff.mean[d] <- pred.list.mean[d] - pred.direct.mean[d]
-# 
-# }
-# (est.diff <- mean(pred.diff.mean))
-# (se.diff <- sd(pred.diff.mean))
-# mean(pred.list.mean)
-# mean(pred.direct.mean)
-# level <- .9
-# (ci.upper.diff <- est.diff + qt(1-(1-level)/2, df = nrow(fit.list$x)) * se.diff) # .007 (EU: .01)
-# (ci.lower.diff <- est.diff - qt(1-(1-level)/2, df = nrow(fit.list$x)) * se.diff) # -.06 (EU: -.075)
 
 
 ##### Petition ##### 
-wtd.t.test(us1$gcs_support, us1$petition_gcs, weight=us1$weight, drops = "") # rejects equality (p=.046)
-t.test(us1$gcs_support, us1$petition_gcs, paired = T) # rejects equality (p=.016)
-t.test(us1$gcs_support, us1$petition_gcs, paired = F) # rejects equality (p=.019)
-decrit("petition_gcs", us1) # TODO!!
-(temp <- wtd.t.test(us1$petition_gcs[us1$branch_petition == "gcs"], us1$gcs_support[us1$branch_petition == "gcs"], weight=us1$weight[us1$branch_petition == "gcs"])) # cannot reject equality (p=.30)
+(temp <- wtd.t.test(us1$petition_gcs[us1$branch_petition == "gcs"], us1$gcs_support[us1$branch_petition == "gcs"], 
+                    weight=us1$weight[us1$branch_petition == "gcs"])) # cannot reject equality (p=.30)
 CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
 binconf(sum(us1$weight[us1$petition_gcs & us1$branch_petition == "gcs"]), sum(us1$weight[us1$branch_petition == "gcs"]), alpha = 0.05)
-(temp <- wtd.t.test(us1$petition_nr[us1$branch_petition == "nr"], us1$nr_support[us1$branch_petition == "nr"], weight=us1$weight[us1$branch_petition == "nr"])) # cannot reject equality (p=.76)
+(temp <- wtd.t.test(us1$petition_nr[us1$branch_petition == "nr"], us1$nr_support[us1$branch_petition == "nr"], 
+                    weight=us1$weight[us1$branch_petition == "nr"])) # cannot reject equality (p=.76)
 CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
 binconf(sum(us1$weight[us1$petition_nr & us1$branch_petition == "nr"]), sum(us1$weight[us1$branch_petition == "nr"]), alpha = 0.05)
-(temp <- wtd.t.test(eu$petition_gcs[eu$branch_petition == "gcs"], eu$gcs_support[eu$branch_petition == "gcs"], weight=eu$weight[eu$branch_petition == "gcs"])) # rejects equality (p=1e-5)
+(temp <- wtd.t.test(eu$petition_gcs[eu$branch_petition == "gcs"], eu$gcs_support[eu$branch_petition == "gcs"], 
+                    weight=eu$weight[eu$branch_petition == "gcs"])) # rejects equality (7pp, p=1e-5)
 CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
 binconf(sum(eu$weight[eu$petition_gcs & eu$branch_petition == "gcs"]), sum(eu$weight[eu$branch_petition == "gcs"]), alpha = 0.05)
-(temp <- wtd.t.test(eu$petition_nr[eu$branch_petition == "nr"], eu$nr_support[eu$branch_petition == "nr"], weight=eu$weight[eu$branch_petition == "nr"])) # rejects equality (p=.01)
+(temp <- wtd.t.test(eu$petition_nr[eu$branch_petition == "nr"], eu$nr_support[eu$branch_petition == "nr"], 
+                    weight=eu$weight[eu$branch_petition == "nr"])) # rejects equality (4pp, p=.008)
 CI(temp$additional[1], temp$additional[4], temp$coefficients[2])
 binconf(sum(eu$weight[eu$petition_nr & eu$branch_petition == "nr"]), sum(eu$weight[eu$branch_petition == "nr"]), alpha = 0.05)
-decrit("petition_gcs", eu)
-decrit("petition_nr", eu)
+
+decrit("petition_gcs", eu) # 69%
+decrit("petition_nr", eu) # 67%
+# wtd.t.test(us1$gcs_support, us1$petition_gcs, weight=us1$weight, drops = "") # rejects equality (p=.046)
+# t.test(us1$gcs_support, us1$petition_gcs, paired = T) # rejects equality (p=.016)
+# t.test(us1$gcs_support, us1$petition_gcs, paired = F) # rejects equality (p=.019)
+# decrit("petition_gcs", us1) # 51%
 
 
 ##### Conjoint analyses #####
@@ -308,7 +160,7 @@ amce$DE$estimates$foreignpolicy # 1: .09, 2: .09, 3: .10
 amce$us1$estimates$Foreignpolicy #1: .01, 2: .09, 3: .08
 
 table_effects_amce <- matrix(NA, nrow = 15, ncol = 5, dimnames = list(paste0(countries, "; ", c(rep("Global Climate Plan", 5), rep("Global Millionaire Tax", 5), rep("Global Democratic Assembly on Climate Change", 5))), 
-                              c("Effect", "N", "t", "p", "CI")))
+                                                                      c("Effect", "N", "t", "p", "CI")))
 for (i in 1:5) {
   indices <- if (i == 5) c(9, 11, 10) else 8:10
   temp <- summary(amce[[if (i == 5) "us1" else countries[i]]])
@@ -321,11 +173,11 @@ for (i in 1:5) {
 summary(amce$FR)$amce$`Pr(>|z|)`[8] # 0.00047
 table_effects_amce[1, "p"] <- "$5\\cdot 10^{-4}$"
 cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
-   paste(kbl(table_effects_amce, "latex", caption = "Average Marginal Component Effects of global policies.", 
-             position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(table_effects_amce)-1), 
-             label = "amce", row.names = T,  format.args = list(decimal = ","),
-             col.names = c("Effect", "Obs.", "t", "P-value", "95\\% C.I.")), # "Country; Policy", 
-         collapse="\n"), fixed = T), fixed = T), file = "../tables/amce.tex") 
+                                                 paste(kbl(table_effects_amce, "latex", caption = "Average Marginal Component Effects of global policies.", 
+                                                           position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(table_effects_amce)-1), 
+                                                           label = "amce", row.names = T,  format.args = list(decimal = ","),
+                                                           col.names = c("Effect", "Obs.", "t", "P-value", "95\\% C.I.")), # "Country; Policy", 
+                                                       collapse="\n"), fixed = T), fixed = T), file = "../tables/amce.tex") 
 
 
 
@@ -335,7 +187,7 @@ for (c in c(countries, "all")) {
   pvalues_treatment[[c]] <- list()
   temp <- lm(conjoint_c ~ branch_c_gcs, data = d(c)[d(c)$conjoint_c_none == F & d(c)$wave != "US2",], weights = weight)
   pvalues_treatment[[c]] <- summary(temp)$coefficients[(length(summary(temp)$coefficients[,4])-2):length(summary(temp)$coefficients[,4]), 4]
-  }
+}
 pvalues_treatment
 sort(unlist(pvalues_treatment))
 (adjusted_pvalues <- sort(p.adjust(unlist(pvalues_treatment), method = 'fdr')))
@@ -395,6 +247,66 @@ desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename
 reg_info_support <- lm(gcs_support ~ info_support, data = us2, weights = weight)
 summary(reg_info_support)
 confint(reg_info_support)
+
+# Global wealth tax
+# global_tax_sharing_positive, global_tax_global_share_positive, global_tax_global_share_share TODO! combine them
+decrit(us2$global_tax_support > 0, us2)
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'FR')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'DE')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'ES')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'UK') 
+decrit(all$global_tax_support > 0, all) 
+decrit(all$national_tax_support > 0, all)
+decrit(us2$global_tax_support > 0, us2, which = us2$global_tax_support != 0) 
+decrit(us2$national_tax_support > 0, us2, which = us2$national_tax_support != 0) 
+decrit("global_tax_support", us2)
+decrit("national_tax_support", eu)
+decrit("global_tax_global_share", all, weight = F)
+decrit("global_tax_global_share", us2) # 41
+decrit(us2$global_tax_global_share > 0)
+wtd.mean(eu$global_tax_global_share[eu$country == 'UK'] > 0, weights = eu$weight_country[eu$country == 'UK'])
+decrit("global_tax_sharing", all, weight = F)
+decrit("global_tax_sharing", us2) # 65% Yes
+decrit("global_tax_support", eu, which = eu$country == "FR", weights = eu$weight_country)
+
+# Other global policies
+# support_likert_positive, support_likert_share
+# support_likert_positive, global_policies_mean, global_policies_positive, global_policies_share
+
+# Foreign aid 
+decrit("foreign_aid_raise_support", all)
+# healthcare, education
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_healthcare | d(c)$foreign_aid_reduce_how_education), d(c)$weight), 3)))
+# taxes
+for (c in countries) print(paste(c, round(wtd.mean((d(c)$foreign_aid_reduce_how_income_tax | d(c)$foreign_aid_reduce_how_wealthy | d(c)$foreign_aid_reduce_how_corporations), d(c)$weight), 3)))
+
+min_indifferent <- 1
+max_indifferent <- 0
+for (v in variables_support_likert) for (c in countries) {
+  share_indifferent_vc <- wtd.mean(d(c)[["climate_compensation_support"]] == 0, d(c)$weight)
+  if (share_indifferent_vc < min_indifferent) min_indifferent <- share_indifferent_vc
+  if (share_indifferent_vc > max_indifferent) max_indifferent <- share_indifferent_vc
+}
+min_indifferent # 21%
+max_indifferent # 27%
+
+share_indifferent <- matrix(NA, dimnames = list(variables_support_likert, countries), nrow = 11, ncol = 5)
+for (v in variables_support_likert) for (c in countries) share_indifferent[v,c] <- wtd.mean(d(c)[[v]] == 0, d(c)$weight)
+round(quantile(share_indifferent, c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
+# 0%   5%  25%   50%  75%  95%  100% 
+# 0.10 0.11 0.19 0.25 0.32 0.37 0.40
+
+share_indifferent_oecd <- readRDS("../data/share_indifferent_oecd.rds")
+round(quantile(share_indifferent_oecd, c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
+# 0%   5%   25%  50%  75%  95%  100% 
+# 0.11 0.15 0.21 0.27 0.33 0.40 0.48 
+
+round(quantile(c(share_indifferent_oecd[c(1,2,4),], share_indifferent[10:11,]), c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
+# 0%   5%   25%  50%  75%  95%  100% 
+# 0.10 0.11 0.15 0.20 0.26 0.32 0.37 
+
+# all/foreign_aid_condition
+
 
 
 ##### Second-order beliefs ##### 
@@ -464,6 +376,23 @@ same_reg_subsamples(dep.var = "global_tax_sharing", dep.var.caption = "Prefers t
 
 ##### Methods #####
 decrit("survey_biased", data = all)
+
+# support_binary_positive
+binconf(sum(us1$weight[us1$gcs_support == T]), nrow(us1), alpha = 0.05) # Margin of error is +/- 2pp
+binconf(sum(eu$weight[eu$gcs_support == T]), nrow(eu), alpha = 0.05)
+decrit("nr_support", us1) # 56%
+reweighted_estimate("gcs_support", "EU") # 76
+reweighted_estimate("gcs_support", "US1") # 53 Assigns a weight 0 to vote_us = PNR/No right
+reweighted_estimate("gcs_support", "US1", omit = "vote_us") # 52 Uses all observations and still reweight for vote using e$vote
+decrit("gcs_support", us1, which = us1$voted)
+decrit("gcs_understood", all)
+same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "Supports the Global Climate Scheme", covariates = c("gcs_understood"), covariate.labels = "\\makecell{With GCS, typical\\\\~[country] people lose\\\\and poorest humans win}",
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T, 
+                    filename = "gcs_support_understood", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "Supports the Global Climate Scheme", covariates = variables_understood[c(2,1,3)], covariate.labels = "\\makecell{With GCS, typical\\\\~[country] people lose\\\\and poorest humans win}",# c("gcs_understood"),
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T, 
+                    filename = "gcs_support_understood_all", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
 
 
 ##### App Determinants #####
