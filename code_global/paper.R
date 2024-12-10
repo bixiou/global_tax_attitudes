@@ -272,7 +272,8 @@ summary(lm(conjoint_c ~ branch_c_gcs, eu[eu$conjoint_c_none == F & eu$country ==
 CI(0.007872, 0.038831, 659)
 summary(lm(conjoint_c ~ branch_c_gcs, eu[eu$conjoint_c_none == F & eu$country == "ES",], weights = weight))
 CI(-0.01477, 0.03772, 502)
-summary(lm(gcs_support ~ swing_state, us1, weights = weight)) # .012, n=693
+summary(lm(gcs_support ~ swing_state, us1, weights = weight)) # -.04
+summary(lm(gcs_support ~ swing_state_3pp, us1, weights = weight)) # -.06
 summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state == T,], weights = weight)) # .012, n=693
 summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state_3pp == T,], weights = weight)) # .006, n=509
 summary(lm(conjoint_c_right ~ branch_c_gcs, us1, weights = weight)) # p-value: .0504
