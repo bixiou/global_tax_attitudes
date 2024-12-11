@@ -1268,8 +1268,8 @@ us1pa <- prepare(country = "US1", wave = "pilot", weighting = FALSE, exclude_spe
 us2pa <- prepare(country = "US2", wave = "pilot", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)
 
 # MAIN DATASETS: Western surveys
-e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
 e <- eu <- prepare(country = "EU", weighting = T)
+e <- us1 <- prepare(country = "US1", weighting = T, define_var_lists = FALSE)
 e <- us2 <- prepare(country = "US2", weighting = T, define_var_lists = FALSE)
 us <- merge(us1, us2, all = T)
 e <- all <- merge(us, eu, all = T)
@@ -1766,12 +1766,7 @@ fill_heatmaps <- function(list_var_list = NULL, heatmaps = heatmaps_defs, condit
     if (!"labels" %in% names(heatmaps[[name]])) {
       if (!"vars" %in% names(heatmaps[[name]])) { warning(paste("'vars' must be specified for", name)) }
       heatmaps[[name]]$labels <- c()
-      for (var in heatmaps[[name]]$vars) {
-        print(name)
-        print(var)
-        print(labels[var])
-        heatmaps[[name]]$labels <- c(heatmaps[[name]]$labels, break_strings(ifelse(var %in% names(labels), labels[var], var), sep = "\n"))
-      }
+      for (var in heatmaps[[name]]$vars) heatmaps[[name]]$labels <- c(heatmaps[[name]]$labels, break_strings(ifelse(var %in% names(labels), labels[var], var), sep = "\n"))
     }
     if (!"conditions" %in% names(heatmaps[[name]])) heatmaps[[name]]$conditions <- conditions
     if (!"sort" %in% names(heatmaps[[name]])) heatmaps[[name]]$sort <- sort

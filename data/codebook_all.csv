@@ -1211,7 +1211,7 @@ gcs_field_difficult_agreement,,TRUE / FALSE / NA
 gcs_field_difficult_implement,,TRUE / FALSE / NA
 gcs_field_cost,,TRUE / FALSE / NA
 gcs_field_poorest_humans,,TRUE / FALSE / NA
-length_gcs_field_english,length_gcs_field_english: Number of characters in gcs_field_english,min: 0 / max: 1019
+length_gcs_field_english,length_gcs_field_english: Number of characters in gcs_field_english,min: 0 / max: 1037
 gcs_field_empty,,TRUE / FALSE / NA
 gcs_field_contains_pro,gcs_field_contains_pro: T/F gcs_field_english contains: pro |pro:|pros |pros:,TRUE / FALSE / NA
 gcs_field_contains_con,gcs_field_contains_con: T/F gcs_field_english contains: con |con: |cons |cons: ,TRUE / FALSE / NA
@@ -2727,7 +2727,7 @@ poverty_field_against_help,,TRUE / FALSE / NA
 poverty_field_tax,,TRUE / FALSE / NA
 poverty_field_other,,TRUE / FALSE / NA
 poverty_field_dont_know,,TRUE / FALSE / NA
-length_poverty_field,length_poverty_field_english: Number of characters in poverty_field_english,min: 0 / max: 1362
+length_poverty_field,length_poverty_field_english: Number of characters in poverty_field_english,min: 0 / max: 1368
 poverty_field_empty,,TRUE / FALSE / NA
 poverty_field_contains_justice,poverty_field_contains_justice: T/F poverty_field_english contains: justice|poor|equalit|fair|low-income,TRUE / FALSE / NA
 poverty_field_contains_education,poverty_field_contains_education: T/F poverty_field_english contains: train|teach|educat,TRUE / FALSE / NA

@@ -728,7 +728,7 @@ same_reg_subsamples <- function(dep.var, dep.var.caption = NULL, covariates = se
       coefs[[i]] <- models[[i]]$coefficients
       if (robust_SE) SEs[[i]] <- coeftest(models[[i]], vcov = vcovHC(models[[i]], "HC1"))[,2]
       else SEs[[i]] <- summary(models[[i]])$coefficients[,2]
-      if (p_instead_SE) SEs[[i]] <- summary(models[[i]])$coefficients[,4]
+      if (p_instead_SE) if (robust_SE) SEs[[i]] <- coeftest(models[[i]], vcov = vcovHC(models[[i]], "HC1"))[,4] else summary(models[[i]])$coefficients[,4]
     }
     if (print_regs) print(summary(models[[i]]))
     if (constant_instead_mean & (include.total | j > 0)) means <- c(means, round(coefs[[i]][["(Intercept)"]], digits))

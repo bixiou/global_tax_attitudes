@@ -1201,7 +1201,7 @@ gcs_field_difficult_agreement,,TRUE / FALSE / NA
 gcs_field_difficult_implement,,TRUE / FALSE / NA
 gcs_field_cost,,TRUE / FALSE / NA
 gcs_field_poorest_humans,,TRUE / FALSE / NA
-length_gcs_field_english,length_gcs_field_english: Number of characters in gcs_field_english,min: 0 / max: 1019
+length_gcs_field_english,length_gcs_field_english: Number of characters in gcs_field_english,min: 0 / max: 1037
 gcs_field_empty,,TRUE / FALSE / NA
 gcs_field_contains_pro,gcs_field_contains_pro: T/F gcs_field_english contains: pro |pro:|pros |pros:,TRUE / FALSE / NA
 gcs_field_contains_con,gcs_field_contains_con: T/F gcs_field_english contains: con |con: |cons |cons: ,TRUE / FALSE / NA
