@@ -1009,7 +1009,7 @@ dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE
   weight_var <- if (sum(!is.na(data$weight_country)) == nrow(data) && length(unique(data$country)) == 1) "weight_country" else "weight"
   if (is.null(data[[weight_var]])) weights <- F # TODO? warning
   mat <- c()
-  if (is.character(data[[var]]) | (is.numeric(data[[var]]) & !any(grepl("item", class(data[[var]])))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: no is.logical
+  if (is.character(data[[var]]) | (is.numeric(data[[var]]) & any(grepl("item", class(data[[var]])))) | is.logical(data[[var]])) v <- as.factor(data[[var]]) # before: !any(...item) instead of any(...item); before before: no is.logical
   else v <- data[[var]]
   # if (setequal(levels(v), c(T, F))) levels <- c(T) # before: not this line
   # else if (is.null(annotation(v))) levels <- levels(v)
@@ -1023,7 +1023,7 @@ dataN <- function(var, data=e, miss=T, weights = T, return = "", fr=F, rev=FALSE
   if (weights) N <- sum(data[[weight_var]][!is.pnr(v) & (!(v %in% missing_labels))]) # c("NSP", "Non concerné·e")
   else N <- length(which(!is.pnr(v) & (!(v %in% missing_labels)))) # c("NSP", "Non concerné·e")
   for (val in levels) { # before: no %in% nowhere below
-    if (weights) mat <- c(mat, sum(data[[weight_var]][which(v==val)])/N)
+    if (weights) mat <- c(mat, sum(data[[weight_var]][which(v==val)], na.rm = T)/N)
     else mat <- c(mat, length(which(v==val))/N) }
   if (rev) mat <- rev(mat)
   if (miss) {
@@ -1371,7 +1371,8 @@ barres <- function(data, vars, file, title="", labels, color=c(), rev_color = FA
                                        font = list(family = font, size = 16, color = 'black'),
                                        showarrow = FALSE) } # %>%
   }
-
+  
+  # print(data)
   # print(nrow(data))
   # print(hover)
   # print(nrow(hovers))

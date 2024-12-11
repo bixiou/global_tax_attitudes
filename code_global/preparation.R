@@ -1467,7 +1467,7 @@ labels_vars <- c(
   "donation" = "Donation (any)",
   "global_tax_support" = "Global tax on millionaires funding low-income countries",
   "national_tax_support" = "National tax on millionaires funding public services",
-  "global_tax_global_share" = "Preferred share of global tax for low-income (in %)",
+  "global_tax_global_share" = "Preferred share of global tax for LICs (in %)",
   "global_tax_sharing" = "Sharing half of global tax with low-income countries",
   "foreign_aid_belief" = "Belief about foreign aid", # / public spending",
   "foreign_aid_actual" = "Actual foreign aid (in % of public spending)",
@@ -1846,6 +1846,8 @@ vars_heatmaps <- c("support", "other_policies", "climate_policies", "global_poli
 
 heatmaps_defs <- fill_heatmaps(vars_heatmaps, heatmaps_defs)
 
+heatmaps_defs$support_likert_all$labels[5] <- "[Country]'s foreign aid should be increased*"
+
 
 
 # heatmaps_defs$foreign_aid_no
@@ -1863,7 +1865,8 @@ heatmap_multiple <- function(heatmaps = heatmaps_defs, data = e, trim = FALSE, w
 ##### Barres #####
 data_list_exp <- function(data) return(cbind(t(t(c(0, 0, dataN("list_exp_l", data, miss = F)))), t(t(c(0, dataN("list_exp_gl", data, miss = F)))), t(t(c(0, dataN("list_exp_rl", data, miss = F)))), dataN("list_exp_rgl", data, miss = F)))
 
-barres_multiple <- function(barres = barres_defs, df = e, folder = NULL, print = T, export_xls = FALSE, trim = T, method = 'orca', format = 'pdf', weights = T) {
+# TODO! option to not display main label from barresN
+barres_multiple <- function(barres = barres_defs, df = e, folder = "../figures/country_comparison", print = T, export_xls = FALSE, trim = T, method = 'orca', format = 'pdf', weights = T) {
   if (missing(folder)) folder <- automatic_folder(along = "country", data = df, several = "all")
   for (def in barres) {
     tryCatch({
@@ -2011,6 +2014,7 @@ vars_barresN <- c("group_defended_agg2", "foreign_aid_raise_support", "global_ta
                   "foreign_aid_belief_agg", "foreign_aid_preferred_info_agg", "foreign_aid_preferred_no_info_agg", "donation_charities", "interested_politics", 
                   "involvement_govt",  "vote_participation", "survey_biased", "interview", "left_right") 
 barresN_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T), "gcs_support" = list(rev = T, rev_color = F)), along = "country_name")
+barresN_defs$global_tax_support$labels <- "Global tax on millionaires funding low-income ctries"
 barresN_continent_defs <- fill_barres(vars_barresN, list("negotiation" = list(width = 940), "vote" = list(miss = T)), along = "continent")
 main_outcomes <- c("gcs_support", "nr_support", "global_tax_support", "national_tax_support", "cap_wealth_support", "group_defended_agg2", "negotiation", "democratise_un_imf_support", "climate_mitigation_support")
 barresN_vote3_defs <- fill_barres(main_outcomes, list("gcs_support" = list(rev = T, rev_color = F)), along = "vote3")

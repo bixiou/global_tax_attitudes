@@ -64,6 +64,10 @@ decrit("both_win_lose", data = e)
 decrit("click_details", data = e) # 10%
 decrit("click_reminder", data = e) # 13%
 decrit("dropout", data = e) # TODO!
+decrit("gcs_understood", all)
+same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "Supports the Global Climate Scheme", covariates = variables_understood[c(2,1,3)], covariate.labels = "\\makecell{With GCS, typical\\\\~[country] people lose\\\\and poorest humans win}",# c("gcs_understood"),
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
+                    filename = "gcs_support_understood_all", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
 
 
 ##### Other #####
@@ -213,6 +217,11 @@ summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition"),
 summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition"), data = petition, subset = country == "DE", weights = weight)) # Only country with significant interaction
 summary(lm(support == "Yes" ~ (branch_petition == "gcs") * (type == "petition"), data = petition, subset = country == "ES", weights = weight))
 
+binconf(sum(us1$weight[us1$petition_gcs & us1$branch_petition == "gcs"]), sum(us1$weight[us1$branch_petition == "gcs"]), alpha = 0.05)
+binconf(sum(us1$weight[us1$petition_nr & us1$branch_petition == "nr"]), sum(us1$weight[us1$branch_petition == "nr"]), alpha = 0.05)
+binconf(sum(eu$weight[eu$petition_gcs & eu$branch_petition == "gcs"]), sum(eu$weight[eu$branch_petition == "gcs"]), alpha = 0.05)
+binconf(sum(eu$weight[eu$petition_nr & eu$branch_petition == "nr"]), sum(eu$weight[eu$branch_petition == "nr"]), alpha = 0.05)
+
 
 ##### List experiment #####
 decrit("branch_list_exp", data = e)
@@ -348,6 +357,61 @@ same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progr
                     data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
                     filename = "conjoint_c_wo_none_p", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, p_instead_SE = T)
 
+# conjoint_left_ag_b_binary_positive
+decrit("conjoint_left_ag_b_binary", us1, weight = F)
+wtd.t.test(eu$conjoint_left_ag_b_binary[eu$country=='UK'], .5, weight = eu$weight_country[eu$country=='UK'])
+wtd.t.test(eu$conjoint_left_ag_b_binary[eu$country=='ES'], .5, weight = eu$weight_country[eu$country=='ES'])
+
+
+
+# Interaction with political leaning:
+summary(lm(conjoint_c ~ branch_c_gcs * vote_factor, d("FR")[d("FR")$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c ~ branch_c_gcs * vote3, us1[us1$conjoint_c_none == F,], weights = weight))
+
+same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), weights = "weight_vote", omit.note = T,
+                    data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "conjoint_c_wo_none_weight_vote", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+for (i in c("left", "right", "none", "wo_none", "wo_none_weight_vote")) {
+  temp <- readLines(paste0("../tables/country_comparison/conjoint_c_", i, ".tex"))
+  writeLines(sub("United Kingdom", "UK", temp), paste0("../tables/country_comparison/conjoint_c_", i, ".tex"))
+}
+
+# The effect tends to be driven by right-wing voters
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = all, weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = all[all$conjoint_c_none == F & all$wave != "US2",], weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = eu[eu$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = us1[us1$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = eu[eu$country=="FR" & eu$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c ~ vote_factor*branch_c_gcs, data = eu[eu$country=="FR" & eu$conjoint_c_none == F,], weights = weight))
+summary(lm(conjoint_c_right ~ branch_c_gcs, us1, weights = weight)) # p-value: .0504
+
+
+# Multiple hypotheses testing
+pvalues_treatment <- list() # adjusted for multiple testing
+for (c in c(countries, "all")) {
+  pvalues_treatment[[c]] <- list()
+  temp <- lm(conjoint_c ~ branch_c_gcs, data = d(c)[d(c)$conjoint_c_none == F & d(c)$wave != "US2",], weights = weight)
+  pvalues_treatment[[c]] <- summary(temp)$coefficients[(length(summary(temp)$coefficients[,4])-2):length(summary(temp)$coefficients[,4]), 4]
+}
+pvalues_treatment
+sort(unlist(pvalues_treatment))
+(adjusted_pvalues <- sort(p.adjust(unlist(pvalues_treatment), method = 'fdr')))
+
+
+largest_effect_amce <- function(model) {
+  max <- p_max <- -1
+  for (d in names(model$estimates)) for (p in colnames(model$estimates[[d]])) if (model$estimates[[d]][1, p] > max) {
+    max <- model$estimates[[d]][1, p]
+    p_max <- p
+  }
+  names(max) <- model$user.levels[[p_max]]
+  return(round(max, 3))
+}
+
+for (i in c("us1", countries_EU)) {
+  print(i)
+  print(largest_effect_amce(amce[[i]])) }
 
 
 ##### Donation #####
@@ -360,6 +424,70 @@ CrossTable(e$negotiation, e$country, prop.t = F, prop.r = F, prop.chisq = F, pro
 desc_table(dep_vars = "donation", filename = "donation_interaction", data = list(all, us1, us1, eu), 
            indep_vars = c("branch_donation", "vote3_factor", "branch_donation:vote3_factor", "branch_donation:vote3_factor"), model.numbers = F,
            indep_vars_included = list(c(T,F,F,F), c(T,F,F,F), c(T,T,T,T), c(T,F,F,F)), weights = "weight", save_folder = "../tables/continents/", robust_SE = FALSE, omit = c("Constant", "^  Vote", "^  vote3"))
+
+decrit("donation", all)
+same_reg_subsamples(dep.var = "donation", dep.var.caption = "Donation to poor people (in \\%)", covariates = c("branch_donation"),
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "donation", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+same_reg_subsamples(dep.var = "donation", dep.var.caption = "Donation to poor people (in \\%)", covariates = c("branch_donation"),
+                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "donation", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+same_reg_subsamples(dep.var = "donation", dep.var.caption = "Donation to poor people (in \\%)", covariates = c("branch_donation", "vote_factor", "branch_donation:vote_factor"),
+                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "donation_covariates", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+same_reg_subsamples(dep.var = "donation", dep.var.caption = "Donation to poor people (in \\%)", covariates = c("branch_donation", "vote_factor", "branch_donation:vote_factor"),
+                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, keep = c("branch_donation"),
+                    filename = "donation_interaction", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+desc_table(dep_vars = "donation", filename = "donation_interaction", data = list(all, us1, us1, eu), dep.var.labels = c("All", "US", "US", "Eu"), dep.var.caption = "Donation to poor people (in \\%)",
+           indep_vars = c("branch_donation", "vote_Biden", "branch_donation:vote_Biden"), model.numbers = F, multicolumn = F, mean_above = F,
+           indep_vars_included = list(c(T,F,F), c(T,F,F), c(T,T,T), c(T,F,F)), weights = "weight", save_folder = "../tables/continents/", robust_SE = FALSE, omit = c("Constant", "^  Vote", "^  vote"))
+
+  desc_table(dep_vars = "donation", filename = "donation_interaction", data = list(all, us1, us1, eu), dep.var.labels = c("All", "US", "US", "Eu"), dep.var.caption = "Donation to poor people (in \\%)",
+           indep_vars = c("branch_donation", "vote_not_Biden", "branch_donation:vote_not_Biden"), model.numbers = F, multicolumn = F,  mean_above = F,
+           indep_vars_included = list(c(T,F,F), c(T,F,F), c(T,T,T), c(T,F,F)), weights = "weight", save_folder = "../tables/continents/", robust_SE = FALSE, omit = c("Constant", "^  Vote", "^  vote"))
+
+same_reg_subsamples(dep.var = "donation_above_25 ", dep.var.caption = "More than 25\\% donated to poor people", covariates = c("branch_donation"),
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "donation_above_25 ", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+same_reg_subsamples(dep.var = "donation_above_25 ", dep.var.caption = "More than 25\\% donated to poor people", covariates = c("branch_donation"),
+                    data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "donation_above_25 ", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+
+##### Global millionaire tax #####
+same_reg_subsamples(dep.var = "global_tax_sharing", dep.var.caption = "Prefers to share half of global tax with low-income countries", covariates = c("vote_factor"),
+                    data = all[all$country != "US",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
+                    filename = "global_tax_sharing_vote", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+
+# Global wealth tax
+# global_tax_sharing_positive, global_tax_global_share_positive, global_tax_global_share_share TODO! combine them
+decrit(us2$global_tax_support > 0, us2)
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'FR')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'DE')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'ES')
+decrit(eu$global_tax_support > 0, eu, which = eu$country == 'UK')
+decrit(all$global_tax_support > 0, all)
+decrit(all$national_tax_support > 0, all)
+decrit(us2$global_tax_support > 0, us2, which = us2$global_tax_support != 0)
+decrit(us2$national_tax_support > 0, us2, which = us2$national_tax_support != 0)
+decrit("global_tax_support", us2)
+decrit("national_tax_support", eu)
+decrit("global_tax_global_share", all, weight = F)
+decrit("global_tax_global_share", us2) # 41
+decrit(us2$global_tax_global_share > 0)
+wtd.mean(eu$global_tax_global_share[eu$country == 'UK'] > 0, weights = eu$weight_country[eu$country == 'UK'])
+decrit("global_tax_sharing", all, weight = F)
+decrit("global_tax_sharing", us2) # 65% Yes
+decrit("global_tax_support", eu, which = eu$country == "FR", weights = eu$weight_country)
+
+# Other global policies
+# support_likert_positive, support_likert_share
+# support_likert_positive, global_policies_mean, global_policies_positive, global_policies_share
 
 
 
@@ -565,6 +693,14 @@ decrit("group_defended_agg", data = us1, which = us1$vote == -1)
 # all/negotiation
 
 
+##### Placebo tests #####
+desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies_supported", "conjoint_left_ag_b_binary"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
+           dep.var.labels = c("\\makecell{G+R+C > R+C}", "\\makecell{Support\\G+R+C}", "\\makecell{Signs\\petition}", "\\makecell{Share policies\\supported}", "\\makecell{Conjoint 5\\A+CGS > B}"),
+           filename = "placebo_tests_eu", save_folder = "../tables/", data = eu, indep_vars = c("branch_list_exp", "branch_petition", "branch_donation", "branch_foreign_aid_preferred", "branch_gcs_field"))
+
+desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies_supported", "conjoint_left_ag_b_binary"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
+           dep.var.labels = c("\\makecell{G+R+C > R+C}", "\\makecell{Support\\G+R+C}", "\\makecell{Signs\\petition}", "\\makecell{Share policies\\supported}", "\\makecell{Conjoint 5\\A+CGS > B}"),
+           filename = "placebo_tests_us1", save_folder = "../tables/", data = us1, indep_vars = c("branch_list_exp", "branch_petition", "branch_donation", "branch_foreign_aid_preferred", "branch_gcs_field"))
 
 
 
