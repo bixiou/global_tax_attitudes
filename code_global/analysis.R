@@ -375,7 +375,7 @@ summary(lm(nr_support ~ branch_gcs, data = e, weights = weight))
 summary(lm(gcs_support ~ branch_gcs * political_affiliation, data = e))
 summary(lm(gcs_support ~ branch_gcs * (political_affiliation == "Republican"), data = e))
 summary(lm(gcs_support ~ branch_gcs * (political_affiliation == "Democrat"), data = e))
-.desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
+desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
               dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, 
               add_lines = list(c(18, "Includes controls &  & \\checkmark &  & \\checkmark \\\\")))
 
@@ -555,6 +555,14 @@ desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "d
            indep_vars = quotas_eu) 
 
 
+##### Universalistic values #####
+decrit("group_defended_agg", data = all, which = all$vote != 0)
+decrit("group_defended_agg", data = eu, which = eu$vote != 0)
+decrit("group_defended_agg", data = us1, which = us1$vote != 0)
+decrit("group_defended_agg", data = all, which = all$vote == -1)
+decrit("group_defended_agg", data = eu, which = eu$vote == -1)
+decrit("group_defended_agg", data = us1, which = us1$vote == -1)
+# all/negotiation
 
 
 

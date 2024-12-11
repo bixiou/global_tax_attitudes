@@ -132,7 +132,7 @@ Among the policies below, how many do you support?
 	Marriage only for opposite-sex couples",0 / 1 / 2 / 3
 Q61_First ,Q61_First : Timing - First Click,[string variable]
 Q61_Last,Q61_Last: Timing - Last Click,[string variable]
-duration_conjoint_a,duration_conjoint_a: Timing - Page Submit,[string variable]
+duration_conjoint_a,duration_conjoint_a: Timing - Page Submit,min: 0.056 / max: 745.117
 Q61_Click ,Q61_Click : Timing - Click Count,[string variable]
 conjoint_crg_cr,"conjoint_crg_cr: Among the two following bundles of policies, which one would you prefer? 
 
@@ -153,11 +153,11 @@ Note that for each bundle, all policies of the bundle would be implemented at th
    National redistribution scheme
   
   
-   Global climate scheme",Bundle A / Bundle B
+   Global climate scheme",A / B
 cgr_support,"cgr_support: Do you support Bundle A (combining Coal exit, the National redistribution scheme, and the Global climate scheme)?",PNR / No / Yes
 Q60_First,Q60_First: Timing - First Click,[string variable]
 Q60_Last,Q60_Last: Timing - Last Click,[string variable]
-duration_conjoint_b,duration_conjoint_b: Timing - Page Submit,[string variable]
+duration_conjoint_b,duration_conjoint_b: Timing - Page Submit,min: 0.056 / max: 745.117
 Q60_Click,Q60_Click: Timing - Click Count,[string variable]
 conjoint_cr_gr,"conjoint_cr_gr: Among the two following bundles of policies, which one would you prefer? 
 
@@ -175,7 +175,7 @@ Note that for each bundle, all policies of the bundle would be implemented at th
   
   
    National redistribution scheme
-   National redistribution scheme",NA / Bundle A / Bundle B
+   National redistribution scheme",NA / A / B
 conjoint_r_rcg,"conjoint_r_rcg: Among the two following bundles of policies, which one would you prefer? 
 
 Note that for each bundle, all policies of the bundle would be implemented at the same time.
@@ -196,7 +196,7 @@ Note that for each bundle, all policies of the bundle would be implemented at th
   
   
    
-   Global climate scheme",Bundle A / NA / Bundle B
+   Global climate scheme",A / NA / B
 conjoint_rg_r,"conjoint_rg_r: Among the two following bundles of policies, which one would you prefer? 
 
 Note that for each bundle, all policies of the bundle would be implemented at the same time.
@@ -212,7 +212,7 @@ Note that for each bundle, all policies of the bundle would be implemented at th
    National redistribution scheme
   
   
-   Global climate scheme",NA / Bundle A / Bundle B
+   Global climate scheme",NA / A / B
 conjoint_rc_r,"conjoint_rc_r: Among the two following bundles of policies, which one would you prefer? 
 
 Note that for each bundle, all policies of the bundle would be implemented at the same time.
@@ -228,10 +228,10 @@ Note that for each bundle, all policies of the bundle would be implemented at th
    National redistribution scheme
   
   
-   Coal exit",NA / Bundle A / Bundle B
+   Coal exit",NA / A / B
 Q58_First,Q58_First: Timing - First Click,[string variable]
 Q58_Last,Q58_Last: Timing - Last Click,[string variable]
-duration_conjoint_c,duration_conjoint_c: Timing - Page Submit,[string variable]
+duration_conjoint_c,duration_conjoint_c: Timing - Page Submit,min: 0.034 / max: 67.355
 Q58_Click,Q58_Click: Timing - Click Count,[string variable]
 conjoint_left_right,"conjoint_left_right: Imagine if the Democratic and Republican presidential candidates in 2024 campaigned with the following policies in their platforms.
 
@@ -262,7 +262,7 @@ Which of these candidates would you vote for?
   
   
    National redistribution scheme
-   Strict enforcement of immigration and border legislation",NA / Republican / Democrat / None of them
+   Strict enforcement of immigration and border legislation",NA / Right / Left / None
 conjoint_leftg_right,"conjoint_leftg_right: Imagine if the Democratic and Republican presidential candidates in 2024 campaigned with the following policies in their platforms.
 
 
@@ -296,10 +296,10 @@ Which of these candidates would you vote for?
    Strict enforcement of immigration and border legislation
   
   
-   Global climate scheme",Democrat / NA / None of them / Republican
+   Global climate scheme",Left / NA / None / Right
 Q59_First,Q59_First: Timing - First Click,[string variable]
 Q59_Last,Q59_Last: Timing - Last Click,[string variable]
-duration_conjoint_d,duration_conjoint_d: Timing - Page Submit,[string variable]
+duration_conjoint_d,duration_conjoint_d: Timing - Page Submit,min: 0.021 / max: 25.993
 Q59_Click,Q59_Click: Timing - Click Count,[string variable]
 conjoint_left_a_b,"conjoint_left_a_b: Imagine that at the 2024 Democratic party presidential primaries, the two main candidates campaign with the following key policies in their platforms.
 
@@ -337,7 +337,7 @@ conjoint_left_a_b,"conjoint_left_a_b: Imagine that at the 2024 Democratic party 
 
 [Field-F-1-5]
 [Field-F-1-1-5]
-[Field-F-1-2-5]",Candidate B / NA / Candidate A
+[Field-F-1-2-5]",B / NA / A
 conjoint_left_ag_b,"conjoint_left_ag_b: Imagine that at the 2024 Democratic party presidential primaries, the two main candidates campaign with the following key policies in their platforms.
 
  Which of these candidates do you prefer?
@@ -374,7 +374,7 @@ Candidate B
 
     Foreign policy
     Global climate scheme
-    -",Candidate A / NA / Candidate B
+    -",A / NA / B
 attention_test,"attention_test: Please select ""A little"" (this is a test to see if you are paying attention).",A little
 donation_nation,"donation_nation: By taking this survey, you are automatically entered into a lottery to win $100 in panel points. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery. The payment will be made to you in the same way as your compensation for this survey, so no further action is required on your part.
 
@@ -463,7 +463,7 @@ problem_poverty,problem_poverty: To what extent do you think the following issue
 group_defended,group_defended: What group do you defend when you vote?,"Family and self / Relatives / Region, U.S. State or town / Culture or religion / Fellow citizens / Europeans / Humans / Sentient beings"
 Q64_First,Q64_First: Timing - First Click,[string variable]
 Q64_Last,Q64_Last: Timing - Last Click,[string variable]
-duration_points,duration_points: Timing - Page Submit,[string variable]
+duration_points,duration_points: Timing - Page Submit,min: 0.086 / max: 17.354
 Q64_Click,Q64_Click: Timing - Click Count,[string variable]
 points_econ1,"points_econ1: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
 
@@ -790,29 +790,29 @@ D-1-1,D-1-1: D-1-1,Climate policy / Economic issues / Tax system / Societal issu
 D-1-2,D-1-2: D-1-2,Societal issues / Tax system / Economic issues / Climate policy
 D-1-3,D-1-3: D-1-3,Economic issues / Climate policy / Societal issues / Tax system
 D-1-4,D-1-4: D-1-4,Tax system / Societal issues / Climate policy / Economic issues
-D-1-1-1,D-1-1-1: D-1-1-1,Ban the sale of new combustion-engine cars by 2030 / $15 minimum wage / Wealth tax AND National redistribution scheme / Funding affordable housing / - / Expanding the Supreme Court / Making abortion a right at the federal level / National redistribution scheme / Trillion dollar investment in transportation infrastructure and building insulation / Handgun ban / Universal childcare/pre-K / Student loan forgiveness / Coal exit
-D-1-1-2,D-1-1-2: D-1-1-2,Making abortion a right at the federal level / Wealth tax AND National redistribution scheme / $15 minimum wage / Expanding the Supreme Court / Coal exit / Trillion dollar investment in transportation infrastructure and building insulation / National redistribution scheme / - / Funding affordable housing / Ban the sale of new combustion-engine cars by 2030 / Handgun ban / Universal childcare/pre-K / Student loan forgiveness
-D-1-1-3,D-1-1-3: D-1-1-3,$15 minimum wage / Ban the sale of new combustion-engine cars by 2030 / - / Trillion dollar investment in transportation infrastructure and building insulation / National redistribution scheme / Universal childcare/pre-K / Coal exit / Student loan forgiveness / Expanding the Supreme Court / Wealth tax AND National redistribution scheme / Funding affordable housing / Handgun ban / Making abortion a right at the federal level
-D-1-1-4,D-1-1-4: D-1-1-4,National redistribution scheme / Handgun ban / Coal exit / Universal childcare/pre-K / - / Wealth tax AND National redistribution scheme / Funding affordable housing / Ban the sale of new combustion-engine cars by 2030 / $15 minimum wage / Student loan forgiveness / Making abortion a right at the federal level / Expanding the Supreme Court / Trillion dollar investment in transportation infrastructure and building insulation
-D-1-2-1,D-1-2-1: D-1-2-1,Coal exit / - / Wealth tax AND National redistribution scheme / $15 minimum wage / Making abortion a right at the federal level / Expanding the Supreme Court / Handgun ban / National redistribution scheme / Ban the sale of new combustion-engine cars by 2030 / Student loan forgiveness / Trillion dollar investment in transportation infrastructure and building insulation / Universal childcare/pre-K / Funding affordable housing
-D-1-2-2,D-1-2-2: D-1-2-2,Expanding the Supreme Court / National redistribution scheme / Universal childcare/pre-K / - / Wealth tax AND National redistribution scheme / Coal exit / Making abortion a right at the federal level / Trillion dollar investment in transportation infrastructure and building insulation / $15 minimum wage / Funding affordable housing / Handgun ban / Student loan forgiveness / Ban the sale of new combustion-engine cars by 2030
-D-1-2-3,D-1-2-3: D-1-2-3,$15 minimum wage / Coal exit / Expanding the Supreme Court / Trillion dollar investment in transportation infrastructure and building insulation / National redistribution scheme / Universal childcare/pre-K / Funding affordable housing / Ban the sale of new combustion-engine cars by 2030 / Wealth tax AND National redistribution scheme / Making abortion a right at the federal level / - / Student loan forgiveness / Handgun ban
-D-1-2-4,D-1-2-4: D-1-2-4,National redistribution scheme / Handgun ban / Ban the sale of new combustion-engine cars by 2030 / Wealth tax AND National redistribution scheme / Student loan forgiveness / Coal exit / $15 minimum wage / - / Funding affordable housing / Expanding the Supreme Court / Trillion dollar investment in transportation infrastructure and building insulation / Universal childcare/pre-K / Making abortion a right at the federal level
-F-1-1,F-1-1: F-1-1,Tax system / Economic issues / Foreign policy / Climate policy / Societal issues
-F-1-2,F-1-2: F-1-2,Economic issues / Foreign policy / Societal issues / Tax system / Climate policy
-F-1-3,F-1-3: F-1-3,Foreign policy / Societal issues / Economic issues / Climate policy / Tax system
-F-1-4,F-1-4: F-1-4,Societal issues / Climate policy / Tax system / Foreign policy / Economic issues
-F-1-5,F-1-5: F-1-5,Climate policy / Tax system / Foreign policy / Economic issues / Societal issues
-F-1-1-1,F-1-1-1: F-1-1-1,[string variable]
-F-1-1-2,F-1-1-2: F-1-1-2,[string variable]
-F-1-1-3,F-1-1-3: F-1-1-3,[string variable]
-F-1-1-4,F-1-1-4: F-1-1-4,[string variable]
-F-1-1-5,F-1-1-5: F-1-1-5,[string variable]
-F-1-2-1,F-1-2-1: F-1-2-1,[string variable]
-F-1-2-2,F-1-2-2: F-1-2-2,[string variable]
-F-1-2-3,F-1-2-3: F-1-2-3,[string variable]
-F-1-2-4,F-1-2-4: F-1-2-4,[string variable]
-F-1-2-5,F-1-2-5: F-1-2-5,[string variable]
+D-1-1-1,,climate3 / econ2 / NA / econ4 / - / soc1 / soc3 / tax1 / soc2 / econ3 / econ1 / climate1
+D-1-1-2,,soc3 / NA / econ2 / soc1 / climate1 / tax1 / - / econ4 / climate3 / soc2 / econ3 / econ1
+D-1-1-3,,econ2 / climate3 / - / NA / tax1 / econ3 / climate1 / econ1 / soc1 / econ4 / soc2 / soc3
+D-1-1-4,,tax1 / soc2 / climate1 / econ3 / - / NA / econ4 / climate3 / econ2 / econ1 / soc3 / soc1
+D-1-2-1,,climate1 / - / NA / econ2 / soc3 / soc1 / soc2 / tax1 / climate3 / econ1 / econ3 / econ4
+D-1-2-2,,soc1 / tax1 / econ3 / - / NA / climate1 / soc3 / econ2 / econ4 / soc2 / econ1 / climate3
+D-1-2-3,,econ2 / climate1 / soc1 / NA / tax1 / econ3 / econ4 / climate3 / soc3 / - / econ1 / soc2
+D-1-2-4,,tax1 / soc2 / climate3 / NA / econ1 / climate1 / econ2 / - / econ4 / soc1 / econ3 / soc3
+F-1-1,,tax_system / econ_issues / foreign_policy / climate_pol / society_issues
+F-1-2,,econ_issues / foreign_policy / society_issues / tax_system / climate_pol
+F-1-3,,foreign_policy / society_issues / econ_issues / climate_pol / tax_system
+F-1-4,,society_issues / climate_pol / tax_system / foreign_policy / econ_issues
+F-1-5,,climate_pol / tax_system / foreign_policy / econ_issues / society_issues
+F-1-1-1,,[string variable]
+F-1-1-2,,[string variable]
+F-1-1-3,,[string variable]
+F-1-1-4,,[string variable]
+F-1-1-5,,[string variable]
+F-1-2-1,,[string variable]
+F-1-2-2,,[string variable]
+F-1-2-3,,[string variable]
+F-1-2-4,,[string variable]
+F-1-2-5,,[string variable]
 click_details,click_details: click_details,0 / 1
 language,language: Q_Language,EN / ES
 qvc,qvc: qvc,97189_357ae033
@@ -932,6 +932,53 @@ donation,donation: [0-100] Percentage of potential lottery gain donated to poor 
 donation_above_25,donation_above_25: T/F Percentage of potential lottery gain donated to poor people in Africa or in one's nation is above 25% (depending on branch_donation).,TRUE / FALSE
 gcs_support_100,,0 / 100
 nr_support_100,,0 / 100
+conjoint_a,"conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. rcg > cr.",TRUE / FALSE
+conjoint_crg_cr_binary,"conjoint_crg_crbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE
+conjoint_b,"conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or cr > r in case GCS is in no bundle.",TRUE / FALSE
+branch_conjoint_b,branch_conjoint_b: cr_gr/r_rcg/rc_r/rg_r Random branch faced by the respondent in conjoint analysis (b).,r_rcg / cr_gr / rg_r / rc_r
+conjoint_cr_gr_binary,"conjoint_cr_grbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_r_rcg_binary,"conjoint_r_rcgbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_rg_r_binary,"conjoint_rg_rbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_rc_r_binary,"conjoint_rc_rbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_c,conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE
+conjoint_c_right,conjoint_c: T/F Right-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE
+conjoint_c_none,conjoint_c: T/F None candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE
+branch_conjoint_c,"branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'",leftg_right / left_right
+conjoint_left_right_binary,"conjoint_left_rightbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_leftg_right_binary,"conjoint_leftg_rightbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_left_a_b_binary,"conjoint_left_a_bbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_d,"conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
+conjoint_left_ag_b_binary,"conjoint_left_ag_bbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+branch_b_gcs,"branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE
+conjoint_b_na,"conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE / NA
+branch_c_gcs,"branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'.",TRUE / FALSE
+conjoint_r_type,conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b,None / B / A
+conjoint_r,"conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
+F-1-1_original,F-1-1: F-1-1,Tax system / Economic issues / Foreign policy / Climate policy / Societal issues
+F-1-2_original,F-1-2: F-1-2,Economic issues / Foreign policy / Societal issues / Tax system / Climate policy
+F-1-3_original,F-1-3: F-1-3,Foreign policy / Societal issues / Economic issues / Climate policy / Tax system
+F-1-4_original,F-1-4: F-1-4,Societal issues / Climate policy / Tax system / Foreign policy / Economic issues
+F-1-5_original,F-1-5: F-1-5,Climate policy / Tax system / Foreign policy / Economic issues / Societal issues
+F-1-1-1_original,F-1-1-1: F-1-1-1,[string variable]
+F-1-1-2_original,F-1-1-2: F-1-1-2,[string variable]
+F-1-1-3_original,F-1-1-3: F-1-1-3,[string variable]
+F-1-1-4_original,F-1-1-4: F-1-1-4,[string variable]
+F-1-1-5_original,F-1-1-5: F-1-1-5,[string variable]
+F-1-2-1_original,F-1-2-1: F-1-2-1,[string variable]
+F-1-2-2_original,F-1-2-2: F-1-2-2,[string variable]
+F-1-2-3_original,F-1-2-3: F-1-2-3,[string variable]
+F-1-2-4_original,F-1-2-4: F-1-2-4,[string variable]
+F-1-2-5_original,F-1-2-5: F-1-2-5,[string variable]
+D-1-1-1_original,D-1-1-1: D-1-1-1,Ban the sale of new combustion-engine cars by 2030 / $15 minimum wage / Wealth tax AND National redistribution scheme / Funding affordable housing / - / Expanding the Supreme Court / Making abortion a right at the federal level / National redistribution scheme / Trillion dollar investment in transportation infrastructure and building insulation / Handgun ban / Universal childcare/pre-K / Student loan forgiveness / Coal exit
+D-1-1-2_original,D-1-1-2: D-1-1-2,Making abortion a right at the federal level / Wealth tax AND National redistribution scheme / $15 minimum wage / Expanding the Supreme Court / Coal exit / Trillion dollar investment in transportation infrastructure and building insulation / National redistribution scheme / - / Funding affordable housing / Ban the sale of new combustion-engine cars by 2030 / Handgun ban / Universal childcare/pre-K / Student loan forgiveness
+D-1-1-3_original,D-1-1-3: D-1-1-3,$15 minimum wage / Ban the sale of new combustion-engine cars by 2030 / - / Trillion dollar investment in transportation infrastructure and building insulation / National redistribution scheme / Universal childcare/pre-K / Coal exit / Student loan forgiveness / Expanding the Supreme Court / Wealth tax AND National redistribution scheme / Funding affordable housing / Handgun ban / Making abortion a right at the federal level
+D-1-1-4_original,D-1-1-4: D-1-1-4,National redistribution scheme / Handgun ban / Coal exit / Universal childcare/pre-K / - / Wealth tax AND National redistribution scheme / Funding affordable housing / Ban the sale of new combustion-engine cars by 2030 / $15 minimum wage / Student loan forgiveness / Making abortion a right at the federal level / Expanding the Supreme Court / Trillion dollar investment in transportation infrastructure and building insulation
+D-1-2-1_original,D-1-2-1: D-1-2-1,Coal exit / - / Wealth tax AND National redistribution scheme / $15 minimum wage / Making abortion a right at the federal level / Expanding the Supreme Court / Handgun ban / National redistribution scheme / Ban the sale of new combustion-engine cars by 2030 / Student loan forgiveness / Trillion dollar investment in transportation infrastructure and building insulation / Universal childcare/pre-K / Funding affordable housing
+D-1-2-2_original,D-1-2-2: D-1-2-2,Expanding the Supreme Court / National redistribution scheme / Universal childcare/pre-K / - / Wealth tax AND National redistribution scheme / Coal exit / Making abortion a right at the federal level / Trillion dollar investment in transportation infrastructure and building insulation / $15 minimum wage / Funding affordable housing / Handgun ban / Student loan forgiveness / Ban the sale of new combustion-engine cars by 2030
+D-1-2-3_original,D-1-2-3: D-1-2-3,$15 minimum wage / Coal exit / Expanding the Supreme Court / Trillion dollar investment in transportation infrastructure and building insulation / National redistribution scheme / Universal childcare/pre-K / Funding affordable housing / Ban the sale of new combustion-engine cars by 2030 / Wealth tax AND National redistribution scheme / Making abortion a right at the federal level / - / Student loan forgiveness / Handgun ban
+D-1-2-4_original,D-1-2-4: D-1-2-4,National redistribution scheme / Handgun ban / Ban the sale of new combustion-engine cars by 2030 / Wealth tax AND National redistribution scheme / Student loan forgiveness / Coal exit / $15 minimum wage / - / Funding affordable housing / Expanding the Supreme Court / Trillion dollar investment in transportation infrastructure and building insulation / Universal childcare/pre-K / Making abortion a right at the federal level
+conjoint_r_wrong_level,,TRUE / FALSE
+conjoint_r_number,"conjoint_r_number: 1/2/NA (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican. NA if question not asked or there is some unrecognized level (conjoint_r_wrong_level == T).",1 / 2
 group_defended_original,group_defended: What group do you defend when you vote?,Sentient beings (humans and animals) / Americans / My family and myself / Humans / My town / People sharing my culture or religion / My State / My relatives and/or colleagues / NA
 nationalist,nationalist: T/F Defends one's nation / fellow citizens when one votes (cf. group_defended).,TRUE / FALSE
 egoistic,egoistic: T/F Defends one's self and family when one votes (cf. group_defended).,TRUE / FALSE
@@ -961,7 +1008,10 @@ non_empty_comment_field,"non_empty_comment_field: The respondent left a feedback
 petition_matches_support,petition_matches_support: T/F The answer to the petition coincides with the answer to the support (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE
 petition_yes_support_no,petition_yes_support_no: T/F Willing to sign the petition but does not support (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE / NA
 petition_no_support_yes,petition_no_support_yes: T/F Not willing to sign the petition but supports (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE / NA
-share_policies_supported,share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent.,0 / 0.091 / 0.182 / 0.273 / 0.364 / 0.455 / 0.545 / 0.636 / 0.727 / 0.818 / 0.909 / 1
+conjoint_a_matches_support,conjoint_a_matches_support: T/F The answer to conjoint analysis (a) (irg vs. ir) corresponds to the answer to the support of GCS.,TRUE / FALSE
+conjoint_a_rcg_support_no,conjoint_a_rcg_support_no: T/F Prefers rcg to rc in conjoint analysis (a) but does not support GCS.,TRUE / FALSE / NA
+conjoint_a_rc_support_yes,conjoint_a_rc_support_yes: T/F Prefers rc to rcg in conjoint analysis (a) but supports GCS.,TRUE / FALSE / NA
+share_policies_supported,share_policies_supported: Share of all policies supported (strongly or somewhat) among all policies asked to the respondent.,min: 0 / max: 1
 spread_global_policies,spread_global_policies: Spread between max and min value in the respondent's answers to the matrix global_policies,0 / 1 / 2 / 3 / 4
 all_same_global_policies,all_same_global_policies: T/F Indicator that all answers to the matrix global_policies are identical.,TRUE / FALSE
 spread_climate_policies,spread_climate_policies: Spread between max and min value in the respondent's answers to the matrix climate_policies,0 / 1 / 2 / 3 / 4

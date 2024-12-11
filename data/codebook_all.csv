@@ -243,7 +243,7 @@ Among the policies below, how many do you support?
 	Marriage only for opposite-sex couples",0 / 1 / 2 / 3
 Q61_First ,Q61_First : Timing - First Click,[string variable]
 Q61_Last,Q61_Last: Timing - Last Click,[string variable]
-duration_conjoint_a,duration_conjoint_a: Timing - Page Submit,[string variable]
+duration_conjoint_a,duration_conjoint_a: Timing - Page Submit,min: 0.056 / max: 745.117
 Q61_Click ,Q61_Click : Timing - Click Count,[string variable]
 conjoint_crg_cr,"conjoint_crg_cr: Among the two following bundles of policies, which one would you prefer? 
 
@@ -264,9 +264,9 @@ Note that for each bundle, all policies of the bundle would be implemented at th
    National redistribution scheme
   
   
-   Global climate scheme",Bundle A / Bundle B / A / B / NA
+   Global climate scheme",A / B / NA
 cgr_support,"cgr_support: Do you support Bundle A (combining Coal exit, the National redistribution scheme, and the Global climate scheme)?",PNR / No / Yes
-duration_conjoint_b,duration_conjoint_b: Timing - Page Submit,[string variable]
+duration_conjoint_b,duration_conjoint_b: Timing - Page Submit,min: 0.056 / max: 745.117
 conjoint_cr_gr,"conjoint_cr_gr: Among the two following bundles of policies, which one would you prefer? 
 
 Note that for each bundle, all policies of the bundle would be implemented at the same time.
@@ -283,7 +283,7 @@ Note that for each bundle, all policies of the bundle would be implemented at th
   
   
    National redistribution scheme
-   National redistribution scheme",Bundle B / NA / Bundle A / B / A
+   National redistribution scheme",B / NA / A
 conjoint_r_rcg,"conjoint_r_rcg: Among the two following bundles of policies, which one would you prefer? 
 
 Note that for each bundle, all policies of the bundle would be implemented at the same time.
@@ -304,7 +304,7 @@ Note that for each bundle, all policies of the bundle would be implemented at th
   
   
    
-   Global climate scheme",NA / Bundle A / Bundle B / B / A
+   Global climate scheme",NA / A / B
 conjoint_rg_r,"conjoint_rg_r: Among the two following bundles of policies, which one would you prefer? 
 
 Note that for each bundle, all policies of the bundle would be implemented at the same time.
@@ -320,7 +320,7 @@ Note that for each bundle, all policies of the bundle would be implemented at th
    National redistribution scheme
   
   
-   Global climate scheme",NA / Bundle B / Bundle A / B / A
+   Global climate scheme",NA / B / A
 conjoint_rc_r,"conjoint_rc_r: Among the two following bundles of policies, which one would you prefer? 
 
 Note that for each bundle, all policies of the bundle would be implemented at the same time.
@@ -336,8 +336,8 @@ Note that for each bundle, all policies of the bundle would be implemented at th
    National redistribution scheme
   
   
-   Coal exit",NA / Bundle A / Bundle B / A / B
-duration_conjoint_c,duration_conjoint_c: Timing - Page Submit,[string variable]
+   Coal exit",NA / A / B
+duration_conjoint_c,duration_conjoint_c: Timing - Page Submit,min: 0.025 / max: 67.355
 conjoint_left_right,"conjoint_left_right: Imagine if the Democratic and Republican presidential candidates in 2024 campaigned with the following policies in their platforms.
 
 
@@ -367,7 +367,7 @@ Which of these candidates would you vote for?
   
   
    National redistribution scheme
-   Strict enforcement of immigration and border legislation",Democrat / NA / Republican / None of them / Left / None / Right
+   Strict enforcement of immigration and border legislation",Left / NA / Right / None
 conjoint_leftg_right,"conjoint_leftg_right: Imagine if the Democratic and Republican presidential candidates in 2024 campaigned with the following policies in their platforms.
 
 
@@ -401,8 +401,8 @@ Which of these candidates would you vote for?
    Strict enforcement of immigration and border legislation
   
   
-   Global climate scheme",NA / Democrat / None of them / Republican / Left / None / Right
-duration_conjoint_d,duration_conjoint_d: Timing - Page Submit,[string variable]
+   Global climate scheme",NA / Left / None / Right
+duration_conjoint_d,duration_conjoint_d: Timing - Page Submit,min: 0.021 / max: 25.993
 conjoint_left_a_b,"conjoint_left_a_b: Imagine that at the 2024 Democratic party presidential primaries, the two main candidates campaign with the following key policies in their platforms.
 
  Which of these candidates do you prefer?
@@ -439,7 +439,7 @@ conjoint_left_a_b,"conjoint_left_a_b: Imagine that at the 2024 Democratic party 
 
 [Field-F-1-5]
 [Field-F-1-1-5]
-[Field-F-1-2-5]",Candidate A / Candidate B / NA / A / B
+[Field-F-1-2-5]",A / B / NA
 conjoint_left_ag_b,"conjoint_left_ag_b: Imagine that at the 2024 Democratic party presidential primaries, the two main candidates campaign with the following key policies in their platforms.
 
  Which of these candidates do you prefer?
@@ -476,7 +476,7 @@ Candidate B
 
     Foreign policy
     Global climate scheme
-    -",Candidate B / Candidate A / NA / A / B
+    -",B / A / NA
 donation_nation,"donation_nation: By taking this survey, you are automatically entered into a lottery to win $100 in panel points. This lottery is unrelated to the previous ones that rewarded answers' accuracy. In a few days you will know whether you have been selected in the lottery. The payment will be made to you in the same way as your compensation for this survey, so no further action is required on your part.
 
  
@@ -552,7 +552,7 @@ foreign_aid_no_other,foreign_aid_no_other: Why do you oppose the U.S. increasing
 negotiation,"negotiation: In international climate negotiations, would you prefer U.S. diplomats to defend U.S. interests or global justice?",Only [Country] interest / [Country] then global / Indifferent or don't know / Global then [Country] / Only global justice
 Q64_First,Q64_First: Timing - First Click,[string variable]
 Q64_Last,Q64_Last: Timing - Last Click,[string variable]
-duration_points,duration_points: Timing - Page Submit,[string variable]
+duration_points,duration_points: Timing - Page Submit,min: 0.074 / max: 222.982
 Q64_Click,Q64_Click: Timing - Click Count,[string variable]
 points_econ1,"points_econ1: In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it.
 
@@ -828,29 +828,29 @@ D-1-1,D-1-1: D-1-1,[string variable]
 D-1-2,D-1-2: D-1-2,[string variable]
 D-1-3,D-1-3: D-1-3,[string variable]
 D-1-4,D-1-4: D-1-4,[string variable]
-D-1-1-1,D-1-1-1: D-1-1-1,[string variable]
-D-1-1-2,D-1-1-2: D-1-1-2,[string variable]
-D-1-1-3,D-1-1-3: D-1-1-3,[string variable]
-D-1-1-4,D-1-1-4: D-1-1-4,[string variable]
-D-1-2-1,D-1-2-1: D-1-2-1,[string variable]
-D-1-2-2,D-1-2-2: D-1-2-2,[string variable]
-D-1-2-3,D-1-2-3: D-1-2-3,[string variable]
-D-1-2-4,D-1-2-4: D-1-2-4,[string variable]
-F-1-1,F-1-1: F-1-1,Tax system / Foreign policy / Economic issues / Climate policy / Societal issues / tax_system / foreign_policy / econ_issues / society_issues / climate_pol / NA
-F-1-2,F-1-2: F-1-2,Societal issues / Economic issues / Climate policy / Foreign policy / Tax system / climate_pol / tax_system / econ_issues / society_issues / foreign_policy / NA
-F-1-3,F-1-3: F-1-3,Economic issues / Foreign policy / Climate policy / Societal issues / Tax system / econ_issues / society_issues / tax_system / foreign_policy / climate_pol / NA
-F-1-4,F-1-4: F-1-4,Climate policy / Societal issues / Tax system / Economic issues / Foreign policy / foreign_policy / econ_issues / climate_pol / tax_system / society_issues / NA
-F-1-5,F-1-5: F-1-5,Foreign policy / Climate policy / Tax system / Societal issues / Economic issues / society_issues / tax_system / climate_pol / foreign_policy / econ_issues / NA
-F-1-1-1,F-1-1-1: F-1-1-1,[string variable]
-F-1-1-2,F-1-1-2: F-1-1-2,[string variable]
-F-1-1-3,F-1-1-3: F-1-1-3,[string variable]
-F-1-1-4,F-1-1-4: F-1-1-4,[string variable]
-F-1-1-5,F-1-1-5: F-1-1-5,[string variable]
-F-1-2-1,F-1-2-1: F-1-2-1,[string variable]
-F-1-2-2,F-1-2-2: F-1-2-2,[string variable]
-F-1-2-3,F-1-2-3: F-1-2-3,[string variable]
-F-1-2-4,F-1-2-4: F-1-2-4,[string variable]
-F-1-2-5,F-1-2-5: F-1-2-5,[string variable]
+D-1-1-1,,NA / climate3 / soc1 / tax1 / econ2 / climate1 / soc3 / - / econ4 / econ3 / soc2 / econ1 / climate2
+D-1-1-2,,econ2 / soc3 / NA / - / soc1 / climate1 / tax1 / econ4 / climate3 / soc2 / econ3 / econ1 / climate2
+D-1-1-3,,- / econ2 / econ3 / soc1 / climate3 / climate1 / econ1 / tax1 / NA / econ4 / soc2 / soc3 / climate2
+D-1-1-4,,climate1 / tax1 / econ2 / soc2 / - / NA / econ4 / climate3 / econ1 / econ3 / soc3 / soc1 / climate2
+D-1-2-1,,NA / climate1 / - / climate3 / soc3 / soc2 / tax1 / soc1 / econ2 / econ1 / econ3 / econ4 / climate2
+D-1-2-2,,econ3 / soc1 / - / climate1 / tax1 / NA / soc3 / econ4 / econ2 / soc2 / econ1 / climate3 / climate2
+D-1-2-3,,soc1 / econ2 / econ3 / soc3 / climate1 / climate3 / econ4 / NA / tax1 / - / econ1 / soc2 / climate2
+D-1-2-4,,climate3 / tax1 / NA / econ4 / soc2 / soc1 / econ2 / - / climate1 / econ1 / econ3 / soc3 / climate2
+F-1-1,,tax_system / foreign_policy / econ_issues / climate_pol / society_issues / NA
+F-1-2,,society_issues / econ_issues / climate_pol / foreign_policy / tax_system / NA
+F-1-3,,econ_issues / foreign_policy / climate_pol / society_issues / tax_system / NA
+F-1-4,,climate_pol / society_issues / tax_system / econ_issues / foreign_policy / NA
+F-1-5,,foreign_policy / climate_pol / tax_system / society_issues / econ_issues / NA
+F-1-1-1,,[string variable]
+F-1-1-2,,[string variable]
+F-1-1-3,,[string variable]
+F-1-1-4,,[string variable]
+F-1-1-5,,[string variable]
+F-1-2-1,,[string variable]
+F-1-2-2,,[string variable]
+F-1-2-3,,[string variable]
+F-1-2-4,,[string variable]
+F-1-2-5,,[string variable]
 order_268,order_268: Global Climate Scheme (incl. list experiment) - Display Order - Q268,NA / 7
 order_269,order_269: Global Climate Scheme (incl. list experiment) - Display Order - Q269,NA / 7
 order_264,order_264: Global Climate Scheme (incl. list experiment) - Display Order - Q264,4 / NA
@@ -891,9 +891,59 @@ gcs_support_neg,,-1 / 1
 branch_donation,branch_donation: Africa/Own nation Whether the donation is for poor people in Africa or in one's nation.,Africa / Own nation / NA
 donation,donation: [0-100] Percentage of potential lottery gain donated to poor people in Africa or in one's nation (depending on branch_donation).,min: 0 / max: 100
 donation_above_25,donation_above_25: T/F Percentage of potential lottery gain donated to poor people in Africa or in one's nation is above 25% (depending on branch_donation).,TRUE / FALSE / NA
+conjoint_a,"conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. rcg > cr.",TRUE / FALSE / NA
+conjoint_crg_cr_binary,"conjoint_crg_crbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_b,"conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or cr > r in case GCS is in no bundle.",TRUE / FALSE / NA
+branch_conjoint_b,branch_conjoint_b: cr_gr/r_rcg/rc_r/rg_r Random branch faced by the respondent in conjoint analysis (b).,cr_gr / r_rcg / rg_r / rc_r / NA
+conjoint_cr_gr_binary,"conjoint_cr_grbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_r_rcg_binary,"conjoint_r_rcgbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_rg_r_binary,"conjoint_rg_rbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_rc_r_binary,"conjoint_rc_rbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_c,conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE / NA
+conjoint_c_right,conjoint_c: T/F Right-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE / NA
+conjoint_c_none,conjoint_c: T/F None candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE / NA
+branch_conjoint_c,"branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'",left_right / leftg_right / NA
+conjoint_left_right_binary,"conjoint_left_rightbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_leftg_right_binary,"conjoint_leftg_rightbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_left_a_b_binary,"conjoint_left_a_bbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+conjoint_d,"conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
+conjoint_left_ag_b_binary,"conjoint_left_ag_bbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
+branch_b_gcs,"branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE / NA
+conjoint_b_na,"conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE / NA
+branch_c_gcs,"branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'.",TRUE / FALSE / NA
+conjoint_r_type,conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b,None / B / A / NA
+conjoint_r,"conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
+F-1-1_original,F-1-1: F-1-1,[string variable]
+F-1-2_original,F-1-2: F-1-2,[string variable]
+F-1-3_original,F-1-3: F-1-3,[string variable]
+F-1-4_original,F-1-4: F-1-4,[string variable]
+F-1-5_original,F-1-5: F-1-5,[string variable]
+F-1-1-1_original,F-1-1-1: F-1-1-1,[string variable]
+F-1-1-2_original,F-1-1-2: F-1-1-2,[string variable]
+F-1-1-3_original,F-1-1-3: F-1-1-3,[string variable]
+F-1-1-4_original,F-1-1-4: F-1-1-4,[string variable]
+F-1-1-5_original,F-1-1-5: F-1-1-5,[string variable]
+F-1-2-1_original,F-1-2-1: F-1-2-1,[string variable]
+F-1-2-2_original,F-1-2-2: F-1-2-2,[string variable]
+F-1-2-3_original,F-1-2-3: F-1-2-3,[string variable]
+F-1-2-4_original,F-1-2-4: F-1-2-4,[string variable]
+F-1-2-5_original,F-1-2-5: F-1-2-5,[string variable]
+D-1-1-1_original,D-1-1-1: D-1-1-1,[string variable]
+D-1-1-2_original,D-1-1-2: D-1-1-2,[string variable]
+D-1-1-3_original,D-1-1-3: D-1-1-3,[string variable]
+D-1-1-4_original,D-1-1-4: D-1-1-4,[string variable]
+D-1-2-1_original,D-1-2-1: D-1-2-1,[string variable]
+D-1-2-2_original,D-1-2-2: D-1-2-2,[string variable]
+D-1-2-3_original,D-1-2-3: D-1-2-3,[string variable]
+D-1-2-4_original,D-1-2-4: D-1-2-4,[string variable]
+conjoint_r_wrong_level,,TRUE / FALSE / NA
+conjoint_r_number,"conjoint_r_number: 1/2/NA (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican. NA if question not asked or there is some unrecognized level (conjoint_r_wrong_level == T).",1 / 2
 petition_matches_support,petition_matches_support: T/F The answer to the petition coincides with the answer to the support (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE / NA
 petition_yes_support_no,petition_yes_support_no: T/F Willing to sign the petition but does not support (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE / NA
 petition_no_support_yes,petition_no_support_yes: T/F Not willing to sign the petition but supports (cf. branch_petition to see which measure: gcs/nr).,TRUE / FALSE / NA
+conjoint_a_matches_support,conjoint_a_matches_support: T/F The answer to conjoint analysis (a) (irg vs. ir) corresponds to the answer to the support of GCS.,TRUE / FALSE / NA
+conjoint_a_rcg_support_no,conjoint_a_rcg_support_no: T/F Prefers rcg to rc in conjoint analysis (a) but does not support GCS.,TRUE / FALSE / NA
+conjoint_a_rc_support_yes,conjoint_a_rc_support_yes: T/F Prefers rc to rcg in conjoint analysis (a) but supports GCS.,TRUE / FALSE / NA
 spread_global_policies,spread_global_policies: Spread between max and min value in the respondent's answers to the matrix global_policies,0 / 1 / 2 / 3 / 4
 all_same_global_policies,all_same_global_policies: T/F Indicator that all answers to the matrix global_policies are identical.,TRUE / FALSE / NA
 spread_climate_policies,spread_climate_policies: Spread between max and min value in the respondent's answers to the matrix climate_policies,0 / 1 / 2 / 3 / 4
@@ -2838,54 +2888,4 @@ order_donation_276,order_donation_276: Donation lottery - Display Order - Q276,N
 order_aid_3,order_aid_3: Foreign aid (randomized) - Display Order - Q3,NA / 1
 order_aid_2,order_aid_2: Foreign aid (randomized) - Display Order - Q2,NA / 1
 children,children: Lives with child(ren) below 14.,TRUE / FALSE / NA
-conjoint_a,"conjoint_a: T/F Bundle with GCS is chosen in conjoint analysis (a), i.e. rcg > cr.",TRUE / FALSE / NA
-conjoint_crg_cr_binary,"conjoint_crg_crbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-conjoint_b,"conjoint_b: T/F Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, or cr > r in case GCS is in no bundle.",TRUE / FALSE / NA
-branch_conjoint_b,branch_conjoint_b: cr_gr/r_rcg/rc_r/rg_r Random branch faced by the respondent in conjoint analysis (b).,NA / r_rcg / rc_r / cr_gr / rg_r
-conjoint_cr_gr_binary,"conjoint_cr_grbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-conjoint_r_rcg_binary,"conjoint_r_rcgbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-conjoint_rg_r_binary,"conjoint_rg_rbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-conjoint_rc_r_binary,"conjoint_rc_rbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-conjoint_c,conjoint_c: T/F Left-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE / NA
-conjoint_c_right,conjoint_c: T/F Right-wing candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE / NA
-conjoint_c_none,conjoint_c: T/F None candidate is chosen in conjoint_c (cf. branch_c_gcs to know whether the Left candidate includes GCS in their platform).,TRUE / FALSE / NA
-branch_conjoint_c,"branch_conjoint_c: left_right/leftg_right Random branch faced by the respondent in conjoint analysis (c), used in branch_c_gcs := branch_conjoint_c == 'leftg_right.'",NA / leftg_right / left_right
-conjoint_left_right_binary,"conjoint_left_rightbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-conjoint_leftg_right_binary,"conjoint_leftg_rightbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-conjoint_left_a_b_binary,"conjoint_left_a_bbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-conjoint_d,"conjoint_d: T/F Candidate with GCS is chosen in conjoint analysis (d). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
-conjoint_left_ag_b_binary,"conjoint_left_ag_bbinary: 0/1 Binary indicator of the variable, cf. conjoint_position_1 to see which among A or B is indicated.",TRUE / FALSE / NA
-branch_b_gcs,"branch_b_gcs: T/F Whether GCS is in one Bundle in conjoint_b, i.e. =F iff branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE / NA
-conjoint_b_na,"conjoint_b_na: T/F/NA Bundle with GCS is chosen in conjoint analysis (b) when GCS is in one Bundle, NA in case GCS is in no bundle (i.e. branch_b_gcs == F i.e. branch_conjoint_b == 'conjoint_rc_r'.",TRUE / FALSE / NA
-branch_c_gcs,"branch_c_gcs: T/F Whether GCS is in the Left-wing platform in conjoint_c, i.e. =T iff branch_conjoint_c == 'conjoint_leftg_right'.",TRUE / FALSE / NA
-conjoint_r_type,conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b,NA / None / B / A
-conjoint_r,"conjoint_r: T/F/NA Whether the candidate who includes GCS in their program is preferred (NA if both or none include GCS). In US1, question asked only to non-Republican.",TRUE / FALSE / NA
-F-1-1_original,F-1-1: F-1-1,[string variable]
-F-1-2_original,F-1-2: F-1-2,[string variable]
-F-1-3_original,F-1-3: F-1-3,[string variable]
-F-1-4_original,F-1-4: F-1-4,[string variable]
-F-1-5_original,F-1-5: F-1-5,[string variable]
-F-1-1-1_original,F-1-1-1: F-1-1-1,[string variable]
-F-1-1-2_original,F-1-1-2: F-1-1-2,[string variable]
-F-1-1-3_original,F-1-1-3: F-1-1-3,[string variable]
-F-1-1-4_original,F-1-1-4: F-1-1-4,[string variable]
-F-1-1-5_original,F-1-1-5: F-1-1-5,[string variable]
-F-1-2-1_original,F-1-2-1: F-1-2-1,[string variable]
-F-1-2-2_original,F-1-2-2: F-1-2-2,[string variable]
-F-1-2-3_original,F-1-2-3: F-1-2-3,[string variable]
-F-1-2-4_original,F-1-2-4: F-1-2-4,[string variable]
-F-1-2-5_original,F-1-2-5: F-1-2-5,[string variable]
-D-1-1-1_original,D-1-1-1: D-1-1-1,[string variable]
-D-1-1-2_original,D-1-1-2: D-1-1-2,[string variable]
-D-1-1-3_original,D-1-1-3: D-1-1-3,[string variable]
-D-1-1-4_original,D-1-1-4: D-1-1-4,[string variable]
-D-1-2-1_original,D-1-2-1: D-1-2-1,[string variable]
-D-1-2-2_original,D-1-2-2: D-1-2-2,[string variable]
-D-1-2-3_original,D-1-2-3: D-1-2-3,[string variable]
-D-1-2-4_original,D-1-2-4: D-1-2-4,[string variable]
-conjoint_r_wrong_level,,TRUE / FALSE / NA
-conjoint_r_number,"conjoint_r_number: 1/2/NA (instead of A/B) Candidate with GCS is chosen in conjoint analysis (r). In US1, question asked only to non-Republican. NA if question not asked or there is some unrecognized level (conjoint_r_wrong_level == T).",1 / 2
 ets2_oppose,ets2_oppose: T/F/NA Does not support (somewhat or strongly) any of the four ETS2 variants proposed. NA if ETS2 support is not asked (i.e. if country == UK),TRUE / FALSE / NA
-conjoint_a_matches_support,conjoint_a_matches_support: T/F The answer to conjoint analysis (a) (irg vs. ir) corresponds to the answer to the support of GCS.,TRUE / FALSE / NA
-conjoint_a_rcg_support_no,conjoint_a_rcg_support_no: T/F Prefers rcg to rc in conjoint analysis (a) but does not support GCS.,TRUE / FALSE / NA
-conjoint_a_rc_support_yes,conjoint_a_rc_support_yes: T/F Prefers rc to rcg in conjoint analysis (a) but supports GCS.,TRUE / FALSE / NA
