@@ -1256,7 +1256,7 @@ us2a <- prepare(country = "US2", weighting = FALSE, exclude_speeder = F, only_fi
 eua <- prepare(country = "EU", weighting = FALSE, exclude_speeder = F, only_finished = F, exclude_screened = F)
 
 # MEP sample
-e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)
+# e <- mep <- prepare(country = "MEP", only_finished = FALSE, exclude_speeder = FALSE, incl_quality_fail = T, weighting = FALSE, define_var_lists = FALSE)
 
 # Pilots
 us1p <- prepare(country = "US1", wave = "pilot", weighting = FALSE)
@@ -2031,3 +2031,5 @@ barresN_income_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support")
 # # comment vote_agg in EU
 
 
+##### Prepare conjoint analysis #####
+source("conjoint_analysis.R")

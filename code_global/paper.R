@@ -1,13 +1,14 @@
 # TODO explain: figures in render.R, conjoint in ..., variables Label()
+start <- Sys.time()
 
 ##### Prepare data and figures #####
 # source("preparation.R")
 # source("render.R")
-# save.image(".RData")
+# save.image("after_preparation.RData")
 
 
 ##### Load prepared data #####
-load(".RData")
+load("after_preparation.RData")
 
 # Figure 1: questionnaire/survey_flow-simple.pdf
 
@@ -357,9 +358,11 @@ heatmap_multiple(heatmaps_defs[c("foreign_aid_no")])
 
 
 ##### App Literature review #####
-# Figure S9: figures/maps/gain_gdr_over_gdp_2030.pdf
-# Figure S10: figures/maps/diff_gain_gdr_gcs_over_gdp_2030.pdf
-# Maps created in code_global/map_GCS_incidence.R
+# Figure S9: figures/maps/gain_gdr_over_gdp_2030.pdf, cf. preparation in code_global/map_GCS_incidence.R
+# Figure S10: figures/maps/diff_gain_gdr_gcs_over_gdp_2030.pdf, cf. preparation in code_global/map_GCS_incidence.R
+time_map_gcs <- Sys.time()
+source("map_GCS_incidence.R")
+time_map_gcs <- Sys.time() - time_map_gcs
 
 
 ##### App Raw results #####
@@ -484,7 +487,7 @@ heatmap_wrapper(vars = heatmaps_defs$main_all$vars, data = all, labels = heatmap
 # Figure S47: questionnaire/survey_flow-combined.pdf, created on questionnaire/survey_flow.pptx
 
 
-##### Net gains from the Global Climate Scheme2073 #####
+##### Net gains from the Global Climate Scheme #####
 # cf. questionnaire/specificities.xlsx:Figures (line 6)
 
 # Figure S48: figures/maps/median_gain_2015.pdf, created in code_global/map_GCS_incidence.R
@@ -645,3 +648,7 @@ desc_table(dep_vars = c("universalist", "nationalist", "egoistic"), weights = NU
 round(quantile(c(share_indifferent_oecd[c(1,2,4),], share_indifferent[10:11,]), c(0, .05, .25, .5, .75, .95, 1), na.rm = T), 2)
 # 0%   5%   25%  50%  75%  95%  100%
 # 0.10 0.11 0.15 0.20 0.26 0.32 0.37
+
+(total_duration <- Sys.time() - start)
+beep()
+time_map_gcs
