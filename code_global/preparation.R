@@ -40,6 +40,8 @@ foreign_aid_actual <- c(.8, 1.3, .5, 1.7, .4)
 names(countries_names) <- names(foreign_aid_actual) <- countries <- c("FR", "DE", "ES", "UK", "US")
 names(countries) <- countries_names
 countries_EU <- countries[1:4]
+countries_eu <- c(countries_EU, "Eu" = "EU")
+names_countries_eu <- setNames(names(countries_eu), countries_eu)
 major_candidates <- minor_candidates <- list()
 
 
@@ -820,7 +822,7 @@ convert <- function(e, country, wave = NULL, weighting = T, zscores = T, zscores
       for (i in 1:5) {
         e$conjoint_r_type[e[[paste0("F-1-1-", i)]] %in% policies.names["foreign1",]] <- temp[e[[paste0("F-1-1-", i)]] %in% policies.names["foreign1",]] <- "A"
         e$conjoint_r_type[e[[paste0("F-1-2-", i)]] %in% policies.names["foreign1",]] <- "B" }
-      e$conjoint_r_type[e$conjoint_r_type == "B" & temp == A] <- "Both"
+      e$conjoint_r_type[e$conjoint_r_type == "B" & temp == "A"] <- "Both"
       label(e$conjoint_r_type) <- "conjoint_r_type: None/A/B/Both Which candidate includes GCS in their program in conjoint_left_a_b"
       e$conjoint_r <- e$conjoint_left_a_b == e$conjoint_r_type
       e$conjoint_r[e$conjoint_r_type %in% c("None", "Both")] <- NA
@@ -1286,33 +1288,6 @@ quotas_eu <- c("country_name", "income_factor", "post_secondary", "age_factor", 
 socio_demos <- c(quotas_eu, "couple", "employment_agg", "vote_factor") # add "hh_size", "owner", "wealth_factor", "donation_charities"?
 politics <- c("political_affiliation", "interested_politics", "involvement_govt", "left_right", "vote_participation", "vote_us", "group_defended")
 covariates <- c("country_name", "income_factor", "post_secondary", "age_factor", "man", "couple", "employment_agg", "vote_factor", "urban", "race_white", "region", "swing_state")
-
-
-##### Create Raw results appendices #####
-# # (don't forget instructions in comments)
-# countries_eu <- c(countries_EU, "Eu" = "EU")
-# names_countries_eu <- setNames(names(countries_eu), countries_eu)
-# country_eu <- setNames(c("French", "German", "Spanish", "British", "[own country]"), countries_eu)
-# c <- "EU"
-# temp <- readLines("../paper/app_desc_stats_US.tex")
-# temp <- gsub("the U.S.", names_countries_eu[c], temp, fixed = T)
-# temp <- gsub("U.S.", country_eu[c], temp, fixed = T)
-# temp <- gsub("s US1 and US2", " Eu", temp, fixed = T)
-# temp <- gsub(" \\(US1\\)| \\(US2\\)", "", temp)
-# temp <- gsub("US|US1|US2", c, temp)
-# temp <- gsub("[Asked only to non-Republicans] ", "", temp, fixed = T)
-# temp <- gsub("Democratic", "political", temp, fixed = T)
-# writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
-# # check TODO: Eu and US2 (manually remove duplicates at the end for vote, etc.)
-# for (c in countries_EU) {
-#   temp <- readLines("../paper/app_desc_stats_EU.tex")
-#   temp <- gsub("Eu", names_countries_eu[c], temp, fixed = T)
-#   temp <- gsub("[own country]", country_eu[c], temp, fixed = T)
-#   temp <- gsub("EU", c, temp)
-#   temp <- gsub(paste("Complementary survey", c), "Complementary survey Eu", temp, fixed = T)
-#   writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
-# }
-# # comment vote_agg in EU
 
 
 ##### Random draws #####
@@ -2021,4 +1996,38 @@ barresN_vote3_defs <- fill_barres(main_outcomes, list("gcs_support" = list(rev =
 barresN_vote_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support", "global_tax_sharing", "global_tax_global_share"), list(), along = "vote_factor")
 barresN_age_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "age_factor")
 barresN_income_defs <- fill_barres(c(main_outcomes, "foreign_aid_raise_support"), list(), along = "income_character")
+
+
+##### Create Raw results appendices #####
+# barres_multiple(barres = barres_defs, df = eu, folder = "../figures/EU/") 
+# barres_multiple(barres = barres_defs["gcs_support"], df = us1, folder = "../figures/US1/") 
+# barres_multiple(barres = barres_defs, df = us2, folder = "../figures/US2/") 
+# barres_multiple(barres = barres_defs, df = us, folder = "../figures/US/") 
+# barres_multiple(barres = barres_defs, df = eu[eu$country == 'FR',], folder = "../figures/FR/") 
+# barres_multiple(barres = barres_defs, df = eu[eu$country == 'DE',], folder = "../figures/DE/") 
+# barres_multiple(barres = barres_defs, df = eu[eu$country == 'ES',], folder = "../figures/ES/") 
+# barres_multiple(barres = barres_defs, df = eu[eu$country == 'UK',], folder = "../figures/UK/") 
+# # (don't forget instructions in comments)
+# country_eu <- setNames(c("French", "German", "Spanish", "British", "[own country]"), countries_eu)
+# c <- "EU"
+# temp <- readLines("../paper/app_desc_stats_US.tex")
+# temp <- gsub("the U.S.", names_countries_eu[c], temp, fixed = T)
+# temp <- gsub("U.S.", country_eu[c], temp, fixed = T)
+# temp <- gsub("s US1 and US2", " Eu", temp, fixed = T)
+# temp <- gsub(" \\(US1\\)| \\(US2\\)", "", temp)
+# temp <- gsub("US|US1|US2", c, temp)
+# temp <- gsub("[Asked only to non-Republicans] ", "", temp, fixed = T)
+# temp <- gsub("Democratic", "political", temp, fixed = T)
+# writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
+# # check TODO: Eu and US2 (manually remove duplicates at the end for vote, etc.)
+# for (c in countries_EU) {
+#   temp <- readLines("../paper/app_desc_stats_EU.tex")
+#   temp <- gsub("Eu", names_countries_eu[c], temp, fixed = T)
+#   temp <- gsub("[own country]", country_eu[c], temp, fixed = T)
+#   temp <- gsub("EU", c, temp)
+#   temp <- gsub(paste("Complementary survey", c), "Complementary survey Eu", temp, fixed = T)
+#   writeLines(temp, con = paste0("../paper/app_desc_stats_", c, ".tex")) 
+# }
+# # comment vote_agg in EU
+
 

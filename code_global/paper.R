@@ -325,7 +325,17 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
                  collapse="\n"), fixed = T), fixed = T), file = "../tables/amce.tex") 
 
 # Figure S2: figures/[US1, FR, DE, UK, ES]/ca_r.png
-# Created in code_global/conjoint_analysis.R (this files also contains instructions to reproduce/code the conjoint analysis)
+# Cf. also code_global/conjoint_analysis.R to reproduce/code the conjoint analysis
+plot(amce$FR_en, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r_en", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$DE_en, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r_en", folder = '../figures/DE/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$ES_en, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r_en", folder = '../figures/ES/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$UK, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/UK/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$us1, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/US1/', width = 1100, height = 500, method='dev', trim = T, format = 'png') 
 
 # Figure S3: figures/country_comparison/conjoint_left_ag_b_binary_positive.pdf
 heatmap_multiple(heatmaps_defs[c("conjoint_left_ag_b_binary")]) 
@@ -367,7 +377,13 @@ heatmap_multiple(heatmaps_defs[c("list_exp")])
 # Figure S15: figures/country_comparison/conjoint_ab_all_positive.pdf
 heatmap_multiple(heatmaps_defs[c("conjoint_ab_all")]) 
 
-# Figure S16: figures/[country]/ca_r.png, created in code_global/conjoint_analysis.R
+# Figure S16: figures/[country]/ca_r.png
+plot(amce$FR, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$DE, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/DE/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
+plot(amce$ES, xlab = "Average Marginal Component Effect", text.size = 18)
+save_plot (filename = "ca_r", folder = '../figures/ES/', width = 1100, height = 500, method='dev', trim = T, format = 'png')
 
 # Figure S17: figures/country_comparison/gcs_important_positive.pdf
 heatmap_multiple(heatmaps_defs[c("gcs_important")]) 

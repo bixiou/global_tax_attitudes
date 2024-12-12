@@ -339,6 +339,13 @@ decrit("conjoint_left_ag_b", data = e)
 decrit("conjoint_r", data = e) # 65%
 decrit("conjoint_left_a_b", data = e)
 
+# Plots 4th conjoint analysis 
+plot(amce$all, xlab = "Average Marginal Component Effect", text.size = 18) # TODO! good labels
+save_plot (filename = "ca_r", folder = '../figures/all/', width = 1100, height = 500, method='dev', trim = T, format = 'png') # TODO! solve bug PDF + remove grey
+plot(amce$eu, xlab = "Average Marginal Component Effect", text.size = 18)# TODO! good labels
+save_plot (filename = "ca_r", folder = '../figures/EU/', width = 900, height = 500, method='dev', trim = T, format = 'png')
+
+
 same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), 
                     data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
                     filename = "conjoint_c_left", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)

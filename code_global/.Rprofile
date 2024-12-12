@@ -690,7 +690,7 @@ covariates_with_several_values <- function(data, covariates) { # data is a data.
   for (c in seq_along(covariates)) {
     if (grepl("[:*]", covariates[c])) nb_values_c <- length(unique(eval(str2expression(sub(".*[:*](.*)", "data$\\1", covariates[c]))))) * length(unique(eval(str2expression(sub("(.*)[:*].*", "data$\\1", covariates[c])))))
     else nb_values_c <- length(unique(eval(str2expression(sub("((.*\\()*)(.*)", "\\1data$\\3", covariates[c])))))
-    if (nb_values_c == 0 & j == 0) warning(paste(covariates[c], "is not in the dataset"))
+    if (nb_values_c == 0) warning(paste(covariates[c], "is not in the dataset"))
     several_values[c] <- nb_values_c > 1 }
   return(several_values)
 }
