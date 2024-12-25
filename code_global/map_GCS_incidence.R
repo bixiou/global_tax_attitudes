@@ -2997,10 +2997,46 @@ plot_world_map("budget_gain_over_gdp_both_taxes", df = df, breaks = c(-Inf, 0, .
                save = T)
 
 
+##### Participating countries' number and emission share #####
+# Exceptions: 3 (Chile, Malaysia, Turkmenistan) participate although they lose => removed exception / 3 (Ukraine, Belarus, Moldova) don't participate although they don't lose, 5 more (from Balkans) in low
+union_mid <- setdiff(df$code[df$gain_euro_2030 >= 0], c("UKR", "MDA", "CYP"))
+# union_mid <- setdiff(union(df$code[df$gain_euro_2030 >= 0], c("CHL", "MYS", "TKM")), c("UKR", "MDA", "CYP")) # , "BLR", "SLB", "MNE", "HRV", "BFA"
+union_low <- setdiff(union_mid, c("CHN"))
+union_high <- union(union_mid, c("CAN", "CHE", "GBR", "ISL", "JPN", "KOR", "NOR", "NZL", "TWN", EU27_countries))
+length(union_mid) # 118
+length(union_high) # 153
+
+sum(df$emissions_2025[df$code %in% union_low])/sum(df$emissions_2025) # 24%
+sum(df$emissions_2025[df$code %in% union_mid])/sum(df$emissions_2025) # 55%
+sum(df$emissions_2025[df$code %in% union_high])/sum(df$emissions_2025) # 71%
+sum(df$emissions_2025[df$code %in% union_high & !df$code %in% EU27_countries])/sum(df$emissions_2025) # 63%
+sum(df$emissions_2025[df$code %in% union_high & df$code != "JPN"])/sum(df$emissions_2025) # 68%
+sum(df$emissions_2025[df$code %in% union_high & df$code != "CHE"])/sum(df$emissions_2025) # 71%
+sum(df$emissions_2025[df$code %in% union_high & df$code != "GBR"])/sum(df$emissions_2025) # 70%
+sum(df$emissions_2025[df$code %in% union_high & df$code != "JPN"])/sum(df$emissions_2025) # 68%
+sum(df$emissions_2025[df$code  %in% EU27_countries])/sum(df$emissions_2025) # 8%
+sum(df$emissions_2025[df$code == "RUS"])/sum(df$emissions_2025) # 4.47%
+sum(df$emissions_2025[df$code == "CHE"])/sum(df$emissions_2025) # 0.1%
+sum(df$emissions_2025[df$code == "GBR"])/sum(df$emissions_2025) # 1%
+sum(df$emissions_2025[df$code == "JPN"])/sum(df$emissions_2025) # 3%
+sum(df$emissions_2025[df$code == "SAU"])/sum(df$emissions_2025) # 2%
+sum(df$emissions_2025[df$code == "USA"])/sum(df$emissions_2025) # 15%
 
 
+##### Survey scenarios #####
+high <- all_countries[df$code %in% union_high]
+scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU", "high") # manage , "South"
+scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
 
+df <- create_var_ssp(df = df, scenario = "high")
 
+plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], # filename = paste0("Shigh_gain_adj_over_gdp_2030"),
+               legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), #fill_na = T, \n(with 3% discount rate)
+               save = F, parties = scenarios_parties[["high"]])
 
-
+plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], filename = paste0("Shigh_gain_adj_over_gdp_2030_stripes_EU"),
+               legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), #fill_na = T, \n(with 3% discount rate)
+               save = T, parties = scenarios_parties[["high"]], stripe_codes = EU27_countries)
 
