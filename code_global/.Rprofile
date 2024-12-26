@@ -2061,7 +2061,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   if (!is.null(parties)) {
     if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
     df[[var]][!df$code %in% parties] <- NA
-    na_label <- "Non Parties" }
+    if (na_label == "NA") na_label <- "Non Parties" }
   table <- heatmap_table(vars = var, data = df, along = "country_map", conditions = c(condition), on_control = on_control, remove_na = FALSE)
   # df_countries <- c(Country_Names[colnames(table)], "Wallis and Futuna", "Vatican", "Tobago", "Trinidad", "Sint Maarten", "Liechtenstein", "Saint Kitts", "Nevis", "Monaco", "Jersey", "Barbuda", "Antigua", "Saint Barthelemy", "Reunion", "Grenadines", "Virgin Islands", "Turks and Caicos Islands", "Saint Pierre and Miquelon", "Saint Helena", "Ascension Island", "Niue", "Palau", "Pitcairn Islands", "South Sandwich Islands")
   # df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2))) # For oecd_climate

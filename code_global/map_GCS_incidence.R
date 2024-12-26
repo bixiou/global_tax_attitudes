@@ -3035,8 +3035,20 @@ plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -
                legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), #fill_na = T, \n(with 3% discount rate)
                save = F, parties = scenarios_parties[["high"]])
 
+features <- as.matrix(read.xlsx("../../robustness_global_redistr/questionnaire/sources.xlsx", sheet = "features", rowNames = T))
+languages <- colnames(features) # c("FR", "DE", "IT", "PL", "ES", "EN-GB", "JA", "RU", "AR", "EN", "IT-CH", "DE-CH", "FR-CH", "ES-US") 
+gcs_high_stripe <- list("EN-GB" = "GBR", "JA" = "JPN", "RU" = "RUS", "AR" = "SAU")
+gcs_high_stripe[c("EN", "US-ES")] <- "USA"
+gcs_high_stripe[c("FR", "DE", "IT", "PL", "ES")] <- list(EU27_countries)
+gcs_high_stripe[c("IT-CH", "DE-CH", "FR-CH", "CH")] <- "CHE"
+
+for (l in languages) plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, # svg, pdf
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], 
+                 legend = gsub("\\\\n", "\n", features["gcs_high_legend", l]), filename = paste0("Shigh_gain_adj_over_gdp_2030_stripes_", l), na_label = features["na_label", l],
+                 save = T, parties = scenarios_parties[["high"]], stripe_codes = gcs_high_stripe[[l]])
+
+# EU
 plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], filename = paste0("Shigh_gain_adj_over_gdp_2030_stripes_EU"),
-               legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), #fill_na = T, \n(with 3% discount rate)
+               legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), 
                save = T, parties = scenarios_parties[["high"]], stripe_codes = EU27_countries)
-
