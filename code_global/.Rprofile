@@ -2055,7 +2055,7 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
 #
-plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL,
+plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/',
                            breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, negative_stripes = FALSE, stripe_codes = NULL) {
   # /!\ plot_world_map may sometimes fail (due to processor overload): in that case, either close all other windows or check the pdf/png export (which renders generally fine). When testing the function, remove most countries to speed the rendering (cf. example code below).
   if (!is.null(parties)) {
@@ -2137,7 +2137,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
     }
 
   print(plot)
-  if (save) for (f in format) save_plot(plot, filename = ifelse(!is.null(filename), filename, ifelse(continuous, paste0(var, "_cont"), ifelse(negative_stripes, paste0(var, "_stripes"), var))), folder = '../figures/maps/', width = width, height = height, format = f, trim = trim)
+  if (save) for (f in format) save_plot(plot, filename = ifelse(!is.null(filename), filename, ifelse(continuous, paste0(var, "_cont"), ifelse(negative_stripes, paste0(var, "_stripes"), var))), folder = folder, width = width, height = height, format = f, trim = trim)
   # return(plot)
 }
 
