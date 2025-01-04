@@ -3010,10 +3010,12 @@ sum(df$emissions_2025[df$code %in% union_low])/sum(df$emissions_2025) # 24%
 sum(df$emissions_2025[df$code %in% union_mid])/sum(df$emissions_2025) # 55%
 sum(df$emissions_2025[df$code %in% union_high])/sum(df$emissions_2025) # 71%
 sum(df$emissions_2025[df$code %in% union_high & !df$code %in% EU27_countries])/sum(df$emissions_2025) # 63%
-sum(df$emissions_2025[df$code %in% union_high & df$code != "JPN"])/sum(df$emissions_2025) # 68%
-sum(df$emissions_2025[df$code %in% union_high & df$code != "CHE"])/sum(df$emissions_2025) # 71%
 sum(df$emissions_2025[df$code %in% union_high & df$code != "GBR"])/sum(df$emissions_2025) # 70%
+sum(df$emissions_2025[df$code %in% union_high & df$code != "CHE"])/sum(df$emissions_2025) # 71%
 sum(df$emissions_2025[df$code %in% union_high & df$code != "JPN"])/sum(df$emissions_2025) # 68%
+sum(df$emissions_2025[df$code %in% union_high | df$code == "RUS"])/sum(df$emissions_2025) # 76%
+sum(df$emissions_2025[df$code %in% union_high | df$code == "SAU"])/sum(df$emissions_2025) # 73%
+sum(df$emissions_2025[df$code %in% union_high | df$code == "USA"])/sum(df$emissions_2025) # 86%
 sum(df$emissions_2025[df$code  %in% EU27_countries])/sum(df$emissions_2025) # 8%
 sum(df$emissions_2025[df$code == "RUS"])/sum(df$emissions_2025) # 4.47%
 sum(df$emissions_2025[df$code == "CHE"])/sum(df$emissions_2025) # 0.1%
