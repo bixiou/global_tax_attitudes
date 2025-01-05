@@ -2081,7 +2081,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   }
   if (continuous) df$mean <- pmax(pmin(df$mean, limits[2]), limits[1])
 
-  world_map <- map_data(map = "world")
+  world_map <- map_data(map = "world") # ggplot2
   world_map <- world_map[world_map$region != "Antarctica",] #
   world_map <- world_map[!world_map$region %in% c("Antarctica", "American Samoa", "Micronesia", "Guam", "Niue", "Pitcairn Islands", "Cook Islands", "Tonga", "Kiribati", "Marshall Islands", "French Polynesia", "Fiji", "Samoa", "Wallis and Futuna", "Vanuatu"),]
   # world_map$region <- iso.alpha(world_map$region)
@@ -2147,6 +2147,108 @@ merge_maps <- function(map1, map2) {
   return(rbind(map1, map2))
 }
 
+# admin1 <- ne_download(scale = 50, type = "admin_1_states_provinces", category = "cultural", returnclass = "sf") # st_read("../data/ne_10m_admin_1_states_provinces.shp") # We also need .dbf and .shx in the folder
+# admin1$adm0_a3[admin1$name %in% c("Kherson", "Donets'k", "Luhans'k", "Zaporizhzhya", "Crimea")] <- "RUS"
+# admin1$adm0_a3[admin1$adm0_a3 == "SDS"] <- "SSD"
+# admin0 <- admin1 %>% group_by(admin) %>% dplyr::summarize(geometry = st_union(geometry), code = adm0_a3) %>% st_as_sf()
+# admin0_simplified <- st_simplify(admin0, dTolerance = .4)
+# # admin0_simplified$region <- admin0_simplified$admin
+# admin0_simplified <- merge(admin0_simplified, df[, c("code", "country_map")], all.x = T)
+# admin0_simplified$region <- admin0_simplified$country_map
+# # admin0_simplified <- admin0_simplified[, c("region", "name", "adm0_a3", "geonunit", "geometry")]
+# st_write(admin0_simplified, "../data/world_map_russian_outlook.shp", append = FALSE)
+# ggplot(admin0_simplified) + geom_sf() + theme_minimal()
+# 
+# plot <- ggplot(df) + #geom_map(aes(map_id = admin0_simplified, fill = pattern), map = admin0_simplified, show.legend=TRUE) + # coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+#   geom_sf() + 
+#   # geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes))) +
+#   scale_fill_manual(name = legend, drop = FALSE, values = colors_pattern[1:(length(colors_pattern)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks}) +
+#   # geom_map_pattern(data = df, map = admin0_simplified, aes(map_id = country_map, pattern = pattern), 
+#   #                  pattern_fill = "#7F7F7F", fill = NA, show.legend = FALSE, pattern_density = 0.5, pattern_angle = 45, pattern_spacing = 0.015, pattern_linetype = 0) +
+#   # scale_pattern_manual(values = stripe_pattern, labels =  c(rev(labels), na_label), breaks = c(rev(labels), na_label), name = legend, drop = FALSE) +
+#   guides(fill = "none", pattern = guide_legend(override.aes = list(fill = colors_pattern[!grepl("stripe", names(colors_pattern))])))
+# plot
+
+# admin0_df <- st_as_sf(admin0_simplified) %>% st_cast("POLYGON") %>%st_cast("POINT") %>% st_coordinates() %>% as.data.frame() %>% setNames(c("lon", "lat"))
+# 
+# ne_admin1 <- ne_download(scale = 50, type = "admin_1_states_provinces", category = "cultural", returnclass = "sf")
+# View(ne_admin1)
+# View(admin0_df)
+# View(admin0_map)
+# View(geom_df)
+# 
+
+# # Attempt to convert sf to dataframe with lon, lat, order, group => fail
+# geom_df <- st_as_sf(admin0_simplified) %>%
+#   st_cast("POLYGON") %>%
+#   st_cast("POINT") %>%   # Cast to points after polygons for easier plotting
+#   st_coordinates() %>%
+#   as.data.frame()
+# admin0_df <- data_frame(
+#   long = geom_df$X,
+#   lat = geom_df$Y,
+#   group = cumsum(is.na(geom_df$X) & is.na(geom_df$Y)) + 1,
+#   order = seq_along(geom_df$X)
+# )
+# admin0_df$region <- admin0_simplified$region[admin0_df$group]
+# admin0_df <- merge(admin0_df, admin0_simplified)
+# (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = admin0_df, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+#     geom_polygon(data = admin0_df, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = admin0_df$long, y = admin0_df$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
+#     scale_fill_manual(name = legend, drop = FALSE, values = colors[1:(length(colors)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
+
+
+# admin0_df <- ne_admin1 %>%
+#   st_cast("MULTIPOLYGON") %>%
+#   st_cast("POLYGON") %>%
+#   st_cast("POINT") %>%
+#   st_coordinates() %>%
+#   as.data.frame()
+# 
+# # Combine coordinates with original data
+# admin0_map <- cbind(ne_admin1 %>% st_set_geometry(NULL), admin0_df)
+# 
+# admin0_map <- fortify(ne_admin1, region = "adm0_a3")
+# 
+# convert_sf_to_df <- function(sf_object) {
+#   sf_object <- sf_object %>% mutate(id = row_number())
+#   
+#   # Make sure geometries are in MULTIPOLYGON or POLYGON form to extract their boundaries
+#   if (any(st_geometry_type(sf_object) %in% c("MULTIPOINT", "MULTILINESTRING"))) {
+#     sf_object <- st_cast(sf_object, "POLYGON", do_split = TRUE)
+#   }
+#   
+#   # Get the geometry and convert it to a data frame with coordinates
+#   geom_df <- st_as_sf(sf_object) %>%
+#     st_cast("POLYGON") %>%
+#     st_cast("POINT") %>%   # Cast to points after polygons for easier plotting
+#     st_coordinates() %>%
+#     as.data.frame()
+#   
+#   # Combine coordinates with original data excluding geometry
+#   df_final <- sf_object %>%
+#     st_set_geometry(NULL) %>%  # Remove the geometry column to simplify the data
+#     bind_cols(
+#       geom_df %>%
+#         setNames(c("lon", "lat"))  # Set coordinate names appropriately
+#     )
+#   
+#   # Add group identifier for plotting
+#   df_final <- df_final %>%
+#     group_by(id) %>%
+#     mutate(group = id, order = row_number()) %>%
+#     ungroup()
+#   
+#   return(df_final)
+# }
+# 
+# # Apply the conversion function
+# admin0_df <- convert_sf_to_df(admin0_simplified)
+# View(admin0_df)
+
+# ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = admin0_df, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+#   geom_polygon(data = admin0_df, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) #+
+#   expand_limits(x = admin0_df$long, y = admin0_df$lat) + theme_void() + theme(legend.position = c(legend_x, .29))
+# 
 # df.bak <- df
 # df <- df.bak
 # df$Shigh_RUS_gain_adj_over_gdp_2030[!df$code %in% scenarios_parties[["high_RUS"]]] <- NA
@@ -2167,7 +2269,7 @@ merge_maps <- function(map1, map2) {
 # legend_x = .073
 # rev_color <- F
 # legend <- NULL
-# df.bak2 <- df
+# # df.bak2 <- df
 # world_map.bak <- world_map
 # # world_map <- world_map.bak
 # df <- df[df$code %in% c("ROU", "UKR", "SRB", "CAN"), ]
