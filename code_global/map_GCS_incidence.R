@@ -2997,10 +2997,72 @@ plot_world_map("budget_gain_over_gdp_both_taxes", df = df, breaks = c(-Inf, 0, .
                save = T)
 
 
+##### Participating countries' number and emission share #####
+# Exceptions: 3 (Chile, Malaysia, Turkmenistan) participate although they lose => removed exception / 3 (Ukraine, Belarus, Moldova) don't participate although they don't lose, 5 more (from Balkans) in low
+union_mid <- setdiff(df$code[df$gain_euro_2030 >= 0], c("UKR", "MDA", "CYP"))
+# union_mid <- setdiff(union(df$code[df$gain_euro_2030 >= 0], c("CHL", "MYS", "TKM")), c("UKR", "MDA", "CYP")) # , "BLR", "SLB", "MNE", "HRV", "BFA"
+union_low <- setdiff(union_mid, c("CHN"))
+union_high <- union(union_mid, c("CAN", "CHE", "GBR", "ISL", "JPN", "KOR", "NOR", "NZL", "TWN", EU27_countries))
+length(union_mid) # 118
+length(union_high) # 153
+
+sum(df$emissions_2025[df$code %in% union_low])/sum(df$emissions_2025) # 24%
+sum(df$emissions_2025[df$code %in% union_mid])/sum(df$emissions_2025) # 55%
+sum(df$emissions_2025[df$code %in% union_high])/sum(df$emissions_2025) # 71%
+sum(df$emissions_2025[df$code %in% union_high & !df$code %in% EU27_countries])/sum(df$emissions_2025) # 63%
+sum(df$emissions_2025[df$code %in% union_high & df$code != "GBR"])/sum(df$emissions_2025) # 70%
+sum(df$emissions_2025[df$code %in% union_high & df$code != "CHE"])/sum(df$emissions_2025) # 71%
+sum(df$emissions_2025[df$code %in% union_high & df$code != "JPN"])/sum(df$emissions_2025) # 68%
+sum(df$emissions_2025[df$code %in% union_high | df$code == "RUS"])/sum(df$emissions_2025) # 76%
+sum(df$emissions_2025[df$code %in% union_high | df$code == "SAU"])/sum(df$emissions_2025) # 73%
+sum(df$emissions_2025[df$code %in% union_high | df$code == "USA"])/sum(df$emissions_2025) # 86%
+sum(df$emissions_2025[df$code  %in% EU27_countries])/sum(df$emissions_2025) # 8%
+sum(df$emissions_2025[df$code == "RUS"])/sum(df$emissions_2025) # 4.47%
+sum(df$emissions_2025[df$code == "CHE"])/sum(df$emissions_2025) # 0.1%
+sum(df$emissions_2025[df$code == "GBR"])/sum(df$emissions_2025) # 1%
+sum(df$emissions_2025[df$code == "JPN"])/sum(df$emissions_2025) # 3%
+sum(df$emissions_2025[df$code == "SAU"])/sum(df$emissions_2025) # 2%
+sum(df$emissions_2025[df$code == "USA"])/sum(df$emissions_2025) # 15%
 
 
+##### Survey scenarios #####
+high <- all_countries[df$code %in% union_high]
+high_SAU <- all_countries[df$code %in% c(union_high, "SAU")]
+high_USA <- all_countries[df$code %in% c(union_high, "USA")]
+high_RUS <- all_countries[df$code %in% c(union_high, "RUS")]
+scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU", "high", "high_SAU", "high_USA", "high_RUS") # manage , "South"
+scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
 
+for (s in paste0("high_", c("SAU", "USA", "RUS"))) df <- create_var_ssp(df = df, scenario = s)
 
+plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], filename = paste0("GCS_high_color"),
+               legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), #fill_na = T, \n(with 3% discount rate)
+               save = F, parties = scenarios_parties[["high"]])
 
+features <- as.matrix(read.xlsx("../../robustness_global_redistr/questionnaire/sources.xlsx", sheet = "features", rowNames = T))
+languages <- colnames(features) # c("FR", "DE", "IT", "PL", "ES", "EN-GB", "JA", "RU", "AR", "EN", "IT-CH", "DE-CH", "FR-CH", "ES-US") 
+gcs_high_stripe <- list("EN-GB" = "GBR", "JA" = "JPN", "RU" = "RUS", "AR" = "SAU")
+gcs_high_stripe[c("EN", "ES-US")] <- "USA"
+gcs_high_stripe[c("FR", "DE", "IT", "PL", "ES")] <- list(EU27_countries)
+gcs_high_stripe[c("IT-CH", "DE-CH", "FR-CH", "CH")] <- "CHE"
 
+for (l in c("RU")) {
+  s <- if (gcs_high_stripe[[l]] %in% c("SAU", "USA", "RUS")) paste0("high_", gcs_high_stripe[[l]]) else "high"
+  plot_world_map(paste0("S", s, "_gain_adj_over_gdp_2030"), df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], 
+                 legend = gsub("\\\\n", "\n", features["gcs_high_legend", l]), filename = paste0("GCS_high_color_", l), na_label = features["na_label", l], 
+                 save = T, parties = scenarios_parties[[s]], stripe_codes = gcs_high_stripe[[l]])
+  print(l)
+}
 
+# EU
+plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], filename = "GCS_high_color_EU",
+               legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), 
+               save = T, parties = scenarios_parties[["high"]], stripe_codes = EU27_countries)
+
+plot_world_map("gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], filename = "GCS_global_color",
+               legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), 
+               save = F)

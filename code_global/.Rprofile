@@ -57,7 +57,7 @@ package("list") # list experiment aka. item count technique: ictreg
 package("weights") # wtd.t.test
 # package("raster") # merge boundaries in maps
 package("sf") # merge boundaries in maps
-# package("ggpattern") # stripes in maps
+package("ggpattern") # stripes in maps
 # package("maptools") # merge boundaries in maps
 # package("threadr", github = "skgrange") # dependency of gissr
 # package("gissr", github = "skgrange") # merge boundaries in maps
@@ -1511,7 +1511,7 @@ heatmap_table <- function(vars, labels = vars, data = e, along = "country_name",
     for (v in 1:nb_vars) {
       if (vars[v] %in% c("gcs_support", "nr_support", "gcs_support_100")) {
         temp <- df_c
-        df_c <- df_c[df_c$wave != "US2",] }
+        if ("wave" %in% names(df_c)) df_c <- df_c[df_c$wave != "US2",] }
       var_c <- df_c[[vars[v]]][!is.na(df_c[[vars[v]]])]
       if (conditions[v] == "median") {
         if (weights & length(var_c) > 0 & c %in% c(countries_EU, names(countries_EU))) table[v,c] <- eval(str2expression(paste("wtd.median(var_c, na.rm = T, weight = df_c$weight_country[!is.na(df_c[[vars[v]]])])")))
@@ -2055,18 +2055,19 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
 #
-plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL,
-                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, negative_stripes = FALSE) {
+plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', 
+                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, negative_stripes = FALSE, stripe_codes = NULL) {
+  # /!\ plot_world_map may sometimes fail (due to processor overload): in that case, either close all other windows or check the pdf/png export (which renders generally fine). When testing the function, remove most countries to speed the rendering (cf. example code below).
   if (!is.null(parties)) {
     if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
     df[[var]][!df$code %in% parties] <- NA
-    na_label <- "Non Parties" }
+    if (na_label == "NA") na_label <- "Non Parties" }
   table <- heatmap_table(vars = var, data = df, along = "country_map", conditions = c(condition), on_control = on_control, remove_na = FALSE)
   # df_countries <- c(Country_Names[colnames(table)], "Wallis and Futuna", "Vatican", "Tobago", "Trinidad", "Sint Maarten", "Liechtenstein", "Saint Kitts", "Nevis", "Monaco", "Jersey", "Barbuda", "Antigua", "Saint Barthelemy", "Reunion", "Grenadines", "Virgin Islands", "Turks and Caicos Islands", "Saint Pierre and Miquelon", "Saint Helena", "Ascension Island", "Niue", "Palau", "Pitcairn Islands", "South Sandwich Islands")
   # df <- data.frame(country = df_countries, mean = c(as.vector(table), seq(-1.84, 1.94, 0.2), seq(0.06, 0.86, 0.2))) # For oecd_climate
   df_countries <- df$country_map
-  df <- data.frame(country_map = df_countries, mean = as.vector(table))
-
+  df <- data.frame(country_map = df_countries, code = df$code, mean = as.vector(table))
+  
   if (condition != "") {
     if (is.null(breaks)) breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
     if (is.null(labels)) labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
@@ -2080,7 +2081,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   }
   if (continuous) df$mean <- pmax(pmin(df$mean, limits[2]), limits[1])
 
-  world_map <- map_data(map = "world")
+  world_map <- map_data(map = "world") # ggplot2
   world_map <- world_map[world_map$region != "Antarctica",] #
   world_map <- world_map[!world_map$region %in% c("Antarctica", "American Samoa", "Micronesia", "Guam", "Niue", "Pitcairn Islands", "Cook Islands", "Tonga", "Kiribati", "Marshall Islands", "French Polynesia", "Fiji", "Samoa", "Wallis and Futuna", "Vanuatu"),]
   # world_map$region <- iso.alpha(world_map$region)
@@ -2111,6 +2112,20 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
           geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = fct_rev(group)), pattern_fill = "black", fill = NA, show.legend=TRUE,
                            pattern_size = 0.01, pattern_density = 0.05, pattern_angle = 45, pattern_spacing = 0.015) +
           scale_pattern_manual(name = legend, values = pattern, drop = FALSE, labels = c(rev(labels), na_label)) + guides(fill = "none", pattern = guide_legend(override.aes = list(fill = colors))))
+    } else if (!is.null(stripe_codes)) { # When certain df$code need to be stripped
+      df$pattern <- paste0(df$group, ifelse(df$code %in% stripe_codes, "stripe", ""))
+      df$pattern[is.na(df$group)] <- na_label
+      colors_pattern <- setNames(c(colors[1:(length(colors)-1)], colors[1:(length(colors)-1)], "#7F7F7F"), c(rev(labels), paste0(rev(labels), "stripe"), na_label))
+      colors_pattern <- stripe_pattern <- colors_pattern[names(colors_pattern) %in% df$pattern]
+      stripe_pattern <- setNames(ifelse(grepl("stripe", names(stripe_pattern)), "stripe", "none"), names(stripe_pattern))
+      plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = pattern), map = world_map, show.legend=TRUE) + # coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes))) +
+          scale_fill_manual(name = legend, drop = FALSE, values = colors_pattern[1:(length(colors_pattern)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks}) +
+          geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = pattern), 
+                           pattern_fill = "#7F7F7F", fill = NA, show.legend = FALSE, pattern_density = 0.5, pattern_angle = 45, pattern_spacing = 0.015, pattern_linetype = 0) +
+          scale_pattern_manual(values = stripe_pattern, labels =  c(rev(labels), na_label), breaks = c(rev(labels), na_label), name = legend, drop = FALSE) +
+          guides(fill = "none", pattern = guide_legend(override.aes = list(fill = colors_pattern[!grepl("stripe", names(colors_pattern))])))
+      if (!"RUS" %in% stripe_codes) plot <- plot + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) # /!\ Bug for Russia when proj_coord() is present ("There is a MULTIPOLYGON with length greater than 1")
     } else {
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
@@ -2120,9 +2135,9 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
          scale_fill_gradientn(name = legend, limits = limits, colours = color(9, rev_color = !rev_color))) # scale_fill_manual(palette = "RdBu", limits = limits, direction = 1, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
     }
-
+  
   print(plot)
-  if (save) for (f in format) save_plot(plot, filename = ifelse(!is.null(filename), filename, ifelse(continuous, paste0(var, "_cont"), ifelse(negative_stripes, paste0(var, "_stripes"), var))), folder = '../figures/maps/', width = width, height = height, format = f, trim = trim)
+  if (save) for (f in format) save_plot(plot, filename = ifelse(!is.null(filename), filename, ifelse(continuous, paste0(var, "_cont"), ifelse(negative_stripes, paste0(var, "_stripes"), var))), folder = folder, width = width, height = height, format = f, trim = trim)
   # return(plot)
 }
 
@@ -2131,6 +2146,151 @@ merge_maps <- function(map1, map2) {
   map1$order <- map1$order + max(map2$order)
   return(rbind(map1, map2))
 }
+
+# admin1 <- ne_download(scale = 50, type = "admin_1_states_provinces", category = "cultural", returnclass = "sf") # st_read("../data/ne_10m_admin_1_states_provinces.shp") # We also need .dbf and .shx in the folder
+# admin1$adm0_a3[admin1$name %in% c("Kherson", "Donets'k", "Luhans'k", "Zaporizhzhya", "Crimea")] <- "RUS"
+# admin1$adm0_a3[admin1$adm0_a3 == "SDS"] <- "SSD"
+# admin0 <- admin1 %>% group_by(admin) %>% dplyr::summarize(geometry = st_union(geometry), code = adm0_a3) %>% st_as_sf()
+# admin0_simplified <- st_simplify(admin0, dTolerance = .4)
+# # admin0_simplified$region <- admin0_simplified$admin
+# admin0_simplified <- merge(admin0_simplified, df[, c("code", "country_map")], all.x = T)
+# admin0_simplified$region <- admin0_simplified$country_map
+# # admin0_simplified <- admin0_simplified[, c("region", "name", "adm0_a3", "geonunit", "geometry")]
+# st_write(admin0_simplified, "../data/world_map_russian_outlook.shp", append = FALSE)
+# ggplot(admin0_simplified) + geom_sf() + theme_minimal()
+# 
+# plot <- ggplot(df) + #geom_map(aes(map_id = admin0_simplified, fill = pattern), map = admin0_simplified, show.legend=TRUE) + # coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+#   geom_sf() + 
+#   # geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes))) +
+#   scale_fill_manual(name = legend, drop = FALSE, values = colors_pattern[1:(length(colors_pattern)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks}) +
+#   # geom_map_pattern(data = df, map = admin0_simplified, aes(map_id = country_map, pattern = pattern), 
+#   #                  pattern_fill = "#7F7F7F", fill = NA, show.legend = FALSE, pattern_density = 0.5, pattern_angle = 45, pattern_spacing = 0.015, pattern_linetype = 0) +
+#   # scale_pattern_manual(values = stripe_pattern, labels =  c(rev(labels), na_label), breaks = c(rev(labels), na_label), name = legend, drop = FALSE) +
+#   guides(fill = "none", pattern = guide_legend(override.aes = list(fill = colors_pattern[!grepl("stripe", names(colors_pattern))])))
+# plot
+
+# admin0_df <- st_as_sf(admin0_simplified) %>% st_cast("POLYGON") %>%st_cast("POINT") %>% st_coordinates() %>% as.data.frame() %>% setNames(c("lon", "lat"))
+# 
+# ne_admin1 <- ne_download(scale = 50, type = "admin_1_states_provinces", category = "cultural", returnclass = "sf")
+# View(ne_admin1)
+# View(admin0_df)
+# View(admin0_map)
+# View(geom_df)
+# 
+
+# # Attempt to convert sf to dataframe with lon, lat, order, group => fail
+# geom_df <- st_as_sf(admin0_simplified) %>%
+#   st_cast("POLYGON") %>%
+#   st_cast("POINT") %>%   # Cast to points after polygons for easier plotting
+#   st_coordinates() %>%
+#   as.data.frame()
+# admin0_df <- data_frame(
+#   long = geom_df$X,
+#   lat = geom_df$Y,
+#   group = cumsum(is.na(geom_df$X) & is.na(geom_df$Y)) + 1,
+#   order = seq_along(geom_df$X)
+# )
+# admin0_df$region <- admin0_simplified$region[admin0_df$group]
+# admin0_df <- merge(admin0_df, admin0_simplified)
+# (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = admin0_df, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+#     geom_polygon(data = admin0_df, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = admin0_df$long, y = admin0_df$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
+#     scale_fill_manual(name = legend, drop = FALSE, values = colors[1:(length(colors)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
+
+
+# admin0_df <- ne_admin1 %>%
+#   st_cast("MULTIPOLYGON") %>%
+#   st_cast("POLYGON") %>%
+#   st_cast("POINT") %>%
+#   st_coordinates() %>%
+#   as.data.frame()
+# 
+# # Combine coordinates with original data
+# admin0_map <- cbind(ne_admin1 %>% st_set_geometry(NULL), admin0_df)
+# 
+# admin0_map <- fortify(ne_admin1, region = "adm0_a3")
+# 
+# convert_sf_to_df <- function(sf_object) {
+#   sf_object <- sf_object %>% mutate(id = row_number())
+#   
+#   # Make sure geometries are in MULTIPOLYGON or POLYGON form to extract their boundaries
+#   if (any(st_geometry_type(sf_object) %in% c("MULTIPOINT", "MULTILINESTRING"))) {
+#     sf_object <- st_cast(sf_object, "POLYGON", do_split = TRUE)
+#   }
+#   
+#   # Get the geometry and convert it to a data frame with coordinates
+#   geom_df <- st_as_sf(sf_object) %>%
+#     st_cast("POLYGON") %>%
+#     st_cast("POINT") %>%   # Cast to points after polygons for easier plotting
+#     st_coordinates() %>%
+#     as.data.frame()
+#   
+#   # Combine coordinates with original data excluding geometry
+#   df_final <- sf_object %>%
+#     st_set_geometry(NULL) %>%  # Remove the geometry column to simplify the data
+#     bind_cols(
+#       geom_df %>%
+#         setNames(c("lon", "lat"))  # Set coordinate names appropriately
+#     )
+#   
+#   # Add group identifier for plotting
+#   df_final <- df_final %>%
+#     group_by(id) %>%
+#     mutate(group = id, order = row_number()) %>%
+#     ungroup()
+#   
+#   return(df_final)
+# }
+# 
+# # Apply the conversion function
+# admin0_df <- convert_sf_to_df(admin0_simplified)
+# View(admin0_df)
+
+# ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = admin0_df, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+#   geom_polygon(data = admin0_df, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) #+
+#   expand_limits(x = admin0_df$long, y = admin0_df$lat) + theme_void() + theme(legend.position = c(legend_x, .29))
+# 
+# df.bak <- df
+# df <- df.bak
+# df$Shigh_RUS_gain_adj_over_gdp_2030[!df$code %in% scenarios_parties[["high_RUS"]]] <- NA
+# table <- heatmap_table(vars = "Shigh_RUS_gain_adj_over_gdp_2030", data = df, along = "country_map", conditions = "", on_control = F, remove_na = FALSE)
+# df_countries <- df$country_map
+# df <- data.frame(country_map = df_countries, code = df$code, mean = as.vector(table))
+# world_map <- map_data(map = "world")
+# world_map <- world_map[world_map$region != "Antarctica",] #
+# world_map <- world_map[!world_map$region %in% c("Antarctica", "American Samoa", "Micronesia", "Guam", "Niue", "Pitcairn Islands", "Cook Islands", "Tonga", "Kiribati", "Marshall Islands", "French Polynesia", "Fiji", "Samoa", "Wallis and Futuna", "Vanuatu"),]
+# df_na <- data.frame(country_map = setdiff(world_map$region, df_countries), mean = NA)
+# df <- merge(df, df_na, all = T)
+# breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf)
+# labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels"))
+# df$group <- cut(df$mean, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), labels = labels)
+# df$pattern <- paste0(df$group, ifelse(df$code %in% "RUS", "stripe", ""))
+# na_label = "Non Parties"
+# df$pattern[is.na(df$group)] <- na_label
+# legend_x = .073
+# rev_color <- F
+# legend <- NULL
+# # df.bak2 <- df
+# world_map.bak <- world_map
+# # world_map <- world_map.bak
+# df <- df[df$code %in% c("ROU", "UKR", "SRB", "CAN"), ]
+# world_map <- world_map[world_map$region %in% c("Romania", "Ukraine", "Serbia", "Canada"),]
+# df$pattern <- paste0(df$group, ifelse(df$code %in% "RUS", "stripe", ""))
+# df$pattern[is.na(df$group)] <- na_label
+# colors <- color(11)[2:10]
+# colors_pattern <- setNames(c(colors[1:(length(colors)-1)], colors[1:(length(colors)-1)], "#7F7F7F"), c(rev(labels), paste0(rev(labels), "stripe"), na_label))
+# colors_pattern <- stripe_pattern <- colors_pattern[names(colors_pattern) %in% df$pattern]
+# stripe_pattern <- setNames(ifelse(grepl("stripe", names(stripe_pattern)), "stripe", "none"), names(stripe_pattern))
+# 
+# plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = pattern), map = world_map) +
+#     geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA, show.legend = T) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x+.05, .29)) + 
+#     scale_fill_manual(name = NULL, drop = FALSE, values = colors_pattern[1:(length(colors_pattern)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks}) +
+#     geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = pattern),
+#                      pattern_fill = "#7F7F7F", fill = NA, show.legend = FALSE, pattern_density = 0.5, pattern_angle = 45, pattern_spacing = 0.015, pattern_linetype = 0) +
+#     scale_pattern_manual(values = stripe_pattern, labels =  c(rev(labels), na_label), breaks = c(rev(labels), na_label), name = legend, drop = FALSE) +
+#     guides(fill = "none", pattern = guide_legend(override.aes = list(fill = colors_pattern[!grepl("stripe", names(colors_pattern))])))
+# if (F) plot <- plot + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84))
+# ggsave("plot.pdf", plot)
+
 
 # dem_us <- non_dem_us <- co2_pop[co2_pop$code == "USA",]
 # dem_us$country_map <- "Dem USA"
@@ -2305,6 +2465,7 @@ merge_maps <- function(map1, map2) {
 #   expand_limits(x = us_coord$long, y = us_coord$lat) +
 #   scale_fill_continuous(low = 'thistle2', high = 'darkred', guide = 'colorbar') +
 #   labs(x=NULL, y=NULL)
+
 
 ##### Plot along #####
 # gives a list of regressions with given covariates and the different values for the 'subsamples' variable and the 'outcomes'
