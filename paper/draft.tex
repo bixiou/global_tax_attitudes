@@ -996,7 +996,7 @@ Appendix \ref{app:balance} shows that the treatment branches are balanced. Appen
 
 % \subsection*{\small Data quality.} % WPcomment % TODO attrition analysis
 \paragraph{\small Data quality.} % NCCcomment
-The median duration is 28 minutes for the \textit{global} survey, 14 min for \textit{US1}, 11 min for \textit{US2}, and 20 min for \textit{Eu}. To ensure the best possible data quality, we exclude respondents who fail an attention test or rush through the survey (i.e., answer in less than 11.5 minutes in the \textit{global} survey, 4 minutes in \textit{US1} or \textit{US2}, 6 minutes in \textit{Eu}). %All the results and analyses use survey weights, defined to make the results fully representative of the country (or of Eu in the case of results at the Eu level) along the quota variables. Weights are trimmed to be between .25 and 4. 
+The median duration is 28 minutes for the \textit{global} survey, 14 min for \textit{US1}, 11 min for \textit{US2}, and 20 min for \textit{Eu}. To ensure the best possible data quality, we exclude 14\% respondents who fail an attention test or rush through the survey (i.e., answer in less than 11.5 minutes in the \textit{global} survey, 4 minutes in \textit{US1} or \textit{US2}, 6 minutes in \textit{Eu}). %All the results and analyses use survey weights, defined to make the results fully representative of the country (or of Eu in the case of results at the Eu level) along the quota variables. Weights are trimmed to be between .25 and 4. 
 %\textit{Ex post}, we checked that there were only a few careless response patterns (such as choosing the same answer for all items in a matrix of questions; see Appendix \ref{app:data_quality}). 
 At the end of the survey, we ask whether respondents thought that our survey was politically biased and offer to provide some feedback. 69\% of the respondents found the survey unbiased. 24\% found it left-wing biased, and 8\% found it right-wing biased.
 
@@ -1143,8 +1143,8 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
 \begin{bibunit}[plainnaturl_clean]
 
 \appendix % NCCcomment
-\renewcommand{\thetable}{S\arabic{table}}
-\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{ED\arabic{table}}
+\renewcommand{\thefigure}{ED\arabic{figure}}
 \setcounter{figure}{0}
 \setcounter{table}{0}
 
@@ -1167,12 +1167,6 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
 
 \input{../tables/amce.tex}
 
-\begin{figure}[h!]
-    \caption[Support for the Global Climate Scheme]{[For Supplementary Material] Support for the GCS, NR and the combination of GCS, NR and C (\textit{Yes}/\textit{No} questions). \\(p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:nr_support}, \ref{q:global_tax}, \ref{q:national_tax}, and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)
-    }\label{fig:support_binary}
-    \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/support_binary_positive.pdf}} 
-\end{figure}
-
 % TODO?: add note to the figure above, to explain what is the national climate policy.
  
 \begin{figure}[h] 
@@ -1180,26 +1174,26 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
   )}\label{fig:ca_r}
   \begin{subfigure}{\textwidth}
     \subcaption{U.S. (Asked only to non-Republicans)}
-    \includegraphics[width=\textwidth]{../figures/US1/ca_r.png}
+    \includegraphics[width=\textwidth]{../figures/US1/ca_r.pdf}
   \end{subfigure}
   \begin{subfigure}{\textwidth}
     \subcaption{France}
-    \includegraphics[width=\textwidth]{../figures/FR/ca_r_en.png}
+    \includegraphics[width=\textwidth]{../figures/FR/ca_r_en.pdf}
   \end{subfigure}
 \end{figure}%
 \clearpage
 \begin{figure}[h!]\ContinuedFloat % if bugs try b! instead of h!
   \begin{subfigure}{\textwidth}
     \subcaption{Germany}
-    \includegraphics[width=\textwidth]{../figures/DE/ca_r_en.png}
+    \includegraphics[width=\textwidth]{../figures/DE/ca_r_en.pdf}
   \end{subfigure}
   \begin{subfigure}{\textwidth}
     \subcaption{Spain}
-    \includegraphics[width=\textwidth]{../figures/ES/ca_r_en.png}
+    \includegraphics[width=\textwidth]{../figures/ES/ca_r_en.pdf}
   \end{subfigure}
   \begin{subfigure}{\textwidth}
     \subcaption{UK}
-    \includegraphics[width=\textwidth]{../figures/UK/ca_r.png}
+    \includegraphics[width=\textwidth]{../figures/UK/ca_r.pdf}
   \end{subfigure}
   %\makebox[\textwidth][c]{} 
 \end{figure}
@@ -1236,6 +1230,11 @@ We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez
   \caption[Reasons why foreign aid should not be increased]{Reasons why foreign aid should not be increased (in percent). [Asked to those who wish a decrease or stability of foreign aid.] (Question \ref{q:foreign_aid_no})}\label{fig:foreign_aid_no}
   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_no_positive.pdf}} 
 \end{figure}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
 
 \input{literature_review.tex}
 % \clearpage
