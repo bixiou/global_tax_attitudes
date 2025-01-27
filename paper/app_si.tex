@@ -6,66 +6,67 @@
 % TODO! add share who click on info or reminder
 % TODO! Appendix Sources or at least clean up specificities.xlsx
 
+For each figure, the captions refer to the figure's \verb|filename| and to the questionnaire's question. The figures' folders are \verb|figures/country_comparison| (for PDFs) and \verb|xlsx/country_comparison| (for data tables), except when the filename contains a folder name (which then replaces \verb|country_comparison|). 
 Country-specific raw results are also available as supplementary material files:  \href{https://github.com/bixiou/international_attitudes_toward_global_policies/raw/main/paper/app_desc_stats_US.pdf}{US}, \href{https://github.com/bixiou/international_attitudes_toward_global_policies/raw/main/paper/app_desc_stats_EU.pdf}{EU}, \href{https://github.com/bixiou/international_attitudes_toward_global_policies/raw/main/paper/app_desc_stats_FR.pdf}{FR}, \href{https://github.com/bixiou/international_attitudes_toward_global_policies/raw/main/paper/app_desc_stats_DE.pdf}{DE}, \href{https://github.com/bixiou/international_attitudes_toward_global_policies/raw/main/paper/app_desc_stats_ES.pdf}{ES}, \href{https://github.com/bixiou/international_attitudes_toward_global_policies/raw/main/paper/app_desc_stats_UK.pdf}{UK}.
 
 \begin{figure}[h!]
-    \caption[Support for the Global Climate Scheme]{Support for the GCS, NR and the combination of GCS, NR and C (\textit{Yes}/\textit{No} questions). \\(p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:nr_support}, \ref{q:global_tax}, \ref{q:national_tax}, and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)
+    \cprotect\caption[Support for the Global Climate Scheme]{Support for the GCS, NR and the combination of GCS, NR and C (\textit{Yes}/\textit{No} questions). \\(\verb|support_binary_positive|; p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:nr_support}, \ref{q:global_tax}, \ref{q:national_tax}, and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)
     }\label{fig:support_binary}
     \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/support_binary_positive.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Absolute support for global climate policies]{Absolute support for global climate policies. \\ Share of \textit{Somewhat} or \textit{Strongly support} (in percent, $n$ = 40,680). The color blue denotes an absolute majority. See Figure \ref{fig:oecd} for the relative support. (Questions \ref{q:scale}-\ref{q:millionaire_tax} of the global survey.)% Reproduced from \citealp{dechezlepretre_fighting_nodate}, Figure A20.)
+    \cprotect\caption[Absolute support for global climate policies]{Absolute support for global climate policies. \\ Share of \textit{Somewhat} or \textit{Strongly support} (in percent, $n$ = 40,680). The color blue denotes an absolute majority. See Figure \ref{fig:oecd} for the relative support. (\verb|OECD/Heatplot_global_tax_attitudes_positive|; Questions \ref{q:scale}-\ref{q:millionaire_tax} of the global survey.)% Reproduced from \citealp{dechezlepretre_fighting_nodate}, Figure A20.)
     } 
     \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{../figures/OECD/Heatplot_global_tax_attitudes_positive.pdf}}\label{fig:oecd_absolute}% with dependence on others (absent from OECD): Heatplot_burden_share_all_positive_countries
     {\footnotesize \\ *In Denmark, France and the U.S., the questions with an asterisk were asked differently, cf. Question \ref{q:burden_sharing_asterisk}. } 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Comprehension]{Correct answers to comprehension questions (in percent). (Questions \ref{q:understood_gcs}-\ref{q:understood_both})}\label{fig:understood_each}
+    \cprotect\caption[Comprehension]{Correct answers to comprehension questions (in percent). (\verb|understood_each_positive|; Questions \ref{q:understood_gcs}-\ref{q:understood_both})}\label{fig:understood_each}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/understood_each_positive.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Comprehension score]{Number of correct answers to comprehension questions (mean). (%Section \ref{subsec:gcs_stated_support}, 
+    \cprotect\caption[Comprehension score]{Number of correct answers to comprehension questions (mean). (\verb|understood_score_mean|; %Section \ref{subsec:gcs_stated_support}, 
     Questions \ref{q:understood_gcs}-\ref{q:understood_both})}\label{fig:understood_score}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/understood_score_mean.pdf}} 
 \end{figure}
 
 % \begin{figure}[h!]
-%     \caption[Support for the Global Climate Scheme]{Support for the GCS, NR and the combination of GCS, NR and C. (Questions \ref{q:gcs_support}, \ref{q:nr_support} and \ref{q:crg_support})}\label{fig:support_binary}
+%     \cprotect\caption[Support for the Global Climate Scheme]{Support for the GCS, NR and the combination of GCS, NR and C. (Questions \ref{q:gcs_support}, \ref{q:nr_support} and \ref{q:crg_support})}\label{fig:support_binary}
 %     \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/support_binary.pdf}} 
 % \end{figure}
 
 % \begin{figure}[h!]
-%     \caption[Beliefs about support for the GCS and NR]{Beliefs regarding the support for the GCS and NR. (Questions \ref{q:gcs_belief} and \ref{q:nr_belief})}\label{fig:belief}
+%     \cprotect\caption[Beliefs about support for the GCS and NR]{Beliefs regarding the support for the GCS and NR. (Questions \ref{q:gcs_belief} and \ref{q:nr_belief})}\label{fig:belief}
 %     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/belief.pdf}} 
 % \end{figure}
 
 \begin{figure}[h!]
-    \caption[List experiment]{List experiment: mean number of supported policies. (%Section \ref{subsubsec:list_exp}, 
+    \cprotect\caption[List experiment]{List experiment: mean number of supported policies. (\verb|list_exp_mean|; %Section \ref{subsubsec:list_exp}, 
     Question \ref{q:list_exp})}\label{fig:list_exp}
     \makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/country_comparison/list_exp_mean.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Conjoint analyses 1 and 2]{Conjoint analyses 1 and 2. (Questions \ref{q:conjoint_a}-\ref{q:conjoint_b}%, Back to Section \ref{subsubsec:conjoint}
+    \cprotect\caption[Conjoint analyses 1 and 2]{Conjoint analyses 1 and 2. (\verb|conjoint_ab_all_positive|; Questions \ref{q:conjoint_a}-\ref{q:conjoint_b}%, Back to Section \ref{subsubsec:conjoint}
     )}\label{fig:conjoint}
     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/conjoint_ab_all_positive.pdf}} 
 \end{figure}
 
 % \begin{figure}[h!] % already in text
-%     \caption{[Asked only to non-Republicans] Conjoint analysis n°4: random programs at the Democratic primary. (Question \ref{q:conjoint_r})}\label{fig:ca_r}
+%     \cprotect\caption{[Asked only to non-Republicans] Conjoint analysis n°4: random programs at the Democratic primary. (Question \ref{q:conjoint_r})}\label{fig:ca_r}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/ca_r.png}} 
 % \end{figure}
 
 % \begin{figure}[h!]
-%     \caption[Influence of the GCS on preferred platform]{Influence of the GCS on preferred platform:\\ Preference for a random platform A that contains the Global Climate Scheme rather than a platform B that does not (in percent). (Question \ref{q:conjoint_d}; in the U.S., asked only to non-Republicans.)}\label{fig:conjoint_left_ag_b}
+%     \cprotect\caption[Influence of the GCS on preferred platform]{Influence of the GCS on preferred platform:\\ Preference for a random platform A that contains the Global Climate Scheme rather than a platform B that does not (in percent). (Question \ref{q:conjoint_d}; in the U.S., asked only to non-Republicans.)}\label{fig:conjoint_left_ag_b}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/conjoint_left_ag_b_binary_positive.pdf}} 
 % \end{figure}
 
 \begin{figure}[h] 
-  \caption[Preferences for various policies in political platforms (original)]{Effects of the presence of a policy (rather than none from this domain) in a random platform on the likelihood that it is preferred to another random platform. Points represent Average Marginal Component Effects and bars 95\% C.I. (See English translations in Figure \ref{fig:ca_r}; Question \ref{q:conjoint_r}%; in the U.S., asked only to non-Republicans.
+  \cprotect\caption[Preferences for various policies in political platforms (original)]{Effects of the presence of a policy (rather than none from this domain) in a random platform on the likelihood that it is preferred to another random platform. Points represent Average Marginal Component Effects and bars 95\% C.I. (\verb|[country]/ca_r|; See English translations in Figure \ref{fig:ca_r}; Question \ref{q:conjoint_r}%; in the U.S., asked only to non-Republicans.
   )}\label{fig:ca_r_en}
     \begin{subfigure}{.97\textwidth}
       \subcaption{Germany}
@@ -82,29 +83,29 @@ Country-specific raw results are also available as supplementary material files:
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Perceptions of the GCS]{Perceptions of the GCS. Elements seen as important for supporting the GCS in a 4-Likert scale (in percent). (Question \ref{q:gcs_important})  %\hfill (Back~to~Section~\ref{subsubsec:pros_cons})
+    \cprotect\caption[Perceptions of the GCS]{Perceptions of the GCS. Elements seen as important for supporting the GCS in a 4-Likert scale (in percent). (\verb|gcs_important_positive|; Question \ref{q:gcs_important})  %\hfill (Back~to~Section~\ref{subsubsec:pros_cons})
     }\label{fig:gcs_important}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/gcs_important_positive.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Classification of open-ended field on the GCS]{Perceptions of the GCS. Elements found in the open-ended field on the GCS (manually recoded, in percent). \\ ``When thinking about the Global climate scheme, what comes to
+    \cprotect\caption[Classification of open-ended field on the GCS]{Perceptions of the GCS. Elements found in the open-ended field on the GCS (manually recoded, in percent). \\ ``When thinking about the Global climate scheme, what comes to
     your mind?
-    \\ Please list pros and cons of the Global climate scheme.'' (Question \ref{q:gcs_field}) %\hfill (Back~to~Section~\ref{subsubsec:pros_cons})
+    \\ Please list pros and cons of the Global climate scheme.'' (\verb|gcs_field_positive|; Question \ref{q:gcs_field}) %\hfill (Back~to~Section~\ref{subsubsec:pros_cons})
     }\label{fig:gcs_field}
     \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{../figures/country_comparison/gcs_field_positive.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Topics of open-ended field on the GCS]{Perceptions of the GCS. Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent). \\ ``When thinking about the Global climate scheme, what comes to
+    \cprotect\caption[Topics of open-ended field on the GCS]{Perceptions of the GCS. Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent). \\ ``When thinking about the Global climate scheme, what comes to
     your mind?
-    \\ Please list pros and cons of the Global climate scheme.'' (Question \ref{q:gcs_field}) %\hfill (Back~to~Section~\ref{subsubsec:pros_cons})
+    \\ Please list pros and cons of the Global climate scheme.'' (\verb|gcs_field_contains_positive|; Question \ref{q:gcs_field}) %\hfill (Back~to~Section~\ref{subsubsec:pros_cons})
     }\label{fig:gcs_field_contains}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/gcs_field_contains_positive.pdf}} 
 \end{figure}
 
 % \begin{table}[h]
-%     \caption[Campaign and bandwagon effects on the support for the GCS.]{Effects on the support for the GCS of a question on its pros and cons (either in open-ended of closed format) and on information about the actual support, in the U.S. (See Section \ref{subsec:questionnaire_perceptions} in the \textit{US2} Questionnaire)  \hfill (Back~to~Section~\ref{subsubsec:pros_cons})} \label{tab:branch_gcs}
+%     \cprotect\caption[Campaign and bandwagon effects on the support for the GCS.]{Effects on the support for the GCS of a question on its pros and cons (either in open-ended of closed format) and on information about the actual support, in the U.S. (See Section \ref{subsec:questionnaire_perceptions} in the \textit{US2} Questionnaire)  \hfill (Back~to~Section~\ref{subsubsec:pros_cons})} \label{tab:branch_gcs}
 %     \makebox[\textwidth][c]{
 %         \input{../tables/US2/branch_gcs.tex}
 %     }
@@ -113,204 +114,204 @@ Country-specific raw results are also available as supplementary material files:
 % \end{table}
 
 \begin{figure}[h!]
-    \caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality (mean). (Question \ref{q:donation})%\hfill (Back~to~Section~\ref{subsec:universalistic})
+    \cprotect\caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality (mean). (\verb|donation_mean|; Question \ref{q:donation})%\hfill (Back~to~Section~\ref{subsec:universalistic})
     }\label{fig:donation}
     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/donation_mean.pdf}} 
 \end{figure}
 
 % \begin{table}[h]
-%     \caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality. (Question \ref{q:donation})\hfill (Back~to~Section~\ref{subsec:universalistic})} \label{tab:donation}
+%     \cprotect\caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality. (Question \ref{q:donation})\hfill (Back~to~Section~\ref{subsec:universalistic})} \label{tab:donation}
 %     \makebox[\textwidth][c]{\input{../tables/continents/donation_interaction.tex}}
 % \end{table}
 
 \begin{figure}[h!]
-    \caption[Support for a national wealth tax]{Support for a national wealth tax. \\ ``Do you support or oppose a tax on millionaires in [the U.S.] to finance [\textit{US2}: affordable housing and universal childcare/pre-K; \textit{Eu}: finance government hospitals and schools]?'' %financing public services like healthcare, education, and social housing. 
-    (Question \ref{q:national_tax})}\label{fig:national_tax}
+    \cprotect\caption[Support for a national wealth tax]{Support for a national wealth tax. \\ ``Do you support or oppose a tax on millionaires in [the U.S.] to finance [\textit{US2}: affordable housing and universal childcare/pre-K; \textit{Eu}: finance government hospitals and schools]?'' %financing public services like healthcare, education, and social housing. 
+    (\verb|national_tax_support|; Question \ref{q:national_tax})}\label{fig:national_tax}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/national_tax_support.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Support for a global wealth tax]{Support for a global wealth tax. \\
+    \cprotect\caption[Support for a global wealth tax]{Support for a global wealth tax. \\
     ``Do you support or oppose a tax on millionaires of all countries to finance low-income countries? \\
-    Such tax would finance infrastructure and public services such as access to drinking water, healthcare, and education.'' (Question \ref{q:global_tax})}\label{fig:global_tax}
+    Such tax would finance infrastructure and public services such as access to drinking water, healthcare, and education.'' (\verb|global_tax_support|; Question \ref{q:global_tax})}\label{fig:global_tax}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/global_tax_support.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Preferred share of global tax for low-income countries]{Preferred share of global wealth tax revenues that should be pooled to finance low-income countries. (Question \ref{q:global_tax_global_share})}\label{fig:global_tax_global_share}
+    \cprotect\caption[Preferred share of global tax for low-income countries]{Preferred share of global wealth tax revenues that should be pooled to finance low-income countries. (\verb|global_tax_global_share|; Question \ref{q:global_tax_global_share})}\label{fig:global_tax_global_share}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/global_tax_global_share.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Support for sharing half of global tax revenues with low-income countries]{Support for sharing half of global tax revenues with low-income countries, rather that each country retaining all the revenues it collects (in percent). (Question \ref{q:global_tax_sharing})}\label{fig:global_tax_sharing}
+    \cprotect\caption[Support for sharing half of global tax revenues with low-income countries]{Support for sharing half of global tax revenues with low-income countries, rather that each country retaining all the revenues it collects (in percent). (\verb|global_tax_sharing_positive|; Question \ref{q:global_tax_sharing})}\label{fig:global_tax_sharing}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/global_tax_sharing_positive.pdf}} 
 \end{figure}
 
 % \begin{figure}
 %     \centering 
-%     \caption{Your previous answer shows that you would like to increase [UK] foreign aid.\\How would you like to finance such increase in foreign aid? (Multiple answers possible)}
+%     \cprotect\caption{Your previous answer shows that you would like to increase [UK] foreign aid.\\How would you like to finance such increase in foreign aid? (Multiple answers possible)}
 %     \includegraphics[width=\columnwidth]{../figures/all/foreign_aid_raise.pdf} 
 % \end{figure}		
 % \begin{figure}
 %     \centering 
-%     \caption{Your previous answer shows that you would like to reduce [UK] foreign aid.\\How would you like to use the freed budget? (Multiple answers possible)}
+%     \cprotect\caption{Your previous answer shows that you would like to reduce [UK] foreign aid.\\How would you like to use the freed budget? (Multiple answers possible)}
 %     \includegraphics[width=\columnwidth]{../figures/all/foreign_aid_reduce.pdf} 
 % \end{figure}
 
 \begin{figure}[h!]
-    \caption[Perceived foreign aid]{Perceived foreign aid. ``From your best guess, what percentage of [own country] government spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?'' (Question \ref{q:foreign_aid_belief})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid}) 
+    \cprotect\caption[Perceived foreign aid]{Perceived foreign aid. ``From your best guess, what percentage of [own country] government spending is allocated to foreign aid (that is, to reduce poverty in low-income countries)?'' (\verb|foreign_aid_belief_agg|; Question \ref{q:foreign_aid_belief})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid}) 
     \\ Actual values: France: 0.8\%; Germany: 1.3\%; Spain: 0.5\%; UK: 1.7\%; U.S.: 0.4\%.}\label{fig:foreign_aid_belief}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_belief_agg.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Preferred foreign aid (without info on actual amount)]{Preferred foreign aid (without info on actual amount). \\ ``If you could choose the government spending, what percentage would you allocate
-    to foreign aid?'' (Question \ref{q:foreign_aid_preferred})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
+    \cprotect\caption[Preferred foreign aid (without info on actual amount)]{Preferred foreign aid (without info on actual amount). \\ ``If you could choose the government spending, what percentage would you allocate
+    to foreign aid?'' (\verb|foreign_aid_preferred_no_info_agg|; Question \ref{q:foreign_aid_preferred})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
     }\label{fig:foreign_aid_preferred_no_info}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_preferred_no_info_agg.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Preferred foreign aid (after info on actual amount)]{Preferred foreign aid (after info on actual amount). \\ ``Actually,
+    \cprotect\caption[Preferred foreign aid (after info on actual amount)]{Preferred foreign aid (after info on actual amount). \\ ``Actually,
     [US1: 0.4\%; FR: 0.8\%; DE: 1.3\%; ES: 0.5\%; UK: 1.7\%] of [own country] government spending is allocated to foreign aid. \\
     If you could choose the government spending, what percentage would you allocate
-    to foreign aid?'' (Question \ref{q:foreign_aid_preferred})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
+    to foreign aid?'' (\verb|foreign_aid_preferred_info_agg|; Question \ref{q:foreign_aid_preferred})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
     }\label{fig:foreign_aid_preferred_info}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_preferred_info_agg.pdf}} 
 \end{figure}
 
 \begin{figure} 
-    \caption[Actual, perceived and preferred amount of foreign aid (mean)]{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Mean} in percent of public spending, Questions \ref{q:foreign_aid_belief}, \ref{q:foreign_aid_preferred})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
+    \cprotect\caption[Actual, perceived and preferred amount of foreign aid (mean)]{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Mean} in percent of public spending; \verb|foreign_aid_amount_mean|; Questions \ref{q:foreign_aid_belief}, \ref{q:foreign_aid_preferred})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
     }\label{fig:foreign_aid_amount}
     \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/foreign_aid_amount_mean.pdf} } 
 \end{figure}
 
 % \begin{figure} 
-%     \caption{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Median}, Questions \ref{q:foreign_aid_belief}, \ref{q:foreign_aid_preferred})}\label{fig:foreign_aid_amount}
+%     \cprotect\caption{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Median}, Questions \ref{q:foreign_aid_belief}, \ref{q:foreign_aid_preferred})}\label{fig:foreign_aid_amount}
 %     \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/foreign_aid_amount_median.pdf} } % TODO? add? not necessary as the info on median can be deduced from below figures
 % \end{figure}
 
 \begin{figure} 
-    % \caption{Support for increased foreign aid (vs. reduced or stable): from previous question, and directly asked (with info).}\vspace{-.2cm}
+    % \cprotect\caption{Support for increased foreign aid (vs. reduced or stable): from previous question, and directly asked (with info).}\vspace{-.2cm}
     % \includegraphics[height=.32\textheight]{../figures/country_comparison/foreign_aid_more_positive.pdf} 
-    \caption[Preferred foreign aid (summary)]{Preferred foreign aid (after info or after perception). (Questions \ref{q:foreign_aid_belief} and \ref{q:foreign_aid_preferred})}\label{fig:foreign_aid_no_less_all}
+    \cprotect\caption[Preferred foreign aid (summary)]{Preferred foreign aid (after info or after perception). (\verb|foreign_aid_no_less_all_positive|; Questions \ref{q:foreign_aid_belief} and \ref{q:foreign_aid_preferred})}\label{fig:foreign_aid_no_less_all}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_no_less_all_positive.pdf} }
 \end{figure} 
 
 \begin{figure}[h!]
-    \caption[Preferences for funding increased foreign aid]{Preferences for funding increased foreign aid. [Asked iff preferred foreign aid is strictly greater than [Info: actual; No info: perceived] foreign aid] \\ ``How would you like to finance such increase in foreign aid? (Multiple answers possible)'' (in percent) (Question \ref{q:foreign_aid_raise_how})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
+    \cprotect\caption[Preferences for funding increased foreign aid]{Preferences for funding increased foreign aid. [Asked iff preferred foreign aid is strictly greater than [Info: actual; No info: perceived] foreign aid] \\ ``How would you like to finance such increase in foreign aid? (Multiple answers possible)'' (in percent) (\verb|foreign_aid_raise_positive|; Question \ref{q:foreign_aid_raise_how})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
     }\label{fig:foreign_aid_raise_how}
     \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{../figures/country_comparison/foreign_aid_raise_positive.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Preferences of spending following reduced foreign aid]{Preferences of spending following reduced foreign aid. [Asked iff preferred foreign aid is strictly lower than [Info: actual; No info: perceived] foreign aid] \\ ``How would you like to use the freed budget? (Multiple answers possible)'' (in percent) (Question \ref{q:foreign_aid_reduce_how})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
+    \cprotect\caption[Preferences of spending following reduced foreign aid]{Preferences of spending following reduced foreign aid. [Asked iff preferred foreign aid is strictly lower than [Info: actual; No info: perceived] foreign aid] \\ ``How would you like to use the freed budget? (Multiple answers possible)'' (in percent) (\verb|foreign_aid_reduce_positive|; Question \ref{q:foreign_aid_reduce_how})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
     }\label{fig:foreign_aid_reduce_how}
     \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{../figures/country_comparison/foreign_aid_reduce_positive.pdf}} 
 \end{figure}
 
 % \begin{figure}[h!]
-%     \caption[Attitudes on the evolution of foreign aid]{Attitudes regarding the evolution of [own country] foreign aid. (Question \ref{q:foreign_aid_raise_support})}\label{fig:foreign_aid_raise_support}
+%     \cprotect\caption[Attitudes on the evolution of foreign aid]{Attitudes regarding the evolution of [own country] foreign aid. (Question \ref{q:foreign_aid_raise_support})}\label{fig:foreign_aid_raise_support}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_raise_support.pdf}} 
 % \end{figure}
 
 % \begin{figure}[h!]
-%     \caption[Conditions at which foreign aid should be increased]{Conditions at which foreign aid should be increased (in percent). [Asked to those who wish an increase of foreign aid at some conditions.] (Question \ref{q:foreign_aid_condition})}\label{fig:foreign_aid_condition}
+%     \cprotect\caption[Conditions at which foreign aid should be increased]{Conditions at which foreign aid should be increased (in percent). [Asked to those who wish an increase of foreign aid at some conditions.] (Question \ref{q:foreign_aid_condition})}\label{fig:foreign_aid_condition}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_condition_positive.pdf}} 
 % \end{figure}
 
 % \begin{figure}[h!]
-%     \caption[Reasons why foreign aid should not be increased]{Reasons why foreign aid should not be increased (in percent). [Asked to those who wish a decrease or stability of foreign aid.] (Question \ref{q:foreign_aid_no})}\label{fig:foreign_aid_no}
+%     \cprotect\caption[Reasons why foreign aid should not be increased]{Reasons why foreign aid should not be increased (in percent). [Asked to those who wish a decrease or stability of foreign aid.] (Question \ref{q:foreign_aid_no})}\label{fig:foreign_aid_no}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_no_positive.pdf}} 
 % \end{figure}
 
 % \begin{figure}[h!]
-%     \caption[Willingness to sign a real-stake petition]{Willingness to sign real-stake petition for the Global Climate Scheme or National Redistribution. (Question \ref{q:petition})}\label{fig:petition}
+%     \cprotect\caption[Willingness to sign a real-stake petition]{Willingness to sign real-stake petition for the Global Climate Scheme or National Redistribution. (Question \ref{q:petition})}\label{fig:petition}
 %     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/petition_only_positive.pdf}} 
 % \end{figure}
 
 \begin{figure}[h!]
-    \caption[Willingness to sign a real-stake petition]{Willingness to sign real-stake petition for the Global Climate Scheme or National Redistribution, compared to stated support in corresponding subsamples (e.g. support for the GCS in the branch where the petition was about the GCS). (Question \ref{q:petition})}\label{fig:petition}
+    \cprotect\caption[Willingness to sign a real-stake petition]{Willingness to sign real-stake petition for the Global Climate Scheme or National Redistribution, compared to stated support in corresponding subsamples (e.g. support for the GCS in the branch where the petition was about the GCS). (\verb|petition_comparable_positive|; Question \ref{q:petition})}\label{fig:petition}
     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/petition_comparable_positive.pdf}} 
 \end{figure}
 
 \begin{figure}[h!] % TODO? More details?
-    \caption[Absolute support for various global policies]{Absolute support for various global policies (Percent of (\textit{somewhat} or \textit{strong}) support). (Questions \ref{q:climate_policies} and \ref{q:other_policies}. See Figure \ref{fig:support} for the relative support.)}\label{fig:support_likert_positive}
+    \cprotect\caption[Absolute support for various global policies]{Absolute support for various global policies (Percent of (\textit{somewhat} or \textit{strong}) support). (\verb|support_likert_positive|; Questions \ref{q:climate_policies} and \ref{q:other_policies}. See Figure \ref{fig:support} for the relative support.)}\label{fig:support_likert_positive}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_positive.pdf}} 
 \end{figure}
 
 % \begin{figure}[h!]
-%     \caption{label}\label{fig:climate_policies}
+%     \cprotect\caption{label}\label{fig:climate_policies}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/climate_policies.pdf}} 
 % \end{figure}
 
 % \begin{figure}[h!]
-%     \caption{label}\label{fig:global_policies}
+%     \cprotect\caption{label}\label{fig:global_policies}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/global_policies.pdf}} 
 % \end{figure}
 
 \begin{figure}[h!]
-    \caption[Preferred approach for international climate negotiations]{Preferred approach of diplomats at international climate negotiations. \\ In international climate negotiations, would you prefer [U.S.] diplomats to defend [own country] interests or global justice? (Question \ref{q:negotiation})}\label{fig:negotiation}
+    \cprotect\caption[Preferred approach for international climate negotiations]{Preferred approach of diplomats at international climate negotiations. \\ In international climate negotiations, would you prefer [U.S.] diplomats to defend [own country] interests or global justice? (\verb|negotiation|; Question \ref{q:negotiation})}\label{fig:negotiation}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/negotiation.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Importance of selected issues]{Percent of selected issues viewed as important.\\ ``To what extent do you think the following issues are a problem?'' (Question \ref{q:problem})}\label{fig:problem}
+    \cprotect\caption[Importance of selected issues]{Percent of selected issues viewed as important.\\ ``To what extent do you think the following issues are a problem?'' (\verb|problem_positive|; Question \ref{q:problem})}\label{fig:problem}
     \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{../figures/country_comparison/problem_positive.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Group defended when voting]{Group defended when voting. \\ ``What group do you defend when you vote?'' (Question \ref{q:group_defended})}\label{fig:group_defended}
+    \cprotect\caption[Group defended when voting]{Group defended when voting. \\ ``What group do you defend when you vote?'' (\verb|group_defended_agg2|; Question \ref{q:group_defended})}\label{fig:group_defended}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/group_defended_agg2.pdf}} 
 \end{figure}
 
 % \begin{figure}[h!]
-%     \caption{label}\label{fig:group_defended}
+%     \cprotect\caption{label}\label{fig:group_defended}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/group_defended.pdf}} 
 % \end{figure}
 
 \begin{figure}[h!] 
-    \caption[Mean prioritization of policies]{Mean prioritization of policies. \\Mean number of points allocated policies to express intensity of support (among six policies chosen at random). Blue color means that the policy has been awarded more points than the average policy. \\ ``In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it. \\ How do you allocate the points among the following policies?'' (Question \ref{q:points})}\label{fig:points}
+    \cprotect\caption[Mean prioritization of policies]{Mean prioritization of policies. \\Mean number of points allocated policies to express intensity of support (among six policies chosen at random). Blue color means that the policy has been awarded more points than the average policy. \\ ``In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it. \\ How do you allocate the points among the following policies?'' (\verb|points_mean|; Question \ref{q:points})}\label{fig:points}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/points_mean.pdf}} 
 \end{figure}
 
 \begin{figure}[h!] 
-    \caption[Positive prioritization of policies]{Positive prioritization of policies. \\ Percent of people allocating a positive number of points to policies, expressing their support (among six policies chosen at random). \\ ``In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it. \\ How do you allocate the points among the following policies?'' (Question \ref{q:points})}\label{fig:points_positive}
+    \cprotect\caption[Positive prioritization of policies]{Positive prioritization of policies. \\ Percent of people allocating a positive number of points to policies, expressing their support (among six policies chosen at random). \\ ``In this question, you have 100 points that you can allocate to different policies. The more you give points to a policy, the more you support it. \\ How do you allocate the points among the following policies?'' (\verb|points_positive|; Question \ref{q:points})}\label{fig:points_positive}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/points_positive.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Charity donation]{Charity donation. \\ ``How much did you give to charities in 2022?'' (Question \ref{q:donation_charities})}\label{fig:donation_charities}
+    \cprotect\caption[Charity donation]{Charity donation. \\ ``How much did you give to charities in 2022?'' (\verb|donation_charities|; Question \ref{q:donation_charities})}\label{fig:donation_charities}
     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/donation_charities.pdf}} 
 \end{figure}
 
 \begin{figure}[h!] 
-    \caption[Interest in politics]{Interest in politics. \\ ``To what extent are you interested in politics?'' (Question \ref{q:interested_politics})}\label{fig:interested_politics}
+    \cprotect\caption[Interest in politics]{Interest in politics. \\ ``To what extent are you interested in politics?'' (\verb|interested_politics|; Question \ref{q:interested_politics})}\label{fig:interested_politics}
     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/interested_politics.pdf}} 
 \end{figure}
 
 \begin{figure}[h!] 
-    \caption[Desired involvement of government]{Desired involvement of government (from 1 to 5). (Question \ref{q:involvement_govt})}\label{fig:involvement_govt}
+    \cprotect\caption[Desired involvement of government]{Desired involvement of government (from 1 to 5). (\verb|involvement_govt|; Question \ref{q:involvement_govt})}\label{fig:involvement_govt}
     \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/involvement_govt.pdf}} 
 \end{figure}
 
 \begin{figure}[h!] 
-    \caption[Political leaning]{Political leaning on economics (from 1: Left to 5: Right). (Question \ref{q:left_right})}\label{fig:left_right}
+    \cprotect\caption[Political leaning]{Political leaning on economics (from 1: Left to 5: Right). (\verb|left_right|; Question \ref{q:left_right})}\label{fig:left_right}
     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/left_right.pdf}} 
 \end{figure}
 
 \begin{figure}[h!] 
-    \caption[Voted in last election]{Voted in last election. (Question \ref{q:vote_participation})}\label{fig:vote_participation}
+    \cprotect\caption[Voted in last election]{Voted in last election. (\verb|vote_participation|; Question \ref{q:vote_participation})}\label{fig:vote_participation}
     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/vote_participation.pdf}} 
 \end{figure}
 
 \begin{figure}[h!] 
-    \caption[Vote in last election]{Vote in last election (aggregated). \textit{PNR} includes people who did not vote or prefer not to answer. (Question \ref{q:vote})}\label{fig:vote}
+    \cprotect\caption[Vote in last election]{Vote in last election (aggregated). \textit{PNR} includes people who did not vote or prefer not to answer. (\verb|vote|; Question \ref{q:vote})}\label{fig:vote}
     \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{../figures/country_comparison/vote.pdf}} 
 \end{figure}
 
 \begin{figure}[h!] 
-    \caption[Perception that survey was biased]{Perception that survey was biased. \\ ``Do you feel that this survey was politically biased?'' (Question \ref{q:survey_biased})}\label{fig:survey_biased}
+    \cprotect\caption[Perception that survey was biased]{Perception that survey was biased. \\ ``Do you feel that this survey was politically biased?'' (\verb|survey_biased|; Question \ref{q:survey_biased})}\label{fig:survey_biased}
     \makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/country_comparison/survey_biased.pdf}} 
 \end{figure}
 
@@ -318,22 +319,22 @@ Country-specific raw results are also available as supplementary material files:
 % \begin{column}{.5\textwidth}
 % \begin{multicols}{2}
     \begin{figure}[h!]
-        \caption[Classification of open-ended field on extreme poverty]{Opinion on the fight against extreme poverty. \\ ``According to you, what should high-income countries do to fight extreme poverty in low-income countries?'' (Question \ref{q:poverty_field})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
+        \cprotect\caption[Classification of open-ended field on extreme poverty]{Opinion on the fight against extreme poverty. \\ ``According to you, what should high-income countries do to fight extreme poverty in low-income countries?'' (\verb|poverty_field|; Question \ref{q:poverty_field})  %\hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})
         }\label{fig:poverty_field}
     \begin{subfigure}{.34\textwidth}
-        \caption{Elements found in the open-ended field on the question (manually recoded, in percent)}.
+        \cprotect\caption{Elements found in the open-ended field on the question (manually recoded, in percent)}.
         \includegraphics[width=\textwidth]{../figures/country_comparison/poverty_field_positive.pdf}        
     \end{subfigure}
     \hspace{.02\textwidth}
     \begin{subfigure}{.64\textwidth}
-        \caption{Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent).}
+        \cprotect\caption{Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent).}
         \includegraphics[width=\textwidth]{../figures/country_comparison/poverty_field_contains_positive.pdf}    
     \end{subfigure}
     \end{figure}
 % \end{column}
 % \begin{column}{.5\textwidth}
     % \begin{figure}[h!]
-    %     \caption[Topics of open-ended field on extreme poverty]{Opinion on the fight against extreme poverty. \\ ``According to you, what should high-income countries do to fight extreme poverty in low-income countries?'' \\ Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent). (Question \ref{q:poverty_field})}\label{fig:poverty_field_contains}
+    %     \cprotect\caption[Topics of open-ended field on extreme poverty]{Opinion on the fight against extreme poverty. \\ ``According to you, what should high-income countries do to fight extreme poverty in low-income countries?'' \\ Keywords found in the open-ended field on the GCS (automatic search ignoring case, in percent). (Question \ref{q:poverty_field})}\label{fig:poverty_field_contains}
     %     \makebox[\textwidth][c]{\includegraphics[width=\columnwidth]{../figures/country_comparison/poverty_field_contains_positive.pdf}} 
     % \end{figure}
 % \end{multicols}
@@ -342,23 +343,23 @@ Country-specific raw results are also available as supplementary material files:
 
 
 \begin{figure}[h!] 
-    \caption[Main attitudes by vote]{Main attitudes by vote (``Right'' spans from Center-right to Far right). \\ (Relative support in percent in Questions \ref{q:gcs_support}, \ref{q:global_tax}, \ref{q:other_policies}, \ref{q:foreign_aid_raise_support}, \ref{q:negotiation}) %\hfill (Back~to~Section~\ref{subsec:universalistic})
+    \cprotect\caption[Main attitudes by vote]{Main attitudes by vote (``Right'' spans from Center-right to Far right). \\ (\verb|main_all_by_vote_share|; Relative support in percent in Questions \ref{q:gcs_support}, \ref{q:global_tax}, \ref{q:other_policies}, \ref{q:foreign_aid_raise_support}, \ref{q:negotiation}) %\hfill (Back~to~Section~\ref{subsec:universalistic})
     }\label{fig:main_by_vote}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/main_all_by_vote_share.pdf}} 
 \end{figure}
 
 % \begin{figure}[h!] 
-%     \caption[Interested to be interviewed]{Interested to be interviewed by a researcher for 30 min through videoconference. (Question \ref{q:interview})}\label{fig:interview}
+%     \cprotect\caption[Interested to be interviewed]{Interested to be interviewed by a researcher for 30 min through videoconference. (Question \ref{q:interview})}\label{fig:interview}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/interview.pdf}} 
 % \end{figure}    
 
 % \begin{figure}[h!]
-%     \caption{label}\label{fig:share_policies_supported}
+%     \cprotect\caption{label}\label{fig:share_policies_supported}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/share_policies_supported.pdf}} 
 % \end{figure} % TODO? uncomment?
 
 % \begin{figure}[h!]
-%     \caption{label}\label{fig:vars}
+%     \cprotect\caption{label}\label{fig:vars}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/vars.pdf}} 
 % \end{figure}
 
@@ -411,7 +412,7 @@ This would finance infrastructure and public services such as access to drinking
 % survey}\label{app:questionnaire_US1}
 
 % \begin{figure}[h!]
-%     \caption{US1 survey structure}\label{fig:flow_US1}
+%     \cprotect\caption{US1 survey structure}\label{fig:flow_US1}
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../questionnaire/survey_flow_US1.pdf}} 
 % \end{figure}
 
@@ -439,12 +440,12 @@ For the record, Table \ref{tab:gain_gcs.tex} also provides an estimate of \texti
 Estimates of the net gains from the Global Climate Scheme are necessarily imprecise, given the uncertainties surrounding the carbon price required to achieve emissions reductions as well as each country's trajectory in terms of emissions and population. These values are highly dependent on future (non-price) climate policies, technical progress, and economic growth of each country, which are only partially known. Integrated Assessment Models have been used to derive a Global Energy Assessment \citeRp{johansson_global_2012}, a 100\% renewable scenario \citeRp{greenpeace_energy_2015} as well as Shared Socioeconomic Pathways (SSPs), which include consistent trajectories of population, emissions, and carbon price \citeRt{bauer_shared_2017}, \citeRt{fricko_marker_2017}, \citeRt{riahi_shared_2017}, \citeRt{van_vuuren_energy_2017}. Instead of using some of these modelling trajectories, we relied on a simple and transparent formula, for a number of reasons. First and foremost, those trajectories describe territorial emissions while we need consumption-based emissions to compute the incidence of the GCS. Second, the carbon price is relatively low in trajectories of SSPs that contain global warming below 2\textdegree{}C (less than \$35/tCO$_\text{2}$ in 2030), so we conservatively chose a method yielding a higher carbon price (\$90 in 2030). Third, modelling results are available only for a few macro regions, while we wanted country by country estimates. Finally, we have checked that the emissions per capita given by our method are broadly in line with alternative methods, even if it tends to overestimate net gains in countries which will decarbonize less rapidly than average.\footnote{Computations with alternative methods can be found on \href{https://github.com/bixiou/international_attitudes_toward_global_policies/blob/main/code_global/map_GCS_incidence.R}{our public repository}.} For example, although countries' decarbonization plans should realign with the GCS in place, India might still decarbonize less quickly than the European Union, so India's gain and the EU's loss might be overestimated in our computations. For a more sophisticated version of the Global Climate Scheme which includes participation mechanisms preventing middle-income countries (like China) to lose from it and estimations of the Net Present Value by country, see \citeRt{fabre_global_2023}.  %\hfill (Back~to~Section~\ref{box:GCS})
 
 \begin{figure}[h!]
-    \caption{Net gains from the Global Climate Scheme.}\label{fig:median_gain_2015}
+    \cprotect\caption[Net gains from the Global Climate Scheme]{Net gains from the Global Climate Scheme (\verb|maps/median_gain_2015|).}\label{fig:median_gain_2015}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/maps/median_gain_2015.pdf}} 
 \end{figure}
 
 % \begin{table}[h]\label{tab:gain_gcs}
-%     \caption{Net gains from the Global Climate Scheme.} 
+%     \cprotect\caption{Net gains from the Global Climate Scheme.} 
 %     \makebox[\textwidth][c]{
         % \resizebox*{!}{.7\textheight}{
 \clearpage
@@ -472,7 +473,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
 \section{Determinants of support}\label{app:determinants}
 
 \begin{table}[h]\label{tab:gcs_determinant}
-    \caption[Determinants of support for the GCS]{Determinants of support for the Global Climate Scheme. %(Back to \ref{subsec:gcs_stated_support})
+    \cprotect\caption[Determinants of support for the GCS]{Determinants of support for the Global Climate Scheme. %(Back to \ref{subsec:gcs_stated_support})
     } 
     \makebox[\textwidth][c]{
 \resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
@@ -484,7 +485,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
 \end{table}
 
 \begin{table}[h]\label{tab:gcs_support_understood}
-    \caption[Support for the GCS regressed on comprehension]{Support for the GCS regressed on comprehension of its financial effects.} 
+    \cprotect\caption[Support for the GCS regressed on comprehension]{Support for the GCS regressed on comprehension of its financial effects.} 
     \makebox[\textwidth][c]{
 % \resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
         \input{../tables/country_comparison/gcs_support_understood.tex}
@@ -495,7 +496,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
 \end{table}
 
 \begin{table}[h]\label{tab:tax_determinant_hi}
-    \caption[Beliefs correlated with support for a global GHG tax and dividend (HICs)]{Correlation between (\textit{Somewhat} or \textit{Strong}) \textit{support for a global tax on GHG financing a global basic income} (Question \ref{q:global_tax_dividend}) and beliefs in high-income countries.}\vspace{.5cm}
+    \cprotect\caption[Beliefs correlated with support for a global GHG tax and dividend (HICs)]{Correlation between (\textit{Somewhat} or \textit{Strong}) \textit{support for a global tax on GHG financing a global basic income} (Question \ref{q:global_tax_dividend}) and beliefs in high-income countries.}\vspace{.5cm}
     \makebox[\textwidth][c]{
         \scalebox{0.5}{
         \input{"../tables/global_tax_support_pos_AtC_keepC_hi"}
@@ -505,7 +506,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
 \end{table}
 
 \begin{table}[h]\label{tab:tax_determinant_mi}
-    \caption[Beliefs correlated with support for a global GHG tax and dividend (MICs)]{Correlation between (\textit{Somewhat} or \textit{Strong}) \textit{support for a global tax on GHG financing a global basic income} (Question \ref{q:global_tax_dividend}) and beliefs in middle-income countries.}\vspace{.5cm}
+    \cprotect\caption[Beliefs correlated with support for a global GHG tax and dividend (MICs)]{Correlation between (\textit{Somewhat} or \textit{Strong}) \textit{support for a global tax on GHG financing a global basic income} (Question \ref{q:global_tax_dividend}) and beliefs in middle-income countries.}\vspace{.5cm}
     \makebox[\textwidth][c]{
         \scalebox{0.5}{
         \input{"../tables/global_tax_support_pos_AtC_keepC_mi"}
@@ -519,7 +520,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
 
 
 \begin{table}[h!]
-    \caption[Sample representativeness of \textit{US1}, \textit{US2}, \textit{Eu}]{Sample representativeness of the Western surveys. %(Back to \ref{subsec:data}) 
+    \cprotect\caption[Sample representativeness of \textit{US1}, \textit{US2}, \textit{Eu}]{Sample representativeness of the Western surveys. %(Back to \ref{subsec:data}) 
     } \label{tab:representativeness_waves}
     \makebox[\textwidth][c]{
         \resizebox*{!}{.80\textheight}{% 73 without notes cf. https://tex.stackexchange.com/questions/13809/resizing-a-table-by-textheight 
@@ -533,7 +534,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
 \end{table}
 
 \begin{table}[h]
-    \caption[Sample representativeness of each European country]{Sample representativeness for each European country. %(Back to \ref{subsec:data})
+    \cprotect\caption[Sample representativeness of each European country]{Sample representativeness for each European country. %(Back to \ref{subsec:data})
     } \label{tab:representativeness_EU}
     \makebox[\textwidth][c]{
         \resizebox*{!}{.50\textheight}{% 73 without notes cf. https://tex.stackexchange.com/questions/13809/resizing-a-table-by-textheight 
@@ -553,7 +554,7 @@ Similar tables for the global surveys can be found in \citeRt{dechezlepretre_fig
 \section{Attrition analysis}\label{app:attrition}
 
 \begin{table}[h]\label{tab:attrition_US1}
-    \caption[Attrition analysis: \textit{US1}]{Attrition analysis for the \textit{US1} survey.} 
+    \cprotect\caption[Attrition analysis: \textit{US1}]{Attrition analysis for the \textit{US1} survey.} 
     \makebox[\textwidth][c]{
 \resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
         \input{../tables/US1/attrition_analysis_vote.tex}
@@ -564,7 +565,7 @@ Similar tables for the global surveys can be found in \citeRt{dechezlepretre_fig
 \end{table}
 
 \begin{table}[h]\label{tab:attrition_US2}
-    \caption[Attrition analysis: \textit{US2}]{Attrition analysis for the \textit{US2} survey.} 
+    \cprotect\caption[Attrition analysis: \textit{US2}]{Attrition analysis for the \textit{US2} survey.} 
     \makebox[\textwidth][c]{
 \resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
         \input{../tables/US2/attrition_analysis_vote.tex}
@@ -575,7 +576,7 @@ Similar tables for the global surveys can be found in \citeRt{dechezlepretre_fig
 \end{table}
 
 \begin{table}[h]\label{tab:attrition_EU}
-    \caption[Attrition analysis: \textit{Eu}]{Attrition analysis for the \textit{Eu} survey.} 
+    \cprotect\caption[Attrition analysis: \textit{Eu}]{Attrition analysis for the \textit{Eu} survey.} 
     \makebox[\textwidth][c]{
 \resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
         \input{../tables/EU/attrition_analysis_vote.tex}
@@ -589,7 +590,7 @@ Similar tables for the global surveys can be found in \citeRt{dechezlepretre_fig
 \section{Balance analysis}\label{app:balance}
 
 \begin{table}[h]\label{tab:balance}
-    \caption[Balance analysis]{Balance analysis.} 
+    \cprotect\caption[Balance analysis]{Balance analysis.} 
     \makebox[\textwidth][c]{
 \resizebox*{!}{.72\textheight}{ % 73 is the max when there is a title
         \input{../tables/balance_analysis.tex}
@@ -603,7 +604,7 @@ Similar tables for the global surveys can be found in \citeRt{dechezlepretre_fig
 \section{Placebo tests}\label{app:placebo}
 
 \begin{table}[h]\label{tab:placebo}
-    \caption[Placebo tests]{Placebo tests.} 
+    \cprotect\caption[Placebo tests]{Placebo tests.} 
     \makebox[\textwidth][c]{
 % \resizebox*{!}{.73\textheight}{ % 73 is the max when there is a title
         \input{../tables/placebo_tests.tex}
@@ -618,19 +619,19 @@ Similar tables for the global surveys can be found in \citeRt{dechezlepretre_fig
 As a robustness check, we reproduce our main results on the extended sample that includes the 14\% respondents who failed the attention check or rushed through the survey ($n = 9,318$). These results are non-weighted. They closely match the results in our main specification. For example, the support for the GCS is 54\% in the U.S. and 75\% in Europe, while the same coefficients are significant for the list experiment. % and the conjoint analyses. 
 
 \begin{figure}[h!] 
-    \caption[(Extended sample) Main attitudes]{[Extended sample] Main attitudes. \\ (Relative support ---unless *--- in percent in Questions \ref{q:gcs_support}, \ref{q:global_tax}, \ref{q:other_policies}, \ref{q:foreign_aid_raise_support}, \ref{q:negotiation}) %\hfill (Back~to~Section~\ref{subsec:universalistic})
+    \cprotect\caption[(Extended sample) Main attitudes]{[Extended sample] Main attitudes. \\ (\verb|main_alla_share|; Relative support ---unless *--- in percent in Questions \ref{q:gcs_support}, \ref{q:global_tax}, \ref{q:other_policies}, \ref{q:foreign_aid_raise_support}, \ref{q:negotiation}) %\hfill (Back~to~Section~\ref{subsec:universalistic})
     }\label{fig:main_by_vote_alla}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/main_alla_share.pdf}} 
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[(Extended sample) Influence of the GCS on preferred platform]{[Extended sample] Influence of the GCS on preferred platform:\\ Preference for a random platform A that contains the Global Climate Scheme rather than a platform B that does not (in percent). (Question \ref{q:conjoint_d}; in the U.S., asked only to non-Republicans.)}\label{fig:conjoint_left_ag_b_alla}
+    \cprotect\caption[(Extended sample) Influence of the GCS on preferred platform]{[Extended sample] Influence of the GCS on preferred platform:\\ Preference for a random platform A that contains the Global Climate Scheme rather than a platform B that does not (in percent). (\verb|conjoint_left_ag_b_binary_alla_positive|; Question \ref{q:conjoint_d}; in the U.S., asked only to non-Republicans.)}\label{fig:conjoint_left_ag_b_alla}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/conjoint_left_ag_b_binary_alla_positive.pdf}} 
 \end{figure}
 
   
 \begin{table}[h]
-  \caption[(Extended sample) List experiment: tacit support for the GCS]{[Extended sample] Number of supported policies in the list experiment depending on the presence of the Global Climate Scheme (GCS) in the list. 
+  \cprotect\caption[(Extended sample) List experiment: tacit support for the GCS]{[Extended sample] Number of supported policies in the list experiment depending on the presence of the Global Climate Scheme (GCS) in the list. 
    The tacit support for the GCS is estimated by regressing the number of supported policies on the presence of the GCS in the list of policies. The social desirability is estimated as the difference between the tacit and stated support, and it is not significantly different from zero even at a 20\% threshold. % (see \nameref{sec:methods}).
   }\label{tab:list_exp_alla}
   \makebox[\textwidth][c]{\input{../tables/continents/reg_list_exp_g_alla.tex}
@@ -639,7 +640,7 @@ As a robustness check, we reproduce our main results on the extended sample that
 
 
 \begin{table}[h]
-    \caption[(Extended sample) Influence of the GCS on electoral prospects]{[Extended sample] Preference for a progressive platform depending on whether it includes the GCS or not. (Question \ref{q:conjoint_c}) 
+    \cprotect\caption[(Extended sample) Influence of the GCS on electoral prospects]{[Extended sample] Preference for a progressive platform depending on whether it includes the GCS or not. (Question \ref{q:conjoint_c}) 
   } 
     \makebox[\textwidth][c]{\input{../tables/country_comparison/conjoint_c_wo_none_alla.tex}}\label{tab:_alla}
     {\footnotesize \textit{Note:} Simple OLS model. \textit{None of them} answers have been excluded from the regression samples. $^{*}p<0.1$; $^{**} p<0.05$; $^{***} p<0.01$. 
@@ -652,7 +653,7 @@ As a robustness check, we reproduce our main results on the extended sample that
 When comparing the samples \textit{US1} and \textit{US2}, we observe no effect of questionnaire framing (or block sequence) on the question ``What group do you defend when you vote?'', common to all waves and placed close to the end of the questionnaire (Table \ref{tab:ordering_us}).
 
 \begin{table}[h]
-    \caption[Effect of the wave on group defend when voting]{Effect of the wave (\textit{US1} vs. \textit{US2}) on the group defend when voting. \\ ``What group do you defend when you vote?'' (Question \ref{q:group_defended}) 
+    \cprotect\caption[Effect of the wave on group defend when voting]{Effect of the wave (\textit{US1} vs. \textit{US2}) on the group defend when voting. \\ ``What group do you defend when you vote?'' (Question \ref{q:group_defended}) 
   } 
     \makebox[\textwidth][c]{\input{../tables/ordering_us.tex}}\label{tab:ordering_us}
     {\footnotesize \textit{Note:} Simple OLS model. $^{*}p<0.1$; $^{**} p<0.05$; $^{***} p<0.01$. 

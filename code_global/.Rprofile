@@ -1411,6 +1411,11 @@ save_plot <- function(plot=NULL, filename = deparse(substitute(plot)), folder = 
         dev.copy(svg, filename = file, width = width/100, height = height/100) # save plot from R (not plotly)
         dev.off() } # TODO choose width height with PDF
       else if (format == 'pdf') dev.print(pdf, file = file) # because dev.size('px')[1]/dev.size('in')[1] = 105 , width = width/105, height = height/105
+      else if (format == 'eps') {
+        setEPS()
+        postscript('../figures/FR/ca_r_en.eps')
+        dev.off()
+      }
     }
     else {
       server <- orca_serve() # doesn't work within a function because requires admin rights
