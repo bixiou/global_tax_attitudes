@@ -1,0 +1,326 @@
+\documentclass[12pt,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella} % Palatino text only
+\usepackage{mathpazo}  % Palatino math & text
+\usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
+% \linespread{1.5}
+\usepackage[super,compress]{natbib} % WPcomment
+\usepackage{bibunits} % To get multiple bibliography
+% \usepackage[round,sort&compress]{natbib} % NCCcomment
+\usepackage{url} % [hyphens]
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation. 
+\usepackage[pagebackref]{hyperref} 
+\usepackage{cprotect} % \verb|| in captions
+
+% Lines below required to make pagebackref compatible with bibunits
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\Hy@backout{\@auxout}{\@mainaux}{}{\fail}
+\patchcmd\Hy@backout{\@auxout}{\@mainaux}{}{\fail} %yes twice the same line
+\makeatother
+
+% \usepackage{hyperref}
+% \usepackage{multibib} % incompatible with backref
+\hypersetup{
+  colorlinks=true, % breaklinks=true,
+  urlcolor=purple,    % color of external links
+  linkcolor=blue,  % color of toc, list of figs etc.
+  citecolor=violet,   % color of links to bibliography
+}
+\usepackage{bm}
+\usepackage{indentfirst}
+\usepackage{tocbibind}
+\setcitestyle{aysep={}} 
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsfonts}
+% \usepackage{fontspec}
+\usepackage{enumerate}
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{supertabular}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{gensymb}
+\usepackage{textcomp}
+
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{fullpage}
+\usepackage{morefloats}
+\usepackage{makecell}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage{titletoc}
+\usepackage[export]{adjustbox}
+\usepackage[anythingbreaks]{breakurl} % for links
+\usepackage{multicol}
+\usepackage{lineno}
+\linenumbers
+\newsavebox\ltmcbox % For net gain table over two columns
+%\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
+%\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
+\renewcommand{\floatpagefraction}{.99}
+\newenvironment{stretchpars}{\par\setlength{\parfillskip}{0pt}}{\par} % to justify a line
+
+\newcommand\citeR[1]{\citeauthor{#1} (\citeyear{#1})}
+\newcommand\citeRt[1]{\citeauthor{#1} (\citeyear{#1})}
+\newcommand\citeRp[1]{(\citeauthor{#1} \citeyear{#1})}
+\newcommand\citeRalp[1]{\citeauthor{#1} \citeyear{#1}}
+\defaultbibliographystyle{unsrtnat}
+\defaultbibliography{global_tax_attitudes}
+
+% % Getting landscape page and page number/footer on bottom of page (instead of to the left)
+% \fancypagestyle{mylandscape}{
+% \fancyhf{} %Clears the header/footer
+% \fancyfoot{% Footer
+% \makebox[\textwidth][r]{% Right
+%   \rlap{\hspace{1.5cm}% Push out of margin by \footskip
+%     \smash{% Remove vertical height
+%       \raisebox{13.6cm}{% Raise vertically
+%         \rotatebox{90}{\thepage}}}}}}% Rotate counter-clockwise
+% \renewcommand{\headrulewidth}{0pt}% No header rule
+% \renewcommand{\footrulewidth}{0pt}% No footer rule
+% }
+
+% \fancypagestyle{page_left}{%
+% 	\renewcommand{\headrulewidth}{0pt}
+%   \fancyhf{}
+%   \fancyfoot[OC]{%
+%       \begin{tikzpicture}[remember picture,overlay]
+%           \node[xshift=1cm] (number) at (current page.west) {\thepage};
+%       \end{tikzpicture}
+%   }%
+% }
+% \renewcommand{\thesubfigure}{\Alph{subfigure}}
+
+% \newcites{App}{Appendix References}
+
+% \cprotect\captionsetup[table]{skip=-10pt}
+% \begin{document}
+
+% \maketitle
+
+% \clearpage
+% % \startcontents
+% % \printcontents{ }{1}{\section{\contentsname}}
+% % \clearpage
+% \section{Introduction\label{sec:intro}}
+
+% % \clearpage
+% \renewcommand{\bibsection}{\section{\refname}}
+% \bibliographystyle{naturemag}
+% \bibliography{global_tax_attitudes}
+% % \stopcontents
+
+% \end{document}
+
+
+\title{Majority support for global redistributive and climate policies
+  %International Majorities Genuinely Support\\Global Redistributive and Climate Policies
+\\\textbf{Supplementary Information}}
+%International Attitudes Toward Global Policies %\\ Addressing Climate Change and Inequality 
+% Global redistributive and climate policies are genuinely supported by majorities worldwide
+
+
+% \author{Adrien Fabre$^{1,2}$, Thomas Douenne$^3$ and Linus Mattauch$^{4,5,6}$} % WPcomment
+\author{Adrien Fabre\footnote{CNRS, CIRED. E-mail: adrien.fabre@cnrs.fr (corresponding author).}, Thomas Douenne\footnote{University of Amsterdam}\; and Linus Mattauch\footnote{Technical University Berlin, Potsdam Institute for Climate Impact Research -- Member of the Leibniz Association and University of Oxford}
+% ~~\thanks{The project is approved by Economics \& Business Ethics Committee (EBEC) at the University of Amsterdam (EB-1113) and %is approved by IRB at Harvard University (IRB21-0137), and 
+% was preregistered in the Open Science Foundation registry (\href{https://osf.io/fy6gd}{osf.io/fy6gd}). \\ We are grateful for financial support from the University of Amsterdam and TU Berlin. Mattauch also thanks the Robert Bosch Foundation. %We are grateful for financial support from the OECD, the French Ministry of Foreign Affairs, the French Conseil d’Analyse Economique and the Spanish Ministry for the Ecological Transition and Demographic Challenge. We also acknowledge support from the Grantham Foundation for the Protection of the Environment and the Economic and Social Research Council through the Centre for Climate Change Economics and Policy. 
+% We thank Antoine Dechezleprêtre, Tobias Kruse, Bluebery Planterose, Ana Sanchez Chico, and Stefanie Stantcheva for their invaluable inputs for the project. We thank Auriane Meilland for feedback. %We further thank Jakob Niemann, Laura Schepp, Martín Fernández-Sánchez, Samuel Gervais, Samuel Haddad, and Guadalupe Manzo for assistance. Fabre declares that he also serves as president of Global Redistribution Advocates. % TODO! put back
+% }
+} % NCCcomment
+
+\date{\today} % NCCcomment
+
+\begin{document}
+
+% \maketitle
+
+\sloppy
+\tableofcontents
+
+\onehalfspacing % NCCcomment
+
+\begin{bibunit}[plainnaturl_clean]
+% \clearpage
+% \section{Raw results% from the complementary surveys
+% }\label{app:raw_results}
+\section*{Main text figures and tables}\label{app:main_text_figures_tables}
+
+For each figure, the captions refer to the figure's \verb|filename| and to the questionnaire's question. The figures' folders are \verb|figures/country_comparison| (for PDFs) and \verb|xlsx/country_comparison| (for data tables), except when the filename contains a folder name (which then replaces \verb|country_comparison|). The repository (for code, data, and figures) is \href{https://github.com/bixiou/international_attitudes_toward_global_policies}{github.com/bixiou/international\_attitudes\_toward\_global\_policies}.
+
+\begin{figure}[h!]
+    \cprotect\caption[Western surveys' structure]{Structure of Western survey, cf. also Figure \ref{fig:flow_combined} for the treatment branches (\verb|questionnaire/survey_flow-simple|).}\label{fig:flow_simple}
+    \makebox[\textwidth][c]{\includegraphics[width=.58\textwidth]{../questionnaire/survey_flow-simple.pdf}} 
+\end{figure}
+
+\begin{figure}[h!]
+    % MAJOR figure
+    \cprotect\caption[Relative support for global climate policies]{Relative Support for global climate policies\\ (\verb|OECD/Heatplot_global_tax_attitudes_share|).} 
+    \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]
+    {../figures/OECD/Heatplot_global_tax_attitudes_share.pdf}}\label{fig:oecd} % with dependence on others (absent from OECD): Heatplot_burden_share_all_share_countries
+    {\footnotesize \\ $\quad$ \\ Note 1: The numbers represent \textit{relative} support, i.e. the share of \textit{Somewhat} or \textit{Strongly support} among non-\textit{indifferent} answers (in percent, $n$ = 40,680). Shares of indifferent answers range from 11\% to 48\%, with quartiles 20\%, 27\%, and 33\%. The color blue denotes a relative majority. See Figure \ref{fig:oecd_absolute} for the absolute support. (Questions \ref{q:scale}-\ref{q:millionaire_tax}% Reproduced from \citealp{dechezlepretre_fighting_nodate}, Figure A21.
+  ). \\ Note 2: *In Denmark, France and the U.S., the questions with an asterisk were asked differently, cf. Question \ref{q:burden_sharing_asterisk}. } 
+\end{figure}
+
+
+\begin{table}[h]
+  % MAJOR figure % TODO! same table for NR in appendix
+  % TODO table by country
+  \caption[List experiment: tacit support for the GCS]{Number of supported policies in the list experiment depending on the presence of the Global Climate Scheme (GCS) in the list. %in function of the composition of the list. GCS stands for the Global Climate Scheme and NR for the National Redistribution Scheme.} % Beware, this question is quite unusual. \\ Among the policies below, how many do you support?  \\ Coal exit, Marriage only for opposite-sex couples 
+   The tacit support for the GCS is estimated by regressing the number of supported policies on the presence of the GCS in the list of policies. The social desirability is estimated as the difference between the tacit and stated support (see Methods), and it is not significantly different from zero even at a 20\% threshold (as shown by the 80\% Confidence Interval).
+  }\label{tab:list_exp}
+  \makebox[\textwidth][c]{\input{../tables/continents/reg_list_exp_g.tex}
+  }  
+  % {\footnotesize \textit{Note:} $^{*}p<0.1$; $^{**} p<0.05$; $^{***} p<0.01$.}
+\end{table}
+
+\begin{table}[h]
+  % MAJOR figure
+  \cprotect\caption[Influence of the GCS on electoral prospects]{Preference for a progressive platform depending on whether it includes the GCS or not. (Question \ref{q:conjoint_c}) 
+  %Imagine if the [Democratic and Republican presidential candidates in 2024] campaigned with the following policies in their platforms. [Credible Progressive and Conservative platforms] \\ % TODO See More
+% Which of these candidates would you vote for? \textit{A; B; None of them} \\
+% ~[FR: second round of presidential; DE, ES, UK: two favorite candidates in one's constituency]
+} % Beware, this question is quite unusual. \\ Among the policies below, how many do you support?  \\ Coal exit, Marriage only for opposite-sex couples 
+  \makebox[\textwidth][c]{\input{../tables/country_comparison/conjoint_c_wo_none_stats_ci.tex}}\label{tab:conjoint_c}
+  {\footnotesize \textit{Note:} Simple OLS model with robust standard errors (HC1). %P-values are reported in parentheses. 
+  The 14\% of \textit{None of them} answers have been excluded from the regression samples. GCS has no significant influence on them. $^{*}p<0.1$; $^{**} p<0.05$; $^{***} p<0.01$. 
+  }
+\end{table}
+
+\begin{figure}[h!]
+    % MAJOR figure
+    \cprotect\caption[Relative support for other global policies]{Relative support for various global policies. (percentage of \textit{somewhat} or \textit{strong support}, after excluding \textit{indifferent} answers; *except for GCS: percentage of \textit{Yes} in a \textit{Yes}/\textit{No} question, preferred share: percentage of answers $\geq$30\%, and foreign aid: percentage of unconditional or conditional increase rather than decrease or stable aid). Shares of indifferent answers range from 10\% to 40\%, with quartiles 19\%, 25\%, and 32\%. (\verb|support_likert_all_share|; p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:global_tax_global_share}, \ref{q:climate_policies}, \ref{q:other_policies}, and \ref{q:foreign_aid_raise_support}; See Figure \ref{fig:support_likert_positive} for the absolute support.)% $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749, n_\text{US, global/national wealth tax} = 2,000$
+    }
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/support_likert_all_share.pdf}}\label{fig:support}
+\end{figure} 
+
+\renewcommand{\thetable}{ED\arabic{table}}
+\renewcommand{\thefigure}{ED\arabic{figure}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+
+\begin{table}[h]
+    \cprotect\caption[Campaign and bandwagon effects on the support for the GCS.]{Effects on the support for the GCS of a question on its pros and cons (either in open-ended of closed format) and on information about the actual support, in the U.S. (See Section \ref{subsec:questionnaire_perceptions} in the \textit{US2} Questionnaire)  %\hfill (Back~to~Section~\ref{subsubsec:pros_cons})
+    } \label{tab:branch_gcs}
+    \makebox[\textwidth][c]{
+        \input{../tables/US2/branch_gcs_ci.tex}
+    }
+    {\footnotesize %\textit{Note}: 
+    }
+  \end{table}
+  
+  \begin{table}[h]
+    \cprotect\caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality. (Question \ref{q:donation})%\hfill (Back~to~Section~\ref{subsec:universalistic})
+    } \label{tab:donation}
+    \makebox[\textwidth][c]{\input{../tables/continents/donation_interaction_ci.tex}}
+  \end{table}
+  
+  \input{../tables/amce.tex}
+  
+  % \begin{figure}[h!]
+  %     \cprotect\caption[Support for the Global Climate Scheme]{[For Supplementary Material] Support for the GCS, NR and the combination of GCS, NR and C (\textit{Yes}/\textit{No} questions). \\(p. \pageref{subsec:questionnaire_GCS}, Questions \ref{q:gcs_support}, \ref{q:nr_support}, \ref{q:global_tax}, \ref{q:national_tax}, and \ref{q:crg_support}).%; $n_\text{US} = n_\text{Eu} = 3,000,\, n_\text{FR} = 729,\, n_\text{DE} = 929,\, n_\text{ES} = 543,\, n_\text{UK} = 749$)
+  %     }\label{fig:support_binary}
+  %     \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/support_binary_positive.pdf}} 
+  % \end{figure}
+  
+  % TODO?: add note to the figure above, to explain what is the national climate policy.
+   
+  \begin{figure}[h] 
+    \cprotect\caption[Preferences for various policies in political platforms]{Effects of the presence of a policy (rather than none from this domain) in a random platform on the likelihood that it is preferred to another random platform. (See non-translated versions in Figure \ref{fig:ca_r_en}; \verb|[country]/ca_r|; Question \ref{q:conjoint_r}%; in the U.S., asked only to non-Republicans.
+    )}\label{fig:ca_r}
+    \begin{subfigure}{\textwidth}
+      \subcaption{U.S. (Asked only to non-Republicans)}
+      \includegraphics[width=\textwidth]{../figures/US1/ca_r.png}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+      \subcaption{France}
+      \includegraphics[width=\textwidth]{../figures/FR/ca_r_en.png}
+    \end{subfigure}
+  \end{figure}%
+  \clearpage
+  \begin{figure}[h!]\ContinuedFloat % if bugs try b! instead of h!
+    \begin{subfigure}{\textwidth}
+      \subcaption{Germany}
+      \includegraphics[width=\textwidth]{../figures/DE/ca_r_en.png}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+      \subcaption{Spain}
+      \includegraphics[width=\textwidth]{../figures/ES/ca_r_en.png}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+      \subcaption{UK}
+      \includegraphics[width=\textwidth]{../figures/UK/ca_r.png}
+    \end{subfigure}
+    %\makebox[\textwidth][c]{} 
+  \end{figure}
+  
+  \begin{figure}[h!]
+    \cprotect\caption[Influence of the GCS on preferred platform]{Influence of the GCS on preferred platform:\\ Preference for a random platform A that contains the Global Climate Scheme rather than a platform B that does not (in percent). (\verb|conjoint_left_ag_b_binary_positive|; Question \ref{q:conjoint_d}; in the U.S., asked only to non-Republicans.)}\label{fig:conjoint_left_ag_b}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/conjoint_left_ag_b_binary_positive.pdf}} 
+  \end{figure}
+  
+  \begin{figure}[h!]
+    \cprotect\caption[Beliefs about support for the GCS and NR]{Beliefs regarding the support for the GCS and NR. (\verb|belief_all_mean|; Questions \ref{q:gcs_belief} and \ref{q:nr_belief})}\label{fig:belief}
+    \makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/country_comparison/belief_all_mean.pdf}} 
+  \end{figure}
+  
+  \begin{figure}
+    \centering 
+    \cprotect\caption[Preferred share of wealth tax for low-income countries]{Percent of global wealth tax that should finance low-income countries (\textit{mean}). \\ ``Imagine a wealth tax on households with net worth above [\$]5 million, enacted in all countries around the world.  
+    (\dots)  \\
+    What percentage should be pooled to finance low-income countries (instead of retained in the country's national budget)?'' (\verb|global_tax_global_share_mean|; Question \ref{q:global_tax_global_share})} % TODO? n
+    \includegraphics[width=1\textwidth]{../figures/country_comparison/global_tax_global_share_mean.pdf} \label{fig:global_share_mean}
+  \end{figure}
+  
+  \begin{figure}[h!]
+    \cprotect\caption[Attitudes on the evolution of foreign aid]{Attitudes regarding the evolution of [own country] foreign aid. (\verb|foreign_aid_raise_support|; Question \ref{q:foreign_aid_raise_support})}\label{fig:foreign_aid_raise_support}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_raise_support.pdf}} 
+  \end{figure}
+  
+  \begin{figure}[h!]
+    \cprotect\caption[Conditions at which foreign aid should be increased]{Conditions at which foreign aid should be increased (in percent). [Asked to those who wish an increase of foreign aid at some conditions.] (\verb|foreign_aid_condition_positive|; Question \ref{q:foreign_aid_condition})}\label{fig:foreign_aid_condition}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_condition_positive.pdf}} 
+  \end{figure}
+  
+  \begin{figure}[h!]
+    \cprotect\caption[Reasons why foreign aid should not be increased]{Reasons why foreign aid should not be increased (in percent). [Asked to those who wish a decrease or stability of foreign aid.] (\verb|foreign_aid_no_positive|; Question \ref{q:foreign_aid_no})}\label{fig:foreign_aid_no}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_no_positive.pdf}} 
+  \end{figure}
+
+\appendix 
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\input{literature_review_si}
+\input{app_si} 
+
+\renewcommand{\url}[1]{\href{#1}{Link}} 
+\putbib
+\end{bibunit}
+
+% \clearpage
+\listoftables
+\listoffigures
+
+\end{document}

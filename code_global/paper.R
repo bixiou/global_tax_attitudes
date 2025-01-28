@@ -50,9 +50,9 @@ fit.list_us <- ictreg(list_exp ~ 1, treat = 'branch_list_exp_g', J = 2 + wtd.mea
 fit.direct_us <- glm(as.character(gcs_support) == 'Yes' ~ 1, data = all[all$wave == "US1",], weights = weight, family = binomial("logit"))
 (avg.pred.social.desirability_us <- predict(fit.list_us, direct.glm = fit.direct_us, se.fit = TRUE, level = .8)) 
 
-same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g"), share_na_remove = 0.5,
+same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported policies", covariates = c("branch_list_exp_g"), share_na_remove = 0.5, p_instead_SE = T,
                     data = all, along = "continent", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, constant_instead_mean = T,
-                    filename = "reg_list_exp_g", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
+                    filename = "reg_list_exp_g_ci", folder = "../tables/continents/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, 
                     add_lines = list(c(11, paste("\\hline  \\\\[-1.8ex] \\textit{Support for GCS} &", round(wtd.mean(all$gcs_support[all$wave != "US2"], weights = all$weight[all$wave != "US2"]), 3), " & ", round(wtd.mean(us1$gcs_support, weights = us1$weight), 3), " & ", round(wtd.mean(eu$gcs_support, weights = eu$weight), 3), "\\\\")),
                                      c(12, paste("\\textit{Social desirability bias} & \\textit{$", round(avg.pred.social.desirability$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_us$fit[3,1], 3), "$} & \\textit{$", round(avg.pred.social.desirability_eu$fit[3,1], 3),  "$}\\\\")),
                                      c(13, paste("\\textit{80\\% C.I. for the bias} & \\textit{ $[", round(avg.pred.social.desirability$fit[3,2], 2), ";", round(avg.pred.social.desirability$fit[3,3], 2), "]$ } & \\textit{ $[", round(avg.pred.social.desirability_us$fit[3,2], 2), ";", round(avg.pred.social.desirability_us$fit[3,3], 2), "]$} & \\textit{ $[", round(avg.pred.social.desirability_eu$fit[3,2], 2), ";", round(avg.pred.social.desirability_eu$fit[3,3], 2), "]$}\\\\"))))
@@ -82,7 +82,7 @@ decrit("petition_nr", eu) # 67%
 # Table 2: tables/country_comparison/conjoint_c_wo_none_stats.tex
 same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), 
                     data = all[all$conjoint_c_none == F & all$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
-                    filename = "conjoint_c_wo_none", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+                    filename = "conjoint_c_wo_none_stats_ci", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T, report = 'vcspt', ci = T)
 
 # P-values, t, and C.I. are added manually to the table exported above
 reg_left_gcs_p_values <- "\textit{P-value}"
@@ -301,12 +301,18 @@ summary(lm(donation ~ (branch_donation=='Africa') + (vote3_factor!='Biden') + (b
 
 ##### Extended data #####
 # Table S1: tables/US2/branch_gcs.tex
-desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
-           dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, 
-           add_lines = list(c(18, "Includes controls &  & \\checkmark &  & \\checkmark \\\\")))
+desc_table(c("gcs_support", "gcs_support", "nr_support", "nr_support"), filename = "branch_gcs_ci", data = us2, indep_vars = c("branch_gcs", covariates), indep_vars_included = list("branch_gcs", c("branch_gcs", covariates), "branch_gcs", c("branch_gcs", covariates)), mean_control = T, model.numbers = T, #!mean_above,
+           dep.var.labels = c("Global Climate Scheme", "National Redistribution"), dep.var.caption = c("Support"), digits= 3, robust_SE = T, omit = c("Constant", "Race: Other"), mean_above = T, only_mean = F, keep = "branch_gcs", save_folder = "../tables/US2/", nolabel = F, ci = T,
+           add_lines = list(c(21, "Includes controls &  & \\checkmark &  & \\checkmark \\\\")), report = 'vcsp')
 
 # Figure S1: figures/country_comparison/support_binary_positive.pdf
 heatmap_multiple(heatmaps_defs[c("support_binary")]) 
+
+# Table S2: tables/continents/donation_interaction_ci.tex
+desc_table(dep_vars = "donation", filename = "donation_interaction_ci", data = list(all, us1, us1, eu), dep.var.labels = c("All", "US", "US", "Eu"), dep.var.caption = "Donation to poor people (in \\%)",
+           indep_vars = c("branch_donation", "vote_not_Biden", "branch_donation:vote_not_Biden"), model.numbers = F, multicolumn = F,  mean_above = F, ci = T, report = 'vcsp',
+           indep_vars_included = list(c(T,F,F), c(T,F,F), c(T,T,T), c(T,F,F)), weights = "weight", save_folder = "../tables/continents/", robust_SE = FALSE, omit = c("Constant", "^  Vote", "^  vote"))
+
 
 # Table S3: tables/amce.tex# Table S3: tables/amce.tex
 table_effects_amce <- matrix(NA, nrow = 15, ncol = 5, dimnames = list(paste0(countries, "; ", c(rep("Global Climate Plan", 5), rep("Global Millionaire Tax", 5), rep("Global Democratic Assembly on Climate Change", 5))), 
@@ -516,18 +522,18 @@ heatmap_wrapper(vars = heatmaps_defs$main_all$vars, data = all, labels = heatmap
 
 ##### App Determinants of support #####
 # Table S5: tables/country_comparison/gcs_support.tex
-same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "\\makecell{Supports the Global Climate Scheme}", covariates = covariates, 
+same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "\\makecell{Supports the Global Climate Scheme}", covariates = covariates, ci = T, report = 'vcsp', omit.note = T,
                     data_list = list(all, us, eu, d("DE"), d("FR"), d("UK"), d("ES")), dep_var_labels = c("All", "United States", "Europe", countries_names), 
                     data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE,
-                    filename = "gcs_support", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+                    filename = "gcs_support_ci", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
 
 # Table S6: tables/country_comparison/gcs_support_understood.tex
 same_reg_subsamples(dep.var = "gcs_support", dep.var.caption = "Supports the Global Climate Scheme", covariates = c("gcs_understood"), covariate.labels = "\\makecell{With GCS, typical\\\\~[country] people lose\\\\and poorest humans win}",
-                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
-                    filename = "gcs_support_understood", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+                    data = all, along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T, ci = T, report = 'vcsp',
+                    filename = "gcs_support_understood_ci", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
 
 # Table S7: tables/global_tax_support_pos_AtC_keepC_hi.tex, cf. code at https://doi.org/10.3886/E208254V1
-# Table S8: tables/global_tax_support_pos_AtC_keepC_mi.tex, cf. code at https://doi.org/10.3886/E208254V1
+# Table S8: tables/global_tax_support_pos_AtC_keepC_mi.tex, cf. code at https://doi.org/10.3886/E208254V1 TODO!
 
 
 ##### App Representativeness of the surveys #####
@@ -542,38 +548,38 @@ representativeness_table(countries_EU, return_table = F, all = T, weight_var = "
 ##### App Attrition analysis #####
 
 # Table S11: tables/US1/attrition_analysis_vote.tex
-desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), weights = NULL, omit = c("Constant", "Race: Other", "vote3NA"),
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), weights = NULL, omit = c("Constant"), ci = T, report = 'vcsp', # c("Constant", "Race: Other", "vote3NA")
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\4 min}"),
-           filename = "attrition_analysis_vote", save_folder = "../tables/US1/", data = c(list(us1a), list(us1a), list(us1a[us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,])), 
+           filename = "attrition_analysis_vote_ci", save_folder = "../tables/US1/", data = c(list(us1a), list(us1a), list(us1a[us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,]), list(us1a[us1a$failed_test == F & us1a$stayed == T,])), 
            indep_vars = c(quotas_us, "vote3")) 
 
 # Table S12: tables/US2/attrition_analysis_vote.tex
-desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), weights = NULL, omit = c("Constant", "Race: Other", "vote3NA"),
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 4"), weights = NULL, omit = c("Constant"), ci = T, report = 'vcsp', # c("Constant", "Race: Other", "vote3NA")
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\4 min}"),
-           filename = "attrition_analysis_vote", save_folder = "../tables/US2/", data = c(list(us2a), list(us2a), list(us2a[us2a$stayed == T,]), list(us2a[us2a$failed_test == F & us2a$stayed == T,]), list(us2a[us2a$failed_test == F & us2a$stayed == T,])), 
+           filename = "attrition_analysis_vote_ci", save_folder = "../tables/US2/", data = c(list(us2a), list(us2a), list(us2a[us2a$stayed == T,]), list(us2a[us2a$failed_test == F & us2a$stayed == T,]), list(us2a[us2a$failed_test == F & us2a$stayed == T,])), 
            indep_vars = c(quotas_us, "vote3")) 
 
 # Table S13: tables/EU/attrition_analysis_vote.tex
-desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 6"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
+desc_table(dep_vars = c("dropout", "dropout_late", "failed_test", "duration", "duration < 6"), weights = NULL, omit = c("Constant"), ci = T, report = 'vcsp', # c("Constant", "Race: Other", "vote3NA")
            dep.var.labels = c("\\makecell{Dropped out}", "\\makecell{Dropped out\\\\after\\\\socio-eco}", "\\makecell{Failed\\\\attention test}", "\\makecell{Duration\\\\(in min)}", "\\makecell{Duration\\\\below\\\\6 min}"),
-           filename = "attrition_analysis_vote", save_folder = "../tables/EU/", data = c(list(eua), list(eua), list(eua[eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,])), 
+           filename = "attrition_analysis_vote_ci", save_folder = "../tables/EU/", data = c(list(eua), list(eua), list(eua[eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,]), list(eua[eua$failed_test == F & eua$stayed == T,])), 
            indep_vars = c(quotas_eu, "vote_factor")) 
 
 
 ##### App Balance analysis #####
 
 # Table S14: tables/balance_analysis.tex 
-desc_table(dep_vars = c("branch_list_exp_g", "branch_petition == 'nr'", "branch_donation == 'Own nation'", "branch_conjoint_c == 'leftg_right'"), omit = c("Constant", "Race: Other", "factorNA", "partner"),
-           dep.var.labels = c("\\makecell{List contains: G}", "\\makecell{Branch petition: NR}", "\\makecell{Branch donation: Own nation}", "\\makecell{Branch conjoint 3: with GCS}"),
-           filename = "balance_analysis", save_folder = "../tables/", data = all, indep_vars = c(socio_demos)) 
+desc_table(dep_vars = c("branch_list_exp_g", "branch_petition == 'nr'", "branch_donation == 'Own nation'", "branch_conjoint_c == 'leftg_right'"), omit = c("Constant"), # c("Constant", "Race: Other", "factorNA", "partner"),
+           dep.var.labels = c("\\makecell{List contains: G}", "\\makecell{Branch petition: NR}", "\\makecell{Branch donation: Own nation}", "\\makecell{Branch conjoint 3: with GCS}"), ci = T, report = 'vcsp', 
+           filename = "balance_analysis_ci", save_folder = "../tables/", data = all, indep_vars = c(socio_demos)) 
 
 
 ##### App Placebo tests #####
 
 # Table S16: tables/placebo_tests.tex 
-desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies_supported", "conjoint_left_ag_b_binary"), omit = c("Constant", "Race: Other", "factorNA"),
+desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies_supported", "conjoint_left_ag_b_binary"), omit = c("Constant"), ci = T, report = 'vcsp', #c("Constant", "Race: Other", "factorNA"),
            dep.var.labels = c("\\makecell{G+R+C\\\\preferred to\\\\R+C}", "\\makecell{Supports\\\\G+R+C}", "\\makecell{Signs\\\\petition}", "\\makecell{Share of\\\\policies\\\\supported}", "\\makecell{Conjoint 5\\\\A+CGS\\\\preferred to B}"),
-           filename = "placebo_tests", save_folder = "../tables/", data = all, indep_vars = c("branch_list_exp", "branch_petition", "branch_donation")) 
+           filename = "placebo_tests_ci", save_folder = "../tables/", data = all, indep_vars = c("branch_list_exp", "branch_petition", "branch_donation")) 
 
 
 ##### App Main results on the extended sample #####
@@ -649,17 +655,17 @@ same_reg_subsamples(dep.var = "list_exp", dep.var.caption = "Number of supported
 
 # Table S17: tables/country_comparison/conjoint_c_wo_none_alla.tex
 same_reg_subsamples(dep.var = "conjoint_c", dep.var.caption = "Prefers the Progressive platform", covariates = c("branch_c_gcs"), along.levels = c("United States", names(countries_eu)[1:4]), share_na_remove = 1,
-                    data = e[e$conjoint_c_none == F & e$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T,
-                    filename = "conjoint_c_wo_none_alla", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
+                    data = e[e$conjoint_c_none == F & e$wave != "US2",], along = "country_name", nolabel = F, include.total = T, mean_above = FALSE, only_mean = FALSE, mean_control = FALSE, omit.note = T, ci = T, report = 'vcsp', 
+                    filename = "conjoint_c_wo_none_alla_ci", folder = "../tables/country_comparison/", digits= 3, model.numbers = F, logit = FALSE, robust_SE = T, print_regs = F, no.space = T)
 
 
 ##### App Effect of questionnaire framing #####
 
 # Table S18: tables/ordering_us.tex
-desc_table(dep_vars = c("universalist", "nationalist", "egoistic"), weights = NULL, omit = c("Constant", "Race: Other", "factorNA"),
-          dep.var.caption = "Group defended when voting", mean_above = F,
+desc_table(dep_vars = c("universalist", "nationalist", "egoistic"), weights = NULL, omit = c("Constant"),
+          dep.var.caption = "Group defended when voting", mean_above = F, ci = T, report = 'vcsp', 
            dep.var.labels = c("Humans \\textit{or} Sentient beings", "Fellow citizens", "Family and self"),
-           filename = "ordering_us", save_folder = "../tables/", data = all[all$wave != "EU",], indep_vars = c("wave")) 
+           filename = "ordering_us_ci", save_folder = "../tables/", data = all[all$wave != "EU",], indep_vars = c("wave")) 
 
 
 ##### Figure Research Briefing #####
