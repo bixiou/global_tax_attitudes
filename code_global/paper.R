@@ -329,18 +329,33 @@ cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\tex
                      col.names = c("Effect", "Obs.", "t", "P-value", "95\\% C.I.")), # "Country; Policy", 
                  collapse="\n"), fixed = T), fixed = T), file = "../tables/amce.tex") 
 
+table_all_effects_amce <- matrix(NA, nrow = 77, ncol = 6, dimnames = list(unlist(sapply(c("us1", "FR_en", "DE_en", "ES_en", "UK"), 
+                                      function(c) paste0(c, "; ", summary(amce[[c]])$amce[,2]))), c("Effect", "N", "t", "p", "95% CI (low)", "95% CI (high)")))
+imax <- 0
+for (i in 1:5) {
+  c <- c("us1", "FR_en", "DE_en", "ES_en", "UK")[i]
+  table_all_effects_amce[1:length(summary(amce[[c]])$amce[,2]) + imax, "Effect"] <- summary(amce[[c]])$amce$Estimate
+  table_all_effects_amce[1:length(summary(amce[[c]])$amce[,2]) + imax, "N"] <- rep(summary(amce[[c]])$samplesize_estimates, length(summary(amce[[c]])$amce[,2]))
+  table_all_effects_amce[1:length(summary(amce[[c]])$amce[,2]) + imax, "t"] <- summary(amce[[c]])$amce$`z value`
+  table_all_effects_amce[1:length(summary(amce[[c]])$amce[,2]) + imax, "p"] <- summary(amce[[c]])$amce$`Pr(>|z|)`
+  table_all_effects_amce[1:length(summary(amce[[c]])$amce[,2]) + imax, 5:6] <- CI(summary(amce[[c]])$amce$Estimate, summary(amce[[c]])$amce$`Std. Err`, rep(temp$samplesize_estimates, length(summary(amce[[c]])$amce[,2])))
+  imax <- imax + length(summary(amce[[c]])$amce[,2])
+} 
+write.xlsx(as.table(table_all_effects_amce), "../xlsx/all/table_all_effects_amce.xlsx")
+
+
 # Figure S2: figures/[US1, FR, DE, UK, ES]/ca_r.png
 # Cf. also code_global/conjoint_analysis.R to reproduce/code the conjoint analysis
 plot(amce$FR_en, xlab = "Average Marginal Component Effect", text.size = 14)
-save_plot (filename = "ca_r_en", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf')
+save_plot(filename = "ca_r_en", folder = '../figures/FR/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf')
 plot(amce$DE_en, xlab = "Average Marginal Component Effect", text.size = 14)
-save_plot (filename = "ca_r_en", folder = '../figures/DE/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf')
+save_plot(filename = "ca_r_en", folder = '../figures/DE/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf')
 plot(amce$ES_en, xlab = "Average Marginal Component Effect", text.size = 14)
-save_plot (filename = "ca_r_en", folder = '../figures/ES/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf')
+save_plot(filename = "ca_r_en", folder = '../figures/ES/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf')
 plot(amce$UK, xlab = "Average Marginal Component Effect", text.size = 14)
-save_plot (filename = "ca_r", folder = '../figures/UK/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf')
+save_plot(filename = "ca_r", folder = '../figures/UK/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf')
 plot(amce$us1, xlab = "Average Marginal Component Effect", text.size = 14)
-save_plot (filename = "ca_r", folder = '../figures/US1/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf') 
+save_plot(filename = "ca_r", folder = '../figures/US1/', width = 1100, height = 500, method='dev', trim = T, format = 'pdf') 
 
 # Figure S3: figures/country_comparison/conjoint_left_ag_b_binary_positive.pdf
 heatmap_multiple(heatmaps_defs[c("conjoint_left_ag_b_binary")]) 
@@ -352,7 +367,7 @@ heatmap_multiple(heatmaps_defs[c("belief_all")])
 heatmap_multiple(heatmaps_defs[c("global_tax_global_share")]) 
 
 # Figure S6: figures/country_comparison/foreign_aid_raise_support.pdf
-barres_multiple(barresN_defs[c("foreign_aid_raise_support")]) 
+barres_multiple(barresN_defs[c("foreign_aid_raise_support")], export_xls = T) 
 
 # Figure S7: figures/country_comparison/foreign_aid_condition_positive.pdf
 heatmap_multiple(heatmaps_defs[c("foreign_aid_condition")]) 
