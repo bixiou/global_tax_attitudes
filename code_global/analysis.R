@@ -710,9 +710,43 @@ desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies
            filename = "placebo_tests_us1", save_folder = "../tables/", data = us1, indep_vars = c("branch_list_exp", "branch_petition", "branch_donation", "branch_foreign_aid_preferred", "branch_gcs_field"))
 
 
+##### New survey GCS losses #####
 
+#  Same for ES, FR, GB, much higher for DE (57), US (140); very high for RU, SA
+setNames(round(df$gain_adj_2030[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")]/12), 
+         df$code[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])
 
+setNames(100*df$gain_adj_over_gdp_2030[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")], 
+         df$code[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])
 
+setNames(round((90*sum(df$emissions_2026)/sum(df$adult_2026) - 90*df$emissions_pa_2026[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])/12), 
+         df$code[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])
+90*(sum(df$emissions_2026)/sum(df$adult_2026) - wtd.mean(df$emissions_pa_2026, df$code %in% c(EU27_countries, "CHE") * df$adult_2026))/12 # -11
+
+wtd.mean(df$gain_adj_2030, df$code %in% c(EU27_countries, "CHE") * df$adult_2030)/12 # -26
+wtd.mean(df$gain_adj_2025, df$code %in% c(EU27_countries, "CHE") * df$adult_2025)/12 # -20
+wtd.mean(round((0.9*(df$gain_adj_2025 - basic_income_adj$all_countries["2025"]) + basic_income_adj$all_countries["2025"])/12), 
+         df$code %in% c(EU27_countries, "CHE") * df$adult_2025)/12 # -1
+
+setNames(df$emissions_2030[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")]/sum(df$emissions_2030), 
+         df$code[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])
+
+# US -92
+setNames(round((0.9*(df$gain_adj_2025[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")] - basic_income_adj$all_countries["2025"]) + basic_income_adj$all_countries["2025"])/12), 
+         df$code[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])
+
+setNames(round((0.9*(df$gain_adj_2030[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")] - basic_income_adj$all_countries["2030"]) + basic_income_adj$all_countries["2030"])/12), 
+         df$code[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])
+
+setNames(round(df$Shigh_gain_adj_2030[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")]/12), 
+         df$code[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])
+
+setNames(round((0.9*(df$Shigh_gain_adj_2030[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")] - basic_income_adj$all_countries["2030"]) + basic_income_adj$all_countries["2030"])/12), 
+         df$code[df$code %in% c("FRA", "ITA", "DEU", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")])
+
+df$Shigh_RUS_gain_adj_2030[df$code == "RUS"]/12 # -64
+df$Shigh_SAU_gain_adj_2030[df$code == "SAU"]/12 # -194
+df$Shigh_USA_gain_adj_2030[df$code == "USA"]/12 # -148
 
 
 
