@@ -728,5 +728,3 @@ desc_table(dep_vars = c("conjoint_a", "cgr_support", "petition", "share_policies
 
 
 
-
-
