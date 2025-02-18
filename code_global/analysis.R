@@ -762,5 +762,3 @@ df$Shigh_USA_gain_adj_2030[df$code == "USA"]/12 # -148
 
 
 
-
-

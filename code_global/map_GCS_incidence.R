@@ -2999,12 +2999,12 @@ plot_world_map("budget_gain_over_gdp_both_taxes", df = df, breaks = c(-Inf, 0, .
 
 ##### Participating countries' number and emission share #####
 # Exceptions: 3 (Chile, Malaysia, Turkmenistan) participate although they lose => removed exception / 3 (Ukraine, Belarus, Moldova) don't participate although they don't lose, 5 more (from Balkans) in low
-union_mid <- union(setdiff(df$code[df$gain_euro_2030 >= 0], c("UKR", "MDA", "CYP")), c("CHL", "URY", "TUN", "UGA", "SDN", "MYS"))
+union_mid <- union(setdiff(df$code[df$gain_euro_2030 >= 0], c("UKR", "MDA", "CYP", "HRV")), c("CHL", "URY", "TUN", "UGA", "SDN", "MYS"))
 # union_mid <- setdiff(union(df$code[df$gain_euro_2030 >= 0], c("CHL", "MYS", "TKM")), c("UKR", "MDA", "CYP")) # , "BLR", "SLB", "MNE", "HRV", "BFA"
 union_low <- union(setdiff(union_mid, c("CHN")), EU27_countries)
 union_high <- union(union_mid, c("CAN", "CHE", "GBR", "ISL", "JPN", "KOR", "NOR", "NZL", "TWN", EU27_countries))
 length(union_low) # 145
-length(union_mid) # 120
+length(union_mid) # 119
 length(union_high) # 155
 
 sum(df$emissions_2025[df$code %in% union_low])/sum(df$emissions_2025) # 24%
@@ -3036,6 +3036,13 @@ high_RUS <- all_countries[df$code %in% c(union_high, "RUS")]
 scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU", "high", "mid", "low", "high_SAU", "high_USA", "high_RUS", "custom") # manage , "South"
 scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names) 
 
+for (s in c("low", "mid", "high")) for (c in c(list(EU27_countries), lapply(countries_new[6:11], function(l) l))) {
+  print(paste0(s, " Emissions without: ", if (length(c) > 1) "EU27" else c, " ", round(100*sum(df$emissions_2025[df$code %in% setdiff(eval(str2expression(s)), c)])/sum(df$emissions_2025)), "% (", sum(df$code %in% setdiff(eval(str2expression(s)), c)), ")"))
+}
+for (s in c("low", "mid", "high")) for (c in c(list(EU27_countries), lapply(countries_new[6:11], function(l) l))) { 
+  print(paste0(s, " Emissions with: ", if (length(c) > 1) "EU27" else c, " ", round(100*sum(df$emissions_2025[df$code %in% union(eval(str2expression(s)), c)])/sum(df$emissions_2025)), "%"))
+}
+
 for (s in c("low", "mid", "high", paste0("high_", c("SAU", "USA", "RUS")))) df <- create_var_ssp(df = df, scenario = s)
 
 plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
@@ -3049,10 +3056,11 @@ gcs_high_stripe <- list("EN-GB" = "GBR", "JA" = "JPN", "RU" = "RUS", "AR" = "SAU
 gcs_high_stripe[c("EN", "ES-US")] <- "USA"
 gcs_high_stripe[c("FR", "DE", "IT", "PL", "ES")] <- list(EU27_countries)
 gcs_high_stripe[c("IT-CH", "DE-CH", "FR-CH", "CH")] <- "CHE"
+legendx <- c("FR" = .073, "FR-CH" = .073, "DE" = .073, "DE-CH" = .073, "IT" = .073, "IT-CH" = .073, "PL" = .073,"ES" = .073,"EN-GB" = .073,"CH" = .073,"JA" = .073,"RU" = .073,"AR" = .073,"EN" = .073, "ES-US" = .073)
 
-for (l in languages) {
+for (l in "PL") { # 1123x563 languages
   s <- if (any(gcs_high_stripe[[l]] %in% c("SAU", "USA", "RUS"))) paste0("high_", gcs_high_stripe[[l]]) else "high"
-  plot_world_map(paste0("S", s, "_gain_adj_over_gdp_2030"), df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = .073, trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
+  plot_world_map(paste0("S", s, "_gain_adj_over_gdp_2030"), df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = legendx[l], trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
                  labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], 
                  legend = gsub("\\\\n", "\n", features["gcs_high_legend", l]), filename = paste0("GCS_high_color_", l), na_label = features["na_label", l], 
                  save = T, parties = scenarios_parties[[s]], stripe_codes = gcs_high_stripe[[l]])
@@ -3070,6 +3078,7 @@ plot_world_map("gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, 
                legend = paste0("Net gain per adult\nfollowing the\nGlobal Climate Scheme\nin 2030\n(in % of GDP)"), 
                save = F)
 
+#### GCS gains new survey ####
 countries_new <- c("FRA", "DEU", "ITA", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")
 gains_countries_new <- basic_income_new <- matrix(NA, nrow = 11, ncol = 4, dimnames = list(countries_new, c("low", "mid", "high", "all")))
 for (c in countries_new) for (s in c("low", "mid", "high", "all")) {
@@ -3087,3 +3096,37 @@ for (c in countries_new) for (s in c("low", "mid", "high", "all")) {
 round(gains_countries_new)
 write.csv(round(gains_countries_new), "../../robustness_global_redistr/data/gains_countries.csv", quote = F)
 write.csv(round(basic_income_new/12), "../../robustness_global_redistr/data/basic_income.csv", quote = F)
+
+countries_new
+setNames(round(100*(sum(df$Shigh_emissions_2030)/sum(df$adult_2030 * df$code %in% union_high) - df$Shigh_emissions_pa_2030)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+setNames(round(100*(sum(df$emissions_2030)/sum(df$adult_2030) - df$emissions_pa_2030)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+
+setNames(round(df$gain_adj_2025[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+setNames(round(df$Shigh_gain_adj_2025[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+
+setNames(round(df$gain_adj_2025[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+setNames(round(df$Shigh_gain_adj_2025[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+round(wtd.mean(df$gain_adj_2025, df$code %in% EU27_countries * df$adult_2025)/12) # -19
+round(wtd.mean((df$gain_adj_2025 * df$adult_2025/df$pop_2025), df$code %in% EU27_countries * df$adult_2025)/12) # -16
+round(wtd.mean(df$Shigh_gain_adj_2025, df$code %in% EU27_countries * df$adult_2025)/12) # -31
+round(wtd.mean((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025), df$code %in% EU27_countries * df$adult_2025)/12) # -26
+
+setNames(round((df$gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+setNames(round((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+
+setNames(round((0.9*(df$gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+setNames(round((0.9*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+
+setNames(round(-100*(df$gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 1)[df$code %in% countries_new], df$code[df$code %in% countries_new])
+setNames(round(-100*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 1)[df$code %in% countries_new], df$code[df$code %in% countries_new])
+setNames(round(-100*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 0)[df$code %in% countries_new], df$code[df$code %in% countries_new])
+
+basic_income_adj$all_countries/12
+basic_income_adj$df/12
+basic_income_adj$high/12
+
+# According to PIP, in 2022, the lowest percentile has an average conso of .65$/day i.e. $45/month short of $2.15/day.
+# $20/month (22 - carbon footprint) should be multiplied by 2.7 to get the PPP value of the basic income in SSA => 20*2.7 = $54/month
+# => everyone above the 1st percentile is lifted out of extreme poverty, i.e. 670-80=590M people
+# Source 2.7: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=ZG&year_high_desc=true https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=ZG&year_high_desc=true
+
