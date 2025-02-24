@@ -320,7 +320,7 @@ table_effects_amce <- matrix(NA, nrow = 15, ncol = 5, dimnames = list(paste0(cou
 for (i in 1:5) {
   indices <- if (i == 5) c(9, 11, 10) else 8:10
   temp <- summary(amce[[if (i == 5) "us1" else countries[i]]])
-  table_effects_amce[c(i, i+5, i+10), "Effect"] <- paste0(round(temp$amce$Estimate[indices], 2), temp$amce$` `[indices])
+  table_effects_amce[c(i, i+5, i+10), "Effect"] <- paste0(round(temp$amce$Estimate[indices], 2)) #, temp$amce$` `[indices]) # asterisks
   table_effects_amce[c(i, i+5, i+10), "N"] <- rep(temp$samplesize_estimates, 3)
   table_effects_amce[c(i, i+5, i+10), "t"] <- round(temp$amce$`z value`[indices], 2)
   table_effects_amce[c(i, i+5, i+10), "p"] <- round(temp$amce$`Pr(>|z|)`[indices], 3)
@@ -331,7 +331,7 @@ table_effects_amce[1, "p"] <- "$5\\cdot 10^{-4}$"
 cat(sub("\\end{tabular}", "\\end{tabular}}", sub("\\centering", "\\makebox[\\textwidth][c]{", 
            paste(kbl(table_effects_amce, "latex", caption = "Average Marginal Component Effects of global policies.", 
                      position = "h", escape = F, booktabs = T, align = "c", linesep = rep("", nrow(table_effects_amce)-1), 
-                     label = "amce", row.names = T,  format.args = list(decimal = ","),
+                     label = "amce", row.names = T,  format.args = list(decimal = ","), 
                      col.names = c("Effect", "Obs.", "t", "P-value", "95\\% C.I.")), # "Country; Policy", 
                  collapse="\n"), fixed = T), fixed = T), file = "../tables/amce.tex") 
 
