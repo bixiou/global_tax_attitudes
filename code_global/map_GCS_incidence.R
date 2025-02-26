@@ -3058,11 +3058,11 @@ gcs_high_stripe[c("FR", "DE", "IT", "PL", "ES")] <- list(EU27_countries)
 gcs_high_stripe[c("IT-CH", "DE-CH", "FR-CH", "CH")] <- "CHE"
 legendx <- c("FR" = .073, "FR-CH" = .073, "DE" = .073, "DE-CH" = .073, "IT" = .073, "IT-CH" = .073, "PL" = .073,"ES" = .073,"EN-GB" = .073,"CH" = .073,"JA" = .073,"RU" = .073,"AR" = .073,"EN" = .073, "ES-US" = .073)
 
-for (l in "PL") { # 1123x563 languages
+for (l in c("EN-GB", "EN")) { # languages 823x417 for PNG; 1123x563 for PDF 
   s <- if (any(gcs_high_stripe[[l]] %in% c("SAU", "USA", "RUS"))) paste0("high_", gcs_high_stripe[[l]]) else "high"
-  plot_world_map(paste0("S", s, "_gain_adj_over_gdp_2030"), df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png', 'pdf'), legend_x = legendx[l], trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
+  plot_world_map(paste0("S", s, "_gain_adj_over_gdp_2030"), df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c('png'), legend_x = legendx[l], trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
                  labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], 
-                 legend = gsub("\\\\n", "\n", features["gcs_high_legend", l]), filename = paste0("GCS_high_color_", l), na_label = features["na_label", l], 
+                 legend = gsub("\\\\n", "\n", features["gcs_high_legend", l]), filename = paste0("GCS_high_color_", l), na_label = features["na_label", l], width = 825, height = 420,
                  save = T, parties = scenarios_parties[[s]], stripe_codes = gcs_high_stripe[[l]])
   print(l)
 }
