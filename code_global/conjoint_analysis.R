@@ -77,7 +77,11 @@ for (df in c("us1", "eu", "all")) { # "usp", "eup", "ep"
   formula_cjoint <- if (grepl("us", df)) formula_cjoint_specific else formula_cjoint_generic
   design_cjoint <- if (grepl("us", df)) design_cjoint_US else { if (df %in% c("e", "ep", "all")) design_cjoint_both else design_cjoint_EU }
   # amce[[n]] <- amce(formula_cjoint, ca[[df]], cluster = FALSE, weights= NULL)
-  amce[[df]] <- amce(formula_cjoint, ca[[df]], design = design_cjoint, cluster = FALSE, weights= NULL)
+  
+  # To allow for ties, replace selected==NA by 0.5 and previously make conjoint_r_number == "" for respondents who chose "neither" (read.qualtrics removes NA from ca[[df]] but keeps "" which it converts into selected==NA).
+  # /!\ But beware, if the question wasn't asked to everyone, this will attribute 0.5 instead of NA to some respondents!
+  # ca[[df]]$selected[is.na(ca[[df]]$selected)] <- .5
+  amce[[df]] <- amce(formula_cjoint, ca[[df]], design = design_cjoint, cluster = FALSE, weights= NULL, na.ignore = T)
 }
 # ca_e <- read.qualtrics("../data/EUn.csv", responses = "Q30", covariates = variables_conjoint_r_levels, ranks = NULL, new.format = T) 
 for (c in countries_EU) {
