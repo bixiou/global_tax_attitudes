@@ -3111,14 +3111,14 @@ round(wtd.mean((df$gain_adj_2025 * df$adult_2025/df$pop_2025), df$code %in% EU27
 round(wtd.mean(df$Shigh_gain_adj_2025, df$code %in% EU27_countries * df$adult_2025)/12) # -31
 round(wtd.mean((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025), df$code %in% EU27_countries * df$adult_2025)/12) # -26
 
-setNames(round((df$gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
-setNames(round((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
+setNames(round((df$gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new]) # THIS ONE FOR RU-SA-US
+setNames(round((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new]) # THIS ONE FOR THE OTHER
 
 setNames(round((0.9*(df$gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
 setNames(round((0.9*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
 
-setNames(round(-100*(df$gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 1)[df$code %in% countries_new], df$code[df$code %in% countries_new])
-setNames(round(-100*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 1)[df$code %in% countries_new], df$code[df$code %in% countries_new])
+setNames(round(-100*(df$gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 1)[df$code %in% countries_new], df$code[df$code %in% countries_new]) # THIS ONE FOR RU-SA-US
+setNames(round(-100*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 1)[df$code %in% countries_new], df$code[df$code %in% countries_new]) # THIS ONE FOR THE OTHER
 setNames(round(-100*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 0)[df$code %in% countries_new], df$code[df$code %in% countries_new])
 
 basic_income_adj$all_countries/12
