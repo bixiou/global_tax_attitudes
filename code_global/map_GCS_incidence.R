@@ -3058,7 +3058,7 @@ gcs_high_stripe[c("FR", "DE", "IT", "PL", "ES-ES")] <- list(EU27_countries)
 gcs_high_stripe[c("IT-CH", "DE-CH", "FR-CH", "CH")] <- "CHE"
 legendx <- c("FR" = .08, "FR-CH" = .08, "DE" = .09, "DE-CH" = .092, "IT" = .084, "IT-CH" = .084, "PL" = .073,"ES-ES" = .08,"EN-GB" = .073,"CH" = .08,"JA" = .2,"RU" = .073,"AR" = .073,"EN" = .073, "ES-US" = .08)
 
-for (l in "AR") { # languages 823x417 for PNG; 1123x563 for PDF  languages[!languages %in% c("JA", "EN", "EN-GB", "PL", RU)]
+for (l in "FR") { # languages 823x417 for PNG; 1123x563 for PDF  languages[!languages %in% c("JA", "EN", "EN-GB", "PL", RU)]
   s <- if (any(gcs_high_stripe[[l]] %in% c("SAU", "USA", "RUS"))) paste0("high_", gcs_high_stripe[[l]]) else "high"
   plot_world_map(paste0("S", s, "_gain_adj_over_gdp_2030"), df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c("pdf"), legend_x = legendx[l], trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
                  labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = " to ", return = "levels")), colors = color(11)[2:10], 

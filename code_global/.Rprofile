@@ -131,7 +131,7 @@ package("readstata13")
 # }
 if (!is.element("stargazer", installed.packages()[,1]) || packageVersion("stargazer") != "5.2.3.42") {
   temp <- getwd()
-  setwd(.libPaths()[2])
+  # setwd(.libPaths()[2])
   tryCatch({  detach("package:stargazer", unload=T)}, error = function(cond) { print("This is just a warning: stargazer not loaded yet.") } )
   tryCatch({  remove.packages("stargazer")}, error = function(cond) { print("This is just a warning: stargazer not found.") } )
   download.file("https://cran.r-project.org/src/contrib/stargazer_5.2.3.tar.gz", destfile = "stargazer_5.2.3.tar.gz")
@@ -2113,13 +2113,15 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   df <- merge(df, df_na, all = T)
   df$group <- cut(df$mean, breaks = breaks, labels = labels)
 
+  base_family <- "" # "Arial"
+  
   if (!continuous) {
     if (is.null(colors)) colors <- setNames(c(color(length(breaks)-1, rev_color = rev_color), "#7F7F7F"), c(rev(labels), na_label))
     if (negative_stripes) {
       pattern <- setNames(c(rep("none", ceiling((length(breaks)-1)/2)), rep("stripe", floor((length(breaks)-1)/2)), "none"), c(rev(labels), na_label))
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
           geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) +
-          expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
+          expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
           scale_fill_manual(name = legend, drop = FALSE, values = colors, labels = c(rev(labels), na_label)) +
           geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = fct_rev(group)), pattern_fill = "black", fill = NA, show.legend=TRUE,
                            pattern_size = 0.01, pattern_density = 0.05, pattern_angle = 45, pattern_spacing = 0.015) +
@@ -2131,7 +2133,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
       colors_pattern <- stripe_pattern <- colors_pattern[names(colors_pattern) %in% df$pattern]
       stripe_pattern <- setNames(ifelse(grepl("stripe", names(stripe_pattern)), "stripe", "none"), names(stripe_pattern))
       plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = pattern), map = world_map, show.legend=TRUE) + # coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
-          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes))) +
+          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes))) +
           scale_fill_manual(name = legend, drop = FALSE, values = colors_pattern[1:(length(colors_pattern)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks}) +
           geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = pattern), 
                            pattern_fill = "#7F7F7F", fill = NA, show.legend = FALSE, pattern_density = 0.5, pattern_angle = 45, pattern_spacing = 0.015, pattern_linetype = 0) +
@@ -2140,11 +2142,11 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
       if (!"RUS" %in% stripe_codes) plot <- plot + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) # /!\ Bug for Russia when proj_coord() is present ("There is a MULTIPOLYGON with length greater than 1")
     } else {
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
-         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
+         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
          scale_fill_manual(name = legend, drop = FALSE, values = colors[1:(length(colors)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
     }} else {
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
-         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void() + theme(legend.position = c(legend_x, .29)) +
+         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
          scale_fill_gradientn(name = legend, limits = limits, colours = color(9, rev_color = !rev_color))) # scale_fill_manual(palette = "RdBu", limits = limits, direction = 1, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
     }
   
