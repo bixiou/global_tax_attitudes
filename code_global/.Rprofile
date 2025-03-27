@@ -208,7 +208,7 @@ package("quanteda") # stopwords
 #' package("tidytext")
 #' package("modelsummary")
 package("dplR") # latexify, used in table_mean_lines_save
-package("Hmisc")
+package("Hmisc") # wtd.mean
 package("readxl")
 #' package("ggpubr")
 #' package("RStata")
