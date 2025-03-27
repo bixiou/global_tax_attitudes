@@ -238,8 +238,7 @@ prepare <- function(incl_quality_fail = FALSE, exclude_speeder=TRUE, exclude_scr
   
   print(paste(length(which(e$excluded=="QuotaMet")), "QuotaMet"))
   e$finished[e$excluded=="QuotaMet"] <- "False" # To check the number of QuotaMet that shouldn't have incremented the quota, comment this line and: decrit(e$each_strate[e$exclu=="QuotaMet" & e$csp=="Employé" & !grepl("2019-03-04 07", e$date)])
-  if (incl_quality_fail & "attention_test" %in% names(e)) e <- e[replace_na(e$excluded, "na") != "QuotaMet" & !is.na(e$attention_test) & 
-                                                                !(replace_na(e$excluded, "na") == "Screened" & replace_na(e$attention_test) == "A little"),] # allqa: e[e$finished == 1
+  if (incl_quality_fail & "attention_test" %in% names(e)) e <- e[replace_na(e$excluded, "na") != "QuotaMet" & !is.na(e$attention_test) & !(replace_na(e$excluded, "na") == "Screened" & replace_na(e$attention_test) == "A little"),] # allqa: e[e$finished == 1
   if (exclude_screened & !incl_quality_fail) { e <- e[is.na(e$excluded),] }
   if (exclude_speeder) e <- e[as.numeric(as.vector(e$duration)) > duration_min,] # & !incl_quality_fail
   if (only_finished & !incl_quality_fail) e <- e[e$finished==1,] 

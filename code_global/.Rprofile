@@ -31,7 +31,9 @@ if (!is.element("iatgen", installed.packages()[,1])) {
   # devtools::install_github("iatgen/iatgen")
 } else library(iatgen)
 package("ggplot2")
-if (!is.element("ggalt", installed.packages()[,1])) { devtools::install_github("eliocamp/ggalt@new-coord-proj")
+if (!is.element("ggalt", installed.packages()[,1])) { 
+  warning("/!\ Install ggalt manually from github!")
+  # devtools::install_github("eliocamp/ggalt@new-coord-proj")
 } else package("ggalt") # maps
 package("janitor") # heatmaps
 package("ggdist") # nice confidence intervals in regression plots
@@ -226,7 +228,7 @@ package("wbstats") # World Bank
 #' # One needs a *patched* version of memisc version 0.99.22 (not a newer), hence the code below (cf. this issue: https://github.com/melff/memisc/issues/62)
 if (!is.element("memisc", installed.packages()[,1])) {
   install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
-} else if (packageVersion("memisc")!="0.99.22") {
+} else if (FALSE & packageVersion("memisc")!="0.99.22") {
   detach("package:memisc", unload = TRUE)
   remove.packages("memisc")
   install.packages("https://github.com/melff/memisc/files/9690453/memisc_0.99.22.tar.gz", repos=NULL)
