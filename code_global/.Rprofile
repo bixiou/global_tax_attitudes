@@ -383,13 +383,19 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
     if (strict_ineq_lower) vec_agg[(vec <= thresholds[i] & vec < max_i & vec > thresholds[i-1]) | (vec == max_i & i == length(thresholds)) | (vec == thresholds[i] & i < length(thresholds) & vec < max_i) | (i == 2 & vec == min)] <- (thresholds[i] + thresholds[i-1])/2
     else vec_agg[(vec < thresholds[i] & vec >= thresholds[i-1] & vec > min_i) | (vec == min_i & i == 2) | (vec == thresholds[i-1] & i > 2 & vec > min_i) | (i == length(thresholds) & vec == max)] <- (thresholds[i] + thresholds[i-1])/2
   }
-  if (min == -Inf & strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "≤ ", levels[1])
-  if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
-  if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "> \\1", levels[length(levels)]) # sub(" ", "", sep)
-  if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "≥ \\1", levels[length(levels)]) # sub(" ", "", sep)
+  if (!RTL) { 
+    if (min == -Inf & strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "≤ ", levels[1])
+    if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
+    if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "> \\1", levels[length(levels)]) # sub(" ", "", sep)
+    if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "≥ \\1", levels[length(levels)]) # sub(" ", "", sep)
+  } else { # To manage Arabic
+    if (min == -Inf & strict_ineq_lower) levels[1] <- sub(paste0(sep, "-Inf"), " ≥", levels[1])
+    if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0(sep, "-Inf"), " >", levels[1])
+    if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("Inf", sep, "(.*)"), "\\1 <", levels[length(levels)]) # sub(" ", "", sep)
+    if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("Inf", sep, "(.*)"), "\\1 ≤", levels[length(levels)]) # sub(" ", "", sep)
+  }
   levels <- gsub("000 ", ",000 ",  gsub("-", "–", levels))
   vec_agg[is.na(vec)] <- NA
-  print(vec_agg)
   vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
   if (return == "vec") return(vec_agg)
   else if (return %in% c("levels", "labels")) return(levels)
@@ -2087,7 +2093,7 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
 #
-plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', base_family = NULL, 
+plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', base_family = NULL, RTL = FALSE,
                            breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, negative_stripes = FALSE, stripe_codes = NULL) {
   # /!\ plot_world_map may sometimes fail (due to processor overload): in that case, either close all other windows or check the pdf/png export (which renders generally fine). When testing the function, remove most countries to speed the rendering (cf. example code below).
   if (!is.null(parties)) {
@@ -2151,12 +2157,13 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
       colors_pattern <- stripe_pattern <- colors_pattern[names(colors_pattern) %in% df$pattern]
       stripe_pattern <- setNames(ifelse(grepl("stripe", names(stripe_pattern)), "stripe", "none"), names(stripe_pattern))
       plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = pattern), map = world_map, show.legend=TRUE) + # coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
-          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes))) +
+          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes) + 0.42*RTL)) +
           scale_fill_manual(name = legend, drop = FALSE, values = colors_pattern[1:(length(colors_pattern)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks}) +
           geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = pattern), 
                            pattern_fill = "#7F7F7F", fill = NA, show.legend = FALSE, pattern_density = 0.5, pattern_angle = 45, pattern_spacing = 0.015, pattern_linetype = 0) +
           scale_pattern_manual(values = stripe_pattern, labels =  c(rev(labels), na_label), breaks = c(rev(labels), na_label), name = legend, drop = FALSE) +
-          guides(fill = "none", pattern = guide_legend(override.aes = list(fill = colors_pattern[!grepl("stripe", names(colors_pattern))])))
+          guides(fill = "none", pattern = guide_legend(label.position = if (RTL) "left" else "right", override.aes = list(fill = colors_pattern[!grepl("stripe", names(colors_pattern))])))
+      if (RTL) plot <- plot + theme(legend.title = element_text(family = "Arial", hjust = 1), legend.text = element_text(family = "Arial", hjust = 1))
       if (!"RUS" %in% stripe_codes) plot <- plot + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) # /!\ Bug for Russia when proj_coord() is present ("There is a MULTIPOLYGON with length greater than 1")
     } else {
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +

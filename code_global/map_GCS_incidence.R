@@ -3051,18 +3051,20 @@ plot_world_map("Shigh_gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -
                save = T, parties = scenarios_parties[["high"]])
 
 features <- as.matrix(read.xlsx("../../robustness_global_redistr/questionnaire/sources.xlsx", sheet = "features", rowNames = T))
+features["gcs_high_legend", "AR"] <- stri_reverse(features["gcs_high_legend", "AR"])
 languages <- c("FR", "DE", "IT", "PL", "ES-ES", "EN-GB", "JA", "RU", "AR", "EN", "IT-CH", "DE-CH", "FR-CH", "ES-US") 
 gcs_high_stripe <- list("EN-GB" = "GBR", "JA" = "JPN", "RU" = "RUS", "AR" = "SAU")
 gcs_high_stripe[c("EN", "ES-US")] <- "USA"
 gcs_high_stripe[c("FR", "DE", "IT", "PL", "ES-ES")] <- list(EU27_countries)
 gcs_high_stripe[c("IT-CH", "DE-CH", "FR-CH", "CH")] <- "CHE"
-legendx <- c("FR" = .08, "FR-CH" = .08, "DE" = .09, "DE-CH" = .092, "IT" = .084, "IT-CH" = .084, "PL" = .073,"ES-ES" = .08,"EN-GB" = .073,"CH" = .08,"JA" = .065, "RU" = .073,"AR" = .06,"EN" = .073, "ES-US" = .08)
+legendx <- c("FR" = .073, "FR-CH" = .073, "DE" = .07, "DE-CH" = .07, "IT" = .07, "IT-CH" = .07, "PL" = .05,"ES-ES" = .06,"EN-GB" = .06,"CH" = .06,"JA" = .065, "RU" = .073,"AR" = .94,"EN" = .06, "ES-US" = .06)
+legendx <- c("FR" = .08, "FR-CH" = .08, "DE" = .09, "DE-CH" = .092, "IT" = .084, "IT-CH" = .084, "PL" = .073,"ES-ES" = .08,"EN-GB" = .073,"CH" = .08,"JA" = .065, "RU" = .073,"AR" = .06,"EN" = .073, "ES-US" = .08) 
 
-for (l in "AR") { # languages 823x417 for PNG; 1123x563 for PDF  languages[!languages %in% c("JA", "EN", "EN-GB", "PL", RU)]
+for (l in languages[!languages %in% c("AR", "JA", "RU", "EN", "EN-GB")]) { # languages[languages %in% c("AR", "JA", "RU", "EN", "EN-GB")] 823x417 for PNG; 1123x563 for PDF  languages[!languages %in% c("JA", "EN", "EN-GB", "PL", RU)]
   s <- if (any(gcs_high_stripe[[l]] %in% c("SAU", "USA", "RUS"))) paste0("high_", gcs_high_stripe[[l]]) else "high"
   plot_world_map(paste0("S", s, "_gain_adj_over_gdp_2030"), df = df, breaks = c(-Inf, -.02, -.005, -1e-10, 0, .005, .02, .05, Inf), format = c("pdf"), legend_x = legendx[l], trim = T, folder = "../../robustness_global_redistr/figures/maps_participation/",
-                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = features["to", l], return = "levels", RTL = (l == "AR"))), colors = color(11)[2:10], base_family = ifelse(l %in% c("AR", "JA"), ifelse(l == "AR", "Arial", "MS Gothic"), NULL),
-                 legend = gsub("\\\\n", "\n", stri_reverse(features["gcs_high_legend", l])), filename = paste0("GCS_high_color_", l), na_label = features["na_label", l], width = 825, height = 420, 
+                 labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, -.02, -.005, 0, 0, .005, .02, .05, Inf)*100, sep = features["to", l], return = "levels", RTL = (l == "AR"))), colors = color(11)[2:10], base_family = ifelse(l %in% c("AR", "JA"), ifelse(l == "AR", "Arial", "MS Gothic"), ""),
+                 legend = gsub("\\\\n", "\n", features["gcs_high_legend", l]), filename = paste0("GCS_high_color_", l), na_label = features["na_label", l], width = 825, height = 420, RTL = (l == "AR"),
                  save = T, parties = scenarios_parties[[s]], stripe_codes = gcs_high_stripe[[l]])
   print(l)
 }
