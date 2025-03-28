@@ -65,6 +65,16 @@ package("ggpattern") # stripes in maps
 # package("gissr", github = "skgrange") # merge boundaries in maps
 # package("maps") # merge boundaries in maps
 package("rnaturalearth")
+
+# package("extrafont") # maps/ggplot2 with Arabic, Japanese...
+# windowsFonts(
+#   MSGothic = windowsFont("MS Gothic"), # Japanese
+#   Arial = windowsFont("Arial") # Arabic
+# )
+# # fonts()
+package("showtext")
+showtext_auto()
+font_add("MSGothic", "C:/Windows/Fonts/msgothic.ttc")
 # package("ggfortify") # density plot
 #' package("rms")
 #' package('pwr')
@@ -359,8 +369,12 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
     min_i <- ifelse(i > 2, thresholds[i-2], min)
     max_i <- ifelse(i <= length(thresholds) - 2, thresholds[i+2], max)
     next_i <- ifelse(i <= length(thresholds) - 1, thresholds[i+1], max)
-    if (missing(labels)) levels <- c(levels, if (thresholds[i-1]==thresholds[i]) paste0(begin, thresholds[i], end) else paste0(begin, thresholds[i-1] + (shift_left*(i < length(thresholds)) + shift_right*(thresholds[i-1] == min_i))*(i > 2), sep,
-                                                                                                                               thresholds[i] - (shift_right*(i > 2) + shift_left*(thresholds[i] == next_i))*(i < length(thresholds)), end))
+    if (missing(labels)) {
+      level_i <- c(begin, thresholds[i-1] + (shift_left*(i < length(thresholds)) + shift_right*(thresholds[i-1] == min_i))*(i > 2), sep,
+        thresholds[i] - (shift_right*(i > 2) + shift_left*(thresholds[i] == next_i))*(i < length(thresholds)), end)
+      if (RTL) level_i <- rev(level_i)
+      levels <- c(levels, if (thresholds[i-1]==thresholds[i]) paste0(begin, thresholds[i], end) else paste0(level_i))
+    }
     if (strict_ineq_lower) vec_agg[(vec <= thresholds[i] & vec < max_i & vec > thresholds[i-1]) | (vec == max_i & i == length(thresholds)) | (vec == thresholds[i] & i < length(thresholds) & vec < max_i) | (i == 2 & vec == min)] <- (thresholds[i] + thresholds[i-1])/2
     else vec_agg[(vec < thresholds[i] & vec >= thresholds[i-1] & vec > min_i) | (vec == min_i & i == 2) | (vec == thresholds[i-1] & i > 2 & vec > min_i) | (i == length(thresholds) & vec == max)] <- (thresholds[i] + thresholds[i-1])/2
   }
@@ -2113,7 +2127,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   df <- merge(df, df_na, all = T)
   df$group <- cut(df$mean, breaks = breaks, labels = labels)
 
-  base_family <- "" # "Arial"
+  base_family <- "Noto Sans Arabic" # "Arial"
   
   if (!continuous) {
     if (is.null(colors)) colors <- setNames(c(color(length(breaks)-1, rev_color = rev_color), "#7F7F7F"), c(rev(labels), na_label))
