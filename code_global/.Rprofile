@@ -2162,7 +2162,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
           geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = pattern), 
                            pattern_fill = "#7F7F7F", fill = NA, show.legend = FALSE, pattern_density = 0.5, pattern_angle = 45, pattern_spacing = 0.015, pattern_linetype = 0) +
           scale_pattern_manual(values = stripe_pattern, labels =  c(rev(labels), na_label), breaks = c(rev(labels), na_label), name = legend, drop = FALSE) +
-          guides(fill = "none", pattern = guide_legend(label.position = if (RTL) "left" else "right", override.aes = list(fill = colors_pattern[!grepl("stripe", names(colors_pattern))])))
+          guides(fill = "none", pattern = guide_legend(label.position = if (RTL) "left", override.aes = list(fill = colors_pattern[!grepl("stripe", names(colors_pattern))])))
       if (RTL) plot <- plot + theme(legend.title = element_text(family = "Arial", hjust = 1), legend.text = element_text(family = "Arial", hjust = 1))
       if (!"RUS" %in% stripe_codes) plot <- plot + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) # /!\ Bug for Russia when proj_coord() is present ("There is a MULTIPOLYGON with length greater than 1")
     } else {
