@@ -60,6 +60,11 @@ package("weights") # wtd.t.test
 # package("raster") # merge boundaries in maps
 package("sf") # merge boundaries in maps
 package("ggpattern") # stripes in maps
+package("showtext") # maps/ggplot2 with Arabic, Japanese...
+showtext_auto()
+font_add("Arial", "C:/Windows/Fonts/arial.ttf") # Arabic
+font_add("MSGothic", "C:/Windows/Fonts/msgothic.ttc") # Japanese
+package("stringi") # stri_reverse For Arabic RTL
 # package("maptools") # merge boundaries in maps
 # package("threadr", github = "skgrange") # dependency of gissr
 # package("gissr", github = "skgrange") # merge boundaries in maps
@@ -341,7 +346,7 @@ interpolate <- function(x, x_vec, y_vec) { # x_vec and y_vec are assumed to be n
   }
   return(y)
 }
-agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T, return = "vec" # min = 0, max = Inf,
+agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = "", end = "", shift = 0, strict_ineq_lower = T, return = "vec", RTL = FALSE # min = 0, max = Inf,
 ) {
   # strict_ineq_lower == T means intervals 50,60 are of type ];] while == F means [;[.
   # shift = 1 (with strict_ineq_lower == T) means levels ]50;60] will be displayed as "[begin]51[sep]60[end]".
@@ -2067,7 +2072,7 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
 #
-plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', 
+plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', base_family = NULL, 
                            breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, negative_stripes = FALSE, stripe_codes = NULL) {
   # /!\ plot_world_map may sometimes fail (due to processor overload): in that case, either close all other windows or check the pdf/png export (which renders generally fine). When testing the function, remove most countries to speed the rendering (cf. example code below).
   if (!is.null(parties)) {
@@ -2112,8 +2117,6 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   df_na <- data.frame(country_map = setdiff(world_map$region, df_countries), mean = if (fill_na) breaks[2] else NA)
   df <- merge(df, df_na, all = T)
   df$group <- cut(df$mean, breaks = breaks, labels = labels)
-
-  base_family <- "" # "Arial"
   
   if (!continuous) {
     if (is.null(colors)) colors <- setNames(c(color(length(breaks)-1, rev_color = rev_color), "#7F7F7F"), c(rev(labels), na_label))
