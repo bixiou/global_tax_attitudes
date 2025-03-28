@@ -378,17 +378,19 @@ agg_thresholds <- function(vec, thresholds, labels = NULL, sep = " - ", begin = 
       level_i <- c(begin, thresholds[i-1] + (shift_left*(i < length(thresholds)) + shift_right*(thresholds[i-1] == min_i))*(i > 2), sep,
         thresholds[i] - (shift_right*(i > 2) + shift_left*(thresholds[i] == next_i))*(i < length(thresholds)), end)
       if (RTL) level_i <- rev(level_i)
-      levels <- c(levels, if (thresholds[i-1]==thresholds[i]) paste0(begin, thresholds[i], end) else paste0(level_i))
+      levels <- c(levels, if (thresholds[i-1]==thresholds[i]) paste0(begin, thresholds[i], end) else paste0(level_i, collapse = ""))
     }
     if (strict_ineq_lower) vec_agg[(vec <= thresholds[i] & vec < max_i & vec > thresholds[i-1]) | (vec == max_i & i == length(thresholds)) | (vec == thresholds[i] & i < length(thresholds) & vec < max_i) | (i == 2 & vec == min)] <- (thresholds[i] + thresholds[i-1])/2
     else vec_agg[(vec < thresholds[i] & vec >= thresholds[i-1] & vec > min_i) | (vec == min_i & i == 2) | (vec == thresholds[i-1] & i > 2 & vec > min_i) | (i == length(thresholds) & vec == max)] <- (thresholds[i] + thresholds[i-1])/2
   }
+  print(levels)
   if (min == -Inf & strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "≤ ", levels[1])
   if (min == -Inf & !strict_ineq_lower) levels[1] <- sub(paste0("-Inf", sep), "< ", levels[1])
   if (max == Inf & strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "> \\1", levels[length(levels)]) # sub(" ", "", sep)
   if (max == Inf & !strict_ineq_lower) levels[length(levels)] <- sub(paste0("(.*)", sep, "Inf"), "≥ \\1", levels[length(levels)]) # sub(" ", "", sep)
   levels <- gsub("000 ", ",000 ",  gsub("-", "–", levels))
   vec_agg[is.na(vec)] <- NA
+  print(vec_agg)
   vec_agg <- as.item(vec_agg, labels = structure(values, names = levels), missing.values = c("",NA), annotation=Label(vec))
   if (return == "vec") return(vec_agg)
   else if (return %in% c("levels", "labels")) return(levels)
