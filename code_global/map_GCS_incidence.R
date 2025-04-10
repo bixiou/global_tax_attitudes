@@ -2495,15 +2495,16 @@ legend("topright", legend = c("World", "Equal p.c.", "Climate Union", "China", "
 # /!\  in first phase, _bau and _gcp are comparable for AFR but not for IND (although they should)
 # PB: E_GCP is wrong because it should match equal p.c. for the union, yet is lower.
 # TODO: sum paid and received should be equal even in first phase
-compute_net_gain <- function(h = .5, price_1 = 10, convergence_price = T, price_2 = carbon_price$ssp2_26msg, year_converge = convergence_year, df = v, discount_rate = .03) { # 
+carbon_price_ssp2_26msg <- carbon_price$ssp2_26msg
+compute_net_gain <- function(h = .5, price_1 = 10, convergence_price = T, price_2 = carbon_price_ssp2_26msg, year_converge = convergence_year, df = v, discount_rate = .03) { # 
   price <- price_2
   for (y in years_v) {
     if (y < year_converge) price[as.character(y)] <- if (convergence_price) barycenter(y, 2020, 10*ceiling(convergence_year/10), price_1, carbon_price$ssp2_26msg[as.character(10*ceiling(convergence_year/10))]) else price_1
-    contributor_y <- 1*(v[[paste0("emissions_gcp_pc_", y)]] > v[[paste0("rights_pc_", y)]])
-    revenues_y <- price[as.character(y)] * sum(pmax(0, v[[paste0("emissions_gcp_pc_", y)]] - v[[paste0("rights_pc_", y)]]) * v[[paste0("pop_", y)]] * v$union, na.rm = T)
-    transfer_pt_y <- revenues_y/sum(pmax(0, v[[paste0("rights_pc_", y)]] - v[[paste0("emissions_gcp_pc_", y)]]) * v[[paste0("pop_", y)]] * v$union, na.rm = T)
-    df[[paste0("gain_pc_", y)]] <- (price[as.character(y)] * contributor_y + transfer_pt_y * (1-contributor_y)) * (v[[paste0("rights_pc_", y)]] - v[[paste0("emissions_gcp_pc_", y)]]) - 
-      h*price_2[as.character(y)] * (v[[paste0("emissions_cf_pc_", y)]] - v[[paste0("emissions_gcp_pc_", y)]]) # /!\ Beware, it's not the same price on the left- and right-hand side in 1st period (left is pre-agreed price_1 while right is abatement cost h*price_2)
+    contributor_y <- 1*(df[[paste0("emissions_gcp_pc_", y)]] > df[[paste0("rights_pc_", y)]])
+    revenues_y <- price[as.character(y)] * sum(pmax(0, df[[paste0("emissions_gcp_pc_", y)]] - df[[paste0("rights_pc_", y)]]) * df[[paste0("pop_", y)]] * df$union, na.rm = T)
+    transfer_pt_y <- revenues_y/sum(pmax(0, df[[paste0("rights_pc_", y)]] - df[[paste0("emissions_gcp_pc_", y)]]) * df[[paste0("pop_", y)]] * df$union, na.rm = T)
+    df[[paste0("gain_pc_", y)]] <- (price[as.character(y)] * contributor_y + transfer_pt_y * (1-contributor_y)) * (df[[paste0("rights_pc_", y)]] - df[[paste0("emissions_gcp_pc_", y)]]) - 
+      h*price_2[as.character(y)] * (df[[paste0("emissions_cf_pc_", y)]] - df[[paste0("emissions_gcp_pc_", y)]]) # /!\ Beware, it's not the same price on the left- and right-hand side in 1st period (left is pre-agreed price_1 while right is abatement cost h*price_2)
   }
   df$npv_gain <- rowSums(sapply(2:8, function(i) { return(10*df[[paste0("gain_pc_", 2000+10*i)]]/((1+discount_rate)^10)^(i-2)) }))
   return(df)
@@ -2741,6 +2742,10 @@ cop <- read.csv("../data/climate_negotiators.csv")
 View(cop)
 View(cop[cop$Progress %in% c(21, 100) | cop$RecipientEmail == "Recipient Email",c("RecipientLastName", "RecipientEmail", "Q13_1", "Q13_2", "Q16", "country", "Q11", "Q7", "Q8_15", "Q15_15", "Q23", "Q9", "Q10", "Q13")])
 median(as.numeric(gsub("+|°C", "", cop$Q23)), na.rm = T) # +2.1°C
+
+rights_summary <- round(v[, c("rights", "rights_proposed", "cumulative_rights_30_future")])
+rownames(rights_summary) <- v$region
+rights_summary
 
 
 ##### "Nature" comment #####
