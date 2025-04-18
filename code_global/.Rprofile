@@ -59,7 +59,7 @@ package("list") # list experiment aka. item count technique: ictreg
 package("weights") # wtd.t.test
 # package("raster") # merge boundaries in maps
 package("sf") # merge boundaries in maps
-package("ggpattern") # stripes in maps
+package("ggpattern") # stripes in maps, geom_map_pattern
 package("showtext") # maps/ggplot2 with Arabic, Japanese...
 showtext_auto()
 font_add("Arial", "C:/Windows/Fonts/arial.ttf") # Arabic
@@ -2093,8 +2093,8 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 #   invisible(list(tdm=tdm, freqTable = d))
 # }
 #
-plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', base_family = NULL, RTL = FALSE,
-                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, negative_stripes = FALSE, stripe_codes = NULL) {
+plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', base_family = NULL, RTL = FALSE, thick_border = FALSE,
+                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, negative_stripes = FALSE, stripe_codes = NULL, strict_ineq_lower = FALSE, sep = " - ", end = "") {
   # /!\ plot_world_map may sometimes fail (due to processor overload): in that case, either close all other windows or check the pdf/png export (which renders generally fine). When testing the function, remove most countries to speed the rendering (cf. example code below).
   if (!is.null(parties)) {
     if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
@@ -2106,6 +2106,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
   df_countries <- df$country_map
   df <- data.frame(country_map = df_countries, code = df$code, mean = as.vector(table))
   
+  if (is.null(labels) & !is.null(breaks)) labels <- sub("≤", "<", sub("≥", ">", agg_thresholds(c(0), breaks, sep = sep, end = end, strict_ineq_lower = strict_ineq_lower, return = "levels")))
   if (condition != "") {
     if (is.null(breaks)) breaks <- c(-Inf, .2, .35, .5, .65, .8, Inf)
     if (is.null(labels)) labels <- c("0-20%", "20-35%", "35-50%", "50-65%", "65-80%", "80-100%")
@@ -2118,7 +2119,8 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
     if (is.null(limits)) limits <- c(-2, 2)
   }
   if (continuous) df$mean <- pmax(pmin(df$mean, limits[2]), limits[1])
-
+  size_border <- 0 + (thick_border)*0.4
+  
   world_map <- map_data(map = "world") # ggplot2
   world_map <- world_map[world_map$region != "Antarctica",] #
   world_map <- world_map[!world_map$region %in% c("Antarctica", "American Samoa", "Micronesia", "Guam", "Niue", "Pitcairn Islands", "Cook Islands", "Tonga", "Kiribati", "Marshall Islands", "French Polynesia", "Fiji", "Samoa", "Wallis and Futuna", "Vanuatu"),]
@@ -2144,7 +2146,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
     if (negative_stripes) {
       pattern <- setNames(c(rep("none", ceiling((length(breaks)-1)/2)), rep("stripe", floor((length(breaks)-1)/2)), "none"), c(rev(labels), na_label))
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
-          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) +
+          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = size_border,  fill = NA) +
           expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
           scale_fill_manual(name = legend, drop = FALSE, values = colors, labels = c(rev(labels), na_label)) +
           geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = fct_rev(group)), pattern_fill = "black", fill = NA, show.legend=TRUE,
@@ -2157,7 +2159,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
       colors_pattern <- stripe_pattern <- colors_pattern[names(colors_pattern) %in% df$pattern]
       stripe_pattern <- setNames(ifelse(grepl("stripe", names(stripe_pattern)), "stripe", "none"), names(stripe_pattern))
       plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = pattern), map = world_map, show.legend=TRUE) + # coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
-          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes) + 0.42*RTL)) +
+          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = size_border,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x + .1*("RUS" %in% stripe_codes), .29 + .03*("RUS" %in% stripe_codes) + 0.42*RTL)) +
           scale_fill_manual(name = legend, drop = FALSE, values = colors_pattern[1:(length(colors_pattern)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks}) +
           geom_map_pattern(data = df, map = world_map, aes(map_id = country_map, pattern = pattern), 
                            pattern_fill = "#7F7F7F", fill = NA, show.legend = FALSE, pattern_density = 0.5, pattern_angle = 45, pattern_spacing = 0.015, pattern_linetype = 0) +
@@ -2167,7 +2169,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
       if (!"RUS" %in% stripe_codes) plot <- plot + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) # /!\ Bug for Russia when proj_coord() is present ("There is a MULTIPOLYGON with length greater than 1")
     } else {
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
-         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = 0,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
+         geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = size_border,  fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
          scale_fill_manual(name = legend, drop = FALSE, values = colors[1:(length(colors)-1)], labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
     }} else {
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
