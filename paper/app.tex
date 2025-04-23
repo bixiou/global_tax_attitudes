@@ -15,7 +15,7 @@ Country-specific raw results are also available as supplementary material files:
 \end{figure}
 
 \begin{figure}[h!]
-    \caption[Absolute support for global climate policies]{Absolute support for global climate policies. \\ Share of \textit{Somewhat} or \textit{Strongly support} (in percent, $n$ = 40,680). The color blue denotes an absolute majority. See Figure \ref{fig:oecd} for the relative support. (Questions \ref{q:scale}-\ref{q:millionaire_tax} of the global survey.)% Reproduced from \citealp{dechezlepretre_fighting_nodate}, Figure A20.)
+    \caption[Absolute support for global climate policies]{Absolute support for global climate policies. \\ Share of \textit{Somewhat} or \textit{Strongly support} (in percent, $n$ = 40,680). The color blue denotes an absolute majority. See Figure \ref{fig:oecd} for the relative support. (Questions \ref{q:scale}-\ref{q:millionaire_tax} of the global survey.)% Reproduced from \citealp{dechezlepretre_fighting_2025}, Figure A20.)
     } 
     \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{../figures/OECD/Heatplot_global_tax_attitudes_positive.pdf}}\label{fig:oecd_absolute}% with dependence on others (absent from OECD): Heatplot_burden_share_all_positive_countries
     {\footnotesize \\ *In Denmark, France and the U.S., the questions with an asterisk were asked differently, cf. Question \ref{q:burden_sharing_asterisk}. } 
@@ -40,6 +40,11 @@ Country-specific raw results are also available as supplementary material files:
 %     \caption[Beliefs about support for the GCS and NR]{Beliefs regarding the support for the GCS and NR. (Questions \ref{q:gcs_belief} and \ref{q:nr_belief})}\label{fig:belief}
 %     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/belief.pdf}} 
 % \end{figure}
+
+\begin{figure}[h!]
+    \caption[Beliefs about support for the GCS and NR]{Beliefs regarding the support for the GCS and NR. (Questions \ref{q:gcs_belief} and \ref{q:nr_belief})}\label{fig:belief}
+    \makebox[\textwidth][c]{\includegraphics[width=.7\textwidth]{../figures/country_comparison/belief_all_mean.pdf}} 
+\end{figure}
 
 \begin{figure}[h!]
     \caption[List experiment]{List experiment: mean number of supported policies. (Section \ref{subsubsec:list_exp}, Question \ref{q:list_exp})}\label{fig:list_exp}
@@ -78,6 +83,8 @@ Country-specific raw results are also available as supplementary material files:
     \end{subfigure}
 \end{figure}
 
+\input{../tables/amce.tex}
+
 \begin{figure}[h!]
     \caption[Perceptions of the GCS]{Perceptions of the GCS. Elements seen as important for supporting the GCS in a 4-Likert scale (in percent). (Question \ref{q:gcs_important})  \hfill (Back~to~Section~\ref{subsubsec:pros_cons})}\label{fig:gcs_important}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/gcs_important_positive.pdf}} 
@@ -111,10 +118,10 @@ Country-specific raw results are also available as supplementary material files:
     \makebox[\textwidth][c]{\includegraphics[width=.8\textwidth]{../figures/country_comparison/donation_mean.pdf}} 
 \end{figure}
 
-% \begin{table}[h]
-%     \caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality. (Question \ref{q:donation})\hfill (Back~to~Section~\ref{subsec:universalistic})} \label{tab:donation}
-%     \makebox[\textwidth][c]{\input{../tables/continents/donation_interaction.tex}}
-% \end{table}
+\begin{table}[h]
+  \caption[Donation to Africa vs. own country]{Donation in case of lottery win, depending on the recipient's (randomly drawn) nationality. (Question \ref{q:donation})\hfill (Back~to~Section~\ref{subsec:universalistic})} \label{tab:donation}
+  \makebox[\textwidth][c]{\input{../tables/continents/donation_interaction.tex}}
+\end{table}
 
 \begin{figure}[h!]
     \caption[Support for a national wealth tax]{Support for a national wealth tax. \\ ``Do you support or oppose a tax on millionaires in [the U.S.] to finance [\textit{US2}: affordable housing and universal childcare/pre-K; \textit{Eu}: finance government hospitals and schools]?'' %financing public services like healthcare, education, and social housing. 
@@ -127,6 +134,14 @@ Country-specific raw results are also available as supplementary material files:
     ``Do you support or oppose a tax on millionaires of all countries to finance low-income countries? \\
     Such tax would finance infrastructure and public services such as access to drinking water, healthcare, and education.'' (Question \ref{q:global_tax})}\label{fig:global_tax}
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/global_tax_support.pdf}} 
+\end{figure}
+
+\begin{figure}
+    \centering 
+    \caption[Preferred share of wealth tax for low-income countries]{Percent of global wealth tax that should finance low-income countries (\textit{mean}). \\ ``Imagine a wealth tax on households with net worth above [\$]5 million, enacted in all countries around the world.  
+    (\dots)  \\
+    What percentage should be pooled to finance low-income countries (instead of retained in the country's national budget)?'' (Question \ref{q:global_tax_global_share})} % TODO? n
+    \includegraphics[width=1\textwidth]{../figures/country_comparison/global_tax_global_share_mean.pdf} \label{fig:global_share_mean}
 \end{figure}
 
 \begin{figure}[h!]
@@ -169,10 +184,10 @@ Country-specific raw results are also available as supplementary material files:
     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_preferred_info_agg.pdf}} 
 \end{figure}
 
-\begin{figure} 
-    \caption[Actual, perceived and preferred amount of foreign aid (mean)]{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Mean} in percent of public spending, Questions \ref{q:foreign_aid_belief}, \ref{q:foreign_aid_preferred})  \hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})}\label{fig:foreign_aid_amount}
-    \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/foreign_aid_amount_mean.pdf} } 
-\end{figure}
+% \begin{figure} 
+%     \caption[Actual, perceived and preferred amount of foreign aid (mean)]{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Mean} in percent of public spending, Questions \ref{q:foreign_aid_belief}, \ref{q:foreign_aid_preferred})  \hfill (Back~to~Section~\ref{subsubsec:support_foreign_aid})}\label{fig:foreign_aid_amount}
+%     \makebox[\textwidth][c]{\includegraphics[width=.9\textwidth]{../figures/country_comparison/foreign_aid_amount_mean.pdf} } 
+% \end{figure}
 
 % \begin{figure} 
 %     \caption{Actual, perceived and preferred amount of foreign aid, with random info (or not) on actual amount. (\textit{Median}, Questions \ref{q:foreign_aid_belief}, \ref{q:foreign_aid_preferred})}\label{fig:foreign_aid_amount}
@@ -206,10 +221,10 @@ Country-specific raw results are also available as supplementary material files:
 %     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_condition_positive.pdf}} 
 % \end{figure}
 
-% \begin{figure}[h!]
-%     \caption[Reasons why foreign aid should not be increased]{Reasons why foreign aid should not be increased (in percent). [Asked to those who wish a decrease or stability of foreign aid.] (Question \ref{q:foreign_aid_no})}\label{fig:foreign_aid_no}
-%     \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_no_positive.pdf}} 
-% \end{figure}
+\begin{figure}[h!]
+    \caption[Reasons why foreign aid should not be increased]{Reasons why foreign aid should not be increased (in percent). [Asked to those who wish a decrease or stability of foreign aid.] (Question \ref{q:foreign_aid_no})}\label{fig:foreign_aid_no}
+    \makebox[\textwidth][c]{\includegraphics[width=\textwidth]{../figures/country_comparison/foreign_aid_no_positive.pdf}} 
+\end{figure}
 
 % \begin{figure}[h!]
 %     \caption[Willingness to sign a real-stake petition]{Willingness to sign real-stake petition for the Global Climate Scheme or National Redistribution. (Question \ref{q:petition})}\label{fig:petition}
@@ -485,7 +500,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
         \input{"../tables/global_tax_support_pos_AtC_keepC_hi"}
         }
     }            
-        {\footnotesize \textit{Note}: The table shows the results of regressions on standardized variables measuring respondents' beliefs and perceptions. Treatment indicators and individual socioeconomic characteristics are included but not displayed. Robust standard errors are in parentheses; $^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01. See Appendix A-1 of \citeR{dechezlepretre_fighting_nodate} for variable definitions. }
+        {\footnotesize \textit{Note}: The table shows the results of regressions on standardized variables measuring respondents' beliefs and perceptions. Treatment indicators and individual socioeconomic characteristics are included but not displayed. Robust standard errors are in parentheses; $^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01. See Appendix A-1 of \citeR{dechezlepretre_fighting_2025} for variable definitions. }
 \end{table}
 
 \begin{table}[h]\label{tab:tax_determinant_mi}
@@ -495,7 +510,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
         \input{"../tables/global_tax_support_pos_AtC_keepC_mi"}
         }
     }            
-        {\footnotesize \textit{Note}: The table shows the results of regressions on standardized variables measuring respondents' beliefs and perceptions. Treatment indicators and individual socioeconomic characteristics are included but not displayed. Robust standard errors are in parentheses; $^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01. See Appendix A-1 of \citeR{dechezlepretre_fighting_nodate} for variable definitions. }
+        {\footnotesize \textit{Note}: The table shows the results of regressions on standardized variables measuring respondents' beliefs and perceptions. Treatment indicators and individual socioeconomic characteristics are included but not displayed. Robust standard errors are in parentheses; $^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01. See Appendix A-1 of \citeR{dechezlepretre_fighting_2025} for variable definitions. }
 \end{table}
 
 \clearpage
@@ -529,7 +544,7 @@ Estimates of the net gains from the Global Climate Scheme are necessarily imprec
     }
 \end{table}
 
-Similar tables for the global surveys can be found in \citeRt{dechezlepretre_fighting_nodate}.
+Similar tables for the global surveys can be found in \citeRt{dechezlepretre_fighting_2025}.
 
 \clearpage
 \section{Attrition analysis}\label{app:attrition}
