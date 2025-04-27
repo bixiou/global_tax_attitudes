@@ -1,0 +1,60 @@
+---
+title: "correspondence_price_rights"
+output:
+  html_document: default
+  pdf_document: default
+date: "2025-04-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In case of global revenue use in proportion to $r_i$ of prices $p_i$, country's $i$ transfer $t_i$ is:
+$$t_i = r_i p - e_i p_i$$
+
+Denote $e^*_i(p_i)$ the emissions ``demand curve'': $e_i$ maximizing $u_i(c_i, e_i)$ s.t. $y_i = c_i + (p_e + \max\{0; p_i\}) e_i$.
+For given world emissions $E$, define let $p^*$ be the price such that $\sum_i e^*_i(p^*) \cdot n_i = E$.
+Let $g_i$ be country's $i$ net gain (or "equivalent transfer") in situation $j=(t_i, p_i)$ compared to the situation $c*=(0, p^*)$ in terms of equivalent variation. Define $V_i(p_i)$ the equivalent variation between situation $a=(0, p_i)$ and $c*$:
+$$g_i = y^j_i - y^{c*}_i = t_i + V_i(p_i)$$
+$$\begin{aligned}
+u^a_i &= u^{c*}_i \\
+u^a_i &= u_i(c_i + V_i(p_i), e^*_i(p_i)) = u^{c*}_i + V_i(p_i) \partial u_{i1} + (p_i - p^*) \partial u_{i2} \partial e^*_i  \\
+u^{c*}_i &= u_i(c_i, e^*_i(p^*))
+\end{aligned}$$
+
+Therefore
+$$V_i(p_i) = -(p_i - p^*) \partial u_{i2} \partial e^*_i / \partial u_{i1}$$
+
+Comparing situation (d) with differentiated prices but equal rights: $d=(ep^* - e_i p_i, p_i)$ with 
+situation (u) with a uniform price but differentiated rights: $u=(r_i p^* - e_i p^*, p^*)$, we have:
+$$\begin{aligned}
+g^d_i &= ep^* - e_i p_i + V_i(p_i) \\
+g^u_i &= r_i p^* - e_i p^*  \\
+g^u_i - g^d_i &= (r_i - e) p^* + (p_i - p^*) e_i - V_i(p_i) = (r_i - e) p^* + (p_i - p^*) \cdot (e_i + \partial u_{i2} \partial e^*_i / \partial u_{i1})
+\end{aligned}$$
+
+Let $\pi^j_i$ the "equivalent price" such that $j=(t_i, p_i)$ is utility-equivalent to $j*=(0, \pi^j_i)$. 
+$$\begin{aligned}
+u^j_i &= u^{j*}_i \\
+u^{j*}_i &= u_i(c_i, e^*_i(\pi_i)) \\
+u^j_i &= u_i(c_i + t_i, e^*_i(p_i))  = u^{j*}_i + t_i \partial u{i1} + (p_i - \pi_i) \partial u_{i2} \partial e^*_i
+\end{aligned}$$
+
+Therefore, the equivalent price is:
+$$\pi_i = p_i - \frac{t_i \partial u{i1}}{-\partial u_{i2} \partial e^*_i(\pi_i)} $$
+The equivalent price is ill-defined in case it is negative in the above formula. Hence, when $p_i/t_i < \frac{t_i \partial u{i1}}{-\partial u_{i2} \partial e^*_i(\pi_i)}$, we instead use the notion of "equivalent transfer at zero price": $t^{0*}_i$ such that $(t^{0*}_i, 0)$ (with $\pi_i = 0$) is utility-equivalent to $j=(t_i, p_i)$.
+$$\begin{aligned}
+u^j_i &= u^{0*}_i \\
+u^{0*}_i &= u_i(c_i + t^{0*}_i, e^*_i(0)) \\
+u^j_i &= u_i(c_i + t_i, e^*_i(p_i))  = u^{0*}_i + (t_i - t^{0*}_i) \partial u{i1} + p_i \partial u_{i2} \partial e^*_i \\
+\Rightarrow t^{0*}_i &= t_i - p_i \frac{-\partial u_{i2} \partial e^*_i(0)}{\partial u{i1}}
+\end{aligned}$$
+
+
+```{r, echo=FALSE}
+
+
+
+```
+

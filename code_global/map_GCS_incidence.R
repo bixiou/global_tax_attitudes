@@ -2354,7 +2354,7 @@ sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$
 # # /!\ The site also shows that taxes would not only increase for the top 1%, e.g. for percentile 98: 30.1->30.9% 
 
 
-##### Realistic scenario #####
+##### Realistic scenario / carbon budgets by country #####
 # Approach: To assess the net gain from the GCP, I take as counterfactual a scenario with the same emissions allowances but no carbon trading, so different location of emissions.
 # Counterfactual: Each country's emissions is capped by the equal pc allocation. Carbon price is higher than the international GCP one for high emitters and zero for low ones.
 #                 National price times emissions reductions gives an upper bound of true cost as they were undertaken because their cost was lower than the national price.
@@ -2445,7 +2445,9 @@ convergence_year <- 2048
 for (y in years_v) {
   correction_gcp_y <- pmin(v[[paste0("rights_pc_", y)]][v$region == "union"], v[[paste0("emissions_bau_pc_", y)]][v$region == "union"])/wtd.mean(df[[paste0("emissions_pc_", y)]][df$region_tiam %in% regions_union], df[[paste0("pop_", y)]][df$region_tiam %in% regions_union])
   for (r in unique(df$region_tiam)) v[[paste0("emissions_gcp_pc_", y)]][v$region == r] <- correction_gcp_y * wtd.mean(df[[paste0("emissions_pc_", y)]][df$region_tiam == r], df[[paste0("pop_", y)]][df$region_tiam == r])
+  v[[paste0("emissions_gcp_pc_", y)]][v$region == "World"] <- wtd.mean(v[[paste0("emissions_gcp_pc_", y)]], v[[paste0("pop_", y)]], na.rm = T)
   v[[paste0("emissions_gcp_pc_", y)]][v$region == "union"] <- wtd.mean(v[[paste0("emissions_gcp_pc_", y)]][v$union == T], v[[paste0("pop_", y)]][v$union == T])
+  v[[paste0("emissions_gcp_", y)]] <- v[[paste0("emissions_gcp_pc_", y)]] * v[[paste0("pop_", y)]]
   v[[paste0("emissions_cf_pc_", y)]] <- pmin(v[[paste0("emissions_bau_pc_", y)]], v[[paste0("rights_pc_", y)]])
   if (y < convergence_year) v[[paste0("emissions_cf_pc_", y)]] <- barycenter(y, 2020, convergence_year, v[[paste0("emissions_bau_pc_", y)]], v[[paste0("emissions_cf_pc_", y)]])
 }
@@ -2604,8 +2606,8 @@ for (y in seq(2020, 2080, 10)) { # CHI: its 2°C pathway
 # => For countries with excess emissions and GDP = (1+x)*world_GDP (x < 1), emissions rights = footprint*(1-x) + equal_pc*x, i.e. price paid to World is multiplied by x.
 #                                                                        OR emissions rights = equal_pc * (x + extra*(1-x))
 
-types <- c("emissions_bau", "rights", "rights_proposed", "emissions_formula", "emissions_target", "emissions_ndc", "cumulative_rights")
-carbon_budgets <- matrix(NA, nrow = length(v$region), ncol = 7, dimnames = list("region" = v$region, "type" = types))
+types <- c("emissions_bau", "rights", "rights_proposed", "emissions_formula", "emissions_target", "emissions_ndc", "cumulative_rights", "emissions_gcp", "pop")
+carbon_budgets <- matrix(NA, nrow = length(v$region), ncol = 9, dimnames = list("region" = v$region, "type" = types))
 
 for (t in types) if (all(paste0(t, "_", seq(2030, 2080, 10)) %in% names(v))) {
   v[, t] <- round((5*rowSums(v[, paste0(t, "_", c(2030, 2080))]) + 10*rowSums(v[, paste0(t, "_", seq(2040, 2070, 10))]))/1e9) }
@@ -2666,6 +2668,9 @@ v$rights_proposed[v$region == "union"] <- sum(v$rights_proposed[v$region %in% re
 for (r in v$region) for (y in seq(2020, 2080, 10)) v[[paste0("rights_proposed_pc_", y)]] <- v[[paste0("rights_proposed_", y)]]/v[[paste0("pop_", y)]]
 for (r in v$region) for (y in seq(2020, 2080, 10)) v[[paste0("emissions_ndc_pc_", y)]] <- v[[paste0("emissions_ndc_", y)]]/v[[paste0("pop_", y)]]
 
+v$emissions_gcp_pc <- v$emissions_gcp/v$pop
+v$cumulative_rights_30_future_pc <- v$cumulative_rights_30_future/v$pop
+v$rights_proposed_pc <- v$rights_proposed/v$pop
 (carbon_budgets <- as.data.frame(round(v[,c(types, "cumulative_rights_30_future", "rights_gcp")]), row.names = v$region))
 
 # sum(carbon_budgets[v$region %in% regions_rich, "emissions_bau"])
@@ -2735,6 +2740,29 @@ plot(seq(2025, 2050, 5), v[v$region == "CHI", paste0("emissions_target_pc_",  se
 lines( years_v[2:7], v[v$region == "CHI", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'red', lwd = 2, lty = 1, xlab = "", ylab = "")
 grid() 
 legend("topright", legend = c("Proposal, union allowances", "2°C decarbonization pathway"), col = "red", lwd = 2, lty = 1:2)
+
+
+##### Differentiated prices correspondence: case with equal pc revenue use ######
+# r_i = e - d_i*e_i = e - e_i*(p_i - p)/p => p_i/p = e/e_i + 1 - r_i/e_i = 1 + (e - r_i)/e_i
+# If e_i = r_i => p_i/p = e/r_i i.e. r_i = e*p/p_i
+
+# gives p_i/p in function of r_i, e_i, e
+price_from_rights <- function(rights_pc, emissions_pc = rights_pc, global_emissions_pc = NULL, names = v$region) {
+  if (is.null(global_emissions_pc) & "World" %in% names) global_emissions_pc <- emissions_pc[names == "World"]
+  return(setNames(global_emissions_pc/emissions_pc + 1 - rights_pc/emissions_pc, names))
+}
+# gives r_i in function of e, p_i/p, e_i
+rights_from_price <- function(price_scaling, emissions_pc = NULL, global_emissions_pc = NULL, names = v$region) {
+  if (is.null(global_emissions_pc) & "World" %in% names) global_emissions_pc <- emissions_pc[names == "World"]
+  if (is.null(emissions_pc)) rights <- global_emissions_pc/price_scaling
+  else rights <- global_emissions_pc + emissions_pc*(1 - price_scaling)
+  return(setNames(rights, names))
+}
+price_from_rights(rights_pc = v$rights_proposed_pc_2040, emissions_pc = v$emissions_gcp_pc_2040)
+
+
+##### Differentiated prices correspondence: case with domestic revenue use ######
+
 
 
 ##### Poll COP #####

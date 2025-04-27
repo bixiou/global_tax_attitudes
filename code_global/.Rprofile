@@ -69,6 +69,7 @@ package("stringi") # stri_reverse For Arabic RTL
 # package("threadr", github = "skgrange") # dependency of gissr
 # package("gissr", github = "skgrange") # merge boundaries in maps
 # package("maps") # merge boundaries in maps
+package("httr")
 package("rnaturalearth")
 
 # package("extrafont") # maps/ggplot2 with Arabic, Japanese...
