@@ -2376,7 +2376,19 @@ sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$
 # 3. Compute P_1(h).
 
 # emissions_bau: emissions-based, current policies (and after 2030, same reduction rate in emissions intensity) according to van de Ven et al. (2023)
+#>rights: equal p.c. (population evaluated at each period)
+#>cumulative_rights_30_future: equal p.c. (population evaluated in 2030): global carbon budget for 2030-2080 divided by population in 2030.
+#>rights_proposed: cumulative_rights_30_future except for WEU (its NDC-LTT) and for China (its emissions_target: He et al. (2022) trajectory).
+# rights_proposed_20xx: trajectory that aggregates to rights_proposed and is shaped according to emissions_formula + manual adjustments (shifting emissions rights intertemporally)
 # emissions_cf: rights-based, starts at BAU and converges in 2048 at min(BAU, equal p.c.)
+# emissions_target: equal_pc=rights for HIC (except WEU), BAU for LMIC (except CHI), emissions_cf for WEU, He et al. (2022) trajectory for CHI
+# emissions_formula: attempt to shift eq p.c. rights from AFR to CHI (now just used to adjust the temporal allocation of rights_proposed, make it closer to BAU): mixture of BAU and rights with a higher share of rights (1) for HIC and a lower (0.33) for LMICs
+#                    if (gdp > 2*mean) min(bau, rights) else: rights + .66*(bau - rights)*(lambda if bau > rights, i.e. all but AFR, else 1) with lambda to preserve the cumulative right
+# emissions_ndc: emissions in the NDC-LTT scenario of van de Van et al. (23)
+# rights: equal p.c. (population evaluated at each period) carbon budget over 2030-2080
+# cumulative_rights: equal p.c. (population evaluated at each period) carbon budget over 2030-2080 taking into account carbon debt 1990-2029
+# cumulative_rights_30: equal p.c. (population evaluated in 2030) carbon budget over 2030-2080 taking into account carbon debt 1990-2029
+# rights_gcp: rights corresponding to GCP adj
 # emissions_gcp: emissions-based, emissions GCP (from other model, incl. opt-out) scaled to min(BAU, equal p.c.) for the whole union
 
 # 0. Prepare data from van de Ven et al. (2023)
@@ -2612,13 +2624,13 @@ carbon_budgets <- matrix(NA, nrow = length(v$region), ncol = 9, dimnames = list(
 for (t in types) if (all(paste0(t, "_", seq(2030, 2080, 10)) %in% names(v))) {
   v[, t] <- round((5*rowSums(v[, paste0(t, "_", c(2030, 2080))]) + 10*rowSums(v[, paste0(t, "_", seq(2040, 2070, 10))]))/1e9) }
 
-regions_correction <- v$region %in% regions_union & !v$region %in% regions_rich
+regions_correction <- v$region %in% regions_union & !v$region %in% regions_rich # factor_correcting_excess_bau = lambda = .47
 (factor_correcting_excess_bau <- sum(pmax(0, v[regions_correction | v$region == "WEU", "rights"] - v[regions_correction | v$region == "WEU", "emissions_bau"]))/
   sum(pmax(0, v[regions_correction, "emissions_bau"] - v[regions_correction, "rights"])))
 
-factor_grandfathering <- .66
+factor_grandfathering <- .66 # = a
 for (y in seq(2020, 2080, 10)) { # TODO!
-  v[[paste0("emissions_formula_", y)]] <- pmin(v[[paste0("emissions_bau_", y)]], v[[paste0("rights_", y)]]) 
+  v[[paste0("emissions_formula_", y)]] <- pmin(v[[paste0("emissions_bau_", y)]], v[[paste0("rights_", y)]]) # for rich regions: min(equal p.c., BAU)
   v[[paste0("emissions_formula_", y)]][regions_correction] <- (v[[paste0("rights_", y)]] + factor_grandfathering*factor_correcting_excess_bau*(
     v[[paste0("emissions_bau_", y)]] - v[[paste0("rights_", y)]]))[regions_correction]
   v[[paste0("emissions_formula_", y)]][v$region == "AFR"] <- (v[[paste0("rights_", y)]] + factor_grandfathering*(v[[paste0("emissions_bau_", y)]] - v[[paste0("rights_", y)]]))[v$region == "AFR"]

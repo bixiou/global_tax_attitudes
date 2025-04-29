@@ -1,0 +1,236 @@
+\documentclass[12pt,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella} % Palatino text only
+\usepackage{mathpazo}  % Palatino math & text
+\usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
+% \linespread{2}
+% \usepackage[super,comma,sort]{natbib} % WPcomment
+\usepackage[round,sort&compress]{natbib} % NCCcomment
+% \usepackage[natbibapa]{apacite}
+% \bibliographystyle{apacite} 
+\usepackage{url} % [hyphens]
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation. Incompatible with apacite.
+% \usepackage{hyperref}
+\usepackage[pagebackref]{hyperref} % Incompatible with apacite.
+% \usepackage{hyperref}
+% \usepackage{multibib} % incompatible with backref
+\hypersetup{
+  colorlinks=true, % breaklinks=true,
+  urlcolor=purple,    % color of external links
+  linkcolor=blue,  % color of toc, list of figs etc.
+  citecolor=violet,   % color of links to bibliography
+}
+\usepackage{bm}
+\usepackage{indentfirst}
+\setcitestyle{aysep={}} 
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{supertabular}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{gensymb}
+\usepackage{textcomp}
+\usepackage{placeins} % Floats appear in their section (to use with \FloatBarrier or [section])
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{fullpage}
+\usepackage{morefloats}
+\usepackage{makecell}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{fancyhdr}
+\usepackage{tocbibind} % Adds biblio to ToC
+% \usepackage{tocloft}
+\usepackage{titletoc} % Adds title to ToC (use with tocloft?)
+\usepackage[export]{adjustbox}
+\usepackage[anythingbreaks]{breakurl} % for links
+\usepackage{multicol}
+\usepackage{lineno}
+\usepackage{endnotes}
+\let\footnote=\endnote
+% \linenumbers
+\makeatletter
+\renewcommand\tableofcontents{% removes "Contents" from ToC
+    \@starttoc{toc}%
+}
+\makeatother
+\newsavebox\ltmcbox % For net gain table over two columns
+%\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
+%\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
+\renewcommand{\floatpagefraction}{.99}
+\newenvironment{stretchpars}{\par\setlength{\parfillskip}{0pt}}{\par} % to justify a line
+
+
+% \newcites{App}{Appendix References}
+
+% \captionsetup[table]{skip=-10pt}
+% \begin{document}
+
+% \maketitle
+
+% % \clearpage
+% \renewcommand{\bibsection}{\section{\refname}}
+% \bibliographystyle{naturemag}
+% \bibliography{global_tax_attitudes}
+% % \stopcontents
+
+% \end{document}
+
+
+\title{Global Policies to Phase Out Fossil Fuels } 
+
+% \author{Adrien Fabre$^{1,2}$} % WPcomment
+\author{Adrien Fabre\footnote{CNRS, CIRED. E-mail: adrien.fabre@cnrs.fr.}}
+
+\date{\today} % NCCcomment
+
+\begin{document}
+
+\sloppy
+\maketitle
+
+% \begin{center}
+% {\textbf{\href{https://github.com/bixiou/domestic_poverty_eradication/raw/main/paper/poverty.pdf}{Link to most recent version}}}
+% \end{center}
+
+% WPcomment
+% \begin{affiliations}
+% \item CNRS
+% \item CIRED
+% \end{affiliations}
+
+% \begin{small} % NCCcomment
+\begin{abstract}
+% /200 words
+
+\end{abstract}
+% \textbf{JEL codes:}
+% \textbf{Keywords:} 
+
+\clearpage
+\tableofcontents
+
+% \onehalfspacing % NCCcomment
+
+%\clearpage
+
+\section{Introduction}% NCCcomment
+
+% Start paper on Fossil-Free Union, then expand.
+
+% Argue in favor of FFU: guarantee the union respects its targets; determines burden sharing.
+% Carbon price floors very important as it's binding in first years. Must be complemented by the obligation to pay higher price if country reduces its domestic carbon price / climate regulations. In effect, acts as a generalized JTEP (more favorable to LDCs). 
+
+% PB of FFU: in first phase with carbon price floor, China loses as it has less rights among the union than its emissions share in the union. => No, I think it's been computed so that China doesn't lose. The above effect is mitigated by the carbon trade + larger rights.
+% PB of SU: same issue if partial participation => No because China is allowed to skip the redistribution part and just apply the FFU.
+% => Think of treaty rules
+
+% Pb du FFU: EU has no financial interest that US joins (as long as EU is a net contributor => determine loss of EU when US joins; determine date of US joining that makes EU indifferent). Indeed, EU pays price*(emissions - rights). If US joins, price will increase and (e - r) be constant. If instead of fixing the rights we fixed the price, EU would have interest that US joins, as its rights (equal to union average) would increase. EU would also have interest of US joining in the case 1% GNI return in fct of pop.
+% => What rules leave no one worse off when big emitters join? What rules leave big emitters indifferent when bigger emitters join?
+
+% Global policies to phase out fossil fuels 
+% - Principles: non-universal, open, redistributive, non-dichotomic
+% - Climate justice -> justice (burden-sharing options, criticism of CERF, grandfathering would be plausible in absence of broader inequality/justice hence can make sense within country)
+% - Finance options (multilateral guarantees, climate bonds, money creation - Dafermos...)
+% - Common standards (ships, cars, banning coal or oil exploration)
+% - Pricing:
+% -- equivalence differentiated prices p_i = p + a_i where mean(p_i)=p  and differentiated rights per capita r_i : r_i = p*e - a_i*e_i, where e_i is country's emission pc and e global average.
+% -- uniform price better, countries can always add policies to e.g. subsidize fuels if they wish
+% -- for acceptability + fairness, we need departures from equal pc
+% -- simulations using NICE
+% -- critiques of other proposals: Pezsko, Edenhofer, Nordhaus, Piketty, rationing...
+% -- feasibility of global redistributive policy: surveys, informal support of diplomats (even EU saying govts is pb, they personally like)
+% -- call for expert contributions and common proposal
+
+% \begin{figure}[b!]
+%   \caption[Title.]{Caption
+%   }\label{fig:antipoverty_tax_7}
+%   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]
+%   {../figures/antipoverty_2_tax_7_average.pdf}}
+% \end{figure}
+
+% \begin{figure}[h!]
+%     \caption[Title.]{Caption.}\label{fig:kenya}
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_a.}\label{fig:kenya_policies}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_policies.pdf}
+%   \end{subfigure} \;
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_b.}\label{fig:kenya_cap}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_cap.pdf}
+%   \end{subfigure}
+%   \\ \quad \\
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_c.}\label{fig:kenya_tax}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_tax.pdf}
+%   \end{subfigure} \;
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_d.}\label{fig:kenya_floor}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_floor.pdf}
+%   \end{subfigure}
+% \end{figure}  
+
+
+\section{Discussion\label{sec:conclusion}} 
+
+% \begin{methods}  % WPcomment
+  \begin{small} % NCCcomment
+% \section*{\normalsize Data and code availability}
+
+% \end{methods} % WPcomment
+\end{small}  % NCCcomment
+
+\theendnotes
+
+\renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
+\bibliographystyle{plainnaturl_clean} % NCCcomment
+\bibliography{poverty}
+% \input{app} 
+
+\begin{itemize}
+\item[Acknowledgments] %I am grateful to 
+%  \item[Competing Interests] I declare that I also serve as president of Global Redistribution Advocates.
+\item[JEL codes] 
+\item[Keywords]  
+\item[Correspondence] Correspondence and requests for materials should be addressed to Adrien Fabre~(email: adrien.fabre@cnrs.fr).
+\end{itemize}
+% \end{addendum}
+
+% \onehalfspacing
+% \clearpage
+\listoftables
+\listoffigures
+
+\appendix % NCCcomment
+\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\thefigure}{A\arabic{figure}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\clearpage
+\section{Appendix}
+
+
+\subsection{Additional tables}
+% \input{../tables/income.tex}
+
+
+\end{document}
