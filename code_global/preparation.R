@@ -168,7 +168,7 @@ weighting <- function(e, country, printWeights = T, variant = NULL, min_weight_f
   freqs <- list()
   for (v in vars) {
     if (!(v %in% names(e))) warning(paste(v, "not in data"))
-    e[[v]] <- as.character(e[[v]])
+    e[[v]] <- as.character(e[[v]], include.missings = T)
     e[[v]][is.na(e[[v]])] <- "NA"
     var <- ifelse(v %in% names(levels_quotas), v, paste(country, v, sep="_"))
     if (!(var %in% names(levels_quotas))) warning(paste(var, "not in levels_quotas"))

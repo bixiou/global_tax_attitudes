@@ -2754,7 +2754,7 @@ grid()
 legend("topright", legend = c("Proposal, union allowances", "2°C decarbonization pathway"), col = "red", lwd = 2, lty = 1:2)
 
 
-##### Differentiated prices correspondence: case with equal pc revenue use ######
+##### Differentiated prices correspondence: case with global equal pc revenue use ######
 # r_i = e - d_i*e_i = e - e_i*(p_i - p)/p => p_i/p = e/e_i + 1 - r_i/e_i = 1 + (e - r_i)/e_i
 # If e_i = r_i => p_i/p = e/r_i i.e. r_i = e*p/p_i
 
@@ -2772,9 +2772,31 @@ rights_from_price <- function(price_scaling, emissions_pc = NULL, global_emissio
 }
 price_from_rights(rights_pc = v$rights_proposed_pc_2040, emissions_pc = v$emissions_gcp_pc_2040)
 
+rights_from_price(c(75, 75, 75, 75, 50, 50, 25, 25)/60, emissions_pc = c(20, 15, 10, 5, 8, 5, 3, 1), 
+                  global_emissions_pc = 4, names = c("US", "JP", "DE", "ES", "CN", "BR", "IA", "AF"))
+
 
 ##### Differentiated prices correspondence: case with domestic revenue use ######
+# cf. correspondence_price_rights
 
+
+##### Temperature following FFU #####
+sum(bau[, paste0("emissions_", 2020:2029)])/1e9 # 385 Gt
+sum(bau[!bau$code %in% prudent, paste0("emissions_", 2030:2100)])/1e9 # 778 Gt
+sum(df[df$code %in% prudent, paste0("emissions_", 2030:2100)])/1e9 # 425 Gt
+sum(bau[!bau$code %in% c(central, "KOR"), paste0("emissions_", 2030:2100)])/1e9 # 669 Gt
+sum(df[df$code %in% c(central, "KOR"), paste0("emissions_", 2030:2100)])/1e9 # 463 Gt
+sum(bau[!bau$code %in% setdiff(c(central, "KOR"), "JPN"), paste0("emissions_", 2030:2100)])/1e9 # 719 Gt
+sum(df[df$code %in% setdiff(c(central, "KOR"), "JPN"), paste0("emissions_", 2030:2100)])/1e9 # 444 Gt
+# Rights union FFU: central + KOR: 653 Gt
+# Temperature FFU: +2.15°C  # With BAU outside club of 387 Gt instead of 691 Gt, we get 2.00°C
+barycenter((385 + 669 + 653)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
+
+# Temperature (WEU+EEU) (I withdraw from centralJPN = 11Gt): +2.17°C
+barycenter((385 + 719 + 653 - 11)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
+
+# Temperature prudent: +2.20°C
+barycenter((385 + 778 + 653 - 19)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 
 
 ##### Poll COP #####
