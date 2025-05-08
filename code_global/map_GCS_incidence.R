@@ -2382,7 +2382,7 @@ sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$
 # rights_proposed_20xx: trajectory that aggregates to rights_proposed and is shaped according to emissions_formula + manual adjustments (shifting emissions rights intertemporally)
 # emissions_cf: rights-based, starts in 2020 at BAU and converges in 2048 at min(BAU, equal p.c.)
 # emissions_cc: rights-based, starts in 2030 at BAU and converges in 2050 at equal p.c.
-# emissions_target: equal_pc=rights for HIC (except WEU), BAU for LMIC (except CHI), emissions_cf for WEU, He et al. (2022) trajectory for CHI
+# emissions_target: equal_pc=rights for HIC (except WEU), BAU for LMIC (except CHI), emissions_cf for WEU, He et al. (2022) trajectory for CHI => He et al. gives 154 territorial, we use instead 147 from emissions_ndc to approach consumption-based
 # emissions_formula: attempt to shift eq p.c. rights from AFR to CHI (now just used to adjust the temporal allocation of rights_proposed, make it closer to BAU): mixture of BAU and rights with a higher share of rights (1) for HIC and a lower (0.33) for LMICs
 #                    if (gdp > 2*mean) min(bau, rights) else: rights + .66*(bau - rights)*(lambda if bau > rights, i.e. all but AFR, else 1) with lambda to preserve the cumulative right
 # emissions_ndc: emissions in the NDC-LTT scenario of van de Van et al. (23)
@@ -2406,21 +2406,22 @@ vdv$Variable[vdv$Variable == "Population"] <- "pop"
 vdv$Variable[vdv$Variable == "GDP|PPP"] <- "gdp"
 vbau <- vdv[vdv$Scenario == "CP_EI", names(vdv) != "Scenario"] # Current policies. Others are: Baseline, NDC_EI, NDC_LTT, CP_EI, baseline.
 vndc <- vdv[vdv$Scenario == "NDC_LTT" & vdv$Variable != "price", names(vdv) != "Scenario"] # NDC_EI = BAU for AFR, CHI, FSU, IND, ODA, MEX, MEA
+vndc30 <- vdv[vdv$Scenario == "NDC_EI" & vdv$Variable != "price", names(vdv) != "Scenario"] # NDC_EI = BAU for AFR, CHI, FSU, IND, ODA, MEX, MEA
 vbau$Variable[vbau$Variable == "Emissions|CO2|Energy and Industrial Processes"] <- "emissions_bau"
 vndc$Variable[vndc$Variable == "Emissions|CO2|Energy and Industrial Processes"] <- "emissions_ndc"
+vndc30$Variable[vndc30$Variable == "Emissions|CO2|Energy and Industrial Processes"] <- "emissions_ndc30"
 vbau <- vbau %>% pivot_longer(cols = starts_with("X"), names_to = "Year", values_to = "Value") %>% mutate(Year = gsub("X", "", Year)) %>%
   unite("Variable_Year", Variable, Year, sep = "_") %>% pivot_wider(names_from = "Variable_Year", values_from = "Value")
 vndc <- vndc %>% pivot_longer(cols = starts_with("X"), names_to = "Year", values_to = "Value") %>% mutate(Year = gsub("X", "", Year)) %>%
   unite("Variable_Year", Variable, Year, sep = "_") %>% pivot_wider(names_from = "Variable_Year", values_from = "Value")
-v <- merge(vndc, vbau)
-vndc30 <- vdv[vdv$Scenario == "NDC_EI" & vdv$Variable != "price", names(vdv) != "Scenario"] # NDC_EI = BAU for AFR, CHI, FSU, IND, ODA, MEX, MEA
-vndc30$Variable[vndc30$Variable == "Emissions|CO2|Energy and Industrial Processes"] <- "emissions_ndc30"
 vndc30 <- vndc30 %>% pivot_longer(cols = starts_with("X"), names_to = "Year", values_to = "Value") %>% mutate(Year = gsub("X", "", Year)) %>%
   unite("Variable_Year", Variable, Year, sep = "_") %>% pivot_wider(names_from = "Variable_Year", values_from = "Value")
+v <- merge(vndc, vbau)
 v <- merge(vndc30, v)
 names(v)[1] <- "region"
 for (y in years_v) v[[paste0("emissions_bau_", y)]] <- 1e6*v[[paste0("emissions_bau_", y)]]
 for (y in years_v) v[[paste0("emissions_ndc_", y)]] <- 1e6*v[[paste0("emissions_ndc_", y)]]
+for (y in years_v) v[[paste0("emissions_ndc30_", y)]] <- 1e6*v[[paste0("emissions_ndc30_", y)]]
 # Create union
 regions_union <- c("AFR", "CHI", "IND", "CSA", "MEX", "ODA", "EEU", "WEU", "JPN", "SKO") 
 regions_rich <- c("AUS", "CAN", "JPN", "SKO", "USA", "WEU") # MEA EEU
@@ -2441,13 +2442,14 @@ for (y in years_v) v[[paste0("rights_pc_", y)]] <- emissions_pc[as.character(y)]
 for (y in years_v) v[[paste0("pop_", y)]] <- 1e6 * v[[paste0("pop_", y)]]
 for (y in years_v) v[[paste0("emissions_bau_pc_", y)]] <- v[[paste0("emissions_bau_", y)]]/v[[paste0("pop_", y)]]
 for (y in years_v) v[[paste0("emissions_ndc_pc_", y)]] <- v[[paste0("emissions_ndc_", y)]]/v[[paste0("pop_", y)]]
+for (y in years_v) v[[paste0("emissions_ndc30_pc_", y)]] <- v[[paste0("emissions_ndc30_", y)]]/v[[paste0("pop_", y)]]
 # Add GCP
 df$region_tiam <- c("ODA", "AFR", "EEU", "MEA", "CSA", "FSU", "AUS", "WEU", "FSU", "AFR", "WEU", "AFR", "AFR", "ODA", "EEU", "MEA", "CSA", "EEU", "FSU", "CSA", "CSA", "CSA", "CSA", "MEA", "ODA", "AFR", "AFR", "CAN", "WEU", "CSA", 
                     "CHI", "AFR", "AFR", "AFR", "AFR", "CSA", "AFR", "AFR", "CSA", "CSA", "EEU", "EEU", "WEU", "AFR", "WEU", "CSA", "AFR", "CSA", "AFR", "AFR", "WEU", "EEU", "AFR", "WEU", "AUS", "WEU", "AFR", "WEU", "FSU", "AFR", 
                     "AFR", "AFR", "AFR", "AFR", "WEU", "CSA", "CSA", "AUS", "CSA", "EEU", "CSA", "WEU", "ODA", "IND", "WEU", "MEA", "MEA", "WEU", "MEA", "WEU", "CSA", "MEA", "JPN", "FSU", "AFR", "FSU", "ODA", "SKO", "MEA", "ODA", 
                     "MEA", "AFR", "AFR", "ODA", "AFR", "WEU", "WEU", "WEU", "AFR", "WEU", "AFR", "ODA", "MEX", "AUS", "AFR", "WEU", "ODA", "AUS", "ODA", "AFR", "AFR", "AFR", "AFR", "ODA", "AFR", "AFR", "AFR", "CSA", "WEU", "WEU", 
                     "ODA", "AUS", "MEA", "ODA", "CSA", "CSA", "ODA", "ODA", "EEU", "WEU", "CSA", "MEA", "EEU", "FSU", "AFR", "MEA", "AFR", "AFR", "ODA", "AUS", "AFR", "CSA", "AFR", "EEU", "AFR", "CSA", "EEU", "EEU", "WEU", "AFR", 
-                    "MEA", "AFR", "AFR", "ODA", "FSU", "FSU", "ODA", "CSA", "AFR", "MEA", "CHI", "AFR", "AFR", "FSU", "CSA", "USA", "FSU", "CSA", "ODA", "AUS", "AUS", "MEA", "AFR", "AFR", "AFR", "ODA")
+                    "MEA", "AFR", "AFR", "ODA", "FSU", "FSU", "ODA", "CSA", "AFR", "MEA", "CHI", "AFR", "AFR", "FSU", "CSA", "USA", "FSU", "CSA", "ODA", "AUS", "AUS", "MEA", "AFR", "AFR", "AFR", "ODA") # TODO!! wrong
 region_tiam <- setNames(df$region_tiam, df$code)
 v$rights_pc_2040[v$region == "union"]/v$emissions_bau_pc_2040[v$region == "union"] # 113%
 v$rights_pc_2050[v$region == "union"]/v$emissions_bau_pc_2050[v$region == "union"] # 95%
@@ -2623,8 +2625,8 @@ for (y in seq(2020, 2080, 10)) { # CHI: its 2°C pathway
 # => For countries with excess emissions and GDP = (1+x)*world_GDP (x < 1), emissions rights = footprint*(1-x) + equal_pc*x, i.e. price paid to World is multiplied by x.
 #                                                                        OR emissions rights = equal_pc * (x + extra*(1-x))
 
-types <- c("emissions_cc", "emissions_cf", "emissions_bau", "rights", "rights_proposed", "emissions_formula", "emissions_target", "emissions_ndc", "cumulative_rights", "emissions_gcp", "pop")
-carbon_budgets <- matrix(NA, nrow = length(v$region), ncol = 11, dimnames = list("region" = v$region, "type" = types))
+types <- c("emissions_cc", "emissions_cf", "emissions_bau", "rights", "rights_proposed", "emissions_formula", "emissions_target", "emissions_ndc", "emissions_ndc30", "cumulative_rights", "emissions_gcp", "pop")
+carbon_budgets <- matrix(NA, nrow = length(v$region), ncol = 12, dimnames = list("region" = v$region, "type" = types))
 
 for (t in types) if (all(paste0(t, "_", seq(2030, 2080, 10)) %in% names(v))) {
   v[, t] <- round((5*rowSums(v[, paste0(t, "_", c(2030, 2080))]) + 10*rowSums(v[, paste0(t, "_", seq(2040, 2070, 10))]))/1e9) }
@@ -2643,8 +2645,8 @@ for (y in seq(2020, 2080, 10)) { # TODO!
 
 for (t in types) if (all(paste0(t, "_", seq(2030, 2080, 10)) %in% names(v))) {
   v[, t] <- round((5*rowSums(v[, paste0(t, "_", c(2030, 2080))]) + 10*rowSums(v[, paste0(t, "_", seq(2040, 2070, 10))]))/1e9) }
-v[v$region == "World", c("emissions_target", "emissions_formula")] <- colSums(v[1:15, c("emissions_target", "emissions_formula")])
-v[v$region == "union", c("emissions_target", "emissions_formula")] <- colSums(v[v$region %in% regions_union, c("emissions_target", "emissions_formula")])
+v[v$region == "World", c("emissions_target", "emissions_formula", "emissions_ndc30")] <- colSums(v[1:15, c("emissions_target", "emissions_formula", "emissions_ndc30")])
+v[v$region == "union", c("emissions_target", "emissions_formula", "emissions_ndc30")] <- colSums(v[v$region %in% regions_union, c("emissions_target", "emissions_formula", "emissions_ndc30")])
 v$cumulative_rights <- v$rights - v$carbon_debt_1990_2029/1e9
 v$cumulative_rights_30_future <- 754*v$pop_2030/v$pop_2030[v$region == "World"]
 v$cumulative_rights_30 <- v$cumulative_rights_30_future - v$carbon_debt_1990_2029/1e9
@@ -2799,9 +2801,8 @@ sum(bau[!bau$code %in% setdiff(central, "JPN"), paste0("emissions_", 2030:2100)]
 sum(df[df$code %in% setdiff(central, "JPN"), paste0("emissions_", 2030:2080)])/1e9 # 493 Gt
 # Rights union FFU: central + KOR: 653 Gt
 # Temperature FFU: +2.15°C  # With BAU outside club of 387 Gt instead of 691 Gt, we get 2.00°C
-barycenter((385 + 669 + 653)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
+barycenter((385 + 669 + 653)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7) # 2.15°C
 barycenter((385 + 669 + 589)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7) # 2.11°C
-
 # Temperature scenario Europe (WEU+EEU) (I withdraw from central JPN = 11Gt): +2.18°C
 barycenter((385 + 741 + 653 - 11)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 
@@ -2812,22 +2813,27 @@ barycenter((385 + 778 + 653 - 19)*1e9, sum(df[, paste0("emissions_", 2020:2100)]
 barycenter((385 + 754)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 # Temperature all countries: 1.81°C
 barycenter((385 + 589*754/653)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
-# Temperature all countries if decarbonization at same rate as in club with 653 Gt: 1.96°C
-barycenter((385 + 754*653/514)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
+# Temperature all countries if decarbonization at same rate as in club with 653 Gt: 1.95°C
+barycenter((385 + 754*653/525)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 
 
 ##### Non-losing rights in scenario central #####
 carbon_price # price_1.8: equivalent to world equal pc 1.8°C
-sum(df[df$code %in% central, paste0("emissions_", 2030:2080)])/1e9 # 514 Gt: club emissions implied by price_1.8
+sum(df[df$code %in% c(central, "KOR"), paste0("emissions_", 2030:2080)])/1e9 # 525 Gt: club emissions implied by price_1.8
 sum(bau[bau$code %in% central, paste0("emissions_", 2030:2080)])/1e9 # 1394 Gt: club BAU emissions (921 Gt without CHN)
+(club_emissions_share <- sum(df$emissions_2025[setdiff(df$code %in% c(union_high, "TUR", "CHL", "URY", "TUN", "UGA", "SDN", "MYS", "UKR", "TKM"), "CAN")])/sum(df$emissions_2025)) # 74%
+sum(df$emissions_2025[df$code %in% c("USA", "AUS", "RUS", "SAU", "KAZ", "ISR", "ARE", "QAT", "SGP", "KWT", "OMN", "BHR", "HKG")])/sum(df$emissions_2025)
+sum(df$emissions_2025[df$code %in% c("USA", "AUS", "RUS", "SAU")])/sum(df$emissions_2025)
+sum(df$emissions_2025[df$code %in% c("AUS")])/sum(df$emissions_2025)
 (club_over_universal_equal_pc_emissions <- (colSums(df[df$code %in% central, paste0("emissions_", seq(2020, 2075, 5))])/colSums(df[, paste0("emissions_", seq(2020, 2075, 5))]))/(colSums(df[df$code %in% central, paste0("pop_", seq(2020, 2075, 5))])/colSums(df[, paste0("pop_", seq(2020, 2075, 5))])))
 (club_over_universal_equal_pc_emission <- (sum(df[df$code %in% central, paste0("emissions_", seq(2020, 2075, 5))])/sum(df[, paste0("emissions_", seq(2020, 2075, 5))]))/(sum(df[df$code %in% central, paste0("pop_", seq(2020, 2075, 5))])/sum(df[, paste0("pop_", seq(2020, 2075, 5))])))
 setNames(carbon_budgets$emissions_cc, rownames(carbon_budgets))
-70+142+45+8+109+10+101+13+11 # Min non-losing rights, 509 Gt emissions_cf (BAU converging to min(BAU; equal pc) in 2048) except for WEU: NDC (which we can call a BAU)
-124+156+46+8+115+11+104+13+12 # 589 Gt emissions_cc (BAU converging to equal pc in 2050) except for WEU: NDC (which we can call a BAU)
+70+142+45+8+109+10+101+13+11 # 509 Gt emissions_cf (BAU converging to min(BAU; equal pc) in 2048) except for WEU: NDC (which we can call a BAU)
+124+156+46+9+115+11+7+104+4+13 # Min non-losing rights, 589 Gt (central+SKO) emissions_cc (BAU converging to equal pc in 2050) except for WEU: NDC (which we can call a BAU)
 # LMICs are allocated their emissions needs and HIC the min between equal pc and their NDC => low price, China funding Africa
 # rights_proposed correspond to (jointly) equal_pc 1.8°C and will induce price consistent with global equal_pc 2°C
-
+sum(df$emissions_2025[df$country %in% c("Algeria", "Kazakhstan", "Iraq", "Iran", "Libya", "Mongolia", "South Africa", "Turkmenistan")])/sum(df$emissions_2025)
+653*sum(df$pop_2030[df$country %in% c("Algeria", "Kazakhstan", "Iraq", "Iran", "Libya", "Mongolia", "South Africa", "Turkmenistan")])/sum(df$pop_2030)
 
 
 
