@@ -2815,6 +2815,7 @@ barycenter((385 + 754)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[
 barycenter((385 + 589*754/653)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 # Temperature all countries if decarbonization at same rate as in club with 653 Gt: 1.95°C
 barycenter((385 + 754*653/525)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
+# TODO!! issue because I sum over negative values, which reduces the carbon budget beyond what it should be
 
 
 ##### Non-losing rights in scenario central #####
