@@ -2474,18 +2474,31 @@ for (r in unique(df$region_tiam)) v$carbon_debt_1990_2029[v$region == r] <- sum(
 v$carbon_debt_1990_2029[v$region == "World"] <- 0
 v$carbon_debt_1990_2029[v$region == "union"] <- sum(v$carbon_debt_1990_2029[v$region %in% regions_union])
 # China trajectory from He et al. (2022). I take the scenario 2°C target path as counterfactual (Table 5), as it is the realistic one compatible with net-zero in 2060: converges to equal p.c. in 2050, gives less rights than GCP, though coincides over 2030-35: perfect!
-v$emissions_target_2020[v$region == "CHI"] <- 10*1e9
-v$emissions_target_2025[v$region == "CHI"] <- 10.5*1e9
-v$emissions_target_2030[v$region == "CHI"] <- 10.5*1e9
-v$emissions_target_2035[v$region == "CHI"] <- 9.4*1e9
-v$emissions_target_2040[v$region == "CHI"] <- 7.3*1e9
-v$emissions_target_2045[v$region == "CHI"] <- 4.9*1e9
-v$emissions_target_2050[v$region == "CHI"] <- 2.9*1e9
+# v$emissions_target_2020[v$region == "CHI"] <- 10*1e9
+# v$emissions_target_2025[v$region == "CHI"] <- 10.5*1e9
+# v$emissions_target_2030[v$region == "CHI"] <- 10.5*1e9
+# v$emissions_target_2035[v$region == "CHI"] <- 9.4*1e9
+# v$emissions_target_2040[v$region == "CHI"] <- 7.3*1e9
+# v$emissions_target_2045[v$region == "CHI"] <- 4.9*1e9
+# v$emissions_target_2050[v$region == "CHI"] <- 2.9*1e9
+# China trajectory from Hu (2025).
+v$emissions_target_2020[v$region == "CHI"] <- 11.1*1e9
+v$emissions_target_2025[v$region == "CHI"] <- 12.8*1e9
+v$emissions_target_2030[v$region == "CHI"] <- 12.7*1e9
+v$emissions_target_2035[v$region == "CHI"] <- 10.8*1e9
+v$emissions_target_2040[v$region == "CHI"] <- 7.4*1e9
+v$emissions_target_2045[v$region == "CHI"] <- 3.8*1e9
+v$emissions_target_2050[v$region == "CHI"] <- 2.0*1e9
+v$emissions_target_2055[v$region == "CHI"] <- 0.7*1e9
 v$emissions_target_2060[v$region == "CHI"] <- 0
 v$emissions_target_2070[v$region == "CHI"] <- 0
 v$emissions_target_2080[v$region == "CHI"] <- 0
-for (y in seq(2025, 2045, 10)) v[[paste0("pop_", y)]] <- (v[[paste0("pop_", y-5)]] + v[[paste0("pop_", y+5)]])/2
-for (y in seq(2020, 2050, 5)) v[[paste0("emissions_target_pc_", y)]][v$region == "CHI"] <- (v[[paste0("emissions_target_", y)]]/v[[paste0("pop_", y)]])[v$region == "CHI"]
+v$emissions_bau_2030[v$region == "CHI"] <- v$emissions_target_2030[v$region == "CHI"]
+v$emissions_bau_2040[v$region == "CHI"] <- v$emissions_target_2040[v$region == "CHI"] # update overly optimistic BAU emissions for China
+for (y in years_v) v[[paste0("emissions_bau_", y)]][v$region == "union"] <- sum(v[[paste0("emissions_bau_", y)]][v$union == T])
+for (y in years_v) v[[paste0("emissions_bau_pc_", y)]] <- v[[paste0("emissions_bau_", y)]]/v[[paste0("pop_", y)]]
+for (y in seq(2025, 2055, 10)) v[[paste0("pop_", y)]] <- (v[[paste0("pop_", y-5)]] + v[[paste0("pop_", y+5)]])/2
+for (y in seq(2020, 2055, 5)) v[[paste0("emissions_target_pc_", y)]][v$region == "CHI"] <- (v[[paste0("emissions_target_", y)]]/v[[paste0("pop_", y)]])[v$region == "CHI"]
 
 
 # 1. ../figures/BAU_equal_pc: Compare E_BAU with R for major countries and Climate Union, find date at which both cross.
@@ -2653,7 +2666,7 @@ v$cumulative_rights_30 <- v$cumulative_rights_30_future - v$carbon_debt_1990_202
 setNames(v$cumulative_rights_30_future, v$region)
 
 for (y in seq(2020, 2080, 10)) {
-  v[[paste0("rights_proposed_", y)]][v$region == "CHI"] <- v[[paste0("emissions_target_", y)]][v$region == "CHI"]
+  v[[paste0("rights_proposed_", y)]][v$region == "CHI"] <- (147/158)*v[[paste0("emissions_target_", y)]][v$region == "CHI"] # v[[paste0("emissions_ndc_", y)]][v$region == "CHI"] # multiplied by 147/158 so totals coincides with emissions_ndc (instead of 158)
   v[[paste0("rights_proposed_", y)]][v$region == "WEU"] <- v[[paste0("emissions_ndc_", y)]][v$region == "WEU"]
   
   # v[[paste0("rights_proposed_", y)]][!v$region %in% c("AFR", "CHI", "WEU")] <- (v[[paste0("emissions_formula_", y)]]*1e9*v$rights/
@@ -2661,31 +2674,39 @@ for (y in seq(2020, 2080, 10)) {
   v[[paste0("rights_proposed_", y)]][!v$region %in% c("CHI", "WEU")] <- (v[[paste0("emissions_formula_", y)]]*1e9*v$cumulative_rights_30_future/
                    (5*rowSums(v[, paste0("emissions_formula_", c(2030, 2080))]) + 10*rowSums(v[, paste0("emissions_formula_", seq(2040, 2070, 10))])))[!v$region %in% c("CHI", "WEU")]
 }
+for (y in seq(2035, 2055, 10)) v[[paste0("rights_proposed_pc_", y)]][v$region == "CHI"] <- (147/158)*v[[paste0("emissions_target_pc_", y)]][v$region == "CHI"]
 # manual adjustments:
 v$rights_proposed_2050[v$region %in% c("CSA", "IND", "ODA")] <- v$rights_proposed_2050[v$region %in% c("CSA", "IND", "ODA")] + .5*v$rights_proposed_2080[v$region %in% c("CSA", "IND", "ODA")]
 v$rights_proposed_2080[v$region %in% c("CSA", "IND", "ODA")] <- 0
 # for (y in seq(2020, 2080, 10)) v[[paste0("rights_proposed_", y)]][v$region == "AFR"] <- v[[paste0("rights_proposed_", y)]][v$region == "union"] - sum(v[[paste0("rights_proposed_", y)]][v$region %in% setdiff(regions_union,  "AFR")])
-v$rights_proposed_2050[v$region == "AFR"] <- v$rights_proposed_2050[v$region == "AFR"] + 3e8
-v$rights_proposed_2030[v$region == "AFR"] <- v$rights_proposed_2030[v$region == "AFR"] - 6e8
-# v$rights_proposed_2070[v$region == "AFR"] <- v$rights_proposed_2030[v$region == "AFR"] - 995e6
-# v$rights_proposed_2080[v$region == "AFR"] <- 0
-# v$rights_proposed_2050[v$region == "AFR"] <- v$rights_proposed_2050[v$region == "AFR"] - 1e9
+v$rights_proposed_2050[v$region == "AFR"] <- v$rights_proposed_2050[v$region == "AFR"] + 3e8 + 4e8
+v$rights_proposed_2030[v$region == "AFR"] <- v$rights_proposed_2030[v$region == "AFR"] - 6e8 - 11e8
+v$rights_proposed_2040[v$region == "AFR"] <- v$rights_proposed_2040[v$region == "AFR"]       -115e7
+v$rights_proposed_2070[v$region == "AFR"] <- v$rights_proposed_2070[v$region == "AFR"] + 5e8 + 5e8
+v$rights_proposed_2080[v$region == "AFR"] <- 0 # 1636247294 = 1.6
+v$rights_proposed_2060[v$region == "AFR"] <- v$rights_proposed_2060[v$region == "AFR"] + 3e8 + 9e8
 # v$rights_proposed_2060[v$region == "AFR"] <- v$rights_proposed_2060[v$region == "AFR"] - 13e8
 # v$rights_proposed_2040[v$region == "AFR"] <- v$rights_proposed_2040[v$region == "AFR"] + 3e8 
 # v$rights_proposed_2070[v$region == "AFR"] <- v$rights_proposed_2070[v$region == "AFR"] + 1e9
 # v$rights_proposed_2030[v$region == "AFR"] <- v$rights_proposed_2030[v$region == "AFR"] + 2e9
-v$rights_proposed_2050[v$region == "IND"] <- v$rights_proposed_2050[v$region == "IND"] + 5e8
-v$rights_proposed_2060[v$region == "IND"] <- v$rights_proposed_2060[v$region == "IND"] + 5e8
-v$rights_proposed_2070[v$region == "IND"] <- v$rights_proposed_2070[v$region == "IND"] - 5e8
-v$rights_proposed_2030[v$region == "IND"] <- v$rights_proposed_2030[v$region == "IND"] - 1e9
+v$rights_proposed_2050[v$region == "IND"] <- v$rights_proposed_2050[v$region == "IND"] + 5e8 - 2e8
+v$rights_proposed_2060[v$region == "IND"] <- v$rights_proposed_2060[v$region == "IND"] + 5e8 + 1e8
+v$rights_proposed_2070[v$region == "IND"] <- v$rights_proposed_2070[v$region == "IND"] - 5e8 + 4e8
+v$rights_proposed_2030[v$region == "IND"] <- v$rights_proposed_2030[v$region == "IND"] - 1e9 
+v$rights_proposed_2040[v$region == "IND"] <- v$rights_proposed_2040[v$region == "IND"]       - 3e8
 v$rights_proposed_2050[v$region == "ODA"] <- v$rights_proposed_2050[v$region == "ODA"] + 5e8
-v$rights_proposed_2060[v$region == "ODA"] <- v$rights_proposed_2060[v$region == "ODA"] + 5e8
+v$rights_proposed_2060[v$region == "ODA"] <- v$rights_proposed_2060[v$region == "ODA"] + 3e8
 v$rights_proposed_2070[v$region == "ODA"] <- v$rights_proposed_2070[v$region == "ODA"] - 5e8
-v$rights_proposed_2030[v$region == "ODA"] <- v$rights_proposed_2030[v$region == "ODA"] - 1e9
+v$rights_proposed_2030[v$region == "ODA"] <- v$rights_proposed_2030[v$region == "ODA"] - 6e8
+# v$rights_proposed_2050[v$region == "CSA"] <- v$rights_proposed_2050[v$region == "CSA"] + 5e8
+# v$rights_proposed_2040[v$region == "CSA"] <- v$rights_proposed_2040[v$region == "CSA"] - 5e8
+# v$rights_proposed_2060[v$region == "CSA"] <- v$rights_proposed_2060[v$region == "CSA"] + 5e8
+# v$rights_proposed_2030[v$region == "CSA"] <- v$rights_proposed_2030[v$region == "CSA"] - 10e8
 v$rights_proposed <- round((5*rowSums(v[, paste0("rights_proposed_", c(2030, 2080))]) + 10*rowSums(v[, paste0("rights_proposed_", seq(2040, 2070, 10))]))/1e9)
 v$rights_proposed[v$region == "World"] <- sum(v$rights_proposed[1:15])
 v$rights_proposed[v$region == "union"] <- sum(v$rights_proposed[v$region %in% regions_union])
 
+for (r in v$region) for (y in seq(2020, 2080, 10)) v[[paste0("rights_proposed_", y)]][v$region == "union"] <- sum(v[v$region %in% regions_union, paste0("rights_proposed_", y)])
 for (r in v$region) for (y in seq(2020, 2080, 10)) v[[paste0("rights_proposed_pc_", y)]] <- v[[paste0("rights_proposed_", y)]]/v[[paste0("pop_", y)]]
 for (r in v$region) for (y in seq(2020, 2080, 10)) v[[paste0("emissions_ndc_pc_", y)]] <- v[[paste0("emissions_ndc_", y)]]/v[[paste0("pop_", y)]]
 
@@ -2729,22 +2750,22 @@ sum(alt$gain_adj_2030[alt$code == "COD"])
 # China, EU agree on their footprint trajectory, other countries have equal rights except countries with emission<2t/pers who get lower rights in proportion to 2-emission
 
 par(mar = c(2.1, 3.1, 0.1, 0.1), mgp = c(2.2, 1, 0)) 
-plot( years_v[2:7], v[v$region == "WEU", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'darkgreen', lwd = 2, lty = 1, xlab = "", ylab = "CO2 emissions per capita (tCO2/year)", ylim = c(0, 7.5))
-lines( years_v[2:7], v[v$region == "WEU", paste0("emissions_ndc_pc_",  years_v[2:7])], type = 'l', col = 'darkgreen', lwd = 2, lty = 2, xlab = "", ylab = "")
+plot( years_v[2:7], v[v$region == "WEU", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'darkgreen', lwd = 2, lty = 1, xlab = "", ylab = "CO2 emissions per capita (tCO2/year)", ylim = c(0, 8))
+# lines( years_v[2:7], v[v$region == "WEU", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'darkgreen', lwd = 2, lty = 2, xlab = "", ylab = "")
 lines( years_v[2:7], v[v$region == "union", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 4, lty = 1, xlab = "", ylab = "")
-lines( years_v[2:7], v[v$region == "union", paste0("rights_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 3, lty = 3, xlab = "", ylab = "")
+# lines( years_v[2:7], v[v$region == "union", paste0("rights_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 3, lty = 3, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "union", paste0("emissions_ndc_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 4, lty = 1, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "union", paste0("emissions_cf_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 4, lty = 2, xlab = "", ylab = "")
-lines( years_v[2:7], v[v$region == "union", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 3, lty = 6, xlab = "", ylab = "")
-lines( years_v[2:7], v[v$region == "CHI", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'red', lwd = 2, lty = 1, xlab = "", ylab = "")
-lines( years_v[2:7], v[v$region == "CHI", paste0("emissions_ndc_pc_",  years_v[2:7])], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "")
+lines( years_v[2:7], v[v$region == "union", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 3, lty = 2, xlab = "", ylab = "")
+lines( c(seq(2030, 2060, 5), 2070, 2080), v[v$region == "CHI", paste0("rights_proposed_pc_",  c(seq(2030, 2060, 5), 2070, 2080))], type = 'l', col = 'red', lwd = 2, lty = 1, xlab = "", ylab = "")
+# lines( years_v[2:7], v[v$region == "CHI", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "")
 # lines( seq(2020, 2050, 5), v[v$region == "CHI", paste0("emissions_target_pc_",  seq(2020, 2050, 5))], type = 'l', col = 'red', lwd = 2, lty = 3, xlab = "", ylab = "")
 lines( years_v[2:7], v[v$region == "IND", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'orange', lwd = 2, lty = 1, xlab = "", ylab = "")
-lines( years_v[2:7], v[v$region == "IND", paste0("emissions_ndc_pc_",  years_v[2:7])], type = 'l', col = 'orange', lwd = 2, lty = 2, xlab = "", ylab = "")
+lines( years_v[2:7], v[v$region == "IND", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'orange', lwd = 2, lty = 2, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "CSA", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'blue', lwd = 2, lty = 1)
-# lines( years_v[2:7], v[v$region == "CSA", paste0("emissions_ndc_pc_",  years_v[2:7])], type = 'l', col = 'blue', lwd = 2, lty = 2)
+# lines( years_v[2:7], v[v$region == "CSA", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'blue', lwd = 2, lty = 2)
 lines( years_v[2:7], v[v$region == "AFR", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'cyan', lwd = 2, lty = 1, xlab = "", ylab = "")
-lines( years_v[2:7], v[v$region == "AFR", paste0("emissions_ndc_pc_",  years_v[2:7])], type = 'l', col = 'cyan', lwd = 2, lty = 2, xlab = "", ylab = "")
+lines( years_v[2:7], v[v$region == "AFR", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'cyan', lwd = 2, lty = 2, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "EEU", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'green', lwd = 2, lty = 8, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "EEU", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'green', lwd = 2, lty = 8, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "JPN", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'cyan', lwd = 2, lty = 8, xlab = "", ylab = "")
@@ -2753,8 +2774,14 @@ lines( years_v[2:7], v[v$region == "AFR", paste0("emissions_ndc_pc_",  years_v[2
 # lines( years_v[2:7], v[v$region == "World", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'grey', lwd = 4, lty = 1, xlab = "", ylab = "")
 grid() 
 # legend("topright", legend = c("Proposal, union allowances", "NDC", "Equal p.c.", "China", "Western Europe", "India, Other LMIC Asia", "South America", "Africa"), col = c("black", "black", "black", "red", "darkgreen", "orange", "blue", "cyan"), lwd = c(4, 2, 4, rep(2, 5)), lty = c(1, 2, 3, 1, 1, 1, 1, 1))
-legend("topright", legend = c("Proposal, union allowances", "NDC", "Equal p.c.", "Current policies", "China", "Western Europe", "India, Other LMIC Asia", "South America", "Africa"), col = c("black", "black", "black", "black", "red", "darkgreen", "orange", "blue", "cyan"), lwd = c(4, 2, 3, 3, rep(2, 5)), lty = c(1, 2, 3, 6, 1, 1, 1, 1, 1))
+# legend("topright", legend = c("Proposal, union allowances", "NDC", "Equal p.c.", "Current policies", "China", "Western Europe", "India", "Africa"), col = c("black", "black", "black", "black", "red", "darkgreen", "orange", "cyan"), lwd = c(4, 2, 3, 3, rep(2, 4)), lty = c(1, 2, 3, 6, 1, 1, 1, 1))
+legend("topright", legend = c("Proposed allowances, Union", "Current policies", "China", "Western Europe", "India", "Africa"), col = c("black", "black", "red", "darkgreen", "orange", "cyan"), lwd = c(4, 2, rep(2, 4)), lty = c(1, 2, 1, 1, 1, 1))
 
+(v$rights_proposed_2040/v$rights_proposed_2030)[v$region == "union"] # .77 (max) = .974^10
+(v$rights_proposed_2050/v$rights_proposed_2040)[v$region == "union"]
+(v$rights_proposed_2060/v$rights_proposed_2050)[v$region == "union"]
+(v$rights_proposed_2070/v$rights_proposed_2060)[v$region == "union"]
+(v$rights_proposed_2080/v$rights_proposed_2070)[v$region == "union"]
 
 par(mar = c(2.1, 3.1, 0.1, 0.1), mgp = c(2.2, 1, 0)) 
 plot(seq(2025, 2050, 5), v[v$region == "CHI", paste0("emissions_target_pc_",  seq(2025, 2050, 5))], type = 'l', col = 'red', lwd = 2, lty = 2, xlab = "", ylab = "CO2 emissions per capita (tCO2/year)", ylim = c(0, 7), xlim = c(2025, 2060))
