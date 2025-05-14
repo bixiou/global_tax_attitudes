@@ -345,10 +345,10 @@ barycenter <- function(x, x_prev, x_next, y_prev, y_next) {
   lambda <- if (x_next == x_prev) 0 else (x - x_prev)/(x_next - x_prev)
   return(((1 - lambda) * y_prev + lambda * y_next))
 }
-interpolate <- function(x, x_vec, y_vec) { # x_vec and y_vec are assumed to be non-decreasing vectors
+interpolate <- function(x, x_vec, y_vec) { # x_vec assumed to be non-decreasing and y_vec monotonic
   y <- x
   x_vec <- sort(x_vec)
-  y_vec <- sort(y_vec)
+  y_vec <- if (y_vec[length(y_vec)] > y_vec[1]) sort(y_vec) else sort(y_vec, decreasing = T)
   for (i in 1:length(x)) {
     j <- 1
     while (x[i] > x_vec[j+1] & j < length(x_vec)-1) j <- j+1
