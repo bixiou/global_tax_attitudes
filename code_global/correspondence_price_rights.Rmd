@@ -9,6 +9,7 @@ date: "2025-04-27"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+## Correspondence carbon price / emissions rights
 
 In case of global revenue use in proportion to $r_i$ of prices $p_i$, country's $i$ transfer $t_i$ is:
 $$t_i = r_i p - e_i p_i$$
@@ -75,4 +76,3 @@ where $\epsilon \approx .5$ is the absolute price elasticity of emissions and 10
 
 
 ```
-

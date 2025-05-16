@@ -1,5 +1,6 @@
 library(utils)
 chooseCRANmirror(ind = 1)
+.libPaths(c("C:/Users/fabre/AppData/Local/R/win-library/4.4", "C:/Program Files/R/R-4.4.3/library", "C:/Program Files/R/R-4.3.1/library", "C:/Users/fabre/AppData/Local/R/win-library/4.3"))
 
 # options(download.file.method = "wget"); # For Ubuntu 14.04
 package <- function(p, version = NULL, remove = FALSE, github = '') {
@@ -294,6 +295,28 @@ CI <- function(estimate, SE, N = NULL, level = 0.95, print = FALSE, digits = 2) 
   ci <- estimate + if (length(margin) > 1) matrix(margin, nrow = length(margin))%*%c(-1, 1) else margin*c(-1, 1)
   if (print) ci <- paste0("[", round(if (is.matrix(ci)) ci[,1] else ci[1], digits), "; ", round(if (is.matrix(ci)) ci[,2] else ci[2], digits), "]")
   return(ci) }
+quadratic_interpolation <- function(integral, y0, yend = 0, x0 = 2030, xend = 2080, nonnegative = T) {
+  # Assumes y0 > 0 and yend = 0 (not sure it works otherwise).
+  # Equivalent to finding the quadratic function that respects the boundary conditions and matches the integral, 
+  # using solve(matrix(c(x0^2, x0, 1, # xend^2, xend, 1, # sum(x^2), sum(x), n), byrow = TRUE, nrow = 3), c(y0, yend, integral))
+  m <- xend - x0
+  n_points <- m + 1
+  sum_dx <- m * (m + 1) / 2
+  sum_dx2 <- m * (m + 1) * (2 * m + 1) / 6
+  c_val <- yend - y0
+  d_val <- integral - n_points * y0
+  denominator <- sum_dx2 - sum_dx * m
+  a <- (d_val - (sum_dx * c_val) / m) / denominator
+  b <- (c_val - a * m^2) / m
+  dx <- 0:m
+  y <- a * dx^2 + b * dx + y0
+  if (nonnegative & any(y < -1)) { # linear interpolation if y constrained to be nonnegative (-1 used instead of 0 because there are values like e-6 instead of 0)
+    xmax <- floor(2*integral/y0)
+    if (xmax < 2 | (y0 - yend) + (xmax - 1) * d < 0) stop("No feasible solution exists.")
+    y <- pmax(0, y0 + dx*((yend - y0)*xmax + integral)/(xmax*(xmax-1)/2)) # dx*(yend - y0)/xmax
+  } 
+  return(y)
+}
 match.nona <- function(v, t) {return(as.vector(na.omit(match(v, t))))} # returns match(v, t) purged from NAs, i.e. the (first) position of v elements (that are in t) in t (screened/ordered from v), cf. below
 # so df$foo[match.nona(db$bar, df$bar)] <- db$foo[db$bar %in% df$bar] replaces elements of df$foo such that df$bar is in db$bar by corresponding db$foo
 Label <- function(var) {

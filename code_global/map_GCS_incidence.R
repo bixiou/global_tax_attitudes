@@ -2394,6 +2394,7 @@ sum(co2_pop$pop_2030[co2_pop$code %in% EU27_countries])*target_2030/sum(co2_pop$
 
 # 0. Prepare data from van de Ven et al. (2023)
 years_v <- seq(2020, 2100, 10) # Could start in 2010
+years_f <- seq(2030, 2080, 10)
 vdv <- read.csv("../data/van_de_Ven2023/global_ite2_allmodels.csv")
 # Select variables
 vdv <- vdv[vdv$Model == "TIAM_Grantham", ] # Closest to reality in 2024 compared to the others: "GCAM-PR 5.3", "GEMINI-E3 7.0" (the one with Policy Cost variables), "MUSE", "TIAM_Grantham" # TODO: try GEMINI
@@ -2764,6 +2765,7 @@ par(mar = c(2.2, 3.1, 0.1, 0.1), mgp = c(2.2, 1, 0)) # 495*304
 plot( years_v[2:7], v[v$region == "WEU", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'darkgreen', lwd = 2, lty = 1, xlab = "", ylab = "CO2 emissions per capita (tCO2/year)   ", ylim = c(0, 8))
 # lines( years_v[2:7], v[v$region == "WEU", paste0("emissions_bau_pc_",  years_v[2:7])], type = 'l', col = 'darkgreen', lwd = 2, lty = 2, xlab = "", ylab = "")
 lines( years_v[2:7], v[v$region == "union", paste0("rights_proposed_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 4, lty = 1, xlab = "", ylab = "")
+lines( years_v[2:7], colSums(v[v$region %in% setdiff(regions_union, c("CHI", "WEU")), paste0("rights_proposed_",  years_v[2:7])])/colSums(v[v$region %in% setdiff(regions_union, c("CHI", "WEU")), paste0("pop_",  years_v[2:7])]), type = 'l', col = 'black', lwd = 4, lty = 1, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "union", paste0("rights_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 3, lty = 3, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "union", paste0("emissions_ndc_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 4, lty = 1, xlab = "", ylab = "")
 # lines( years_v[2:7], v[v$region == "union", paste0("emissions_cf_pc_",  years_v[2:7])], type = 'l', col = 'black', lwd = 4, lty = 2, xlab = "", ylab = "")
@@ -2827,7 +2829,6 @@ price_from_rights(rights_pc = v$rights_proposed_pc_2040, emissions_pc = v$emissi
 rights_from_price(c(75, 75, 75, 75, 50, 50, 25, 25)/60, emissions_pc = c(20, 15, 10, 5, 8, 5, 3, 1), 
                   global_emissions_pc = 4, names = c("US", "JP", "DE", "ES", "CN", "BR", "IA", "AF"))
 
-
 v[v$region == "union", paste0("rights_proposed_20", seq(30, 80, 10))]
 
 ##### Differentiated prices correspondence: case with domestic revenue use ######
@@ -2881,6 +2882,8 @@ sum(df$emissions_2078)/1e9 # > 0
 barycenter((385 + 669 + 667 - 296)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 barycenter((385 + 1567)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 # 1567: World BAU 2030-2100 / 1240: World BAU 2030-80 i.e. v$emissions_bau
+# Dans NICE, temperature in 2100: 2.39°C / total world emissions over 2020-2100: => For me it would imply 2.29°C
+barycenter((1986)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 
 
 ##### Non-losing rights in scenario central #####
@@ -2902,6 +2905,152 @@ sum(df$emissions_2025[df$country %in% c("Algeria", "Kazakhstan", "Iraq", "Iran",
 653*sum(df$pop_2030[df$country %in% c("Algeria", "Kazakhstan", "Iraq", "Iran", "Libya", "Mongolia", "South Africa", "Turkmenistan")])/sum(df$pop_2030)
 
 
+##### Country downscaling of emissions rights #####
+# Equal pc (using 2030 pop) within world region, keeping the region trajectory => no, e.g. some in Africa deserve equal pc. For EU, an alternative would be to use Effort-Sharing Regulation allocation but TODO later.
+# a. Group countries by similarity (e.g. put ZAF, IRN, MNG with CHN), manually adjust, downscale equal pc.
+# b. Find formula (cf. intertemporal_allocation.lyx)
+# For Algeria, Kazakhstan, Iran, Iraq, Libya, Mongolia, South Africa, and Turkmenistan, give them their rights rescaled by their emissions/average in 2025, taken out of the 12 Gt. 
+# For 2030-40: for non-Union ones, no pb as rights_proposed increase not more than BAU; for AFR/ODA ones, taken from other of the regions and compensated in 2050-60 from 12 Gt.
+# Compute Union emissions accounting for new members. Ask Erwan to infer carbon price and emissions by country for each period.
+# From emissions rights and emissions by period by country, maps of int'l transfers (in % of GDP) in 2030, 40, ..., 70, as well as NPV.
+df$share_rights_among_region_tiam <- df$pop_2030/sapply(df$region_tiam, function(r) sum(df$pop_2030[df$region_tiam == r]))
+df$participate_union <- df$region_tiam %in% regions_union
+df$participate_union[df$code %in% c("VEN", "SOM", "SSD", "TTO", "PRK")] <- FALSE
+v[v$region == "AFR", c("rights_proposed_2030", "emissions_bau_2030", "rights_proposed_2040", "emissions_bau_2040")]/1e8
+# Option 1: equal pc per region
+for (y in 2030:2080) df[[paste0("rights_proposed_", y)]] <- pmax(0, sapply(1:nrow(df), function(i) df$share_rights_among_region_tiam[i] * 
+        barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == df$region_tiam[i], paste0("rights_proposed_", 10*floor(y/10))], y_next = v[v$region == df$region_tiam[i], paste0("rights_proposed_", 10*ceiling(y/10))], x = y)))
+for (y in 2030:2060) df[[paste0("rights_proposed_", y)]][df$code == "CHN"] <- pmax(0, (151.6/163.85)*barycenter(x_prev = 5*floor(y/5), x_next = 5*ceiling(y/5), y_prev = v[v$region == "CHI", paste0("emissions_target_", 5*floor(y/5))], y_next = v[v$region == "CHI", paste0("emissions_target_", 5*ceiling(y/5))], x = y))
+write.csv(data.frame("year" = seq(2030, 2080, 10), "rights_proposed" = unname(t(round(v[v$region == "union", paste0("rights_proposed_", seq(2030, 2080, 10))])))), "../../NICE2020/cap_and_share/data/input/ffu_rights_proposed.csv", quote = F, row.names = F)
+write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../../NICE2020/cap_and_share/data/input/ffu_rights_proposed_allocation.csv", quote = F, row.names = F)
+write.csv(data.frame("year" = seq(2030, 2080, 10), "rights_proposed" = unname(t(round(v[v$region == "union", paste0("rights_proposed_", seq(2030, 2080, 10))])))), "../data/ffu_rights_proposed.csv", quote = F, row.names = F)
+write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../data/ffu_rights_proposed_allocation.csv", quote = F, row.names = F)
+df[df$code %in% c("DZA", "KAZ", "IRN", "IRQ", "LBY", "MNG", "ZAF", "TKM"), c("code", "region_tiam", "participate_union", "emissions_2025", "emissions_pc_2025")]
+df$region_tiam[df$code %in% c("DZA", "KAZ", "IRN", "IRQ", "LBY", "MNG", "ZAF", "TKM")]
+emissions_pc["2025"]*1.35
+# Rights available for fossil countries:
+(sum(v[v$region == "World", paste0("rights_", years_f)]) - sum(v[1:15, paste0("rights_proposed_", years_f)]))/1e9
+# Pb: no more rights available in the first years
+(sum(v[v$region == "union", paste0("emissions_bau_", 2030)]) - sum(v[v$region == "union", paste0("rights_proposed_", 2030)]))/1e9
+
+v$emissions_bau_2030[v$region %in% "World"] - sum(v$emissions_bau_2030[v$region %in% c("CHI", "WEU")])
+sum(df$emissions_2030[!df$region_tiam %in% c("CHI", "WEU")])
+v$emissions_bau_2030[v$region %in% "World"]
+sum(df$emissions_2030)
+
+{
+# Option 2: (cf. intertemporal_allocation.lyx)
+spread <- .2 # 0: matches initial value / 1: all countries share trajectory shape
+df$share_rights_among_region_tiam <- df$pop_2030/sapply(df$region_tiam, function(r) sum(df$pop_2030[df$region_tiam == r]))
+df$participate_union <- df$region_tiam %in% regions_union
+df$participate_union[df$code %in% c("VEN", "SOM", "SSD", "TTO", "PRK")] <- FALSE # Removed because absent from NICE. I could also remove BRN, MYS (Brunei, Malaysia) as they'd lose and are unlikely to join.
+for (y in 2030:2080) df[df$region_tiam == "WEU", paste0("rights_proposed_", y)] <- pmax(0, sapply(which(df$region_tiam == "WEU"), function(i) df$share_rights_among_region_tiam[i] * 
+    barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == "WEU", paste0("emissions_ndc_", 10*floor(y/10))], y_next = v[v$region == "WEU", paste0("emissions_ndc_", 10*ceiling(y/10))], x = y)))
+for (y in 2030:2060) df[df$region_tiam == "CHI", paste0("rights_proposed_", y)] <- pmax(0, (151.6/163.85)*sapply(which(df$region_tiam == "CHI"), function(i) df$share_rights_among_region_tiam[i] * 
+    barycenter(x_prev = 5*floor(y/5), x_next = 5*ceiling(y/5), y_prev = v[v$region == "CHI", paste0("emissions_target_", 5*floor(y/5))], y_next = v[v$region == "CHI", paste0("emissions_target_", 5*ceiling(y/5))], x = y)))
+for (y in 2061:2080) df[df$region_tiam == "CHI", paste0("rights_proposed_", y)] <- 0
+
+df$share_rights <- df$share_rights_among_region_tiam * sapply(df$region_tiam, function(r) v$rights_proposed[v$region == r])/(v$rights[v$region == "World"])
+df$rights_proposed <- df$share_rights * v$rights[v$region == "World"]*1e9
+df$participate_union[df$code %in% c("IRN", "LBY", "TKM")] <- T # Allocating  the 12 Gt remaining rights to 5 fossil-dependent MICs: I've checked that I am not adding more rights than remaining ones (needs perfectly coincides with remaining rights)
+df$rights_proposed[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")] <- df$rights_proposed[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")]*c(9.1, 8.88, 8.45, 10.51, 6.56)/4.86
+df$share_rights[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")] <- df$share_rights[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")]*c(9.1, 8.88, 8.45, 10.51, 6.56)/4.86
+# df$participate_union[df$code %in% c("TJK", "YEM", "KGZ", "ARM", "SYR", "JOR", "GEO", "LBN", "UZB", "AZE", "MKD", "IRQ")] <- T # I leave HKG, ISR out as they are HICs
+# Below is to equalize Union's rights_proposed_2030 with Union's emissions_bau_2030 (excluding CHI, WEU, which are handled separately)
+
+# old: now replace by the line ... emissions_max[1]
+# emissions_constraint_2030 <- if (spread == 0) 0 else ((v$emissions_bau_2030[v$region %in% "union"] - sum(df$rights_proposed_2030[df$region_tiam %in% c("CHI", "WEU")])) - (1 - spread)* sum(df$emissions_2030[df$participate_union & !df$region_tiam %in% c("CHI", "WEU")]))/spread
+# df$rights_proposed_2030[!df$region_tiam %in% c("CHI", "WEU")] <- (spread * (df$share_rights/sum(df$share_rights[df$participate_union & !df$region_tiam %in% c("CHI", "WEU")])) * emissions_constraint_2030 + (1 - spread) * df$emissions_2030)[!df$region_tiam %in% c("CHI", "WEU")]
+# df$rights_proposed_2030[!df$participate_union] <- v$rights[v$region == "World"]/df$pop_2030[!df$participate_union]
+# for (i in which(!df$region_tiam %in% c("CHI", "WEU"))) df[i, paste0("rights_proposed_", 2030:2080)] <- quadratic_interpolation(integral = df$rights_proposed[i], y0 = df$rights_proposed_2030[i])
+emissions_max <- c()
+for (y in 2030:2080) emissions_max[y-2029] <- barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == "union", paste0("emissions_bau_", 10*floor(y/10))], y_next = v[v$region == "union", paste0("emissions_bau_", 10*ceiling(y/10))], x = y)
+for (y in 2030:2080) emissions_max[y-2029] <- emissions_max[1]
+y <- 2030
+# We need two exogenous data: emissions_max (for the whole Union); emissions_y (BAU for each country, for now we use bau$emissions_y (we could also use df$emissions_y))
+while (y == 2030 || sum(df[df$participate_union, paste0("rights_proposed_", y)]) > emissions_max[y-2029]) {
+  emissions_constraint <- if (spread == 0) 0 else ((emissions_max[y-2029] - sum(df[df$region_tiam %in% c("CHI", "WEU"), paste0("rights_proposed_", y)])) - (1 - spread)* sum(bau[df$participate_union & !df$region_tiam %in% c("CHI", "WEU"), paste0("emissions_", y)]))/spread
+  df[!df$region_tiam %in% c("CHI", "WEU"), paste0("rights_proposed_", y)] <- (spread * (df$share_rights/sum(df$share_rights[df$participate_union & !df$region_tiam %in% c("CHI", "WEU")])) * emissions_constraint + (1 - spread) * bau[[paste0("emissions_", y)]])[!df$region_tiam %in% c("CHI", "WEU")]
+  df[!df$participate_union, paste0("rights_proposed_", y)] <- (df$pop_2030[!df$participate_union]/sum(df$pop_2030))*barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == "World", paste0("rights_proposed_", 10*floor(y/10))], y_next = v[v$region == "World", paste0("rights_proposed_", 10*ceiling(y/10))], x = y)
+  for (i in which(!df$region_tiam %in% c("CHI", "WEU"))) df[i, paste0("rights_proposed_", y:2080)] <- quadratic_interpolation(integral = df$rights_proposed[i] - sum(df[i, if (y > 2030) paste0("rights_proposed_", 2030:(y-1)) else NULL]), y0 = df[i, paste0("rights_proposed_", y)], x0 = y)
+  y <- y + 1 # Pb: for low values of spread, may lead to rights_proposed < rights_proposed_y because we don't decrease rights_proposed_y fast enough in the first years
+} 
+# TODO: smoothen while accounting for growth (e.g. smoothen emissions per unit of GDP instead of smoothen emissions)
+
+plot(2030:2080, colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', ylim = c(0, 26))
+lines(years_f, v[v$region == "union", paste0("rights_proposed_", years_f)]/1e9, type = 'l', lwd = 2)
+lines(years_f, v[v$region == "union", paste0("emissions_bau_", years_f)]/1e9, type = 'l', col = "red")
+lines(years_f, v[v$region == "union", paste0("rights_", years_f)]/1e9, type = 'l', col = "blue")
+lines(2030:2080, colSums(df[df$region_tiam %in% "AFR", paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "cyan")
+lines(2030:2080, colSums(df[df$region_tiam %in% "IND", paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "orange")
+lines(2030:2080, colSums(df[df$region_tiam %in% "CHI", paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "red")
+lines(2030:2080, colSums(df[df$region_tiam %in% "ODA", paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "blue")
+lines(2030:2080, colSums(df[df$region_tiam %in% "WEU", paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "green")
+
+for (y in 2030:2080) df[[paste0("rights_proposed_pc_", y)]] <- df[[paste0("rights_proposed_", y)]]/df[[paste0("pop_", y)]]
+rights_proposed_pc_union <- colSums(df[df$participate_union, paste0("rights_proposed_pc_", 2030:2080)] * df[df$participate_union, paste0("pop_", 2030:2080)])/colSums(df[df$participate_union, paste0("pop_", 2030:2080)])
+# max(rights_proposed_pc_union[2:50]/rights_proposed_pc_union[1:49]) # -2.55%
+
+# Using bau$emissions instead of v$bau shows that ODA, IND gain (and is consistent with the above computations, contrary to v), but for CSA it's the opposite
+plot(2030:2080, rights_proposed_pc_union, type = 'l', ylim = c(0, 8))
+lines(years_f, v[v$region == "union", paste0("emissions_bau_pc_", years_f)], type = 'l', col = "red", lty = 2)
+# lines(years_f, v[v$region == "union", paste0("rights_proposed_pc_", years_f)], type = 'l', lwd = 2)
+# lines(years_f, v[v$region == "union", paste0("rights_pc_", years_f)], type = 'l', col = "blue")
+lines(2030:2080, colSums(df[df$region_tiam %in% "AFR", paste0("rights_proposed_pc_", 2030:2080)] * df[df$region_tiam %in% "AFR", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "AFR", paste0("pop_", 2030:2080)]), type = 'l', col = "cyan")
+# lines(2030:2080, colSums(bau[df$region_tiam %in% "AFR", paste0("emissions_pc_", 2030:2080)] * df[df$region_tiam %in% "AFR", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "AFR", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "cyan")
+lines(years_f, v[v$region == "AFR", paste0("emissions_bau_pc_", years_f)], type = 'l', lty = 2, col = "cyan")
+lines(2030:2080, colSums(df[df$region_tiam %in% "IND", paste0("rights_proposed_pc_", 2030:2080)] * df[df$region_tiam %in% "IND", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "IND", paste0("pop_", 2030:2080)]), type = 'l', col = "orange")
+# lines(2030:2080, colSums(bau[df$region_tiam %in% "IND", paste0("emissions_pc_", 2030:2080)] * df[df$region_tiam %in% "IND", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "IND", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "orange")
+lines(years_f, v[v$region == "IND", paste0("emissions_bau_pc_", years_f)], type = 'l', lty = 2, col = "orange")
+# lines(2030:2080, colSums(df[df$region_tiam %in% "CHI", paste0("rights_proposed_pc_", 2030:2080)] * df[df$region_tiam %in% "CHI", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "CHI", paste0("pop_", 2030:2080)]), type = 'l', col = "red")
+# # lines(2030:2080, colSums(bau[df$region_tiam %in% "CHI", paste0("emissions_pc_", 2030:2080)] * df[df$region_tiam %in% "CHI", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "CHI", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "red")
+# lines(years_f, v[v$region == "CHI", paste0("emissions_bau_pc_", years_f)], type = 'l', lty = 2, col = "red")
+lines(2030:2080, colSums(df[df$region_tiam %in% "ODA", paste0("rights_proposed_pc_", 2030:2080)] * df[df$region_tiam %in% "ODA", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "ODA", paste0("pop_", 2030:2080)]), type = 'l', col = "blue")
+# lines(2030:2080, colSums(bau[df$region_tiam %in% "ODA", paste0("emissions_pc_", 2030:2080)] * df[df$region_tiam %in% "ODA", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "ODA", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "blue")
+lines(years_f, v[v$region == "ODA", paste0("emissions_bau_pc_", years_f)], type = 'l', lty = 2, col = "blue")
+lines(2030:2080, colSums(df[df$code %in% "JPN", paste0("rights_proposed_pc_", 2030:2080)] * df[df$code %in% "JPN", paste0("pop_", 2030:2080)])/colSums(df[df$code %in% "JPN", paste0("pop_", 2030:2080)]), type = 'l', col = "green")
+# lines(2030:2080, colSums(bau[df$code %in% "JPN", paste0("emissions_pc_", 2030:2080)] * df[df$code %in% "JPN", paste0("pop_", 2030:2080)])/colSums(df[df$code %in% "JPN", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "green")
+lines(years_f, v[v$region == "JPN", paste0("emissions_bau_pc_", years_f)], type = 'l', lty = 2, col = "green")
+# lines(2030:2080, colSums(df[df$region_tiam %in% "CSA", paste0("rights_proposed_pc_", 2030:2080)] * df[df$region_tiam %in% "CSA", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "CSA", paste0("pop_", 2030:2080)]), type = 'l', col = "blue")
+# # lines(2030:2080, colSums(bau[df$region_tiam %in% "CSA", paste0("emissions_pc_", 2030:2080)] * df[df$region_tiam %in% "CSA", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "CSA", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "blue")
+# lines(years_f, v[v$region == "CSA", paste0("emissions_bau_pc_", years_f)], type = 'l', lty = 2, col = "blue")
+# lines(2030:2080, colSums(df[df$region_tiam %in% "WEU", paste0("rights_proposed_pc_", 2030:2080)] * df[df$region_tiam %in% "WEU", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "WEU", paste0("pop_", 2030:2080)]), type = 'l', col = "green")
+# # lines(2030:2080, colSums(df[df$region_tiam %in% "WEU", paste0("emissions_pc_", 2030:2080)] * df[df$region_tiam %in% "WEU", paste0("pop_", 2030:2080)])/colSums(df[df$region_tiam %in% "WEU", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "green")
+# lines(years_f, v[v$region == "WEU", paste0("emissions_bau_pc_", years_f)], type = 'l', lty = 2, col = "green")
+# lines(2030:2080, colSums(df[df$code %in% "COD", paste0("rights_proposed_pc_", 2030:2080)] * df[df$code %in% "COD", paste0("pop_", 2030:2080)])/colSums(df[df$code %in% "COD", paste0("pop_", 2030:2080)]), type = 'l', col = "cyan")
+# lines(2030:2080, colSums(df[df$code %in% "COD", paste0("emissions_pc_", 2030:2080)] * df[df$code %in% "COD", paste0("pop_", 2030:2080)])/colSums(df[df$code %in% "COD", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "cyan")
+}
+
+# I use spread = .5 when emissions_max is just set in 2030 and spread = .8 when it is set over all first years
+write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../../NICE2020/cap_and_share/data/input/ffu_rights_proposed_allocation_below_bau.csv", quote = F, row.names = F)
+write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../data/ffu_rights_proposed_allocation_below_bau.csv", quote = F, row.names = F)
+# write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../../NICE2020/cap_and_share/data/input/ffu_rights_proposed_allocation.csv", quote = F, row.names = F)
+# write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../data/ffu_rights_proposed_allocation.csv", quote = F, row.names = F)
+
+sum(df$rights_proposed[df$participate_union])
+sum(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])
+v$rights[v$region == "union"]
+# (sum(df$pop_2030[df$code %in% c("IRN", "LBY", "TKM")]) - sum(df$pop_2030[df$code %in% c("VEN", "SOM", "SSD", "TTO", "PRK")]))/1e6 # I am adding 9M in the Union and not adding rights so it's fine.
+# sort(setNames(df$emissions_pc_2025, df$country)[!df$participate_union & df$pop_2030 > 1e6])
+
+sum(df$rights_proposed[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")])/1e9 
+sum(df$rights_proposed[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")]*df$emissions_pc_2025[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")]/(sum(df$emissions_2025)/sum(df$pop_2025)))/1e9
+sum(df$rights_proposed[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")]*c(9.1, 8.88, 8.45, 10.51, 6.56)/4.86)/1e9 # using 2023 data from EDGAR fossil/indus CO2 https://en.wikipedia.org/wiki/List_of_countries_by_carbon_dioxide_emissions_per_capita, excluding KAZ because we believe it wouldn't join the Union
+sum(df$rights_proposed[df$code %in% c("IRN", "IRQ", "TKM")])/1e9
+sum(df$rights_proposed[df$code %in% c("IRN", "IRQ", "TKM")]*df$emissions_pc_2025[df$code %in% c("IRN", "IRQ", "TKM")]/(sum(df$emissions_2025)/sum(df$pop_2025)))/1e9
+v$rights[v$region %in% "union"]
+
+sum(df$rights_proposed_2030[df$region_tiam %in% c("WEU", "CHI")])
+sum(v$emissions_bau_2030[v$region %in% c("WEU", "CHI")])
+sum(df$rights_proposed_2030)/1e9
+sum(df$emissions_2030)/1e9
+
+sum(df$rights_proposed_2040[df$participate_union & !df$region_tiam %in% c("CHI", "WEU")])
+(v$emissions_bau_2040[v$region %in% "union"] - sum(v$rights_proposed_2040[v$region %in% c("CHI", "WEU")]))
+df$rights_proposed_2080[df$code == "IND"]
+quadratic_interpolation(integral = df$rights_proposed[df$code == "JPN"], y0 = df$rights_proposed_2030[df$code == "JPN"])
+
+plot(2030:2080, quadratic_interpolation(integral = df$rights_proposed[df$code == "JPN"], y0 = df$rights_proposed_2030[df$code == "JPN"]))
 
 ##### Poll COP #####
 cop <- read.csv("../Adrien's/climate_negotiators.csv")
