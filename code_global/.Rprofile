@@ -312,7 +312,7 @@ quadratic_interpolation <- function(integral, y0, yend = 0, x0 = 2030, xend = 20
   y <- a * dx^2 + b * dx + y0
   if (nonnegative & any(y < -1)) { # linear interpolation if y constrained to be nonnegative (-1 used instead of 0 because there are values like e-6 instead of 0)
     xmax <- floor(2*integral/y0)
-    if (xmax < 2 | (y0 - yend) + (xmax - 1) * d < 0) stop("No feasible solution exists.")
+    if (xmax < 2 || (y0 - yend) + ((yend - y0)*xmax + integral)/(xmax*(xmax-1)/2) < 0) stop("No feasible solution exists.")
     y <- pmax(0, y0 + dx*((yend - y0)*xmax + integral)/(xmax*(xmax-1)/2)) # dx*(yend - y0)/xmax
   } 
   return(y)

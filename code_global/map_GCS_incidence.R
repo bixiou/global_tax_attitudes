@@ -2940,7 +2940,8 @@ sum(df$emissions_2030)
 
 {
 # Option 2: (cf. intertemporal_allocation.lyx)
-spread <- .2 # 0: matches initial value / 1: all countries share trajectory shape
+spread <- .8 # 0: matches initial value / 1: all countries share trajectory shape
+max_only_start <- F
 df$share_rights_among_region_tiam <- df$pop_2030/sapply(df$region_tiam, function(r) sum(df$pop_2030[df$region_tiam == r]))
 df$participate_union <- df$region_tiam %in% regions_union
 df$participate_union[df$code %in% c("VEN", "SOM", "SSD", "TTO", "PRK")] <- FALSE # Removed because absent from NICE. I could also remove BRN, MYS (Brunei, Malaysia) as they'd lose and are unlikely to join.
@@ -2965,7 +2966,7 @@ df$share_rights[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")] <- df$share_r
 # for (i in which(!df$region_tiam %in% c("CHI", "WEU"))) df[i, paste0("rights_proposed_", 2030:2080)] <- quadratic_interpolation(integral = df$rights_proposed[i], y0 = df$rights_proposed_2030[i])
 emissions_max <- c()
 for (y in 2030:2080) emissions_max[y-2029] <- barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == "union", paste0("emissions_bau_", 10*floor(y/10))], y_next = v[v$region == "union", paste0("emissions_bau_", 10*ceiling(y/10))], x = y)
-for (y in 2030:2080) emissions_max[y-2029] <- emissions_max[1]
+if (max_only_start) for (y in 2030:2080) emissions_max[y-2029] <- emissions_max[1]
 y <- 2030
 # We need two exogenous data: emissions_max (for the whole Union); emissions_y (BAU for each country, for now we use bau$emissions_y (we could also use df$emissions_y))
 while (y == 2030 || sum(df[df$participate_union, paste0("rights_proposed_", y)]) > emissions_max[y-2029]) {
@@ -3021,15 +3022,22 @@ lines(years_f, v[v$region == "JPN", paste0("emissions_bau_pc_", years_f)], type 
 # lines(2030:2080, colSums(df[df$code %in% "COD", paste0("emissions_pc_", 2030:2080)] * df[df$code %in% "COD", paste0("pop_", 2030:2080)])/colSums(df[df$code %in% "COD", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "cyan")
 }
 
-# I use spread = .5 when emissions_max is just set in 2030 and spread = .8 when it is set over all first years
-write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../../NICE2020/cap_and_share/data/input/ffu_rights_proposed_allocation_below_bau.csv", quote = F, row.names = F)
-write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../data/ffu_rights_proposed_allocation_below_bau.csv", quote = F, row.names = F)
-# write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../../NICE2020/cap_and_share/data/input/ffu_rights_proposed_allocation.csv", quote = F, row.names = F)
-# write.csv(t(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))]), "../data/ffu_rights_proposed_allocation.csv", quote = F, row.names = F)
+# I use spread = .5 when max_only_start (emissions_max is just set in 2030) and spread = .8 when it is set over all first years
+if (max_only_start) {
+  write.csv(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))], "../../NICE2020/cap_and_share/data/input/ffu_rights_proposed_allocation.csv", quote = F, row.names = F)
+  write.csv(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))], "../data/ffu_rights_proposed_allocation.csv", quote = F, row.names = F)
+} else {
+  write.csv(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))], "../../NICE2020/cap_and_share/data/input/ffu_rights_proposed_allocation_below_bau.csv", quote = F, row.names = F)
+  write.csv(df[, c("code", "region_tiam", "participate_union", paste0("rights_proposed_", 2030:2080))], "../data/ffu_rights_proposed_allocation_below_bau.csv", quote = F, row.names = F)
+}
+
+temp <- read.csv("../data/ffu_rights_proposed_allocation.csv", skip = 3)
+sum(temp)
+sum(df[,paste0("rights_proposed_", 2030:2080)])
 
 sum(df$rights_proposed[df$participate_union])
 sum(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])
-v$rights[v$region == "union"]
+v$rights[v$region == "World"]
 # (sum(df$pop_2030[df$code %in% c("IRN", "LBY", "TKM")]) - sum(df$pop_2030[df$code %in% c("VEN", "SOM", "SSD", "TTO", "PRK")]))/1e6 # I am adding 9M in the Union and not adding rights so it's fine.
 # sort(setNames(df$emissions_pc_2025, df$country)[!df$participate_union & df$pop_2030 > 1e6])
 
