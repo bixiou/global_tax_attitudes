@@ -65,6 +65,8 @@
 \usepackage{multicol}
 \usepackage{lineno}
 \usepackage{endnotes}
+\usepackage{ragged2e}
+\newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}} % left-align in tables with fixed column widths
 % \let\footnote=\endnote
 % \linenumbers
 \makeatletter
@@ -544,6 +546,109 @@ As a next step, supportive organizations could launch a taskforce gathering scho
 % \section{The draft treaty} % TODO!!
 
 % COMPARISON
+
+\clearpage
+
+
+\begin{table}[h]
+  \caption{Description of possible international policies to phase out fossil fuels.\label{tab:policies}}
+  \makebox[\textwidth][c]{
+
+\begin{tabular}[t]{P{4cm}P{15cm}}
+  \toprule
+  International policy & Description \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & Countries trade Internationally Transferred Mitigation Outcomes, bringing flexibility to the location of NDCs' emission reductions. \\
+  ITMOs avoiding hot air  &  ITMOs with extra rules (described in Section \ref{subsubsec:itmo}) ensuring that countries trading ITMOs have joint NDCs in line with the Paris target. \\
+  ITMOs + country-level integrity  & ITMOs with extra rules preventing countries lacking ambition to participate. \\
+  (\textit{Status quo}) JETPs  &  Just Energy Transition Partnerships where one developing country obtain concessional loans from a set of HICs conditional on the decarbonization of its power sector. \\
+  JETPs with more grants  & JETPs financed by grants more than loans, of \$120 billion per year.\citep{bolton_why_2025} \\
+  JETPs with wider scope   & JETPs with grants conditional on implementation of climate policy such as national carbon pricing.\citep{steckel_climate_2017} \\
+  Uniform price on CBAM sectors  & International cap-and-trade on carbon-intensive manufacturing sectors with little revenue sharing between countries. \\
+  Differentiated price floors  & Coordinated carbon price floors (\$25/tCO$_\text{2}$ for LICs and lower-MICs, \$50 for upper-MICs, \$75 for HICs), with little revenue sharing between countries.\citep{parry_proposal_2021} \\
+  Diff. prices on CBAM sectors  & Differentiated price floors limited to CBAM sectors, with little revenue sharing between countries.  \\
+  Nordhaus-type club  & Uniform carbon price, with little revenue sharing between countries, with a CBAM, and dissuasive tariffs on imports from outside the club.\citep{nordhaus_climate_2015} \\
+  Fossil-Free Union (FFU)  & International cap-and-trade, with revenue returned on a basis given by an equal per capita benchmark with some adjustments (cf. Section \ref{sec:ffu}). \\
+  FFU + Sustainable Union (SU)  &  International cap-and-trade and new taxes (especially on wealth), where international transfers are proportional to the difference between a country's GNI per capita to the world average (cf. Section \ref{sec:su}). \\
+  Uniform price floor + SU  & Sustainable Union with a (negotiated) uniform carbon tax rather than a cap-and-trade. \\
+  Fossil non-proliferation treaty  & Coordinated phase out of fossil fuel extraction, with supply cuts starting in richest countries and ending with poorer, more fossil-dependent ones.\citep{newell_building_2022} \\ % TODO! check accurate
+  Producer carbon tax  &  Uniform carbon applied on extraction or imports of fossil fuels, with part of the revenue share with LICs.\citep{world_bank_-first-international-research-conference--carbon-pricingpdf_2019} \\% TODO! check accurate
+  Expansion of climate finance  & Reforms to the financial system to orient investment towards sustainable projects in the Global South, through public multilateral guarantees on climate projects, expansion of Multilateral Development Banks' (MDBs) operations, rechannelling of Special Drawing Rights to MDBs' capital, debt-for-climate swaps, money creation, etc.\citep{songwe_raising_2024,mazzucato_green_2024,bridgetown_bridgetown_2025,hourcade_climate_2025,green_climate_fund_scaling_2021,dafermos_climate_2025} \\
+  Standards and bans  &  Implementation of common sectoral norms, e.g. standards on the CO$_\text{2}$-emission intensity of cars, shipping or aviation fuel; bans of fossil-fuel exploration, or on the opening of new coal power plants; common taxonomy for climate finance. \\
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+% TODO! cite others: Cramton, Blanchard-Tirole, Equal Right, etc.
+
+
+\begin{table}[h]
+  \caption{Pros and cons of possible international policies.\label{tab:policies}}
+  \makebox[\textwidth][c]{
+
+\begin{tabular}[t]{P{4cm}P{8cm}P{8cm}}
+  \toprule
+  International policy & Pros & Cons \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & Cross-border financing of efficient decarbonization projects. & \textit{Hot air}, risks weakening domestic climate action. \\
+  ITMOs avoiding hot air  & ITMOs without hot air. & Trading between countries rather than firms, weakening enforcement. \\
+  ITMOs + country-level integrity  & ITMOs with reduced hot air. & Either hot air or risks of unfair burden-sharing. \\
+  (\textit{Status quo}) JETPs  & Cross-border financing of electricity decarbonization. & Limited scope; few grants; no effect on high emitting countries. \\
+  JETPs with more grants  & JETPs with North--South transfers. & Limited scope; no effect on high emitting countries. \\
+  JETPs with wider scope   & Potentially full country decarbonization. & No effect on high emitting countries. \\
+  Uniform price on CBAM sectors  & Efficient decarbonization of manufacturing, settling the CBAM issue. & Limited scope; no North--South transfer. \\  
+  Differentiated price floors  & Country-wide efficiency; ambition adapted to country circumstances. & Few North--South transfer; no gains from trade. \\
+  Diff. prices on CBAM sectors  & Decarbonization of manufacturing. & Few North--South transfer; limited scope. \\
+  Nordhaus-type club  & Efficient decarbonization. & Few North--South transfer; trade sanctions may fail to incentive recalcitrant countries and will hurt the club. \\
+  Fossil-Free Union (FFU)  & Efficient decarbonization with North--South transfers. & Ambition and burden-sharing rigid to changing circumstances. \\
+  FFU + Sustainable Union (SU)  & Efficient decarbonization with large North--South transfers, spurring development. & Climate ambition rigid to changing circumstances; imperfect incentives for countries to implement complementary climate policies (as international transfers don't depend the country's emissions). \\
+  Uniform price floor + SU  & Efficient decarbonization with large North--South transfers, spurring development.  & Climate ambition not guaranteed (price may be too low); imperfect incentives for countries to implement complementary climate policies. \\
+  Fossil non-proliferation treaty  & Decarbonization. & Relies on the (unlikely) participation of fossil-fuel producing countries; would increase oil rents and hurt consumers, especially low-income ones; lacks efficiency. \\
+  Producer carbon tax  & Efficient decarbonization. & Relies on the (unlikely) participation of fossil-fuel producing countries; would increase oil rents and hurt consumers, especially low-income ones. \\
+  Expansion of climate finance  & Lower interest rates in LMICs, spurring sustainable development. & Does not cap emissions. \\
+  Standards and bans  & Aligns one sector towards decarbonization. & Limited scope; no North--South transfer. \\
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+\begin{table}[h]
+  \caption{Comparison summary of possible international policies.\label{tab:policies}}
+  \makebox[\textwidth][c]{
+\begin{tabular}[t]{lccccccccc}
+  \toprule
+  International policy & Emission & Least & \multicolumn{2}{c}{Fair} & \multicolumn{4}{c}{Acceptable by} & Flexible \\
+  & \makecell{reductions\\} & \makecell{cost\\} & \makecell{Rich\\pay} & \makecell{Poor\\gain} & LICs & MICs & HICs & \makecell{Oil\\countries} &  \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & 0 & 0 & 0 & 0 & +++ & +++ & +++ & +++ & +++ \\   
+  ITMOs avoiding hot air  & +++ & +++ & ++ & ++ & +++ & ++ & + & \texttt{--} & - \\   % Very similar to FFU but trading between countries rather than firms
+  ITMOs + country-level integrity  & + & + & + & + & + & + & ++ & ++ & +++ \\      
+  (\textit{Status quo}) JETPs  & + & 0 & 0 & + & +++ & +++ & +++ & +++ & +++ \\   
+  JETPs with more grants  & + & 0 & ++ & ++ & +++ & ++ & + & \texttt{--} & +++ \\   
+  JETPs covering broad policy   & ++ & + & ++ & ++ & +++ & ++ & + & \texttt{--} & +++ \\   
+  Uniform price on CBAM sectors  & ++ & ++ & 0 & \texttt{--} & - & + & +++ & \texttt{--} & + \\  
+  Differentiated price floors  & + & + & 0 & - & - & + & +++ & - & + \\    
+  Diff. prices on CBAM sectors  & + & + & + & - & 0 & ++ & ++ & \texttt{--} & +\\   
+  Nordhaus-type club  & +++ & +++ & 0 & - & + & + & +++ & \texttt{---} & + \\   
+  Fossil-Free Union (FFU)  & ++++ & +++ & ++ & ++ & +++ & ++ & + & \texttt{--} & \texttt{--} \\   
+  FFU + Sustainable Union (SU)  & ++++ & +++ & +++ & +++ & +++ & ++ & 0 & \texttt{---} & \texttt{--} \\   
+  Uniform price floor + SU  & ++ & ++ & +++ & +++ & +++ & +++ & 0 & \texttt{--} & + \\   
+  Fossil non-proliferation treaty  & + & - & - & - & - & - & - & - & + \\   
+  Producer carbon tax  & ++ & ++ & \texttt{--} & \texttt{---} & \texttt{---} & \texttt{--} & - & - & + \\   
+  Expansion of climate finance  & ++ & + & + & + & +++ & +++ & ++ & + & +++ \\   
+  Standards and bans  & ++ & 0 & 0 & 0 & + & + & ++ & + & 0 \\   
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+% Types:
+% ITMOs
+% JETPs
+% Limited coverage
+% Differentiated prices
+% Transfers
+% Supply-side
+% Finance
+% Standards
+
 
 % Criteria: Effectiveness; Efficiency; Justice; Adaptability; Rich pay; Acceptability LICs; Acc MICs; Acc HICs; Acc oil; Pros; Cons
 

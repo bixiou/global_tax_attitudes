@@ -2845,18 +2845,18 @@ sum(bau[!bau$code %in% c(central, "KOR"), paste0("emissions_", 2030:2100)])/1e9 
 (5.5*sum(v[v$region == "World", paste0("emissions_ndc30_", c(2030, 2100))]) + 10*sum(v[v$region == "World", paste0("emissions_ndc30_", seq(2040, 2090, 10))]))/1e9 # 1291 Gt => 2.13°C
 (5.5*sum(v[v$region == "World", paste0("emissions_bau_", c(2030, 2100))]) + 10*sum(v[v$region == "World", paste0("emissions_bau_", seq(2040, 2090, 10))]))/1e9 # 1567 Gt => 2.28°C
 (5.5*sum(v[v$region == "union", paste0("emissions_bau_", c(2030, 2100))]) + 10*sum(v[v$region == "union", paste0("emissions_bau_", seq(2040, 2090, 10))]))/1e9 # 1032 Gt 
-# => 535 Gt outside Union in BAU according to van de Ven
+# => 1567-1032 = 535 Gt outside Union in BAU according to van de Ven
 v$emissions_bau_2100[v$region == "World"]/1e9 # 15 Gt
 sum(df[df$code %in% c(central, "KOR"), paste0("emissions_", 2030:2080)])/1e9 # 522 Gt
 sum(bau[!bau$code %in% setdiff(central, "JPN"), paste0("emissions_", 2030:2100)])/1e9 # 741 Gt
 sum(df[df$code %in% setdiff(central, "JPN"), paste0("emissions_", 2030:2080)])/1e9 # 493 Gt
 # Rights union FFU: central + KOR: 667 Gt
 v$rights[v$region == "union"] # 667
-sum(df[, paste0("emissions_", 2020:2080)]) # 1113 Gt (Gütschow) vs. 385+770=1155 (allocation) i.e. 4% difference (or .02°C), which comes from the decadal approximation
+sum(df[, paste0("emissions_", 2020:2080)]) # 1113 Gt (Gütschow) vs. 385+770=1155 (allocation) i.e. 42 Gt = 4% difference (or .02°C), which comes from the decadal approximation
 sum(df[, paste0("emissions_", 2081:2100)]) # -67 Gt
 sum(df[df$code %in% c(central, "KOR"), paste0("emissions_", 2081:2100)])/1e9 # -59 Gt
-# Temperature FFU: +2.12°C  # With BAU outside club of 440 Gt instead of 669 Gt, we get 2.00°C
-barycenter((385 + 535 + 667 - 59)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7) # 2.15°C
+# Temperature FFU: +2.05°C  # With BAU outside club of 440 Gt instead of 669 Gt, we get 2.00°C
+barycenter((385 + 535 + 667 - 59)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7) # 2.05°C
 barycenter((385 + 669 + 667 - 59)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7) # 2.15°C
 barycenter((385 + 669 + 667 - 59 - 42)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7) # 2.15°C
 barycenter((385 + 669 + 667)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7) # 2.15°C
@@ -2884,6 +2884,20 @@ barycenter((385 + 1567)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau
 # 1567: World BAU 2030-2100 / 1240: World BAU 2030-80 i.e. v$emissions_bau
 # Dans NICE, temperature in 2100: 2.39°C / total world emissions over 2020-2100: => For me it would imply 2.29°C
 barycenter((1986)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
+
+# Temperature => with NICE interpolation / Beware of scope (fossil CO2 in van de Ven vs. all CO2 in NICE)
+# TODO! check where this discrepancy of 0.2°C comes from and update figures (incl. carbon budgets)
+# TODO! calibrate carbon budgets on Climate Action Tracker
+# Note that bau=385 for 2020-29 might be more than actual
+barycenter(385 + 535 + 667 - 59, 447.9671, 3210.041, 1.80299, 2.92176) # FFU 2.05°C => 2.24°C
+barycenter(385 + 770 - 67, 447.9671, 3210.041, 1.80299, 2.92176) # FFU universal 1.82°C => 2.06°C
+barycenter(385 + (770 - 67)*667/522, 447.9671, 3210.041, 1.80299, 2.92176) # All countries at FFU speed 1.93°C => 2.14°C
+
+barycenter(385 + 535 + 585 - 59, 447.9671, 3210.041, 1.80299, 2.92176) # FFU with more stringent (non-losing) budgets 2.21°C
+barycenter(385 + 1045, 447.9671, 3210.041, 1.80299, 2.92176) # 2.2°C
+barycenter(385 + 550, 447.9671, 3210.041, 1.80299, 2.92176) # 2°C
+barycenter(385 + 55, 447.9671, 3210.041, 1.80299, 2.92176) # 1.8°C
+barycenter(385 + 1567, 447.9671, 3210.041, 1.80299, 2.92176) # 2.41°C van de Ven BAU
 
 
 ##### Non-losing rights in scenario central #####
