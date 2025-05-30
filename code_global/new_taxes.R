@@ -207,8 +207,8 @@ plot_world_map("net_gain_over_gdp_both_taxes", df = df, breaks = c(-.015, -.005,
 #                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, 0, .01, .05, .1, .2, Inf)*100, sep = "% to ", end = "%", return = "levels")), colors = color(11)[c(1:5,7,8)], 
 #                legend = "Budget gain\nfrom new taxes\n(in % of GNI)", 
 #                save = T)
-plot_world_map("budget_gain_over_gdp_both_taxes", df = df, breaks = c(-Inf, 0, .025, .05, .1, .2, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
-               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, 0, .025, .05, .1, .2, Inf)*100, sep = "% to ", end = "%", return = "levels")), colors = color(11)[c(1:5,7,8)], 
+plot_world_map("budget_gain_over_gdp_both_taxes", df = df, breaks = c(-Inf, 0, .01, .025, .05, .1, .2, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
+               labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, 0, .01, .025, .05, .1, .2, Inf)*100, sep = "% to ", end = "%", return = "levels")), colors = color(13)[c(1:6,8,9)], 
                legend = "Budget gain\nfrom new taxes\n(in % of GNI)", 
                save = T)
 
@@ -235,6 +235,7 @@ plot_world_map("budget_gain_over_gdp_both_taxes_pop", df = df, breaks = c(-Inf, 
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, 0, .01, .025, .05, .1, .2, Inf)*100, sep = "% to ", end = "%", return = "levels")), colors = color(13)[c(1:6,8,9)], 
                legend = "Budget gain\nfrom new taxes\n(in % of GNI)", 
                save = T)
+write.csv(df[,c("code", "country_map", "budget_gain_over_gdp_both_taxes_pop")], "../data/budget_gain_over_gdp_both_taxes.csv", quote = F, row.names = F)
 
 table_new_taxes_pop <- cbind("transfer" = df$net_gain_both_taxes_pc_pop, "budget_gain" = df$budget_gain_both_taxes_pc_pop, "global_wealth" = df$global_wealth_tax_revenue_pc, "national_wealth" = df$national_wealth_tax_revenue_pc, "ftt" = df$ftt_pc, 
                          "carbon" = carbon_tax*df$emissions_pc_2023, "maritime" = maritime_carbon_price*df$emissions_maritime_mean/df$pop_2018, "aviation" = aviation_carbon_price*df$emissions_pc_aviation, 

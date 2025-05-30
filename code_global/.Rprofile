@@ -2209,7 +2209,7 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 # }
 
 # Fix bugs for stripes, might bug in this repo because wasn't tested here
-plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/', base_family = NULL, RTL = FALSE, thick_border = FALSE, stripes_up = T,
+plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', base_family = NULL, RTL = FALSE, thick_border = FALSE, stripes_up = T,
                            breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, level_striped = NULL, stripe_codes = NULL, strict_ineq_lower = FALSE, sep = " - ", begin = "", end = "") {
   # /!\ plot_world_map may sometimes fail (due to processor overload): in that case, either close all other windows or check the pdf/png export (which renders generally fine). When testing the function, remove most countries to speed the rendering (cf. example code below).
   if (!is.null(parties)) {

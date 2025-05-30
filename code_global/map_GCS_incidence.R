@@ -2321,7 +2321,7 @@ plot_world_map("net_gain_over_gdp_both_taxes_pop", df = df, breaks = c(-.015, -.
 plot_world_map("budget_gain_over_gdp_both_taxes_pop", df = df, breaks = c(-Inf, 0, .01, .025, .05, .1, .2, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, filename = "budget_gain_over_gdp_both_taxes_pop_fr",
                labels = sub("≤", "<", agg_thresholds(c(0), c(-Inf, 0, .01, .025, .05, .1, .2, Inf)*100, sep = "% to ", end = "%", return = "levels")), colors = color(13)[c(1:6,8,9)], 
                legend = "Gain budgétaire\ngrâce aux nouvelles taxes\n(en % du RNB)", 
-               save = T)
+               save = F)
 
 
 ##### Course Tsinghua equal pc 2030 target #####
@@ -3336,7 +3336,7 @@ sort(setNames(df$budget_gain_over_gdp_both_taxes, df$country), decreasing = T)
 plot_world_map("budget_gain_over_gdp_both_taxes", df = df, breaks = c(-Inf, 0, .01, .05, .1, .2, Inf), format = c('png', 'pdf'), legend_x = .08, trim = T, # svg, pdf
                labels = sub("≤", "<", agg_thresholds(c(0), c(-.0015, 0, .01, .05, .1, .2, Inf)*100, sep = "% to ", end = "%", return = "levels")), colors = color(11)[c(1:5,7,8)], 
                legend = "Budget gain\nfrom new taxes\n(in % of GNI)", 
-               save = T)
+               save = F)
 
 
 ##### Participating countries' number and emission share #####
