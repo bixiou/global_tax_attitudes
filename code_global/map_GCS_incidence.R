@@ -2886,8 +2886,7 @@ barycenter((385 + 1567)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau
 barycenter((1986)*1e9, sum(df[, paste0("emissions_", 2020:2100)]), sum(bau[, paste0("emissions_", 2020:2100)]), 1.8, 2.7)
 
 # Temperature => with NICE interpolation / Beware of scope (fossil CO2 in van de Ven vs. all CO2 in NICE)
-# TODO! check where this discrepancy of 0.2°C comes from and update figures (incl. carbon budgets)
-# TODO! calibrate carbon budgets on Climate Action Tracker
+# The reason of higher temperature in NICE is not the scope but more pessimistic hypotheses for non-CO2 emissions (SSP2-4.5 instead of 2.6). NICE temperature decreases by 0.28°C once switching to SSP1-2.6
 # Note that bau=385 for 2020-29 might be more than actual
 barycenter(385 + 535 + 667 - 59, 447.9671, 3210.041, 1.80299, 2.92176) # FFU 2.05°C => 2.24°C
 barycenter(385 + 770 - 67, 447.9671, 3210.041, 1.80299, 2.92176) # FFU universal 1.82°C => 2.06°C
@@ -2898,6 +2897,17 @@ barycenter(385 + 1045, 447.9671, 3210.041, 1.80299, 2.92176) # 2.2°C
 barycenter(385 + 550, 447.9671, 3210.041, 1.80299, 2.92176) # 2°C
 barycenter(385 + 55, 447.9671, 3210.041, 1.80299, 2.92176) # 1.8°C
 barycenter(385 + 1567, 447.9671, 3210.041, 1.80299, 2.92176) # 2.41°C van de Ven BAU
+
+barycenter(385 + 770 - 67, 800+117, 2000+117, 1.8, 2.4) # 1.89°C from Lamboll et al. (23) (calibration/values taken visually from their Fig. 4c, 117Gt is 2020-22 emissions; scope: all CO2 emissions)
+barycenter(1113 - 67, 800+117, 2000+117, 1.8, 2.4) # 1.86°C (vs. 1.8°C in Gütschow, the difference probably comes from updated modelling of carbon budget in Lamboll)
+barycenter(385 + 535 + 667 - 59, 800+117, 2000+117, 1.8, 2.4) # 2.11°C
+barycenter(385 + (770 - 67)*667/522, 800+117, 2000+117, 1.8, 2.4) # 1.98°C
+
+# Only one model in van de Ven has LULUCF emissions, not the one we use. It projects ~ -40Gt (-8*5) AFOLU emissions over 2020-2100. AFOLU ~ LULUCF for CO2 (as AFOLU = LULUCF + agri)
+# sum(as.numeric(vdv[vdv$Model == "GCAM-PR 5.3" & vdv$Variable %in% "Emissions|CO2|AFOLU" & vdv$Scenario == "NDC_LTT" & vdv$Region == "World", paste0("X", seq(2020, 2100, 5))]))
+# => It is correct to compute the temperature as if AFOLU CO2 emissions were 0, we overestimate temperature by .02°C, which is negligible.
+barycenter(1113 - 67, 800+117, 2000+117, 1.8, 2.4) - barycenter(1113 - 67 - 40, 800+117, 2000+117, 1.8, 2.4) # .02
+# While IPCC AR6 uses SR1.5 database, Lamboll et al. (23) uses AR6 database and a more accurate technique named QRW for non-CO2 emissions.
 
 
 ##### Non-losing rights in scenario central #####
