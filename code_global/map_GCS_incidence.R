@@ -2902,6 +2902,7 @@ barycenter(385 + 770 - 67, 800+117, 2000+117, 1.8, 2.4) # 1.89°C from Lamboll e
 barycenter(1113 - 67, 800+117, 2000+117, 1.8, 2.4) # 1.86°C (vs. 1.8°C in Gütschow, the difference probably comes from updated modelling of carbon budget in Lamboll)
 barycenter(385 + 535 + 667 - 59, 800+117, 2000+117, 1.8, 2.4) # 2.11°C
 barycenter(385 + (770 - 67)*667/522, 800+117, 2000+117, 1.8, 2.4) # 1.98°C
+barycenter(320, 800+117, 2000+117, 1.8, 2.4) # 1.5°C => 700 Gt will need to be removed, this would take 100 years at a rate of 7 Gt/year.
 
 # Only one model in van de Ven has LULUCF emissions, not the one we use. It projects ~ -40Gt (-8*5) AFOLU emissions over 2020-2100. AFOLU ~ LULUCF for CO2 (as AFOLU = LULUCF + agri)
 # sum(as.numeric(vdv[vdv$Model == "GCAM-PR 5.3" & vdv$Variable %in% "Emissions|CO2|AFOLU" & vdv$Scenario == "NDC_LTT" & vdv$Region == "World", paste0("X", seq(2020, 2100, 5))]))
