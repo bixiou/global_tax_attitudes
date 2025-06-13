@@ -2943,6 +2943,8 @@ df$participate_union <- df$region_tiam %in% regions_union
 df$participate_union[df$code %in% c("VEN", "SOM", "SSD", "TTO", "PRK")] <- FALSE
 v[v$region == "AFR", c("rights_proposed_2030", "emissions_bau_2030", "rights_proposed_2040", "emissions_bau_2040")]/1e8
 # Option 1: equal pc per region
+for (y in 2030:2080) df[[paste0("rights_", y)]] <- (df$pop_2030/sum(df$pop_2030)) * 
+        barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == "World", paste0("rights_", 10*floor(y/10))], y_next = v[v$region == "World", paste0("rights_", 10*ceiling(y/10))], x = y)
 for (y in 2030:2080) df[[paste0("rights_proposed_", y)]] <- pmax(0, sapply(1:nrow(df), function(i) df$share_rights_among_region_tiam[i] * 
         barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == df$region_tiam[i], paste0("rights_proposed_", 10*floor(y/10))], y_next = v[v$region == df$region_tiam[i], paste0("rights_proposed_", 10*ceiling(y/10))], x = y)))
 for (y in 2030:2060) df[[paste0("rights_proposed_", y)]][df$code == "CHN"] <- pmax(0, (151.6/163.85)*barycenter(x_prev = 5*floor(y/5), x_next = 5*ceiling(y/5), y_prev = v[v$region == "CHI", paste0("emissions_target_", 5*floor(y/5))], y_next = v[v$region == "CHI", paste0("emissions_target_", 5*ceiling(y/5))], x = y))
@@ -2965,8 +2967,8 @@ sum(df$emissions_2030)
 
 {
 # Option 2: (cf. intertemporal_allocation.lyx)
-spread <- .8 # 0: matches initial value / 1: all countries share trajectory shape
-max_only_start <- F
+spread <- .5 # 0: matches initial value / 1: all countries share trajectory shape
+max_only_start <- T
 df$share_rights_among_region_tiam <- df$pop_2030/sapply(df$region_tiam, function(r) sum(df$pop_2030[df$region_tiam == r]))
 df$participate_union <- df$region_tiam %in% regions_union
 df$participate_union[df$code %in% c("VEN", "SOM", "SSD", "TTO", "PRK")] <- FALSE # Removed because absent from NICE. I could also remove BRN, MYS (Brunei, Malaysia) as they'd lose and are unlikely to join.
@@ -2977,7 +2979,7 @@ for (y in 2030:2060) df[df$region_tiam == "CHI", paste0("rights_proposed_", y)] 
 for (y in 2061:2080) df[df$region_tiam == "CHI", paste0("rights_proposed_", y)] <- 0
 
 df$share_rights <- df$share_rights_among_region_tiam * sapply(df$region_tiam, function(r) v$rights_proposed[v$region == r])/(v$rights[v$region == "World"])
-df$rights_proposed <- df$share_rights * v$rights[v$region == "World"]*1e9
+df$rights_proposed <- df$rights <- df$share_rights * v$rights[v$region == "World"]*1e9
 df$participate_union[df$code %in% c("IRN", "LBY", "TKM")] <- T # Allocating  the 12 Gt remaining rights to 5 fossil-dependent MICs: I've checked that I am not adding more rights than remaining ones (needs perfectly coincides with remaining rights)
 df$rights_proposed[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")] <- df$rights_proposed[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")]*c(9.1, 8.88, 8.45, 10.51, 6.56)/4.86
 df$share_rights[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")] <- df$share_rights[df$code %in% c("IRN", "LBY", "MNG", "TKM", "ZAF")]*c(9.1, 8.88, 8.45, 10.51, 6.56)/4.86
@@ -3084,6 +3086,19 @@ df$rights_proposed_2080[df$code == "IND"]
 quadratic_interpolation(integral = df$rights_proposed[df$code == "JPN"], y0 = df$rights_proposed_2030[df$code == "JPN"])
 
 plot(2030:2080, quadratic_interpolation(integral = df$rights_proposed[df$code == "JPN"], y0 = df$rights_proposed_2030[df$code == "JPN"]))
+
+
+##### NICE2020 Emissions from rights_proposed #####
+emissions_ffu <- read.csv("../../NICE2020/cap_and_share/output/revenue_recycling/global_per_capita/new_transfer/country_output/industrial_co2_emissions.csv")
+emissions_ffu$region_tiam <- region_tiam[emissions_ffu$country]
+(emissions_realised <- round(cbind("rights_proposed" = sapply(unique(region_tiam), function(r) sum(df$rights_proposed[df$region_tiam == r])/1e9), "emissions" = sapply(unique(region_tiam), function(r) sum(emissions_ffu$E_gtco2[emissions_ffu$region_tiam %in% r & emissions_ffu$time %between% c(2030, 2080)])))))
+
+# TODO! Change in EDE due to recycling
+#       Change in EDE due to recycling + avoided damages (shunning the impact on Y)
+#       Use non-losing instead of BAU as baseline
+#       Add SU taxes and compute change in EDE
+
+
 
 ##### Poll COP #####
 cop <- read.csv("../Adrien's/climate_negotiators.csv")
