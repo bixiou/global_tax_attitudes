@@ -341,6 +341,7 @@ copy_from_cp <- c("country", "country_map", # These two are absolutely needed
 total_revenues <- average_revenues <- basic_income <- basic_income_adj <- basic_income_pa <- basic_income_adj_pa <- list()
 bau <- prepare_ssp_country("SSP245MESGB") # SSP2-4.5, temp 2100: 2.7°C, AR6 WGI SPM https://www.carbone4.com/publication-scenarios-ssp-adaptation
 bau <- create_var_ssp(df = bau) # 
+bau <- bau[order(bau$code),]
 df <- prepare_ssp_country("SSP226MESGB") # sm, SSP2-2.6, temp max: 1.8°C, temp 2100: 1.8°C
 df <- create_var_ssp(df = df) # medium price - medium ambition. Illustrative pathway ssp2_26, SSP226MESGB  # , beneficiary = "recipient_"
 
