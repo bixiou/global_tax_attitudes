@@ -2969,8 +2969,8 @@ sum(df$emissions_2030)
 ##### NICE2020: Export rights_proposed #####
 {
 # Option 2: (cf. intertemporal_allocation.lyx)
-spread <- .5 # 0: matches initial value / 1: all countries share trajectory shape
-max_only_start <- T
+spread <- .8 # 0: matches initial value / 1: all countries share trajectory shape
+max_only_start <- F
 df$share_rights_among_region_tiam <- df$pop_2030/sapply(df$region_tiam, function(r) sum(df$pop_2030[df$region_tiam == r]))
 df$participate_union <- df$region_tiam %in% regions_union
 df$participate_union[df$code %in% c("VEN", "SOM", "SSD", "TTO", "TWN", "PRK")] <- FALSE # Removed because absent from NICE. For the moment I also remove TWN to not bundle it with CHN (same region_tiam) TODO: handle TWN
@@ -3020,7 +3020,7 @@ df$share_rights[df$code %in% offset_EEU_partially] <- df$share_rights[df$code %i
 # additional_rights <- sum(df$rights_proposed) - sum(df$rights)
 # additional_rights/1e9
 # 
-# nfede <- read.csv(paste0(path_nice, "ffu_custom_transfers/country_output/consumption_EDE.csv"))
+# nfede <- read.csv(paste0(path_nice, "ffu_below_bau_custom_transfers/country_output/consumption_EDE.csv"))
 # nlede <- read.csv("../../NICE2020/cap_and_share/output/revenue_recycling/within_country/equal_pc_transfer/country_output/consumption_EDE.csv")
 # nfede$diff_ede_ffu_nl <- nfede$cons_EDE_country/nlede$cons_EDE_country - 1
 # nfede$diff_sum_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) sum(nfede$cons_EDE_country[nfede$time %between% c(2030, 2080) & nfede$country ==c]))/sapply(unique(nfede$country), function(c) sum(nlede$cons_EDE_country[nlede$time %between% c(2030, 2080) & nlede$country ==c])) - 1
@@ -3034,8 +3034,10 @@ df$share_rights[df$code %in% offset_EEU_partially] <- df$share_rights[df$code %i
 # setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF")], c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF"))
 # setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code], nfede$country[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code])
 # setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% names(manual_adjust)], nfede$country[nfede$time == 2030 & nfede$country %in% names(manual_adjust)])
-
+# 
+# max(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]))
 # colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)])
+# which(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]) > .985)
 # }
 
 # df$participate_union[df$code %in% c("TJK", "YEM", "KGZ", "ARM", "SYR", "JOR", "GEO", "LBN", "UZB", "AZE", "MKD", "IRQ")] <- T # I leave HKG, ISR out as they are HICs
