@@ -3019,22 +3019,7 @@ df$share_rights[df$code %in% offset_EEU_partially] <- df$share_rights[df$code %i
 # sum(df[df$participate_union, paste0("rights_proposed_", 2030:2080)]) # 6.80366e+11 before adjustment (7.56245e+11 for all world)
 # additional_rights <- sum(df$rights_proposed) - sum(df$rights)
 # additional_rights/1e9
-# 
-# nfede <- read.csv(paste0(path_nice, "ffu_below_bau_custom_transfers/country_output/consumption_EDE.csv"))
-# nlede <- read.csv("../../NICE2020/cap_and_share/output/revenue_recycling/within_country/equal_pc_transfer/country_output/consumption_EDE.csv")
-# nfede$diff_ede_ffu_nl <- nfede$cons_EDE_country/nlede$cons_EDE_country - 1
-# nfede$diff_sum_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) sum(nfede$cons_EDE_country[nfede$time %between% c(2030, 2080) & nfede$country ==c]))/sapply(unique(nfede$country), function(c) sum(nlede$cons_EDE_country[nlede$time %between% c(2030, 2080) & nlede$country ==c])) - 1
-# nfede$diff_npv_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) sum(sapply(2030:2080, function(y) nfede$cons_EDE_country[nfede$time == y & nfede$country ==c]/1.03^(y-2030)))/sum(sapply(2030:2080, function(y) nlede$cons_EDE_country[nlede$time == y & nlede$country ==c]/1.03^(y-2030))) - 1)
-# nfede$rights_proposed_over_non_losing[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) if (c %in% df$code) df$rights_proposed_over_non_losing[df$code == c] else 0)
-# nfede$diff_npv_ede_ffu_nl[nfede$country %in% df$code[df$participate_union == F]] <- NA
-# 
-# # plot_map("rights_proposed_over_non_losing", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
-# # plot_map("diff_sum_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
-# plot_map("diff_npv_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, 0, 0.005, 0.01, 0.025, 0.05, 0.1, Inf), labels = c("< 0", "0 to 0.5", "0.5 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "> 10"), colors = color(13)[c(9,7:1)])  # c("#E08A84", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#6CAAD1", "#2166AC", "#103A71")
-# setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF")], c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF"))
-# setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code], nfede$country[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code])
-# setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% names(manual_adjust)], nfede$country[nfede$time == 2030 & nfede$country %in% names(manual_adjust)])
-# 
+# # 
 # max(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]))
 # colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)])
 # which(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]) > .985)
@@ -3105,6 +3090,10 @@ lines(years_f, v[v$region == "JPN", paste0("emissions_bau_pc_", years_f)], type 
 # lines(years_f, v[v$region == "WEU", paste0("emissions_bau_pc_", years_f)], type = 'l', lty = 2, col = "green")
 # lines(2030:2080, colSums(df[df$code %in% "COD", paste0("rights_proposed_pc_", 2030:2080)] * df[df$code %in% "COD", paste0("pop_", 2030:2080)])/colSums(df[df$code %in% "COD", paste0("pop_", 2030:2080)]), type = 'l', col = "cyan")
 # lines(2030:2080, colSums(df[df$code %in% "COD", paste0("emissions_pc_", 2030:2080)] * df[df$code %in% "COD", paste0("pop_", 2030:2080)])/colSums(df[df$code %in% "COD", paste0("pop_", 2030:2080)]), type = 'l', lty = 3, col = "cyan")
+
+max(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]))
+colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)])
+which(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]) > .98)
 }
 
 # I use spread = .5 when max_only_start (emissions_max is just set in 2030) and spread = .8 when it is set over all first years
@@ -3673,10 +3662,10 @@ nfede$diff_sum_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), f
 nfede$diff_npv_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) sum(sapply(2030:2080, function(y) nfede$cons_EDE_country[nfede$time == y & nfede$country ==c]/1.03^(y-2030)))/sum(sapply(2030:2080, function(y) nlede$cons_EDE_country[nlede$time == y & nlede$country ==c]/1.03^(y-2030))) - 1)
 nfede$rights_proposed_over_non_losing[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) if (c %in% df$code) df$rights_proposed_over_non_losing[df$code == c] else 0)
 nfede$diff_npv_ede_ffu_nl[nfede$country %in% df$code[df$participate_union == F]] <- NA
+df$var_npv_ede_ffu_nl <- sapply(unique(df$code), function(c) if (c %in% nfede$country) sum(sapply(2030:2080, function(y) nfede$cons_EDE_country[nfede$time == y & nfede$country ==c]/1.03^(y-2030)))/sum(sapply(2030:2080, function(y) nlede$cons_EDE_country[nlede$time == y & nlede$country ==c]/1.03^(y-2030))) - 1 else NA)
 
 # plot_map("rights_proposed_over_non_losing", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
 # plot_map("diff_sum_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
-plot_map("diff_npv_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.005, 0.005, 0.01, 0.025, 0.05, 0.1, Inf), labels = c("< -0.05", "-0.05 to 0.05", "0.05 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "> 10"), colors = color(11)[c(8,6:1)])  # c("#E08A84", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#6CAAD1", "#2166AC", "#103A71")
 plot_map("diff_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
 plot_map("diff_ede_ffu_nl", nfede[nfede$time == 2031,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
 plot_map("diff_ede_ffu_nl", nfede[nfede$time == 2040,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
@@ -3685,6 +3674,36 @@ plot_map("diff_ede_ffu_nl", nfede[nfede$time == 2060,], breaks = c(-Inf, -0.05, 
 plot_map("diff_ede_ffu_nl", nfede[nfede$time == 2080,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
 plot_map("diff_ede_ffu_nl", nfede[nfede$time == 2100,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
 plot_map("diff_ede_ffu_nl", nfede[nfede$time == 2150,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+
+# plot_map("rights_proposed_over_non_losing", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+# plot_map("diff_sum_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+# EXPORT
+plot_world_map("var_npv_ede_ffu_nl", save = T, df[df$participate_union,], breaks = c(-Inf, 0, 0.003, 0.01, 0.03, 0.1, Inf), labels = c("< 0%", "0% to 0.3%", "0.3% to 1%", "1% to 3%", "3% to 10%", "> 10%"), colors = color(11)[c(1:5,8)], legend = "Welfare change:\nNet Present Value\nof Equally-Distributed\nEquivalent consumption\nFFU vs. non-losing\n(over 2030-2080, r = 3%)", na_label = "Non Parties", legend_x = .07)   
+plot_map("diff_npv_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, 0, 0.005, 0.01, 0.025, 0.05, 0.1, Inf), labels = c("< 0", "0 to 0.5", "0.5 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "> 10"), colors = color(13)[c(9,7:1)])  # c("#E08A84", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#6CAAD1", "#2166AC", "#103A71")
+setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF")], c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF"))
+setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code], nfede$country[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code])
+setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% names(manual_adjust)], nfede$country[nfede$time == 2030 & nfede$country %in% names(manual_adjust)])
+
+fbtra <- read.csv(paste0(path_nice, "ffu_below_bau_custom_transfers/country_output/transfer_over_gdp.csv"))
+strong_contributors <- sort(unique(fbtra$country[which(fbtra$transfer_over_gdp < -.01)]))
+sapply(strong_contributors, function(c) min(fbtra$transfer_over_gdp[fbtra$country == c]))
+setNames(df$net_gain_over_gdp_both_taxes_pop[df$code %in% strong_contributors], strong_contributors)
+fbtra$npv_transfer_over_gdp <- sapply(unique(fbtra$country), function(c) sum(sapply(2030:2080, function(y) fbtra$transfer_over_gdp[fbtra$time == y & fbtra$country ==c]/1.03^(y-2030))))*(1-1/1.03)/(1-1/1.03^51)
+fbtra$mean_transfer_over_gdp <- sapply(unique(fbtra$country), function(c) mean(fbtra$transfer_over_gdp[fbtra$time %between% c(2030, 2080) & fbtra$country ==c]))
+df$mean_transfer_over_gdp <- sapply(unique(df$code), function(c) mean(fbtra$transfer_over_gdp[fbtra$time %between% c(2030, 2080) & fbtra$country ==c]))
+# EXPORT
+plot_world_map("mean_transfer_over_gdp", save = T, df[df$participate_union,], breaks = c(-Inf, -0.05, -0.01, -0.003, 0.003, 0.01, 0.05, Inf), labels = c("< -5%", "-5% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 5%", "> 5%"), legend = "Net transfer\ndue to the\nFossil-Free Union\n(average over 2030-2080,\nin % of GDP)", legend_x = .075, na_label = "Non Parties", filename = "ffu_mean_transfer", format = "pdf")
+plot_map("npv_transfer_over_gdp", fbtra[fbtra$time == 2030 & fbtra$country %in% df$code[df$participate_union],], breaks = c(-Inf, -0.03, -0.01, -0.003, 0.003, 0.01, 0.03, 0.1, Inf), labels = c("< -3%", "-3% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 3%", "3% to 10%", "> 10%"), colors = color(9)[8:1])
+plot_map("mean_transfer_over_gdp", fbtra[fbtra$time == 2030 & fbtra$country %in% df$code[df$participate_union],], breaks = c(-Inf, -0.05, -0.01, -0.003, 0.003, 0.01, 0.05, Inf), labels = c("< -5%", "-5% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 5%", "> 5%"), colors = color(7)[7:1])
+plot_map("transfer_over_gdp", fbtra[fbtra$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+plot_map("transfer_over_gdp", fbtra[fbtra$time == 2031,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+plot_map("transfer_over_gdp", fbtra[fbtra$time == 2040 & fbtra$country %in% df$code[df$participate_union],], breaks = c(-Inf, -0.03, -0.01, -0.003, 0.003, 0.01, 0.03, 0.1, Inf), labels = c("< -3%", "-3% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 3%", "3% to 10%", "> 10%"), colors = color(9)[8:1])
+plot_map("transfer_over_gdp", fbtra[fbtra$time == 2050,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+plot_map("transfer_over_gdp", fbtra[fbtra$time == 2060,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+plot_map("transfer_over_gdp", fbtra[fbtra$time == 2080,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+plot_map("transfer_over_gdp", fbtra[fbtra$time == 2100,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+plot_map("transfer_over_gdp", fbtra[fbtra$time == 2150,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+fbtra$mean_transfer_over_gdp[fbtra$time == 2030 & fbtra$country == "MNG"]
 
 sort(setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% c("BGR", "BWA", "CHL", "EST", "MYS", "NAM", "PAN", "POL", "SRB", "SUR", "THA", "TKM", "TWN")], c("BGR", "BWA", "CHL", "EST", "MYS", "NAM", "PAN", "POL", "SRB", "SUR", "THA", "TKM", "TWN")))
 sort(setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030], nfede$country[nfede$time == 2030]), decreasing = T)
@@ -3697,8 +3716,39 @@ sum((df$rights_proposed - df$non_losing)[df$code %in% c("BIH", "BWA", "IRN", "IR
 
 # TODO: Adjust to e.g. give more rights to IDN and less to AFR, enhancing participation.
 
+max(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]))
+max(colSums(df[df$participate_union, paste0("rights_proposed_", seq(2035, 2080, 5))])/colSums(df[df$participate_union, paste0("rights_proposed_", seq(2030, 2075, 5))]))
 colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)])
-which(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]) > .975)
+which(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]) > .98)
+# Absolute
+ffu_price <- read.csv(paste0(path_nice, "ffu_below_bau_custom_transfers/country_output/country_carbon_tax.csv"))
+par(mar=c(2, 3, 0, 3) + 0.1) # EXPORT to figures/policies/ffu_rights_price
+plot(2030:2080, colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', lwd = 2, ylim = c(0, 25), xlab="", ylab="")
+lines(2030:2080, colSums(df[df$region_tiam %in% "CHI", paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "red")
+lines(2030:2080, colSums(df[df$region_tiam %in% c("ODA", "AFR", "IND"), paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "cyan")
+lines(2030:2080, colSums(df[df$region_tiam %in% c("WEU", "SKO", "JPN"), paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "green")
+mtext("Proposed CO2 emissions rights (in GtCO2)",side=2,line=2) 
+par(new=TRUE)
+plot(2030:2080, ffu_price$country_carbon_tax[ffu_price$time %between% c(2030, 2080) & ffu_price$country == "CHN"], type = 'l', col = "blue", lwd = 2, lty = 2, axes = F, ylim = c(0, 500), xlab="", ylab="")
+axis(4, ylim = c(0, 500), col = "blue", col.axis = "blue")
+mtext("Projected carbon price (in $/tCO2)",side=4,col="blue",line=2) 
+grid()
+legend("top", legend = c("Fossil-Free Union (total)", "China", "West. Europe+Japan+Korea", "Africa + Other Asia", "Carbon price (right axis)"), text.col = c("black", "black", "black", "black", "blue"), col = c("black", "red", "green", "cyan", "blue"), lwd = c(2,1,1,1,2), lty=c(1,1,1,1,2))
+
+# Per capita
+par(mar=c(2, 3, 0, 3) + 0.1) # EXPORT to figures/policies/ffu_rights_pc_price
+plot(2030:2080, colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])/colSums(df[df$participate_union, paste0("pop_", 2030:2080)]), type = 'l', lwd = 2, ylim = c(0, 10), xlab="", ylab="")
+lines(2030:2080, colSums(df[df$region_tiam %in% "CHI", paste0("rights_proposed_", 2030:2080)])/colSums(df[df$region_tiam %in% "CHI", paste0("pop_", 2030:2080)]), type = 'l', col = "red")
+lines(2030:2080, colSums(df[df$region_tiam %in% c("ODA", "AFR", "IND"), paste0("rights_proposed_", 2030:2080)])/colSums(df[df$region_tiam %in% c("ODA", "AFR", "IND"), paste0("pop_", 2030:2080)]), type = 'l', col = "purple")
+lines(2030:2080, colSums(df[df$region_tiam %in% c("WEU", "SKO", "JPN"), paste0("rights_proposed_", 2030:2080)])/colSums(df[df$region_tiam %in% c("WEU", "SKO", "JPN"), paste0("pop_", 2030:2080)]), type = 'l', col = "green")
+mtext("Proposed CO2 emissions rights per capita (in tCO2)",side=2,line=2) 
+par(new=TRUE)
+plot(2030:2080, ffu_price$country_carbon_tax[ffu_price$time %between% c(2030, 2080) & ffu_price$country == "CHN"], type = 'l', col = "blue", lwd = 2, lty = 2, axes = F, ylim = c(0, 500), xlab="", ylab="")
+axis(4, ylim = c(0, 500), col = "blue", col.axis = "blue")
+mtext("Projected carbon price (in $/tCO2)",side=4,col="blue",line=2) 
+grid()
+legend("top", legend = c("Fossil-Free Union (average)             ", "China", "West. Europe + Japan + Korea", "Africa + Other Asia", "Carbon price (right axis)"), text.col = c("black", "black", "black", "black", "blue"), col = c("black", "red", "green", "purple", "blue"), lwd = c(2,1,1,1,2), lty=c(1,1,1,1,2))
+
 # Pbs:
 # >Transferts négatifs
 # Emissions par pays / prix carbone identiques dans within_country et global_pc

@@ -2209,8 +2209,8 @@ print.Crosstab <- function(x,dec.places=x$dec.places,subtotals=x$subtotals,...) 
 # }
 
 # Fix bugs for stripes, might bug in this repo because wasn't tested here
-plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', base_family = NULL, RTL = FALSE, thick_border = FALSE, stripes_up = T,
-                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "png", trim = T, na_label = "NA", parties = NULL, filename = NULL, level_striped = NULL, stripe_codes = NULL, strict_ineq_lower = FALSE, sep = " - ", begin = "", end = "") {
+plot_world_map <- function(var, df = sm, condition = "", on_control = FALSE, save = T, continuous = FALSE, width = dev.size('px')[1], height = dev.size('px')[2], legend_x = .05, rev_color = FALSE, colors = NULL, folder = '../figures/maps/', base_family = NULL, RTL = FALSE, thick_border = FALSE, stripes_up = T,
+                           breaks = NULL, labels = NULL, legend = NULL, limits = NULL, fill_na = FALSE, format = "pdf", trim = T, na_label = "NA", parties = NULL, filename = NULL, level_striped = NULL, stripe_codes = NULL, strict_ineq_lower = FALSE, sep = " - ", begin = "", end = "") {
   # /!\ plot_world_map may sometimes fail (due to processor overload): in that case, either close all other windows or check the pdf/png export (which renders generally fine). When testing the function, remove most countries to speed the rendering (cf. example code below).
   if (!is.null(parties)) {
     if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
@@ -2265,7 +2265,7 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
       if (!"#7F7F7F" %in% colors & any(is.na(df$group))) colors <- setNames(c(colors, "#7F7F7F"), c(rev(labels), na_label))
       if (identical(level_striped, T)) pattern <- setNames(c(rep("none", ceiling((length(breaks)-1)/2)), rep("stripe", floor((length(breaks)-1)/2)), "none"), c(rev(labels), na_label))
       else pattern <- setNames(c(ifelse(level_striped, "stripe", "none"), "none"), c(rev(labels), na_label))
-      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = group), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 165.5), ylim = c(-56, 84)) +
           geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = size_border,  fill = NA) +
           expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
           scale_fill_manual(name = legend, drop = FALSE, values = colors, labels = c(rev(labels), na_label)) +
@@ -2294,11 +2294,11 @@ plot_world_map <- function(var, condition = "", df = sm, on_control = FALSE, sav
       if (RTL) plot <- plot + theme(legend.title = element_text(family = "Arial", hjust = 1), legend.text = element_text(family = "Arial", hjust = 1))
       if (!"RUS" %in% stripe_codes) plot <- plot + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) # /!\ Bug for Russia when proj_coord() is present ("There is a MULTIPOLYGON with length greater than 1")
     } else {
-      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 165.5), ylim = c(-56, 84)) +
          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = size_border, fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
-         scale_fill_manual(name = legend, drop = FALSE, values = colors, labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
+         scale_fill_manual(name = legend, drop = FALSE, values = colors, na.value = "grey60", labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
     }} else {
-      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) +
+      (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = mean), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 165.5), ylim = c(-56, 84)) +
          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
          scale_fill_gradientn(name = legend, limits = limits, colours = color(9, rev_color = !rev_color))) # scale_fill_manual(palette = "RdBu", limits = limits, direction = 1, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
     }

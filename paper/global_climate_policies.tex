@@ -306,7 +306,7 @@ Table \ref{tab:budgets} present the cumulative emissions implied by the current 
   \caption{Carbon budgets over 2030--2080 for a 1.8\textdegree{}C trajectory (in GtCO$_\text{2}$).\label{tab:budgets}} % actually this leads to 1.86°C because not counting negative emissions over 2080-2100 led to 1.84°C and decadal approximation adds .02°C => We can argue that with more negative emissions over 2081-2100 than in Gütschow (109 Gt instead of 67) we go back to 1.8°C (that's with universal 770 Gt scenario; with BAU for non-Union, 296 Gt negative em are needed to meet 2°C)
   \makebox[\textwidth][c]{
 \begin{tabular}[t]{cccccccccc}
-  \toprule
+  \toprule % TODO!! update
    & Africa & China & \makecell{Latin\\America} & India & Europe & \makecell{Japan \& \\South Korea} & \makecell{Other\\Asia} & \makecell{\textit{Fossil-Free}\\\textit{Union}} & \textit{World} \\
   \midrule % TODO? Add Current policies (data "bau") to clarify the difference between Climate Action Tracker 2.7°C and current trend 2.3°C? => No, risks making readers skeptic that non-losing is really not costly
   \bo{Current trend} & 90 & 250 & 81 & 145 & 32 & 46 & 182 & \textit{827} & \textit{1,240} \\ % emissions_bau
@@ -320,28 +320,27 @@ Table \ref{tab:budgets} present the cumulative emissions implied by the current 
 Table \ref{tab:budgets} shows that the sum of the Union's proposed carbon budget is 12~GtCO$_\text{2}$ (or 2\%) lower than its equal per capita share of the world's carbon budget. The unallocated emissions allowances could be used to grant additional countries some extra carbon budget. For the moment, we have only modelled such a departure for China, but a similar one should be granted to other fossil-dependent middle-income countries with relatively high emissions: Algeria, Kazakhstan, Iraq, Iran, Libya, Mongolia, South Africa, and/or Turkmenistan. % TODO! simulation with these extra departures
 These countries currently represent 5.6\% of global emissions and 3.4\% of global population, translating into an equal per capita carbon budget of 22~GtCO$_\text{2}$. Therefore, the extra allowances would cover their needs. 
 
-Finally, \textbf{we propose yearly quotas by country that respect the different constraints} (Figure \ref{fig:trajectories} shows trajectories for selected regions). 
-In particular, proposed allowances sum up to national carbon budgets for each country, and lower-income countries receive more allowances than their needs (the current trend) 
-during the first decades. %years (or even decades). 
-In Table \ref{tab:trajectory}, we estimate the carbon price implied by this emission trajectory. The steadily increasing price would ensure sustained North-to-South transfers, paid by the efficiency gains from trade.
+Finally, \textbf{we propose yearly quotas by country that respect the different constraints} (Figure \ref{fig:trajectories} shows trajectories for broad regions). 
+In particular, proposed allowances sum up to national carbon budgets for each country, and lower-income countries receive more allowances than their needs during the first decades. %years (or even decades). 
+The figure also the carbon price projected with this emission trajectory. The steadily increasing price would ensure sustained North-to-South transfers, paid by the efficiency gains from trade.
 
 \begin{figure}[h]
   \centering \caption{CO$_\text{2}$ emissions allowances for selected regions (in tCO$_\text{2}$ p.c.).\label{fig:trajectories}}
-  \includegraphics[width=.7\textwidth]{../figures/policies/fossil_free_union_emission_trajectories.pdf} 
+  \includegraphics[width=.7\textwidth]{../figures/policies/ffu_rights_pc_price.pdf} 
 \end{figure}
 
-\begin{table}[h!]
-  \caption{Projected carbon price trajectory in the Union.\label{tab:trajectory}} 
-  \makebox[\textwidth][c]{
-\begin{tabular}[t]{ccccccccc}
-  \toprule
-   & 2030 & 2035 & 2040 & 2045 & 2050 & 2060 & 2070 & 2080 \\ %& Total \\
-  \midrule 
-  Carbon price (in \$/tCO$_\text{2}$) & 2 & 34 & 80 & 122 & 162 & 243 & 340 & 481 \\ %&  \\
-  %  &  &  &  &  &  &  &  &  &  \\    % TODO: add distributive effects 
-  \bottomrule\\[-0.81em]
-\end{tabular}}
-\end{table}
+% \begin{table}[h!]
+%   \caption{Projected carbon price trajectory in the Union.\label{tab:trajectory}} 
+%   \makebox[\textwidth][c]{
+% \begin{tabular}[t]{ccccccccc}
+%   \toprule
+%    & 2030 & 2035 & 2040 & 2045 & 2050 & 2060 & 2070 & 2080 \\ %& Total \\
+%   \midrule 
+%   Carbon price (in \$/tCO$_\text{2}$) & 2 & 34 & 80 & 122 & 162 & 243 & 340 & 481 \\ %&  \\
+%   %  &  &  &  &  &  &  &  &  &  \\    % TODO: add distributive effects 
+%   \bottomrule\\[-0.81em]
+% \end{tabular}}
+% \end{table}
 
 
 \subsection{A win-win deal\label{subsec:winwin}}
@@ -349,13 +348,19 @@ In Table \ref{tab:trajectory}, we estimate the carbon price implied by this emis
 Each country colored in Figure \ref{fig:participation} would have an interest to join the Union: 
 \begin{itemize}
   \item Every country would benefit from a stabilized climate, and from the guarantee that all countries in the Union decarbonize.
-  \item Most countries (including all countries likely to join) would be granted a carbon budget sufficient to avoid a loss from the status quo. Exceptions include Russia, Saudi Arabia and other high-income countries from the Gulf. Even the U.S., Australia and Canada would enjoy a non-losing carbon budget.
+  \item Most countries would be granted a carbon budget sufficient to avoid a loss from the status quo. In particular, Figure \ref{fig:var_ede} shows that all countries likely to join would enjoy increased welfare thanks to the Fossil-Free Union.\footnote{\label{ede}Simulations take into account international transfers, abatement costs, consumption-based emissions, and local climate damages. I used the model NICE \citep{young-brun_within-country_2025}, which allows disaggregation at the country-decile-year level. To measure welfare, consumption is aggregated across deciles using the concept of Equally-Distributed Equivalent consumption, corresponding to the consumption level under perfect equality that would result in the same  isoelastic utility (with $\eta=1.5$).} %Exceptions include Russia, Saudi Arabia and other high-income countries from the Gulf. Even the U.S., Australia and Canada would enjoy a non-losing carbon budget. % TODO! check what I meant by that
   \item Lower-income countries would receive transfers from the rest of the world, spurring their sustainable development.
   \item Countries with an important low-carbon industry, such as East Asian countries, would gain from the stronger demand for these goods.
   \item High-income countries would benefit from the efficiency gains allowed by international carbon trading.
   \item \textbf{Large representative surveys show strong public support in favor of the Fossil-Free Union, even in high-income countries} when transfers are presented as a loss and the amount of transfers is specified. For example, there is\textbf{ 54\% support in the U.S. and 76\% in Western Europe} (cf. Section \ref{subsec:public_support}).\cite{fabre_majority_2025} 
   Moreover, academic research shows that political programs containing the Fossil-Free Union are preferred to similar programs without it by 58\% to 60\% of citizens in Western countries, suggesting that \textbf{candidates at an election may win vote intentions by campaigning on the proposal}.\cite{fabre_majority_2025}
 \end{itemize}
+
+\begin{figure}[h!] 
+  \caption{Variation in welfare\footref{ede} in the Fossil-Free Union, compared to a world with countries' emissions given by ``non-losing rights'' and without international carbon trading.}\label{fig:var_ede}
+  \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/var_npv_ede_ffu_nl.pdf}} 
+\end{figure}
+
 
 \subsection{A ratcheted-up ambition\label{subsec:ambition}}
 
@@ -374,7 +379,7 @@ It is important that the Union's carbon price be sufficiently high, for differen
 
 To make sure that the price is sufficiently high, the Union could implement a (steadily increasing) carbon price floor. However, this is not our favorite option. Indeed, \textbf{adding a price floor would redefine and obscure the distributive effects} implied by the carbon budgets. By inducing a price higher than the equilibrium market price, \textbf{the price floor would} entail emissions lower than the yearly allowances and \textbf{be equivalent to a reduction of each country's emissions allowances}. While countries recipient of transfers would be cushioned against these lower allowances through larger transfers, contributing countries would lose out compared to the situation without a binding price floor. This could jeopardize an agreement on the proposed allocation, that has been designed so that industrialized countries neither gain nor lose from the policy. Furthermore, given that we can hardly predict whether the price floor would be binding or whether the equilibrium price would be higher than the price floor, we can hardly redefine the proposed allocation to mitigate the effects of the price floor.
 
-\textbf{Instead of a carbon price floor, we propose rules to ensure that there is no excess allowances and that the carbon price increases sufficiently overtime}. These rules correspond to the rules sketched in Section \ref{subsubsec:itmo} and apply to the intertemporal allocation of national budgets. These rules are that the \textbf{Union's allowances should not exceed its joint emissions at the starting year, and that they have to decrease every year at a minimum rate of, say, 2\%}. The intertemporal allocation proposed in Figure \ref{fig:trajectories} respects these constraints: allowances never above the \textit{current trend} scenario and they decrease by at least 2.5\% per year at every period.
+\textbf{Instead of a carbon price floor, we propose rules to ensure that there is no excess allowances and that the carbon price increases sufficiently overtime}. These rules correspond to the rules sketched in Section \ref{subsubsec:itmo} and apply to the intertemporal allocation of national budgets. These rules are that the \textbf{Union's allowances should not exceed its joint emissions at the starting year, and that they have to decrease every year at a minimum rate of, say, 2\%}. The intertemporal allocation proposed in Figure \ref{fig:trajectories} respects these constraints: allowances never above the \textit{current trend} scenario and they decrease by at least 2\% per year at every period.\footnote{In the proposed allocation, the decrease is slightly below 2\% in 2046, 2047, 2051, and 2052, with a minimum at 1.63\%, blunt the average decrease evaluated over any five-year period is always larger than 2\% per year.}
 
 \textbf{If countries cannot agree on an intertemporal allocation of their emissions allowances that respect these rules, the Union's scientific council would propose how to allocate allowances intertemporally} in a way that maximizes welfare, thereby preserving the interests of all countries. \textbf{In case the Union rejects the proposal of the scientific council, a price floor would be implemented} (say, starting at \$10/tCO$_\text{2}$ and increasing by \$10 each year). The threat of a strong price floor should help countries find an agreement.
 
@@ -450,7 +455,6 @@ Second, to fully understand the distributive effects resulting from the carbon b
 
 Third, the North-to-South transfers involved in the Fossil-Free Union may be too low in view of the resources needed to achieve the SDGs or of the ``climate debt'' that high-income countries owe due to their past emissions. These concerns are also resolved in the ``Sustainable Union'' proposed in Section \ref{sec:su}.
 
-% TODO!! estimation of transfers and carbon price
 
 % \subsection{Variants of the proposal\label{subsec:variants}} % 
 
