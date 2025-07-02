@@ -514,7 +514,7 @@ key_gdp("rev_pc")
 # SSA gets more when using PPP. Gets most with line at 4. For lines at 2 and 4, gets more if max_reg = mean; for line at 7, gets more if max_reg = Inf.
 # Three most credible are l=4, not PPP, max_reg mean; l=7, PPP, max_reg mean; l=4, PPP, max_reg Inf; l=4, not PPP, max_reg Inf
 # LIC <- pg$code[pg$gdp_pc_2019 < 1085] # closer to the 2021 classification available on World Bank data for which LIC: 700M people
-HIC <- pg$code[pg$gdp_pc_2019 > 13205] # approximately right (63 countries instead of 81 but differences are due to small islands)  
+HIC <- c(pg$code[pg$gdp_pc_2019 > 13205], "TWN") # approximately right (63 countries instead of 81 but differences are due to small islands)  
 LIC <- c("AFG", "BFA", "BDI", "TCD", "COD", "ERI", "ETH", "GMB", "GIN", "GNB", "PRK", "LBR", "MDG", "MWI", "MLI", "MOZ", "NER", "RWA", "SOM", "SRE", "SDN", "SSD", "SYR", "TGO", "UGA", "YEM") # 2023 official classification. LIC: 650M people " # New: ZMB no longer LIC!
 # SSA <- c("SDN", "AGO", "GIN", "GMB", "GNB", "GNQ", "BDI", "BEN", "BFA", "SEN", "BWA", "CAF", "SLE", "SOM", "SSD", "CIV", "CMR", "COD", "COG", "COM", "LBR", "LSO", "SWZ", "TCD", "TGO", "MLI", "MDG", "DJI", "ERI", "ESH", "ETH", "MWI", "MUS", "MRT", "MOZ", "TZA", "UGA", "ZMB", "ZWE", "NGA", "NER", "NAM", "GHA", "GAB") # old
 SSA <- c("SDN", "AGO", "GIN", "GMB", "GNB", "GNQ", "BDI", "BEN", "BFA", "SEN", "BWA", "CAF", "SLE", "SOM", "SSD", "CIV", "CMR", "COD", "COG", "COM", "LBR", "LSO", "SWZ", "TCD", "TGO", "MLI", "MDG", "DJI", "ERI", "ESH", "ETH", "MWI", "MUS", "MRT", "MOZ", "TZA", "UGA", "ZMB", "ZWE", "NGA", "NER", "NAM", "GHA", "GAB", "RWA", "ZAF")
@@ -1909,7 +1909,7 @@ scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2ex
 
 for (s in scenarios_names) df <- create_var_ssp(df = df, scenario = s)
 
-emissions_tot <- emissions_pc <- c()
+emissions_tot <- emissions_pc <- c() # Used to define "rights"
 for (y in as.character(2025:2100)) {
   emissions_tot[y] <- sum(df[[paste0("emissions_", y)]], na.rm = T)
   emissions_pc[y] <- wtd.mean(df[[paste0("emissions_pc_", y)]], weights = df[[paste0("pop_", y)]], na.rm = T) }
@@ -2449,8 +2449,9 @@ df$region_tiam <- c("ODA", "AFR", "EEU", "MEA", "CSA", "FSU", "AUS", "WEU", "FSU
                     "CHI", "AFR", "AFR", "AFR", "AFR", "CSA", "AFR", "AFR", "CSA", "CSA", "EEU", "EEU", "WEU", "AFR", "WEU", "CSA", "AFR", "CSA", "AFR", "AFR", "WEU", "EEU", "AFR", "WEU", "AUS", "WEU", "AFR", "WEU", "FSU", "AFR", 
                     "AFR", "AFR", "AFR", "AFR", "WEU", "CSA", "CSA", "AUS", "CSA", "EEU", "CSA", "WEU", "ODA", "IND", "WEU", "MEA", "MEA", "WEU", "MEA", "WEU", "CSA", "MEA", "JPN", "FSU", "AFR", "FSU", "ODA", "SKO", "MEA", "ODA", 
                     "MEA", "AFR", "AFR", "ODA", "AFR", "WEU", "WEU", "WEU", "AFR", "WEU", "AFR", "ODA", "MEX", "AUS", "AFR", "WEU", "ODA", "AUS", "ODA", "AFR", "AFR", "AFR", "AFR", "ODA", "AFR", "AFR", "AFR", "CSA", "WEU", "WEU", 
-                    "ODA", "AUS", "MEA", "ODA", "CSA", "CSA", "ODA", "ODA", "EEU", "WEU", "CSA", "MEA", "EEU", "FSU", "AFR", "MEA", "AFR", "AFR", "ODA", "AUS", "AFR", "CSA", "AFR", "EEU", "AFR", "CSA", "EEU", "EEU", "WEU", "AFR", 
-                    "MEA", "AFR", "AFR", "ODA", "FSU", "FSU", "ODA", "CSA", "AFR", "MEA", "CHI", "AFR", "AFR", "FSU", "CSA", "USA", "FSU", "CSA", "ODA", "AUS", "AUS", "MEA", "AFR", "AFR", "AFR", "ODA") # TODO!! wrong
+                    "ODA", "AUS", "MEA", "ODA", "CSA", "CSA", "ODA", "ODA", "EEU", "ODA", # If PRK is at the end, remove that last "ODA" and put it at the end
+                    "WEU", "CSA", "MEA", "EEU", "FSU", "AFR", "MEA", "AFR", "AFR", "ODA", "AUS", "AFR", "CSA", "AFR", "EEU", "AFR", "CSA", "EEU", "EEU", "WEU", "AFR", 
+                    "MEA", "AFR", "AFR", "ODA", "FSU", "FSU", "ODA", "CSA", "AFR", "MEA", "CHI", "AFR", "AFR", "FSU", "CSA", "USA", "FSU", "CSA", "ODA", "AUS", "AUS", "MEA", "AFR", "AFR", "AFR")
 region_tiam <- setNames(df$region_tiam, df$code)
 v$rights_pc_2040[v$region == "union"]/v$emissions_bau_pc_2040[v$region == "union"] # 113%
 v$rights_pc_2050[v$region == "union"]/v$emissions_bau_pc_2050[v$region == "union"] # 95%
@@ -2740,8 +2741,9 @@ alt$region_tiam <- c("ODA", "AFR", "EEU", "MEA", "CSA", "FSU", "AUS", "WEU", "FS
                     "CHI", "AFR", "AFR", "AFR", "AFR", "CSA", "AFR", "AFR", "CSA", "CSA", "EEU", "EEU", "WEU", "AFR", "WEU", "CSA", "AFR", "CSA", "AFR", "AFR", "WEU", "EEU", "AFR", "WEU", "AUS", "WEU", "AFR", "WEU", "FSU", "AFR", 
                     "AFR", "AFR", "AFR", "AFR", "WEU", "CSA", "CSA", "AUS", "CSA", "EEU", "CSA", "WEU", "ODA", "IND", "WEU", "MEA", "MEA", "WEU", "MEA", "WEU", "CSA", "MEA", "JPN", "FSU", "AFR", "FSU", "ODA", "SKO", "MEA", "ODA", 
                     "MEA", "AFR", "AFR", "ODA", "AFR", "WEU", "WEU", "WEU", "AFR", "WEU", "AFR", "ODA", "MEX", "AUS", "AFR", "WEU", "ODA", "AUS", "ODA", "AFR", "AFR", "AFR", "AFR", "ODA", "AFR", "AFR", "AFR", "CSA", "WEU", "WEU", 
-                    "ODA", "AUS", "MEA", "ODA", "CSA", "CSA", "ODA", "ODA", "EEU", "WEU", "CSA", "MEA", "EEU", "FSU", "AFR", "MEA", "AFR", "AFR", "ODA", "AUS", "AFR", "CSA", "AFR", "EEU", "AFR", "CSA", "EEU", "EEU", "WEU", "AFR", 
-                    "MEA", "AFR", "AFR", "ODA", "FSU", "FSU", "ODA", "CSA", "AFR", "MEA", "CHI", "AFR", "AFR", "FSU", "CSA", "USA", "FSU", "CSA", "ODA", "AUS", "AUS", "MEA", "AFR", "AFR", "AFR", "ODA")
+                    "ODA", "AUS", "MEA", "ODA", "CSA", "CSA", "ODA", "ODA", "EEU", "ODA", # If PRK is at the end, remove that last "ODA" and put it at the end
+                    "WEU", "CSA", "MEA", "EEU", "FSU", "AFR", "MEA", "AFR", "AFR", "ODA", "AUS", "AFR", "CSA", "AFR", "EEU", "AFR", "CSA", "EEU", "EEU", "WEU", "AFR", 
+                    "MEA", "AFR", "AFR", "ODA", "FSU", "FSU", "ODA", "CSA", "AFR", "MEA", "CHI", "AFR", "AFR", "FSU", "CSA", "USA", "FSU", "CSA", "ODA", "AUS", "AUS", "MEA", "AFR", "AFR", "AFR")
 alt$rights_gcp <- rowSums(alt[, paste0("rights_equivalent_", 2030:2076)])
 for (r in v$region) v$rights_gcp_alt[v$region == r] <- sum(alt$rights_gcp[alt$region_tiam == r])/1e9
 v$rights_gcp_alt[v$region == "union"] <- sum(alt$rights_gcp[alt$region_tiam %in% regions_union])/1e9
@@ -2975,12 +2977,17 @@ df$share_rights_among_region_tiam <- df$pop_2030/sapply(df$region_tiam, function
 df$participate_union <- df$region_tiam %in% regions_union
 df$participate_union[df$code %in% c("VEN", "SOM", "SSD", "TTO", "TWN", "PRK")] <- FALSE # Removed because absent from NICE. For the moment I also remove TWN to not bundle it with CHN (same region_tiam) TODO: handle TWN
 df$participate_union[df$code %in% c("ARM", "GEO", "IRQ", "IRN", "JOR", "LBY", "SYR", "TKM", "TUR", "UKR", "UZB", "YEM")] <- T
-for (y in 2030:2080) df[df$region_tiam == "WEU", paste0("rights_proposed_", y)] <- pmax(0, sapply(which(df$region_tiam == "WEU"), function(i) df$share_rights_among_region_tiam[i] * 
-    barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == "WEU", paste0("emissions_ndc_", 10*floor(y/10))], y_next = v[v$region == "WEU", paste0("emissions_ndc_", 10*ceiling(y/10))], x = y)))
+for (y in 2030:2080) df[df$region_tiam == "WEU", paste0("rights_proposed_", y)] <- pmax(0, sapply(which(df$region_tiam == "WEU"), function(i) df$share_rights_among_region_tiam[i] *
+    barycenter(x_prev = 10*floor(y/10), x_next = 10*ceiling(y/10), y_prev = v[v$region == "WEU", paste0("emissions_ndc_", 10*floor(y/10))], y_next = v[v$region == "WEU", paste0("emissions_ndc_", 10*ceiling(y/10))], x = y))) 
+# temp <- read.csv(paste0("../../NICE2020/data/emissions_ndc_WEU_all.csv"), header = F)
+# row.names(temp) <- 2020:2300
+# colnames(temp) <- unique(nwco2$country)
+# for (y in 2030:2080) for (c in df$code[df$region_tiam == "WEU"]) df[[paste0("rights_proposed_", y)]][df$code == c] <- temp[as.character(y), c]*1e9
 for (y in 2030:2060) df[df$region_tiam == "CHI", paste0("rights_proposed_", y)] <- pmax(0, (151.6/163.85)*sapply(which(df$region_tiam == "CHI"), function(i) df$share_rights_among_region_tiam[i] * 
     barycenter(x_prev = 5*floor(y/5), x_next = 5*ceiling(y/5), y_prev = v[v$region == "CHI", paste0("emissions_target_", 5*floor(y/5))], y_next = v[v$region == "CHI", paste0("emissions_target_", 5*ceiling(y/5))], x = y)))
 for (y in 2061:2080) df[df$region_tiam == "CHI", paste0("rights_proposed_", y)] <- 0
 
+# /!\ share_rights doesn't sum to 1 due to missing countries, hence sum(df$rights) < sum(df[, paste0("rights_", 2030:2080)]): only the latter is correct
 df$share_rights <- df$share_rights_among_region_tiam * sapply(df$region_tiam, function(r) v$rights_proposed[v$region == r])/(v$rights[v$region == "World"])
 df$rights_proposed <- df$rights <- df$share_rights * v$rights[v$region == "World"]*1e9
 
@@ -2999,8 +3006,8 @@ df$rights_proposed <- df$rights <- df$share_rights * v$rights[v$region == "World
 # TODO  redefine non-losing and rights_proposed from NDCs for most countries
 manual_adjust <- c("BGR" = 1.07, "BHS" = 1.02, "BIH" = 1.23, "BWA" = 1.3, "CHL" = 1.1, "CZE" = 1.4, 
   "EST" = 1.64, "IRN" = 1.5, "IRQ" = 1.28, "JOR" = 1.01, "LAO" = 1.19, "LBY" = 1.25, # Most important ones: IRN, IRQ, LBY, MNG
-  "MNG" = 1.42, "MYS" = 1.6, "NAM" = 1.03, "PAN" = 1.4, "POL" = 1.26, "SRB" = 1.06, 
-  "SUR" = 1.28, "SVK" = 1.16, "THA" = 1.18, "TKM" = 2.28, "TUR" = 1.18, "UKR" = 1.07, "ZAF" = 1.0) # SGP only country whose diff_npv_ede_ffu_nl remains < 0 (at -.0097)
+  "MNG" = 1.42, "MYS" = 1.6, "NAM" = 1.03, "PAN" = 1.4, "POL" = 1.26, "SRB" = 1.06, # , "ZAF" = 1.0
+  "SUR" = 1.28, "SVK" = 1.16, "THA" = 1.18, "TKM" = 2.28, "TUR" = 1.18, "UKR" = 1.07) # SGP only country whose diff_npv_ede_ffu_nl remains < 0 (at -.0097)
 offset_EEU_partially <- c("AUT", "CHE", "DEU", "DNK", "ESP", "GBR", "FIN", "FRA", "HUN", "ITA", "ISL", "LVA", "LTU", "LUX", "NLD", "NOR", "SWE")
 # manual_adjust <- c("BGR" = 1.07, "BIH" = 1.23, "BWA" = 1.3, "CHL" = 1.08, "CZE" = 1.2, 
 #   "EST" = 1.25, "IRN" = 1.49, "IRQ" = 1.27, "JOR" = 1.01, "LAO" = 1.18, "LBY" = 1.25, 
@@ -3009,8 +3016,10 @@ offset_EEU_partially <- c("AUT", "CHE", "DEU", "DNK", "ESP", "GBR", "FIN", "FRA"
 # manual_adjust <- c("BIH" = 1.3, "BWA" = 1.28, "IRN" = 1.48, "IRQ" = 1.28, "LBY" = 1.28, "MNG" = 1.43, "MYS" = 1.3, "SUR" = 1.18, "TKM" = 2.28, "ZAF" = 1.0) # All > -.005 (with TWN outside union)
 df$rights_proposed[df$code %in% names(manual_adjust)] <- df$rights_proposed[df$code %in% names(manual_adjust)]*manual_adjust # Scale rights to prevent MICs from losing
 df$share_rights[df$code %in% names(manual_adjust)] <- df$share_rights[df$code %in% names(manual_adjust)]*manual_adjust
-df$rights_proposed[df$code %in% offset_EEU_partially] <- df$rights_proposed[df$code %in% offset_EEU_partially]*.94 # Scale rights to prevent MICs from losing
-df$share_rights[df$code %in% offset_EEU_partially] <- df$share_rights[df$code %in% offset_EEU_partially]*.94
+df$rights_proposed[df$code %in% offset_EEU_partially] <- df$rights_proposed[df$code %in% offset_EEU_partially]*.98 # Scale rights to prevent MICs from losing
+df$share_rights[df$code %in% offset_EEU_partially] <- df$share_rights[df$code %in% offset_EEU_partially]*.98
+df[df$code %in% offset_EEU_partially, c("rights_proposed", paste0("rights_proposed_", 2030:2080))] <- df[df$code %in% offset_EEU_partially, c("rights_proposed", paste0("rights_proposed_", 2030:2080))]*.98 # Scale rights to prevent MICs from losing 
+# df[df$code %in% names(manual_adjust), c("rights_proposed", paste0("rights_proposed_", 2030:2080))] <- df[df$code %in% names(manual_adjust), c("rights_proposed", paste0("rights_proposed_", 2030:2080))]*manual_adjust # Scale rights to prevent MICs from losing 
 
 # if (FALSE) {
 # setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF")], c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF"))
@@ -3549,6 +3558,7 @@ basic_income_adj$high/12
 
 ##### NICE2020 results #####
 path_nice <- "../../NICE2020/cap_and_share/output/revenue_recycling/global_per_capita/"
+nice_path <- "../../NICE2020/cap_and_share/output/"
 nfco2 <- read.csv(paste0(path_nice, "ffu_custom_transfers/country_output/co2_emissions.csv"))
 nfco2$region <- region_tiam[nfco2$country]
 for (r in unique(region_tiam)) carbon_budgets[r, "emissions_ffu"] <- round(sum(nfco2$E_gtco2[nfco2$time %between% c(2030, 2080) & nfco2$region %in% r], na.rm = T))
@@ -3600,8 +3610,9 @@ carbon_budgets[,c("rights_proposed", "emissions_ffu", "emissions_ndc", "emission
 
 # TODO: Define non-losing rights from NDCs and CC
 # TODO: Other method for non-losing trajectory: assume backstop price at net-zero target year and find the growth rate of carbon price required to meet the budget.
+HIC <- df$code[df$gdp_pc_2019 > 13205] # approximately right (63 countries instead of 81 but differences are due to small islands)  
 bau_nice_emissions <- read.csv("../../NICE2020/cap_and_share/output/bau_no_policy_at_all/no_revenue_recycling/country_output/co2_emissions.csv")
-for (y in 2030:2080) for (c in intersect(df$code, bau_nice_emissions$country)) df[df$code == c, paste0("bau_nice_emissions_", y)] <- 1e9*bau_nice_emissions$E_gtco2[bau_nice_emissions$time == y & bau_nice_emissions$country == c]
+for (y in 2030:2100) for (c in intersect(df$code, bau_nice_emissions$country)) df[df$code == c, paste0("bau_nice_emissions_", y)] <- 1e9*bau_nice_emissions$E_gtco2[bau_nice_emissions$time == y & bau_nice_emissions$country == c]
 for (y in 2030:2050) df[[paste0("non_losing_", y)]] <- df[[paste0("bau_nice_emissions_", y)]] * (2050 - y)/20 + (y - 2030)/20 * sum(df[[paste0("rights_", y)]])*df[[paste0("pop_", y)]]/sum(df[[paste0("pop_", y)]]) # df[[paste0("rights_", y)]] # Choosing pop at y or 2030 has negligible effect on MICs close to 0 net gain
 for (y in 2030:2050) df[[paste0("non_losing_", y)]][is.na(df[[paste0("non_losing_", y)]])] <- df[[paste0("rights_", y)]][is.na(df[[paste0("non_losing_", y)]])] # SOM SSD TTO VEN PRK
 for (y in 2051:2080) df[[paste0("non_losing_", y)]] <- pmax(0, df[[paste0("rights_", y)]])
@@ -3678,7 +3689,7 @@ plot_map("diff_ede_ffu_nl", nfede[nfede$time == 2150,], breaks = c(-Inf, -0.05, 
 # plot_map("rights_proposed_over_non_losing", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
 # plot_map("diff_sum_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
 # EXPORT
-plot_world_map("var_npv_ede_ffu_nl", save = T, df[df$participate_union,], breaks = c(-Inf, 0, 0.003, 0.01, 0.03, 0.1, Inf), labels = c("< 0%", "0% to 0.3%", "0.3% to 1%", "1% to 3%", "3% to 10%", "> 10%"), colors = color(11)[c(1:5,8)], legend = "Welfare change:\nNet Present Value\nof Equally-Distributed\nEquivalent consumption\nFFU vs. non-losing\n(over 2030-2080, r = 3%)", na_label = "Non Parties", legend_x = .07)   
+plot_world_map("var_npv_ede_ffu_nl", save = F, df[df$participate_union,], breaks = c(-Inf, 0, 0.003, 0.01, 0.03, 0.1, Inf), labels = c("< 0%", "0% to 0.3%", "0.3% to 1%", "1% to 3%", "3% to 10%", "> 10%"), colors = color(11)[c(1:5,8)], legend = "Welfare change:\nNet Present Value\nof Equally-Distributed\nEquivalent consumption\nFFU vs. non-losing\n(over 2030-2080, r = 3%)", na_label = "Non Parties", legend_x = .07)   
 plot_map("diff_npv_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, 0, 0.005, 0.01, 0.025, 0.05, 0.1, Inf), labels = c("< 0", "0 to 0.5", "0.5 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "> 10"), colors = color(13)[c(9,7:1)])  # c("#E08A84", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#6CAAD1", "#2166AC", "#103A71")
 setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF")], c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF"))
 setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code], nfede$country[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code])
@@ -3692,7 +3703,7 @@ fbtra$npv_transfer_over_gdp <- sapply(unique(fbtra$country), function(c) sum(sap
 fbtra$mean_transfer_over_gdp <- sapply(unique(fbtra$country), function(c) mean(fbtra$transfer_over_gdp[fbtra$time %between% c(2030, 2080) & fbtra$country ==c]))
 df$mean_transfer_over_gdp <- sapply(unique(df$code), function(c) mean(fbtra$transfer_over_gdp[fbtra$time %between% c(2030, 2080) & fbtra$country ==c]))
 # EXPORT
-plot_world_map("mean_transfer_over_gdp", save = T, df[df$participate_union,], breaks = c(-Inf, -0.05, -0.01, -0.003, 0.003, 0.01, 0.05, Inf), labels = c("< -5%", "-5% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 5%", "> 5%"), legend = "Net transfer\ndue to the\nFossil-Free Union\n(average over 2030-2080,\nin % of GDP)", legend_x = .075, na_label = "Non Parties", filename = "ffu_mean_transfer", format = "pdf")
+plot_world_map("mean_transfer_over_gdp", save = F, df[df$participate_union,], breaks = c(-Inf, -0.05, -0.01, -0.003, 0.003, 0.01, 0.05, Inf), labels = c("< -5%", "-5% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 5%", "> 5%"), legend = "Net transfer\ndue to the\nFossil-Free Union\n(average over 2030-2080,\nin % of GDP)", legend_x = .075, na_label = "Non Parties", filename = "ffu_mean_transfer", format = "pdf")
 plot_map("npv_transfer_over_gdp", fbtra[fbtra$time == 2030 & fbtra$country %in% df$code[df$participate_union],], breaks = c(-Inf, -0.03, -0.01, -0.003, 0.003, 0.01, 0.03, 0.1, Inf), labels = c("< -3%", "-3% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 3%", "3% to 10%", "> 10%"), colors = color(9)[8:1])
 plot_map("mean_transfer_over_gdp", fbtra[fbtra$time == 2030 & fbtra$country %in% df$code[df$participate_union],], breaks = c(-Inf, -0.05, -0.01, -0.003, 0.003, 0.01, 0.05, Inf), labels = c("< -5%", "-5% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 5%", "> 5%"), colors = color(7)[7:1])
 plot_map("transfer_over_gdp", fbtra[fbtra$time == 2030,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
@@ -3758,29 +3769,46 @@ legend("top", legend = c("Fossil-Free Union (average)             ", "China", "W
 # legend("top", legend = c("Fossil-Free Union (average)             ", "China", "West. Europe + Japan + Korea", "Africa + Other Asia", "Revenue per capita ($/day)", "Carbon price (right axis)"), text.col = c("black", "black", "black", "black", "black", "blue"), col = c("black", "red", "green", "purple", "darkgreen", "blue"), lwd = c(2,1,1,1,2,2), lty=c(1,1,1,1,3,2))
 
 # EXPORT Table 1, tab:budgets
-sapply(v$region, function(r) sum(df[df$region_tiam == r, paste0("rights_proposed_", 2030:2080)]))/1e9
-sapply(v$region, function(r) sum(df[df$region_tiam == r, paste0("rights_", 2030:2080)]))/1e9
-sapply(v$region, function(r) sum(df[df$region_tiam == r, paste0("non_losing_", 2030:2080)]))/1e9
+round(sapply(v$region, function(r) sum(df[df$region_tiam == r, paste0("rights_proposed_", 2030:2080)]))/1e9)
+round(sapply(v$region, function(r) sum(df[df$region_tiam == r, paste0("rights_", 2030:2080)]))/1e9)
+round(sapply(v$region, function(r) sum(df[df$region_tiam == r, paste0("non_losing_", 2030:2080)]))/1e9)
 sapply(v$region, function(r) sum(df$rights_proposed[df$region_tiam == r]))/1e9
 sapply(v$region, function(r) sum(df$rights[df$region_tiam == r]))/1e9
 sapply(v$region, function(r) sum(df$non_losing[df$region_tiam == r]))/1e9
-sum(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])
-sum(df[df$participate_union, paste0("rights_", 2030:2080)])
-sum(df[df$participate_union, paste0("non_losing_", 2030:2080)])
-sum(df[df$region_tiam %in% c("AFR", "CHI", "CSA", "EEU", "IND", "JPN", "MEX", "ODA", "SKO", "WEU"), paste0("rights_proposed_", 2030:2080)])
-sum(df[df$region_tiam %in% c("AFR", "CHI", "CSA", "EEU", "IND", "JPN", "MEX", "ODA", "SKO", "WEU"), paste0("rights_", 2030:2080)])
-sum(df[df$region_tiam %in% c("AFR", "CHI", "CSA", "EEU", "IND", "JPN", "MEX", "ODA", "SKO", "WEU"), paste0("non_losing_", 2030:2080)])
+sum(df[df$region_tiam %in% regions_union, paste0("rights_proposed_", 2030:2080)])
+sum(df[df$region_tiam %in% regions_union, paste0("rights_", 2030:2080)])
+sum(df[df$region_tiam %in% regions_union, paste0("non_losing_", 2030:2080)])
 sum(df[df$code %in% "CHN", paste0("rights_proposed_", 2030:2080)])
 sum(df[df$code %in% "CHN", paste0("rights_", 2030:2080)])
 sum(df[df$code %in% "CHN", paste0("non_losing_", 2030:2080)])
-sum(df[df$region_tiam %in% c("WEU", "EEU"), paste0("rights_proposed_", 2030:2080)])
 sum(df[df$region_tiam %in% c("WEU", "EEU"), paste0("rights_", 2030:2080)])
+sum(df[df$region_tiam %in% c("WEU", "EEU"), paste0("rights_proposed_", 2030:2080)])
 sum(df[df$region_tiam %in% c("WEU", "EEU"), paste0("non_losing_", 2030:2080)])
+sum(df$rights_proposed[df$region_tiam %in% c("WEU", "EEU")])
+sum(df$rights[df$region_tiam %in% c("WEU", "EEU")])
+sum(df[df$participate_union, paste0("non_losing_", 2030:2080)])
+sum(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])
+sum(df[df$participate_union, paste0("rights_", 2030:2080)])
+sum(df$rights_proposed[df$participate_union])
 sum(df[, paste0("rights_proposed_", 2030:2080)])
 sum(df[, paste0("rights_", 2030:2080)])
 sum(df[, paste0("non_losing_", 2030:2080)])
 sum(df[df$participate_union, paste0("bau_nice_emissions_", 2030:2080)], na.rm = T)
+sum(df[df$participate_union, paste0("bau_nice_emissions_", 2030:2080)], na.rm = T)
+(sum(df[df$code=="CHN",paste0("rights_proposed_", 2030:2080)])-sum(df$rights_proposed[df$code=="CHN"]))/1e9
+(sum(df[,paste0("rights_proposed_", 2030:2080)])-sum(df$rights_proposed))/1e9
+# Current trend Union:
+sum(v$emissions_bau[v$region %in% regions_union]) + sum(df[df$participate_union & !df$region_tiam %in% regions_union, paste0("bau_nice_emissions_", 2030:2080)])*sum(v$emissions_bau[!v$region %in% c(regions_union, "World", "union")])/sum(df[!df$region_tiam %in% regions_union, paste0("bau_nice_emissions_", 2030:2080)]) # 941
+emissions_bau_union_2030_2100 + sum(df[df$participate_union & !df$region_tiam %in% regions_union, paste0("bau_nice_emissions_", 2030:2100)])*sum(v$emissions_bau[!v$region %in% c(regions_union, "World", "union")])/sum(df[!df$region_tiam %in% regions_union, paste0("bau_nice_emissions_", 2030:2100)]) # 1154
+emissions_bau_union_2030_2100 <- (5.5*sum(v[v$region == "union", paste0("emissions_bau_", c(2030, 2100))]) + 10*sum(v[v$region == "union", paste0("emissions_bau_", seq(2040, 2090, 10))]))/1e9 # 1032 Gt 
 
+sum(sort(setNames(df$rights_proposed[df$code %in% names(manual_adjust)]*(manual_adjust-1)/manual_adjust/1e9, names(manual_adjust))))
+sum(sort(setNames(df$rights_proposed[df$code %in% names(manual_adjust)]*(manual_adjust-1)/manual_adjust/1e9, names(manual_adjust))[names(manual_adjust) %in% df$code[df$region_tiam %in% c("WEU", "EEU")]]))
+sum(df$rights_proposed[df$code %in% offset_EEU_partially]*.02/.98/1e9)
+sum(df$emissions_2025[df$code %in% names(manual_adjust)])/sum(df$emissions_2025) # 8.5%
+sum(df$pop_2025[df$code %in% names(manual_adjust)])/sum(df$pop_2025) # 6.3%
+sum(df$rights[df$code %in% names(manual_adjust)])/1e9 
+sum(df$rights)
 # Pbs:
 # >Transferts négatifs
 # Emissions par pays / prix carbone identiques dans within_country et global_pc
@@ -3793,3 +3821,27 @@ sum(df[df$participate_union, paste0("bau_nice_emissions_", 2030:2080)], na.rm = 
 # À quoi sert update_param!(nice_v2, :policy_scenario, policy_scenario) dans find_global_exp_carbon_tax_budget_zoom?
 # Why can't I set emission_budget_limit to a non-integer value?
 # Why does emissions drop in 2031 rather than 2030?
+
+# North-South transfer FFU
+fftra <- read.csv(paste0(nice_path, "ffu/country_output/transfer.csv"))
+ffgdp <- read.csv(paste0(nice_path, "ffu/global_output/global_gross_output.csv"))
+sum(fftra$transfer[fftra$time == 2040]) # TODO!!
+sum(fftra$transfer[fftra$time == 2040 & fftra$transfer < 0])/(ffgdp$YGROSS_global[ffcpc$time == 2040]*1e12)
+sum(fftra$transfer[fftra$time == 2040 & fftra$transfer > 0])/(ffgdp$YGROSS_global[ffcpc$time == 2040]*1e12)
+sum(fftra$transfer[fftra$time == 2060 & fftra$transfer > 0])/(ffgdp$YGROSS_global[ffcpc$time == 2060]*1e12)
+
+gptra <- read.csv(paste0(nice_path, "global_price_ffu/country_output/transfer.csv"))
+gpgdp <- read.csv(paste0(nice_path, "global_price_ffu/global_output/global_gross_output.csv"))
+sum(gptra$transfer[gptra$time == 2040 & gptra$transfer < 0]) # TODO!!
+sum(gptra$transfer[gptra$time == 2040 & gptra$transfer < 0])/(gpgdp$YGROSS_global[gpgdp$time == 2040]*1e12)
+
+# US, CAN, AUS non-losing? no
+df$rights_proposed[df$code %in% c("AUS", "CAN", "USA")]/1e9
+rowSums(df[df$code %in% c("AUS", "CAN", "USA"), paste0("rights_", 2030:2080)])/1e9
+df$non_losing[df$code %in% c("AUS", "CAN", "USA")]/1e9
+
+# EXPORT rights_proposed
+temp <- read.csv(paste0("../../NICE2020/cap_and_share/data/input/E_Union_2020_2300.csv"))
+sum(temp$E_gtco2[temp$time %between% c(2030, 2080)])
+temp$E_gtco2[temp$time %between% c(2030, 2080)] <- colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])/1e9
+write.csv(temp, paste0("../../NICE2020/cap_and_share/data/input/E_ffu_2020_2300.csv"), quote = F, row.names = F)
