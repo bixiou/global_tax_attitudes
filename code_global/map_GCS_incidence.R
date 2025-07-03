@@ -3666,8 +3666,8 @@ df$footprint_over_territorial_2022[is.na(df$footprint_over_territorial_2022)] <-
 
 # TODO: Compute diff_EDE between FFU and non-losing.
 
-nfede <- read.csv(paste0(path_nice, "ffu_custom_transfers/country_output/consumption_EDE.csv"))
-nlede <- read.csv("../../NICE2020/cap_and_share/output/revenue_recycling/within_country/equal_pc_transfer/country_output/consumption_EDE.csv")
+nfede <- read.csv(paste0(nice_path, "ffu/country_output/consumption_EDE.csv")) # path_nice, "ffu_custom_transfers
+nlede <- read.csv(paste0(nice_path, "non_losing/country_output/consumption_EDE.csv"))
 nfede$diff_ede_ffu_nl <- nfede$cons_EDE_country/nlede$cons_EDE_country - 1
 nfede$diff_sum_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) sum(nfede$cons_EDE_country[nfede$time %between% c(2030, 2080) & nfede$country ==c]))/sapply(unique(nfede$country), function(c) sum(nlede$cons_EDE_country[nlede$time %between% c(2030, 2080) & nlede$country ==c])) - 1
 nfede$diff_npv_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) sum(sapply(2030:2080, function(y) nfede$cons_EDE_country[nfede$time == y & nfede$country ==c]/1.03^(y-2030)))/sum(sapply(2030:2080, function(y) nlede$cons_EDE_country[nlede$time == y & nlede$country ==c]/1.03^(y-2030))) - 1)
@@ -3695,7 +3695,7 @@ setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% c("BI
 setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code], nfede$country[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code])
 setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% names(manual_adjust)], nfede$country[nfede$time == 2030 & nfede$country %in% names(manual_adjust)])
 
-fbtra <- read.csv(paste0(path_nice, "ffu_below_bau_custom_transfers/country_output/transfer_over_gdp.csv"))
+fbtra <- read.csv(paste0(nice_path, "ffu/country_output/transfer_over_gdp.csv"))
 strong_contributors <- sort(unique(fbtra$country[which(fbtra$transfer_over_gdp < -.01)]))
 sapply(strong_contributors, function(c) min(fbtra$transfer_over_gdp[fbtra$country == c]))
 setNames(df$net_gain_over_gdp_both_taxes_pop[df$code %in% strong_contributors], strong_contributors)
@@ -3732,7 +3732,7 @@ max(colSums(df[df$participate_union, paste0("rights_proposed_", seq(2035, 2080, 
 colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)])
 which(colSums(df[df$participate_union, paste0("rights_proposed_", 2031:2080)])/colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2079)]) > .98)
 # Absolute
-ffu_price <- read.csv(paste0(path_nice, "ffu_below_bau_custom_transfers/country_output/country_carbon_tax.csv"))
+ffu_price <- read.csv(paste0(nice_path, "ffu/country_output/country_carbon_tax.csv"))
 par(mar=c(2, 3, 0, 3) + 0.1) # EXPORT to figures/policies/ffu_rights_price
 plot(2030:2080, colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', lwd = 2, ylim = c(0, 25), xlab="", ylab="")
 lines(2030:2080, colSums(df[df$region_tiam %in% "CHI", paste0("rights_proposed_", 2030:2080)])/1e9, type = 'l', col = "red")
@@ -3748,7 +3748,7 @@ legend("top", legend = c("Fossil-Free Union (total)", "China", "West. Europe+Jap
 
 # Per capita 769x405
 ffu_bi <- ffu_price$country_carbon_tax[ffu_price$time %between% c(2030, 2080) & ffu_price$country == "CHN"]*colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])/colSums(df[df$participate_union, paste0("pop_", 2030:2080)])/365
-ffu_gdp <- read.csv(paste0(path_nice, "ffu_below_bau_custom_transfers/country_output/nice_net_output.csv"))
+ffu_gdp <- read.csv(paste0(nice_path, "ffu/country_output/nice_net_output.csv"))
 ffu_revenue_pc_over_gdp <- 100*ffu_price$country_carbon_tax[ffu_price$time %between% c(2030, 2080) & ffu_price$country == "CHN"]*colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])/sapply(2030:2080, function(y) 1e6*sum(ffu_gdp$Y[ffu_gdp$country %in% df$code[df$participate_union] & ffu_gdp$time == y]))
 par(mar=c(2, 3, 0, 3) + 0.1) # EXPORT to figures/policies/ffu_rights_pc_price
 plot(2030:2080, colSums(df[df$participate_union, paste0("rights_proposed_", 2030:2080)])/colSums(df[df$participate_union, paste0("pop_", 2030:2080)]), type = 'l', lwd = 2, ylim = c(0, 10), xlab="", ylab="")
@@ -3833,7 +3833,7 @@ sum(fftra$transfer[fftra$time == 2060 & fftra$transfer > 0])/(ffgdp$YGROSS_globa
 gptra <- read.csv(paste0(nice_path, "global_price_ffu/country_output/transfer.csv"))
 gpgdp <- read.csv(paste0(nice_path, "global_price_ffu/global_output/global_gross_output.csv"))
 sum(gptra$transfer[gptra$time == 2040 & gptra$transfer < 0]) # TODO!!
-sum(gptra$transfer[gptra$time == 2040 & gptra$transfer < 0])/(gpgdp$YGROSS_global[gpgdp$time == 2040]*1e12)
+sum(gptra$transfer[gptra$time == 2040 & gptra$transfer > 0])/(gpgdp$YGROSS_global[gpgdp$time == 2040]*1e12)
 
 # US, CAN, AUS non-losing? no
 df$rights_proposed[df$code %in% c("AUS", "CAN", "USA")]/1e9
