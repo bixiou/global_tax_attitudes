@@ -3835,14 +3835,20 @@ sum(df$rights)
 # North-South transfer FFU
 fftra <- read.csv(paste0(nice_path, "ffu/country_output/transfer.csv"))
 ffgdp <- read.csv(paste0(nice_path, "ffu/global_output/global_gross_output.csv"))
-sum(fftra$transfer[fftra$time == 2040]) # TODO!!
-sum(fftra$transfer[fftra$time == 2040 & fftra$transfer < 0])/(ffgdp$YGROSS_global[ffcpc$time == 2040]*1e12)
-sum(fftra$transfer[fftra$time == 2040 & fftra$transfer > 0])/(ffgdp$YGROSS_global[ffcpc$time == 2040]*1e12)
-sum(fftra$transfer[fftra$time == 2060 & fftra$transfer > 0])/(ffgdp$YGROSS_global[ffcpc$time == 2060]*1e12)
+(global_transfers <- round(setNames(sapply(2030:2080, function(y) sum(fftra$transfer[fftra$time == y & fftra$transfer > 0])/1e9), 2030:2080)))
+(global_transfers_over_gdp <- round(100*setNames(sapply(2030:2080, function(y) sum(fftra$transfer[fftra$time == y & fftra$transfer > 0])/(ffgdp$YGROSS_global[ffgdp$time == y]*1e12)), 2030:2080), 2))
+mean(global_transfers_over_gdp)
+sum(fftra$transfer[fftra$time == 2040 & fftra$transfer > 0])/1e9
+sum(fftra$transfer[fftra$time == 2040 & fftra$transfer < 0])/(ffgdp$YGROSS_global[ffgdp$time == 2040]*1e12)
+sum(fftra$transfer[fftra$time == 2040 & fftra$transfer > 0])/(ffgdp$YGROSS_global[ffgdp$time == 2040]*1e12)
+sum(fftra$transfer[fftra$time == 2060 & fftra$transfer > 0])/(ffgdp$YGROSS_global[ffgdp$time == 2060]*1e12)
 
 gptra <- read.csv(paste0(nice_path, "global_price_ffu/country_output/transfer.csv"))
 gpgdp <- read.csv(paste0(nice_path, "global_price_ffu/global_output/global_gross_output.csv"))
-sum(gptra$transfer[gptra$time == 2040 & gptra$transfer < 0]) # TODO!!
+(global_transfers <- round(setNames(sapply(2030:2080, function(y) sum(gptra$transfer[gptra$time == y & gptra$transfer > 0])/1e9), 2030:2080)))
+(global_transfers_over_gdp <- round(100*setNames(sapply(2030:2080, function(y) sum(gptra$transfer[gptra$time == y & gptra$transfer > 0])/(gpgdp$YGROSS_global[gpgdp$time == y]*1e12)), 2030:2080), 2))
+mean(global_transfers_over_gdp) # EXPORT
+sum(gptra$transfer[gptra$time == 2040 & gptra$transfer < 0]) 
 sum(gptra$transfer[gptra$time == 2040 & gptra$transfer > 0])/(gpgdp$YGROSS_global[gpgdp$time == 2040]*1e12)
 
 # US, CAN, AUS non-losing? no
