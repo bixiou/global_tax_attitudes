@@ -3585,6 +3585,8 @@ nbede <- read.csv("../../NICE2020/cap_and_share/output/bau_no_policy_at_all/no_r
 nfede$diff_ede_ffu_bau <- nfede$cons_EDE_country/nbede$cons_EDE_country - 1
 
 plot_map("diff_ede_ffu_bau", nfede[nfede$time == 2040,], breaks = c(-Inf, -0.05, -0.025, -0.01, -0.0001, 0.0001, 0.01, 0.025, 0.05, 0.1, 0.3, Inf), labels = c("< -5", "-5 to -2.5", "-2.5 to -1","-1 to -0.1", "-0.1 to 0.1", "0.1 to 1", "1 to 2.5", "2.5 to 5", "5 to 10", "10 to 30", "> 30"), colors =c("#D05F68", "#E08A84", "#F7B7A1", "#FBE3D9", "#FFFFFF", "#E5F0FB", "#C0E0EF", "#92C5DE", "#6CAAD1", "#2166AC", "#103A71") )
+df$diff_ede_ffu_bau <- sapply(unique(df$code), function(c) if (c %in% nfede$country) sum(sapply(2030:2080, function(y) nfede$cons_EDE_country[nfede$time == y & nfede$country ==c]/1.03^(y-2030)))/sum(sapply(2030:2080, function(y) nbede$cons_EDE_country[nbede$time == y & nbede$country ==c]/1.03^(y-2030))) - 1 else NA)
+plot_world_map("diff_ede_ffu_bau", save = F, df[df$participate_union,], breaks = c(-Inf, -0.05, -0.01, -0.003, 0.003, 0.01, 0.05, Inf), labels = c("< -5%", "-5% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 5%", "> 5%"), legend = "Welfare change:\nNet Present Value\nof Equally-Distributed\nEquivalent consumption\nFFU vs. non-losing\n(over 2030-2080, r = 3%)", na_label = "Non Parties", legend_x = .07)   
 
 nfcpc <- read.csv(paste0(path_nice, "ffu_custom_transfers/country_output/consumption_per_capita.csv"))
 nbcpc <- read.csv("../../NICE2020/cap_and_share/output/bau_no_policy_at_all/no_revenue_recycling/country_output/consumption_per_capita.csv")
