@@ -3681,6 +3681,7 @@ df$footprint_over_territorial_2022[is.na(df$footprint_over_territorial_2022)] <-
 
 nfede <- read.csv(paste0(nice_path, "ffu/country_output/consumption_EDE.csv")) # path_nice, "ffu_custom_transfers
 nlede <- read.csv(paste0(nice_path, "non_losing/country_output/consumption_EDE.csv"))
+ngede <- read.csv(paste0(nice_path, "global_cap_share/country_output/consumption_EDE.csv"))
 nfede$diff_ede_ffu_nl <- nfede$cons_EDE_country/nlede$cons_EDE_country - 1
 nfede$diff_sum_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) sum(nfede$cons_EDE_country[nfede$time %between% c(2030, 2080) & nfede$country ==c]))/sapply(unique(nfede$country), function(c) sum(nlede$cons_EDE_country[nlede$time %between% c(2030, 2080) & nlede$country ==c])) - 1
 nfede$diff_npv_ede_ffu_nl[nfede$time == 2030] <- sapply(unique(nfede$country), function(c) sum(sapply(2030:2080, function(y) nfede$cons_EDE_country[nfede$time == y & nfede$country ==c]/1.03^(y-2030)))/sum(sapply(2030:2080, function(y) nlede$cons_EDE_country[nlede$time == y & nlede$country ==c]/1.03^(y-2030))) - 1)
@@ -3707,6 +3708,12 @@ plot_map("diff_npv_ede_ffu_nl", nfede[nfede$time == 2030,], breaks = c(-Inf, 0, 
 setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF")], c("BIH", "BWA", "IRN", "IRQ", "LBY", "MNG", "MYS", "SUR", "TKM", "TWN", "ZAF"))
 setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code], nfede$country[nfede$time == 2030 & nfede$diff_npv_ede_ffu_nl < 0 & !is.na(nfede$diff_npv_ede_ffu_nl) & nfede$country %in% df$code])
 setNames(nfede$diff_npv_ede_ffu_nl[nfede$time == 2030 & nfede$country %in% names(manual_adjust)], nfede$country[nfede$time == 2030 & nfede$country %in% names(manual_adjust)])
+
+df$diff_ede_ffu_bau <- sapply(unique(df$code), function(c) if (c %in% nfede$country) sum(sapply(2030:2080, function(y) nfede$cons_EDE_country[nfede$time == y & nfede$country ==c]/1.03^(y-2030)))/sum(sapply(2030:2080, function(y) nbede$cons_EDE_country[nbede$time == y & nbede$country ==c]/1.03^(y-2030))) - 1 else NA)
+plot_world_map("diff_ede_ffu_bau", save = F, df[df$participate_union,], breaks = c(-Inf, -0.05, -0.01, -0.003, 0.003, 0.01, 0.05, Inf), labels = c("< -5%", "-5% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 5%", "> 5%"), legend = "Welfare change:\nNet Present Value\nof Equally-Distributed\nEquivalent consumption\nFFU vs. non-losing\n(over 2030-2080, r = 3%)", na_label = "Non Parties", legend_x = .07)   
+
+df$diff_ede_cs_bau <- sapply(unique(df$code), function(c) if (c %in% nfede$country) sum(sapply(2030:2080, function(y) ngede$cons_EDE_country[ngede$time == y & ngede$country ==c]/1.03^(y-2030)))/sum(sapply(2030:2080, function(y) nbede$cons_EDE_country[nbede$time == y & nbede$country ==c]/1.03^(y-2030))) - 1 else NA)
+plot_world_map("diff_ede_cs_bau", save = F, df[df$participate_union,], breaks = c(-Inf, -0.05, -0.01, -0.003, 0.003, 0.01, 0.05, Inf), labels = c("< -5%", "-5% to -1%", "-1% to -0.3%", "-0.3% to 0.3%", "0.3% to 1%", "1% to 5%", "> 5%"), legend = "Welfare change:\nNet Present Value\nof Equally-Distributed\nEquivalent consumption\nFFU vs. non-losing\n(over 2030-2080, r = 3%)", na_label = "Non Parties", legend_x = .07)   
 
 fbtra <- read.csv(paste0(nice_path, "ffu/country_output/transfer_over_gdp.csv"))
 strong_contributors <- sort(unique(fbtra$country[which(fbtra$transfer_over_gdp < -.01)]))
