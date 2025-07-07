@@ -2,6 +2,7 @@ library(utils)
 chooseCRANmirror(ind = 1)
 .libPaths(c("C:/Users/fabre/AppData/Local/R/win-library/4.4", "C:/Program Files/R/R-4.4.3/library", "C:/Program Files/R/R-4.3.1/library", "C:/Users/fabre/AppData/Local/R/win-library/4.3"))
 
+# options(device = "x11") # RStudioGD
 # options(download.file.method = "wget"); # For Ubuntu 14.04
 package <- function(p, version = NULL, remove = FALSE, github = '') {
   if (remove) {
@@ -72,6 +73,7 @@ package("stringi") # stri_reverse For Arabic RTL
 # package("maps") # merge boundaries in maps
 package("httr")
 package("rnaturalearth")
+package("ncdf4") # Work with .nc files
 
 # package("extrafont") # maps/ggplot2 with Arabic, Japanese...
 # windowsFonts(
@@ -2293,7 +2295,7 @@ plot_world_map <- function(var, df = sm, condition = "", on_control = FALSE, sav
         )))
       if (RTL) plot <- plot + theme(legend.title = element_text(family = "Arial", hjust = 1), legend.text = element_text(family = "Arial", hjust = 1))
       if (!"RUS" %in% stripe_codes) plot <- plot + coord_proj("+proj=robin", xlim = c(-135, 178.5), ylim = c(-56, 84)) # /!\ Bug for Russia when proj_coord() is present ("There is a MULTIPOLYGON with length greater than 1")
-    } else {
+    } else { # /!\ If error in `backtransform_range()`... check packageVersion("ggalt") = 0.6.2 and if it's not: devtools::install_github("eliocamp/ggalt@new-coord-proj")
       (plot <- ggplot(df) + geom_map(aes(map_id = country_map, fill = fct_rev(group)), map = world_map, show.legend=TRUE) + coord_proj("+proj=robin", xlim = c(-135, 165.5), ylim = c(-56, 84)) +
          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', size = size_border, fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
          scale_fill_manual(name = legend, drop = FALSE, values = colors, na.value = "grey60", labels = function(breaks) {breaks[is.na(breaks)] <- na_label; breaks})) #, na.value = "grey50" +proj=eck4 (equal area) +proj=wintri (compromise) +proj=robin (compromise, default) Without ggalt::coord_proj(), the default use is a sort of mercator
@@ -2302,6 +2304,7 @@ plot_world_map <- function(var, df = sm, condition = "", on_control = FALSE, sav
          geom_polygon(data = world_map, aes(x = long, y = lat, group = group), colour = 'grey', fill = NA) + expand_limits(x = world_map$long, y = world_map$lat) + theme_void(base_family = base_family) + theme(legend.position = c(legend_x, .29)) +
          scale_fill_gradientn(name = legend, limits = limits, colours = color(9, rev_color = !rev_color))) # scale_fill_manual(palette = "RdBu", limits = limits, direction = 1, na.value = "grey50")) #scale_fill_viridis_c(option = "plasma", trans = "sqrt"))
     }
+
   
   print(plot)
   if (save) for (f in format) save_plot(plot, filename = ifelse(!is.null(filename), filename, ifelse(continuous, paste0(var, "_cont"), ifelse(any(level_striped) | !is.null(stripe_codes), paste0(var, "_stripes"), var))), folder = folder, width = width, height = height, format = f, trim = trim)
