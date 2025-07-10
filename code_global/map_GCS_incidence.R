@@ -243,9 +243,17 @@ pg4 <- read.csv("../data/poverty_gap_3-65.csv") # Poverty gap at $3.65 a day (20
 pg4$code <- pg4$Country.Code
 pg4 <- extract_last_year(df = pg4, cols = paste0("X", 1960:2021), var_name = "pg4", keep = c("Country.Name", "code"))
 
+pg4 <- read.csv("../data/poverty_gap_4-20.csv") # Poverty gap at $4.20 a day (2021 PPP) (%) https://data.worldbank.org/indicator/SI.POV.LMIC.GP July 1, 2025. World average: 8% i.e. (less than - bc PPP) .86T$ = 4.2*365*8e9*.07
+pg4$code <- pg4$Country.Code
+pg4 <- extract_last_year(df = pg4, cols = paste0("X", 1960:2024), var_name = "pg4", keep = c("Country.Name", "code"))
+
 pg7 <- read.csv("../data/poverty_gap_6-85.csv") # Poverty gap at $6.85 a day (2017 PPP) (%) https://data.worldbank.org/indicator/SI.POV.UMIC.GP March 1, 2023. World average: 21% i.e. (less than - bc PPP) 4.2T$ = 6.85*365*8e9*.21
 pg7$code <- pg7$Country.Code
 pg7 <- extract_last_year(df = pg7, cols = paste0("X", 1960:2021), var_name = "pg7", keep = c("Country.Name", "code"))
+
+GDPpcPPP <- read.csv("../data/GDPpc_2021$_PPP.csv") # GDP per capita, PPP (constant 2021 international $) https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD July 1, 2025  (last year available is 2024)
+GDPpcPPP$code <- GDPpcPPP$Country.Code
+GDPpcPPP$GDPpcPPP[!is.na(pg4$last_year)] <- sapply(which(!is.na(pg4$last_year)), function(i) GDPpcPPP[[paste0("X", pg4$last_year[i])]][i])
 
 GDPpcPPP <- read.csv("../data/GDPpc_2017$_PPP.csv") # GDP per capita, PPP (constant 2017 international $) https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD March 1, 2023  (last year available is 2021)
 GDPpcPPP$code <- GDPpcPPP$Country.Code
@@ -260,6 +268,8 @@ GDPpcPPP$GDPpcPPP[!is.na(pg7$last_year)] <- sapply(which(!is.na(pg7$last_year)),
 
 pg <- merge(merge(pg2, merge(pg4, pg7)), GDPpcPPP[, c("Country.Name", "code", "GDPpcPPP")]) # TODO: do not remove region groupings (or recreate them, once we've done the share computations)
 
+pg <- merge(pg4, GDPpcPPP[, c("Country.Name", "code", "GDPpcPPP")])
+
 # co2_pop$country[co2_pop$code %in% setdiff(co2_pop$code, pg$code)]
 # pg$Country.Name[pg$code %in% setdiff(pg$code, co2_pop$code)]
 pg <- merge(pg, co2_pop)
@@ -271,7 +281,7 @@ pg <- merge(pg, co2_pop)
 reg_pg7_gdp_log <- lm(log10(pg7) ~ log10(GDPpcPPP), data = pg, weights = adult_2023, subset = pg7 > 0)
 summary(reg_pg7_gdp_log) # 7.36 - 1.6 gdp, R^2: .78
 pg$predicted_gap7[as.numeric(names(reg_pg7_gdp_log$fitted.values))] <- 10^reg_pg7_gdp_log$fitted.values
-reg_pg4_gdp_log <- lm(log10(pg4) ~ log10(GDPpcPPP), data = pg, weights = adult_2023, subset = pg4 > 0)
+reg_pg4_gdp_log <- lm(log10(pg4) ~ log10(GDPpcPPP), data = pg, weights = adult_2024, subset = pg4 > 0)
 summary(reg_pg4_gdp_log) # 6.6 - 1.52 gdp, R^2: .66
 pg$predicted_gap4[as.numeric(names(reg_pg4_gdp_log$fitted.values))] <- 10^reg_pg4_gdp_log$fitted.values
 reg_pg2_gdp_log <- lm(log10(pg2) ~ log10(GDPpcPPP), data = pg, weights = adult_2023, subset = pg2 > 0)
@@ -291,7 +301,7 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
                         phase_out_start = NULL, phase_out_end = 2*phase_out_start) { # wtd.mean(pg$GDPpcPPP, pg$pop_2019) wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
   pg <- df
   pg$gap <- pg[[paste0("pg", poverty_line)]]
-  pg$gdp <- if (PPP) pg$GDPpcPPP else pg$gdp_pc_2019
+  pg$gdp <- if (PPP) pg$GDPpcPPP else pg$gdp_pc_2024 # gdp_pc_2019
   pg$log_gdp <- log10(pg$gdp)
   if (is.null(phase_out_start)) phase_out_start <- wtd.mean(pg$gdp, pg$pop_2019) #  + I(log10(gdp)^3)
   if (type_reg == "piecewise") {
@@ -362,7 +372,7 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
     if (return_var == "gdp") return(sort(setNames(pg$gdp[pg$pop_2023 > min_pop] / ifelse(monthly, 12, 1), pg$country[pg$pop_2023 > min_pop]), decreasing = T))
   }
 }
-plot(pg$gdp_pc_2019, key_gap_gdp("new_gni", return_type = 'var', monthly = F, poverty_line = 4), xlim = c(0,3000), ylim = c(0,3000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
+plot(pg$gdp_pc_2024, key_gap_gdp("new_gni", return_type = 'var', monthly = F, poverty_line = 4), xlim = c(0,3000), ylim = c(0,3000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
 lines(c(0,1e5), c(0,1e5), type = 'l') + grid() # /!\ Big issue with this allocation: it doesn't preserve GDP rankings.
 plot(pg$gdp_pc_2019, key_gap_gdp("rev_pc", return_type = 'var', monthly = F, poverty_line = 4), xlim = c(0,3000), ylim = c(0,1000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
 # /!\ Two conditions to check to select an allocation key: rev_pc(gdp) must be decreasing and new_gni(gdp) increasing.
@@ -375,7 +385,12 @@ qplot(log10(gdp_pc_2019), log10(pg4), data = pg, size = pop_2019, xlab = "log10 
   geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE) + theme_bw()
 # save_plot(filename = "poverty_gap_gdp", folder = "../figures/policies/", format = "png", width = 538, height = 413) # Renders much better by hand
 
-table_pg <- key_gap_gdp(return_var = "gdp_share", return_type = "list")
+pg$predicted_gap <- key_gap_gdp(poverty_line = 4, PPP = F, phase_out_start = wtd.mean(pg$gdp_pc_2024, pg$pop_2024), return_var = "gap", return_type = "var")
+mean_gdp_pc <- wtd.mean(pg$gdp_pc_2024, pg$pop_2024)
+qplot(log10(gdp_pc_2024), log10(pg4), data = pg, size = pop_2020, xlab = "log10 of 2019 GDP per capita (constant 2015 $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE) + 
+  geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE) + theme_bw()
+
+table_pg <- key_gap_gdp(return_var = "gdp_share", return_type = "list", phase_out_start = .9*mean_gdp_pc_2024, phase_out_end = 1.1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
 (table_pg <- cbind("gdp_share" = table_pg, "rev_pc" = key_gap_gdp("rev_pc")[names(table_pg)], "global_share_pc" = key_gap_gdp("global_share_pc")[names(table_pg)], "global_share" = key_gap_gdp("global_share")[names(table_pg)]))
 row.names(table_pg)[row.names(table_pg) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
 cat(paste(kbl(table_pg[table_pg[,1] > 0.07,], "latex", caption = "Allocation of the global wealth tax revenues.", position = "b", escape = F, booktabs = T, digits = c(2, 0, 2, 2), linesep = rep("", nrow(table_pg)-1), longtable = T, label = "allocation",
@@ -464,6 +479,11 @@ segmented.fit <- segmented(fit, seg.Z = ~log_gdp, weights = pop_2023) # npsi: nu
 predicted_data <- data.frame(log_gdp = pg$log_gdp, pop_2023 = pg$pop_2023, gdp_pc_2019 = pg$gdp_pc_2019, GDPpcPPP = pg$GDPpcPPP, pg4 = pg$pg4)
 predicted_data$predicted_pg <- predict(segmented.fit, newdata = predicted_data)
 
+mean_gdp_pc_2024 <- wtd.mean(pg$gdp_pc_2024, pg$pop_2024)
+summary(lm(log10(pg4) ~ log10(gdp_pc_2024) + I(log10(gdp_pc_2024)^2), data = pg[pg$pg4 > 0 & pg$gdp_pc_2024 < mean_gdp_pc_2024,], weights = pop_2024))
+qplot(log10(gdp_pc_2024), log10(pg4), data = pg[pg$pg4 > 0 & pg$gdp_pc_2024 < mean_gdp_pc_2024,], size = pop_2024, xlab = "log10 of GDP per capita in 2024 (nominal $)", ylab = "log10 of Poverty gap at $4.20 a day (2021 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
+  geom_smooth(method = "lm", formula = y ~ x,  mapping = aes(weight = pop_2024 * (gdp_pc_2024 < mean_gdp_pc_2024)), color = "red", size = 2, show.legend = FALSE, se = F) + theme_bw()
+
 mean_GDPpcPPP <- wtd.mean(pg$GDPpcPPP, pg$pop_2019)
 mean_gdp_pc_2019 <- wtd.mean(pg$gdp_pc_2019, pg$pop_2019)
 qplot(log10(gdp_pc_2019), log10(pg4), data = pg[pg$pg4 > 0 & pg$gdp_pc_2019 < mean_gdp_pc_2019,], size = pop_2023, xlab = "log10 of GDP per capita in 2019 (nominal $)", ylab = "log10 of Poverty gap at $3.65 a day (2017 PPP) (%)", show.legend = FALSE, ylim = c(-1, 2)) + 
@@ -536,18 +556,18 @@ India_max_reg_mean
 key_gdp(poverty_line = 4, PPP = F, return_var = "global_share")
 key_gdp(poverty_line = 4, PPP = F, max_reg = Inf, return_var = "global_share_pc")
 sum(key_gdp(poverty_line = 4, PPP = T, max_reg = Inf, return_var = "global_share", return_type = "var")[pg$code %in% SSA], na.rm = T)
-pg$global_share <- key_gap_gdp(return_var = "global_share", return_type = "var")
-pg$global_share_pc <- key_gap_gdp(return_var = "global_share_pc", return_type = "var")
-pg$rev_pc <- key_gap_gdp(return_var = "rev_pc", return_type = "var")
-pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", return_type = "var")
-sum(pg$global_share[pg$code %in% SSA], na.rm = T) # 39%, linear: 53%
+pg$global_share <- key_gap_gdp(return_var = "global_share", return_type = "var", phase_out_start = .9*mean_gdp_pc_2024, phase_out_end = 1.1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+pg$global_share_pc <- key_gap_gdp(return_var = "global_share_pc", return_type = "var", phase_out_start = .9*mean_gdp_pc_2024, phase_out_end = 1.1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+pg$rev_pc <- key_gap_gdp(return_var = "rev_pc", return_type = "var", phase_out_start = .9*mean_gdp_pc_2024, phase_out_end = 1.1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", return_type = "var", phase_out_start = .9*mean_gdp_pc_2024, phase_out_end = 1.1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+sum(pg$global_share[pg$code %in% SSA], na.rm = T) # 55% 
 wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) # $26, linear: $36
 wtd.mean(pg$rev_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T) / wtd.mean(pg$rev_pc, pg$pop_2019, na.rm = T) # 2.9, linear: 4
 wtd.mean(pg$global_share_pc[pg$code %in% SSA], pg$pop_2019[pg$code %in% SSA], na.rm = T)
 wealth_tax_revenues <- 0.0176*1e14  # 0.013*96e12 (2/4/6) # From a 2% tax above $5 million / 6% above $100M / 10% above $1G, cf. Chancel et al. (2022) https://wid.world/world-wealth-tax-simulator/ # 0.0085
 pooled_revenues <- 0.5 * wealth_tax_revenues
 pooled_revenues * sum(pg$global_share[pg$code %in% SSA], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% SSA], na.rm = T) # 25%, linear: 32%
-sum(pg$global_share[pg$code %in% LIC], na.rm = T)
+sum(pg$global_share[pg$code %in% LIC], na.rm = T) # 48%
 wtd.mean(pg$rev_pc[pg$code %in% LIC], pg$pop_2019[pg$code %in% LIC], na.rm = T)
 wtd.mean(pg$global_share_pc[pg$code %in% LIC], pg$pop_2019[pg$code %in% LIC], na.rm = T)
 pooled_revenues * sum(pg$global_share[pg$code %in% LIC], na.rm = T) / sum((pg$gdp_pc_2019 * pg$pop_2019)[pg$code %in% LIC], na.rm = T)
@@ -580,6 +600,27 @@ wealth_tax_revenues <- 1.3*96e12 # From a 2% tax above $5 million / 4% above $10
 pooled_revenues <- 0.5 * wealth_tax_revenues
 pg$wealth_tax_rev_pc <- pooled_revenues * pg$share_revenues4 / pg$adult_2023 # per year
 sort(setNames(pg$wealth_tax_rev_pc/12, pg$country)) # per month: $4.6 in India, 2.8 in China, 14.6 in RDC, 1.3 in U.S.
+
+pg$global_share <- key_gap_gdp(return_var = "global_share", PPP = F, type_reg = "linear", return_type = "var", phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", PPP = F, return_type = "var", phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+sum(pg$global_share[pg$code %in% LIC], na.rm = T) # 50%
+sum(pg$global_share[pg$code %in% SSA], na.rm = T) # 57%
+sum(pg$global_share[pg$code %in% c("IND", "PAK", "BGD", "SRI", "NPL", "BTN")], na.rm = T) # 27%
+pg$global_share_pc_distance_mean <- pmax(0, mean_gdp_pc_2024 - pg$gdp_pc_2024)
+pg$global_share_distance_mean <- pg$global_share_pc_distance_mean * pg$pop_2024
+pg$global_share_distance_mean <- 100*pg$global_share_distance_mean/sum(pg$global_share_distance_mean, na.rm = T)
+pg$global_share_pc_distance_mean <- pg$global_share_distance_mean/pg$pop_2024
+pg$gdp_share_distance_mean <- pg$global_share_distance_mean*sum(pg$gdp_share*pg$gdp_2024, na.rm = T)/(pg$pop_2024*pg$gdp_pc_2024)/100
+sum(pg$global_share_distance_mean[pg$code %in% LIC], na.rm = T) # 24%
+sum(pg$global_share_distance_mean[pg$code %in% c("IND", "PAK", "BGD", "SRI", "NPL", "BTN")], na.rm = T) # 44%
+sum(pg$global_share_distance_mean[pg$code %in% SSA], na.rm = T) # 35%
+View(pg[pg$pop_2024 > 3e7, c("pg4", "gdp_pc_2024", "global_share_distance_mean", "global_share", "gdp_share_distance_mean", "gdp_share", "code", "country")])
+plot(pg$gdp_pc_2024, key_gap_gdp("new_gni", return_type = 'var', PPP = F, type_reg = "linear", monthly = F, poverty_line = 4, phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024), xlim = c(0,18e3), ylim = c(0,18e3), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
+lines(pg$gdp_pc_2024, pg$gdp_pc_2024*(1+pg$gdp_share_distance_mean/100), lwd = 2, col = "blue")
+
+pg$predicted_gap <- key_gap_gdp(poverty_line = 4, PPP = F, type_reg = "linear", return_var = "gap", return_type = "var", phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+qplot(log10(gdp_pc_2024), log10(pg4), data = pg, size = pop_2024, xlab = "log10 of 2024 GDP per capita (constant 2021 $)", ylab = "log10 of Poverty gap at $4.20 a day (2021 PPP) (%)", show.legend = FALSE) + 
+  geom_line(aes(y = log10(predicted_gap)), size = 2, color = "red", show.legend = FALSE) + theme_bw()
 
 
 ##### SSPs #####
