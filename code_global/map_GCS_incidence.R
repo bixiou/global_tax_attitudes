@@ -305,18 +305,18 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
   pg$log_gdp <- log10(pg$gdp)
   if (is.null(phase_out_start)) phase_out_start <- wtd.mean(pg$gdp, pg$pop_2019) #  + I(log10(gdp)^3)
   if (type_reg == "piecewise") {
-    reg_gap_gdp_log <- lm(log10(gap) ~ log_gdp, data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
-    reg_gap_gdp_log <- segmented(reg_gap_gdp_log, seg.Z = ~log_gdp, weights = pop_2023)
+    reg_gap_gdp_log <- lm(log10(gap) ~ log_gdp, data = pg, weights = pop_2024, subset = gap > 0 & gdp < max_reg)
+    reg_gap_gdp_log <- segmented(reg_gap_gdp_log, seg.Z = ~log_gdp, weights = pop_2024)
   } else if (type_reg == "quadratic") {
-    reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp) + I(log10(gdp)^2), data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
+    reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp) + I(log10(gdp)^2), data = pg, weights = pop_2024, subset = gap > 0 & gdp < max_reg)
   } else if (type_reg == "linear") {
-    reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp), data = pg, weights = pop_2023, subset = gap > 0 & gdp < max_reg)
+    reg_gap_gdp_log <- lm(log10(gap) ~ log10(gdp), data = pg, weights = pop_2024, subset = gap > 0 & gdp < max_reg)
   }
   # pg$predicted_gap[as.numeric(names(reg_gap_gdp_log$fitted.values))] <- 10^reg_gap_gdp_log$fitted.values
   print(paste("R^2: ", round(summary(reg_gap_gdp_log)$r.squared, 3)))
 
   key_gap <- function(gdp) {
-    predicted <- data.frame(log_gdp = pg$log_gdp, gdp = pg$gdp, pop_2023 = pg$pop_2023) # [pg$gap > 0 & pg$gdp < max_reg]
+    predicted <- data.frame(log_gdp = pg$log_gdp, gdp = pg$gdp, pop_2024 = pg$pop_2024) # [pg$gap > 0 & pg$gdp < max_reg]
     predicted$gap <- 10^predict(reg_gap_gdp_log, newdata = predicted)
     predicted_gap_phase_out_start <- predict(reg_gap_gdp_log, newdata = data.frame(log_gdp = log10(phase_out_start), gdp = phase_out_start))
     predicted$gap[!is.na(predicted$gdp) & predicted$gdp > phase_out_start] <- 10^(-1 + (predicted_gap_phase_out_start + 1) * (log10(phase_out_end) - log10(predicted$gdp[!is.na(predicted$gdp) & predicted$gdp > phase_out_start]))/(log10(phase_out_end) - log10(phase_out_start)))
@@ -332,24 +332,22 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
 
   global_share_pc <- function(gdp, pop) return(global_share(gdp, pop) / (100*pop/sum(pop, na.rm = T)))
 
-  gdp_share <- function(gdp, pop, revenues = global_revenues) {
-    return(global_share(gdp, pop) * revenues / (gdp*pop))
-  }
+  gdp_share <- function(gdp, pop, revenues = global_revenues) return(global_share(gdp, pop) * revenues / (gdp*pop))
 
   rev_pc <- function(gdp, pop, revenues = global_revenues) return(global_share(gdp, pop) * revenues / pop / 100 / ifelse(monthly, 12, 1))
 
   new_gni <- function(gdp, pop, revenues = global_revenues) return(gdp / ifelse(monthly, 12, 1) + rev_pc(gdp, pop, revenues = global_revenues))
 
-  if (any(new_gni(pg$gdp, pg$pop_2023)[order(pg$gdp)] != sort(new_gni(pg$gdp, pg$pop_2023), na.last = T), na.rm = T)) warning("new_gni is not increasing")
-  if (any(rev_pc(pg$gdp, pg$pop_2023)[order(pg$gdp)] != sort(rev_pc(pg$gdp, pg$pop_2023), decreasing = T, na.last = T), na.rm = T)) warning("new_gni is not decreasing")
+  if (any(new_gni(pg$gdp, pg$pop_2024)[order(pg$gdp)] != sort(new_gni(pg$gdp, pg$pop_2024), na.last = T), na.rm = T)) warning("new_gni is not increasing")
+  if (any(rev_pc(pg$gdp, pg$pop_2024)[order(pg$gdp)] != sort(rev_pc(pg$gdp, pg$pop_2024), decreasing = T, na.last = T), na.rm = T)) warning("new_gni is not decreasing")
   
   if (return_type == "var") {
     if (return_var == "gap") return(key_gap(pg$gdp))
-    if (return_var == "global_share") return(global_share(pg$gdp, pg$pop_2023))
-    if (return_var == "global_share_pc") return(global_share_pc(pg$gdp, pg$pop_2023))
-    if (return_var == "gdp_share") return(gdp_share(pg$gdp_pc_2019, pg$pop_2023))
-    if (return_var == "rev_pc") return(rev_pc(pg$gdp, pg$pop_2023))
-    if (return_var == "new_gni") return(new_gni(pg$gdp, pg$pop_2023))
+    if (return_var == "global_share") return(global_share(pg$gdp, pg$pop_2024))
+    if (return_var == "global_share_pc") return(global_share_pc(pg$gdp, pg$pop_2024))
+    if (return_var == "gdp_share") return(gdp_share(pg$gdp_pc_2024, pg$pop_2024))
+    if (return_var == "rev_pc") return(rev_pc(pg$gdp, pg$pop_2024))
+    if (return_var == "new_gni") return(new_gni(pg$gdp, pg$pop_2024))
     if (return_var == "gdp") return(pg$gdp / ifelse(monthly, 12, 1))
   } else if (return_type == "function") {
     if (return_var == "gap") return(key_gap)
@@ -363,13 +361,13 @@ key_gap_gdp <- function(return_var = "gap", # gap, global_share, gdp_share, rev_
     # if (return_var == "rev_pc") return(rev_pc(seq(250, 120000, 250)))
     else warning("Impossible combination of return_var and return_type")
   } else if (return_type == "list") {
-    if (return_var == "gap") return(sort(setNames(key_gap(pg$gdp)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
-    if (return_var == "global_share") return(sort(setNames(global_share(pg$gdp, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
-    if (return_var == "global_share_pc") return(sort(setNames(global_share_pc(pg$gdp, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
-    if (return_var == "gdp_share") return(sort(setNames(gdp_share(pg$gdp_pc_2019, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
-    if (return_var == "rev_pc") return(sort(setNames(rev_pc(pg$gdp, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
-    if (return_var == "new_gni") return(sort(setNames(new_gni(pg$gdp, pg$pop_2023)[pg$pop_2023 > min_pop], pg$country[pg$pop_2023 > min_pop]), decreasing = T))
-    if (return_var == "gdp") return(sort(setNames(pg$gdp[pg$pop_2023 > min_pop] / ifelse(monthly, 12, 1), pg$country[pg$pop_2023 > min_pop]), decreasing = T))
+    if (return_var == "gap") return(sort(setNames(key_gap(pg$gdp)[pg$pop_2024 > min_pop], pg$country[pg$pop_2024 > min_pop]), decreasing = T))
+    if (return_var == "global_share") return(sort(setNames(global_share(pg$gdp, pg$pop_2024)[pg$pop_2024 > min_pop], pg$country[pg$pop_2024 > min_pop]), decreasing = T))
+    if (return_var == "global_share_pc") return(sort(setNames(global_share_pc(pg$gdp, pg$pop_2024)[pg$pop_2024 > min_pop], pg$country[pg$pop_2024 > min_pop]), decreasing = T))
+    if (return_var == "gdp_share") return(sort(setNames(gdp_share(pg$gdp_pc_2019, pg$pop_2024)[pg$pop_2024 > min_pop], pg$country[pg$pop_2024 > min_pop]), decreasing = T))
+    if (return_var == "rev_pc") return(sort(setNames(rev_pc(pg$gdp, pg$pop_2024)[pg$pop_2024 > min_pop], pg$country[pg$pop_2024 > min_pop]), decreasing = T))
+    if (return_var == "new_gni") return(sort(setNames(new_gni(pg$gdp, pg$pop_2024)[pg$pop_2024 > min_pop], pg$country[pg$pop_2024 > min_pop]), decreasing = T))
+    if (return_var == "gdp") return(sort(setNames(pg$gdp[pg$pop_2024 > min_pop] / ifelse(monthly, 12, 1), pg$country[pg$pop_2024 > min_pop]), decreasing = T))
   }
 }
 plot(pg$gdp_pc_2024, key_gap_gdp("new_gni", return_type = 'var', monthly = F, poverty_line = 4), xlim = c(0,3000), ylim = c(0,3000), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
@@ -601,8 +599,9 @@ pooled_revenues <- 0.5 * wealth_tax_revenues
 pg$wealth_tax_rev_pc <- pooled_revenues * pg$share_revenues4 / pg$adult_2023 # per year
 sort(setNames(pg$wealth_tax_rev_pc/12, pg$country)) # per month: $4.6 in India, 2.8 in China, 14.6 in RDC, 1.3 in U.S.
 
-pg$global_share <- key_gap_gdp(return_var = "global_share", PPP = F, type_reg = "linear", return_type = "var", phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
-pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", PPP = F, return_type = "var", phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+# NEW
+pg$global_share <- key_gap_gdp(return_var = "global_share", PPP = F, global_revenues = 100e9, type_reg = "linear", return_type = "var", phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
+pg$gdp_share <- key_gap_gdp(return_var = "gdp_share", PPP = F, global_revenues = 100e9, type_reg = "linear", return_type = "var", phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
 sum(pg$global_share[pg$code %in% LIC], na.rm = T) # 50%
 sum(pg$global_share[pg$code %in% SSA], na.rm = T) # 57%
 sum(pg$global_share[pg$code %in% c("IND", "PAK", "BGD", "SRI", "NPL", "BTN")], na.rm = T) # 27%
@@ -617,6 +616,15 @@ sum(pg$global_share_distance_mean[pg$code %in% SSA], na.rm = T) # 35%
 View(pg[pg$pop_2024 > 3e7, c("pg4", "gdp_pc_2024", "global_share_distance_mean", "global_share", "gdp_share_distance_mean", "gdp_share", "code", "country")])
 plot(pg$gdp_pc_2024, key_gap_gdp("new_gni", return_type = 'var', PPP = F, type_reg = "linear", monthly = F, poverty_line = 4, phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024), xlim = c(0,18e3), ylim = c(0,18e3), xlab = "GDP pc 2019", ylab = "GNI pc after transfers", lwd = 2)
 lines(pg$gdp_pc_2024, pg$gdp_pc_2024*(1+pg$gdp_share_distance_mean/100), lwd = 2, col = "blue")
+
+pg$global_share_pc_diff_mean <- pmax(0, pg$gdp_pc_2024 - mean_gdp_pc_2024)
+pg$global_share_diff_mean <- pg$global_share_pc_diff_mean * pg$pop_2024
+pg$global_share_diff_mean <- 100*pg$global_share_diff_mean/sum(pg$global_share_diff_mean, na.rm = T)
+pg$global_share_pc_diff_mean <- pg$global_share_diff_mean/pg$pop_2024
+pg$gdp_share_diff_mean <- pg$global_share_diff_mean*sum(pg$gdp_share*pg$gdp_2024, na.rm = T)/(pg$pop_2024*pg$gdp_pc_2024)/100
+write.xlsx(pg[, c("code", "pg4", "gdp_pc_2024", "pop_2024", "global_share_distance_mean", "global_share", "gdp_share_distance_mean", "gdp_share", "global_share_diff_mean", "gdp_share_diff_mean", "country")], "../xlsx/allocation_keys.xlsx")
+wtd.mean(pg$gdp_pc_2024[pg$code %in% EU27_countries], pg$pop_2024[pg$code %in% EU27_countries])
+sum(.00382*(pg$gdp_pc_2024*pg$pop_2024)[pg$code %in% HIC])/1e9
 
 pg$predicted_gap <- key_gap_gdp(poverty_line = 4, PPP = F, type_reg = "linear", return_var = "gap", return_type = "var", phase_out_start = .7*mean_gdp_pc_2024, phase_out_end = 1*mean_gdp_pc_2024, max_reg = mean_gdp_pc_2024)
 qplot(log10(gdp_pc_2024), log10(pg4), data = pg, size = pop_2024, xlab = "log10 of 2024 GDP per capita (constant 2021 $)", ylab = "log10 of Poverty gap at $4.20 a day (2021 PPP) (%)", show.legend = FALSE) + 
