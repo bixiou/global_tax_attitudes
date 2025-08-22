@@ -1,0 +1,335 @@
+\documentclass[12pt,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella} % Palatino text only
+\usepackage{mathpazo}  % Palatino math & text
+\usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
+% \linespread{1.5}
+% \usepackage[super,comma,sort]{natbib}
+\usepackage{bibunits} % To get multiple bibliography
+\usepackage[round,sort&compress]{natbib}
+\usepackage{url} % [hyphens]
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation.
+\usepackage[pagebackref]{hyperref}
+% Lines below required to make pagebackref compatible with bibunits
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\Hy@backout{\@auxout}{\@mainaux}{}{\fail}
+\patchcmd\Hy@backout{\@auxout}{\@mainaux}{}{\fail} %yes twice the same line
+\makeatother
+% \usepackage{multibib} % incompatible with backref
+\hypersetup{
+  colorlinks=true, % breaklinks=true,
+  urlcolor=purple,    % color of external links
+  linkcolor=blue,  % color of toc, list of figs etc.
+  citecolor=violet,   % color of links to bibliography
+}
+\usepackage{bm}
+\usepackage{indentfirst}
+\usepackage{tocbibind}
+\setcitestyle{aysep={}} 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{babel}
+\usepackage{caption}
+\usepackage{supertabular}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{gensymb}
+\usepackage{textcomp}
+\usepackage{bibentry} % to use nobibliography
+
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{fullpage}
+\usepackage{morefloats}
+\usepackage{makecell}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{xcolor}% header
+\usepackage{titlesec} % To change size of Bibliography heading
+\usepackage{fancyhdr}
+
+% Header on every page except frontpage (handled by tikz)
+% \pagestyle{fancy}% header
+% \renewcommand{\headrulewidth}{0pt} % removes horizontal line from header
+% \setlength{\headheight}{62pt} % adjust the nb of pt here and below if there is a warning
+% \addtolength{\topmargin}{-62pt}
+% \fancyhead[R]{} % removes section title from header
+% \fancyhead[L]{} % removes section title from header
+% \chead{\href{http://global-redistribution-advocates.org}{\includegraphics[height=1cm]{../figures/policies/logo_full_white_bg}}\\ \quad }
+
+\usepackage{tocloft}
+\usepackage{titletoc}
+\usepackage{csquotes}
+\usepackage{tcolorbox}
+\usepackage[export]{adjustbox}
+\usepackage[anythingbreaks]{breakurl} % for links
+\usepackage{multicol}
+
+\usepackage{abstract}
+\addto\captionsenglish{\renewcommand{\abstractname}{}}    % clear the title
+\renewcommand{\absnamepos}{empty} % originally center
+\newsavebox\ltmcbox % For net gain table over two columns
+%\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
+%\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
+\renewcommand{\floatpagefraction}{.9}
+
+\title{An International Plan for Sustainable Development
+%\textit{A shared vision towards global climate justice}
+} 
+\defaultbibliographystyle{plainnaturl_clean}
+\defaultbibliography{global_tax_attitudes}
+
+\author{Adrien Fabre,\footnote{Corresponding author. CNRS; Paris, 75016, France and CIRED, Nogent-sur-Marne, 94130, France. Email: adrien.fabre@cnrs.fr.} \;
+Rabah Arezki,\footnote{CNRS, Paris, 75016, France and Harvard’s Kennedy School of Government, Cambridge, 02138, USA.} \;
+Dipak Dasgupta,\footnote{The Energy and Resources Institute, New Delhi, 110003, India.} \;
+Bin Hu,\footnote{Institute of Climate Change and Sustainable Development, Tsinghua University, Beijing, 100190, China.}  \\
+Partha Sen,\footnote{Centre for Development Economics, Delhi School of Economics, Delhi, 110007, India and CESifo, Munich, 81679, Germany.}  \;
+Frederick van der Ploeg\footnote{Department of Economics, University of Oxford, Oxford, OX1 3UQ, UK, University of Amsterdam, the Netherlands, and CEPR.} }
+%\footnote{CNRS researcher in economics at CIRED. E-mail: adrien.fabre@cnrs.fr.}
+% } 
+% \author{Global Redistribution Advocates\footnote{The author is Adrien Fabre, CNRS researcher in economics at CIRED. E-mail: adrien.fabre@cnrs.fr.}} 
+
+% TODO? Ideas from Andreas Bummel. Reduce the endorsement threshold 1M => 500k. Cut the budget (no staffers, 30M per list). Widen the mandate (though not a condition for DwB support): say the assembly would primarily work on climate but could propose things on any domain.
+
+\date{\today{} %-- \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/policy_brief_taxes.pdf}{Link to most recent version}
+} 
+
+\begin{document}
+
+\maketitle
+% \tikz [remember picture, overlay] %
+% \node [shift={(5.5cm,-1.5cm)}] at (current page.north west) % north west
+% [anchor=north west] % north west
+% {\href{http://global-redistribution-advocates.org}{\includegraphics[height=1.3cm]{../figures/policies/logo_full_white_bg}}};
+
+\begin{abstract}
+  Renewed momentum to combat climate change and global poverty can be achieved by embracing a shared vision on international carbon pricing and new global taxes, with proper allocation of revenues and conditional cooperation mechanisms. We put forward a sketch of a treaty that sets up new taxes on wealth, polluting fuels, financial transactions, and corporate income, raising more than \$3 trillion per year. Part of the revenue from these taxes would finance international transfers. One percent of each countr's GNI would be reallocated to each country in proportion to their population, which would address climate finance needs and foster sustainable development. According to recent surveys, this vision for sustainable development is supported by majorities worldwide.
+\end{abstract}
+
+\onehalfspacing 
+\begin{bibunit}
+
+After years of slow progress, international negotiations on climate and taxation issues have yet to deliver ambitious agreements that secure decarbonization, clamp down on tax evasion, and foster international cohesion. We therefore suggest the contours of a fair agreement between voluntary countries aimed to ensure climate neutrality and sustainable development. We believe that our proposal will be supported by a majority of citizens worldwide.
+A broad set of countries currently are actively cooperating to develop a transformative agenda for all the people on the planet, including a new UN Framework Convention on International Tax Cooperation (UNFCITC), and an expansion of the lending headroom of Multilateral Development Banks (MDBs) by \$400 billion. Recent successes ought to be reproduced on neighboring issues.
+
+We seek a plan that meets the following criteria: it must achieve the Paris agreement temperature target; meet the Sustainable Development Goals; be efficient; and be acceptable by most countries and people. While plans for climate action or international tax justice have already been proposed \citep{pisani-ferry_global_2025,zucman_blueprint_2024,bolton_why_2025}, they often fail to meet all our criteria. Our ambition is to offer a shared vision to address climate change and global poverty, which translates into commonly agreed principles and instruments.
+
+An International Sustainable Union for Climate and Redistribution
+While decisions at the UNFCCC require unanimity, a subset of countries can begin to work productively to propose ambitious agreements, with no need for universal participation, on the condition that they are fair and open to all countries.
+
+We stress the necessity of an equitable climate outcome and acknowledge the responsibility of developed countries, whose current income level stems from a historical accumulation of capital that benefited from their past emissions. Meanwhile, it is time to move beyond the simple dichotomy between developing and developed countries as, compared to 30 years ago, some countries are no longer developing countries. For example, Slovenia, South Korea, Saudi Arabia, and Singapore are classified with developing countries by the UNFCCC though they are richer than Greece, which is considered a developed country. We prefer simple yet continuous, harmonized and up-to-date measure of development, such as GNI per capita, as basis for countries' contributions and entitlements. This is already used as the basis of a range of international arrangements from eligibility to International Development Association loan terms to allocation of Special Drawing Rights. As a benchmark (from which some adjustments can be made to account for specific cases), we suggest that contributions should be proportional to a country's GNI while transfers should be proportional to the size of its population. Of course, one could do more by asking developed countries that have emitted more since the beginning of the Industrial Revolution to contribute more but it would be less politically feasible.
+
+We need to act now as any delay comes with deadly costs, disproportionately borne by low-income countries. Furthermore, such delays come with further distortions as they provoke fossil fuel producers to boost extraction while the going is good (the so-called ``Green Paradox''). Ensuring flows of, and access to, adequate climate finance is key to the implementation and delivery of the Paris Agreement, as well as to achieving the transition required to address the climate crisis. Developed countries should fulfill their financial commitments set out in the UNFCCC and Paris Agreement. We believe that it is in their best interest to go much further \citep{bolton_why_2025}. Only by providing adequate financial conditions to developing countries can we address climate change and avoid its daunting costs.
+
+Climate change requires responses of three types: mitigation, adaptation, and funding of losses and damages. Climate finance should be broken down into these three types too. Although market loans from the private sector play a major role in mitigation and adaptation, they play no role in funding losses and damages. Soft loans from development banks play a capital-heavy role in adaptation, but less so for mitigation and not at all for losses and damages. Furthermore, grants from donors play a critical role in losses and damages. The policy responses should thus be tailored to the specific response type. For mitigation, one key element is to address capital market imperfections and lower the cost of capital in the Global South through multilateral guarantees. Adaptation is largely addressed by the recapitalization of MDBs. Lastly, increased grants are needed for adaptation and losses and damages.
+
+The high cost of capital in developing countries remains a great challenge for mitigation and adaptation. Public finance is an indispensable lever for private finance to swiftly mobilize private sector investment on a large scale. Public guarantees and soft loans are needed to protect investors from foreign exchange and sovereign risks \citep{hourcade_climate_2025}.
+
+Beyond making low-carbon investments more profitable, we must also shift the current system away from fossil fuels. We should make polluters pay and progressively develop the international pricing of greenhouse gas emissions. Representative surveys from 20 countries show very strong support for climate policies that are at the global level. These surveys indicate the presence of strong majority support for a global carbon price and a consensus in favor of an equal per capita allocation of its revenue \citep{fabre_majority_2025}.
+
+While previous attempts of international carbon pricing have failed, this time may be different for three reasons. First, we now know that the public at large supports a global carbon price. Second, the world population shares a common norm on how to share the revenues from a global carbon price: the equal per capita allocation. Third, rather than seeking universal agreement among all countries, a Sustainable Union can be formed by a broad set of ambitious countries (a coalition of the willing).
+
+\subsection*{Carbon Pricing}
+In the short term, countries participating in the Sustainable Union would establish a carbon price floor of \$10 per ton of CO$_\text{2}$. This floor roughly corresponds to the carbon price on China's national carbon market. A share of the carbon price revenues raised in any country would be pooled at the international level and rebated to participating countries in proportion to their population size. The pooled amount would be proportional to the country's GNI, which ensures that transfers take place from rich to poor countries. The more GNI per capita of a country exceeds the world average, the more a country contributes. Countries with a GNI per capita below the world average benefit from the pooling and rebating of carbon price revenues. In the medium term, the Union would establish an international competitive market for carbon permits. Once the carbon market is fully in place, the Union would auction emission permits to fossil fuel companies upstream. The permit quota would be reduced each year, until it reaches zero at a predetermined date, say 2075. The quota would respect a global emissions target compatible with the objectives of the Paris Agreement. To leave a fair carbon budget to countries outside the Union, the quota would correspond to the emissions target scaled by the Union's share of the world's population.
+The carbon market does not imply a uniform carbon price, because some countries may choose to implement a higher carbon price than the international one. To avoid carbon leakage resulting from differentiated carbon prices, carbon border tax adjustments are needed. However, such adjustments should be coordinated, and their implementation overseen by a multilateral institution to assess tax liabilities and arbitrate disputes impartially. Besides, participating countries would commit either not to tax the carbon content of imports from one another or to return the tax collected to the exporting country if they do so. This would neutralize the carbon tariff for participating countries. More than in the details of carbon tariffs, high stakes lie in the allocation of the carbon market's emissions rights.
+
+As a benchmark, each country would be granted emissions rights proportional to its population. There would be some adjustments to the benchmark, in line with specific needs and ambition of certain regions (see Table \ref{tab:budgets}). In particular, China and the EU would receive emissions rights corresponding to their own, ambitious decarbonization pathway. Importantly, integrating all countries' emissions within a common market guarantees that each country respects its target. For example, if the EU ends up emitting more than it aimed for, this will be compensated by other countries (e.g. in Africa) emitting less than the world average and selling unused emissions rights to the EU. Emissions reductions will take place where they are the least costly, ensuring efficiency. To the extent that the price of carbon is higher than the price floor, additional transfers will flow from rich to poor countries, spurring much needed growth and poverty reduction in lower-income countries. 
+
+\begin{table}[h]
+  \caption{Carbon budget over 2030-2080 (in GtCO$_\text{2}$): budgets proposed and equal per capita budgets.\label{tab:budgets}} 
+  \makebox[\textwidth][c]{
+\begin{tabular}[t]{ccccccccc}
+  \toprule 
+   & Africa & China & \makecell{Latin\\America} & India & Europe & \makecell{Japan \& \\South Korea} & \makecell{Other\\Asia} & \textit{World} \\
+  \midrule 
+  \textbf{Equal p.c.} & 144 & \textbf{131} & 64 & 140 & \textbf{51} & 16 & 118 & \textit{770} \\ % cumulative_rights_30_future
+  \textbf{Proposal} & 146 & \textbf{147} & 64 & 140 & \textbf{24} & 16 & 123 & \textit{770} \\ % 769    
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+\subsection*{Other Instruments}
+Yet, if all participating countries reduce their emissions according to their Nationally Determined Contributions (NDCs) and their long-term targets, the international carbon price will remain low, since the long-term climate targets of ambitious countries already align with the Paris agreement target. A situation with a non-binding quota and a low carbon price is likely to occur in the first years of implementation. To meet the climate finance goals and provide enough financial resources to the Global South, other instruments will be needed. 
+
+Given the breadth of financing needs, climate finance should be scaled up from billions to trillions, so that any innovative source is worth pursuing. A tax on ultra-high wealth, a financial transactions tax, a higher minimum rate for the corporate income tax, or an aviation or a maritime fuel levy are all potential candidates. They are being studied by the Global Solidarity Levies Task Force led by Barbados, France, and Kenya. Again, for each new tax, we propose that a share of revenues be pooled at the international level and rebated to countries in need. 
+
+While allocating tax revenue in proportion to countries' population propels the sustainable development goals, it does not address the needs for adaptation nor for losses and damages. It is therefore advisable that at least one instrument be used to finance losses and damages. The instrument could be chosen as one that only affects the wealthiest, to not overburden ordinary people, with a contribution that might not be returned to their country. In this regard, the tax on ultra-high wealth proposed by Brazil seems fit for purpose \citep{zucman_blueprint_2024}. A share of this tax could finance the Loss and Damage Fund and multilateral guarantee funds. 
+
+Table \ref{tab:revenue} estimates the potential revenues from new taxes at global level. These would amount to over 3\% of global GNI, the majority of which would come from wealth taxes. The remaining revenues would come half from carbon pricing (with a higher rate on the maritime and air sectors, currently exempt from taxes) and half from taxes on financial transactions and profits. A tax on the super-profits of fossil fuel companies and a tax on digital advertising could also be added \citep{acemoglu_urgent_2024}. 
+
+\begin{table}[h]
+  \caption{Estimated revenues from new global taxes (in billions of dollars per year).\label{tab:revenue}} 
+  \makebox[\textwidth][c]{
+\begin{tabular}[t]{cccccccccc}
+  \toprule 
+  \makecell{Financial\\Transactions\\Tax} & \makecell{Carbon\\price floor\\(10 \$/tCO$_\text{2}$)} & \makecell{Maritime\\fuel levy\\(100 \$/tCO$_\text{2}$)} & \makecell{Aviation \\fuel levy \\(300 \$/tCO$_\text{2}$)} & \makecell{Corporate\\ income tax\\(at 21\%)} & \makecell{Tax on ultra-\\high wealth\\(3\% above\\ \$100M)} & \makecell{National\\wealth tax\\(2\% above\\ \$5M)} & \textbf{Total} \\
+  \midrule 
+  27 & 356 & 104 & 223 & 299 & 765 & 1,364 & \textbf{3,438} \\
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+One percent of each country's GNI would be reallocated to each country in proportion to their population. Besides, half of the tax on ultra-high wealth is assumed to finance (through the funds) countries with per capita GNI below twice the world average, in proportion to their distance to this threshold. Finally, each country is assumed to complement the global tax on ultra-high wealth (a 3\% tax above \$100 million) by a national wealth tax (a 2\% tax above \$5 million, so that the marginal tax rate above \$100 million becomes 5\%, which is less than the return to capital on large fortunes). 
+
+Figures \ref{fig:gain_both_taxes} and \ref{fig:budget_gain_both_taxes} estimate in each country the revenue collected from the new taxes as well as the transfers between countries in the case of universal participation (see Supplementary Material for details). These mechanisms would entail \$766 billion in North-to-South transfers (see Figure \ref{fig:gain_both_taxes}), mostly borne by the richest 1\%, and up to \$1 trillion per year if one adds up existing Official Development Assistance. This transfer is similar to the poverty gap at \$4 per day expected in 2030. Therefore, this transfer should be sufficient to eradicate extreme poverty (defined with the \$3 per day threshold). A country like the D.R.C. would receive 24\% of its GNI in transfers, and India, 6\% (see Figure 2). One third of the revenues collected in high-income countries would finance their net international contribution. This corresponds to the preferred share of a global wealth tax that the average American or Western European would wish to allocate to low-income countries \citep{fabre_majority_2025}. As 69\% of Americans and 84\% of Europeans support a global tax on all millionaires funding low-income countries \citep{fabre_majority_2025}, global redistributive taxes are likely to be popular.
+ 
+\begin{figure}[h!] 
+    \caption{International transfers to be financed by new global taxes. \\ \textit{The instruments proposed entail North-South transfers of \$766 billion per year.}}\label{fig:gain_both_taxes}
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/net_gain_over_gdp_both_taxes_pop.pdf}} 
+\end{figure}
+
+\begin{figure}[h!] 
+    \caption{Net gain for state budgets from new taxes and international transfers (revenue plus net transfer). \textit{All countries' governments gain. }}\label{fig:budget_gain_both_taxes}
+    \makebox[\textwidth][c]{\includegraphics[width=.95\textwidth]{../figures/maps/budget_gain_over_gdp_both_taxes_pop.pdf}} 
+\end{figure}
+
+\subsection*{Proposal for an International Treaty}
+The group of countries forming what could be called the Sustainable Union would have to agree on a number of elements: (i) a target for revenues from new levies on the richest and on pollution, say at least 2\% of their GNI; (ii) a common contribution to sustainable development, that we propose at 1\% of GNI; and (iii) a global carbon budget, say 1,000~GtCO$_\text{2}$ starting in 2025.
+The parties to the Union would be expected to apply minimum rates of taxation on CO$_\text{2}$ emissions, individual wealth, and financial transactions, and to create a global asset register to list the assets held by each person. Tax avoidance would be prevented thanks to the extraterritorial mechanism of the ``tax collector of last resort'' proposed by the economist Gabriel \cite{zucman_blueprint_2024}. The Union would collect the ``missing'' tax due to the non-application by countries outside the Union of the minimum rates on multinational profits and individual wealth. In this case, the Union would demand payment of the “missing” tax, pro rata to the activities of the company (or companies controlled by the wealthy individual) that take place inside the Union, on pain of retaliatory measures against the company in question. These revenues would be used to increase transfers from the Union to the countries of the Global South.  
+
+To respect the plurality of solutions and the sovereignty of States, the treaty would leave the choice of programs to be financed to the beneficiary States, provided they are validated by a multilateral agency. The agency in question would ensure that funds are traceable, and that they finance only public services, social protection and sustainable infrastructure. In the event of non-compliance with conditionalities, management of the funds would be entrusted to (another) multilateral agency, which would ensure that the population benefits. This mechanism would guarantee that transfers contribute to the intended uses and that they are not diverted nor misused.
+
+\subsection*{A Pragmatic Treaty in the Interest of the Greatest Number}
+The Union would be open to all countries. To encourage as many countries as possible to join, the treaty could include elements of flexibility and conditional cooperation. In particular, the participation required of a high-income country could be reduced to the extent that other high-income countries did not participate. Thus, if the European countries join the Union but the United States and Japan do not, Europe's contribution could be halved. Also, to facilitate the accession to the Union of fossil-dependent countries such as China, Iran or Mongolia, a country could make its participation in carbon pricing conditional on an exemption from the system of taxes and transfers (it would then be subject to the same carbon price as the others but would neither be a beneficiary nor a contributor of transfers), provided this is accepted by the majority of other countries (weighted by their population). Finally, a country could make its participation conditional on the participation of one or more other countries, or on the GNI or emissions covered by the Union exceeding a threshold. For example, the European Union could choose to participate on condition that 60\% of global emissions are covered, which would de facto make its participation conditional on that of China (which accounts for 30\% of global emissions).
+
+Various countries in the Global South could spearhead such a Union. The African Union has already taken similar positions \citep{african_union_african_2023}. Brazil is hosting the next COP of the UNFCCC. Mexico is presided over by a lead author of the fifth IPCC report. India would have strong interest to join such a Union, since it would receive large transfers from the rest of the world. China, with a per capita income equal to the world average, would be neither a contributor nor a beneficiary. It would have an interest in participating to ensure a low-carbon future in the long term, and outlets for its low-carbon equipment exports in the short term. We do not expect high-income fossil fuel exporters such as the United States, Russia, or Saudi Arabia to participate in the Union in the short term (though Democratic U.S. States such as California or New York could join it). Nonetheless, a Union composed of the Global South, China, the European Union, and some other high-income countries (Japan, South Korea, the UK, Canada…) would already cover 72\% of global CO$_\text{2}$ emissions. If such a Union respects an emissions pathway compatible with a global warming of +1.8\textdegree{}C in 2100, and assuming that non-participating countries follow a business-as-usual scenario without additional climate policies, global warming would reach +2.0\textdegree{}C in 2100, that is 0.6\textdegree{}C less than if the whole world follows the business-as-usual scenario \citep{fabre_global_2025}.
+
+\subsection*{Societal Support for the Treaty}
+Many people believe that such a treaty is politically impossible, especially in high-income countries. Yet recent academic surveys reveal strong public support for international climate policies, supranational governance and North-to-South solidarity. A survey of 125 countries shows that 69\% of people are willing to contribute 1\% of their income to fight climate change \citep{andre_globally_2024}. Another one in 17 countries (which include China, India, Russia, France, and Egypt) reveals that around 70\% of the population support a global democratic government to deal with global issues \citep{ghassim_who_2024}. A last survey shows that a global tax on millionaires to fund low-income countries is supported by 8 out of 10 people in high-income countries, that three quarters of Europeans and a majority of Americans support the internationally redistributive carbon pricing outlined above, and that parties advocating global redistribution could win votes in elections \citep{fabre_majority_2025}. Admittedly, despite public support, the prospect of global cooperation on sustainable development and climate action is dim in the short term, due to other political constraints, including hostile governments in major countries like the U.S. However, the direction of world politics could well shift in a few years, and a coalition of the willing could make progress despite the opposition of major countries, particularly on the preparatory work required for such an ambitious proposal. 
+
+\subsection*{A Solution Based on Climate Justice}
+Since the start of the climate negotiations in 1992, the countries of the Global South have been demanding a financial contribution from the countries of the Global North, in recognition of their overriding responsibility for climate change, and to finance their sustainable development. The proposed Union would respect this legitimate demand. It would set a benchmark for contributions and transfers, resolving a long-standing debate on the distribution of decarbonization efforts. Financial contributions would be proportional to GNI, while financial transfers and emission rights would be proportional to the size of the population in each country. In this way, countries with per capita incomes below the global average would benefit financially (see Figure \ref{fig:gain_both_taxes}). Countries with per capita incomes above the world average would be net contributors, but the new taxes would be paid by the richest individuals, generating additional resources for their governments. Such a treaty could garner wide support, since the population of each country would benefit from a more stable climate, increased public revenues, and sustainable development.
+
+Although they still need to be amended and negotiated, we believe that the principles and instruments that we put forward can pave the way for fruitful international agreements. Public attitudes suggest that high-level political impetus, prepared by extensive legal and diplomatic work, could make this vision for sustainable development a reality. We hope that our proposals can contribute to a positive political tipping point where a much larger and growing group of nations work together to solve humanity's great challenges.
+
+\renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
+% \bibliographystyle{plainnaturl_clean} % NCCcomment
+% \bibliography{global_tax_attitudes}
+% \clearpage
+\putbib
+\end{bibunit}
+\begin{bibunit}
+
+\appendix
+\clearpage
+\section*{Supplementary Material}
+
+% \section{Summary}\label{sec:intro}
+% \begin{abstract}
+  We estimate the revenues by country from six global taxes: a tax on wealth above \$100 million, a small carbon tax, a higher minimum corporate income tax, % carbon tax is the only one whose transfers are based on GDP
+  a financial transaction tax, a tax on maritime fuel and one on aviation fuel. \$2.1 trillion would be collected. % (2\% of the world GDP). 
+  %
+  We further estimate international transfers that could be financed.  %according to the proposed allocation of revenues between countries. 
+  Namely, we reallocate 1\% of each country's GNI to all countries in proportion to their %adult 
+  population, and one half of the wealth tax to countries with a per capita GNI lower than twice the world average, in proportion to their distance to this threshold. The combination of these taxes and transfers entail \$766 billion in North--South transfers.  
+% \end{abstract}
+
+
+\subsection*{Wealth tax}\label{sec:wealth}
+
+% Under its G20 presidency, Brazil commissionned a report on a global tax on ultra-high wealth. Indeed, the richest pay less taxes than average people in proportion to their contributive capacity, as most of their income is in the form of unrealized capital gains not subject to taxation. The report by \cite{zucman_blueprint_2024} proposes a top-up tax on the wealth of individual owning more than \$100 million, to collect the missing income tax revenue. With a 3\% top-up tax, a billionaire who already pays taxes amounting to 1\% of its wealth would be liable to an additional 2\% tax. Although a top-up tax may be 
+
+We simulate two wealth taxes. First, a global tax on ultra-high wealth: a 3\% tax on all individual wealth in excess of \$100 million. Second, a national wealth tax: a 2\% tax on wealth in excess of \$5 million. These taxes add up,\footnote{For example, with a wealth of \$150 million, someone would pay each year a tax of 2.9\% on their wealth: 1\% from the tax on ultra-high wealth ($3\% \cdot \left(150-100\right)=1.5M$) and 1.9\% from the national wealth tax.% ($2\% \cdot \left(150-5\right)=2.9M$).
+} so the highest marginal tax rate is 5\%.
+
+
+The World Inequality Lab offers an \href{https://wid.world/world-wealth-tax-simulator/}{online simulator} to estimate the revenue collected by a custom wealth tax in each world region. Building on this work, we disaggregate the revenue estimates at the country level. Courtesy of Félix Bajard, we obtained the simulator's underlying data for 50 countries covering 95\% of global wealth tax revenue. To impute missing data, we predict the taxable base from a linear regression of the log of taxable base on the log of nominal GDP per capita, weighted by country population. 
+
+Following \cite{zucman_blueprint_2024}, we assume 20\% of tax evasion. We also conservatively assume that asset prices would decline by 10\%. Half of the revenue from the global tax on ultra-high wealth would not be retained domestically but channeled into a fund to finance sustainable development. This fund would return revenues to countries with a per capita GNI below a threshold. We fix this eligibility threshold at twice the world average per capita GNI, or \$26,885 per year (in nominal terms). Finally, eligible countries receive a transfer per person %adult 
+proportional to the difference between the threshold and their GNI per capita.
+
+% \clearpage
+\begin{table}[!h]
+  \caption{\label{tab:transfers_gain}Global taxes: international transfers, budget gain, revenues collected (\% of GNI). }
+  \makebox[\textwidth][c]{
+  \input{../tables/transfers_gain_pop.tex} % add \midrule after World
+} 
+{\footnotesize \textit{Note:}  Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
+}
+\end{table}
+% \clearpage
+
+\begin{table}[!h]
+  \vspace{-1cm}
+  \caption{\label{tab:transfers_balance}Comparison of population vs. adult pop. entitlement; carbon balance (\% of GNI). }
+  \makebox[\textwidth][c]{
+  \input{../tables/transfers_gain_pop_adult_balance.tex} % add \midrule after World
+} 
+{\footnotesize \textit{Note:} Budget gain denotes the country net entitlements, i.e. the revenue it collects plus the net international transfer. International transfers denotes the country net entitlements minus taxes paid in the country. The carbon balance is separated from the tax proposals, it corresponds to the carbon credit or debt over 1850--2024 (or 1990--2024), priced at \$185/tCO$_\text{2}$ and annualized at 3.5\%. For example, a country with excess emissions compared to the world average accumulates a carbon debt. % Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
+}
+\end{table}
+% \clearpage
+
+
+\subsection*{Financial Transactions Tax}\label{sec:ftt}
+
+\cite{pekanov_global_2019} estimate the revenues from a Financial Transactions Tax (FTT). Following the proposal by the European Commission (2011), they use a rate of 0.1\% of bonds and stocks and a rate of 0.01\% on derivatives. We use their baseline scenario, which assumes evasion rates of 15\% on bonds and stocks and 70\% on derivatives, together with an elasticity of trading volumes of $-$1.\footnote{The formula is: $\text{Revenue} = \text{tax rate} \cdot \text{volume} \cdot \text{evasion} \cdot \left(1 + \text{tax rate} / \text{transaction cost}\right)^\text{elasticity}$.} 
+
+\cite{pekanov_global_2019} provide estimates at the global level and for 18 high-income countries. We allocate the global revenue that does not originate from these 18 countries to remaining countries, in proportion to their GDP. 22\% of world revenues would be collected in these remaining countries, with a revenue amounting to 0.1\% of their GDP (vs. 0.56\% of GDP for the 18 high-income countries).
+% In these remaining countries, the FTT collects 22\% of the world total, and 0.1\% of these countries' GDP (vs. 0.56\% of GDP in the 18 high-income countries).
+
+
+\subsection*{Carbon price}\label{sec:carbon}
+
+We model simulate the international transfers a \$100/tCO$_\text{2}$ carbon price applied to all non-LULUCF CO$_\text{2}$ emissions. At the global level, and neglecting behavioral responses, 0.33\% of the world nominal GDP would be collected. 
+%Contrary to the other taxes studied here, the revenues of the carbon price are not entirely pooled at the global level. Instead, we assume that 0.2\% of each country's nominal GDP would be pooled and rebated to all countries in proportion to their adult population. With some exceptions (such as Ireland and Switzerland), the carbon price revenues would cover more than the transfer owed to the rest of the world, leaving revenues for domestic spending even in high-income countries.
+
+\subsection*{Maritime fuel levy}\label{sec:wealth}
+
+We simulate the revenues of a \$100/tCO$_\text{2}$ levy on maritime fuel. The emissions from shipping by country are given by the simple average between the minimum and maximum estimates of \citet{dequiedt_navigating_2024}, who graciously provided the data. 
+
+\subsection*{Aviation fuel levy}\label{sec:wealth}
+
+Using data from \cite{graver_CO2_2018},\footnote{We use the data unadjusted for tourism.} we estimate the revenues from a tax on all flights (domestic and international). Due to complex climate effects such as contrails, aviation the global warming potential of aviation (GWP*$_\text{100}$) is 3 times the warming caused by its CO$_\text{2}$ emissions \citep{lee_contribution_2021}. To fully account for all effects on global warming, the carbon levy on aviation should be multiplied by that factor. Therefore, we simulate a \$300/tCO$_\text{2}$ tax on aviation fuel, comparable to the \$100/tCO$_\text{2}$ tax on maritime fuel. We use the 2018 data without adjusting for the expected increase in air traffic, and without adjusting for the decrease in traffic that would follow the tax.\footnote{More generally, we do not adjust for inflation or changes in volumes throughout this technical note. Figures are only provided to get ballpark estimates and cannot be very precise.}
+
+\subsection*{Higher minimum corporate income tax}
+
+We estimate extra revenue by country if the internationally agreed minimum rate on corporate income tax was raised from 15\% to 21\%, with no carve-out. We use data from the \href{https://www.taxobservatory.eu/fr/base-de-donn%C3%A9es/the-tax-deficit-simulator/}{tax deficit simulator} from the EU Tax Observatory. These estimates are available for 45 countries (from OECD and the G20). We impute missing data only for three high-income countries (Iceland, Israel, New Zealand) and conservatively assume no extra revenue for other (developing) countries with missing data.
+
+\subsection*{Carbon balance}
+
+On top of the proposed new taxes, we compute historical responsibilites for climate change. We define a carbon balance as the sum of a country's excess emissions compared to the world average, each year between 1850 and 2024, priced at $p=$ \$185/tCO$_\text{2}$ (which corresponds to the social cost of carbon according to \citealp{rennert_comprehensive_2022}). 
+% We report the carbon balance over nominal GNI in 2025 country-by-country in Table \ref{tab:transfers_balance}.
+In Table \ref{tab:transfers_balance}, we report the carbon balance annualized at a risk-adjusted discount rate of $r =$ 3.5\%. Denoting $e_t^c$ the emissions of country $c$ in year $t$, and $\pi_t^c$ its share of the world population at $t$, its annualized carbon balance over nominal GNI, $B_c$, is: $ B_c = r \cdot p \cdot \sum_{t=1850}^{2024} e_t^c - \pi_t^c \cdot \sum_c e_t^c / \text{GNI}_c^{2023}\text{.}$ Our computations are based on historical CO$_\text{2}$ emissions excluding LULUCF sector \citep{gutschow_country-resolved_2021}.
+
+\clearpage
+\renewcommand{\url}[1]{\href{#1}{Link}} 
+\putbib
+\end{bibunit}
+% \textit{Our figures are fully reproducible from our data and code, openly availably on\\ \href{https://github.com/bixiou/global_tax_attitudes/raw/main/code_global/new_taxes.R}{github.com/bixiou/global\_tax\_attitudes/raw/main/code\_global/main/raw/new\_taxes.R}. %We are here to feed the public debate on global redistribution. We welcome counter-proposals, criticisms and suggestions concerning (including pull requests).  
+% }
+
+
+% {\footnotesize
+% \begingroup
+% \setstretch{.5}
+% \titleformat*{\section}{\fontsize{11pt}{14pt}\bfseries\selectfont}
+% \renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
+% \renewcommand\bibname{\small Bibliography}
+% \footnotesize
+% \bibliographystyle{plainnaturl_clean} % NCCcomment
+% \bibliography{global_tax_attitudes}
+% \hphantom{\vphantom{
+%     \begin{minipage}{\textwidth}
+%         \bibliography{global_tax_attitudes}
+%     \end{minipage}
+% }}
+% \endgroup }
+
+\end{document}
