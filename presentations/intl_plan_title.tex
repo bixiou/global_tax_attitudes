@@ -1,0 +1,133 @@
+\documentclass[12pt,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella} % Palatino text only
+\usepackage{mathpazo}  % Palatino math & text
+\usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
+% \linespread{1.5}
+% \usepackage[super,comma,sort]{natbib}
+\usepackage{bibunits} % To get multiple bibliography
+\usepackage[round,sort&compress]{natbib}
+\usepackage{url} % [hyphens]
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation.
+\usepackage[pagebackref]{hyperref}
+% Lines below required to make pagebackref compatible with bibunits
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\Hy@backout{\@auxout}{\@mainaux}{}{\fail}
+\patchcmd\Hy@backout{\@auxout}{\@mainaux}{}{\fail} %yes twice the same line
+\makeatother
+% \usepackage{multibib} % incompatible with backref
+\hypersetup{
+  colorlinks=true, % breaklinks=true,
+  urlcolor=purple,    % color of external links
+  linkcolor=blue,  % color of toc, list of figs etc.
+  citecolor=violet,   % color of links to bibliography
+}
+\usepackage{bm}
+\usepackage{indentfirst}
+\usepackage{tocbibind}
+\setcitestyle{aysep={}} 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{babel}
+\usepackage{caption}
+\usepackage{supertabular}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{gensymb}
+\usepackage{textcomp}
+\usepackage{bibentry} % to use nobibliography
+
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{fullpage}
+\usepackage{morefloats}
+\usepackage{makecell}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{xcolor}% header
+\usepackage{titlesec} % To change size of Bibliography heading
+\usepackage{fancyhdr}
+
+% Header on every page except frontpage (handled by tikz)
+% \pagestyle{fancy}% header
+% \renewcommand{\headrulewidth}{0pt} % removes horizontal line from header
+% \setlength{\headheight}{62pt} % adjust the nb of pt here and below if there is a warning
+% \addtolength{\topmargin}{-62pt}
+% \fancyhead[R]{} % removes section title from header
+% \fancyhead[L]{} % removes section title from header
+% \chead{\href{http://global-redistribution-advocates.org}{\includegraphics[height=1cm]{../figures/policies/logo_full_white_bg}}\\ \quad }
+
+\usepackage{tocloft}
+\usepackage{titletoc}
+\usepackage{csquotes}
+\usepackage{tcolorbox}
+\usepackage[export]{adjustbox}
+\usepackage[anythingbreaks]{breakurl} % for links
+\usepackage{multicol}
+\usepackage{lineno}
+\linenumbers
+
+\usepackage{abstract}
+\addto\captionsenglish{\renewcommand{\abstractname}{}}    % clear the title
+\renewcommand{\absnamepos}{empty} % originally center
+\newsavebox\ltmcbox % For net gain table over two columns
+%\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
+%\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
+\renewcommand{\floatpagefraction}{.9}
+
+\title{An International Plan for Sustainable Development
+%\textit{A shared vision towards global climate justice}
+} 
+\defaultbibliographystyle{plainnaturl_clean}
+\defaultbibliography{global_tax_attitudes}
+
+\author{Adrien Fabre,\footnote{Corresponding author. CNRS; Paris, 75016, France and CIRED, Nogent-sur-Marne, 94130, France. Email: adrien.fabre@cnrs.fr.} \;
+Rabah Arezki,\footnote{CNRS, Paris, 75016, France and Harvard’s Kennedy School of Government, Cambridge, 02138, USA.} \;
+Dipak Dasgupta,\footnote{The Energy and Resources Institute, New Delhi, 110003, India.} \;
+Bin Hu,\footnote{Institute of Climate Change and Sustainable Development, Tsinghua University, Beijing, 100190, China.}  \\
+Partha Sen,\footnote{Centre for Development Economics, Delhi School of Economics, Delhi, 110007, India and CESifo, Munich, 81679, Germany.}  \;
+Frederick van der Ploeg\footnote{Department of Economics, University of Oxford, Oxford, OX1 3UQ, UK, University of Amsterdam, the Netherlands, and CEPR.} }
+%\footnote{CNRS researcher in economics at CIRED. E-mail: adrien.fabre@cnrs.fr.}
+% } 
+% \author{Global Redistribution Advocates\footnote{The author is Adrien Fabre, CNRS researcher in economics at CIRED. E-mail: adrien.fabre@cnrs.fr.}} 
+
+% TODO? Ideas from Andreas Bummel. Reduce the endorsement threshold 1M => 500k. Cut the budget (no staffers, 30M per list). Widen the mandate (though not a condition for DwB support): say the assembly would primarily work on climate but could propose things on any domain.
+
+\date{\today{} %-- \href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/policy_brief_taxes.pdf}{Link to most recent version}
+} 
+
+\begin{document}
+
+\maketitle
+% \tikz [remember picture, overlay] %
+% \node [shift={(5.5cm,-1.5cm)}] at (current page.north west) % north west
+% [anchor=north west] % north west
+% {\href{http://global-redistribution-advocates.org}{\includegraphics[height=1.3cm]{../figures/policies/logo_full_white_bg}}};
+
+\begin{abstract}
+  Renewed momentum to combat climate change and global poverty can be achieved by embracing a shared vision on international carbon pricing and new global taxes, with proper allocation of revenues and conditional cooperation mechanisms. We put forward a sketch of a treaty that sets up new taxes on wealth, polluting fuels, financial transactions, and corporate income, raising more than \$3 trillion per year. Part of the revenue from these taxes would finance international transfers. One percent of each countr's GNI would be reallocated to each country in proportion to their population, which would address climate finance needs and foster sustainable development. According to recent surveys, this vision for sustainable development is supported by majorities worldwide.
+\end{abstract}
+
+\textbf{Keywords}: Climate policy; carbon price; SDGs; poverty; international taxation.
+
+\textbf{JEL}: Q56; F38; H23; Q54; H87; F64; Q58; F53; F35.
+
+
+
+\end{document}
