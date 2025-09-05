@@ -16,15 +16,16 @@ $$t_i = r_i p - e_i p_i$$
 
 Denote $e^*_i(p_i)$ the emissions ``demand curve'': $e_i$ maximizing $u_i(c_i, e_i)$ s.t. $y_i = c_i + (p_e + \max\{0; p_i\}) e_i$.
 For given world emissions $E$, define let $p^*$ be the price such that $\sum_i e^*_i(p^*) \cdot n_i = E$.
-Let $g_i$ be country's $i$ net gain (or "equivalent transfer") in situation (transfers, prices) $j=(t_i, p_i)$ compared to the situation $c*=(0, p^*)$ in terms of equivalent variation. Define $V_i(p_i)$ the equivalent variation between situation $a=(0, p_i)$ and $c*$ (i.e. the compensation at $c*$ needed to get $a$'s utility:
+Let $g_i$ be country's $i$ net gain (or "equivalent transfer") in situation (transfers, prices) $j=(t_i, p_i)$ compared to the situation $c*=(0, p^*)$ (uniform within-country), in terms of equivalent variation (i.e. the transfer that would make it indifferent between the two situations). Define $V_i(p_i)$ the equivalent variation between situation $a=(0, p_i)$ and $c*$ (i.e. the compensation at $c*$ needed to get $a$'s utility):
 $$g_i = (y^j_i - y^a_i) + (y^a_i - y^{c*}_i) = t_i + V_i(p_i)$$
+<!-- correct u^a_i -->
 $$\begin{aligned}
-u^a_i &= u_i(c_i, e^*_i(p_i)) = u^{c*}_i + (p_i - p^*) \partial u_{i2} \partial e^*_i  \\
+u^a_i &= u_i(c_i, e^*_i(p_i)) = u^{c*}_i + (p_i - p^*) \partial u_{i2} \partial e^*_i  \\ 
 u^{c*}_i &= u_i(c_i, e^*_i(p^*)) \\
 u^a_i &= u_i(c_i + V_i(p_i), e^*_i(p^*))= u^{c*}_i + V_i(p_i) \partial u_{i1}
 \end{aligned}$$
 
-Therefore
+Therefore <!-- correct -->
 $$V_i(p_i) = -(p^* - p_i) \partial u_{i2} \partial e^*_i / \partial u_{i1}$$
 
 $V_i$ is positive iff $p^* > p_i$ as country i "needs" a positive compensation for consumption to get the same utility as in (a) with a higher price $p^*$ / lower emissions in ($c*$).
@@ -38,7 +39,7 @@ g^u_i &= r_i p^* - e_i p^*  \\
 g^u_i - g^d_i &= (r_i - e) p^* + (p_i - p^*) e_i - V_i(p_i) = (r_i - e) p^* + (p_i - p^*) \cdot (e_i - \partial u_{i2} \partial e^*_i / \partial u_{i1})
 \end{aligned}$$
 
-Let $\pi^j_i$ the "equivalent price" such that $j=(t_i, p_i)$ is utility-equivalent to $j*=(0, \pi^j_i)$. 
+Let $\pi^j_i$ the "equivalent price" such that $j=(t_i, p_i)$ is utility-equivalent to $j*=(0, \pi^j_i)$. <!-- correct u^{j*}_i -->
 $$\begin{aligned}
 u^j_i &= u^{j*}_i \\
 u^{j*}_i &= u_i(c_i, e^*_i(\pi_i)) \\
@@ -51,8 +52,8 @@ The equivalent price is ill-defined in case it is negative in the above formula.
 $$\begin{aligned}
 u^j_i &= u^{0*}_i \\
 u^{0*}_i &= u_i(c_i + t^{0*}_i, e^*_i(0)) \\
-u^j_i &= u_i(c_i + t_i, e^*_i(p_i))  = u^{0*}_i + (t_i - t^{0*}_i) \partial u{i1} + p_i \partial u_{i2} \partial e^*_i \\
-\Rightarrow t^{0*}_i &= t_i - p_i \frac{-\partial u_{i2} \partial e^*_i(0)}{\partial u{i1}}
+u^j_i &= u_i(c_i + t_i, e^*_i(p_i))  = u^{0*}_i + (t_i - t^{0*}_i) \partial u_{i1} + p_i \partial u_{i2} \partial e^*_i \\
+\Rightarrow t^{0*}_i &= t_i - p_i \frac{-\partial u_{i2} \partial e^*_i(0)}{\partial u_{i1}}
 \end{aligned}$$
 
 Now, let us study the situation (n) with differentiated prices and no international transfers. We simply have 
