@@ -117,7 +117,7 @@ Conceptually, abatement costs can be divided in two parts: first, the extra inve
 ## The dynamic case
 
 At which conditions is there an equivalence between each country receiving a fixed share $b_{it}=b_i$ of the intertemporal carbon budget $B$, or using an homothetic carbon price vis-à-vis the world average: $p_{it}=\pi_ip_t$?
-
+What is the relation between a country's carbon budget $B_i$'s link on its net gain in the static case and the rights x price trajectory link with its net gain in the dynamic case?
 
 
 ```{r, echo=FALSE}
