@@ -161,6 +161,7 @@ where $\mathscr{B} = \sum_t b_{t} r_t p^*_t$, $\mathscr{E} = \sum_t e_{it} p^*_t
 Although we do find a correspondence in this special case, the formula faces practical limitations, as it requires knowing the future price trajectory $(p^*_t)_t$, which can only be imprecisely estimated in the cap-and-trade situation. In any case, although one can find a trajectory of differentiated prices welfare equivalent to a given allocation of emissions rights, and vice versa, the derivation cannot be done analytically, one has to resort to an integrated assessment model. 
 
 TODO: in the Hotelling case, the formula simplifies as $r_t p^*_t = p_0$.
+TODO: uniform price is optimal (under some conditions)
 
 ```{r, echo=FALSE}
 
