@@ -104,6 +104,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="the-static-case">The static case</h2>
 <section id="setting" class="level3">
 <h3 class="anchored" data-anchor-id="setting">Setting</h3>
+<p>TODO: replace b by r and r by beta</p>
 <p>Decarbonization is costly. When country <span class="math inline">\(i\)</span> faces a carbon price <span class="math inline">\(p_i\)</span>, it curtails consumption by investing in low-carbon equipment and reorienting consumption to less preferred, less carbon-intensive products. These costs to consumption are called abatements costs and denoted <span class="math inline">\(a_i\)</span>. Taking into account the possibility of transfers <span class="math inline">\(t_i\)</span> from the rest of the world, expressing everything in per capita terms, and abstracting from exogenous investments, country i’s consumption is related to its potential output <span class="math inline">\(y_i\)</span> as follows: <span class="math display">\[c_i = y_i + t_i - a_i(p_i)\]</span></p>
 <p>Assume that welfare of country <span class="math inline">\(i\)</span> depends on its consumption <span class="math inline">\(c_i\)</span> and global emissions <span class="math inline">\(E=\sum_j e_j n_j\)</span>, where <span class="math inline">\(e_j\)</span> is country’s <span class="math inline">\(j\)</span> per capita emissions and <span class="math inline">\(n_j\)</span> its population size. For now, take global emissions as fixed at their optimal level <span class="math inline">\(E^*\)</span>. Let <span class="math inline">\(p^*\)</span> be the uniform carbon price required to attain <span class="math inline">\(E^*\)</span>, i.e.&nbsp;<span class="math inline">\(E^*=\sum_j e_j(p^*) n_j\)</span>.</p>
 <p>A situation is fully specified by the set of transfers <span class="math inline">\((t_j)_j\)</span> and carbon prices <span class="math inline">\((p_j)_j\)</span> for each country. For country <span class="math inline">\(i\)</span>, given that global emissions are taken as fixed, the situation can be summarized as <span class="math inline">\(s=(t_i, p_i)\)</span>, and (with a slight abuse of notation) we may express <span class="math inline">\(i\)</span>’s welfare accordingly: <span class="math inline">\(u_i(c_i;E^*)=u_i(t_i,p_i)\)</span>.</p>
@@ -136,20 +137,20 @@ t_i + (p^* - p_i) \partial a_i &amp;= (p^*- p^*_i) \partial a_i \\
 <p>Therefore, the equivalent price is: <span class="math display">\[p^*_i = p_i - \frac{t_i}{\partial a_i} \]</span></p>
 <p>The equivalent price is negative when <span class="math inline">\(p_i \partial a_i &lt; t_i\)</span>. As a negative price would require a transfer from the rest of the world, a regime with differentiated (positive) prices is restrictive compared to a system that allows for international transfers. <!-- To implement transfers in the case where the equivalent price would be negative, --> Therefore, we prefer to use the concept of equivalent transfer <span class="math inline">\(g^s_i = t_i + (p^* - p_i) \partial a_i\)</span>.</p>
 </section>
-<section id="correspondence-between-differentiated-and-rights" class="level3">
-<h3 class="anchored" data-anchor-id="correspondence-between-differentiated-and-rights">Correspondence between differentiated and rights</h3>
-<p>Denote <span class="math inline">\(p\)</span> the world average carbon price: <span class="math inline">\(p=\sum_j p_j e_j n_j / E\)</span>, and <span class="math inline">\(e\)</span> the world average emission: <span class="math inline">\(e=\sum_j e_j n_j / \sum_j n_j\)</span>.</p>
-<p>Let us consider the case where countries pool their carbon price revenue: they collectively collect <span class="math inline">\(\sum_j e_j p_j n_j = Ep\)</span>. Imagine further that countries establish a uniform carbon price <span class="math inline">\(p^*\)</span>, e.g.&nbsp;through a cap-and-trade. Say each person in country <span class="math inline">\(i\)</span> has an emission right (or tradable budget) <span class="math inline">\(b_i\)</span>, then they are entitled a claim <span class="math inline">\(b_i p\)</span> on global carbon revenue. Therefore, the net monetary transfer to <span class="math inline">\(i\)</span> is <span class="math display">\[t^*_i = b_i p^* - e_i p_i\]</span></p>
+<section id="correspondence-between-differentiated-prices-and-rights" class="level3">
+<h3 class="anchored" data-anchor-id="correspondence-between-differentiated-prices-and-rights">Correspondence between differentiated prices and rights</h3>
+<!-- Denote $p$ the world average carbon price: $p=\sum_j p_j e_j n_j / E$, and $e$ the world average emission: $e=\sum_j e_j n_j / \sum_j n_j$.
+
+Let us consider the case where countries pool their carbon price revenue: they collectively collect $\sum_j e_j p_j n_j = Ep$. -->
+<p>Imagine that countries establish a uniform carbon price <span class="math inline">\(p^*\)</span>, e.g.&nbsp;through a cap-and-trade. Say each person in country <span class="math inline">\(i\)</span> has an emission right (or tradable budget) <span class="math inline">\(b_i\)</span>, so they are entitled a claim <span class="math inline">\(b_i p^*\)</span> on global carbon revenue. Therefore, the net monetary transfer to <span class="math inline">\(i\)</span> is <span class="math display">\[t^*_i = b_i p^* - e_i p^*\]</span></p>
 <p>There is a correspondence between emission rights in a cap-and-trade and differentiated prices in autarchy (without transfers): <span class="math display">\[\begin{aligned}
 g^a_i &amp;= V_i(p_i) = (p^* - p_i) \partial a_i \\
-g^*_i &amp;= t^*_i = b_i p^* - e_i p_i \\
-g^*_i = g^a_i &amp;\Leftrightarrow b_i = e_i \frac{p_i}{p^*} + (1 - \frac{p_i}{p^*}) \partial a_i  \\
-&amp;\Leftrightarrow p_i = p^* \frac{b_i - \partial a_i}{e_i - \partial a_i}
+g^*_i &amp;= t^*_i = (b_i - e_i) p^* \\
+g^*_i = g^a_i &amp;\Leftrightarrow b_i = e_i + (1 - \frac{p_i}{p^*}) \partial a_i  \\
+&amp;\Leftrightarrow p_i = p^* (1 + \frac{e_i - b_i}{\partial a_i})
 \end{aligned}\]</span></p>
 <p>TODO: estimate <span class="math inline">\(\partial a_i\)</span></p>
 <!--
-b_i &= (e_i - \partial a_i) \frac{p_i}{p^*} + \partial a_i  \\
-
 Let us compare two special cases: a situation $d$ with differentiated prices but equal rights: $d=(ep-e_i p_i, p_i)$, and a situation $u$ with a uniform price but differentiated rights: $u=(b_i p^* - e_i p^*, p^*)$. We have:
 
 $$\begin{aligned}
@@ -177,7 +178,37 @@ g^u_i - g^d_i &= b_i p^* - ep + (p_i - p^*) (e_i + \partial a_i)
 </section>
 <section id="the-dynamic-case" class="level2">
 <h2 class="anchored" data-anchor-id="the-dynamic-case">The dynamic case</h2>
-<p>At which conditions is there an equivalence between each country receiving a fixed share <span class="math inline">\(b_{it}=b_i\)</span> of the intertemporal carbon budget <span class="math inline">\(B\)</span>, or using an homothetic carbon price vis-à-vis the world average: <span class="math inline">\(p_{it}=\pi_ip_t\)</span>? What is the relation between a country’s carbon budget <span class="math inline">\(B_i\)</span>’s link on its net gain in the static case and the rights x price trajectory link with its net gain in the dynamic case?</p>
+<section id="setting-1" class="level3">
+<h3 class="anchored" data-anchor-id="setting-1">Setting</h3>
+<p>In this section, we will show that the correspondence between transfers and differentiated carbon prices imperfectly extends to the dynamic case.</p>
+<p>Let us keep the previous notations and add an index <span class="math inline">\(t\)</span> to denote the value of a variable at time <span class="math inline">\(t\)</span>. Let <span class="math inline">\(r_t\)</span> be the discount factor between the initial period and <span class="math inline">\(t\)</span> (containing the pure rate of time preference and the welfare discounting from growth). Intertemporal values are denoted with uppercase letters. Monetary variables are discounted while physical ones are not, e.g.&nbsp;the intertemporal consumption of <span class="math inline">\(i\)</span> is <span class="math inline">\(C_i = \sum_t c_{it} r_t\)</span>, its intertemporal net gain is <span class="math inline">\(G_i = \sum_t g_{it} r_t\)</span>, and its intertemporal emission right is <span class="math inline">\(B_i = \sum_t b_{it}\)</span>.</p>
+<p>A situation <span class="math inline">\(S\)</span> is now given by the transfers and prices trajectories: <span class="math inline">\(S=((t_{it})_t, (p_{it})_t)\)</span>. Taking <span class="math inline">\(y_{it}\)</span> as exogenous as a first approximation, a situation <span class="math inline">\(S\)</span> is welfare-equivalent to a situation <span class="math inline">\(S'\)</span> for country <span class="math inline">\(i\)</span> iff: <span class="math inline">\(\sum_t t_{it} - a_{it}(p_{it}) = \sum_t t'_{it} - a_{it}(p'_{it})\)</span>.</p>
+</section>
+<section id="the-uniform-price-without-transfer-case-as-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="the-uniform-price-without-transfer-case-as-benchmark">The uniform price without transfer case as benchmark</h3>
+<!-- Consider the situation $C*$ of a global cap-and-trade system with a uniform carbon price. The transfers and price trajectories are determined by the allocation of the global intertemporal carbon budget $B$ at the country-by-period level: $(b_{it})_t$. -->
+<p>Consider the situation <span class="math inline">\(C*=(0,(p^*_t)_t)\)</span> of a uniform carbon price trajectory <span class="math inline">\((p^*_t)_t\)</span> and within-country revenue recycling (i.e.&nbsp;without transfers). The carbon price trajectory may be fixed in advance or emerge from the temporal allocation of the global intertemporal carbon budget <span class="math inline">\(B\)</span> in a cap-and-trade system: <span class="math inline">\((b_{t})_t\)</span>. Let us define the net gain for <span class="math inline">\(i\)</span> at <span class="math inline">\(t\)</span> in a situation <span class="math inline">\(S\)</span> with the same emissions trajectory as <span class="math inline">\(C*\)</span> in relation to <span class="math inline">\(C*\)</span>. As above: <span class="math inline">\(g_{it} = t_{it} + V_{it}(p_{it})\)</span>, where <span class="math inline">\(V_{it}(p_{it}) = (p^*_t - p_{it}) \partial a_{it}\)</span>.</p>
+</section>
+<section id="the-difficulty-to-find-a-correspondence-between-differentiated-prices-and-rights" class="level3">
+<h3 class="anchored" data-anchor-id="the-difficulty-to-find-a-correspondence-between-differentiated-prices-and-rights">The difficulty to find a correspondence between differentiated prices and rights</h3>
+<p>As in the static case, let us look for a correspondence between an autarchy situation <span class="math inline">\(A\)</span> with differentiated prices and a cap-and-trade system <span class="math inline">\(U\)</span> with uniform price. In the general case, <span class="math inline">\(A=(0, (p_{it})_t)\)</span> while <span class="math inline">\(U=(((b_{it}-e_{it})p^*_t)_t, (p^*_t)_t)\)</span> is indirectly determined by <span class="math inline">\(b=(b_{it})_t\)</span>. The welfare equivalence for <span class="math inline">\(î\)</span> between <span class="math inline">\(A\)</span> and <span class="math inline">\(U\)</span> requires: <span class="math display">\[\begin{aligned}
+G^A_i &amp;= \sum_t (p^*_t - p_{it}) \partial a_{it} r_t \\
+G^U_i &amp;= \sum_t (b_{it} - e_{it}) p^*_t r_t \\
+G^U_i = G^A_i &amp;\Leftrightarrow \sum_t b_{it} r_t p^*_t  = \sum_t (\partial a_{it} + e_{it}) p^*_t r_t - \sum_t p_{it} \partial a_{it} r_t  
+\end{aligned}\]</span></p>
+<p>Contrary to the static case, there is no direct equivalence between an intertemporal aggregate of the emission rights and an intertemporal aggregate of differentiated prices, since the welfare effect of emission rights depends on the cap-and-trade price trajectory <span class="math inline">\(p^*_t\)</span>.</p>
+<p>The same reason also complicates the comparison between two possible allocations <span class="math inline">\(b\)</span> and <span class="math inline">\(b'\)</span> of the intertemporal carbon budget in a cap-and-trade, even when the price trajectory coincides. Indeed, the condition <span class="math inline">\(G^U_i &gt; G^{U'}_i \Leftrightarrow \sum_t b_{it} r_t p^*_t &gt; \sum_t b'_{it} r_t p^*_t\)</span> does <em>not</em> imply that <span class="math inline">\(B_i = \sum_t b_{it} &gt; \sum_t b'_{it} = B'_i\)</span>. In other words, there is no immediate relation between <span class="math inline">\(i\)</span>’s intertemporal carbon budget and its intertemporal welfare, as the price trajectory matters.</p>
+<p>Let us study whether we can find a correspondence in simpler cases. For the autarchy situation <span class="math inline">\(A\)</span>, consider a homothetic carbon price vis-à-vis the world average: <span class="math inline">\(p_{it}=\pi_ip_t\)</span>. For the cap-and-trade situation <span class="math inline">\(U\)</span>, consider that <span class="math inline">\(i\)</span> is granted a fixed share of the world’s carbon budget: <span class="math inline">\(b_{it}=b_ib_t\)</span>. Now, the equivalence between <span class="math inline">\(A\)</span> and <span class="math inline">\(U\)</span> rewrites:</p>
+<p><span class="math display">\[\begin{aligned}
+G^U_i = G^A_i &amp;\Leftrightarrow b_i \sum_t b_{t} r_t p^*_t  = \sum_t (\partial a_{it} + e_{it}) p^*_t r_t - \pi_i \sum_t p_{t} \partial a_{it} r_t  
+\end{aligned}\]</span></p>
+<p>Provided that the price trajectories in autarchy are homothetic to the price trajectory in the cap-and-trade, without loss of generality: <span class="math inline">\(p_{it}=\pi_ip^*_t\)</span>; the equivalence simplifies further:</p>
+<p><span class="math display">\[\begin{aligned}
+G^U_i = G^A_i &amp;\Leftrightarrow b_i \mathscr{B} = \mathscr{E} + (1 - \pi_i) \mathscr{\partial A}
+\end{aligned}\]</span> where <span class="math inline">\(\mathscr{B} = \sum_t b_{t} r_t p^*_t\)</span>, <span class="math inline">\(\mathscr{E} = \sum_t e_{it} p^*_t r_t\)</span>, and <span class="math inline">\(\mathscr{\partial A} = \sum_t \partial a_{it} p^*_t r_t\)</span>.</p>
+<p>Although we do find a correspondence in this special case, the formula faces practical limitations, as it requires knowing the future price trajectory <span class="math inline">\((p^*_t)_t\)</span>, which can only be imprecisely estimated in the cap-and-trade situation. In any case, although one can find a trajectory of differentiated prices welfare equivalent to a given allocation of emissions rights, and vice versa, the derivation cannot be done analytically, one has to resort to an integrated assessment model.</p>
+<p>TODO: in the Hotelling case, the formula simplifies as <span class="math inline">\(r_t p^*_t = p_0\)</span>.</p>
+</section>
 </section>
 </section>
 
