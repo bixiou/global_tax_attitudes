@@ -1,0 +1,127 @@
+---
+title: "correspondence_price_rights"
+output:
+  html_document: default
+  pdf_document: default
+date: "2025-04-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Correspondence between transfers in a cap-and-trade and differentiated carbon prices
+
+## The static case
+### Setting
+
+Decarbonization is costly. When country $i$ faces a carbon price $p_i$, it curtails consumption by investing in low-carbon equipment and reorienting consumption to less preferred, less carbon-intensive products. These costs to consumption are called abatements costs and denoted $a_i$. Taking into account the possibility of transfers $t_i$ from the rest of the world, expressing everything in per capita terms, and abstracting from exogenous investments, country i's consumption is related to its potential output $y_i$ as follows: $$c_i = y_i + t_i - a_i(p_i)$$
+
+Assume that welfare of country $i$ depends on its consumption $c_i$ and global emissions $E=\sum_j e_j n_j$, where $e_j$ is country's $j$  per capita emissions and $n_j$ its population size. For now, take global emissions as fixed at their optimal level $E^*$. Let $p^*$ be the uniform carbon price required to attain $E^*$, i.e. $E^*=\sum_j e_j(p^*) n_j$.
+
+A situation is fully specified by the set of transfers $(t_j)_j$ and carbon prices $(p_j)_j$ for each country. For country $i$, given that global emissions are taken as fixed, the situation can be summarized as $s=(t_i, p_i)$, and (with a slight abuse of notation) we may express $i$'s welfare accordingly: $u_i(c_i;E^*)=u_i(t_i,p_i)$. 
+
+
+### Equivalent variation from the benchmark in the absence of transfers
+
+To analyze an arbitrary situation $s$, it will be useful to relate it to two special cases. First, the coordinated situation $c*=(0,p^*)$, without transfer and with a uniform carbon price, which we take as a benchmark. Second, the autarchy situation $a=(0, p_i)$, without transfer and with differentiated prices, which will be a useful intermediary to analyze an arbitrary situation. We denote $V_i(p_i)$ the equivalent variation between situation $a$ and $c*$, i.e. the transfer required at $c*$ to get $a$'s welfare:
+$$\begin{aligned}
+u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i) \\
+c^{c*}_i + V_i(p_i) &= c^a_i
+\end{aligned}$$
+In terms of welfare:
+$$\begin{aligned}
+u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i)=u_i(y_i-a_i(p_i))\sim u^{c*}_i - (p_i - p^*) \partial a_i \partial u_{i1} \\
+u_i(V_i(p_i), p^*)&= u^{c*}_i + V_i(p_i)\partial u_{i1}
+\end{aligned}$$
+Therefore, 
+$$V_i(p_i) = (p^* - p_i) \partial a_i$$
+
+$V_i$ is positive iff $p^* > p_i$ as country i ``needs'' a positive compensation for consumption to get the same welfare as in (a) with a higher price $p^*$ (and lower emissions) compared to $c*$.
+
+### Equivalent transfer for an arbitrary situation
+Let $g^s_i$ be country $i$'s net gain (or ``equivalent transfer'') in an arbitrary situation $s=(t_i, p_i)$ compared to the benchmark situation $c*=(0,p^*)$: 
+$$\begin{aligned}
+g^s_i &= (c^s_i - c^a_i) + (c^a_i - c^{c*}_i) \\
+ &= t_i + V_i(p_i)
+\end{aligned}$$
+Note that we can call $g^s_i$ the equivalent transfer as it is the transfer at zero price that makes $i$ indifferent with $s$, i.e. the transfer such that $(g^s_i, 0)$ is welfare-equivalent to $s=(t_i, p_i)$.
+
+
+### Correspondence with an equivalent price
+
+Now, we have all the tools to study the correspondence between transfers, differentiated emission rights, and differentiated prices. 
+Let $p^*_i$ be the ``equivalent price'' such that $s=(t_i, p_i)$ is welfare-equivalent to $s*=(0, p^*_i)$. 
+$$\begin{aligned}
+g^s_i &= g^{s*}_i \\
+t_i + V_i(p_i) &= V_i(p^*_i) \\
+t_i + (p^* - p_i) \partial a_i &= (p^*- p^*_i) \partial a_i \\
+\end{aligned}$$
+
+Therefore, the equivalent price is:
+$$p^*_i = p_i - \frac{t_i}{\partial a_i} $$
+
+The equivalent price is negative when $p_i \partial a_i < t_i$. As a negative price would require a transfer from the rest of the world, a regime with differentiated (positive) prices is restrictive compared to a system that allows for international transfers. <!-- To implement transfers in the case where the equivalent price would be negative, -->
+Therefore, we prefer to use the concept of equivalent transfer $g^s_i = t_i + (p^* - p_i) \partial a_i$.
+
+
+### Correspondence between differentiated and rights
+
+Denote $p$ the world average carbon price: $p=\sum_j p_j e_j n_j / E$, and $e$ the world average emission: $e=\sum_j e_j n_j / \sum_j n_j$.
+
+Let us consider the case where countries pool their carbon price revenue: they collectively collect $\sum_j e_j p_j n_j = Ep$. Imagine further that countries establish a uniform carbon price $p^*$, e.g. through a cap-and-trade. Say each person in country $i$ has an emission right (or tradable budget) $b_i$, then they are entitled a claim $b_i p$ on global carbon revenue. Therefore, the net monetary transfer to $i$ is $$t^*_i = b_i p^* - e_i p_i$$
+
+There is a correspondence between emission rights in a cap-and-trade and differentiated prices in autarchy (without transfers): 
+$$\begin{aligned}
+g^a_i &= V_i(p_i) = (p^* - p_i) \partial a_i \\
+g^*_i &= t^*_i = b_i p^* - e_i p_i \\
+g^*_i = g^a_i &\Leftrightarrow b_i = e_i \frac{p_i}{p^*} + (1 - \frac{p_i}{p^*}) \partial a_i  \\
+&\Leftrightarrow p_i = p^* \frac{b_i - \partial a_i}{e_i - \partial a_i}
+\end{aligned}$$
+
+TODO: estimate $\partial a_i$
+
+<!--
+b_i &= (e_i - \partial a_i) \frac{p_i}{p^*} + \partial a_i  \\
+
+Let us compare two special cases: a situation $d$ with differentiated prices but equal rights: $d=(ep-e_i p_i, p_i)$, and a situation $u$ with a uniform price but differentiated rights: $u=(b_i p^* - e_i p^*, p^*)$. We have:
+
+$$\begin{aligned}
+g^d_i &= ep - e_i p_i + V_i(p_i) \\
+g^u_i &= b_i p^* - e_i p^*  \\
+g^u_i - g^d_i &= b_i p^* - ep + (p_i - p^*) (e_i + \partial a_i) 
+\end{aligned}$$
+-->
+
+### Using the status quo as benchmark
+
+If, instead of using $c*=(0, p^*)$ as the counterfactual, governments use the status quo $c^- = (0, p^-)$, with $p^-<p^*$. Then, we the net gain they consider is 
+$$\begin{aligned}
+\gamma_i &= (y_i + t_i - a_i(p_i)) - (y_i - a_i(p^-)) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
+ &= t_i -a_i(p_i) + a_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
+ &\sim t_i + (p^- - p_i) \partial a_i + (p^* - p^-) \partial E \partial u_{i2}/\partial u_{i1} \\
+ &= g_i - V_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
+\end{aligned}$$ 
+where $\partial u_{i3}$ corresponds to the welfare benefits of lower world emissions.
+
+The gain relative to the status quo $\gamma_i$ is larger than the gain relative to $c*$ iff the price $p^*$ would improve welfare compared to the status quo price $p^-$, i.e. iff the welfare benefit from lower emissions exceeds the cost of decarbonization: 
+$$\gamma_i > g_i \Leftrightarrow (E^* - E^-) \partial u_{i2}/\partial u_{i1} > V_i(p^-) $$
+
+
+### Abatement cost required as transfer by those neglecting climate costs
+
+From the point of view of short-sighted governments, we are likely in the other case $\gamma_i < g_i$, and these governments likely use $\gamma_i$ as a counterfactual to assess welfare. In the worst case where a government doesn't attach any value to a stable climate, accepting a price increase $\Delta p_i = p_i - p^-$ requires a transfer larger than the abatement costs:
+$$t_i > \Delta p_i \partial a_i$$
+
+Conceptually, abatement costs can be divided in two parts: first, the extra investments needed to build and deploy low-carbon infrastructure; second, the curtailment of consumption (of energy, meat, flights...) entailed by a higher carbon price. The former can be estimated with a bottom-up energy model, and the latter using the short (or medium) term price-elasticity of emissions $\epsilon = \frac{\partial e}{e}/\frac{\partial p}{p}$, and the crude approximation that emissions represent one-twentieth of the consumption (corresponding to half the energy share). Assuming $\epsilon = .4$, the effect on consumption of an increase in price by a factor $\delta p$ is therefore: $\delta c = \frac{\partial c/c}{\partial e/e} \epsilon \delta p = .05 \cdot .4 \cdot \delta p = .02 \cdot \delta p$. So, as a first approximation, a doubling of the carbon price should be compensated with a transfer of at least 2% of GDP.
+
+## The dynamic case
+
+At which conditions is there an equivalence between each country receiving a fixed share $b_{it}=b_i$ of the intertemporal carbon budget $B$, or using an homothetic carbon price vis-à-vis the world average: $p_{it}=\pi_ip_t$?
+What is the relation between a country's carbon budget $B_i$'s link on its net gain in the static case and the rights x price trajectory link with its net gain in the dynamic case?
+
+
+```{r, echo=FALSE}
+
+
+
+```

@@ -216,7 +216,9 @@ decrit("gcs_support", us1, which = us1$swing_state) # 51%
 summary(lm(gcs_support ~ swing_state, us1, weights = weight)) # -.04* p: .05
 summary(lm(gcs_support ~ swing_state_3pp, us1, weights = weight)) # -.06*** p: .01
 summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state == T,], weights = weight)) # .012, p: .74, n=693
-summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state_3pp == T,], weights = weight)) # .006, p: .089, n=509
+summary(lm(conjoint_c ~ branch_c_gcs, us1[us1$conjoint_c_none == F & us1$swing_state_3pp == T,], weights = weight)) # .006, p: .89, n=509
+decrit("gcs_support", us1, which = us1$democratic_state) # 62%
+decrit("gcs_support", us1, which = !us1$democratic_state) # 52%
 
 
 ##### Methods: Petition #####
