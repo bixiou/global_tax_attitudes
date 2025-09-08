@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## The static case
 ### Setting
-TODO: replace b by r and r by beta
+TODO: replace b by r and r by betaf
 
 Decarbonization is costly. When country $i$ faces a carbon price $p_i$, it curtails consumption by investing in low-carbon equipment and reorienting consumption to less preferred, less carbon-intensive products. These costs to consumption are called abatements costs and denoted $a_i$. Taking into account the possibility of transfers $t_i$ from the rest of the world, expressing everything in per capita terms, and abstracting from exogenous investments, country i's consumption is related to its potential output $y_i$ as follows: $$c_i = y_i + t_i - a_i(p_i)$$
 
