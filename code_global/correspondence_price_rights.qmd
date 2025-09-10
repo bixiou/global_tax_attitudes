@@ -1,8 +1,5 @@
 ---
 title: "correspondence_price_rights"
-format:
-  latex:
-    keep-tex: true
 output:
   html_document: default
   pdf_document: default
@@ -14,6 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Correspondence between transfers in a cap-and-trade and differentiated carbon prices
 
+<!--
+
+format:
+  latex:
+    keep-tex: true
+    -->
 ## The static case
 ### Setting
 
@@ -50,7 +53,8 @@ At the second order, $i$'s equivalent variation between $a$ and $c*$ is: $$V_i(p
 
 If we assign the same welfare weight to every country, the world welfare is the average of countries' welfare weighted by their population size. The world welfare in any autarchy situation can then be compared to the world welfare in the coordinated situation by looking at the average equivalent variation (weighted by population size): $\overline{V}=\sum_j V_j(p_j) n_j$. 
 If $p^*$ is the average price, they the first order term vanish. TODO: Pb: why would that be the case?
-If $a_i$ are all convex and $u_i$ concave, the second-order terms are all negative, so autarchy is welfare inferior. -->
+If $a_i$ are all convex and $u_i$ concave, the second-order terms are all negative, so autarchy is welfare inferior.
+-->
 
 ### Equivalent transfer for an arbitrary situation
 

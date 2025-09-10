@@ -660,7 +660,7 @@ Many commentators argue that lower-income economies do not have the resources to
 
 A more reasonable argument in favor of coordinated carbon prices that would be differentiated depending on the country's income level,\citep{parry_proposal_2021} is the claim that international transfers are not feasible. In this case, differentiated prices offer a second-best solution. 
 
-Note, however, that there is an economic equivalence between differentiated carbon prices and a uniform price with differentiated emissions rights. More precisely, for a given agreement on differentiated prices, the same global emission reductions and the same costs and benefits by country can be achieved with a uniform price, by appropriately calibrating the price and the emissions rights, at least when efficiency gains are assumed away. This observation should invite us to question the claim that one option is not politically feasible, given that it has the same distributive effects as the other. Besides, because a uniform price offers efficiency gains from trade but differentiated prices do not, the latter is an inferior solution.
+Note, however, that there is an economic equivalence between differentiated carbon prices and a uniform price with differentiated emissions rights (see Appendix \ref{app:correspondence} for the mathematical derivation). More precisely, for a given agreement on differentiated prices, the same global emission reductions and the same costs and benefits by country can be achieved with a uniform price, by appropriately calibrating the price and the emissions rights, at least when efficiency gains are assumed away. This observation should invite us to question the claim that one option is not politically feasible, given that it has the same distributive effects as the other. Besides, because a uniform price offers efficiency gains from trade but differentiated prices do not, the latter is an inferior solution.
 
 \subsection{Supply-side policies such as \textit{fossil fuel non-proliferation}}
 
@@ -947,7 +947,7 @@ As a next step, supportive organizations could launch a taskforce gathering scho
 \clearpage
 \section{Correspondence between transfers in a cap-and-trade and
 differentiated carbon
-prices}\label{correspondence-between-transfers-in-a-cap-and-trade-and-differentiated-carbon-prices}
+prices}\label{app:correspondence}
 
 \subsection{The static case}\label{the-static-case}
 
@@ -1002,6 +1002,15 @@ where \textbf{\(\partial a_i\) is the marginal abatement cost at
 \(V_i\) is positive iff \(p^* > p_i\) as country i ``needs'\,' a
 positive compensation for consumption to get the same welfare as in (a)
 with a higher price \(p^*\) (and lower emissions) compared to \(c*\).
+
+\subsubsection{Efficiency of a uniform price} \label{efficiency-of-a-uniform-price}
+
+When there is undue inequality between countries, differentiated carbon prices can help improve the world's welfare, as reduced abatement in low-income countries act as a subsitute for transfers. However, the Diamond-Mirrlees production efficiency theorem states that, in absence of other imperfections (such as market power or imperfect capital markets), direct transfers are always preferable to differentiated prices to address inequality.\citep{diamond_optimal_1971} In our setting, this theorem translates in the following result: For a given set of prices $(p_j)_j$, there exists a set of transfers $(t_j)_j$ such that the welfare of each country $i$ is at least as high in the coordinated situation $(t_i,p^*)$ as in the autarchy situation $(0,p_i)$. 
+
+The proof relies on the convexity of abatement costs with respect to emissions, which itself stems from the fact that least costly abatement options can be implemented first. Denoting $N=\sum_j n_j$, $e^* = E^*/N$ and $\nu_j = n_j/N$, we have by definition $$e^* = \sum_j e_j(p^*) \nu_j = \sum_j e_j(p_j) \nu_j$$
+By concavity of abatement costs, we then have $$a_j(p^*) \leq \sum_j a_j(p_j) \nu_j$$
+For all $i$, let us define $\tilde{t_i} = a_j(p^*) - a_i(p_i)$. From the previous equation, we have $\sum_j \tilde{t_j} \nu_j \leq 0$. We can thus choose (zero-sum) transfers $t_j \geq \tilde{t_j}$ such that $0 = \sum_j t_j \nu_j \geq \sum_j \tilde{t_j} \nu_j$. Now, for all $i$, as $t_i \geq \tilde{t_i} = a_i(p^*) - a_i(p_i)$, we have $c^{c*}_i = y_i + t_i - a_i(p^*) \geq y_i - a_i = c^a_i$, which proves the efficiency of a uniform price.% \hfill $\blacksquare$
+
 
 \subsubsection{Equivalent transfer for an arbitrary
 situation}\label{equivalent-transfer-for-an-arbitrary-situation}

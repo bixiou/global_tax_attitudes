@@ -100,6 +100,12 @@ window.Quarto = {
 
 <section id="correspondence-between-transfers-in-a-cap-and-trade-and-differentiated-carbon-prices" class="level1">
 <h1>Correspondence between transfers in a cap-and-trade and differentiated carbon prices</h1>
+<!--
+
+format:
+  latex:
+    keep-tex: true
+    -->
 <section id="the-static-case" class="level2">
 <h2 class="anchored" data-anchor-id="the-static-case">The static case</h2>
 <section id="setting" class="level3">
@@ -117,8 +123,17 @@ c^{c*}_i + V_i(p_i) &amp;= c^a_i
 u_i(V_i(p_i), p^*)&amp;=u^a_i=u_i(0, p_i)=u_i(y_i-a_i(p_i))\sim u^{c*}_i - (p_i - p^*) \partial a_i \partial u_{i1} \\
 u_i(V_i(p_i), p^*)&amp;= u^{c*}_i + V_i(p_i)\partial u_{i1}
 \end{aligned}\]</span></p>
-<p>where <strong><span class="math inline">\(\partial a_i\)</span> is the marginal abatement cost at <span class="math inline">\(p^*\)</span></strong>. Therefore, <span class="math display">\[V_i(p_i) = (p^* - p_i) \partial a_i\]</span></p>
+<p>where <strong><span class="math inline">\(\partial a_i\)</span> is the marginal abatement cost at <span class="math inline">\(p^*\)</span></strong>. Therefore, at the first order, <span class="math display">\[V_i(p_i) = (p^* - p_i) \partial a_i\]</span></p>
 <p><span class="math inline">\(V_i\)</span> is positive iff <span class="math inline">\(p^* &gt; p_i\)</span> as country i ``needs’’ a positive compensation for consumption to get the same welfare as in (a) with a higher price <span class="math inline">\(p^*\)</span> (and lower emissions) compared to <span class="math inline">\(c*\)</span>.</p>
+<!--
+### Optimality of the uniform price TODO? I don't find a simple derivation
+
+At the second order, $i$'s equivalent variation between $a$ and $c*$ is: $$V_i(p_i) = (p^* - p_i) \partial a_i + \frac{1}{2} (p^* - p_i)^2 (\partial^2 u_{i1} (\partial a_i)^2 - \partial u_{i1} \partial^2 a_i)$$
+
+If we assign the same welfare weight to every country, the world welfare is the average of countries' welfare weighted by their population size. The world welfare in any autarchy situation can then be compared to the world welfare in the coordinated situation by looking at the average equivalent variation (weighted by population size): $\overline{V}=\sum_j V_j(p_j) n_j$. 
+If $p^*$ is the average price, they the first order term vanish. TODO: Pb: why would that be the case?
+If $a_i$ are all convex and $u_i$ concave, the second-order terms are all negative, so autarchy is welfare inferior.
+-->
 </section>
 <section id="equivalent-transfer-for-an-arbitrary-situation" class="level3">
 <h3 class="anchored" data-anchor-id="equivalent-transfer-for-an-arbitrary-situation">Equivalent transfer for an arbitrary situation</h3>
