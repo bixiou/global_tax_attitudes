@@ -953,136 +953,116 @@ prices}\label{app:correspondence}
 
 \subsubsection*{Setting}\label{setting}
 
-Decarbonization is costly. When a country \(i\) faces a carbon price
-\(p_i\), it curtails consumption by investing in low-carbon equipment
-and reorienting consumption to less preferred, less carbon-intensive
-products. These costs to consumption are called abatements costs and
-denoted \(a_i\). Taking into account the possibility of transfers
-\(t_i\) from the rest of the world, expressing everything in per capita
-terms, abstracting from exogenous investments, country i's consumption
-is related to its potential output \(y_i\) as follows:
+Decarbonization is costly. When a country \(i\) faces a carbon price \(p_i\), it curtails consumption by investing in low-carbon equipment and reorienting consumption to less preferred, less carbon-intensive products. These costs to consumption are called abatements costs and denoted \(a_i\). Taking into account the possibility of transfers \(t_i\) from the rest of the world, expressing everything in per capita terms, and abstracting from exogenous investments, country i's consumption is related to its potential output \(y_i\) as follows:
 \[c_i = y_i + t_i - a_i(p_i)\]
 
-Assume that the welfare of country \(i\) depends on its consumption
-\(c_i\) and global emissions \(E=\sum_j e_j n_j\), where \(e_j\) is
-country's \(j\) per capita emissions and \(n_j\) its population size.
-For now, take global emissions as fixed at their optimal level \(E^*\).
-Let \(p^*\) be the uniform carbon price required to attain \(E^*\),
-i.e.~\(E^*=\sum_j e_j(p^*) n_j\).
+Assume that the welfare of country \(i\) depends on its consumption \(c_i\) and global emissions \(E=\sum_j e_j n_j\), where \(e_j\) is country's \(j\) per capita emissions and \(n_j\) its population size.
+For now, take global emissions as fixed at their optimal level \(E^*\). Let \(p^*\) be the uniform carbon price required to attain \(E^*\), i.e.~\(E^*=\sum_j e_j(p^*) n_j\).
 
-\textbf{A situation is fully specified by the set of transfers
-\((t_j)_j\) and carbon prices \((p_j)_j\) for each country}. For country
-\(i\), given that global emissions are taken as fixed, the situation can
-be summarized as \(s=(t_i, p_i)\), and (with a slight abuse of notation)
-we may express \(i\)'s welfare accordingly:
+\textbf{A situation is fully specified by the set of transfers \((t_j)_j\) and carbon prices \((p_j)_j\) for each country}. For country \(i\), given that global emissions are taken as fixed, the situation can be summarized as \(s=(t_i, p_i)\), and (with a slight abuse of notation) we may express \(i\)'s welfare accordingly:
 \(u_i(c_i;E^*)=u_i(t_i,p_i)\).
 
 \subsubsection*{Equivalent variation from the benchmark in the absence of
 transfers}\label{equivalent-variation-from-the-benchmark-in-the-absence-of-transfers}
 
-To analyze an arbitrary situation \(s\), it will be useful to relate it
-to two special cases. First, the coordinated situation \(c*=(0,p^*)\),
-without transfer and with a uniform carbon price, which we take as a
-benchmark. Second, the autarchy situation \(a=(0, p_i)\), without
-transfer and with differentiated prices, which will be a useful
-intermediary to analyze an arbitrary situation. We denote \(V_i(p_i)\)
-the equivalent variation between situation \(a\) and \(c*\), i.e.~the
-transfer required at \(c*\) to get \(a\)'s welfare: \[\begin{aligned}
+To analyze an arbitrary situation \(s\), it will be useful to relate it to two special cases. First, the coordinated situation \(c*=(0,p^*)\), without transfer and with a uniform carbon price, which we take as a benchmark. Second, the autarchy situation \(a=(0, p_i)\), without transfer and with differentiated prices, which will be a useful intermediary to analyze an arbitrary situation. We denote \(V_i(p_i)\) the equivalent variation between situation \(a\) and \(c*\), i.e.~the transfer required at \(c*\) to get \(a\)'s welfare: \[\begin{aligned}
 u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i) \\
-c^{c*}_i + V_i(p_i) &= c^a_i
-\end{aligned}\] In terms of welfare: \[\begin{aligned}
-u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i)=u_i(y_i-a_i(p_i))\sim u^{c*}_i - (p_i - p^*) \partial a_i \partial u_{i1} \\
-u_i(V_i(p_i), p^*)&= u^{c*}_i + V_i(p_i)\partial u_{i1}
-\end{aligned}\]
+c^{c*}_i + V_i(p_i) &= c^a_i \\
+V_i(p_i) &= c^a_i - c^{c*}_i = a_i(p^*) - a_i(p_i) 
+ &\sim  (p^* - p_i) \partial a^*_i
+\end{aligned}\] 
+where \textbf{\(\partial a^*_i\) is the marginal abatement cost}.
+% In terms of welfare: \[\begin{aligned}
+% u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i)=u_i(y_i-a_i(p_i))\sim u^{c*}_i - (p_i - p^*) \partial a^*_i \partial u_{i1} \\
+% u_i(V_i(p_i), p^*)&= u^{c*}_i + V_i(p_i)\partial u_{i1}
+% \end{aligned}\]
 
-where \textbf{\(\partial a_i\) is the marginal abatement cost at
-\(p^*\)}. Therefore, at the first order,
-\[V_i(p_i) = (p^* - p_i) \partial a_i\]
+% where \textbf{\(\partial a^*_i\) is the marginal abatement cost at
+% \(p^*\)}. Therefore, at the first order,
+% \[V_i(p_i) = (p^* - p_i) \partial a^*_i\]
 
-\(V_i\) is positive iff \(p^* > p_i\) as country i ``needs'\,' a
-positive compensation for consumption to get the same welfare as in (a)
-with a higher price \(p^*\) (and lower emissions) compared to \(c*\).
-
-\subsubsection*{Efficiency of a uniform price} \label{efficiency-of-a-uniform-price}
-
-When there is undue inequality between countries, differentiated carbon prices can help improve the world's welfare, as reduced abatement in low-income countries act as a subsitute for transfers. However, the Diamond-Mirrlees production efficiency theorem states that, in absence of other imperfections (such as market power or imperfect capital markets), direct transfers are always preferable to differentiated prices to address inequality.\citep{diamond_optimal_1971} In our setting, this theorem translates in the following result: For a given set of prices $(p_j)_j$, there exists a set of transfers $(t_j)_j$ such that the welfare of each country $i$ is at least as high in the coordinated situation $(t_i,p^*)$ as in the autarchy situation $(0,p_i)$. 
-
-The proof relies on the convexity of abatement costs with respect to emissions, which itself stems from the fact that least costly abatement options can be implemented first. Denoting $N=\sum_j n_j$, $e^* = E^*/N$ and $\nu_j = n_j/N$, we have by definition $$e^* = \sum_j e_j(p^*) \nu_j = \sum_j e_j(p_j) \nu_j$$
-By concavity of abatement costs, we then have $$a_j(p^*) \leq \sum_j a_j(p_j) \nu_j$$
-For all $i$, let us define $\tilde{t_i} = a_j(p^*) - a_i(p_i)$. From the previous equation, we have $\sum_j \tilde{t_j} \nu_j \leq 0$. We can thus choose (zero-sum) transfers $t_j \geq \tilde{t_j}$ such that $0 = \sum_j t_j \nu_j \geq \sum_j \tilde{t_j} \nu_j$. Now, for all $i$, as $t_i \geq \tilde{t_i} = a_i(p^*) - a_i(p_i)$, we have $c^{c*}_i = y_i + t_i - a_i(p^*) \geq y_i - a_i = c^a_i$, which proves the efficiency of a uniform price.% \hfill $\blacksquare$
-
+\(V_i\) is positive iff \(p^* > p_i\) as country i ``needs'\,' a positive compensation to get the same welfare as in $a$ with a higher price \(p^*\) (and lower emissions) compared to \(c*\).
 
 \subsubsection*{Equivalent transfer for an arbitrary
 situation}\label{equivalent-transfer-for-an-arbitrary-situation}
 
-Let \(g^s_i\) be country \(i\)'s net gain (or ``equivalent transfer'\,')
-in an arbitrary situation \(s=(t_i, p_i)\) compared to the benchmark
-situation \(c*=(0,p^*)\): \[\begin{aligned}
+Let \(g^s_i\) be country \(i\)'s net gain (or ``equivalent transfer'\,') in an arbitrary situation \(s=(t_i, p_i)\) compared to the benchmark situation \(c*=(0,p^*)\): 
+\[\begin{aligned}
 g^s_i &= (c^s_i - c^a_i) + (c^a_i - c^{c*}_i) \\
  &= t_i + V_i(p_i)
-\end{aligned}\] Note that \textbf{we can call \(g^s_i\) the equivalent
-transfer as it is the transfer at zero price that makes \(i\)
-indifferent with \(s\), i.e.~the transfer such that \((g^s_i, 0)\) is
-welfare-equivalent to \(s=(t_i, p_i)\)}. The equivalent transfer is a
-very useful metric to compare the welfare of a country in different
-situations.
+\end{aligned}\] 
+Note that \textbf{we can call \(g^s_i\) the equivalent transfer as it is the transfer at zero price that makes \(i\) indifferent with \(s\), i.e.~the transfer such that \((g^s_i, 0)\) is welfare-equivalent to \(s=(t_i, p_i)\)}. The equivalent transfer is a very useful metric to compare the welfare of a country in different situations.
 
 \subsubsection*{Correspondence with an equivalent
 price}\label{correspondence-with-an-equivalent-price}
 
-Now, we have all the tools to study the correspondence between
-transfers, differentiated emission rights, and differentiated prices.
-Let \(p^*_i\) be the ``equivalent price'\,' such that \(s=(t_i, p_i)\)
-is welfare-equivalent to \(s*=(0, p^*_i)\). \[\begin{aligned}
+Now, we have all the tools to study the correspondence between transfers, differentiated emission rights, and differentiated prices.
+Let \(p^*_i\) be the ``equivalent price'\,' such that \(s=(t_i, p_i)\) is welfare-equivalent to \(s*=(0, p^*_i)\). \[\begin{aligned}
 g^s_i &= g^{s*}_i \\
 t_i + V_i(p_i) &= V_i(p^*_i) \\
-t_i + (p^* - p_i) \partial a_i &= (p^*- p^*_i) \partial a_i \\
+t_i + (p^* - p_i) \partial a^*_i &\sim (p^*- p^*_i) \partial a^*_i \\
 \end{aligned}\]
 
-Therefore, the equivalent price is:
-\[p^*_i = p_i - \frac{t_i}{\partial a_i} \]
+Therefore, at the first order, the equivalent price is:
+\[p^*_i \sim p_i - \frac{t_i}{\partial a^*_i} \]
 
-The equivalent price is negative when \(p_i \partial a_i < t_i\). As a
-negative price would require a transfer from the rest of the world, a
-regime with differentiated (positive) prices is restrictive compared to
-a system that allows for international transfers. Therefore, \textbf{we
-prefer to use the concept of equivalent transfer \(g^s_i\), rather than
-its dual the equivalent price}. From the above, the equivalent transfer
-can be expressed as:
+The equivalent price is negative when \(p_i \partial a^*_i < t_i\). As a negative price would require a transfer from the rest of the world, a regime with differentiated (positive) prices is restrictive compared to a system that allows for international transfers. Therefore, \textbf{we prefer to use the concept of equivalent transfer \(g^s_i\), rather than its dual the equivalent price}. From the above, the equivalent transfer can be expressed as:
 
-\[g^s_i = t_i + (p^* - p_i) \partial a_i\]
+\[g^s_i \sim t_i + (p^* - p_i) \partial a^*_i\]
 
 \subsubsection*{Correspondence between differentiated prices and
 rights}\label{correspondence-between-differentiated-prices-and-rights}
 
-Imagine that countries establish a uniform carbon price \(p^*\),
-e.g.~through a cap-and-trade. Say each person in country \(i\) has an
-emission right \(r_i\), so they are entitled a claim \(r_i p^*\) on
-global carbon revenue. Therefore, the net monetary transfer to \(i\) is
-\[t^*_i = r_i p^* - e^*_i p^*\]
+Imagine that countries establish a uniform carbon price \(p^*\), for example through a cap-and-trade. Say each person in country \(i\) has an emission right \(r_i\), so they are entitled a claim \(r_i p^*\) on global carbon revenue. Then, the net monetary transfer to \(i\) is \[t^*_i = r_i p^* - e^*_i p^*\]
 
 In the static case, \textbf{there is a correspondence between emission
 rights \(r_i\) in a cap-and-trade and differentiated prices \(p_i\) in
 autarchy (without transfers)}: \[\begin{aligned}
-g^a_i &= V_i(p_i) = (p^* - p_i) \partial a_i \\
+g^a_i &= V_i(p_i) \sim (p^* - p_i) \partial a^*_i \\
 g^*_i &= t^*_i = (r_i - e^*_i) p^* \\
-g^*_i = g^a_i &\Leftrightarrow (r_i - e^*_i) p^* = (p^* - p_i) \partial a_i
+g^*_i = g^a_i &\Leftrightarrow (r_i - e^*_i) p^* \sim (p^* - p_i) \partial a^*_i
 \end{aligned}\]
 
-The left-hand side is the cap-and-trade equivalent transfer, which
-corresponds to the net monetary transfer received in the uniform
-cap-and-trade. The equivalence relation states that it is negatively
-related to the difference between the autarchy price and the global
-cap-and-trade price. The coefficient of this linear relation is the
-marginal abatement cost: the costlier abatement is, the larger the
-effect of the autarchy carbon price on the cap-and-trade equivalent
+The left-hand side is the cap-and-trade equivalent transfer, which corresponds to the net monetary transfer received in the uniform cap-and-trade. The (first-order) equivalence relation states that the transfer is negatively related to the difference between the autarchy price and the global cap-and-trade price. The coefficient of this linear relation is the marginal abatement cost: the costlier abatement is, the larger the effect of the autarchy carbon price on the cap-and-trade equivalent
 transfer.
 
-One can easily isolate cap-and-trade emission rights or autarchy price
-in function of the other variables: \[\begin{aligned}
-g^*_i = g^a_i &\Leftrightarrow r_i = e_i^* + (1 - \frac{p_i}{p^*}) \partial a_i  \\
-&\Leftrightarrow p_i = p^* (1 + \frac{e^*_i - r_i}{\partial a_i})
+One can easily isolate cap-and-trade emission rights or autarchy price in function of the other variables: \[\begin{aligned}
+g^*_i = g^a_i &\Leftrightarrow r_i \sim e_i^* + (1 - \frac{p_i}{p^*}) \partial a^*_i  \\
+&\Leftrightarrow p_i \sim p^* (1 + \frac{e^*_i - r_i}{\partial a^*_i})
 \end{aligned}\]
+
+\subsubsection*{Efficiency of a uniform price} \label{efficiency-of-a-uniform-price}
+
+When there is undue inequality between countries, differentiated carbon prices can help improve the world's welfare, as reduced abatement in low-income countries act as a subsitute for transfers. However, the Diamond-Mirrlees production efficiency theorem states that, in absence of other imperfections (such as market power or imperfect capital markets), direct transfers are always preferable to differentiated prices to address inequality.\citep{diamond_optimal_1971} In our setting, this theorem translates into the following result: 
+For any country $i$, the welfare is at least as high in the situation with uniform price and equivalent transfers $(t^*_i,p^*)$ as in the autarchy situation $(0,p_i)$. 
+This result goes beyond the first-order equivalence between the two that we have just derived. It uses second-order terms, which correspond to efficiency gains from trade.
+
+% Equivalent price:
+% $t_i = a_i - a^*_i = (e_i - e_i(p^*_i)) p_i = p_i (p_i - p^*_i) \partial e / \partial p$
+% $p^*_i = p_i - \frac{t_i}{p_i} \partial p / \partial e$
+% existing formula shorter, better
+
+% Correspondence:
+% $V_i(p_i) = a^*_i - a_i \sim (e^*_i - e_i) (-p^*) $
+% $(r_i - e^*_i) p^* $
+% $r_i = e^*_i + \frac{a^*_i - a_i}{p^*} \sim e_i(p_i) = e_0 + (p_i - p_0) \partial e / \partial p
+%      = (1 + \epsilon \delta p_i) e_0$
+% $r_i \sim e_i(p_i)$ shorter than existing formula but not explicit enough on p_i
+% $p_i = p_0 + (r_i - e_0) \partial p / \partial e$
+
+
+% The proof relies on the convexity of abatement costs with respect to emissions, which itself stems from the fact that least costly abatement options can be implemented first. Denoting $N=\sum_j n_j$, $e^* = E^*/N$ and $\nu_j = n_j/N$, we have by definition $$e^* = \sum_j e_j(p^*) \nu_j = \sum_j e_j(p_j) \nu_j$$
+% By concavity of abatement costs, we then have $$a_j(p^*) \leq \sum_j a_j(p_j) \nu_j$$
+% For all $i$, let us define $\tilde{t_i} = a_i(p^*) - a_i(p_i)$. From the previous equation, we have $\sum_j \tilde{t_j} \nu_j \leq 0$. 
+Its proof relies on the convexity of abatement costs, which gives: $$a_i(p_i) - a_i(p^*) \geq (p_i - p^*) \partial a^*_i(p^*)$$ 
+The cap-and-trade transfer $t^*_i$ (where $r_i$ is the emission right equivalent to the autarchy price $p_i$) is therefore lower than $a_i(p^*) - a_i(p_i)$. To see this, let us plug $r_i$ into the transfer received under cap-and-trade: $$t^*_i = (r_i - e^*_i) p^* = (p^* - p_i) \partial a^*_i(p^*) \geq a_i(p^*) - a_i(p_i)$$
+Rearranging this inequality and adding $y_i$, we get %as $t^*_i \geq a_i(p^*) - a_i(p_i)$, we have 
+$c^*_i = y_i + t^*_i - a_i(p^*) \geq y_i - a_i = c^a_i$, which proves the efficiency of trading at a uniform price.
+
+%transfers $t_j \geq \tilde{t_j}$ such that $0 = \sum_j t_j \nu_j \geq \sum_j \tilde{t_j} \nu_j$. Now, for all $i$, as $t_i \geq \tilde{t_i} = a_i(p^*) - a_i(p_i)$, we have $c^{c*}_i = y_i + t_i - a_i(p^*) \geq y_i - a_i = c^a_i$, which proves the efficiency of a uniform price.% \hfill $\blacksquare$
+
+%Finally, by convexity of abatement costs, $a_i(p_i) - a_i(p^*) \geq (p_i - p^*) \partial a^*_i(p^*)$. The cap-and-trade right $r_i$ equivalent to the autarchy price $p_i$ therefore lower than the transfer $t_i$ chosen in the above proof. To see this, let us plug $r_i$ into the transfer received under cap-and-trade: $$t^*_i = (r_i - e^*_i) p^* = (p^* - p_i) \partial a^*_i(p^*) \geq a_i(p^*) - a_i(p_i) = \tilde{t_i}$$
+
 
 \subsubsection*{Using the status quo as
 benchmark}\label{using-the-status-quo-as-benchmark}
@@ -1092,7 +1072,7 @@ use the status quo \(c^- = (0, p^-)\), with \(p^-<p^*\). Then, the net
 gain they consider is \[\begin{aligned}
 \gamma_i &= (y_i + t_i - a_i(p_i)) - (y_i - a_i(p^-)) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
  &= t_i -a_i(p_i) + a_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
- &\sim t_i + (p^- - p_i) \partial a_i + (p^* - p^-) \partial E \partial u_{i2}/\partial u_{i1} \\
+ &\sim t_i + (p^- - p_i) \partial a^*_i + (p^* - p^-) \partial E \partial u_{i2}/\partial u_{i1} \\
  &= g_i - V_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
 \end{aligned}\] where \(\partial u_{i2}\) corresponds to the welfare
 benefits of lower world emissions.
@@ -1113,7 +1093,7 @@ the other case \(\gamma_i < g_i\), and these governments likely use
 where a government doesn't attach any value to a stable climate,
 accepting a price increase \(\Delta p_i = p_i - p^-\) requires a
 transfer larger than the abatement costs:
-\[t_i > V_i(p^-) = \Delta p_i \partial a_i\]
+\[t_i > V_i(p^-) = \Delta p_i \partial a^*_i\]
 
 Conceptually, abatement costs can be divided in two parts: first, the
 extra investments needed to build and deploy low-carbon infrastructure;
