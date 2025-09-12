@@ -38,6 +38,7 @@
 \usepackage{indentfirst}
 \setcitestyle{aysep={}} 
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{mathrsfs}
 \usepackage{tcolorbox}
 \usepackage{amssymb}
@@ -373,7 +374,7 @@ Figure \ref{fig:trajectories} also shows the carbon price that should result fro
 %   \midrule 
 %   Carbon price (in \$/tCO$_\text{2}$) & 2 & 34 & 80 & 122 & 162 & 243 & 340 & 481 \\ %&  \\
 %   %  &  &  &  &  &  &  &  &  &  \\    
-%   \bottomrule\\[-0.81em]
+%   \bottomrule\$$-0.81em]
 % \end{tabular}}
 % \end{table}
 
@@ -537,7 +538,7 @@ We estimate the potential revenues from new taxes at global level.\cite{fabre_sh
   \caption{Estimated revenues from new global taxes (in billions of dollars per year).\label{tab:su}}
   \begin{tabular}[t]{ccccccc}
   \toprule
-  \makecell{Financial\\Transaction\\Tax} & \makecell{Carbon\\price\\(\$10/tCO\textsubscript{2})} & \makecell{Aviation\\tax\\(\$300/tCO\textsubscript{2})} & \makecell{Corporate\\income tax\\(21\%)} & \makecell{Tax on the\\ultra-rich\\(3\% above\\ \$100M)} & \makecell{Wealth tax\\(2\% above\\ \$5M)} & \bo{Total} \\
+  \makecell{Financial\\Transaction\\Tax} & \makecell{Carbon\\price\$\$10/tCO\textsubscript{2})} & \makecell{Aviation\\tax\$\$300/tCO\textsubscript{2})} & \makecell{Corporate\\income tax\$21\%)} & \makecell{Tax on the\\ultra-rich\$3\% above\\ \$100M)} & \makecell{Wealth tax\$2\% above\\ \$5M)} & \bo{Total} \\
   \midrule
   327 & 356 & 223 & 299 & 765 & 1,364 & \bo{3,334} \\
   \bottomrule\\[-0.81em]
@@ -953,89 +954,100 @@ prices}\label{app:correspondence}
 
 \subsubsection*{Setting}\label{setting}
 
-Decarbonization is costly. When a country \(i\) faces a carbon price \(p_i\), it curtails consumption by investing in low-carbon equipment and reorienting consumption to less preferred, less carbon-intensive products. These costs to consumption are called abatements costs and denoted \(a_i\). Taking into account the possibility of transfers \(t_i\) from the rest of the world, expressing everything in per capita terms, and abstracting from exogenous investments, country i's consumption is related to its potential output \(y_i\) as follows:
-\[c_i = y_i + t_i - a_i(p_i)\]
+Decarbonization is costly. When a country $i$ faces a carbon price $p_i$, it curtails consumption by investing in low-carbon equipment and reorienting consumption to less preferred, less carbon-intensive products. These costs to consumption are called abatements costs and denoted $a_i$. Taking into account the possibility of transfers $t_i$ from the rest of the world, expressing everything in per capita terms, and abstracting from exogenous investments, country $i$'s consumption is related to its potential output $y_i$ as follows:
+$$c_i = y_i + t_i - a_i$$
 
-Assume that the welfare of country \(i\) depends on its consumption \(c_i\) and global emissions \(E=\sum_j e_j n_j\), where \(e_j\) is country's \(j\) per capita emissions and \(n_j\) its population size.
-For now, take global emissions as fixed at their optimal level \(E^*\). Let \(p^*\) be the uniform carbon price required to attain \(E^*\), i.e.~\(E^*=\sum_j e_j(p^*) n_j\).
+Assume that the welfare of country $i$  depends on its consumption $c_i$ and global emissions $E=\sum_j e_j n_j$, where $e_j$ is country's $j$ per capita emissions and $n_j$ its population size.
+For now, take global emissions as fixed at their optimal level $E^*$. Let $p^*$ be the uniform carbon price required to attain $E^*$, i.e.~$E^*=\sum_j e_j(p^*) n_j$. As shortcuts, we denote $e_i \coloneqq e_i(p_i)$, $a_i \coloneqq a_i(e_i)$, $e^*_i \coloneqq e_i(p^*) $, and $a^*_i \coloneqq a_i(e^*_i)$.
 
-\textbf{A situation is fully specified by the set of transfers \((t_j)_j\) and carbon prices \((p_j)_j\) for each country}. For country \(i\), given that global emissions are taken as fixed, the situation can be summarized as \(s=(t_i, p_i)\), and (with a slight abuse of notation) we may express \(i\)'s welfare accordingly:
-\(u_i(c_i;E^*)=u_i(t_i,p_i)\).
+\textbf{A situation is fully specified by the set of transfers $(t_j)_j$ and carbon prices $(p_j)_j$ for each country}. For country $i$, given that global emissions are taken as fixed, the situation can be summarized as $s=(t_i, p_i)$, and (with a slight abuse of notation) we may express $i$'s welfare accordingly:
+$u_i(c_i;E^*)=u_i(t_i,p_i)$.
 
 \subsubsection*{Equivalent variation from the benchmark in the absence of
 transfers}\label{equivalent-variation-from-the-benchmark-in-the-absence-of-transfers}
 
-To analyze an arbitrary situation \(s\), it will be useful to relate it to two special cases. First, the coordinated situation \(c*=(0,p^*)\), without transfer and with a uniform carbon price, which we take as a benchmark. Second, the autarchy situation \(a=(0, p_i)\), without transfer and with differentiated prices, which will be a useful intermediary to analyze an arbitrary situation. We denote \(V_i(p_i)\) the equivalent variation between situation \(a\) and \(c*\), i.e.~the transfer required at \(c*\) to get \(a\)'s welfare: \[\begin{aligned}
+To analyze an arbitrary situation $s$, it will be useful to relate it to two special cases. First, the coordinated situation $c*=(0,p^*)$, without transfer and with a uniform carbon price, which we take as a benchmark. Second, the autarchy situation $a=(0, p_i)$, without transfer and with differentiated prices, which will be a useful intermediary to analyze an arbitrary situation. We denote $V_i(p_i)$ the equivalent variation between situation $a$ and $c*$, i.e.~the transfer required at $c*$ to get $a$'s welfare: 
+$$\begin{aligned}
 u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i) \\
 c^{c*}_i + V_i(p_i) &= c^a_i \\
-V_i(p_i) &= c^a_i - c^{c*}_i = a_i(p^*) - a_i(p_i) 
- &\sim  (p^* - p_i) \partial a^*_i
-\end{aligned}\] 
-where \textbf{\(\partial a^*_i\) is the marginal abatement cost}.
-% In terms of welfare: \[\begin{aligned}
-% u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i)=u_i(y_i-a_i(p_i))\sim u^{c*}_i - (p_i - p^*) \partial a^*_i \partial u_{i1} \\
+V_i(p_i) &= c^a_i - c^{c*}_i \\
+&= a_i(e^*_i ) - a_i(e_i) \\
+ &\sim  (e^*_i  - e_i) \frac{da_i}{de} (e^*_i ) = (e_i - e^*_i ) p^* 
+\end{aligned}$$
+as $\frac{da_i}{de} (p) = -p$.
+Denoting $\varepsilon^* = -\frac{de_i/e^*_i }{dp/p^*}$ the absolute price elasticity of emissions at $p^*$, we have $$V_i(p_i) \sim (p^* - p_i) e^*_i  \varepsilon^* $$
+% where \textbf{$\partial a_i$ is the marginal abatement cost}.
+% In terms of welfare: $$\begin{aligned}
+% u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i)=u_i(y_i-a_i)\sim u^{c*}_i - (p_i - p^*) \partial a^*_i \partial u_{i1} \\
 % u_i(V_i(p_i), p^*)&= u^{c*}_i + V_i(p_i)\partial u_{i1}
-% \end{aligned}\]
+% \end{aligned}$$
 
-% where \textbf{\(\partial a^*_i\) is the marginal abatement cost at
-% \(p^*\)}. Therefore, at the first order,
-% \[V_i(p_i) = (p^* - p_i) \partial a^*_i\]
+% where \textbf{$\partial a^*_i$ is the marginal abatement cost at
+% $p^*$}. Therefore, at the first order,
+% $$V_i(p_i) = (p^* - p_i) \partial a^*_i$$
 
-\(V_i\) is positive iff \(p^* > p_i\) as country i ``needs'\,' a positive compensation to get the same welfare as in $a$ with a higher price \(p^*\) (and lower emissions) compared to \(c*\).
+$V_i$ is positive iff $p^* > p_i$, as country $i$ ``needs'' a positive compensation to get the same welfare as in $a$ compared to $c*$ with a higher price $p^*$ (and lower emissions).
 
 \subsubsection*{Equivalent transfer for an arbitrary
 situation}\label{equivalent-transfer-for-an-arbitrary-situation}
 
-Let \(g^s_i\) be country \(i\)'s net gain (or ``equivalent transfer'\,') in an arbitrary situation \(s=(t_i, p_i)\) compared to the benchmark situation \(c*=(0,p^*)\): 
-\[\begin{aligned}
+Let $g^s_i$ be country $i$'s net gain (or ``equivalent transfer'') in a situation $s=(t_i, p_i)$ compared to the benchmark situation $c*=(0,p^*)$: 
+$$\begin{aligned}
 g^s_i &= (c^s_i - c^a_i) + (c^a_i - c^{c*}_i) \\
  &= t_i + V_i(p_i)
-\end{aligned}\] 
-Note that \textbf{we can call \(g^s_i\) the equivalent transfer as it is the transfer at zero price that makes \(i\) indifferent with \(s\), i.e.~the transfer such that \((g^s_i, 0)\) is welfare-equivalent to \(s=(t_i, p_i)\)}. The equivalent transfer is a very useful metric to compare the welfare of a country in different situations.
+\end{aligned}$$ 
+Note that \textbf{we can call $g^s_i$ the equivalent transfer as it is the transfer at zero price that makes $i$ indifferent with $s$, i.e.~the transfer such that $(g^s_i, 0)$ is welfare-equivalent to $s=(t_i, p_i)$}. The equivalent transfer is a very useful metric to compare the welfare of a country in different situations.
 
 \subsubsection*{Correspondence with an equivalent
 price}\label{correspondence-with-an-equivalent-price}
 
 Now, we have all the tools to study the correspondence between transfers, differentiated emission rights, and differentiated prices.
-Let \(p^*_i\) be the ``equivalent price'\,' such that \(s=(t_i, p_i)\) is welfare-equivalent to \(s*=(0, p^*_i)\). \[\begin{aligned}
+Let $p^*_i$ be the ``equivalent price'' such that $s=(t_i, p_i)$ is welfare-equivalent to $s*=(0, p^*_i)$. $$\begin{aligned}
 g^s_i &= g^{s*}_i \\
 t_i + V_i(p_i) &= V_i(p^*_i) \\
-t_i + (p^* - p_i) \partial a^*_i &\sim (p^*- p^*_i) \partial a^*_i \\
-\end{aligned}\]
+t_i + (p^* - p_i) e^*_i  \varepsilon^* &\sim (p^* - p^*_i) e^*_i  \varepsilon^* \\
+\end{aligned}$$
 
 Therefore, at the first order, the equivalent price is:
-\[p^*_i \sim p_i - \frac{t_i}{\partial a^*_i} \]
+$$p^*_i \sim p_i - \frac{t_i}{e^*_i  \varepsilon^* } $$
 
-The equivalent price is negative when \(p_i \partial a^*_i < t_i\). As a negative price would require a transfer from the rest of the world, a regime with differentiated (positive) prices is restrictive compared to a system that allows for international transfers. Therefore, \textbf{we prefer to use the concept of equivalent transfer \(g^s_i\), rather than its dual the equivalent price}. From the above, the equivalent transfer can be expressed as:
+The equivalent price is negative when $p_i e^*_i  \varepsilon^* < t_i$. As a negative price would require a transfer from the rest of the world, a regime with differentiated (positive) prices is restrictive compared to a system that allows for international transfers. Therefore, \textbf{we prefer to use the concept of equivalent transfer $g^s_i$, rather than its dual the equivalent price}. 
+% From the above, the equivalent transfer can be expressed as:
 
-\[g^s_i \sim t_i + (p^* - p_i) \partial a^*_i\]
+% $$g^s_i \sim t_i + (p^* - p_i) \partial a^*_i$$
 
 \subsubsection*{Correspondence between differentiated prices and
 rights}\label{correspondence-between-differentiated-prices-and-rights}
 
-Imagine that countries establish a uniform carbon price \(p^*\), for example through a cap-and-trade. Say each person in country \(i\) has an emission right \(r_i\), so they are entitled a claim \(r_i p^*\) on global carbon revenue. Then, the net monetary transfer to \(i\) is \[t^*_i = r_i p^* - e^*_i p^*\]
+Imagine that countries establish a uniform carbon price $p^*$, for example through a cap-and-trade. Say each person in country $i$ has an emission right $r_i$, so they are entitled a claim $r_i p^*$ on global carbon revenue. Then, the net monetary transfer to $i$ is $$t^*_i = r_i p^* - e^*_i p^*$$
 
 In the static case, \textbf{there is a correspondence between emission
-rights \(r_i\) in a cap-and-trade and differentiated prices \(p_i\) in
-autarchy (without transfers)}: \[\begin{aligned}
-g^a_i &= V_i(p_i) \sim (p^* - p_i) \partial a^*_i \\
+rights $r_i$ in a cap-and-trade and differentiated prices $p_i$ in
+autarchy (without transfers)}: $$\begin{aligned}
+g^a_i &= V_i(p_i) = a^*_i - a_i \sim (p^* - p_i) e^*_i  \varepsilon^* \\
 g^*_i &= t^*_i = (r_i - e^*_i) p^* \\
-g^*_i = g^a_i &\Leftrightarrow (r_i - e^*_i) p^* \sim (p^* - p_i) \partial a^*_i
-\end{aligned}\]
+g^*_i = g^a_i &\Leftrightarrow t^*_i = a^*_i - a_i \\
+&\Leftrightarrow (r_i - e^*_i) p^* \sim (p^* - p_i) e^*_i  \varepsilon^*
+\end{aligned}$$
 
-The left-hand side is the cap-and-trade equivalent transfer, which corresponds to the net monetary transfer received in the uniform cap-and-trade. The (first-order) equivalence relation states that the transfer is negatively related to the difference between the autarchy price and the global cap-and-trade price. The coefficient of this linear relation is the marginal abatement cost: the costlier abatement is, the larger the effect of the autarchy carbon price on the cap-and-trade equivalent
-transfer.
+The left-hand side is the cap-and-trade equivalent transfer, which corresponds to the net monetary transfer received in the uniform cap-and-trade. This transfer is equal to the extra abatement cost incurred by going from autarchy to the cap-and-trade without transfer. The (first-order) equivalence relation states that the transfer is negatively related to the difference between the autarchy price and the global cap-and-trade price. The coefficient of this linear relation is the emissions times their price elasticity: the higher the emissions and the more they are sensitive to the carbon price, the larger the effect of the autarchy carbon price on the cap-and-trade equivalent transfer.
+%The coefficient of this linear relation is the marginal abatement cost: the costlier abatement is, the larger the effect of the autarchy carbon price on the cap-and-trade equivalent transfer. % TODO? explain that e^*_i  \varepsilon^* = \partial a^_i / \partial p ?
 
-One can easily isolate cap-and-trade emission rights or autarchy price in function of the other variables: \[\begin{aligned}
-g^*_i = g^a_i &\Leftrightarrow r_i \sim e_i^* + (1 - \frac{p_i}{p^*}) \partial a^*_i  \\
-&\Leftrightarrow p_i \sim p^* (1 + \frac{e^*_i - r_i}{\partial a^*_i})
-\end{aligned}\]
+One can easily isolate cap-and-trade emission rights or autarchy price in function of the other variables: $$\begin{aligned}
+g^*_i = g^a_i &\Leftrightarrow r_i \sim (1 + (1 - \frac{p_i}{p^*}) \varepsilon^*) e_i^*  \\
+&\Leftrightarrow p_i \sim (1 + \frac{e^*_i - r_i}{e^*_i  \varepsilon^*}) p^*
+\end{aligned}$$
+
+% $$\begin{aligned}
+% g^*_i = g^a_i &\Leftrightarrow r_i \sim e_i^* + (1 - \frac{p_i}{p^*}) \partial a^*_i  \\
+% &\Leftrightarrow p_i \sim p^* (1 + \frac{e^*_i - r_i}{\partial a^*_i})
+% \end{aligned}$$
 
 \subsubsection*{Efficiency of a uniform price} \label{efficiency-of-a-uniform-price}
 
-When there is undue inequality between countries, differentiated carbon prices can help improve the world's welfare, as reduced abatement in low-income countries act as a subsitute for transfers. However, the Diamond-Mirrlees production efficiency theorem states that, in absence of other imperfections (such as market power or imperfect capital markets), direct transfers are always preferable to differentiated prices to address inequality.\citep{diamond_optimal_1971} In our setting, this theorem translates into the following result: 
-For any country $i$, the welfare is at least as high in the situation with uniform price and equivalent transfers $(t^*_i,p^*)$ as in the autarchy situation $(0,p_i)$. 
-This result goes beyond the first-order equivalence between the two that we have just derived. It uses second-order terms, which correspond to efficiency gains from trade.
+When there is undue inequality between countries, differentiated carbon prices can help improve the world's welfare, as reduced abatement in low-income countries act as a subsitute for transfers. However, the Diamond-Mirrlees production efficiency theorem states that, in absence of other imperfections (such as market power or imperfect capital markets), direct transfers are always preferable to differentiated prices to address inequality.\citep{diamond_optimal_1971} In our setting, this theorem means that carbon trading is always beneficial.  
+More precisely, for any country $i$, compared to the autarchy situation $(0,p_i)$, welfare is at least as high in the situation with uniform price where rights correspond to the autarchy emissions: $(\widetilde{t_i}=(e_i - e^*_i)p^* ,p^*)$. 
+% This result goes beyond the first-order equivalence between the two that we have just derived. It uses second-order terms, which correspond to efficiency gains from trade.
 
 % Equivalent price:
 % $t_i = a_i - a^*_i = (e_i - e_i(p^*_i)) p_i = p_i (p_i - p^*_i) \partial e / \partial p$
@@ -1045,55 +1057,58 @@ This result goes beyond the first-order equivalence between the two that we have
 % Correspondence:
 % $V_i(p_i) = a^*_i - a_i \sim (e^*_i - e_i) (-p^*) $
 % $(r_i - e^*_i) p^* $
-% $r_i = e^*_i + \frac{a^*_i - a_i}{p^*} \sim e_i(p_i) = e_0 + (p_i - p_0) \partial e / \partial p
-%      = (1 + \epsilon \delta p_i) e_0$
-% $r_i \sim e_i(p_i)$ shorter than existing formula but not explicit enough on p_i
+% $r_i = e^*_i + \frac{a^*_i - a_i}{p^*} \sim e_i = e_0 + (p_i - p_0) \partial e / \partial p
+%      = (1 + \varepsilon \delta p_i) e_0$
+% $r_i \sim e_i$ shorter than existing formula but not explicit enough on p_i
 % $p_i = p_0 + (r_i - e_0) \partial p / \partial e$
 
 
 % The proof relies on the convexity of abatement costs with respect to emissions, which itself stems from the fact that least costly abatement options can be implemented first. Denoting $N=\sum_j n_j$, $e^* = E^*/N$ and $\nu_j = n_j/N$, we have by definition $$e^* = \sum_j e_j(p^*) \nu_j = \sum_j e_j(p_j) \nu_j$$
 % By concavity of abatement costs, we then have $$a_j(p^*) \leq \sum_j a_j(p_j) \nu_j$$
-% For all $i$, let us define $\tilde{t_i} = a_i(p^*) - a_i(p_i)$. From the previous equation, we have $\sum_j \tilde{t_j} \nu_j \leq 0$. 
-Its proof relies on the convexity of abatement costs, which gives: $$a_i(p_i) - a_i(p^*) \geq (p_i - p^*) \partial a^*_i(p^*)$$ 
-The cap-and-trade transfer $t^*_i$ (where $r_i$ is the emission right equivalent to the autarchy price $p_i$) is therefore lower than $a_i(p^*) - a_i(p_i)$. To see this, let us plug $r_i$ into the transfer received under cap-and-trade: $$t^*_i = (r_i - e^*_i) p^* = (p^* - p_i) \partial a^*_i(p^*) \geq a_i(p^*) - a_i(p_i)$$
-Rearranging this inequality and adding $y_i$, we get %as $t^*_i \geq a_i(p^*) - a_i(p_i)$, we have 
-$c^*_i = y_i + t^*_i - a_i(p^*) \geq y_i - a_i = c^a_i$, which proves the efficiency of trading at a uniform price.
+% For all $i$, let us define $\tilde{t_i} = a^*_i - a_i$. From the previous equation, we have $\sum_j \tilde{t_j} \nu_j \leq 0$. 
+This results stems from the convexity of abatement costs, which gives: $$a_i - a^*_i \geq (e_i - e^*) \frac{da^*_i}{de} = (e_i - e^*) (-p^*)$$ 
+%Note that $\partial a^*_i(p^*) = (\partial a^*_i / \partial e) (\partial e / \partial p) = - p^* \partial e / \partial p$ 
+The transfer obtained from trading $\widetilde{t_i}$ is therefore greater than the transfer equivalent to autarchy $t^*_i$. Indeed: $$\widetilde{t_i} = (e_i - e^*_i ) p^* \geq a^*_i - a_i = t^*_i$$
+Rearranging the inequality and adding $y_i$, we can verify that the consumption is greater while trading: %as $t^*_i \geq a^*_i - a_i$, we have 
+$\widetilde{c_i} = y_i + \widetilde{t_i} - a^*_i \geq y_i - a_i = c^a_i$, which proves the efficiency of trading at a uniform price.
 
-%transfers $t_j \geq \tilde{t_j}$ such that $0 = \sum_j t_j \nu_j \geq \sum_j \tilde{t_j} \nu_j$. Now, for all $i$, as $t_i \geq \tilde{t_i} = a_i(p^*) - a_i(p_i)$, we have $c^{c*}_i = y_i + t_i - a_i(p^*) \geq y_i - a_i = c^a_i$, which proves the efficiency of a uniform price.% \hfill $\blacksquare$
+%transfers $t_j \geq \tilde{t_j}$ such that $0 = \sum_j t_j \nu_j \geq \sum_j \tilde{t_j} \nu_j$. Now, for all $i$, as $t_i \geq \tilde{t_i} = a^*_i - a_i$, we have $c^{c*}_i = y_i + t_i - a^*_i \geq y_i - a_i = c^a_i$, which proves the efficiency of a uniform price.% \hfill $\blacksquare$
 
-%Finally, by convexity of abatement costs, $a_i(p_i) - a_i(p^*) \geq (p_i - p^*) \partial a^*_i(p^*)$. The cap-and-trade right $r_i$ equivalent to the autarchy price $p_i$ therefore lower than the transfer $t_i$ chosen in the above proof. To see this, let us plug $r_i$ into the transfer received under cap-and-trade: $$t^*_i = (r_i - e^*_i) p^* = (p^* - p_i) \partial a^*_i(p^*) \geq a_i(p^*) - a_i(p_i) = \tilde{t_i}$$
+%Finally, by convexity of abatement costs, $a_i - a^*_i \geq (p_i - p^*) \partial a^*_i(p^*)$. The cap-and-trade right $r_i$ equivalent to the autarchy price $p_i$ therefore lower than the transfer $t_i$ chosen in the above proof. To see this, let us plug $r_i$ into the transfer received under cap-and-trade: $$t^*_i = (r_i - e^*_i) p^* = (p^* - p_i) \partial a^*_i(p^*) \geq a^*_i - a_i = \tilde{t_i}$$
 
 
 \subsubsection*{Using the status quo as
 benchmark}\label{using-the-status-quo-as-benchmark}
 
-If, instead of using \(c*=(0, p^*)\) as the counterfactual, governments
-use the status quo \(c^- = (0, p^-)\), with \(p^-<p^*\). Then, the net
-gain they consider is \[\begin{aligned}
-\gamma_i &= (y_i + t_i - a_i(p_i)) - (y_i - a_i(p^-)) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
- &= t_i -a_i(p_i) + a_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
- &\sim t_i + (p^- - p_i) \partial a^*_i + (p^* - p^-) \partial E \partial u_{i2}/\partial u_{i1} \\
+If, instead of using $c*=(0, p^*)$ as the counterfactual, governments
+use the status quo $c^- = (0, p^-)$, with $p^-<p^*$. Then, the net
+gain they consider is 
+$$\begin{aligned}
+\gamma_i &= (y_i + t_i - a_i) - (y_i - a_i(p^-)) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
+ &= t_i -a_i + a_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
  &= g_i - V_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
-\end{aligned}\] where \(\partial u_{i2}\) corresponds to the welfare
+% &\sim t_i + (p^- - p_i) \partial a^*_i + (p^* - p^-) \partial E \partial u_{i2}/\partial u_{i1} \\
+\end{aligned}$$ 
+where $\partial u_{i2}$ corresponds to the welfare
 benefits of lower world emissions.
 
-The gain relative to the status quo \(\gamma_i\) is larger than the gain
-relative to \(c*\) iff the price \(p^*\) would improve welfare compared
-to the status quo price \(p^-\), i.e.~iff the welfare benefit from lower
+The gain relative to the status quo $\gamma_i$ is larger than the gain $g_i$
+relative to $c*$ iff the price $p^*$ would improve welfare compared
+to the status quo price $p^-$, i.e.~iff the welfare benefit from lower
 emissions exceeds the cost of decarbonization:
-\[\gamma_i > g_i \Leftrightarrow (E^* - E^-) \partial u_{i2}/\partial u_{i1} > V_i(p^-) \]
+$$\gamma_i > g_i \Leftrightarrow (E^* - E^-) \partial u_{i2}/\partial u_{i1} > V_i(p^-) $$
 
 \subsubsection*{Abatement cost required as transfer by those neglecting
 climate
 costs}\label{abatement-cost-required-as-transfer-by-those-neglecting-climate-costs}
 
 From the point of view of short-sighted governments, we are likely in
-the other case \(\gamma_i < g_i\), and these governments likely use
-\(\gamma_i\) as a counterfactual to assess welfare. In the worst case
+the other case $\gamma_i < g_i$, and these governments likely use
+$\gamma_i$ as a counterfactual to assess welfare. In the worst case
 where a government doesn't attach any value to a stable climate,
-accepting a price increase \(\Delta p_i = p_i - p^-\) requires a
-transfer larger than the abatement costs:
-\[t_i > V_i(p^-) = \Delta p_i \partial a^*_i\]
+accepting a price increase $\Delta p_i = p_i - p^-$ requires a
+transfer larger than the abatement costs: 
+$$t_i > -V_i(p^-) = a_i - a^-_i \sim \Delta p_i e^*_i  \varepsilon^*$$
 
 Conceptually, abatement costs can be divided in two parts: first, the
 extra investments needed to build and deploy low-carbon infrastructure;
@@ -1101,12 +1116,10 @@ second, the curtailment of consumption (of energy, meat, flights\ldots)
 entailed by a higher carbon price. The former can be estimated with a
 bottom-up energy model; the latter using the short (or medium) term
 price-elasticity of emissions
-\(\epsilon = \frac{\partial e}{e}/\frac{\partial p}{p}\) and the crude
+$\varepsilon^*$ and the crude
 approximation that emissions represent one-twentieth of the consumption
 (corresponding to about half the energy share). Assuming
-\(\epsilon = .4\), the effect on consumption of an increase in price by
-a factor \(\delta p\) is therefore:
-\(\delta c = \frac{\partial c/c}{\partial e/e} \epsilon \delta p = .05 \cdot .4 \cdot \delta p = .02 \cdot \delta p\).
+$\varepsilon = .4$, the transfer needed to compensate a price increase $\delta p = \Delta p / p$ is such that: $\frac{t}{c} > \frac{e\cdot p}{c} \varepsilon \delta p = .05 \cdot .4 \cdot \delta p = .02 \cdot \delta p$.
 So, as a first approximation, a doubling of the carbon price should be
 compensated with a transfer of at least 2\% of GDP.
 
@@ -1118,91 +1131,91 @@ In this section, we will show that the correspondence between transfers
 and differentiated carbon prices imperfectly extends to the dynamic
 case.
 
-Let us keep the previous notations and add an index \(t\) to denote the
-value of a variable at time \(t\). Let \(\beta_t\) be the discount
-factor between the initial period and \(t\) (containing the pure rate of
+Let us keep the previous notations and add an index $t$ to denote the
+value of a variable at time $t$. Let $\beta_t$ be the discount
+factor between the initial period and $t$ (containing the pure rate of
 time preference and the welfare discounting from growth). Intertemporal
 values are denoted with uppercase letters. Monetary variables are
-discounted while physical ones are not, e.g.~ \(i\)'s intertemporal net
-gain is \(G_i = \sum_t g_{it} \beta_t\) and its intertemporal emission
-right is \(R_i = \sum_t r_{it}\).
+discounted while physical ones are not, e.g.~ $i$'s intertemporal net
+gain is $G_i = \sum_t g_{it} \beta_t$ and its intertemporal emission
+right is $R_i = \sum_t r_{it}$.
 
-A situation \(S\) is now given by the transfers and prices trajectories:
-\(S=((t_{it})_t, (p_{it})_t)\). Taking \(y_{it}\) as exogenous as a
-first approximation, for country \(i\) a situation \(S\) is
-welfare-equivalent to a situation \(S'\) with the same temperature
-trajectory iff:
-\(\sum_t t_{it} - a_{it}(p_{it}) = \sum_t t'_{it} - a_{it}(p'_{it})\).
+A situation $S$ is now given by the transfers and prices trajectories:
+$S=((t_{it})_t, (p_{it})_t)$. Taking $y_{it}$ as exogenous as a
+first approximation, for country $i$ a situation $S$ is
+welfare-equivalent to a situation $S'$ with the same temperature
+trajectory iff:\\
+$\sum_t t_{it} - a_{it}(p_{it}) = \sum_t t'_{it} - a_{it}(p'_{it})$.
 
 \subsubsection*{The uniform price without transfer case as
 benchmark}\label{the-uniform-price-without-transfer-case-as-benchmark}
 
-Consider the situation \(C*=(0,(p^*_t)_t)\) of a uniform carbon price
-trajectory \((p^*_t)_t\) and within-country revenue recycling
+Consider the situation $C*=(0,(p^*_t)_t)$ of a uniform carbon price
+trajectory $(p^*_t)_t$ and within-country revenue recycling
 (i.e.~without transfers). The carbon price trajectory may be fixed in
 advance or emerge from the temporal allocation of the global
-intertemporal carbon budget (or emission right) \(R\) in a cap-and-trade
-system: \((r_{t})_t\). Let us define the net gain for \(i\) at \(t\) in
-a situation \(S\) (with the same emissions trajectory as \(C*\)) in
-relation to \(C*\). As above: \(g_{it} = t_{it} + V_{it}(p_{it})\),
-where \(V_{it}(p_{it}) = (p^*_t - p_{it}) \partial a_{it}\).
+intertemporal carbon budget (or emission right) $R$ in a cap-and-trade
+system: $(r_{t})_t$. Let us define the net gain for $i$ at $t$ in
+a situation $S$ (with the same emissions trajectory as $C*$) in
+relation to $C*$. As above: $g_{it} = t_{it} + V_{it}(p_{it})$,
+where $V_{it}(p_{it}) = a^*_{it} - a_{it}$.
 
 \subsubsection*{A more limited correspondence between differentiated
 prices and
 rights}\label{a-more-limited-correspondence-between-differentiated-prices-and-rights}
 
 As in the static case, let us look for a correspondence between an
-autarchy situation \(A\) with differentiated prices and a cap-and-trade
-system \(U\) with uniform price. In the general case,
-\(A=(0, (p_{it})_t)\) while
-\(U=((r_{it}p^*_t-e^*_{it}p^*_t)_t, (p^*_t)_t)\) is indirectly
-determined by \(r=(r_{it})_t\). The welfare equivalence for \(i\)
-between \(A\) and \(U\) can be derived as follows: \[\begin{aligned}
-G^A_i &= \sum_t (p^*_t - p_{it}) \partial a_{it} \beta_t \\
+autarchy situation $A$ with differentiated prices and a cap-and-trade
+system $U$ with uniform price. In the general case,
+$A=(0, (p_{it})_t)$ while
+$U=((r_{it}p^*_t-e^*_{it}p^*_t)_t, (p^*_t)_t)$ is indirectly
+determined by $r=(r_{it})_t$. The welfare equivalence for $i$ between $A$ and $U$ can be approximated as follows: 
+$$\begin{aligned}
+G^A_i &= \sum_t (a^*_{it} - a_{it})\beta_t \sim \sum_t (p^*_t - p_{it}) e^*_{it}  \varepsilon^*_t \beta_t \\
 G^U_i &= \sum_t (r_{it} - e^*_{it}) p^*_t \beta_t \\
-G^U_i = G^A_i &\Leftrightarrow \sum_t r_{it} \beta_t p^*_t  = \sum_t (\partial a_{it} + e^*_{it}) p^*_t \beta_t - \sum_t p_{it} \partial a_{it} \beta_t  
-\end{aligned}\]
+G^U_i = G^A_i &\Leftrightarrow \sum_t (r_{it} - e^*_{it}) \beta_t p^*_t  \sim \sum_t (p^*_t - p_{it}) e^*_{it}  \varepsilon^*_t \beta_t
+\end{aligned}$$
 
 \textbf{Contrary to the static case, there is no direct equivalence
 between an intertemporal aggregate of the emission rights and an
 intertemporal aggregate of differentiated prices}, since the welfare
 effect of emission rights depends on the cap-and-trade price trajectory
-\(p^*_t\).
+$p^*_t$.
 
 The same reason also complicates the comparison between two possible
-allocations \(r\) and \(r'\) of the intertemporal carbon budget in a
+allocations $r$ and $r'$ of the intertemporal carbon budget in a
 cap-and-trade, even when the price trajectories coincide. Indeed, the
 condition
-\(G^U_i > G^{U'}_i \Leftrightarrow \sum_t r_{it} \beta_t p^*_t > \sum_t r'_{it} \beta_t p^*_t\)
+$G^U_i > G^{U'}_i \Leftrightarrow \sum_t r_{it} \beta_t p^*_t > \sum_t r'_{it} \beta_t p^*_t$
 does \emph{not} imply that
-\(R_i = \sum_t r_{it} > \sum_t r'_{it} = R'_i\). In other words,
-\textbf{there is no immediate relation between \(i\)'s intertemporal
+$R_i = \sum_t r_{it} > \sum_t r'_{it} = R'_i$. In other words,
+\textbf{there is no immediate relation between $i$'s intertemporal
 carbon budget and its intertemporal welfare, as the price trajectory
 matters}.
 
 Let us study whether we can find a correspondence in simpler cases. For
-the autarchy situation \(A\), consider a homothetic carbon price
-vis-à-vis the world average: \(p_{it}=\pi_ip_t\). For the cap-and-trade
-situation \(U\), consider that \(i\) is granted a fixed share of the
-world's carbon budget: \(r_{it}=r_ir_t\). Now, the equivalence between
-\(A\) and \(U\) rewrites:
+the autarchy situation $A$, consider a homothetic carbon price
+vis-à-vis the world average: $p_{it}=\pi_i p_t$. For the cap-and-trade
+situation $U$, consider that $i$ is granted a fixed share of the
+world's carbon budget: $r_{it}=r_ir_t$. Now, the equivalence between
+$A$ and $U$ rewrites:
 
-\[\begin{aligned}
-G^U_i = G^A_i &\Leftrightarrow r_i \sum_t r_{t} \beta_t p^*_t  = \sum_t (\partial a_{it} + e^*_{it}) p^*_t \beta_t - \pi_i \sum_t p_{t} \partial a_{it} \beta_t  
-\end{aligned}\]
+$$\begin{aligned}
+G^U_i = G^A_i &\Leftrightarrow r_i \sum_t r_{t} \beta_t p^*_t - \sum_t e^*_{it} p^*_t \beta_t \sim \sum_t (p^*_t - \pi_i p_t) e^*_{it}  \varepsilon^*_t \beta_t  
+\end{aligned}$$
 
 Provided that the price trajectories in autarchy are homothetic to the
 price trajectory in the cap-and-trade (without loss of generality):
-\(p_{it}=\pi_ip^*_t\); the equivalence simplifies further:
+$p_{it}=\pi_i p^*_t$; the equivalence simplifies further:
 
-\[G^U_i = G^A_i \Leftrightarrow r_i \mathscr{B} = \mathscr{E} + (1 - \pi_i) \mathscr{\partial A}\]
-where \(\mathscr{B} = \sum_t r_{t} \beta_t p^*_t\),
-\(\mathscr{E} = \sum_t e^*_{it} p^*_t \beta_t\), and
-\(\mathscr{\partial A} = \sum_t \partial a_{it} p^*_t \beta_t\).
+$$G^U_i = G^A_i \Leftrightarrow r_i \mathscr{B} = \mathscr{E}^*_i + (1 - \pi_i) \Delta \mathscr{A}$$
+where $\mathscr{B} = \sum_t r_{t} \beta_t p^*_t$,
+$\mathscr{E}^*_i = \sum_t e^*_{it} p^*_t \beta_t$, and
+$\Delta \mathscr{A} = \sum_t p^*_t e^*_{it}  \varepsilon^*_t \beta_t $.
 
 \textbf{Although we do find a correspondence in this special case}, the
 formula faces practical limitations, as \textbf{it requires knowing the
-future price trajectory \((p^*_t)_t\), which can only be imprecisely
+future price trajectory $(p^*_t)_t$, which can only be imprecisely
 estimated} in the cap-and-trade situation. In any case, although one can
 find a trajectory of differentiated prices welfare equivalent to a given
 allocation of emissions rights, and vice versa, the derivation cannot be
@@ -1212,11 +1225,11 @@ model}.
 However, \textbf{in the Hotelling case} (with a fixed carbon budget,
 perfect foresight, and efficient capital markets), the formula simplify
 further. Indeed, the Hotelling price grows at the discount rate, so that
-the discounted price is constant: \(\beta_t p^*_t = p_0\). Only in this
+the discounted price is constant: $\beta_t p^*_t = p_0$. Only in this
 very special case, \textbf{the formula simplifies to a formula analogous
 to the static case one}:
 
-\[G^U_i = G^A_i \Leftrightarrow R_i - E^*_i = (1 - \pi_i) \sum_t{\partial a_{it}}\]
+$$G^U_i = G^A_i \Leftrightarrow R_i - E^*_i = (1 - \pi_i) \sum_t e^*_{it}  \varepsilon^*_t$$
 
 
 
