@@ -3618,7 +3618,7 @@ basic_income_adj$high/12
 # Source 2.7: https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD?locations=ZG&year_high_desc=true https://data.worldbank.org/indicator/NY.GDP.PCAP.KD?locations=ZG&year_high_desc=true
 
 
-##### NICE2020 results #####
+##### NICE2020-FFU-SU paper results #####
 path_nice <- "../../NICE2020/cap_and_share/output/revenue_recycling/global_per_capita/"
 nice_path <- "../../NICE2020/cap_and_share/output/"
 nfco2 <- read.csv(paste0(path_nice, "ffu_custom_transfers/country_output/co2_emissions.csv"))
@@ -3895,6 +3895,13 @@ sum(df$rights)
 # À quoi sert update_param!(nice_v2, :policy_scenario, policy_scenario) dans find_global_exp_carbon_tax_budget_zoom?
 # Why can't I set emission_budget_limit to a non-integer value?
 # Why does emissions drop in 2031 rather than 2030?
+
+# North-South transfer C&S
+cstra <- read.csv(paste0(nice_path, "global_cap_share/country_output/transfer.csv"))
+csgdp <- read.csv(paste0(nice_path, "global_cap_share/global_output/global_gross_output.csv"))
+(cs_global_transfers <- round(setNames(sapply(2030:2080, function(y) sum(cstra$transfer[cstra$time == y & cstra$transfer > 0])/1e9), 2030:2080)))
+(cs_global_transfers_over_gdp <- round(100*setNames(sapply(2030:2080, function(y) sum(cstra$transfer[cstra$time == y & cstra$transfer > 0])/(csgdp$YGROSS_global[csgdp$time == y]*1e12)), 2030:2080), 2))
+mean(cs_global_transfers_over_gdp)
 
 # North-South transfer FFU
 fftra <- read.csv(paste0(nice_path, "ffu/country_output/transfer.csv"))
