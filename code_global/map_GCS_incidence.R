@@ -2532,7 +2532,7 @@ v$carbon_debt_1990_2029[v$region == "union"] <- sum(v$carbon_debt_1990_2029[v$re
 # v$emissions_target_2040[v$region == "CHI"] <- 7.3*1e9
 # v$emissions_target_2045[v$region == "CHI"] <- 4.9*1e9
 # v$emissions_target_2050[v$region == "CHI"] <- 2.9*1e9
-# China trajectory from Hu (2025). Extracted from blue line of graph. Corresponds to energy net emissions + industrial emissions (Table 3-3).
+# China trajectory from Hu (2025). Extracted from blue line of graph. Corresponds to energy net CO2 emissions + industrial CO2 emissions (Table 3-3).
 v$emissions_target_2020[v$region == "CHI"] <- 11.1*1e9 
 v$emissions_target_2025[v$region == "CHI"] <- 12.8*1e9 
 v$emissions_target_2030[v$region == "CHI"] <- 12.7*1e9
@@ -3937,3 +3937,12 @@ write.csv(temp, paste0("../../NICE2020/cap_and_share/data/input/E_ffu_2020_2300.
 temp$E_gtco2[temp$time %between% c(2030, 2080)] <- pmax(0, colSums(df[, paste0("rights_", 2030:2080)])/1e9, 0)
 write.csv(temp, paste0("../../NICE2020/cap_and_share/data/input/E_global_cs_2020_2300.csv"), quote = F, row.names = F)
 
+
+##### ITMOs integrity #####
+sum(df$rights_2035)/1e9 # 28.6
+sum(df$rights_2035[df$code %in% EU28_countries])/1e9 # 1.79
+sum(df$rights_2035[df$code %in% c("CHN", EU28_countries)])/1e9 # 6.6
+EU_target_2035 <- .3875*(EU_emissions_1990 <- 4.33) # 1.68 uses EU-27
+EU_target_2040 <- .225*EU_emissions_1990 # .97
+China_target_2035 <- .93*(peak_China_emissions <- 12.8) # 11.9 uses Hu (2025)
+EU_target_2040+China_target_2035 # 12.9
