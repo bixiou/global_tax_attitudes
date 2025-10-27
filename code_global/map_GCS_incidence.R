@@ -2584,6 +2584,7 @@ legend("topright", legend = c("World", "Equal p.c.", "Climate Union", "China", "
 # PB: E_GCP is wrong because it should match equal p.c. for the union, yet is lower.
 # TODO: sum paid and received should be equal even in first phase
 carbon_price_ssp2_26msg <- carbon_price$ssp2_26msg
+carbon_price_ssp2_26 <- carbon_price$ssp2_26
 compute_net_gain <- function(h = .5, price_1 = 10, convergence_price = T, price_2 = carbon_price_ssp2_26msg, year_converge = convergence_year, df = v, discount_rate = .03) { # 
   price <- price_2
   for (y in years_v) {
@@ -3567,20 +3568,47 @@ plot_world_map("gain_adj_over_gdp_2030", df = df, breaks = c(-Inf, -.02, -.005, 
 
 #### GCS gains new survey ####
 countries_new <- c("FRA", "DEU", "ITA", "POL", "ESP", "GBR", "CHE", "JPN", "RUS", "SAU", "USA")
+# basic income per adult
+carbon_price$ssp2_26["2025"]*sum(df$emissions_2025)/sum(df$adult_2025)/12 # $45 Cap & Share basic income
+basic_income_adj$all_countries["2025"]/12 # $36
+basic_income_adj$high["2025"]/12 # $22
+
+# net cost ($) = amount_lost (LCU) per person
+round(net_cost <- -sapply(countries_new, function(i) if (i %in% c("RUS", "SAU", "USA")) (df$gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% i]/12 else (df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% i]/12))
+
+# amount_expenses
+round(amount_expenses <- net_cost + sapply(countries_new, function(i) if (i %in% c("RUS", "SAU", "USA")) basic_income_adj$all_countries["2025"] else basic_income_adj$high["2025"])/12)
+# confusion as I added net cost (per person) and basic income (per adult); true amount_expenses per person
+round(net_cost + sapply(countries_new, function(i) (df$adult_2025/df$pop_2025)[df$code %in% i] * if (i %in% c("RUS", "SAU", "USA")) basic_income_adj$all_countries["2025"] else basic_income_adj$high["2025"])/12)
+# real NCS revenue per person (differs for PL, RU as basic income is higher there; former used for consistency between NCS and GCS)
+sapply(countries_new, function(i) round(carbon_price$ssp2_26[["2025"]]*(df$emissions_2025/df$pop_2025)[df$code %in% i]/12))
+
+# price increase
+sapply(countries_new, function(i) round(100*12*amount_expenses[[i]]/df$gdp_pc_2025[df$code %in% i]))
+# was originally calculated that way (per adult):
+sapply(countries_new, function(i) round(-100*((if (i %in% c("RUS", "SAU", "USA")) (df$gain_adj_2025 - basic_income_adj$df[["2025"]]) else (df$Shigh_gain_adj_2025 - basic_income_adj$high[["2025"]]))/df$gdp_pa_2025)[df$code %in% i]))
+# price increase doesn't correspond to the naive computation in RU (and PL) as basic income should be higher there (+ some discrepancy due to the per person / per adult confusion above)
+sapply(countries_new, function(i) round(100*carbon_price$ssp2_26[["2025"]]*(df$emissions_pa_2025/df$gdp_pa_2025)[df$code %in% i], 1))
+
+# sandbox
 gains_countries_new <- basic_income_new <- matrix(NA, nrow = 11, ncol = 4, dimnames = list(countries_new, c("low", "mid", "high", "all")))
 for (c in countries_new) for (s in c("low", "mid", "high", "all")) {
   if (s == "all") {
-    gains_countries_new[c, s] <- df$gain_adj_2030[df$code == c]/12
-    basic_income_new[c, s] <- basic_income_adj$all_countries[["2030"]]
+    gains_countries_new[c, s] <- (df$gain_adj_2025*df$adult_2025/df$pop_2025)[df$code == c]/12
+    basic_income_new[c, s] <- basic_income_adj$all_countries[["2025"]]
   } else {
     custom <- all_countries[df$code %in% c(eval(str2expression(paste0("union_", s))), c)]
     scenarios_parties <- setNames(lapply(scenarios_names, function(name) eval(str2expression(name))), scenarios_names)
     df <- create_var_ssp(df = df, scenario = "custom")
-    basic_income_new[c, s] <- basic_income_adj$custom[["2030"]]
-    gains_countries_new[c, s] <- df$Scustom_gain_adj_2030[df$code == c]/12
+    basic_income_new[c, s] <- basic_income_adj$custom[["2025"]]
+    gains_countries_new[c, s] <- (df$Scustom_gain_adj_2025*df$adult_2025/df$pop_2025)[df$code == c]/12
   }
 }
 round(gains_countries_new)
+<<<<<<< HEAD
+=======
+round(basic_income_new/12)
+>>>>>>> origin/main
 write.csv(round(gains_countries_new), "../../robustness_global_redistr/data_ext/gains_countries.csv", quote = F)
 write.csv(round(basic_income_new/12), "../../robustness_global_redistr/data_ext/basic_income.csv", quote = F)
 
@@ -3598,17 +3626,24 @@ round(wtd.mean((df$gain_adj_2025 * df$adult_2025/df$pop_2025), df$code %in% EU27
 round(wtd.mean(df$Shigh_gain_adj_2025, df$code %in% EU27_countries * df$adult_2025)/12) # -31
 round(wtd.mean((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025), df$code %in% EU27_countries * df$adult_2025)/12) # -26
 
+# amount lost
 setNames(round((df$gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new]) # THIS ONE FOR RU-SA-US
 setNames(round((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new]) # THIS ONE FOR THE OTHER
+<<<<<<< HEAD
 carbon_price$ssp2_26["2025"] *sum(df$emissions_2025)/sum(df$adult_2025)/12 # $47/month
+=======
+carbon_price$ssp2_26["2025"]*sum(df$emissions_2025)/sum(df$adult_2025)/12 # $45 Cap & Share basic income
+>>>>>>> origin/main
 
 setNames(round((0.9*(df$gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
 setNames(round((0.9*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
 
+# price increase
 setNames(round(-100*(df$gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 1)[df$code %in% countries_new], df$code[df$code %in% countries_new]) # THIS ONE FOR RU-SA-US
 setNames(round(-100*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 1)[df$code %in% countries_new], df$code[df$code %in% countries_new]) # THIS ONE FOR THE OTHER
 setNames(round(-100*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"])/df$gdp_pa_2025, 0)[df$code %in% countries_new], df$code[df$code %in% countries_new])
 
+# basic income
 basic_income_adj$all_countries/12
 basic_income_adj$df/12
 basic_income_adj$high/12
