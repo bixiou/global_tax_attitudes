@@ -3605,10 +3605,7 @@ for (c in countries_new) for (s in c("low", "mid", "high", "all")) {
   }
 }
 round(gains_countries_new)
-<<<<<<< HEAD
-=======
 round(basic_income_new/12)
->>>>>>> origin/main
 write.csv(round(gains_countries_new), "../../robustness_global_redistr/data_ext/gains_countries.csv", quote = F)
 write.csv(round(basic_income_new/12), "../../robustness_global_redistr/data_ext/basic_income.csv", quote = F)
 
