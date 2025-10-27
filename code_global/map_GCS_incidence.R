@@ -3581,8 +3581,8 @@ for (c in countries_new) for (s in c("low", "mid", "high", "all")) {
   }
 }
 round(gains_countries_new)
-write.csv(round(gains_countries_new), "../../robustness_global_redistr/data/gains_countries.csv", quote = F)
-write.csv(round(basic_income_new/12), "../../robustness_global_redistr/data/basic_income.csv", quote = F)
+write.csv(round(gains_countries_new), "../../robustness_global_redistr/data_ext/gains_countries.csv", quote = F)
+write.csv(round(basic_income_new/12), "../../robustness_global_redistr/data_ext/basic_income.csv", quote = F)
 
 countries_new
 setNames(round(100*(sum(df$Shigh_emissions_2030)/sum(df$adult_2030 * df$code %in% union_high) - df$Shigh_emissions_pa_2030)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
@@ -3600,6 +3600,7 @@ round(wtd.mean((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025), df$code %in
 
 setNames(round((df$gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new]) # THIS ONE FOR RU-SA-US
 setNames(round((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new]) # THIS ONE FOR THE OTHER
+carbon_price$ssp2_26["2025"] *sum(df$emissions_2025)/sum(df$adult_2025)/12 # $47/month
 
 setNames(round((0.9*(df$gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
 setNames(round((0.9*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
