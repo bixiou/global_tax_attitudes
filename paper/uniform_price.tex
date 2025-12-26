@@ -1,0 +1,1385 @@
+% Outlets: Climate Policy (7k ~ 20p, supplemental allowed); Review of International Political Economy (12k); PLOS Climate (no limit, $2500); Global Environmental Change (8k); Environmental Politics (8k); Earth System Governance (upon invite); Global Policy (8k)
+% Count: 10.6k without abstract nor appendix; 11.9k with
+
+% Contributions:
+% This paper: Paper I
+% Paper I: FFU-NICE 1-4 + suppl. 7
+% 1 FFU-SU proposal + principles. 13p
+% 2 NICE extensions: income redistr; PPP; footprint. TODO 1-5p
+% 3 Simulations FFU, differentiated prices, Stoft, etc. TODO 3p
+% 4 Correspondence transfers different prices. 4p
+% Suppl: treaty incl. voting procedure. 4-12p
+
+% Intro
+% Rationale for an international cap-and-trade: principles, correspondence
+% Treaty proposals for a coalition of the willing: FFU-SU proposal scenarios (FFU with different coverage, FFU-SU with main coverages)
+% Distributive effects of the different scenarios: distributive FFU, differentiated prices
+
+% Paper II: critique-ITMO 5-6
+% 5 Critical analysis of current regime. 15p
+% 6 NDC-ITMOs proposal. 2-5p
+
+% NDC-ITMO potential goals:
+% a. ITMOs don't weaken buyer's ambition: the should set (NDC buyer + ITMO) + BAU seller > NDC buyer + NDC seller (i.e. seller set their NDC < BAU + ITMO they sell) => more stringent that Michaelowa et al 2019. who allows checking ITMO at project level if our condition is not met (we refuse as the implied ITMO price would be too low and seller is illegitimate to sell ITMOs). 
+% b. In Michaelowa 19, add condition of not buying ITMOs from countries with emissions p.c. > world average nor GDP pc > world average (unless historical emissions of seller 1.5°C compatible in latter case)
+% c. ITMOs only when compatible with Paris target: joint NDC lower than joint cost-optimal 2°C emissions and/or than joint equal pc 1.5°C?
+% A. Must increase ambition: forbidden to sell ITMOs if NDC > current policies
+% B. Must be Paris-aligned: joint NDC < joint equal pc 1.8°C
+% Current policies in all countries given by den Elzen et al. (2023; 24), better than https://1p5ndc-pathways.climateanalytics.org/ or CAT (only 26 countries), or Kotz et al 24 (uses SSP, doesn't model policies)
+% Conflicting goals: increase ambition (joint NDC < joint current policies) if not Paris-aligned (joint NDC < equal pc 1.5); fair (NDC = equal pc); realistic (at t=0, joint NDC = current emissions)
+% => Take a given coalition; start with its emission level and projected emissions in next 10 years; gradually (to at least <2°C equal pc though realistically) increase ambition unless it's already fair share 1.5°C; check that carbon budget if all countries followed this equal pc is Paris-aligned; redefine NDCs so they jointly correspond to the new trajectory, with min{BAU, equal pc} as a focal foint; if new countries join, restart the process making sure that price of ITMOs doesn't decrease
+% => Network of researchers appointed by each country, mobilizable (as a whole) by the coalition to project emissions and propose rules / arbitrate
+
+\documentclass[12pt,english]{article}
+% NB: the damage function used (from Kalkuhl & Wenz) doesn't account for mortality (half of the SCC in Rennert et al) nor sea-level rise. It is 25% lower than Rennert's one and much lower than Kotz et al 24 update.
+% NB: BAU assumes emission peak around 2025, i.e. may be too optimistic on technical/decarbonization progress.
+% TODO: budget => quota (or rights) at country level (terminology)
+% TODO: compatibility with Paris Agreement
+% TODO! Theoretical/simulation analysis of net gain for a given country in function of price x rights.
+% TODO Aggregate EDE with different discount rates.
+% TODO Year at which undiscounted aggregate EDE turns positive.
+
+% Arguments against uniform price: Boeters (14): other taxes, terms-of-trade (numerical); Anthoff, Dennig, Emmerling (22): different discount rates; Babiker et al. (04): other taxes, terms-of-trade (theoretical).
+% Also cite Bauer et al. (2020): efficiency-sovereignty trade-off.
+% https://bsky.app/profile/did:plc:2b4tsqp7a47hhyk3weki7epo/post/3lydrek33fc2x
+
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella} % Palatino text only
+\usepackage{mathpazo}  % Palatino math & text
+\usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
+% \linespread{2}
+\usepackage[super,comma,sort]{natbib} % WPcomment
+% \usepackage[round,sort&compress]{natbib} % NCCcomment
+% \usepackage[natbibapa]{apacite}
+% \bibliographystyle{apacite} 
+\usepackage{url} % [hyphens]
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation. Incompatible with apacite.
+% \usepackage{hyperref}
+\usepackage[pagebackref]{hyperref} % Incompatible with apacite.
+% \usepackage{hyperref}
+% \usepackage{multibib} % incompatible with backref
+\hypersetup{
+  colorlinks=true, % breaklinks=true,
+  urlcolor=purple,    % color of external links
+  linkcolor=blue,  % color of toc, list of figs etc.
+  citecolor=violet,   % color of links to bibliography
+}
+\usepackage{bm}
+\usepackage{indentfirst}
+\setcitestyle{aysep={}} 
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{tcolorbox}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{supertabular}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{gensymb}
+\usepackage{textcomp}
+\usepackage{placeins} % Floats appear in their section (to use with \FloatBarrier or [section])
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{fullpage}
+\usepackage{morefloats}
+\usepackage{makecell}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{fancyhdr}
+\usepackage{tocbibind} % Adds biblio to ToC
+% \usepackage{tocloft}
+\usepackage{titletoc} % Adds title to ToC (use with tocloft?)
+\usepackage[export]{adjustbox}
+\usepackage[anythingbreaks]{breakurl} % for links
+\usepackage{multicol}
+\usepackage{lineno}
+\usepackage{endnotes}
+\usepackage{ragged2e}
+\newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}} % left-align in tables with fixed column widths
+% \let\footnote=\endnote
+% \linenumbers
+\makeatletter
+\renewcommand\tableofcontents{% removes "Contents" from ToC
+    \@starttoc{toc}%
+}
+\makeatother
+\newsavebox\ltmcbox % For net gain table over two columns
+%\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
+%\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
+\renewcommand{\floatpagefraction}{.99}
+\newenvironment{stretchpars}{\par\setlength{\parfillskip}{0pt}}{\par} % to justify a line
+
+\newcommand{\bo}[1]{\textbf{#1}}
+\newcommand{\gras}[1]{\textbf{#1}}
+\renewcommand*\thefootnote{\alph{footnote}} % footnote as letters
+% \newcites{App}{Appendix References}
+
+% \captionsetup[table]{skip=-10pt}
+% \begin{document}
+
+% \maketitle
+
+% % \clearpage
+% \renewcommand{\bibsection}{\section{\refname}}
+% \bibliographystyle{naturemag}
+% \bibliography{global_tax_attitudes}
+% % \stopcontents
+
+% \end{document}
+
+
+\title{Designing an Internationally Uniform Carbon Price} 
+
+% \author{Adrien Fabre$^{1,2}$} % WPcomment
+\author{Adrien Fabre\footnote{CNRS, CIRED. E-mail: adrien.fabre@cnrs.fr.} \footnote{I am very grateful for outstanding research assistance of Erwan Akrour, Agathe Chardon, and Marius Le Hénaff. I thank Marie Young-Brun and her co-authors for sharing their model NICE and for their insightful advice. I thank Antonio Avila-Uribe and Ana Toni for useful comments. I received funding from the Agence Nationale de la Recherche (ANR-24-CE03-7110).}}
+
+\date{\today} % NCCcomment
+
+\begin{document}
+
+\sloppy
+\maketitle
+
+\vspace{-1cm}
+\begin{center}
+{\bo{\href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/uniform_price.pdf}{Link to most recent version}}}
+\end{center}
+
+% WPcomment
+% \begin{affiliations}
+% \item CNRS
+% \item CIRED
+% \end{affiliations}
+
+% \begin{small} % NCCcomment
+\begin{abstract}
+
+In this paper, I show that there is a distributional equivalence between a system of carbon prices differentiated by country and a uniform carbon price with differentiated emission rights involving international transfers. I introduce a policy proposal based on a uniform price and international transfers, with emissions rights close to an equal per capita allocation, and show how it compares to existing proposals. Using the model NICE, I simulate prominent international climate policy proposals and compare their welfare effects at the year-country-decile level. 
+This paper is divided in four sections. First, I take stock of the current international climate policy regime. After showing that the current regime falls short of ensuring decarbonization aligned with the Paris Agreement's target and providing sufficient resources for sustainable development in the Global South, I delineate the objectives that a new regime should meet. Second, I propose that voluntary countries form a \textit{Fossil-Free Union} whereby they would establish an international emissions trading system to guarantee that their emissions are in line with the target, and where the allocation of emissions rights would ensure North-to-South transfers in a way that would make most countries willing to join. I provide precise estimates of the distributive effects of the Fossil-Free Union. Third, I propose a \textit{Sustainable Union}, where voluntary countries would commit to reallocate one percent of their GNI to all participating countries in proportion to their population, financed by global solidarity levies on the wealthiest. These proposals are complementary and would put the world on track for the climate and sustainable development targets. Furthermore, they garner majority support among the population in every country. Fourth, I provide a comparative analysis of alternative international climate policies.
+
+% The most important sentences are in bold to allow fast reading. This document will soon be expanded to include a draft treaty (translating the above proposals in legal terms).
+
+\end{abstract}
+
+\textbf{Keywords}: Climate policy; carbon price; SDGs; poverty; international taxation.
+
+\textbf{JEL}: Q56; F38; H23; Q54; H87; F64; Q58; F53; F35.
+
+\clearpage
+\tableofcontents
+
+% \onehalfspacing % NCCcomment
+
+\clearpage
+
+% Summary of propositions:
+% contributions are to be made in proportion to GNI and entitlements in proportion to population
+% define their target using a common indicator (such as their future cumulative emissions)
+% To prevent ITMOs from weakening domestic action, countries that use them should commit to extra rules
+
+\section{Where do we stand? What do we need?\label{sec:now}}% NCCcomment
+
+
+\subsection{A critical assessment of the current regime\label{subsec:criticism}}
+
+The international climate policy regime is laid down in the United Nations Framework Convention on Climate Change (UNFCCC), and its offshoot, the Paris Agreement. The consensus of the international community in favor of this regime and its common  temperature target is an immense success: The UNFCCC has been universally adopted, and the Paris Agreement had been ratified by all countries but three (Iran, Libya, and Yemen) before the U.S. withdrawal. However, reliance on consensus for decision-making at the UNFCCC also results in major limitations: agreements rest on the lowest common denominator and fall short of achieving any substantial progress on international climate action. In this section, we review the current regime and its most likely developments.
+
+\subsubsection{Developed nations taking the lead\label{subsubsec:developed}}
+The UNFCCC introduces the distinction between developed and developing nations: the former shall provide financial resources to the latter to promote their sustainable development and climate action. While aimed at sharing fairly the costs of climate action, this classification dates from 1992 and is now outdated. For example, \textbf{while Singapore, South Korea, Saudi Arabia and Slovenia are all richer than Greece, only the latter is considered by the UNFCCC to be a developed country with financial obligations}. This outdated classification is stalling progress in critical negotiations, as newly high-income countries resist being considered developed, and historically developed countries are reluctant to increase their contributions unless all high-income countries do so.
+
+While high-income countries should indeed provide resources to foster climate action in lower-income countries, the determination of required transfers should not rest on an outdated, binary classification; it should be defined using up-to-date, continuous indicators such as the GNI per capita. \textbf{A simple yet fair rule would be that a country's contributions are to be made in proportion to GNI and entitlements in proportion to population}. 
+
+\subsubsection{CBDR\label{subsubsec:cbdr}} 
+In its Article 1, the UNFCCC states what is now known as the \textit{CBDR} principle: ``Parties should protect the climate system (...) on the basis of equity and in accordance with their common but differentiated responsibilities and respective capabilities.'' This Article is commendable in its objective to guide the allocation of the burden of climate action between countries and reconcile different burden-sharing principles: common action, equity, historical responsibility, ability to pay, etc. Unfortunately, the CBDR principle only offers vague and inconsistent guidance. For example, does equity refer to equal per capita emissions rights or to something else (equal cost share of emissions reductions, equal access to development)? How should we balance rules that result in different allocations of emissions rights, such as common action, equal per capita, historical responsibilities and ability to pay? \textbf{As the key question of the burden-sharing rule was left unresolved by the CBDR principle and its multiple possible interpretations, countries are not able to agree} on binding targets of emissions reductions and financial transfers by country. 
+
+\subsubsection{NDCs\label{subsubsec:ndc}} 
+
+This absence of consensus on burden-sharing led to the system of Nationally Determined Contributions (NDCs), where each country sets its own targets. Countries are not sanctioned if they miss their targets. Countries do not even have to define their target using a common indicator (such as their future cumulative emissions). As NDCs rarely specify a cumulative emissions target, researchers need to formulate hypotheses to assess whether NDCs are jointly consistent with the universally agreed temperature target.\footnote{Note that the temperature target is itself vague. Article 2 of the Paris Agreement aims at ``holding the increase in the global average temperature to well below 2~\textdegree{}C above pre-industrial levels and pursuing efforts to limit the temperature increase to 1.5~\textdegree{}C above pre-industrial levels.'' Yet, given the uncertainty around the climate system, this (double) target is not precisely defined: does it mean a 83\% chance to limit global warming to 2~\textdegree{}C? A 67\% chance? A 50\% chance? Each probability is associated with a different carbon budget -- respectively 900, 1,150, and 1,350~GtCO$_\text{2}$ starting in 2020, according to the IPCC (AR6, WGI, p. 39).} 
+Even in the most optimistic hypotheses, NDCs are insufficient to meet the temperature target. If all countries respect their NDCs, global GHG emissions should be 51~GtCO$_\text{2}$e in 2030, while 41~Gt would be needed to meet the 2~\textdegree{}C target with a 66\% chance.\cite{den_elzen_updated_2022} According to the \href{https://climateactiontracker.org/}{Climate Action Tracker}, 
+\textbf{current policies and actions correspond to a global warming of +2.7~\textdegree{}C} by 2100, and warming may continue to rise beyond that date.
+
+\subsubsection{ITMOs\label{subsubsec:itmo}} 
+
+The article 6.2 of the Paris Agreement allows Parties to exchange Internationally Transferred Mitigation Outcomes (ITMOs). This enables a country to nominally reduce its emissions (the emissions as counted to assess its NDC) by purchasing verified emissions reduction to another country. The latter country will then be credited with the buyer's ITMO emissions. As any bilateral agreement on ITMO is permitted, the use of ITMOs risks reducing buyers' domestic decarbonization efforts. % Take Switzerland's purchase of ITMOs from Thailand: if they meet their target, these two countries will jointly reach 5.5~tCO$_\text{2}$e per capita in 2030, more than the global level of 4.5~tCO$_\text{2}$e that would be in line with the 2\textdegree{}C target. This observation alone is insufficient to state that these two countries lack climate ambition: for example, if Switzerland and Thailand had the same NDCs but other countries had more ambitious ones, such that the world total is in line with the temperature target, 
+Indeed, to the extent that the NDCs do not add up to the global emissions reductions objective, there will be ``hot air'' (i.e. excess emission rights): ITMOs will not reflect the required mitigation constraint, and their price will be too low. As a result, ITMOs may propagate a global lack of ambition to countries with otherwise ambitious NDCs, offering a cheap (and less effective) alternative to domestic decarbonization. 
+
+To illustrate this, let us use a fictive example with two world regions, Rich and Poor, each containing half of the world population. Say that the carbon budget is 1,000~Gt and that in a business-as-usual scenario without climate action, both regions would emit 750~Gt. Imagine that region Rich has an ambitious NDC of 500~Gt while Poor has a low ambition NDC of 1,000~Gt. In absence of international carbon trading, we can expect region Rich to emit 500~Gt (in line with its NDC) and region Poor to emit 750~Gt (as no climate action is required to fulfill its NDC). In this fictive example, region Poor may be willing to sell 250~Gt of ITMOs to region Rich at a very low price. Region Rich could then meet its NDCs with 750~Gt of emissions, resulting in world emissions of 1,500~Gt, higher than the 1,250~Gt that would have occurred in absence of ITMOs.
+% To the extent that the sum of NDCs' mitigation efforts falls short of the global target, the price of ITMOs will be too low. 
+% In other words, the lack of ambition of some countries' NDCs can propagate to other countries through the sale of ITMOs. 
+
+\textbf{To prevent ITMOs from weakening domestic action, countries that use them should commit to extra rules}, beyond verifying the environmental integrity of the ITMO they buy. In case of linkages between domestic carbon markets, the same rules would be required to the cross-border (or rather, cross-market) purchase of emissions allowances. Let us call \textit{sellers} the countries that are willing to sell ITMOs, and \textit{buyers} the countries they agree to sell them to. The extra rules to prevent hot air could be as follows: 
+\begin{itemize}
+  \item \textbf{Sellers and buyers should include a cumulative emissions target (i.e. a national carbon budget) in their NDC, decomposed in yearly targets}.
+  \item \textbf{The joint carbon budget of sellers and buyers should be compatible with the Paris temperature target}. If the group of sellers and buyers does not include all countries, their joint carbon budget should correspond to their population share of the world's budget.
+  \item \textbf{The joint target} (of sellers and buyers) \textbf{in a given year should be lower than their preceding year's, % joint emissions, TODO? put back?
+  by at least (say) 2\%.} Note that if countries propose a credible emissions trajectory (as per the first rule), this last rule would not be necessary. This last rule is added just to make sure that sellers and buyers propose ambitious emissions reductions even in the first years. % remove the last point? the important ones are the first two, they kinda imply the third (if countries are honest)
+\end{itemize}
+% Pb: still hot air if the group of sellers and buyers have low emissions. => Add a condition as in la_hoz_theuer_when_2019 or michaelowa_additionality_2019 that their joint target in 5 years should be lower than their current ones, and in 10 years lower than 90% of their current ones.
+
+% TODO!!replace rule by joint NDC reduce emission from current ones by at least 2% per year + countries should respect NDCs. Could be defined in intensity terms.
+
+If a group of sellers and buyers agrees to these rules, they would effectively impose the principle of an equal per capita allocation of emissions rights, at least to govern the allocation between their group and the rest of the world. While alternative allocation principles are possible, the operationalization of cross-border trading of emissions allowances (or ITMOs) needs to rely on an allocation principle. The inadequacy of NDCs (taken jointly) proves that the global climate regime cannot rely on diverse and self-serving allocation rules to divide the global carbon budget into consistent national targets. 
+% TODO!? \cite{michaelowa_additionality_2019} propose to check additionality of ITMOs either at the country level if NDCs are more ambitious than a BAU scenario defined by an independent institution, either at the project level otherwise. \cite{la_hoz_theuer_when_2019} propose to limit the use of ITMOs to emission reductions below the BAU.
+
+
+\subsubsection{Climate finance\label{subsubsec:finance}}
+
+An equal per capita allocation of emissions rights corresponding to the remaining carbon budget would entail transfers of 0.3\% of the world's GDP from high to low emitters (on average between 2030 and 2080). North-to-South transfers would be over \$800~billion in 2035 and would exceed \$1~trillion between 2040 and 2060. 
+Taking into account historical responsibilities for emissions, an equal per capita allocation of cumulative (past and future) emissions rights would entail even more transfers (the carbon debt that the North owes to the South is estimated at \$26 trillion\cite{fabre_global_2024,fanning_compensation_2023}). 
+
+At COP29, the international community reached a compromise concerning the New Collective Quantified Goal (NCQG): Developed countries committed to mobilize \$300 billion per year by 2035 for developing countries for climate action (and countries ``call on all actors'' to mobilize \$1.3 trillion, which would be in line with experts' recommendations\cite{unfccc_new_2024,songwe_raising_2024}). \textbf{The quantum of \$300 billion represents a tripling of the previous climate finance goal. However, it can be reached through loans} (including from the private sector), and does not specify what share should be provided as grants (or grant-equivalent concessional loans). In fact, the current goal of \$100 billion is met with only \$26 billion provided in the form of grants.\cite{oecd_climate_2024} 
+In theory, the NCQG could be met with the same amount of grants (i.e. North-to-South transfers), or even less. 
+
+In contrast, at COP29, ``\textbf{India specified that the NCQG should mobilize \$1.3 trillion, of which at least \$600 billion should come in the form of grants} and equivalent resources.''\cite{earth_negotiations_bulletin_daily_2024} India, voicing Global South concerns, stated it was ``disappointed in the outcome which clearly brings out the unwillingness of the developed country parties to fulfill their responsibilities. We cannot accept it.'' Transfers aligned with Global South's demands would allow enormous progress towards the Sustainable Development Goals, including climate action but also the deployment of public services and poverty reduction programs. Conversely, an insufficient provision of climate finance does not only infringe on climate justice, it also jeopardizes decarbonization in the Global South, as \textbf{many countries make their NDC conditional on the adequate provision of climate finance}. 
+
+Together with more North-to-South transfers, reforms to the international financial systems are needed to reorient financial resources towards climate action. These reforms are multifaceted and are more likely to be accepted by governments in the Global North than direct transfers, since they rely on mostly painless, growth-enhancing accounting operations. The government of Barbados (supported by the UN Secretary-General) leads the movement in favor of these reforms. Their ``Bridgetown Initiative'' calls for debt relief for low-income countries, for a new issuance of at least \$650 billion in Special Drawing Rights by the IMF to expand the loans of Multilateral Development Banks (MDBs) to at least \$500 billion per year, and for public guarantees to lower interest rates on sustainable projects in the Global South.\cite{bridgetown_bridgetown_2025} Note that although the Bridgetown Initiative is most famous for its climate finance proposals, it also calls for other reforms, such as a universal carbon price and international taxes on the super-rich to finance global public goods. 
+
+\textbf{While a scaling up of climate finance is crucial, it is not sufficient to decarbonize the world as it does not cap} (or directly reduce) \textbf{emissions}. In the worst case scenario, the expansion of low-emissions projects would mostly add up low-carbon infrastructures on top of fossil ones, failing to meaningfully reduce emissions.
+
+\subsubsection{JETPs\label{subsubsec:jetp}}
+
+The last pieces of the climate regime worth mentioning are the Just Energy Transition Partnerships (JETPs).\textbf{ JETPs are mechanisms where one developing country essentially commits to emissions reductions through the deployment of renewable energy in exchange for concessional terms on the required loans by a group of developed countries}. Four JETPs have been signed so far, involving Indonesia, Vietnam, South Africa, and Senegal.\cite{ha-duong_just_2023} In existing JETPs, the groups of developed countries pledged to offer loans ranging from \$2.5 billion (for Senegal) to \$20 billion (for Indonesia). 
+
+While JETPs offer a promising way to deliver climate finance in a way that guarantees emissions reductions, they currently suffer from several shortcomings. First, \textbf{their coverage is limited (in terms of sectors and countries)}. To improve the sectoral coverage and efficiency of JETPs, researchers have proposed to design them as a financial transfer in exchange for a national carbon price.\cite{steckel_climate_2017} Second, as they focus on emissions reductions rather than sustainable development, \textbf{JETPs do not contribute to poverty reduction}. This concern could be mitigated by JETPs with a higher reliance on grants.\cite{bolton_why_2025} However, a higher provision of grants is difficult to achieve absent a dedicated source of revenue (such as an international tax).
+% cite those who say they should be grant based and those who say they should involve pricing/regulations
+
+Lastly, even if \textbf{JETPs} were improved along the previous lines, they would still \textbf{fail to guarantee that the decarbonization of big emitters like China or the European Union is consistent with required global efforts}. 
+
+% I. current model: NDCs (pb: don't sum up to carbon budget, no common burden-sharing norm), ITMO (pb: hot hair), JETPs (pb: limited coverage, even if expanded wouldn't guarantee big emitters like China or EU decarbonize, absence of funding mechanism, don't address poverty); Bridgetown (necessary but insufficient as doesn't cap emissions)
+
+\subsection{Objectives for a truly sustainable regime\label{subsec:objectives}}
+
+Now that we have a critical understanding of the current international climate regime, let us sketch the properties we desire for a new (or improved) regime. We will then be able to assess different proposals in light of these objectives. Here they are:
+\begin{itemize}
+  \item \bo{Temperature}. An effective climate regime should achieve the Paris Agreement's temperature target. It should do so by a stabilization of the concentration of each GHG in the atmosphere and abstain from the risky bets of climate engineering such as Solar Radiation Management. This objective would translate into a \textbf{global carbon budget}. For example, the carbon budget could be set at 1,000~GtCO$_\text{2}$ starting in 2025, which corresponds to most likely warming of +1.8\textdegree{}C and a 67\% chance to keep global warming below +2\textdegree{}C. 
+  \item \bo{SDGs}. A holistic approach requires solving all humanity's greatest challenges, not just climate change. As argued above, justice requires sufficient \textbf{North-to-South transfers} to fund sustainable development (not just climate action). Even though the Sustainable Development Goals (SDGs) and the planetary boundaries would require additional policies and transfers, one important feature of the climate regime is how much climate finance it delivers in the form of transfers to the poorest and improved market conditions. This can be measured through SDGs indicators or the catch-up of GDP per capita in low- and lower-middle-income countries.
+  \item \bo{Efficiency}. As stated by the UNFCCC since 1992,\cite{unfccc_united_1992-1} ``measures to deal with climate change should be cost-effective so as to ensure global benefits at the lowest possible cost.'' Economists have argued that ensuring cost-effectiveness require an \textbf{economy-wide carbon price, uniform} across sectors and countries. This fundamentally results from the fact the social cost of emissions is independent from their source or location, therefore emissions should be priced uniformly. %Efficiency can then be measured by the dispersion of (implicit) carbon prices across countries and sectors. 
+  Note that this argument in favor of carbon pricing does not preclude other, complementary policies: these have also been shown to be optimal by economic analysis.\cite{stiglitz_addressing_2019}
+  \item \bo{Acceptability}. A viable proposal is one that has good chances to be accepted by most countries. To measure the success of a proposal, we can use the share of global emissions that are covered by participating jurisdictions. Different elements contribute to acceptability: 
+  \begin{itemize}
+    \item \textit{Progressivity at the top}. If costs are concentrated on the richest households, the regime can benefit the majority in each country while addressing %the excessive level of 
+    inequality.
+    \item \textit{No loss in middle-income countries}. Countries whose population is not rich should not lose from an international climate policy. To assess whether a country loses or not, we should compare its situation in the new regime compared to the status quo. If we synthesize a country's situation by the carbon budget it is granted, a country would lose if its carbon budget is lower than their unconditional NDC completed by the ambitious emissions trajectory that the country currently envisions. % TODO? by the long-term strategy % add? This challenges the blunt application of the equal per capita allocation of emissions rights, as it would entail transfers from countries with a carbon footprint greater than the world average to countries with a footprint lower than the average. Yet, some middle-income countries such as China, Iran, or South Africa, have a carbon footprint greater than the world average. 
+    \item \textit{Win-win}. While (per the SDG objective) transfers would be required from high-income countries, this does not necessarily mean that these countries' population would lose out. First, because (as stated above), redistributive policies can concentrate the costs on the richest households in their country. Second, everyone would benefit from a stabilized climate and from a world where SDGs are met. For example, sustainable development would spur global demand, including for advanced technology and low-carbon exports from industrialized economies. Third, while transfers imply a loss compared to the situation with the same worldwide decarbonization efforts and without international transfers, the latter situation is untenable (as transfers are necessary to promote decarbonization in the Global South). As proposed above, the situation that should be used as a point of comparison is the status quo where the country's carbon budget corresponds to its unilaterally planned emissions trajectory and where there is no international trade in emissions allowances. \textbf{To the extent that transfers are the counterpart of the purchase of emissions allowances, a new climate regime could be a \textit{win-win} for all participating countries, as they would all reap the efficiency gains} of an optimal location of emissions reductions.
+  \end{itemize}
+\end{itemize}
+% objectives: SDGs (=> transfers / climate finance), 2°C, efficiency (say it's in UNFCCC 92, => uniform price), acceptability (=> concentrate costs on richest, coalition of willing, win win thx to efficiency, LMIC not losing (compared to carbon budget corresponding to their unconditional ambitious scenario)), incentives to expand (remove?)
+
+\paragraph{Coalition of the willing.} International negotiations have shown that it is illusory to seek universal agreement for an ambitious agreement. Therefore, political realism requires pushing for proposals that do not get accepted by all countries, and thus, that may also fail to deliver on the climate target, as countries outside the coalition would not fulfill their part of the temperature objective. If oil exporting countries, representing 25\% of current emissions, do not join the coalition, temperature in 2100 would be about 0.3\textdegree{}C higher than with a universal participation to decarbonization efforts. While this outcome would be a partial renouncement to some objectives (full acceptability, strict temperature target), %it is a viable agreement that would unblock a) large global improvements b) large geins for those that take part in it.
+it is probably the only type of outcomes that is accessible given the political balance of power.
+
+
+\clearpage
+\section{A Fossil-Free Union\label{sec:ffu}}
+
+Having in mind the shortcomings of the current regime as well as the objectives of a new regime, we are now equipped to propose an international agreement to phase out fossil fuels in a way that is cost-effective, acceptable % profitable? to be more positive TODO?
+to most countries, and promotes sustainable development. 
+
+\subsection{The principles for a Fossil-Free Union\label{subsec:principles}}
+
+The Union would be open to any country, as well as subnational entities (such as U.S. states). 
+
+\paragraph{Emissions Trading System.}
+The Union would put in place \textbf{an international Emissions Trading System (ETS)}, \textbf{that would add up to existing ones} (to not dilute the stringency of existing ETSs). All sectors except agriculture and land-use (LULUCF) would be covered. In particular, the ETS would cover (domestic and international) aviation. International shipping could also be covered, replacing the system established by the International Maritime Organisation. The ETS would cover all gases emitted in industrial or energy processes, as in the Korean ETS. Namely, the ETS would cover CO$_\text{2}$, N$_\text{2}$O, PFCs, SF$_\text{6}$, HFCs, as well as methane emissions from industrial processes, fossil fuel extraction, and waste management (but not methane emissions from agriculture). %As in existing ETSs, production units below a minimal threshold would be exempted. % which equivalence between GHG
+
+Complementary policies such as the Tropical Forest Forever Fund would be needed to cover LULUCF sectors. This is important to avoid carbon leakage that would substitute fossil fuels with biomass obtained through deforestation.\cite{aggarwal_negative_2025} % TODO? acknowledge monitoring challenges, incl. for fossils?
+
+\textbf{Emissions allowances would be fully auctioned by an \textit{ad hoc} international authority to polluting companies upstream} of the supply chain. 
+
+The ETS will be completed by a \textbf{carbon border adjustment} to prevent carbon leakage and ensure that the Union's carbon footprint (rather than its territorial emissions) is capped. Importers into the Union would have to purchase emissions allowances corresponding to the carbon embedded in the imported goods. Exporters out of the Union would receive a rebate for the carbon embedded in their exports, and extra allowances would be auctioned to finance the rebates. 
+
+In some federal countries like the U.S., some States may be willing to join the Fossil-Free Union (FFU) while the federal level would not. To help such States to join the Union despite their belonging to a national customs union, they would be exempted from the carbon border adjustment. % TODO? As long as, commulatively, they do not represent more than X (60%, 70%?) of the population/Trade/GDP in their country. (or as long as their trade is not X times their GDP) --> This is to avoid non FFU countries just to declare a small region their tax-free "port", which does not get the carbon border adjustment.
+In this way, \textbf{a State like California could join}. It could also use its share of the revenues to subsidize manufacturing firms, perpetuating its way of recycling ETS revenues and preventing carbon leakage.
+
+Once export rebates are paid, the remainder of \textbf{carbon pricing revenues would be returned to countries based on their yearly quota}.
+
+\paragraph{National carbon budgets.}
+\textbf{Each country would be granted a carbon budget between the starting year (say 2030) and net-zero (say in 2080)}. 
+
+\textbf{Each country would then describe how they would divide their carbon budget intertemporally into yearly quotas}. As such, the yearly trajectory of the Union's emissions over the next fifty years would be known at the starting year. Each country would be relatively free on the intertemporal breakdown of their carbon budget, though this choice would have to respect some constraints, developed in Section \ref{subsec:implementation}, and related to the \textbf{rules to avoid hot air} proposed in Section \ref{subsubsec:itmo}.
+
+\paragraph{Adjusted per capita allocation.}
+\textbf{By default, each country would be granted a carbon budget corresponding to an equal per capita share of the remaining global carbon budget}. This allocation can be understood as an equal right to pollute for each human, irrespective of their country. Such an allocation would induce international transfers from agents (people or countries) with a carbon footprint higher than the world average, to agents with a lower carbon footprint.
+
+As future population is unknown (and can be affected by policy choices), the benchmark per capita carbon budget would be based on the population share taken at the starting year. % Also, compared to children, adults are predominantly responsible for GHG emissions and most adults over the 2030--2050 period (the most crucial for emissions reductions) will be born in 2030.
+% TODO? acknowledge it disadvantages growing
+
+Then, \textbf{some departures from the benchmark would allow adjusting to special circumstances}. To prevent transfers flowing from lower-income countries to high-income countries, high-income countries would be granted a carbon budget corresponding to their ambitious decarbonization pathway. % LTS?
+In particular, \textbf{the European Union would be granted emissions allowances in line with its NDC}, with 90\% emissions reductions in 2040 (compared to 1990), and net-zero in 2050. This represents \textbf{less than} half of EU's benchmark \textbf{equal per capita share}.
+
+To prevent middle-income countries from losing, % being net contributors of international transfers, 
+\textbf{countries would be allowed to propose further departures from the benchmark} allocation, to the extent that the Union's carbon budget is respected. These departures from the benchmark \textbf{need to be agreed by a majority} of participating countries, weighted by their GHG emissions. % TODO!! refine (e.g. to explain how to handle competing proposals)
+
+In particular, \textbf{middle-income countries with emissions per capita above the world average, such as China, Iran, or Turkmenistan, could be granted} a carbon budget equal to the cumulative carbon footprint corresponding to \textbf{their own ambitious decarbonization pathway}.
+
+\paragraph{Universal cash transfer.} 
+The Union would \textbf{encourage countries to return the ETS revenue to the population through an equal cash transfer}. In particular, the Union would develop standards and provide technological resources to distribute the cash transfer. Despite the difficulty to reach people who lack civil status or live in remote areas, solutions exist. For example, the Indian system Aadhaar has provided a unique biometric identifier to 99\% of the country's population in less than seven years. In Africa, the World Bank's ID for Development program is financing the deployment of universal legal identity, in line with SDG Target 16.9. Besides, with phone-based payments and biometric identification, satellite Internet, and off-grid solar panels, the technology is mature and affordable to distribute cash transfers in a way that is fraud-resistant and leaves no one behind.
+
+The equal cash transfer would compensate people for the rise in fossil fuel prices. The transfer would reflect each person's equal right to pollute, as it would work as if the person would have sold this right at the carbon price to polluting companies.
+
+Countries that choose not to distribute all revenue through a cash transfer would have to prove that they spend it %on social protection, public services, and infrastructure, 
+in a way that leaves no one behind. % TODO? detail proofs
+
+% Second, the basic income must be accessible to all and fraud-resistant (so that no one receives the basic income twice). It is difficult to reach people who do not have a civil status or who live in remote areas. Likewise, it is difficult to verify people's identity and to be confident that they are not registered multiple times. However, there are good reasons to be confident that the required infrastructure to deliver a basic income can be deployed within ten years, as different technical solutions are available. First, most countries maintain electoral lists and already have social programs targeted to isolated people. Second, smartphones now provide biometric identification as well as a costless means of transaction (and the cost of a smartphone would be covered by just a few months of basic income). Third, while many places are still lacking internet access, progress is rapid in satellite internet access, and it might soon become cheap and ubiquitous \citep{hanson_satellite_2016}. Fourth, experience can be gained from the Aadhaar system, launched in 2009, which now provides to 99\% of the Indian adult population a unique biometric identifier. Aadhaar is linked to one's bank accounts and used to distribute welfare benefits. Although the technical challenge remains, it seems solvable by an appropriate combination of these solutions, tailored to the specific needs of each region. 
+
+\subsection{Likely participating countries\label{subsec:scenarios}}
+
+Countries that would not lose from the policy are expected to join: these include all low- and middle-income countries, as well as high-income countries with a strong climate ambition. %n ambitious decarbonization plan. 
+The map in Figure \ref{fig:participation} shows which countries are likely to join the Union. These countries represent 74\% of current emissions. % (club_emissions_share <- sum(df$emissions_2025[setdiff(df$code %in% c(union_high, "TUR", "CHL", "URY", "TUN", "UGA", "SDN", "MYS", "UKR", "TKM"), "CAN")])/sum(df$emissions_2025)) # 74%
+% TODO! add % of GDP and pop
+
+\begin{figure}[h]
+  \centering \caption{Countries likely to participate in the Fossil-Free Union.}\label{fig:participation}
+  \includegraphics[width=\textwidth]{../figures/maps/participation_FFU_wo_CAN.png} 
+\end{figure}
+% /!\ Turkey, Iraq, Iran, and some other MEA countries are not counted in the Union in the code
+
+\subsection{Allocation of emissions rights\label{subsec:allocation}}
+
+\textbf{If decarbonization continues on its current trend, emissions of the prospective Union would total 924~GtCO$_\text{2}$ over 2030--2080}, while current NDCs (without accounting for long-term targets) would imply 788~GtCO$_\text{2}$. In both cases, emissions are expected to continue after 2080: Union's emissions would reach 1,134~GtCO$_\text{2}$ over 2030--2100 under the current trend.\footnote{The data on emissions by region from the current trend and NDCs (with and without long-term targets) is given by the TIAM model in van de Ven et al. (2023)\cite{van_de_ven_multimodel_2023}. They model post-2030 action by extending the average rate of change in emissions intensity of GDP from 2020 to 2030. These estimates are more rudimentary and more optimistic than the ones by Climate Action Tracker (CAT). For example, the \textit{current trend} scenario leads to a warming of +2.3\textdegree{}C in 2100 (vs. 2.7\textdegree{}C for CAT's current policies). Therefore, our comparison provides a conservative estimate of the ratchet-up in ambition brought by the Fossil-Free Union.} % Post-2030 action is then modelled by measuring the average rate of change in emissions intensity of GDP from 2020 to 2030 in each region and assuming emissions-intensity reduction rates will remain the same after 2030. 
+In contrast, enforcing an equal per capita share of the remaining 1.8\textdegree{}C carbon budget would \textbf{limit Union's emissions to 691~GtCO$_\text{2}$} over 2030--2080, with \textbf{net-zero emissions by 2080}, and negative emissions beyond that date (cf. Section \ref{subsec:negative_emissions}).\footnote{The global carbon budget (and associated equal per capita rights) follows from non-LULUCF CO$_\text{2}$ emissions in the scenario SSP226MESGB of Gütschow et al. (2021).\cite{gutschow_country-resolved_2021}} % TODO say it also coincides with CO2 budget in FaIR https://github.com/anthofflab/MimiFAIRv2.jl
+
+To determine the \textbf{``non-losing'' carbon budget, below which a country could be considered losing}, we proceed as follows. For countries in the Global South, %countries with emissions per capita lower than the world average, TODO: define Global South
+we use a Contraction \& Convergence benchmark, where emissions rights per capita start at their current trend value in 2030 and linearly converge to the equal per capita share in 2050. % TODO graph
+This benchmark implicitly assumes that countries with relatively low emissions would consider as beneficial to their development the pathway that starts with the current trend, gradually grants them extra resources for sustainable development (in the form of emissions rights converging to an equal per capita share of the global sum), and then follows the world decarbonization trend. 
+For high-income countries and for China, we use the cumulative emissions implied by their NDCs and long-term targets.\footnote{For China, the value is in line with the domestic 2\textdegree{}C target scenario developed at Tsinghua University.\cite{he_towards_2022}} Doing so implicitly assumes that these countries have the domestic capacity to deliver their long-term targets on their own. These non-losing carbon budgets imply slightly more rights than the equal per capita share for China, and less for high-income countries. 
+
+Table \ref{tab:budgets} present the cumulative emissions implied by the current trend, \textit{non-losing} budgets, equal per capita ones, and the proposed allocation. 
+% TODO put somewhere that companies are allowed to join, paying the FFU carbon price to the governments where their employees are
+
+The proposed allocation departs from the equal per capita one for China and Western Europe only, which are both allocated a carbon budget corresponding to their NDCs and long-term targets. % TODO: hard to read below until intra-EU
+It is worth noting that \textbf{the proposed allocation grants Eastern Europe, Japan, and South Korea with their equal per capita share}. 
+Indeed, either these countries have significantly higher emissions per capita than the world average, in which case there is little risk that they turn net recipient from international transfers, or they are not as rich as Western Europe, in which case there is little concern if they turn net recipient. In both cases, there is no need to apply to them the same exception as for Western Europe. Note that I will soon update the proposal to match the European Union's NDC and Effort Sharing Regulation (that defines intra-EU solidarity in burden-sharing). % TODO!!
+For the moment, the regional grouping of the model I use divides Europe along West vs. East (rather than EU vs. non-EU). % In addition, granting these countries with their equal per capita share improves acceptability. 
+
+\begin{table}[h]
+  \caption{Carbon budgets over 2030--2080 for a 1.8\textdegree{}C trajectory (in GtCO$_\text{2}$).\label{tab:budgets}} % actually this leads to 1.86°C because not counting negative emissions over 2080-2100 led to 1.84°C and decadal approximation adds .02°C => We can argue that with more negative emissions over 2081-2100 than in Gütschow (109 Gt instead of 67) we go back to 1.8°C (that's with universal 770 Gt scenario; with BAU for non-Union, 296 Gt negative em are needed to meet 2°C)
+  \makebox[\textwidth][c]{ % TODO! Add U.S.
+\begin{tabular}[t]{cccccccccc}
+  \toprule 
+   & Africa & China & \makecell{Latin\\America} & India & Europe & \makecell{Japan \& \\South Korea} & \makecell{Other\\Asia} & \makecell{\textit{Fossil-Free}\\\textit{Union}} & \textit{World} \\
+  \midrule % Add Current policies (data "bau") to clarify the difference between Climate Action Tracker 2.7°C and current trend 2.3°C? => No, risks making readers skeptic that non-losing is really not costly
+  \bo{Current trend} & 90 & 250 & 81 & 145 & 32 & 46 & 182 & \textit{924} & \textit{1,240} \\ % emissions_bau
+  % \bo{Non-losing} & 125 & 147 & 58 & 116 & 23 & 11 & 105 & \textit{631} & \textit{802} \\ % emissions_cc for all but WEU, JPN, SKO, CHI: emissions_ndc, and world as a whole: emissions_cc
+  \bo{Non-losing} & 115 & 147 & 58 & 133 & 19 & 11 & 110 & \textit{640} & \textit{800} \\ % Using computations from df rather than v % TODO! update non-losing for EEU in code
+  \bo{Equal p.c.} & 144 & \bo{131} & 64 & 140 & \bo{51} & 16 & 118 & \textit{691} & \textit{770} \\ % cumulative_rights_30_future
+  \bo{Proposal} & 147 & \bo{147} & 64 & 140 & \bo{24} & 16 & 125 & \textit{691} & \textit{770} \\ % 769    
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}% We adjust China's budget to account for carbon footprint: we fix it to van de Ven's NDC-LTT scenario (152 Gt) which is lower than Hu (2025) scenario (162)
+% TODO! explain that even if some countries (such as EEU) have proposed < non_losing, var_ede > 0 because of the shape of the rights trajectory.
+
+Taking into account departures from the benchmark budget for China and Western Europe, emissions rights amounting 11~GtCO$_\text{2}$ remained to be allocated to match the Union's equal per capita share of the world's carbon budget. % Table \ref{tab:budgets} shows that the sum of the Union's proposed carbon budget is 12~GtCO$_\text{2}$ (or 2\%) lower than its equal per capita share of the world's carbon budget. 
+% The unallocated emissions allowances could be 
+These extra emissions rights were 
+used to grant some extra carbon budget to 19 countries that would otherwise lose (in the sense that their welfare would be lower than in the case with non-losing rights). 
+% For the moment, we have only modelled such a departure for China, but a similar one should be granted to other fossil-dependent middle-income countries with relatively high emissions: Algeria, Kazakhstan, Iraq, Iran, Libya, Mongolia, South Africa, and/or Turkmenistan. 
+These countries include oil exporters such as %Egypt, Iraq, 
+Iran, Libya, %Malaysia, 
+and Turkmenistan, but also middle-income countries such as Egypt, 
+Indonesia, Malaysia, and Thailand. % and Türkiye. 
+% The 11 countries with more than 10\% extra carbon budget currently represent 4.6\% %5.6\% 
+% of global emissions and 4.0\% % 3.4\% 
+% of global population, translating into an equal per capita carbon budget of 31~GtCO$_\text{2}$. %22~GtCO$_\text{2}$. 
+% Therefore extra allowances would cover their needs, 
+% After allocating extra allowances so that no country loses (except Singapore), 2~GtCO$_\text{2}$ of extra allowances remain unallocated, which gives some slack to negotiate the final allocation. 
+% To make sure that extra allowances fully cover their needs, we further reallocate 2\% of emissions rights from Western European countries to Eastern European countries, which represents additional burden-sharing within Europe. % We don't do this naymore
+% Accounting extra allowances would almost cover their needs. 
+
+Finally, \textbf{we propose yearly quotas by country that respect the different constraints} (Figure \ref{fig:trajectories} shows trajectories for broad regions). 
+In particular, proposed allowances sum up to national carbon budgets for each country, and low-income countries receive more allowances than their current trend's emissions. % during the first decades. %years (or even decades). 
+Figure \ref{fig:trajectories} also shows the carbon price that should result from this emission trajectory. The steadily increasing price would ensure sustained North-to-South transfers, paid by the efficiency gains from trade.
+
+\begin{figure}[h]
+  \centering \caption{CO$_\text{2}$ emissions allowances for selected regions (in tCO$_\text{2}$ p.c.).\label{fig:trajectories}}
+  \includegraphics[width=.7\textwidth]{../figures/policies/ffu_rights_pc_price_revenue.pdf} 
+\end{figure}
+
+% \begin{table}[h!]
+%   \caption{Projected carbon price trajectory in the Union.\label{tab:trajectory}} 
+%   \makebox[\textwidth][c]{
+% \begin{tabular}[t]{ccccccccc}
+%   \toprule
+%    & 2030 & 2035 & 2040 & 2045 & 2050 & 2060 & 2070 & 2080 \\ %& Total \\
+%   \midrule 
+%   Carbon price (in \$/tCO$_\text{2}$) & 2 & 34 & 80 & 122 & 162 & 243 & 340 & 481 \\ %&  \\
+%   %  &  &  &  &  &  &  &  &  &  \\    
+%   \bottomrule\$$-0.81em]
+% \end{tabular}}
+% \end{table}
+
+
+\subsection{A win-win deal\label{subsec:winwin}}
+
+Each country colored in Figure \ref{fig:participation} would have an interest to join the Union: 
+
+\begin{figure}[t] 
+  \caption{Variation in welfare\footref{ede} in the Fossil-Free Union, compared to a world with countries' emissions given by ``non-losing rights'' and without international carbon trading.}\label{fig:var_ede}
+  \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/var_npv_ede_ffu_nl.pdf}} 
+\end{figure}
+
+\begin{itemize}
+  \item Every country would benefit from a stabilized climate, and from the guarantee that all countries in the Union decarbonize.
+  \item Most countries would be granted a carbon budget sufficient to avoid a loss from the status quo. In particular, Figure \ref{fig:var_ede} shows that all countries likely to join would enjoy increased welfare thanks to the Fossil-Free Union.\footnote{\label{ede}Simulations take into account international transfers, abatement costs, consumption-based emissions, and local climate damages. I used the model NICE,\citep{young-brun_within-country_2025} which allows disaggregation at the country-decile-year level. To measure welfare, consumption is aggregated across deciles using the concept of Equally-Distributed Equivalent consumption, corresponding to the consumption level under perfect equality that would result in the same  isoelastic utility (with a standard inequality aversion parameter $\eta=1.5$).} %Exceptions include Russia, Saudi Arabia and other high-income countries from the Gulf. Even the U.S., Australia and Canada would enjoy a non-losing carbon budget. 
+  \item Lower-income countries would receive transfers from the rest of the world, spurring their sustainable development.
+  \item Countries with an important low-carbon industry, such as East Asian countries, would gain from the stronger demand for these goods.
+  \item High-income countries would benefit from the efficiency gains allowed by international carbon trading.\footnote{Note, however, that such benefit can disappear for countries with internal climate policy more stringent than the FFU's carbon price.}
+  \item \textbf{Large representative surveys show strong public support in favor of the Fossil-Free Union, even in high-income countries} when transfers are presented as a loss and their magnitude is specified. For example, there is\textbf{ 54\% support in the U.S. and 76\% in Western Europe} (cf. Section \ref{subsec:public_support}).\cite{fabre_majority_2025} 
+  Moreover, academic research shows that political programs containing the Fossil-Free Union are preferred by 58\% to 60\% of citizens in Western countries to similar programs without it, suggesting that \textbf{candidates at an election may win vote intentions by campaigning on the proposal}.\cite{fabre_majority_2025}
+\end{itemize}
+% TODO!!? gains in avoided damages vs. transfers
+
+\subsection{A ratcheted-up ambition\label{subsec:ambition}}
+
+\paragraph{Global temperature reduced by more than half a degree.}
+According to the climate-economy model NICE that I use, the business-as-usual scenario without additional climate policies would lead to a global temperature increase of +2.6\textdegree{}C in 2100. % This is the current trend scenario in van de Ven et al. (2023). % This is the current trend scenario in van de Ven et al. (2023), which corresponds to 1567 Gt CO$_\text{2}$ emissions over 2030--2100, and a temperature increase of +2.3\textdegree{}C.
+% Current policies correspond to a temperature trajectory reaching +2.6\textdegree{}C in 2100. % This is from Climate Action Tracker, corresponds to 2372 Gt 2030-2100 / van de Van BAU/current trend is 1567 Gt => +2.3°C. FFU would only reduce global temperature by 0.2°C in that case!
+% Temperature in 2100; bau: 2.64, ffu: 2.045, global_price_ffu: 1.88 (same price as FFU), global_cap_share: 1.81 (same emissions pc as FFU but global).
+
+\textbf{While the carbon budgets proposed in Section \ref{subsec:allocation} are based on a +1.8\textdegree{}C trajectory, to the extent that the Union is not universal, they would imply a higher temperature} trajectory. The higher temperature achieved is \textbf{not only due to countries outside the Union not pricing carbon at the same level as the Union}. %exceeding their equal per capita share} of the +1.8\textdegree{}C carbon budget. 
+It is \textbf{also due to a lower carbon price (and higher emissions) within the Union than the efficicent level that universal participation would entail}. Indeed, as non-participating countries are those with the largest emissions per capita, their absence from the Union decreases the Union's carbon price below its cost-effective level to achieve +1.8\textdegree{}C. In other words, the non-participation of the largest emitters (in per capita terms) prevents the efficiency gains that would occur should they participate: in this case, they would buy emissions allowances to the rest of the world, raising the demand for allowances and hence the carbon price, and the rest of the world would decarbonize faster (in exchange for transfers). 
+% TODO: expliquer que c'est pcq les pays hors Union émettent plus
+
+% TODO: cite van der Wijst that +1.9 is optimal
+If the whole world decarbonized at the same rate as the Union, the temperature would reach +1.9\textdegree{}C in 2100. Assuming that emissions in non-participating countries would follow business-as-usual policies, %the trend from current policies, 
+the \textbf{temperature increase expected in 2100 is +2.0\textdegree{}C}. 
+
+Therefore, \textbf{the Fossil-Free Union} studied here \textbf{would bring a reduction of global temperature in 2100 of 0.6\textdegree{}C}. Of course, a lower temperature target could be reached by choosing a smaller carbon budget: the Union's decarbonization trajectory is a policy choice. % a Fossil-Free Union based on a +1.8\textdegree with the participation scenario of Figure \ref{fig:participation} and the would 
+
+\paragraph{A sufficiently high carbon price.}
+It is important that the Union's carbon price be sufficiently high, for different reasons. First, as transfers are proportional to the carbon price, a substantial carbon price is required to deliver meaningful transfers, finance sustainable development, and convince lower-income countries to join. Second, a low carbon price would entail few decarbonization incentives and indicate that the carbon budget is too large, i.e. the ambition too low. Third, a low price could result in a price hike if a large emitter (like the U.S.) decided to join the Union. This, in turn, would hinder the interest that high-income countries would have in favor of expanding the Union to new countries, as their contributions would increase along with the price.
+
+To make sure that the price is sufficiently high, the Union could implement a (steadily increasing) carbon price floor. However, this is not our favorite option. Indeed, \textbf{adding a price floor would redefine and obscure the distributive effects} implied by the carbon budgets. By inducing a price higher than the equilibrium market price, \textbf{the price floor would} entail emissions lower than the yearly allowances and \textbf{be equivalent to a reduction of each country's emissions allowances}. While countries recipient of transfers would be cushioned against these lower allowances through larger transfers, contributing countries would lose out compared to the situation without a binding price floor. This could jeopardize an agreement on the proposed allocation, that has been designed so that industrialized countries %do not %
+neither gain nor 
+lose from the policy. 
+Furthermore, given that we can hardly predict whether the price floor would be binding or whether the equilibrium price would be higher than the price floor, we can hardly redefine the proposed allocation to mitigate the effects of the price floor.
+
+\textbf{Instead of a carbon price floor, we propose rules to ensure that there is no excess allowances and that the carbon price increases sufficiently overtime}. These rules correspond to the rules sketched in Section \ref{subsubsec:itmo} and apply to the intertemporal allocation of national budgets. These rules are that the \textbf{Union's allowances should not exceed its joint emissions at the starting year, and that they have to decrease every year at a minimum rate of, say, 2\%}. The intertemporal allocation proposed in Figure \ref{fig:trajectories} respects these constraints: allowances are never above the \textit{current trend} scenario and they decrease by at least 2\% per year at every period.\footnote{In the proposed allocation, the decrease is slightly below 2\% in 2046, 2047, and 2051, with a minimum at 1.77\%, but the average decrease evaluated over any five-year period is always larger than 2\% per year.}
+
+\textbf{If countries cannot agree on an intertemporal allocation of their emissions allowances that respect these rules, the Union's scientific council would propose how to allocate allowances intertemporally} in a way that maximizes welfare, thereby preserving the interests of all countries. \textbf{In case the Union rejects the proposal of the scientific council, a price floor would be implemented} (say, starting at \$10/tCO$_\text{2}$ and increasing by \$10 each year). The threat of a strong price floor should help countries find an agreement.
+
+\subsection{Timeline and governance\label{subsec:implementation}}
+
+% \paragraph{Initial negotiation}
+% During the consultations ahead of COP30, the Brazilian presidency could ask to other countries whether they would accept the principles of a Fossil-Free Union, and what carbon budget they would require for themselves. Initial discussions could gather the most important negotiators from Brazil, China, the European Union, India, and the African Union.
+% implementation, governance: experts/scientific council from each country to assess allocation and price; treaty negotiated by main players (CH, EU, IA, UA, BR) with different price trajectories / rights allocation depending on who's in
+
+\paragraph{Initial stages.}
+
+To build up the administrative capacity, the ETS could be preceded for a few years by a small carbon tax (say \$10/tCO$_\text{2}$), instead of an ETS. The revenues would be returned to countries using a pre-agreed allocation, for example proportional to the ETS starting year's national carbon budgets.
+
+The ETS could also gradually expand its sectoral coverage. In particular, emissions from the aviation and/or manufacturing sectors (the ones covered by the European CBAM) could be covered before the ETS is extended to all intended sectors.
+
+In any case, what should occur upfront is negotiation and agreement about the
+carbon budget and how it is allocated between countries and over time.
+
+\paragraph{Expansion of the Union.}
+The Union can expand to a new member by approving a participation request, which should include a proposed national carbon budget and its intertemporal allocation. \textbf{When a new member joins, its entry into the ETS can be phased in} gradually, say over five years. Initially, allowances owed by the new member's companies would correspond to a fraction of their emissions, and the new member would only receive that fraction of its normal ETS revenue, with the fraction linearly increasing during the phase-in period. 
+
+\paragraph{Renegotiation of carbon budgets.}
+At any time, a country can propose a new global carbon budget, a new allocation of the global carbon budget across countries, or a new intertemporal allocation of national carbon budgets. A prospective new member can also make such a* ``reallocation proposal''. A reallocation proposal is submitted to the governing body at the condition that the scientific council deems it compatible with the objectives of Section \ref{subsec:objectives}. In particular, the scientific council would deem the proposal unfit if it is expected to increase the global temperature in 2100, taking into account the changes in membership (entries or exits) that an agreement on the proposal may entail.
+
+
+\paragraph{Monitoring.}
+GHG emissions must be monitored, reported and verified by the Union's administrative authority. The Union would make countries work together and assist countries lacking administrative experience. Besides, transfers would provide resources to low-income countries, which they can use to build up administrative capacity. 
+
+\paragraph{Governing body.} 
+In the Union, voting rights could be proportional to countries' emissions.\footnote{The ETS would directly affect participating countries according to their emissions. It thus seems legitimate to grant each country a voting right proportional to its carbon emissions, at least for decisions pertaining to the ETS or sanctions. In the middle of the century, when some countries will approach full decarbonization, the voting rights will need to be based on another formula, say equal per capita. They could gradually converge to that new formula overtime. % TODO think about that
+} %Each country should be allowed to have multiple representatives, to choose how its representatives are appointed (possibly through elections) and how the country's voting rights are split among these representatives. 
+During operation of the ETS, the governing body would define the market design and possible sanctions against non-compliant or non-participating countries.  % The choice of sanctions would be the most political decision of the body. It would mostly affect powerful countries, as they are the main geopolitical actors, therefore those that the sanctioned countries might target in possible retaliations. Moreover, the ETS would directly affect participating countries according to their emissions. It thus seems legitimate to grant each country a voting right proportional to its carbon emissions, at least for decisions pertaining to the ETS or sanctions. 
+% For decisions relative to the basic income, each country would have a voting right proportional to its adult population. 
+Before the starting year, the governing body would discuss and vote on the agreement. In particular, it would choose the global carbon budget, its allocation into national budgets, and the intertemporal allocation of national budgets. 
+
+Beyond its mandate, the governing body would offer a space for discussion on climate-related matters. For example, it could be used to coordinate complementary policies, such as a ban on the production or import of combustion-engine cars by 2035.
+
+\paragraph{Scientific council.}
+\textbf{Each participating country would be allowed to designate a team of scientists to represent them in a scientific council}. Appointed scientists could be designated by several countries at the same time. The scientific council would assist the governing body by modelling the climate, economic, and distributive effects of the policy, by providing analyses upon request, and by proposing an intertemporal allocation of national budgets. In case of disagreement in the scientific council, each team of scientists would have a voting right proportional to the population % here population rather than emissions because we're dealing with question related to the amount of transfers
+of the country (or countries) that designated them.
+
+% When the body has to choose between several options, it should use approval voting, and when these options are numeric, use the median preferred value. Finally, each country should be allowed to have multiple representatives, to choose how its representatives are appointed (possibly through elections) and how the country's voting rights are split among these representatives. 
+
+\paragraph{Market design.} 
+The compliance period to surrender emissions permits should be one calendar year, and the auctioning of emissions allowances should occur once a year. Carbon offsets should not be allowed as a substitute to surrender emissions allowances. Borrowing and banking emissions permits should be limited in time and quantity to avoid speculation. % Borrowing emissions permits should be forbidden and banking should be limited in time and quantity to avoid speculation. 
+
+% \paragraph{Participation mechanisms}
+
+% The basic participation mechanism, which would also prevent carbon leakage,\footnote{The movement of emissions from a country where legislation is becoming restrictive to one where it is less so, is called ``carbon leakage.''} is carbon tariff: products imported into the club would be priced in proportion to their carbon content (or according to a reference value corresponding to the worst possible case, if these emissions cannot be measured). The most logical approach would probably be to cover the emissions of imported products in the ETS by obliging importers to buy emissions permits.\footnote{In this case, a carbon price rebate for exports would ensure that the club's emissions are not restricted to less than an equal number of permits for each human.} In this way, the club's carbon budget would apply to its carbon footprint rather than its territorial emissions. Should this solution prove too far removed from customs practices, the alternative would be to impose a customs duty on imported products. The customs duty applied to these imports would be at least equal to the market price. The governing body could decide to apply a higher price, on two grounds. Firstly, in the case where the club is a net importer of carbon content, the carbon price would be higher if net imports were included in the ETS than if they were subject to a customs duty equal to the ETS price. The customs duty would have to be equal to this higher level to better respect the carbon budget. Consequently, the carbon tariff could be set at (the estimated value) of this \textit{counterfactual price}, in order to internalize the price that participating entities would have to pay for these imported goods, were the carbon budget better respected. Secondly, the governing body could decide to apply sanctions in the form of a tariff higher than the counterfactual price, to encourage third countries to join the club. 
+
+\paragraph{Sanctions.}
+
+\textbf{Countries that do not correctly apply carbon pricing on their territory could be excluded from the Union} by a vote of the governing body. 
+Besides, \textbf{if the governing body deems it appropriate to encourage participation, it could vote sanctions against non-participating countries, such as tariffs (beyond the carbon border adjustment)}, assets forfeiture, or travel restrictions (especially targeting elites). 
+
+\subsection{Negative emissions\label{subsec:negative_emissions}}
+
+In this proposal, we interpret the Paris Agreement as allowing for a temporary overshoot of the 1.5\textdegree{}C target, provided that warming never exceeds 2\textdegree{}C. In other words, after a first phase with positive emissions, a second phase with net negative emissions will make it possible to get back down to 1.5\textdegree{}C, a threshold that will very likely already be crossed in 2040.\citep{diffenbaugh_data-driven_2023} 
+The positive emissions budget that we consider for the first phase (1,000 GtCO$_\text{2}$ from 2025) corresponds to a 67\% probability of not exceeding 2\textdegree{}C of warming. 
+
+In the second phase, when net emissions will be negative, there would be two annual carbon budgets: a quota of residual positive emissions (for activities that are impossible to decarbonize), and a tender for negative emissions. An annual call for tenders would enable negative emissions to be purchased at the lowest cost. Carbon sequestration could be financed by taxes on the wealthiest, such as a global wealth tax. Only projects whose sequestration is indisputable would be financed. For example, sequestration through gains in forest biomass would only be financed if the emissions due to the loss of forest were also priced. 
+
+Carbon sequestration would also be financed from the first phase, where taxes on the wealthiest could already be used. Its value would then be set at the market carbon price, and the sequestration thus remunerated would swell the auctioned emissions quota by the same amount.\citep{edenhofer_governance_2023} 
+
+After several decades of net negative emissions, the world would reach the Paris Agreement climate target (1.5\textdegree{}C warming), and we could even continue to sequester carbon to achieve a milder climate and limit sea-level rise. In this article, we do not delve into negative emissions, which will only become significant in a few decades' time, and we focus on the first phase of the Plan. 
+
+
+\subsection{Limitations of the proposal\label{subsec:limitation}}
+
+Any proposal comes with downsides, as trade-offs between conflicting policy objectives are inevitable. The proposal for a Fossil-Free Union faces three main limitations. 
+
+First, as the between-country and intertemporal allocation of the global carbon budget would be determined in advance, the agreement is not adapting to changing circumstances (e.g. a middle-income country growing and decarbonizing faster than expected, or surprises concerning the pace at which the transition can occur). Section \ref{subsec:gcp} argues that an alternative option with adaptive emissions rights causes bigger issues. Furthermore, the rigidity ensures that the Union is committed to meet the climate targets. In addition, the rigidity is mitigated by the possibility to renegotiate the carbon budgets, described in the previous section. 
+
+Second, to fully understand the distributive effects resulting from the carbon budget allocation (in particular the intertemporal one), one needs to know the equilibrium carbon price that would emerge at each period. Yet, the carbon price can only be estimated with uncertainty. To make sure that distributive effects are known in advance, the Fossil-Free Union can be complemented by the ``Sustainable Union'' proposed in Section \ref{sec:su}, that would determine the transfers between countries based on their GDP per capita and finance them through new international taxes on the wealthiest.
+
+Third, the North-to-South transfers involved in the Fossil-Free Union may be too low in view of the resources needed to achieve the SDGs or of the ``climate debt'' that high-income countries owe due to their past emissions. These concerns are also resolved in the ``Sustainable Union'' proposed in Section \ref{sec:su}.
+
+Finally, this carbon pricing proposal face challenges inherent to any international proposal to phase out fossil fuels. A challenge for carbon pricing is to monitor and verify emissions of companies or governments that could fail to comply. Although required to guarantee a Paris-aligned decarbonization, the application of a common carbon budget can be viewed as infringing on sovereignty, even if it would always remain a sovereign decision to join the FFU. In absence of a mechanism to preserve forests, policies to phase out fossil fuels may cause some carbon leakage in the form of accrued deforestation. As in any international agreement, there is a risk that some countries leave after a few years (though this risk is mitigated for lower-income countries by granting them more rights around 2050 compared to 2030 or 2040). Lastly, a cartel of oil exporting countries could decide to cut supply in order to raise oil prices, thereby increasing their rents at the expense of the Union's carbon pricing revenues. % TODO? lower support in Eastern Europe?
+
+% \subsection{Variants of the proposal\label{subsec:variants}} % 
+
+% Pb de FFU: 1. la répartition temporelle des droits doit tenir compte du prix, qui n'est pas connu (participation partielle induit différence distributive par rapport à simple marché). => fixer le prix (en fonction de qui participe); 2. inadapté circonstances changeantes e.g. Chine riche; 3. EU doesn't have interest that US joins 
+% Alternatives: differentiated floors (show equivalence, FFU better because efficient); GCP (isn't flexible enough e.g. regarding allocation in first years); C&C: close, main difference is no grandfathering for HIC; fix price
+
+\clearpage
+
+\section{A Sustainable Union\label{sec:su}}
+
+While the previous section focused on the phase out of fossil fuels, we propose here a more comprehensive agreement towards sustainable development, financed by global solidarity levies.\textbf{ We propose new taxes on wealth, polluting fuels, financial transactions, and corporate income, raising more than \$3 trillion per year}. Part of the revenues from these taxes would finance international transfers. \textbf{One percent of each country's GNI would be reallocated to each country in proportion to their population}, addressing climate finance needs and fostering sustainable development.
+
+\subsection{The design of a Sustainable Union\label{subsec:principles_sa}}
+
+A group of countries forming a Sustainable Union would have to agree on \textbf{three key elements}:
+\begin{enumerate}
+  \item a target for \textbf{revenues from new levies} on the richest and on pollution, \textbf{say 2\% of} their \textbf{GNI};
+  \item a common \textbf{contribution to sustainable development, say 1\% of GNI}; and
+  \item the Fossil-Free Union's \textbf{global carbon budget, say 1,000 GtCO$_\text{2}$} starting in 2025.
+\end{enumerate}
+
+If participation is universal, the contributions would be returned to participating countries in proportion to their population. If some countries do not participate, 
+the\textbf{ rules guarantee that countries with per capita GNI above the global average would contribute financially to lower-income countries}, drawing on part of the new revenues. Net contributions (or transfers) per capita are proportional to the difference between the country's GNI per capita and the world average's.\footnote{An alternative basis for the transfers could be the non-fossil GNI per capita. This would help economies dependent on the extraction of fossil fuels achieve their difficult transition.}
+
+\paragraph{Global solidarity levies}
+We propose to tax wealth at a rate of 2\% above \$5 million and 5\% above \$100 million (i.e. less than the return on capital for large fortunes). Thus, a couple with \$10 million in wealth (\$5 million each) would not be taxed, while a person with \$150 million in wealth would be taxed at 3\% per year.\footnote{Indeed, 5\% of $150 - 100 = 50$M and 2\% of $100 - 5 = 95$M yield $2.5 + 1.9 = 4.4$M, that is 2.9\% of 150M.} 
+Our proposal remains moderate; two or three times as much could be raised by adopting a more progressive tax schedule. The remaining revenues would come half from carbon pricing (with a higher rate on the aviation sector, currently exempt from taxes) and half from taxes on financial transactions and profits. 
+We could also add a tax on inheritance, on the super-profits of fossil fuel companies and/or on digital advertising.\cite{acemoglu_urgent_2024} 
+
+We estimate the potential revenues from new taxes at global level.\cite{fabre_shared_2024} These would amount to over 3\% of global GDP (as shown in Table \ref{tab:su}), the majority of which would come from a wealth tax. %The bulk of these taxes would ultimately be paid by the richest 1\% of humans. With universal participation, these mechanisms would entail \$766 billion per year in North-to-South transfers.
+
+% TODO Update maps as I removed maritime tax
+\begin{table}[h!]
+  \centering 
+  \caption{Estimated revenues from new global taxes (in billions of dollars per year).\label{tab:su}}
+  \begin{tabular}[t]{ccccccc}
+  \toprule
+  \makecell{Financial\\Transaction\\Tax} & \makecell{Carbon\\price\\(\$10/tCO\textsubscript{2})} & \makecell{Aviation\\tax\\(\$300/tCO\textsubscript{2})} & \makecell{Corporate\\income tax\\(at 21\%)} & \makecell{Tax on the\\ultra-rich\\(\$3\% above\\ \$100M)} & \makecell{Wealth tax\\(\$2\% above\\ \$5M)} & \bo{Total} \\
+  \midrule
+  327 & 356 & 223 & 299 & 765 & 1,364 & \bo{3,334} \\
+  \bottomrule\\[-0.81em]
+  \end{tabular}
+\end{table}
+
+The participating countries would commit to applying a minimum rate of taxation on individual wealth, corporate income, carbon emissions from aviation fuel, and financial transactions, and to creating a global asset registry to list the assets held by each person. 
+Thanks to the extraterritorial mechanism of ``tax collector of last resort'' proposed by economist Gabriel Zucman,\cite{zucman_blueprint_2024} the Union would collect the ``missing'' tax due to the non-application by countries outside the Union of the minimum rate on multinational profits and individual wealth. In this case, the Union would demand payment of the ``missing'' tax, pro rata to the activities of the company (or companies controlled by the wealthy individual) that take place inside the Union, on pain of retaliatory measures against the company in question. These revenues would be used to increase transfers from the Union to the countries with per capita GNI below the world average. 
+
+\paragraph{The link with the Fossil-Free Union}
+The countries of the Sustainable Union would commit to joining the Fossil-Free Union. The carbon price would thus be probably higher than the figure of \$10/tCO\textsubscript{2} used in the simulation. Importantly, \textbf{the transfers entailed by the Fossil-Free Union would be counted as part of the contributions required by the Sustainable Union}. Therefore, if all countries from the Fossil-Free Union joined the Sustainable Union, the calculation of international transfers would be greatly simplified, as these would be determined by the simple formula of the Sustainable Union. 
+
+An issue with this arrangement is that transfers from or to a country would cease to depend on its carbon emissions, so incentives to implement national decarbonization legislation would be reduced. Two mechanisms would maintain incentives for a country to decarbonize. First, as the carbon price of the Fossil-Free Union would apply to companies rather than governments, even though costs for a country as whole would not depend on its emissions, consumers would still face the marginal cost of the carbon price and be incentivized to decarbonize accordingly. Second, to discourage countries from repealing existing climate legislation, any participating country would have to increase its net contribution to the Union if it reduces the climate ambition of its legislation. More precisely, any change in a country's legislation that is estimated to lead to increased emissions (or reduced emissions reductions) would be counted negatively in the country's contribution. Thereby, \textbf{a country renouncing to a decarbonization policy would have to compensate other countries by the induced extra emissions priced at the Union's carbon price}.
+
+\paragraph{Monitoring}
+A recurring concern on the part of contributors is that transfers could be diverted or misused, and could fail to contribute to the intended uses. Opinions also differ as to the best way to ensure that the poorest people benefit from transfers: should they be paid to governments, development agencies, NGOs, or households? 
+%On the one hand, to ensure that all households in need benefit from transfers, many countries implement direct cash transfers. These have proved their worth in the fight against poverty, whether in Brazil, South Africa or Kenya. With identification and payment technologies now available on cell phones, and solar panels and satellite internet making it possible to reach remote areas, direct transfers are a promising solution. On the other hand, the development of low-income countries requires the development of public services, particularly in education and healthcare, and the construction of infrastructure, in which development agencies specialize. 
+In order to respect the plurality of solutions and the sovereignty of States, the treaty would leave the choice of programs to be financed to the beneficiary States, provided they are validated by \textbf{a multilateral agency} such as the World Bank. The agency in question \textbf{would ensure that funds are traceable, and that they finance only public services, social protection and sustainable infrastructure}. In the event of non-compliance with conditionalities, management of the funds would be entrusted to (another) multilateral agency, which would itself ensure that the population actually benefits.
+
+\paragraph{Flexibility and conditional cooperation}
+% A pragmatic treaty in the interest of the greatest number
+The Sustainable Union would be open to all countries. To encourage as many countries as possible to join, the treaty funding the Union would include elements of flexibility and conditional cooperation. In particular, \textbf{the contribution required of a high-income country could be reduced to the extent that other high-income countries did not participate}. Thus, if the European countries join the Union but the United States and Japan do not, Europe's contribution could be halved. % TODO: specify it's about transfers
+Also, %to facilitate the accession to the Union of fossil-dependent countries such as China, Iraq or South Africa, a country could make its participation in carbon pricing conditional on an exemption from the system of taxes and transfers (it would then be neither a beneficiary nor a contributor), provided this is accepted by the majority of other countries (weighted by their population). Finally, 
+% TODO? above, add explanation why?
+% TODO! add argument against fiscal exile
+\textbf{a country could make its participation conditional on the participation of one or more specific countries, or on emissions covered by the Fossil-Free Union exceeding a threshold}, or on the GDP covered by the Sustainable Union exceeding a threshold. For example, the European Union could choose to participate on condition that 60\% of global emissions are covered by the Fossil-Free Union, which would de facto make its participation conditional on that of China to international carbon pricing (as China accounts for 30\% of global emissions). 
+
+% Diplomatic support 
+% Various countries in the Global South could spearhead such a Union. The African Union has already taken similar (albeit less precise) positions.\cite{african_union_african_2023} Brazil is hosting the next COP, and intends to make it a major event. %Mexico is presided over by a climatologist, one of the main authors of the fifth IPCC report. 
+% India would be well advised to join such a Union, since it would receive large transfers from the rest of the world. %Should Modi choose to protect the Indian oligarchy from a tax on billionaires and reject such a proposal, this would open the way for the Congress Party in the next elections. 
+% China, with a per capita income equal to the world average, would be neither a contributor nor a beneficiary; it would have an interest in participating to promote sustainable development and the Fossil-Free Union. %ensure a low-carbon future in the long term, and outlets for its low-carbon equipment exports in the short term. 
+% In the absence of the United States, Europe would be the main contributor, and would enjoy a certain prestige. Moreover, recent academic surveys reveal that three quarters of Europeans support international climate and redistributive measures, and are ready to contribute financially to end climate change and extreme poverty.  It is hard to imagine certain countries, such as the United States, Russia and Saudi Arabia, joining the Sustainable Union in the short term. However, we can hope that social pressure will then be exerted on (and in) these recalcitrant countries, and eventually modify their political positioning.
+
+% A solution not as impossible as you might think
+% Many people believe that the reason such a treaty has not yet seen the light of day is that such an agreement is politically impossible. Yet the few academic surveys on the subject reveal strong public support for international climate policies, supranational governance and North-South solidarity. A survey of 125 countries shows that 69\% of people are prepared to contribute 1\% of their income to the fight against climate change.  Another shows that in each of the 17 countries surveyed (which include China, India, Russia, France, Egypt...), around 70\% of the population support a global democratic government to deal with global issues (the USA is the only country where this opinion is in the minority, with 45\% support).  On the other hand, a global tax on millionaires to finance low-income countries is supported by 8 out of 10 people in high-income countries (see Figure \ref{fig:support}), and surveys show that parties advocating global redistribution could win votes in elections.\cite{fabre_international_2023} Admittedly, the political impossibility could come from governments rather than the population. By blocking any ambition in climate or tax agreements, the United States has played a decisive role. Trump's election should therefore be seen as an opportunity: it is now clear to everyone that it is an illusion to seek the cooperation of the United States, and that we must instead be resolute and united if we are not to lose ground in the confrontation that the U.S. President has initiated with the rest of the world, including with his allies. 
+
+
+
+\subsection{The distributive effects of a Sustainable Union\label{subsec:distributive}}
+
+% TODO! change in EDE compared to BAU under SU with partial participation
+Figures \ref{fig:gain_both_taxes} and \ref{fig:budget_gain_both_taxes} estimate in each country the revenue collected from the new taxes as well as the transfers between countries. %Half of the tax on ultra-high wealth is assumed to finance (through a fund) countries with per capita GNI below twice the world average, in proportion to their distance to this threshold. Besides, % TODO! maps based on the former: adjust
+As one percent of each country's GNI is reallocated to each country in proportion to their population, with universal participation these mechanisms would entail \textbf{\$766 billion in North-to-South transfers} (Figure \ref{fig:gain_both_taxes}), \textbf{mostly borne by the richest 1\%}, and up to \$1 trillion per year if one adds up existing Official Development Assistance. \textbf{The new taxes would collect \$3.3 trillion globally} (Table \ref{tab:su}), \textbf{enough for all developed countries to finance their net international contribution} (Figure \ref{fig:budget_gain_both_taxes}). See Appendix \ref{app:taxes} %Supplementary Material of Fabre et al. (2024)\cite{fabre_shared_2024} 
+for details. 
+% TODO! improve grammar with AI
+
+\begin{figure}[h!] 
+  \caption{International transfers to be financed by new global taxes.}\label{fig:gain_both_taxes}
+  \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{../figures/maps/net_gain_over_gdp_both_taxes_pop.pdf}} 
+\end{figure}
+
+\begin{figure}[h!] 
+  \caption{Net gain for state budgets from new taxes and international transfers (revenue plus net transfer).}\label{fig:budget_gain_both_taxes}
+  \makebox[\textwidth][c]{\includegraphics[width=.95\textwidth]{../figures/maps/budget_gain_over_gdp_both_taxes_pop.pdf}} 
+\end{figure}
+
+
+% \subsection{The advantages of a Sustainable Union\label{subsec:advantages}}
+
+
+
+% III. sustainable union: stronger incentive for LMIC to join; can simplify allocation (transfers purely based on GNI); count anti-climate legislation as negative contributions; 
+% TODO explain treaty; 
+% distributive effects.
+\clearpage
+
+\section{Support for the proposals\label{sec:support}}
+
+\subsection{Experts' support for the Fossil-Free Union\label{subsec:expert_support}}
+
+The FFU stems from three economic principles: the polluter-pay principle, welfare maximization, and the Pareto principle. The polluter-pay principle calls for carbon pricing, welfare maximization for a progressive distribution of carbon pricing revenues, and the Pareto principle constrains the distribution to allocations that make every participating country better-off. This last principle is what distinguishes the FFU from an \textit{egalitarian cap-and-trade}, where revenues would be redistributed on a strictly equal per capita basis. As these two systems are very close, support for the egalitarian cap-and-trade can be understood as support for its more politically realistic variant: the FFU. 
+
+Given this theoretical backing, it is hardly surprising that the egalitarian cap-and-trade has emerged as the canonical solution to climate change. % ever since it first emerged into public debate. 
+It seems that it was Michael Grubb, a professor at University College London, who first advocated this solution when the first IPCC report was being drafted in 1990.\citep{grubb_greenhouse_1990} In his article, Grubb writes that ``by far the best combination of long-term effectiveness, feasibility, equity, and simplicity, is obtained from a system based upon tradable permits for carbon emission which are allocated on an adult per capita basis.'' %A year later, Anil Agarwal and Sunita Narain, of New Delhi's Centre for Science and Environment, published a seminal text on climate justice that advocated much the same solution. %
+Since then, many have expressed their support for such a solution.\citep{agarwal_global_1991,bertram_tradeable_1992,baer_equity_2000,jamieson_climate_2001,van_den_bergh_dual-track_2020,cramton_global_2017} For example, Blanchard \& Tirole\citep{blanchard_major_2021} (former IMF Chief Economist and ``Nobel Prize'' winner, respectively) write ``The North should
+frankly acknowledge its responsibility for future climate damage, and consider the possibility of paying the South for the implementation of investments necessary to green its economy. This could be achieved by asking the countries of the South to join a % English quote? The European Union should aim at forming a coalition of climate-ambitious countries (including the United States) with a unified ETS market. This climate coalition should encourage other countries to join its ETS in exchange for the distribution of free permits.
+market mechanism and offering them free permits in proportion to their population, which would at the same time increase incentives for mitigation in developing countries.'' Raghuram Rajan, former Governor of the Indian Central Bank and former IMF Chief Economist, also defends this system.\citep{rajan_global_2021} The IMF also recommends a uniform price with international transfers, though it also backs differentiated prices if international transfers are not feasible.\citep{imf_how_2019}
+
+Support for egalitarian cap-and-trade is not confined to \textit{mainstream} economists: under the name \textit{cap and share}, it is the first of six policies proposed in \textit{the economics of degrowth}.\citep{kallis_economics_2012} Similarly, heterodox economists such as Elinor Ostrom and Robert Costanza advocate a variant of global egalitarian carbon pricing, where half of the revenues would fund a basic income and the other half low-carbon projects.\citep{barnes_creating_2008} 
+
+Finally, a coalition of NGOs called the \textit{Cap And Share Climate Alliance} supports the FFU. Climate negotiators from Brazil, China, Kenya and Malawi have also expressed their support. The African Union calls for ``a global carbon taxation regime'',\citep{african_union_african_2023} and Ursula von der Leyen, President of the European Commission, also \href{https://twitter.com/vonderleyen/status/1700416700238225659}{came out} in favor of global carbon pricing Other \href{https://global-redistribution-advocates.org/the-global-climate-plan/}{prominent supporters} include the government of Palau, political parties such as the French Greens or Renaissance (Emmanuel Macron's party), and scholars such as Gabriel Zucman, Julia Steinberger, and Christian Gollier. 
+
+
+\subsection{Public support for global climate and redistributive policies\label{subsec:public_support}}
+
+International surveys have uncovered strong majority support for global redistribution. Over 29 countries, 78\% agree and 5\% disagree that ``present economic differences between rich and poor countries are too large''.\citep{issp_international_2019} 
+Recent representative surveys in 77 countries covering 87\% of the world's population show that in all countries, a majority state that ``rich countries should give more help to poorer countries to address climate change'', with a global average of 79\%.\cite{undp_peoples_2024} Furthermore, 66\% of Americans support providing ``financial aid and technical support to developing countries that agree to limit their greenhouse gas emissions'',\cite{leiserowitz_public_2021} and 90\% of Germans want some degree of global redistribution.\cite{fehr_your_2022}
+
+Surveys of more than 40,000 people in 20 countries show that most people want climate action at the global (rather than the national) level.\citep{fabre_majority_2025,dechezlepretre_fighting_2025} These surveys show overwhelming support for a global emissions trading system that would keep emissions consistent with the 2\textdegree{}C target as well as for a global wealth tax that would finance low-income countries. Consistent with the literature,\citep{carlsson_is_2011,meilland_international_2024,dabla-norris_public_2023} there is a consensus for an equal per capita allocation of emissions rights, while grandfathering (allocating rights in proportion to countries' emissions) is the least preferred option in every country surveyed.
+
+% We then conducted additional surveys over 8,000 respondents in the U.S. and in four European countries (France, Germany, Spain, and the UK) to test whether support for globally redistributive policies was robust and sincere. 
+
+In surveys over 8,000 respondents in the U.S. and in four European countries,\citep{fabre_majority_2025} my co-authors and I described a ``Global Climate Scheme'' similar to the FFU, consisting of a global price on carbon that would finance an equal cash transfer of \$30 per month for every human, thereby alleviating extreme poverty. We explained that increased expenditures (from higher fossil fuel prices) would only be partially offset by the cash transfer, and informed the respondents of the cost to the average person in their country (\$85 per month in the U.S., £20 per month in the UK). Even knowing the costs, 54\% of Americans and 76\% of Europeans supported the policy (Figure \ref{fig:support}). 
+
+\begin{figure}[h] %
+  \caption[Support for global policies]{Support for global climate and redistributive policies (in percent).} 
+  \makebox[\textwidth][c]{\includegraphics[width=.95\textwidth]
+  {../figures/country_comparison/few_main_share.pdf}}\label{fig:support} 
+\end{figure}
+
+We also found widespread support for a global tax on millionaires funding low-income countries (69\% in the U.S., 84\% in Europe), similar to support for a domestic tax on millionaires funding domestic public services. We then asked to the respondents how they would prefer to allocate the revenue from a global wealth tax: The median respondent allocated 30\% to low-income countries versus 70\% to domestic health and education. Other questions in the survey consistently showed that most people care about global poverty. For example, more than 60\% of respondents wanted to increase their country's foreign aid.
+
+Finally, various experimental methods confirmed the sincerity of the support for global redistribution. For example, we found that a progressive candidate would not lose -– and could even gain –- vote intentions by campaigning on global redistribution. This result is based on an experiment in which we presented respondents with two political platforms, corresponding to the conservative and progressive platforms of their country. For a random half of the sample, we added the Global Climate Scheme to the progressive platform. Preference for a platform never decreased when it included the Global Climate Scheme, and is sometimes increased, by up to 11 points in France. % TODO! other example
+
+
+\section{Comparison of alternative proposals to phase out fossils} %possible international policies to phase out fossil fuels}
+
+In Section \ref{subsec:criticism}, we have reviewed the pros and cons of ITMOs, climate finance, and JETPS, which represent the international initiatives to phase out fossil fuels with the greatest chance of implementation. While these approaches are acceptable to most countries, they generally fail to guarantee sufficient emissions reductions. In this section, we assess alternative proposals to expand carbon pricing or restrict fossil fuel extraction. We then provide three tables summarising the evaluation of each policy mentioned in this article.  Table \ref{tab:policies} presents each policy, Table \ref{tab:pros_cons} lists their pros and cons, and Table \ref{tab:comparison} attempts to grade the policies' properties in terms of the multiple desired objectives. 
+
+\subsection{Linkages between carbon markets}
+
+% Contrary to the FFU, that would establish a new carbon market on top (and independent) of existing ones; 
+Existing compliance carbon markets can be linked to each other, or linked to a voluntary carbon offset market.\citep{jaffe_linking_2010} With such linkages, either emissions allowances from a foreign country's carbon market, or carbon offsets (e.g. from forestation projects) are allowed for compliance in the domestic carbon market. The linkage can be partial, in which case there is a cap on the amount of external emission allowances/offsets that can be used for compliance. 
+
+Linkages are very similar to ITMOs; the main differences are that ITMOs are traded between countries (rather than firms) and always affect the accounting of NDCs (contrary to a link between two ETSs). By making carbon prices converge across borders, linkages achieve gains from trade. Yet, a linkage may induce hot air (and weaken domestic decarbonization efforts) if it is made with a system lacking ambition (cf. Section \ref{subsubsec:itmo}). 
+
+Furthermore, when a linkage connects ETSs, the difficult question of the allocation of emissions rights between countries arises (like in any international pricing agreement). The connected countries have to either agree in advance on the trajectories of their respective emissions rights, or renegotiate the allocation at regular intervals. The EU was able to opt for the latter solution thanks to its centralized administration (the EU Commission). In absence of such authority, the former solution seems safer (to avoid later disputes), hence why it is the one chosen in the FFU proposal.
+
+\subsection{Differentiated carbon price floors}
+
+Many commentators argue that lower-income economies do not have the resources to adapt to a high carbon price and require a lower price than high-income countries. However, this claim is misguided and is not a sound argument in favor of differentiated carbon prices.\citep{aldy_promise_2012} Indeed, a uniform price is more efficient, and in a redistributive system like the FFU, lower-income countries would actually \textit{gain} purchasing power from the policy, meaning that they would obtain the required resources to adapt their economies. As long as they benefit from more emissions rights than emissions needs, they could in principle choose to keep their emissions stable and still pocket a financial transfer. Yet, the high carbon price would provide incentives to decarbonize and benefit from larger transfers. 
+
+A more reasonable argument in favor of coordinated carbon prices that would be differentiated depending on the country's income level\citep{parry_proposal_2021} is the claim that international transfers are not feasible. In this case, differentiated prices offer a second-best solution. 
+
+Note, however, that there is an economic equivalence between differentiated carbon prices and a uniform price with differentiated emissions rights (see Appendix \ref{app:correspondence} for the mathematical derivation). More precisely, for a given agreement on differentiated prices, the same global emission reductions and the same costs and benefits by country can be achieved with a uniform price, by appropriately calibrating the price and the emissions rights, at least when efficiency gains are assumed away. This observation should invite us to question the claim that one option is not politically feasible, given that it has the same distributive effects as the other. Besides, because a uniform price offers efficiency gains from trade but differentiated prices do not, the latter is an inferior solution.
+
+\subsection{Supply-side policies such as \textit{fossil fuel non-proliferation}}
+
+The \textit{Fossil-fuel non-proliferation treaty} emerged as a prominent campaign to phase out fossil fuels. The call for a treaty (which does not refer to a specific treaty proposal) has been endorsed by over one million individuals, four thousands organizations (including Greenpeace and Climate Action Network International), and 101 Nobel prizes. While the petition only alludes to a consensual call for a ``binding plan to end the expansion of new coal, oil and gas projects and manage a global transition away from fossil fuels''; campaign briefings and related academic research sketch out a more detailed plan.\citep{civil_society_equity_review_fair_2021,civil_society_equity_review_equitable_2023,calverley_phaseout_2022,fossil_fuel_non-proliferation_treaty_global_2023}
+
+The campaign refers to a plan called to \textit{Fair Shares Phase Out}, which involves setting country-specific end dates for fossil fuel extraction,\citep{civil_society_equity_review_equitable_2023,calverley_phaseout_2022} allowing a later phase out for countries with lower income or higher dependence to fossil fuel extraction. For example, the U.S. would have to fully phase out oil extraction in 2031, Russia in 2037, Saudi Arabia in 2041, and Iraq in 2050.
+
+This plan is problematic for at least two reasons. First, it requires the participation of all countries that export fossil fuels, yet these countries are the least likely to take action on climate change. Second, by cutting supply rather than demand for fossil fuels, this plan would increase fossil fuel rents instead of carbon price revenue. Therefore, despite the plan being touted as fair, it would probably widen inequality, as (predominantly rich) owners of fossil fuel resources would benefit while it would be difficult to compensate low-income consumers for higher fuel prices due to the lack of carbon pricing revenue. Admittedly, the plan also calls for North-to-South transfers to address the negative distributive effects, but it fails to include a specific proposal on how to fund these transfers, how to allocate them, let alone an assessment of overall distributive effects. 
+
+The aforementioned extraction end dates would also result in an inefficient location of fossil fuel extraction,\citep{coulomb_bad_2025} with e.g. cheap oil from Qatar being phased out 13 years before dirty oil from Venezuela. An alternative policy would exhibit similar properties without the inefficiency problem: a producer carbon price. Under this policy, producer countries would price carbon at the wellhead and retain the revenue from carbon pricing (or most of them). Some argue that producer countries would accept a producer carbon price as a compromise if climate-ambitious countries were willing to penalise them for refusing to cooperate. To achieve this, climate-ambitious countries would need to commit to decarbonising faster and imposing trade sanctions on fuel exporter countries (thereby reducing their revenues further) if they fail to price carbon.\citep{peszko_cooperative_2019} However, this solution would lack fairness compared to an equal per capita allocation of carbon price revenues, as it would grant tax revenues to producer countries (most of which are wealthy). Furthermore, its proponents acknowledge that their proposal hinges on fuel-importing countries' ability to credibly commit to unilaterally stabilising the climate (compensating for producers' failure to decarbonise), whereas in reality, fossil-fuel exporters could doubt fuel-importing countries' willingness to make such sacrifices.
+
+% TODO! Stoft, Wolfram, Gersbach
+
+\subsection{Opting-out from revenue sharing as in the \textit{Global Climate Plan}}\label{subsec:gcp}
+
+An earlier version of the Fossil-Free Union proposal was dubbed the \textit{Global Climate Plan} (GCP).\cite{fabre_global_2023,fabre_global_2024} The two proposals differ in how they prevent middle-income countries from losing % being net contributor 
+and high-income countries from being net recipients of transfers. In the GCP, countries with a GNI per capita below 1.5 times the world average are authorized to fully opt-out from the mutualization of carbon pricing revenues and to retain the auction revenues collected on their territories (the waiver is phased out linearly for GNI p.c. between 1.5 and 2 times the world average). Thereby, middle-income countries with a higher-than-average carbon footprint, like China, would not be contributor to transfers, making them more likely to join the union. Conversely, emissions rights would be phased out for countries with high income and low emissions. 
+
+Compared to the FFU, which requires negotiating emission rights trajectories for each country, the GCP requires just a handful of parameters to be negotiated. However, the waiver entails other issues. First, as opting-out countries would obtain carbon pricing revenue corresponding to their territorial emissions, it gives an undue advantage to net exporters, whose territorial emissions are higher than their carbon footprint.\footnote{Note that the Carbon Border Adjustment Mechanism adopted by the EU grants exactly the same advantage on foreign exporting
+countries which pay an internal carbon price equal to the price on the European market: imports from such countries will be exempt from the carbon tariff, and these countries will benefit from carbon price revenues ultimately paid by European consumers.} Second, countries benefiting from the waiver would have too little incentive to reduce their emissions, which could disproportionately shift the burden of decarbonization onto the rest of the world. 
+
+Acknowledging these issues, the GCP proposal envisages an alternative mechanism,\cite{fabre_global_2024} whereby the carbon budget of a middle-income country could be increased by a factor equal to the country's carbon footprint in 2025 divided by the average carbon footprint of the union at that date. Doing so introduces the same rigid carbon budget as in the FFU. But the FFU should be preferred, as its carbon budgets are based on official or scientific proposals concerning countries' decarbonization pathways, rather than on a crude approximation of their future needs.
+
+\begin{table}[h]
+  \caption{Description of possible international policies to phase out fossil fuels.\label{tab:policies}}
+  \makebox[\textwidth][c]{
+
+\begin{tabular}[t]{P{4cm}P{15cm}}
+  \toprule
+  International policy & Description \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & Countries trade Internationally Transferred Mitigation Outcomes, bringing flexibility to the location of NDCs' emission reductions. \\
+  Partial linkage of carbon markets\citep{jaffe_linking_2010} & Carbon markets such as the EU ETS would accept external ETS allowance or emission reduction certificates up to some limit. \\
+  ITMOs avoiding hot air  &  ITMOs with extra rules (described in Section \ref{subsubsec:itmo}) ensuring that countries trading ITMOs have joint NDCs in line with the Paris target. \\
+  ITMOs + country-level integrity  & ITMOs with extra rules preventing countries lacking ambition to participate. \\
+  (\textit{Status quo}) JETPs\citep{ha-duong_just_2023} &  Just Energy Transition Partnerships where one developing country obtains concessional loans from a set of HICs conditional on the decarbonization of its power sector. \\
+  JETPs with more grants\citep{bolton_why_2025}  & JETPs financed by grants more than loans, of \$120 billion per year. \\
+  JETPs with wider scope\citep{steckel_climate_2017}  & JETPs with grants conditional on implementation of climate policy such as national carbon pricing. \\
+  Uniform price on CBAM sectors  & International cap-and-trade on carbon-intensive manufacturing sectors, with little revenue sharing between countries. \\
+  Differentiated price floors\citep{parry_proposal_2021}  & Coordinated carbon price floors (\$25/tCO$_\text{2}$ for LICs and lower-MICs, \$50 for upper-MICs, \$75 for HICs), with little revenue sharing between countries. \\
+  Diff. prices on CBAM sectors  & Differentiated price floors limited to CBAM sectors, with little revenue sharing between countries.  \\
+  Nordhaus-type club\citep{nordhaus_climate_2015,cramton_international_2015,weitzman_world_2017} & Uniform carbon price, with little revenue sharing between countries, with a CBAM, and dissuasive tariffs on imports from outside the club. \\
+  Fossil-Free Union (FFU)  & International cap-and-trade, with revenue returned on a basis given by an equal per capita benchmark with some adjustments (cf. Section \ref{sec:ffu}). \\
+  FFU + Sustainable Union (SU)  &  International cap-and-trade and new taxes (especially on wealth), where international transfers are proportional to the difference between a country's GNI per capita to the world average (cf. Section \ref{sec:su}). \\
+  Uniform price floor + SU  & Sustainable Union with a (negotiated) uniform carbon tax rather than a cap-and-trade. \\
+  Fossil non-proliferation treaty\citep{newell_towards_2020,calverley_phaseout_2022} & Coordinated phase out of fossil fuel extraction, with supply cuts starting in richest countries and ending with poorer, more fossil-dependent ones. \\ 
+  Producer carbon tax\citep{peszko_cooperative_2019} &  Uniform carbon tax applied on extraction or imports of fossil fuels, with part of the revenue shared with LICs and tariffs. \\
+  Expansion of climate finance\citep{songwe_raising_2024,mazzucato_green_2024,bridgetown_bridgetown_2025,hourcade_climate_2025,green_climate_fund_scaling_2021,dafermos_climate_2025}  & Reforms to the financial system to orient investment towards sustainable projects in the Global South, through public multilateral guarantees on climate projects, expansion of Multilateral Development Banks' (MDBs) operations, rechannelling of Special Drawing Rights to MDBs' capital, debt-for-climate swaps, money creation, etc. \\
+  Standards and bans &  Implementation of common sectoral norms, e.g. standards on the CO$_\text{2}$-emission intensity of cars, shipping or aviation fuel; bans of fossil-fuel exploration, or on the opening of new coal power plants; common taxonomy for climate finance. \\
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+\begin{table}[h]
+  \caption{Pros and cons of possible international policies.\label{tab:pros_cons}}
+  \makebox[\textwidth][c]{
+
+\begin{tabular}[t]{P{4cm}P{8cm}P{8cm}}
+  \toprule
+  International policy & Pros & Cons \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & Cross-border financing of efficient decarbonization projects. & \textit{Hot air}, risks weakening domestic climate action. \\
+  Partial linkage of carbon markets & Same as ITMOs. & Same as ITMOs. \\
+  ITMOs avoiding hot air  & ITMOs without hot air. & Trading between countries rather than firms, weakening enforcement. \\
+  ITMOs + country-level integrity  & ITMOs with reduced hot air. & Either hot air or risks of unfair burden-sharing. \\
+  (\textit{Status quo}) JETPs  & Cross-border financing of electricity decarbonization. & Limited scope; few grants; no effect on high emitting countries. \\
+  JETPs with more grants  & JETPs with North--South transfers. & Limited scope; no effect on high emitting countries. \\
+  JETPs with wider scope   & Potentially full country decarbonization. & No effect on high emitting countries. \\
+  % Partial linkage of carbon markets & Increases North--South climate finance. & Weakens climate ambition unless rules to avoid hot air. \\
+  Uniform price on CBAM sectors  & Efficient decarbonization of manufacturing, settling the CBAM issue. & Limited scope; no North--South transfer. \\  
+  Differentiated price floors  & Country-wide efficiency; ambition adapted to country circumstances. & Few North--South transfer; no gains from trade. \\
+  Diff. prices on CBAM sectors  & Decarbonization of manufacturing. & Few North--South transfer; limited scope. \\
+  Nordhaus-type club  & Efficient decarbonization. & Few North--South transfer; trade sanctions may fail to incentivize recalcitrant countries and will hurt the club. \\
+  Fossil-Free Union (FFU)  & Efficient decarbonization with North--South transfers. & Ambition and burden-sharing rigid to changing circumstances. \\
+  FFU + Sustainable Union (SU)  & Efficient decarbonization with large North--South transfers, spurring development. & Climate ambition rigid to changing circumstances; imperfect incentives for countries to implement complementary climate policies (as international transfers don't depend on the country's emissions). \\
+  Uniform price floor + SU  & Efficient decarbonization with large North--South transfers, spurring development.  & Climate ambition not guaranteed (price may be too low); imperfect incentives for countries to implement complementary climate policies. \\
+  Fossil non-proliferation treaty  & Decarbonization. & Relies on the (unlikely) participation of fossil-fuel producing countries; would increase oil rents and hurt consumers, especially low-income ones; lacks efficiency. \\
+  Producer carbon tax  & Efficient decarbonization. & Relies on the (unlikely) participation of fossil-fuel producing countries; would increase oil rents and hurt consumers, especially low-income ones. \\
+  Expansion of climate finance  & Lower interest rates in LMICs, spurring sustainable development. & Does not cap emissions. \\
+  Standards and bans  & Aligns one sector towards decarbonization. & Limited scope; no North--South transfer. \\
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+\begin{table}[h]
+  \caption{Comparison summary of possible international policies.\label{tab:comparison}}
+  \makebox[\textwidth][c]{
+\begin{tabular}[t]{lccccccccc}
+  \toprule
+  International policy & Emission & Least & \multicolumn{2}{c}{Fair} & \multicolumn{4}{c}{Acceptable by} & Flexible \\
+  & \makecell{reductions\\} & \makecell{cost\\} & \makecell{Rich\\pay} & \makecell{Poor\\gain} & LICs & MICs & HICs & \makecell{Oil\\countries} &  \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & 0 & + & 0 & 0 & +++ & +++ & +++ & +++ & +++ \\   
+  Partial linkage of carbon markets & 0 & + & 0 & 0 & +++ & +++ & +++ & +++ & +++ \\
+  ITMOs avoiding hot air  & +++ & +++ & ++ & ++ & +++ & ++ & + & \texttt{--} & - \\   % Very similar to FFU but trading between countries rather than firms
+  ITMOs + country-level integrity  & + & + & + & + & + & + & ++ & ++ & +++ \\      
+  (\textit{Status quo}) JETPs  & + & 0 & 0 & + & +++ & +++ & +++ & +++ & +++ \\   
+  JETPs with more grants  & + & 0 & ++ & ++ & +++ & ++ & + & \texttt{--} & +++ \\   
+  JETPs covering broad policy   & ++ & + & ++ & ++ & +++ & ++ & + & \texttt{--} & +++ \\   
+  Uniform price on CBAM sectors  & ++ & ++ & 0 & \texttt{--} & - & + & +++ & \texttt{--} & + \\  
+  Differentiated price floors  & + & + & 0 & - & - & + & +++ & - & + \\    
+  Diff. prices on CBAM sectors  & + & + & + & - & 0 & ++ & ++ & \texttt{--} & +\\   
+  Nordhaus-type club  & +++ & +++ & 0 & - & + & + & +++ & \texttt{---} & + \\   
+  Fossil-Free Union (FFU)  & ++++ & +++ & ++ & ++ & +++ & ++ & + & \texttt{--} & \texttt{--} \\   
+  FFU + Sustainable Union (SU)  & ++++ & +++ & +++ & +++ & +++ & ++ & 0 & \texttt{---} & \texttt{--} \\   
+  Uniform price floor + SU  & ++ & ++ & +++ & +++ & +++ & +++ & 0 & \texttt{--} & + \\   
+  Fossil non-proliferation treaty  & + & - & - & - & - & - & - & - & + \\   
+  Producer carbon tax  & ++ & ++ & \texttt{--} & \texttt{---} & \texttt{---} & \texttt{--} & - & - & + \\   
+  Expansion of climate finance  & ++ & + & + & + & +++ & +++ & ++ & + & +++ \\   
+  Standards and bans  & ++ & 0 & 0 & 0 & + & + & ++ & + & 0 \\   
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+% Types:
+% ITMOs
+% JETPs
+% Limited coverage
+% Differentiated prices
+% Transfers
+% Supply-side
+% Finance
+% Standards
+
+
+\clearpage
+
+\section*{Conclusion}
+
+Taking stock of the strong public support for global climate and redistributive policies,\cite{fabre_majority_2025} we have proposed two complementary international agreements, dubbed the Fossil-Free Union and the Sustainable Union. 
+
+By establishing an international emissions trading system, the Fossil-Free Union would guarantee that emissions of participating countries are in line with the Paris Agreement's target. It would resolve the long-standing question of how to share the burden of climate action between countries, by setting a benchmark norm of equal per capita emissions allowances. Designed in a flexible way, it should be acceptable by all countries: first, it would allow departures from the benchmark allocation, for example to account for the needs of fossil-dependent countries; second, it would provide transfers to lower-income countries, paid by the efficiency gains resulting from carbon trading.
+
+In addition, the Sustainable Union would ramp up global solidarity to finance sustainable development. A set of global solidarity taxes on the richest and polluters would finance both the budgets of each collecting country (two-thirds of revenues) and the budgets of low-income countries (one-third). %A set of global solidarity levies on the wealthiest and on polluters would finance each collector country's budget for roughly two thirds, and lower-income countries for one third. 
+The Sustainable Union would increase even further the incentives for lower-income countries to decarbonize, as their entry to the Sustainable Union would require them to join the Fossil-Free Union. Furthermore, the new levies would ensure that the richest are put to contribution during the sustainable transition and that they bear the costs of international transfers. Lastly, adding to the Fossil-Free Union the Sustainable Union would streamline the determination of international transfers, as these would be based exclusively on the capacity to pay or the needs, measured as the gap between a country's GNI per capita and the world average's.
+
+As a next step, supportive organizations could launch a taskforce gathering scholars and diplomats to refine or rework these proposals. In particular, dialogue with diplomats or government officials will be key to understand what each country considers as a non-losing allocation, and update the analysis in that regard.
+
+
+% Criteria: Effectiveness; Efficiency; Justice; Adaptability; Rich pay; Acceptability LICs; Acc MICs; Acc HICs; Acc oil; Pros; Cons
+
+% Status quo (ITMO, JETPs)
+% FFU
+% GCP
+% FFU + SU
+% Uniform price floor + SU (or with emissions in excess of pre-agreed amount financing low-emissions countries in proportion to their distance to pre-agreed/equal pc level. Pb: imported carbon not counted + push contributing countries to import carbon)
+% Differentiated price floors without transfers
+% ITMOs avoiding hot air
+% ITMOs with integrity define at country level: lack transfers
+% Expanding JETPs with more grants
+% Expanding JETPs with policy coverage
+% Int'l differentiated prices on CBAM sectors: lack transfers, inefficient
+% Int'l uniform price on CBAM sectors: OK if enough transfers, lack coverage
+% Nordhaus club: conflictual, not clear it'll be enough to make others join, harm own consumers
+% Pezsko: not clear it'll convince oil countries to join
+% fossil non proliferation: vague, benefit oil countries
+% - Finance options (multilateral guarantees, climate bonds, money creation - Dafermos...): good, partial
+% - Common standards (ships, cars, banning coal or oil exploration): good, partial (e.g. lack power, heating)
+
+% Annex: Treaty/ies
+
+% Difficult to reconcile:
+% 1. countries pay marginal footprint to RoW at universal eq price
+% 2. submedial countries are not net contributor in partial union (they lose when price=floor if their planned emissions > rights * club/world average ~ rights * 3/4, when club's rights sum to equal pc). Can be presented as ~1.5°C trajectory with extra rights for submedial or ~1.8°C trajectory with less rights for poor and rich.
+% 3. no discontinuity in price/transfers when union expands (so that members have interest in expansion)
+
+% Options:
+% a. difference between universal and union eq price is collected/recycled nationally for C-submedial countries and the share over the global average is transferred to submedial countries for supermedial ones. Fails 1,2,3.
+%>b. transfers are unrelated to emissions, based on GNI. Fails 1.
+% c. transfers based on GNI + departure from expected emissions reductions. May fail 2.
+% d. union price is universal eq, extra transfers for submedial countries (to the expense of high and low income ones). Fails 3.
+% e. countries with GNI pc < 1.5 average can opt out from revenue sharing. Fails 1 (and rights left to others unpredictable).
+% f. keep carbon price floor low. Fails 3, also 2 but mitigated.
+%>g. revenue share of surmedial LMIC augmented by their footprint/club average at t=0. Fails 2 to the extend emissions decrease slower than in the rest of the club. 
+%>h. Differentiated rights + high price floor. May fail 2 (if differentiated prices don't accommodate enough departure, i.e. if AFR doesn't renounce to enough of its rights).
+%>>i No price floor (except for countries who repeal climate laws), MIC rights get as much rights as their needs. Fails 1 (equivalent to higher temperature target), 3 (same issue with Sustainable Union). 
+%>j A price (rather than quantity) target with equal pc sharing except for countries < 1.2 average GDP which can be exempted from revenue sharing (with phase out up to 1.5 average) and rule to avoid HIC being net receiver => clear, rule-based, only issue is that price may be too low; and if automatically increased then too big an advantage for exempted countries as they increase emissions without increasing transfers (i.e. fails 1 for exempted countries => could be avoided by adding payments if departure from expected emissions reductions) => give this as alternative?
+
+% Pq je suis passé de GCP à FFU? 1. pour ne plus dire que EU perd (mais j'peux parler de droits équivalents dans GCP), 2. pour donner de la flexibilité sur les departures (par ex éviter de donner un avantage trop grand à la Chine, qui va se décarboner plus vite que le club) et sur la répartition temporelle (donner plus tard à Inde pour éviter qu'elle ne sorte), 3. parce que je renonçais à un prix conséquent les premières années (hot air)
+% Pb de FFU: la répartition temporelle des droits doit tenir compte du prix plancher, qui n'est pas connu (participation partielle induit différence distributive par rapport à simple marché). => fixer le prix (en fonction de qui participe)
+% Avantages du GCP? 1. permet un prix plus élevé au début car les surmédiaux sont ajustés relativement à moyenne du club et pas moyenne mondiale comme ds FFU (il le faut pour éviter une augmentation trop rapide lorsque le marché devient binding ou si US rejoignent), 2. rule-based plutôt que discretionary, 3. permet de s'ajuster aux circonstances changeantes (par ex si Chine a rattrapé EU en PIB/hab), 
+
+% Ask to each country: Imagine int'l ETS (membership, price unknown, though probably just Global South, no price floor): 
+% How much allowances they would want? (minimum acceptable, fair, ideal number; give justification for each)
+% Total/world allowances they would want until net zero (minimum, ideal, maximum).
+% Allocation rules they'd accept: equal pc, cumulative equal pc, CC, BAU for MIC, grandfathering
+% => work out a solution based on the answers
+
+% - Pricing:
+% -- equivalence differentiated prices - rights but uniform price better, countries can always add policies to e.g. subsidize fuels if they wish
+% -- for acceptability + fairness, we need departures from equal pc
+% -- simulations using NICE
+% -- feasibility of global redistributive policy: surveys, informal support of diplomats (even EU saying govts is pb, they personally like)
+
+% Start paper on Fossil-Free Union, then expand.
+
+% Argue in favor of FFU: guarantee the union respects its targets; determines burden sharing.
+% Carbon price floors very important as it's binding in first years. Must be complemented by the obligation to pay higher price if country reduces its domestic carbon price / climate regulations. In effect, acts as a generalized JTEP (more favorable to LDCs). 
+
+% PB of FFU: in first phase with carbon price floor, China loses as it has less rights among the union than its emissions share in the union. => No, I think it's been computed so that China doesn't lose. The above effect is mitigated by the carbon trade + larger rights.
+% PB of SU: same issue if partial participation => No because China is allowed to skip the redistribution part and just apply the FFU.
+% => Think of treaty rules
+% Le prix plancher doit correspondre au prix qui serait atteint en cas de participation universelle, pour qu'il y ait suffisamment de réductions d'émission, de transferts, et que les états membres n'aient pas un désintérêt à ce que les US joignent
+
+% Pb du FFU: EU has no financial interest that US joins (as long as EU is a net contributor => determine loss of EU when US joins; determine date of US joining that makes EU indifferent). Indeed, EU pays price*(emissions - rights). If US joins, price will increase and (e - r) be constant. If instead of fixing the rights we fixed the price, EU would have interest that US joins, as its rights (equal to union average) would increase. EU would also have interest of US joining in the case 1% GNI return in fct of pop.
+% => What rules leave no one worse off when big emitters join? What rules leave big emitters indifferent when bigger emitters join?
+
+% Global policies to phase out fossil fuels 
+% - Principles: non-universal, open, redistributive, non-dichotomic
+% - Climate justice -> justice (burden-sharing options, criticism of CERF, grandfathering would be plausible in absence of broader inequality/justice hence can make sense within country)
+% - Finance options (multilateral guarantees, climate bonds, money creation - Dafermos...)
+% - Common standards (ships, cars, banning coal or oil exploration)
+% - Supply-side policies (critique of fossil non proliferation)
+% - Pricing:
+% -- equivalence differentiated prices p_i = p + a_i where mean(p_i)=p  and differentiated rights per capita r_i : r_i = p*e - a_i*e_i, where e_i is country's emission pc and e global average.
+% -- uniform price better, countries can always add policies to e.g. subsidize fuels if they wish
+% -- for acceptability + fairness, we need departures from equal pc
+% -- simulations using NICE
+% -- critiques of other proposals: Pezsko, Edenhofer, Nordhaus, Piketty, rationing, proposals lacking sectoral coverage (CBAM sectors) or redistribution (restricting ITMOs to high-integrity countries)...
+% -- feasibility of global redistributive policy: surveys, informal support of diplomats (even EU saying govts is pb, they personally like)
+% -- call for expert contributions and common proposal
+
+% \begin{figure}[b!]
+%   \caption[Title.]{Caption
+%   }\label{fig:antipoverty_tax_7}
+%   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]
+%   {../figures/antipoverty_2_tax_7_average.pdf}}
+% \end{figure}
+
+% \begin{figure}[h!]
+%     \caption[Title.]{Caption.}\label{fig:kenya}
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_a.}\label{fig:kenya_policies}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_policies.pdf}
+%   \end{subfigure} \;
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_b.}\label{fig:kenya_cap}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_cap.pdf}
+%   \end{subfigure}
+%   \\ \quad \\
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_c.}\label{fig:kenya_tax}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_tax.pdf}
+%   \end{subfigure} \;
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_d.}\label{fig:kenya_floor}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_floor.pdf}
+%   \end{subfigure}
+% \end{figure}  
+
+
+% \section{Discussion\label{sec:conclusion}} 
+
+% \begin{methods}  % WPcomment
+  \begin{small} % NCCcomment
+% \section*{\normalsize Data and code availability}
+
+% \end{methods} % WPcomment
+\end{small}  % NCCcomment
+
+% \theendnotes
+
+% \input{app} 
+
+% \begin{itemize}
+% \item[Acknowledgments] %I am grateful to 
+% %  \item[Competing Interests] I declare that I also serve as president of Global Redistribution Advocates.
+% \item[JEL codes] 
+% \item[Keywords]  
+% \item[Correspondence] Correspondence and requests for materials should be addressed to Adrien Fabre~(email: adrien.fabre@cnrs.fr).
+% \end{itemize}
+% % \end{addendum}
+
+% \onehalfspacing
+\clearpage
+\renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
+\bibliographystyle{plainnaturl_clean} % NCCcomment
+\bibliography{global_tax_attitudes}
+
+\appendix
+\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\thefigure}{A\arabic{figure}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\clearpage
+\section{Correspondence between transfers in a cap-and-trade and
+differentiated carbon
+prices}\label{app:correspondence}
+
+\subsection{The static case}\label{the-static-case}
+
+\subsubsection*{Setting}\label{setting}
+
+Decarbonization is costly. When a country $i$ faces a carbon price $p_i$, it curtails consumption by investing in low-carbon equipment and reorienting consumption to less preferred, less carbon-intensive products. These costs to consumption are called abatements costs and denoted $a_i$. Taking into account the possibility of transfers $t_i$ from the rest of the world, expressing everything in per capita terms, and abstracting from exogenous investments, country $i$'s consumption is related to its potential output $y_i$ as follows:
+$$c_i = y_i + t_i - a_i$$
+
+Assume that the welfare of country $i$  depends on its consumption $c_i$ and global emissions $E=\sum_j e_j n_j$, where $e_j$ is country's $j$ per capita emissions and $n_j$ its population size.
+For now, take global emissions as fixed at their optimal level $E^*$. Let $p^*$ be the uniform carbon price required to attain $E^*$, i.e.~$E^*=\sum_j e_j(p^*) n_j$. As shortcuts, we denote $e_i \coloneqq e_i(p_i)$, $a_i \coloneqq a_i(e_i)$, $e^*_i \coloneqq e_i(p^*) $, and $a^*_i \coloneqq a_i(e^*_i)$.
+
+\textbf{A situation is fully specified by the set of transfers $(t_j)_j$ and carbon prices $(p_j)_j$ for each country}. For country $i$, given that global emissions are taken as fixed, the situation can be summarized as $s=(t_i, p_i)$, and (with a slight abuse of notation) we may express $i$'s welfare accordingly:
+$u_i(c_i;E^*)=u_i(t_i,p_i)$.
+
+\subsubsection*{Equivalent variation from the benchmark in the absence of
+transfers}\label{equivalent-variation-from-the-benchmark-in-the-absence-of-transfers}
+
+To analyze an arbitrary situation $s$, it will be useful to relate it to two special cases. First, the coordinated situation $c*=(0,p^*)$ without transfer and with a uniform carbon price, which we take as a benchmark. Second, the autarchy situation $a=(0, p_i)$, without transfer and with differentiated prices, which will be a useful intermediary to analyze an arbitrary situation. We denote $V_i(p_i)$ the equivalent variation between situation $a$ and $c*$, i.e.~the transfer required at $c*$ to get $a$'s welfare: 
+$$\begin{aligned}
+u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i) \\
+c^{c*}_i + V_i(p_i) &= c^a_i \\
+V_i(p_i) &= c^a_i - c^{c*}_i \\
+&= a_i(e^*_i ) - a_i(e_i) \\
+ &\sim  (e^*_i  - e_i) \frac{da_i}{de} (e^*_i ) = (e_i - e^*_i ) p^* 
+\end{aligned}$$
+as $\frac{da_i}{de} (p) = -p$.
+Denoting $\varepsilon^* = -\frac{de_i/e^*_i }{dp/p^*}$ the absolute price elasticity of emissions at $p^*$, we have $$V_i(p_i) \sim (p^* - p_i) e^*_i  \varepsilon^* $$
+% where \textbf{$\partial a_i$ is the marginal abatement cost}.
+% In terms of welfare: $$\begin{aligned}
+% u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i)=u_i(y_i-a_i)\sim u^{c*}_i - (p_i - p^*) \partial a^*_i \partial u_{i1} \\
+% u_i(V_i(p_i), p^*)&= u^{c*}_i + V_i(p_i)\partial u_{i1}
+% \end{aligned}$$
+
+% where \textbf{$\partial a^*_i$ is the marginal abatement cost at
+% $p^*$}. Therefore, at the first order,
+% $$V_i(p_i) = (p^* - p_i) \partial a^*_i$$
+
+$V_i$ is positive iff $p^* > p_i$, as country $i$ ``needs'' a positive compensation to get the same welfare as in $a$ compared to $c*$ with a higher price $p^*$ (and lower emissions).
+
+\subsubsection*{Equivalent transfer for an arbitrary
+situation}\label{equivalent-transfer-for-an-arbitrary-situation}
+
+Let $g^s_i$ be country $i$'s net gain (or ``equivalent transfer'') in a situation $s=(t_i, p_i)$ compared to the benchmark situation $c*=(0,p^*)$: 
+$$\begin{aligned}
+g^s_i &= (c^s_i - c^a_i) + (c^a_i - c^{c*}_i) \\
+ &= t_i + V_i(p_i)
+\end{aligned}$$ 
+Note that \textbf{we can call $g^s_i$ the equivalent transfer as it is the transfer at zero price that makes $i$ indifferent with $s$, i.e.~the transfer such that $(g^s_i, 0)$ is welfare-equivalent to $s=(t_i, p_i)$}. The equivalent transfer is a very useful metric to compare the welfare of a country in different situations.
+
+\subsubsection*{Correspondence with an equivalent
+price}\label{correspondence-with-an-equivalent-price}
+
+Now, we have all the tools to study the correspondence between transfers, differentiated emission rights, and differentiated prices.
+Let $p^*_i$ be the ``equivalent price'' such that $s=(t_i, p_i)$ is welfare-equivalent to $s*=(0, p^*_i)$. $$\begin{aligned}
+g^s_i &= g^{s*}_i \\
+t_i + V_i(p_i) &= V_i(p^*_i) \\
+t_i + (p^* - p_i) e^*_i  \varepsilon^* &\sim (p^* - p^*_i) e^*_i  \varepsilon^* \\
+\end{aligned}$$
+
+Therefore, at the first order, the equivalent price is:
+$$p^*_i \sim p_i - \frac{t_i}{e^*_i  \varepsilon^* } $$
+
+The equivalent price is negative when $p_i e^*_i  \varepsilon^* < t_i$. As a negative price would require a transfer from the rest of the world, a regime with differentiated (positive) prices is restrictive compared to a system that allows for international transfers. Therefore, \textbf{we prefer to use the concept of equivalent transfer $g^s_i$, rather than its dual the equivalent price}. 
+% From the above, the equivalent transfer can be expressed as:
+
+% $$g^s_i \sim t_i + (p^* - p_i) \partial a^*_i$$
+
+\subsubsection*{Correspondence between differentiated prices and
+rights}\label{correspondence-between-differentiated-prices-and-rights}
+
+Imagine that countries establish a uniform carbon price $p^*$, for example through a cap-and-trade. Say each person in country $i$ has an emission right $r_i$, so they are entitled a claim $r_i p^*$ on global carbon revenue. Then, the net monetary transfer to $i$ is $$t^*_i = r_i p^* - e^*_i p^*$$
+
+In the static case, \textbf{there is a correspondence between emission
+rights $r_i$ in a cap-and-trade and welfare-equivalent differentiated prices $p_i$ in
+autarchy (without transfers)}: $$\begin{aligned}
+g^a_i &= V_i(p_i) = a^*_i - a_i \sim (e_i - e^*_i) p^* \sim (p^* - p_i) e^*_i  \varepsilon^* \\
+g^*_i &= t^*_i = (r_i - e^*_i) p^* \\
+g^*_i = g^a_i &\Leftrightarrow t^*_i = a^*_i - a_i \\
+&\Leftrightarrow (r_i - e^*_i) p^* \sim (p^* - p_i) e^*_i  \varepsilon^*
+\end{aligned}$$
+
+The left-hand side is the cap-and-trade equivalent transfer, which corresponds to the net monetary transfer received in the uniform cap-and-trade. This transfer is equal to the extra abatement cost incurred by going from autarchy to the cap-and-trade without transfer. The (first-order) equivalence relation states that the transfer is negatively related to the difference between the autarchy price and the global cap-and-trade price. The coefficient of this linear relation is the emissions times their price elasticity: the higher the emissions and the more they are sensitive to the carbon price, the larger the effect of the autarchy carbon price on the cap-and-trade equivalent transfer.
+%The coefficient of this linear relation is the marginal abatement cost: the costlier abatement is, the larger the effect of the autarchy carbon price on the cap-and-trade equivalent transfer. % TODO? explain that e^*_i  \varepsilon^* = \partial a^_i / \partial p ?
+
+One can easily isolate cap-and-trade emission rights or autarchy price in function of the other variables: $$\begin{aligned}
+g^*_i = g^a_i &\Leftrightarrow r_i \sim e_i \sim (1 + (1 - \frac{p_i}{p^*}) \varepsilon^*) e_i^*  \\
+&\Leftrightarrow p_i \sim (1 + \frac{e^*_i - r_i}{e^*_i  \varepsilon^*}) p^*
+\end{aligned}$$
+
+% $$\begin{aligned}
+% g^*_i = g^a_i &\Leftrightarrow r_i \sim e_i^* + (1 - \frac{p_i}{p^*}) \partial a^*_i  \\
+% &\Leftrightarrow p_i \sim p^* (1 + \frac{e^*_i - r_i}{\partial a^*_i})
+% \end{aligned}$$
+
+% TODO: say that in case of uniform price, transfers+price are equivalent to rights.
+
+\subsubsection*{Efficiency of a uniform price} \label{efficiency-of-a-uniform-price}
+
+When there is undue inequality between countries, differentiated carbon prices can help improve the world's welfare, as reduced abatement in low-income countries act as a subsitute for transfers. However, the Diamond-Mirrlees production efficiency theorem states that, in absence of other imperfections (such as market power or imperfect capital markets), direct transfers are always preferable to differentiated prices to address inequality.\citep{diamond_optimal_1971} In our setting, this theorem means that carbon trading is always beneficial.  
+More precisely, for any country $i$, compared to the autarchy situation $(0,p_i)$, welfare is at least as high in the situation with uniform price where rights correspond to the autarchy emissions: $(\widetilde{t_i}=(e_i - e^*_i)p^* ,p^*)$. 
+% This result goes beyond the first-order equivalence between the two that we have just derived. It uses second-order terms, which correspond to efficiency gains from trade.
+
+% Equivalent price:
+% $t_i = a_i - a^*_i = (e_i - e_i(p^*_i)) p_i = p_i (p_i - p^*_i) \partial e / \partial p$
+% $p^*_i = p_i - \frac{t_i}{p_i} \partial p / \partial e$
+% existing formula shorter, better
+
+% Correspondence:
+% $V_i(p_i) = a^*_i - a_i \sim (e^*_i - e_i) (-p^*) $
+% $(r_i - e^*_i) p^* $
+% $r_i = e^*_i + \frac{a^*_i - a_i}{p^*} \sim e_i = e_0 + (p_i - p_0) \partial e / \partial p
+%      = (1 + \varepsilon \delta p_i) e_0$
+% $r_i \sim e_i$ shorter than existing formula but not explicit enough on p_i
+% $p_i = p_0 + (r_i - e_0) \partial p / \partial e$
+
+
+% The proof relies on the convexity of abatement costs with respect to emissions, which itself stems from the fact that least costly abatement options can be implemented first. Denoting $N=\sum_j n_j$, $e^* = E^*/N$ and $\nu_j = n_j/N$, we have by definition $$e^* = \sum_j e_j(p^*) \nu_j = \sum_j e_j(p_j) \nu_j$$
+% By concavity of abatement costs, we then have $$a_j(p^*) \leq \sum_j a_j(p_j) \nu_j$$
+% For all $i$, let us define $\tilde{t_i} = a^*_i - a_i$. From the previous equation, we have $\sum_j \tilde{t_j} \nu_j \leq 0$. 
+This results stems from the convexity of abatement costs, which gives: $$a_i - a^*_i \geq (e_i - e^*) \frac{da^*_i}{de} = (e_i - e^*) (-p^*)$$ 
+%Note that $\partial a^*_i(p^*) = (\partial a^*_i / \partial e) (\partial e / \partial p) = - p^* \partial e / \partial p$ 
+The transfer obtained from trading, $\widetilde{t_i}$, is therefore greater than the transfer equivalent to autarchy, $t^*_i$. Indeed: $$\widetilde{t_i} = (e_i - e^*_i ) p^* \geq a^*_i - a_i = t^*_i$$
+Rearranging the inequality and adding $y_i$, we can verify that the consumption is greater under trading: %as $t^*_i \geq a^*_i - a_i$, we have 
+$\widetilde{c_i} = y_i + \widetilde{t_i} - a^*_i \geq y_i - a_i = c^a_i$, which proves the efficiency of trading at a uniform price.
+
+%transfers $t_j \geq \tilde{t_j}$ such that $0 = \sum_j t_j \nu_j \geq \sum_j \tilde{t_j} \nu_j$. Now, for all $i$, as $t_i \geq \tilde{t_i} = a^*_i - a_i$, we have $c^{c*}_i = y_i + t_i - a^*_i \geq y_i - a_i = c^a_i$, which proves the efficiency of a uniform price.% \hfill $\blacksquare$
+
+%Finally, by convexity of abatement costs, $a_i - a^*_i \geq (p_i - p^*) \partial a^*_i(p^*)$. The cap-and-trade right $r_i$ equivalent to the autarchy price $p_i$ therefore lower than the transfer $t_i$ chosen in the above proof. To see this, let us plug $r_i$ into the transfer received under cap-and-trade: $$t^*_i = (r_i - e^*_i) p^* = (p^* - p_i) \partial a^*_i(p^*) \geq a^*_i - a_i = \tilde{t_i}$$
+
+
+% \subsubsection*{Using the status quo as
+% benchmark}\label{using-the-status-quo-as-benchmark}
+
+% If, instead of using $c*=(0, p^*)$ as the counterfactual, governments
+% use the status quo $c^- = (0, p^-)$, with $p^-<p^*$. Then, the net
+% gain they consider is 
+% $$\begin{aligned}
+% \gamma_i &= (y_i + t_i - a_i) - (y_i - a_i(p^-)) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
+%  &= t_i -a_i + a_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
+%  &= g_i - V_i(p^-) + (E^* - E^-) \partial u_{i2}/\partial u_{i1} \\
+% % &\sim t_i + (p^- - p_i) \partial a^*_i + (p^* - p^-) \partial E \partial u_{i2}/\partial u_{i1} \\
+% \end{aligned}$$ 
+% where $\partial u_{i2}$ corresponds to the welfare
+% benefits of lower world emissions.
+
+% The gain relative to the status quo $\gamma_i$ is larger than the gain $g_i$
+% relative to $c*$ iff the price $p^*$ would improve welfare compared
+% to the status quo price $p^-$, i.e.~iff the welfare benefit from lower
+% emissions exceeds the cost of decarbonization:
+% $$\gamma_i > g_i \Leftrightarrow (E^* - E^-) \partial u_{i2}/\partial u_{i1} > V_i(p^-) $$
+
+% \subsubsection*{Abatement cost required as transfer by those neglecting
+% climate
+% costs}\label{abatement-cost-required-as-transfer-by-those-neglecting-climate-costs}
+
+% From the point of view of short-sighted governments, we are likely in
+% the other case $\gamma_i < g_i$, and these governments likely use
+% $\gamma_i$ as a counterfactual to assess welfare. In the worst case
+% where a government doesn't attach any value to a stable climate,
+% accepting a price increase $\Delta p_i = p_i - p^-$ requires a
+% transfer larger than the abatement costs: 
+% $$t_i > -V_i(p^-) = a_i - a^-_i \sim \Delta p_i e^*_i  \varepsilon^*$$
+
+% Conceptually, abatement costs can be divided in two parts: first, the
+% extra investments needed to build and deploy low-carbon infrastructure;
+% second, the curtailment of consumption (of energy, meat, flights\ldots)
+% entailed by a higher carbon price. The former can be estimated with a
+% bottom-up energy model; the latter using the short (or medium) term
+% price-elasticity of emissions
+% $\varepsilon^*$ and the crude
+% approximation that emissions represent one-twentieth of the consumption
+% (corresponding to about half the energy share). Assuming
+% $\varepsilon = .4$, the transfer needed to compensate a price increase $\delta p = \Delta p / p$ is such that: $\frac{t}{c} > \frac{e\cdot p}{c} \varepsilon \delta p = .05 \cdot .4 \cdot \delta p = .02 \cdot \delta p$.
+% So, as a first approximation, a doubling of the carbon price should be
+% compensated with a transfer of at least 2\% of GDP.
+% TODO? put back previous two paragraphs?
+
+\subsection{The dynamic case}\label{the-dynamic-case}
+
+\subsubsection*{Setting}\label{setting-1}
+
+In this section, we will show that the correspondence between transfers
+and differentiated carbon prices imperfectly extends to the dynamic
+case.
+
+Let us keep the previous notations and add an index $t$ to denote the
+value of a variable at time $t$. Let $\beta_t$ be the discount
+factor between the initial period and $t$ (containing the pure rate of
+time preference and the welfare discounting from growth). Intertemporal
+values are denoted with uppercase letters. Monetary variables are
+discounted while physical ones are not, e.g.~ $i$'s intertemporal net
+gain is $G_i = \sum_t g_{it} \beta_t$ and its intertemporal emission
+right is $R_i = \sum_t r_{it}$.
+
+A situation $S$ is now given by the transfers and prices trajectories:
+$S=((t_{it})_t, (p_{it})_t)$. Taking $y_{it}$ as exogenous as a
+first approximation, for country $i$ a situation $S$ is
+welfare-equivalent to a situation $S'$ with the same temperature
+trajectory iff:
+$$\sum_t t_{it} - a_{it}(p_{it}) = \sum_t t'_{it} - a_{it}(p'_{it})$$
+
+\subsubsection*{The uniform price without transfer case as
+benchmark}\label{the-uniform-price-without-transfer-case-as-benchmark}
+
+Consider the situation $C*=(0,(p^*_t)_t)$ of a uniform carbon price
+trajectory $(p^*_t)_t$ and within-country revenue recycling
+(i.e.~without transfers). The carbon price trajectory may be fixed in
+advance or emerge from the temporal allocation of the global
+intertemporal carbon budget (or emission right) $R$ in a cap-and-trade
+system: $(r_{t})_t$. Let us define the net gain for $i$ at $t$ in
+a situation $S$ (with the same emissions trajectory as $C*$) in
+relation to $C*$. As above: $g_{it} = t_{it} + V_{it}(p_{it})$,
+where $V_{it}(p_{it}) = a^*_{it} - a_{it}$.
+
+\subsubsection*{A more limited correspondence between differentiated
+prices and
+rights}\label{a-more-limited-correspondence-between-differentiated-prices-and-rights}
+
+As in the static case, let us look for a correspondence between an
+autarchy situation $A$ with differentiated prices and a cap-and-trade
+system $U$ with uniform price. In the general case,
+$A=(0, (p_{it})_t)$, while
+$U=((r_{it}p^*_t-e^*_{it}p^*_t)_t, (p^*_t)_t)$ is indirectly
+determined by $r=(r_{it})_t$. The welfare equivalence for $i$ between $A$ and $U$ can be approximated as follows: 
+$$\begin{aligned}
+G^A_i &= \sum_t (a^*_{it} - a_{it})\beta_t \sim \sum_t (p^*_t - p_{it}) e^*_{it}  \varepsilon^*_t \beta_t \\
+G^U_i &= \sum_t (r_{it} - e^*_{it}) p^*_t \beta_t \\
+G^U_i = G^A_i &\Leftrightarrow \sum_t (r_{it} - e^*_{it}) \beta_t p^*_t  \sim \sum_t (p^*_t - p_{it}) e^*_{it}  \varepsilon^*_t \beta_t
+\end{aligned}$$
+
+\textbf{Contrary to the static case, there is no direct equivalence
+between an intertemporal aggregate of the emission rights and an
+intertemporal aggregate of differentiated prices}, since the welfare
+effect of emission rights depends on the cap-and-trade price trajectory
+$p^*_t$.
+
+The same reason also complicates the comparison between two possible
+allocations $r$ and $r'$ of the intertemporal carbon budget in a
+cap-and-trade, even when the price trajectories coincide. Indeed, the
+condition
+$G^U_i > G^{U'}_i \Leftrightarrow \sum_t r_{it} \beta_t p^*_t > \sum_t r'_{it} \beta_t p^*_t$
+does \emph{not} imply that
+$R_i = \sum_t r_{it} > \sum_t r'_{it} = R'_i$. In other words,
+\textbf{there is no immediate relation between $i$'s intertemporal
+carbon budget and its intertemporal welfare, as the price trajectory
+matters}.
+
+Let us study whether we can find a correspondence in simpler cases. For
+the autarchy situation $A$, consider a homothetic carbon price
+vis-à-vis the world average: $p_{it}=\pi_i p_t$. For the cap-and-trade
+situation $U$, consider that $i$ is granted a fixed share of the
+world's carbon budget: $r_{it}=r_ir_t$. Now, the equivalence between
+$A$ and $U$ rewrites:
+
+$$\begin{aligned}
+G^U_i = G^A_i &\Leftrightarrow r_i \sum_t r_{t} \beta_t p^*_t - \sum_t e^*_{it} p^*_t \beta_t \sim \sum_t (p^*_t - \pi_i p_t) e^*_{it}  \varepsilon^*_t \beta_t  
+\end{aligned}$$
+
+Provided that the price trajectories in autarchy are homothetic to the
+price trajectory in the cap-and-trade (without loss of generality):
+$p_{it}=\pi_i p^*_t$; the equivalence simplifies further:
+
+$$G^U_i = G^A_i \Leftrightarrow r_i \mathscr{B} \sim \mathscr{E}^*_i + (1 - \pi_i) \Delta \mathscr{A}$$
+where $\mathscr{B} = \sum_t r_{t} \beta_t p^*_t$,
+$\mathscr{E}^*_i = \sum_t e^*_{it} p^*_t \beta_t$, and
+$\Delta \mathscr{A} = \sum_t p^*_t e^*_{it}  \varepsilon^*_t \beta_t $.
+
+\textbf{Although we do find a correspondence in this special case}, the
+formula faces practical limitations, as \textbf{it requires knowing the
+future price trajectory $(p^*_t)_t$, which can only be imprecisely
+estimated} in the cap-and-trade situation. In any case, although one can
+find a trajectory of differentiated prices welfare-equivalent to a given
+allocation of emissions rights, and vice versa, the derivation cannot be
+done analytically, \textbf{one has to resort to an integrated assessment
+model}.
+
+However, \textbf{in the Hotelling case} (with a fixed carbon budget,
+perfect foresight, and efficient capital markets), the formula simplify
+further. Indeed, the Hotelling price grows at the discount rate, so that
+the discounted price is constant: $\beta_t p^*_t = p_0$. Only in this
+very special case, \textbf{the formula simplifies to a formula analogous
+to the static case formula}:
+
+$$G^U_i = G^A_i \Leftrightarrow R_i - E^*_i \sim (1 - \pi_i) \sum_t e^*_{it}  \varepsilon^*_t$$
+
+
+\section{Revenues and transfers from international taxes}\label{app:taxes}
+% \begin{abstract}
+  We estimate the revenues by country from six global taxes: a tax on wealth above \$100 million, a small carbon tax, a higher minimum corporate income tax, % carbon tax is the only one whose transfers are based on GDP
+  a financial transaction tax, a tax on maritime fuel and one on aviation fuel (Table \ref{tab:transfers_gain}). \$2.1 trillion would be collected. % (2\% of the world GDP). 
+  %
+  We further estimate international transfers that could be financed.  %according to the proposed allocation of revenues between countries. 
+  Namely, we reallocate 1\% of each country's GNI to all countries in proportion to their %adult 
+  population, and one half of the wealth tax to countries with a per capita GNI lower than twice the world average, in proportion to their distance to this threshold. The combination of these taxes and transfers entail \$766 billion in North--South transfers.  
+% \end{abstract}
+
+
+\subsection{Wealth tax}\label{sec:wealth}
+
+% Under its G20 presidency, Brazil commissionned a report on a global tax on ultra-high wealth. Indeed, the richest pay less taxes than average people in proportion to their contributive capacity, as most of their income is in the form of unrealized capital gains not subject to taxation. The report by \cite{zucman_blueprint_2024} proposes a top-up tax on the wealth of individual owning more than \$100 million, to collect the missing income tax revenue. With a 3\% top-up tax, a billionaire who already pays taxes amounting to 1\% of its wealth would be liable to an additional 2\% tax. Although a top-up tax may be 
+
+We simulate two wealth taxes. First, a global tax on ultra-high wealth: a 3\% tax on all individual wealth in excess of \$100 million. Second, a national wealth tax: a 2\% tax on wealth in excess of \$5 million. These taxes add up,\footnote{For example, with a wealth of \$150 million, someone would pay each year a tax of 2.9\% on their wealth: 1\% from the tax on ultra-high wealth ($3\% \cdot \left(150-100\right)=1.5M$) and 1.9\% from the national wealth tax.% ($2\% \cdot \left(150-5\right)=2.9M$).
+} so the highest marginal tax rate is 5\%.
+
+
+The World Inequality Lab offers an \href{https://wid.world/world-wealth-tax-simulator/}{online simulator} to estimate the revenue collected by a custom wealth tax in each world region. Building on this work, we disaggregate the revenue estimates at the country level. Courtesy of Félix Bajard, we obtained the simulator's underlying data for 50 countries covering 95\% of global wealth tax revenue. To impute missing data, we predict the taxable base from a linear regression of the log of taxable base on the log of nominal GDP per capita, weighted by country population. 
+
+Following Zucman (2024)\cite{zucman_blueprint_2024}, we assume 20\% of tax evasion. We also conservatively assume that asset prices would decline by 10\%. Half of the revenue from the global tax on ultra-high wealth would not be retained domestically but channeled into a fund to finance sustainable development. This fund would return revenues to countries with a per capita GNI below a threshold. We fix this eligibility threshold at twice the world average per capita GNI, or \$26,885 per year (in nominal terms). Finally, eligible countries receive a transfer per person %adult 
+proportional to the difference between the threshold and their GNI per capita.
+
+% \clearpage
+\begin{table}[!h]
+  \caption{\label{tab:transfers_gain}Global taxes: int'l transfers, budget gain, revenues collected (\% of GNI). }
+  \makebox[\textwidth][c]{
+  \input{../tables/transfers_gain_pop.tex} % add \midrule after World
+} 
+{\footnotesize \textit{Note:}  Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
+}
+\end{table}
+% \clearpage
+
+\begin{table}[!h]
+  \vspace{-1cm}
+  \caption{\label{tab:transfers_balance}Population vs. adult pop. entitlement comparison; carbon balance (\% of GNI). }
+  \makebox[\textwidth][c]{
+  \input{../tables/transfers_gain_pop_adult_balance.tex} % add \midrule after World
+} 
+{\footnotesize \textit{Note:} Budget gain denotes the country net entitlements, i.e. the revenue it collects plus the net international transfer. International transfers denotes the country net entitlements minus taxes paid in the country. The carbon balance is separated from the tax proposals, it corresponds to the carbon credit or debt over 1850--2024 (or 1990--2024), priced at \$185/tCO$_\text{2}$ and annualized at 3.5\%. For example, a country with excess emissions compared to the world average accumulates a carbon debt. % Budget gain denotes the sum of all other columns: international transfer and revenues collected. %revenue collected (last six columns) plus (net) international transfer (first column).
+}
+\end{table}
+% \clearpage
+
+
+\subsection{Financial Transactions Tax}\label{sec:ftt}
+
+Pekanov et al. (2019)\cite{pekanov_global_2019} estimate the revenues from a Financial Transactions Tax (FTT). Following the proposal by the European Commission (2011), they use a rate of 0.1\% of bonds and stocks and a rate of 0.01\% on derivatives. We use their baseline scenario, which assumes evasion rates of 15\% on bonds and stocks and 70\% on derivatives, together with an elasticity of trading volumes of $-$1.\footnote{The formula is: $\text{Revenue} = \text{tax rate} \cdot \text{volume} \cdot \text{evasion} \cdot \left(1 + \text{tax rate} / \text{transaction cost}\right)^\text{elasticity}$.} 
+
+Pekanov et al. (2019)\cite{pekanov_global_2019} provide estimates at the global level and for 18 high-income countries. We allocate the global revenue that does not originate from these 18 countries to remaining countries, in proportion to their GDP. 22\% of world revenues would be collected in these remaining countries, with a revenue amounting to 0.1\% of their GDP (vs. 0.56\% of GDP for the 18 high-income countries).
+% In these remaining countries, the FTT collects 22\% of the world total, and 0.1\% of these countries' GDP (vs. 0.56\% of GDP in the 18 high-income countries).
+
+
+\subsection{Carbon price}\label{sec:carbon}
+
+We model simulate the international transfers a \$100/tCO$_\text{2}$ carbon price applied to all non-LULUCF CO$_\text{2}$ emissions. At the global level, and neglecting behavioral responses, 0.33\% of the world nominal GDP would be collected. 
+%Contrary to the other taxes studied here, the revenues of the carbon price are not entirely pooled at the global level. Instead, we assume that 0.2\% of each country's nominal GDP would be pooled and rebated to all countries in proportion to their adult population. With some exceptions (such as Ireland and Switzerland), the carbon price revenues would cover more than the transfer owed to the rest of the world, leaving revenues for domestic spending even in high-income countries.
+
+\subsection{Maritime fuel levy}\label{sec:wealth}
+
+We simulate the revenues of a \$100/tCO$_\text{2}$ levy on maritime fuel. The emissions from shipping by country are given by the simple average between the minimum and maximum estimates of \citet{dequiedt_navigating_2024}, who graciously provided the data. 
+
+\subsection{Aviation fuel levy}\label{sec:wealth}
+
+Using data from Graver et al. (2018)\cite{graver_CO2_2018},\footnote{We use the data unadjusted for tourism.} we estimate the revenues from a tax on all flights (domestic and international). Due to complex climate effects such as contrails, aviation the global warming potential of aviation (GWP*$_\text{100}$) is 3 times the warming caused by its CO$_\text{2}$ emissions \citep{lee_contribution_2021}. To fully account for all effects on global warming, the carbon levy on aviation should be multiplied by that factor. Therefore, we simulate a \$300/tCO$_\text{2}$ tax on aviation fuel, comparable to the \$100/tCO$_\text{2}$ tax on maritime fuel. We use the 2018 data without adjusting for the expected increase in air traffic, and without adjusting for the decrease in traffic that would follow the tax.\footnote{More generally, we do not adjust for inflation or changes in volumes throughout this technical note. Figures are only provided to get ballpark estimates and cannot be very precise.}
+
+\subsection{Higher minimum corporate income tax}
+
+We estimate extra revenue by country if the internationally agreed minimum rate on corporate income tax was raised from 15\% to 21\%, with no carve-out. We use data from the \href{https://www.taxobservatory.eu/fr/base-de-donn%C3%A9es/the-tax-deficit-simulator/}{tax deficit simulator} from the EU Tax Observatory. These estimates are available for 45 countries (from OECD and the G20). We impute missing data only for three high-income countries (Iceland, Israel, New Zealand) and conservatively assume no extra revenue for other (developing) countries with missing data.
+
+\subsection{Carbon balance}
+
+On top of the proposed new taxes, we compute historical responsibilites for climate change. We define a carbon balance as the sum of a country's excess emissions compared to the world average, each year between 1850 and 2024, priced at $p=$ \$185/tCO$_\text{2}$ (which corresponds to the social cost of carbon according to Rennert et al., 2022\citealp{rennert_comprehensive_2022}). 
+% We report the carbon balance over nominal GNI in 2025 country-by-country in Table \ref{tab:transfers_balance}.
+In Table \ref{tab:transfers_balance}, we report the carbon balance annualized at a risk-adjusted discount rate of $r =$ 3.5\%. Denoting $e_t^c$ the emissions of country $c$ in year $t$, and $\pi_t^c$ its share of the world population at $t$, its annualized carbon balance over nominal GNI, $B_c$, is: $ B_c = r \cdot p \cdot \sum_{t=1850}^{2024} e_t^c - \pi_t^c \cdot \sum_c e_t^c / \text{GNI}_c^{2023}\text{.}$ Our computations are based on historical CO$_\text{2}$ emissions excluding LULUCF sector \citep{gutschow_country-resolved_2021}.
+
+
+% \section{The draft treaty} % TODO!!
+
+\clearpage
+\listoftables
+\listoffigures
+
+
+% \clearpage
+% \section{Appendix}
+
+
+% \subsection{Additional tables}
+% \input{../tables/income.tex}
+
+
+\end{document}
