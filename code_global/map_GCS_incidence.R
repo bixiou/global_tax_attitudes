@@ -3979,3 +3979,18 @@ EU_target_2035 <- .3875*(EU_emissions_1990 <- 4.33) # 1.68 uses EU-27
 EU_target_2040 <- .225*EU_emissions_1990 # .97
 China_target_2035 <- .93*(peak_China_emissions <- 12.8) # 11.9 uses Hu (2025)
 EU_target_2040+China_target_2035 # 12.9
+
+
+##### ITMO rules data #####
+temp <- read.csv("../../NICE2020/cap_and_share/output/global_cap_share_2c/country_output/co2_emissions.csv")
+sum(temp$E_gtco2[temp$country %in% scenarios_parties$central & temp$time %between% c(2026, 2100)]) # 966 Gt
+sum(temp$E_gtco2[temp$time %between% c(2026, 2100)]) # 1349 Gt
+pop_union <- sum(df$pop_2030[df$code %in% scenarios_parties$central])/sum(df$pop_2030) # 88%
+sum(temp$E_gtco2[temp$time %between% c(2026, 2100)])*pop_union # 1187 Gt
+temp <- read.csv("../../NICE2020/cap_and_share/output/global_cap_share_18/country_output/co2_emissions.csv")
+sum(temp$E_gtco2[temp$country %in% scenarios_parties$central & temp$time %between% c(2026, 2100)]) # 596 Gt
+sum(temp$E_gtco2[temp$time %between% c(2026, 2100)]) # 855 Gt
+sum(temp$E_gtco2[temp$time %between% c(2026, 2100)])*pop_union # 753 Gt
+temp <- read.csv("../../NICE2020/cap_and_share/output/global_cap_share_15/country_output/co2_emissions.csv")
+sum(temp$E_gtco2[temp$country %in% scenarios_parties$central & temp$time %between% c(2026, 2100)]) # 125 Gt
+sum(temp$E_gtco2[temp$time %between% c(2026, 2100)]) # 183 Gt
