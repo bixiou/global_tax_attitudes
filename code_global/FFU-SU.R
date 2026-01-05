@@ -1,9 +1,9 @@
 # North-South transfer C&S
-cstra <- read.csv(paste0(nice_path, "global_cap_share/country_output/transfer.csv"))
-csgdp <- read.csv(paste0(nice_path, "global_cap_share/global_output/global_gross_output.csv"))
+cstra <- read.csv(paste0(nice_path, "global_cap_share_18_rampup/country_output/transfer.csv"))
+csgdp <- read.csv(paste0(nice_path, "global_cap_share_18_rampup/global_output/global_gross_output.csv"))
 (cs_global_transfers <- round(setNames(sapply(2030:2080, function(y) sum(cstra$transfer[cstra$time == y & cstra$transfer > 0])/1e9), 2030:2080)))
 (cs_global_transfers_over_gdp <- round(100*setNames(sapply(2030:2080, function(y) sum(cstra$transfer[cstra$time == y & cstra$transfer > 0])/(csgdp$YGROSS_global[csgdp$time == y]*1e12)), 2030:2080), 2))
-mean(cs_global_transfers_over_gdp) # 0.32%
+mean(cs_global_transfers_over_gdp) # 0.40%
 
 # TODO If oil exporting countries, representing 25% of current emissions, do not join the coalition, temperature in 2100 would be about 0.3°C higher than with a universal participation to decarbonization effort
 
