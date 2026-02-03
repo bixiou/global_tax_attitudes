@@ -1,256 +1,256 @@
 "","country","iso2c","iso3c","year","NY.GNP.PCAP.CD"
-"1","Africa Eastern and Southern","ZH","AFE",2023,1579.92493216831
-"2","Africa Western and Central","ZI","AFW",2023,1680.83843434494
-"3","Arab World","1A","ARB",2023,7248.64080452573
-"4","Caribbean small states","S3","CSS",2023,14317.7283692482
-"5","Central Europe and the Baltics","B8","CEB",2023,20427.690627374
-"6","Early-demographic dividend","V2","EAR",2023,4194.68262362745
-"7","East Asia & Pacific","Z4","EAS",2023,13705.8750537339
-"8","East Asia & Pacific (excluding high income)","4E","EAP",2023,10425.3903454143
-"9","East Asia & Pacific (IDA & IBRD countries)","T4","TEA",2023,10542.7104494633
-"10","Euro area","XC","EMU",2023,44304.2516146316
-"11","Europe & Central Asia","Z7","ECS",2023,29122.7938722897
-"12","Europe & Central Asia (excluding high income)","7E","ECA",2023,7737.61531484397
-"13","Europe & Central Asia (IDA & IBRD countries)","T7","TEC",2023,11397.0955397061
-"14","European Union","EU","EUU",2023,40531.5433012481
-"15","Fragile and conflict affected situations","F1","FCS",2023,1794.40020415087
-"16","Heavily indebted poor countries (HIPC)","XE","HPC",2023,1111.80021266475
-"17","High income","XD","",2023,48441.3515763791
-"18","IBRD only","XF","IBD",2023,7910.78420404279
-"19","IDA & IBRD total","ZT","IBT",2023,6135.64368047244
-"20","IDA blend","XH","IDB",2023,1824.64137543396
-"21","IDA only","XI","IDX",2023,1375.58571705218
-"22","IDA total","XG","IDA",2023,1524.480603786
-"23","Late-demographic dividend","V3","LTE",2023,12408.9726639327
-"24","Latin America & Caribbean","ZJ","LCN",2023,9651.44633358684
-"25","Latin America & Caribbean (excluding high income)","XJ","LAC",2023,9116.00249191071
-"26","Latin America & the Caribbean (IDA & IBRD countries)","T2","TLA",2023,9523.39808254062
-"27","Least developed countries: UN classification","XL","LDC",2023,1268.36286916503
-"28","Low & middle income","XO","LMY",2023,5735.77528912916
-"29","Low income","XM","",2023,754.703781209084
-"30","Lower middle income","XN","",2023,2511.42712053637
-"31","Middle East & North Africa","ZQ","MEA",2023,8653.19888293932
-"32","Middle East & North Africa (excluding high income)","XQ","MNA",2023,3891.16747952568
-"33","Middle East & North Africa (IDA & IBRD countries)","T3","TMN",2023,3887.83045277983
-"34","Middle income","XP","MIC",2023,6357.8100961228
-"35","North America","XU","NAC",2023,77638.6049501965
-"36","OECD members","OE","OED",2023,46161.3720837742
-"37","Other small states","S4","OSS",2023,15954.206215063
-"38","Pacific island small states","S2","PSS",2023,4292.72692574963
-"39","Post-demographic dividend","V4","PST",2023,53793.7584917686
-"40","Pre-demographic dividend","V1","PRE",2023,1441.89739642273
-"41","Small states","S1","SST",2023,14152.0471638857
-"42","South Asia","8S","SAS",2023,2381.89784153443
-"43","South Asia (IDA & IBRD)","T5","TSA",2023,2381.89784153443
-"44","Sub-Saharan Africa","ZG","SSF",2023,1620.72586844517
-"45","Sub-Saharan Africa (excluding high income)","ZF","SSA",2023,1619.26936699983
-"46","Sub-Saharan Africa (IDA & IBRD countries)","T6","TSS",2023,1620.72586844517
-"47","Upper middle income","XT","",2023,10563.3233292247
-"48","World","1W","WLD",2023,13179.3706505765
-"49","Afghanistan","AF","AFG",2023,380
-"50","Albania","AL","ALB",2023,7680
-"51","Algeria","DZ","DZA",2023,4950
-"52","Andorra","AD","AND",2022,50150
-"53","Angola","AO","AGO",2023,2120
-"54","Antigua and Barbuda","AG","ATG",2023,20200
-"55","Argentina","AR","ARG",2023,12890
-"56","Armenia","AM","ARM",2023,6780
-"57","Aruba","AW","ABW",2023,30120
-"58","Australia","AU","AUS",2023,63150
-"59","Austria","AT","AUT",2023,55030
-"60","Azerbaijan","AZ","AZE",2023,6660
-"61","Bahamas, The","BS","BHS",2023,33330
-"62","Bahrain","BH","BHR",2023,28300
-"63","Bangladesh","BD","BGD",2023,2880
-"64","Barbados","BB","BRB",2023,22870
-"65","Belarus","BY","BLR",2023,7790
-"66","Belgium","BE","BEL",2023,54580
-"67","Belize","BZ","BLZ",2023,6890
-"68","Benin","BJ","BEN",2023,1390
-"69","Bermuda","BM","BMU",2023,130290
-"70","Bhutan","BT","BTN",2022,3600
-"71","Bolivia","BO","BOL",2023,3620
-"72","Bosnia and Herzegovina","BA","BIH",2023,8280
-"73","Botswana","BW","BWA",2023,8340
-"74","Brazil","BR","BRA",2023,9280
-"75","Brunei Darussalam","BN","BRN",2023,34480
-"76","Bulgaria","BG","BGR",2023,14280
-"77","Burkina Faso","BF","BFA",2023,860
-"78","Burundi","BI","BDI",2023,220
-"79","Cabo Verde","CV","CPV",2023,4780
-"80","Cambodia","KH","KHM",2023,2390
-"81","Cameroon","CM","CMR",2023,1690
-"82","Canada","CA","CAN",2023,54040
-"83","Cayman Islands","KY","CYM",2022,61780
-"84","Central African Republic","CF","CAF",2023,530
-"85","Chad","TD","TCD",2023,670
-"86","Chile","CL","CHL",2023,15800
-"87","China","CN","CHN",2023,13390
-"88","Colombia","CO","COL",2023,6810
-"89","Comoros","KM","COM",2023,1610
-"90","Congo, Dem. Rep.","CD","COD",2023,630
-"91","Congo, Rep.","CG","COG",2023,2450
-"92","Costa Rica","CR","CRI",2023,14260
-"93","Cote d'Ivoire","CI","CIV",2023,2470
-"94","Croatia","HR","HRV",2023,20590
+"1","Africa Eastern and Southern","ZH","AFE",2024,1579.10356988926
+"2","Africa Western and Central","ZI","AFW",2024,1624.31638442004
+"3","Arab World","1A","ARB",2024,7650.33371826764
+"4","Caribbean small states","S3","CSS",2024,17761.8612856618
+"5","Central Europe and the Baltics","B8","CEB",2024,21833.0583893736
+"6","Early-demographic dividend","V2","EAR",2024,4303.46958452427
+"7","East Asia & Pacific","Z4","EAS",2024,13764.4155339858
+"8","East Asia & Pacific (excluding high income)","4E","EAP",2024,10629.7080602908
+"9","East Asia & Pacific (IDA & IBRD countries)","T4","TEA",2024,10749.511363955
+"10","Euro area","XC","EMU",2024,44691.4787889803
+"11","Europe & Central Asia","Z7","ECS",2024,29916.8240608434
+"12","Europe & Central Asia (excluding high income)","7E","ECA",2024,8622.87649107289
+"13","Europe & Central Asia (IDA & IBRD countries)","T7","TEC",2024,12407.3884339644
+"14","European Union","EU","EUU",2024,41062.2558954338
+"15","Fragile and conflict affected situations","F1","FCS",2024,1594.36986381422
+"16","Heavily indebted poor countries (HIPC)","XE","HPC",2024,1138.03193361839
+"17","High income","XD","",2024,49376.41055273
+"18","IBRD only","XF","IBD",2024,8126.74327805953
+"19","IDA & IBRD total","ZT","IBT",2024,6269.43060654793
+"20","IDA blend","XH","IDB",2024,1808.07579267429
+"21","IDA only","XI","IDX",2024,1364.73371105372
+"22","IDA total","XG","IDA",2024,1518.89630101915
+"23","Late-demographic dividend","V3","LTE",2024,12818.2018649917
+"24","Latin America & Caribbean","ZJ","LCN",2024,9897.78632968313
+"25","Latin America & Caribbean (excluding high income)","XJ","LAC",2024,9634.3556453219
+"26","Latin America & the Caribbean (IDA & IBRD countries)","T2","TLA",2024,9756.96201523275
+"27","Least developed countries: UN classification","XL","LDC",2024,1291.05573686149
+"28","Low & middle income","XO","LMY",2024,5970.59340642176
+"29","Low income","XM","",2024,702.608784951295
+"30","Lower middle income","XN","",2024,2566.99700579002
+"31","Middle East, North Africa, Afghanistan & Pakistan","ZQ","MEA",2024,6275.30747739461
+"32","Middle East, North Africa, Afghanistan & Pakistan (excluding high income)","XQ","MNA",2024,2914.38390322034
+"33","Middle East, North Africa, Afghanistan & Pakistan (IDA & IBRD)","T3","TMN",2024,2915.88188847978
+"34","Middle income","XP","MIC",2024,6524.06350122183
+"35","North America","XU","NAC",2024,80242.0713550042
+"36","OECD members","OE","OED",2024,47119.1916020071
+"37","Other small states","S4","OSS",2024,14976.0670271432
+"38","Pacific island small states","S2","PSS",2024,4380.52307042885
+"39","Post-demographic dividend","V4","PST",2024,54750.9501669972
+"40","Pre-demographic dividend","V1","PRE",2024,1453.70309167177
+"41","Small states","S1","SST",2024,14172.7462693778
+"42","South Asia","8S","SAS",2024,2662.20844152326
+"43","South Asia (IDA & IBRD)","T5","TSA",2024,2662.20844152326
+"44","Sub-Saharan Africa","ZG","SSF",2024,1597.37591752611
+"45","Sub-Saharan Africa (excluding high income)","ZF","SSA",2024,1652.17079684644
+"46","Sub-Saharan Africa (IDA & IBRD countries)","T6","TSS",2024,1597.37591752611
+"47","Upper middle income","XT","",2024,10906.8360433289
+"48","World","1W","WLD",2024,13442.5002837166
+"49","Afghanistan","AF","AFG",2023,370
+"50","Albania","AL","ALB",2024,9910
+"51","Algeria","DZ","DZA",2024,5370
+"52","Andorra","AD","AND",2024,47570
+"53","Angola","AO","AGO",2024,2840
+"54","Antigua and Barbuda","AG","ATG",2024,21150
+"55","Argentina","AR","ARG",2024,13530
+"56","Armenia","AM","ARM",2024,7810
+"57","Aruba","AW","ABW",2024,35570
+"58","Australia","AU","AUS",2024,62680
+"59","Austria","AT","AUT",2024,54760
+"60","Azerbaijan","AZ","AZE",2024,7330
+"61","Bahamas, The","BS","BHS",2024,37020
+"62","Bahrain","BH","BHR",2024,28090
+"63","Bangladesh","BD","BGD",2024,2820
+"64","Barbados","BB","BRB",2024,25140
+"65","Belarus","BY","BLR",2024,8260
+"66","Belgium","BE","BEL",2024,55290
+"67","Belize","BZ","BLZ",2024,7150
+"68","Benin","BJ","BEN",2024,1430
+"69","Bermuda","BM","BMU",2024,145150
+"70","Bhutan","BT","BTN",2023,3730
+"71","Bolivia","BO","BOL",2024,4160
+"72","Bosnia and Herzegovina","BA","BIH",2024,8790
+"73","Botswana","BW","BWA",2024,7750
+"74","Brazil","BR","BRA",2024,9930
+"75","Brunei Darussalam","BN","BRN",2024,36020
+"76","Bulgaria","BG","BGR",2024,15370
+"77","Burkina Faso","BF","BFA",2024,850
+"78","Burundi","BI","BDI",2024,260
+"79","Cabo Verde","CV","CPV",2024,4950
+"80","Cambodia","KH","KHM",2024,2550
+"81","Cameroon","CM","CMR",2024,1700
+"82","Canada","CA","CAN",2024,53400
+"83","Cayman Islands","KY","CYM",2023,75720
+"84","Central African Republic","CF","CAF",2024,510
+"85","Chad","TD","TCD",2024,940
+"86","Chile","CL","CHL",2024,15750
+"87","China","CN","CHN",2024,13660
+"88","Colombia","CO","COL",2024,7040
+"89","Comoros","KM","COM",2024,1590
+"90","Congo, Dem. Rep.","CD","COD",2024,670
+"91","Congo, Rep.","CG","COG",2024,2280
+"92","Costa Rica","CR","CRI",2024,15620
+"93","Cote d'Ivoire","CI","CIV",2024,2530
+"94","Croatia","HR","HRV",2024,22250
 "95","Cuba","CU","CUB",2019,9010
-"96","Curacao","CW","CUW",2022,20450
-"97","Cyprus","CY","CYP",2023,32960
-"98","Czechia","CZ","CZE",2023,27370
-"99","Denmark","DK","DNK",2023,73340
-"100","Djibouti","DJ","DJI",2023,3400
-"101","Dominica","DM","DMA",2023,9790
-"102","Dominican Republic","DO","DOM",2023,9710
-"103","Ecuador","EC","ECU",2023,6590
-"104","Egypt, Arab Rep.","EG","EGY",2023,3840
-"105","El Salvador","SV","SLV",2023,4960
-"106","Equatorial Guinea","GQ","GNQ",2023,4840
+"96","Curacao","CW","CUW",2024,22590
+"97","Cyprus","CY","CYP",2024,32870
+"98","Czechia","CZ","CZE",2024,29560
+"99","Denmark","DK","DNK",2024,72540
+"100","Djibouti","DJ","DJI",2024,3640
+"101","Dominica","DM","DMA",2024,10230
+"102","Dominican Republic","DO","DOM",2024,10280
+"103","Ecuador","EC","ECU",2024,6430
+"104","Egypt, Arab Rep.","EG","EGY",2024,3510
+"105","El Salvador","SV","SLV",2024,5120
+"106","Equatorial Guinea","GQ","GNQ",2024,4740
 "107","Eritrea","ER","ERI",2011,650
-"108","Estonia","EE","EST",2023,27620
-"109","Eswatini","SZ","SWZ",2023,3690
-"110","Ethiopia","ET","ETH",2023,1110
-"111","Faroe Islands","FO","FRO",2023,72150
-"112","Fiji","FJ","FJI",2023,5680
-"113","Finland","FI","FIN",2023,53230
-"114","France","FR","FRA",2023,45180
-"115","French Polynesia","PF","PYF",2000,19380
-"116","Gabon","GA","GAB",2023,7930
-"117","Gambia, The","GM","GMB",2023,870
-"118","Georgia","GE","GEO",2023,6710
-"119","Germany","DE","DEU",2023,54800
-"120","Ghana","GH","GHA",2023,2360
-"121","Greece","GR","GRC",2023,22590
+"108","Estonia","EE","EST",2024,28880
+"109","Eswatini","SZ","SWZ",2024,3590
+"110","Ethiopia","ET","ETH",2024,1100
+"111","Faroe Islands","FO","FRO",2024,73070
+"112","Fiji","FJ","FJI",2024,5820
+"113","Finland","FI","FIN",2024,51650
+"114","France","FR","FRA",2024,45160
+"115","French Polynesia","PF","PYF",2024,23930
+"116","Gabon","GA","GAB",2024,7790
+"117","Gambia, The","GM","GMB",2024,880
+"118","Georgia","GE","GEO",2024,8110
+"119","Germany","DE","DEU",2024,55090
+"120","Ghana","GH","GHA",2024,2310
+"121","Greece","GR","GRC",2024,22730
 "122","Greenland","GL","GRL",2007,34800
-"123","Grenada","GD","GRD",2023,10470
-"124","Guatemala","GT","GTM",2023,5480
-"125","Guinea","GN","GIN",2023,1350
-"126","Guinea-Bissau","GW","GNB",2023,940
-"127","Guyana","GY","GUY",2023,13600
-"128","Haiti","HT","HTI",2023,1760
-"129","Honduras","HN","HND",2023,2890
-"130","Hong Kong SAR, China","HK","HKG",2023,55170
-"131","Hungary","HU","HUN",2023,19670
-"132","Iceland","IS","ISL",2023,80400
-"133","India","IN","IND",2023,2540
-"134","Indonesia","ID","IDN",2023,4810
-"135","Iran, Islamic Rep.","IR","IRN",2023,4650
-"136","Iraq","IQ","IRQ",2023,5640
-"137","Ireland","IE","IRL",2023,78970
-"138","Isle of Man","IM","IMN",2021,76440
-"139","Israel","IL","ISR",2023,54650
-"140","Italy","IT","ITA",2023,37920
-"141","Jamaica","JM","JAM",2023,6200
-"142","Japan","JP","JPN",2023,39350
-"143","Jordan","JO","JOR",2023,4420
-"144","Kazakhstan","KZ","KAZ",2023,10730
-"145","Kenya","KE","KEN",2023,2110
-"146","Kiribati","KI","KIR",2023,3740
-"147","Korea, Rep.","KR","KOR",2023,35490
-"148","Kosovo","XK","XKX",2023,6020
-"149","Kuwait","KW","KWT",2023,41320
-"150","Kyrgyz Republic","KG","KGZ",2023,1760
-"151","Lao PDR","LA","LAO",2023,2110
-"152","Latvia","LV","LVA",2023,22630
-"153","Lebanon","LB","LBN",2022,4170
-"154","Lesotho","LS","LSO",2023,1250
-"155","Liberia","LR","LBR",2023,710
-"156","Libya","LY","LBY",2023,5940
+"123","Grenada","GD","GRD",2024,10510
+"124","Guatemala","GT","GTM",2024,5780
+"125","Guinea","GN","GIN",2024,1440
+"126","Guinea-Bissau","GW","GNB",2024,990
+"127","Guyana","GY","GUY",2024,20140
+"128","Haiti","HT","HTI",2024,1760
+"129","Honduras","HN","HND",2024,3020
+"130","Hong Kong SAR, China","HK","HKG",2024,57070
+"131","Hungary","HU","HUN",2024,20770
+"132","Iceland","IS","ISL",2024,82200
+"133","India","IN","IND",2024,2650
+"134","Indonesia","ID","IDN",2024,4910
+"135","Iran, Islamic Rep.","IR","IRN",2024,5130
+"136","Iraq","IQ","IRQ",2024,6030
+"137","Ireland","IE","IRL",2024,80650
+"138","Isle of Man","IM","IMN",2022,78440
+"139","Israel","IL","ISR",2024,52910
+"140","Italy","IT","ITA",2024,38590
+"141","Jamaica","JM","JAM",2024,7210
+"142","Japan","JP","JPN",2024,36000
+"143","Jordan","JO","JOR",2024,4430
+"144","Kazakhstan","KZ","KAZ",2024,12090
+"145","Kenya","KE","KEN",2024,2090
+"146","Kiribati","KI","KIR",2024,3660
+"147","Korea, Rep.","KR","KOR",2024,36750
+"148","Kosovo","XK","XKX",2024,6910
+"149","Kuwait","KW","KWT",2024,40770
+"150","Kyrgyz Republic","KG","KGZ",2024,2190
+"151","Lao PDR","LA","LAO",2024,2000
+"152","Latvia","LV","LVA",2024,21630
+"153","Lebanon","LB","LBN",2023,3700
+"154","Lesotho","LS","LSO",2024,1180
+"155","Liberia","LR","LBR",2024,760
+"156","Libya","LY","LBY",2024,6890
 "157","Liechtenstein","LI","LIE",2009,116380
-"158","Lithuania","LT","LTU",2023,25080
-"159","Luxembourg","LU","LUX",2023,83980
-"160","Macao SAR, China","MO","MAC",2022,45960
-"161","Madagascar","MG","MDG",2023,510
-"162","Malawi","MW","MWI",2023,600
-"163","Malaysia","MY","MYS",2023,11710
-"164","Maldives","MV","MDV",2023,11070
-"165","Mali","ML","MLI",2023,840
-"166","Malta","MT","MLT",2023,34750
-"167","Marshall Islands","MH","MHL",2023,7860
-"168","Mauritania","MR","MRT",2023,2130
-"169","Mauritius","MU","MUS",2023,11590
-"170","Mexico","MX","MEX",2023,11980
-"171","Micronesia, Fed. Sts.","FM","FSM",2023,4250
-"172","Moldova","MD","MDA",2023,6200
-"173","Mongolia","MN","MNG",2023,4870
-"174","Montenegro","ME","MNE",2023,11590
-"175","Morocco","MA","MAR",2023,3760
-"176","Mozambique","MZ","MOZ",2023,540
-"177","Myanmar","MM","MMR",2023,1230
-"178","Namibia","NA","NAM",2023,4280
-"179","Nauru","NR","NRU",2023,23980
-"180","Nepal","NP","NPL",2023,1430
-"181","Netherlands","NL","NLD",2023,62540
-"182","New Caledonia","NC","NCL",2021,35430
-"183","New Zealand","NZ","NZL",2023,48220
-"184","Nicaragua","NI","NIC",2023,2350
-"185","Niger","NE","NER",2023,620
-"186","Nigeria","NG","NGA",2023,1880
-"187","North Macedonia","MK","MKD",2023,7900
-"188","Norway","NO","NOR",2023,102910
-"189","Oman","OM","OMN",2023,20470
-"190","Pakistan","PK","PAK",2023,1460
-"191","Palau","PW","PLW",2023,14110
-"192","Panama","PA","PAN",2023,17870
-"193","Papua New Guinea","PG","PNG",2023,2820
-"194","Paraguay","PY","PRY",2023,6220
-"195","Peru","PE","PER",2023,7090
-"196","Philippines","PH","PHL",2023,4320
-"197","Poland","PL","POL",2023,19900
-"198","Portugal","PT","PRT",2023,26150
-"199","Puerto Rico","PR","PRI",2023,25240
-"200","Qatar","QA","QAT",2023,79430
-"201","Romania","RO","ROU",2023,16660
-"202","Russian Federation","RU","RUS",2023,14250
-"203","Rwanda","RW","RWA",2023,990
-"204","Samoa","WS","WSM",2023,4200
-"205","San Marino","SM","SMR",2022,53930
-"206","Sao Tome and Principe","ST","STP",2023,2580
-"207","Saudi Arabia","SA","SAU",2023,31860
-"208","Senegal","SN","SEN",2023,1630
-"209","Serbia","RS","SRB",2023,10760
-"210","Seychelles","SC","SYC",2023,16940
-"211","Sierra Leone","SL","SLE",2023,870
-"212","Singapore","SG","SGP",2023,70590
-"213","Sint Maarten (Dutch part)","SX","SXM",2023,36890
-"214","Slovak Republic","SK","SVK",2023,22790
-"215","Slovenia","SI","SVN",2023,30860
-"216","Solomon Islands","SB","SLB",2023,2100
-"217","Somalia","SO","SOM",2023,590
-"218","South Africa","ZA","ZAF",2023,6480
+"158","Lithuania","LT","LTU",2024,27150
+"159","Luxembourg","LU","LUX",2024,84650
+"160","Macao SAR, China","MO","MAC",2023,65040
+"161","Madagascar","MG","MDG",2024,510
+"162","Malawi","MW","MWI",2024,570
+"163","Malaysia","MY","MYS",2024,11650
+"164","Maldives","MV","MDV",2024,11640
+"165","Mali","ML","MLI",2024,1030
+"166","Malta","MT","MLT",2024,36730
+"167","Marshall Islands","MH","MHL",2024,8500
+"168","Mauritania","MR","MRT",2024,2120
+"169","Mauritius","MU","MUS",2024,12970
+"170","Mexico","MX","MEX",2024,12850
+"171","Micronesia, Fed. Sts.","FM","FSM",2024,4240
+"172","Moldova","MD","MDA",2024,6880
+"173","Mongolia","MN","MNG",2024,5380
+"174","Montenegro","ME","MNE",2024,12210
+"175","Morocco","MA","MAR",2024,3840
+"176","Mozambique","MZ","MOZ",2024,550
+"177","Myanmar","MM","MMR",2024,1210
+"178","Namibia","NA","NAM",2024,4240
+"179","Nauru","NR","NRU",2024,20400
+"180","Nepal","NP","NPL",2024,1470
+"181","Netherlands","NL","NLD",2024,62520
+"182","New Caledonia","NC","NCL",2024,30070
+"183","New Zealand","NZ","NZL",2024,47580
+"184","Nicaragua","NI","NIC",2024,2510
+"185","Niger","NE","NER",2024,680
+"186","Nigeria","NG","NGA",2024,1700
+"187","North Macedonia","MK","MKD",2024,8300
+"188","Norway","NO","NOR",2024,98170
+"189","Oman","OM","OMN",2024,19520
+"190","Pakistan","PK","PAK",2024,1430
+"191","Palau","PW","PLW",2023,14780
+"192","Panama","PA","PAN",2024,18010
+"193","Papua New Guinea","PG","PNG",2024,2900
+"194","Paraguay","PY","PRY",2024,6300
+"195","Peru","PE","PER",2024,7500
+"196","Philippines","PH","PHL",2024,4470
+"197","Poland","PL","POL",2024,21590
+"198","Portugal","PT","PRT",2024,26910
+"199","Puerto Rico (US)","PR","PRI",2024,25860
+"200","Qatar","QA","QAT",2024,77290
+"201","Romania","RO","ROU",2024,17600
+"202","Russian Federation","RU","RUS",2024,15320
+"203","Rwanda","RW","RWA",2024,1040
+"204","Samoa","WS","WSM",2024,5040
+"205","San Marino","SM","SMR",2023,53890
+"206","Sao Tome and Principe","ST","STP",2024,2850
+"207","Saudi Arabia","SA","SAU",2024,35630
+"208","Senegal","SN","SEN",2024,1680
+"209","Serbia","RS","SRB",2024,11610
+"210","Seychelles","SC","SYC",2024,17460
+"211","Sierra Leone","SL","SLE",2024,820
+"212","Singapore","SG","SGP",2024,74750
+"213","Sint Maarten (Dutch part)","SX","SXM",2024,38950
+"214","Slovak Republic","SK","SVK",2024,23560
+"215","Slovenia","SI","SVN",2024,31790
+"216","Solomon Islands","SB","SLB",2024,1910
+"217","Somalia, Fed. Rep.","SO","SOM",2024,620
+"218","South Africa","ZA","ZAF",2024,6110
 "219","South Sudan","SS","SSD",2015,1050
-"220","Spain","ES","ESP",2023,32830
-"221","Sri Lanka","LK","LKA",2023,3540
-"222","St. Kitts and Nevis","KN","KNA",2023,21520
-"223","St. Lucia","LC","LCA",2023,12350
-"224","St. Vincent and the Grenadines","VC","VCT",2023,10300
-"225","Sudan","SD","SDN",2023,880
-"226","Suriname","SR","SUR",2023,5200
-"227","Sweden","SE","SWE",2023,60480
-"228","Switzerland","CH","CHE",2023,95070
+"220","Spain","ES","ESP",2024,33550
+"221","Sri Lanka","LK","LKA",2024,3860
+"222","St. Kitts and Nevis","KN","KNA",2024,22470
+"223","St. Lucia","LC","LCA",2024,12640
+"224","St. Vincent and the Grenadines","VC","VCT",2024,11060
+"225","Sudan","SD","SDN",2024,710
+"226","Suriname","SR","SUR",2024,5690
+"227","Sweden","SE","SWE",2024,58190
+"228","Switzerland","CH","CHE",2024,95220
 "229","Syrian Arab Republic","SY","SYR",2022,710
-"230","Tajikistan","TJ","TJK",2023,1400
-"231","Tanzania","TZ","TZA",2023,1220
-"232","Thailand","TH","THA",2023,7200
-"233","Timor-Leste","TL","TLS",2023,2020
-"234","Togo","TG","TGO",2023,1000
-"235","Tonga","TO","TON",2022,5260
-"236","Trinidad and Tobago","TT","TTO",2023,21000
-"237","Tunisia","TN","TUN",2023,3840
-"238","Turkiye","TR","TUR",2023,11730
-"239","Turkmenistan","TM","TKM",2023,8250
-"240","Turks and Caicos Islands","TC","TCA",2023,26490
+"230","Tajikistan","TJ","TJK",2024,1650
+"231","Tanzania","TZ","TZA",2024,1210
+"232","Thailand","TH","THA",2024,7100
+"233","Timor-Leste","TL","TLS",2024,1650
+"234","Togo","TG","TGO",2024,1080
+"235","Tonga","TO","TON",2023,5910
+"236","Trinidad and Tobago","TT","TTO",2024,19740
+"237","Tunisia","TN","TUN",2024,3880
+"238","Turkiye","TR","TUR",2024,13460
+"239","Turkmenistan","TM","TKM",2024,6510
+"240","Turks and Caicos Islands","TC","TCA",2024,36760
 "241","Tuvalu","TV","TUV",2023,8770
-"242","Uganda","UG","UGA",2023,970
-"243","Ukraine","UA","UKR",2023,4950
-"244","United Arab Emirates","AE","ARE",2023,49020
-"245","United Kingdom","GB","GBR",2023,47700
-"246","United States","US","USA",2023,80450
-"247","Uruguay","UY","URY",2023,19700
-"248","Uzbekistan","UZ","UZB",2023,2700
-"249","Vanuatu","VU","VUT",2023,3820
-"250","Venezuela, RB","VE","VEN",2014,12990
-"251","Viet Nam","VN","VNM",2023,4110
-"252","West Bank and Gaza","PS","PSE",2023,4180
+"242","Uganda","UG","UGA",2024,1020
+"243","Ukraine","UA","UKR",2024,5210
+"244","United Arab Emirates","AE","ARE",2024,51550
+"245","United Kingdom","GB","GBR",2024,49470
+"246","United States","US","USA",2024,83490
+"247","Uruguay","UY","URY",2024,21650
+"248","Uzbekistan","UZ","UZB",2024,3020
+"249","Vanuatu","VU","VUT",2024,3890
+"250","Venezuela, RB","VE","VEN",2024,3820
+"251","Viet Nam","VN","VNM",2024,4490
+"252","West Bank and Gaza","PS","PSE",2024,2710
 "253","Yemen, Rep.","YE","YEM",2018,740
-"254","Zambia","ZM","ZMB",2023,1290
-"255","Zimbabwe","ZW","ZWE",2023,2060
+"254","Zambia","ZM","ZMB",2024,1220
+"255","Zimbabwe","ZW","ZWE",2024,2400

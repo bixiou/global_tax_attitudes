@@ -18,6 +18,9 @@ union_waivers <- c() # c("CHN")
 # source("GCP_gain_by_country.R") # For iso2to3, pop, adult, emissions_2023 and emissions_pc_2023
 # source("new_taxes.R")
 
+## Other taxes (TODO)
+df$global_wealth_tax_revenue <- df$national_wealth_tax_revenue <- df$ftt <- 0
+
 ## Carbon tax
 df$carbon_price_revenues <- carbon_price_floor*df$emissions_2023
 df$carbon_price_revenues_pc <- carbon_price_floor*df$emissions_pc_2023
@@ -69,8 +72,10 @@ compute_union <- function(taxes = union_taxes, scenario = "central", parties = N
   return(data)
 }
 
+scenarios_names <- c("all_countries", "all_but_OPEC", "optimistic", "central", "prudent", "africa_EU")
 for (s in scenarios_names) df <- compute_union(taxes = union_taxes, scenario = s, data = df)
 df <- compute_union(taxes = union_taxes, scenario = "South", parties = df$code[!df$contributing], data = df)
+df <- compute_union(taxes = union_taxes, scenario = "all_countries", parties = df$code, data = df)
 
 
 ##### Figures #####

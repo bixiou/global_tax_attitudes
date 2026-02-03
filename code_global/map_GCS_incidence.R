@@ -3626,11 +3626,8 @@ round(wtd.mean((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025), df$code %in
 # amount lost
 setNames(round((df$gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new]) # THIS ONE FOR RU-SA-US
 setNames(round((df$Shigh_gain_adj_2025 * df$adult_2025/df$pop_2025)[df$code %in% countries_new]/12), df$code[df$code %in% countries_new]) # THIS ONE FOR THE OTHER
-<<<<<<< HEAD
-carbon_price$ssp2_26["2025"] *sum(df$emissions_2025)/sum(df$adult_2025)/12 # $47/month
-=======
 carbon_price$ssp2_26["2025"]*sum(df$emissions_2025)/sum(df$adult_2025)/12 # $45 Cap & Share basic income
->>>>>>> origin/main
+
 
 setNames(round((0.9*(df$gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
 setNames(round((0.9*(df$Shigh_gain_adj_2025 - basic_income_adj$df["2025"]) + basic_income_adj$df["2025"])[df$code %in% countries_new]/12), df$code[df$code %in% countries_new])
