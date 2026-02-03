@@ -3869,6 +3869,9 @@ grid()
 legend("top", legend = c("Fossil-Free Union (average)             ", "China", "West. Europe + Japan + Korea", "Africa + Other Asia", "Revenue over GDP (in %)", "Carbon price (right axis)"), text.col = c("black", "black", "black", "black", "black", "blue"), col = c("black", "red", "green", "purple", "darkgreen", "blue"), lwd = c(2,1,1,1,2,2), lty=c(1,1,1,1,3,2))
 # legend("top", legend = c("Fossil-Free Union (average)             ", "China", "West. Europe + Japan + Korea", "Africa + Other Asia", "Revenue per capita ($/day)", "Carbon price (right axis)"), text.col = c("black", "black", "black", "black", "black", "blue"), col = c("black", "red", "green", "purple", "darkgreen", "blue"), lwd = c(2,1,1,1,2,2), lty=c(1,1,1,1,3,2))
 
+saveRDS(df, "../data/df_tab_budgets.rds")
+saveRDS(v, "../data/v_tab_budgets.rds")
+
 # EXPORT Table 1, tab:budgets
 round(sapply(v$region, function(r) sum(df[df$region_tiam == r, paste0("rights_proposed_", 2030:2080)]))/1e9)
 round(sapply(v$region, function(r) sum(df[df$region_tiam == r, paste0("rights_", 2030:2080)]))/1e9)
