@@ -39,7 +39,7 @@ compute_union_revenues <- function(taxes = union_taxes, parties = union_parties,
   for (t in taxes) revenues[t] <- sum(data[[t]][data$code %in% parties], na.rm = T)*participation_factor(parties, data)/unit
   if (return_total) {
     return(sum(revenues))
-    print(paste("particiation factor:", particiation_factor))
+    print(paste("particiation factor:", particiation_factor(parties, data)))
   } else return(revenues)
 }
 compute_union_revenues(parties = scenarios_parties$central, return_total = F, unit = 1e9)
