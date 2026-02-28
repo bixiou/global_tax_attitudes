@@ -42,8 +42,8 @@ wealth_tax_revenue(thresholds = c(2e5,    5e5,  1e6,   2e6,  5e6, 2e7, 2e8), # 0
 # With this schedule, wealth converges at 20M (4.5% return), 47M (7.5%), 200M (10%), 300M (35%) in less than 5 years for multi-billionaires, up to 30 years for self-made people (starting at 10k)
 wealth_tax_revenue(thresholds = c(2e5,    1e6,  2e6,   5e6,  5e7, 5e8, 5e9), 
                    tax_rates = c(0.001, 0.005, 0.01, 0.02, 0.05, 0.1, 0.9)) # 464G
-# Piketty: Multiple of average net wealth (300k€ in FR): .5 2 5 10 100 1k 10k, i.e. 150k 600k 1.5M 3M 30M 300M 3G
-#          Effect tax rate on net wealth (in %):         .1 1 2  5  10 60 90
+# Piketty: Multiple of average net wealth (300k€ in FR): .5 2 5 10 100 1k 10k, i.e. 150k 600k 1.5M 3M 30M 300M 3G  (? => 0% at 0.33=100k, 0.2% at 0.66=200k, 0.4% at 1=300k)
+#          Effect tax rate on net wealth (in %):         .1 1 2  5  10 60 90   
 write.csv(wfr, "wfr.csv")
 View(wfr)
 
