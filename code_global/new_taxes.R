@@ -244,11 +244,13 @@ table_new_taxes_pop <- cbind("budget_gain" = df$budget_gain_both_taxes_pc_pop, "
                          "cit" = df$cit_revenue_pc, "pop" = df$pop_2023*df$gni_pc_nom_2023) / df$gni_pc_nom_2023
 row.names(table_new_taxes_pop) <- df$country
 row.names(table_new_taxes_pop)[row.names(table_new_taxes_pop) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
+row.names(table_new_taxes_pop)[row.names(table_new_taxes_pop) %in% c("United Kingdom")] <- "UK"
+row.names(table_new_taxes_pop)[row.names(table_new_taxes_pop) %in% c("United States")] <- "USA"
 (table_new_taxes_pop <- rbind("World" = colSums(sweep(table_new_taxes_pop, 1, df$pop_2023*df$gni_pc_nom_2023/(sum(df$pop_2023*df$gni_pc_nom_2023, na.rm = T)), `*`), na.rm = TRUE),
-                          table_new_taxes_pop[order(-table_new_taxes_pop[,1]),]))
+                          table_new_taxes_pop[order(-table_new_taxes_pop[,2]),]))
 cat(paste(kbl(100*table_new_taxes_pop[no.na(table_new_taxes_pop[,10] > 35e6, F, F), 1:9], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
               position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, 1, rep(2, 7)), linesep = rep("", nrow(table_new_taxes_pop)-1), longtable = F, label = "transfers_gain_pop", align = 'c',
-              col.names = c("\\makecell{Int'l\\\\transfers}", "\\makecell{Budget\\\\gain}", "\\makecell{Wealth\\\\Tax (3\\%\\\\$>$100M)}", "\\makecell{Wealth\\\\Tax (2\\%\\\\$>$5M)}","\\makecell{Fin.\\\\Trans.\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/t)}",
+              col.names = c("\\makecell{Budget\\\\gain}", "\\makecell{Int'l\\\\transfers}", "\\makecell{Wealth\\\\Tax (3\\%\\\\$>$100M)}", "\\makecell{Wealth\\\\Tax (2\\%\\\\$>$5M)}","\\makecell{Fin.\\\\Trans.\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/t)}",
                             "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/t)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/t)}", "\\makecell{Corporate\\\\inc. tax\\\\(min 21\\%)}")), collapse="\n"), file = "../tables/transfers_gain_pop.tex")
 
 

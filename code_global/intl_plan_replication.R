@@ -210,24 +210,47 @@ plot_world_map("budget_gain_over_gdp_both_taxes_pop", df = df, breaks = c(-Inf, 
                save = T)
 write.csv(df[,c("code", "country_map", "budget_gain_over_gdp_both_taxes_pop")], "../data/budget_gain_over_gdp_both_taxes.csv", quote = F, row.names = F)
 
-table_new_taxes_pop <- cbind("budget_gain" = df$budget_gain_both_taxes_pc_pop, "transfer" = df$net_gain_both_taxes_pc_pop, "global_wealth" = df$global_wealth_tax_revenue_pc, "national_wealth" = df$national_wealth_tax_revenue_pc, "ftt" = df$ftt_pc, 
+table_new_taxes_pop <- cbind("budget_gain" = df$budget_gain_both_taxes_pc_pop, "transfer" = df$net_gain_both_taxes_pc_pop, "transfer_gni" = df$net_gain_gdp_tax_pc, "global_wealth" = df$global_wealth_tax_revenue_pc, "national_wealth" = df$national_wealth_tax_revenue_pc, "ftt" = df$ftt_pc, 
                              "carbon" = carbon_tax*df$emissions_pc_2023, "maritime" = maritime_carbon_price*df$emissions_maritime_mean/df$pop_2018, "aviation" = aviation_carbon_price*df$emissions_pc_aviation, 
                              "cit" = df$cit_revenue_pc, "pop" = df$pop_2023*df$gni_pc_nom_2023) / df$gni_pc_nom_2023
 row.names(table_new_taxes_pop) <- df$country
 row.names(table_new_taxes_pop)[row.names(table_new_taxes_pop) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
+row.names(table_new_taxes_pop)[row.names(table_new_taxes_pop) %in% c("United Kingdom")] <- "UK"
+row.names(table_new_taxes_pop)[row.names(table_new_taxes_pop) %in% c("United States")] <- "USA"
 (table_new_taxes_pop <- rbind("World" = colSums(sweep(table_new_taxes_pop, 1, df$pop_2023*df$gni_pc_nom_2023/(sum(df$pop_2023*df$gni_pc_nom_2023, na.rm = T)), `*`), na.rm = TRUE),
-                              table_new_taxes_pop[order(-table_new_taxes_pop[,1]),]))
+                              table_new_taxes_pop[order(-table_new_taxes_pop[,2]),]))
 table_new_taxes_pop[1,2] <- (sum((df$net_gain_both_taxes_pc * df$pop_2030)[df$net_gain_both_taxes_pc > 0], na.rm = T)/sum(df$pop_2023*df$gni_pc_nom_2023, na.rm = T))
+table_new_taxes_pop[1,3] <- (sum((df$net_gain_gdp_tax_pc * df$pop_2030)[df$net_gain_gdp_tax_pc > 0], na.rm = T)/sum(df$pop_2023*df$gni_pc_nom_2023, na.rm = T))
 
-cat(paste(kbl(100*table_new_taxes_pop[no.na(table_new_taxes_pop[,10] > 35e6, F, F), 1:9], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
-              position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, 1, rep(2, 7)), linesep = rep("", nrow(table_new_taxes_pop)-1), longtable = F, label = "transfers_gain_pop", align = 'c',
-              col.names = c("\\makecell{Budget\\\\gain}", "\\makecell{Int'l\\\\transfers}", "\\makecell{Wealth\\\\Tax (3\\%\\\\$>$100M)}", "\\makecell{Wealth\\\\Tax (2\\%\\\\$>$5M)}","\\makecell{Fin.\\\\Trans.\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/t)}",
-                            "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/t)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/t)}", "\\makecell{Corporate\\\\inc. tax\\\\(min 21\\%)}")), collapse="\n"), file = "../tables/transfers_gain_pop.tex")
+cat(paste(kbl(100*table_new_taxes_pop[no.na(table_new_taxes_pop[,11] > 35e6, F, F), 1:10], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
+              position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, 1, 1, rep(2, 7)), linesep = rep("", nrow(table_new_taxes_pop)-1), longtable = F, label = "transfers_gain_pop", align = 'c',
+              col.names = c("\\makecell{Budget\\\\gain}", "\\makecell{Int'l\\\\transfers\\\\(all)}", "\\makecell{Int'l\\\\transfers\\\\1\\% GNI}", "\\makecell{Wealth\\\\Tax (3\\%\\\\$>$100M)}", "\\makecell{Wealth\\\\Tax (2\\%\\\\$>$5M)}","\\makecell{Fin.\\\\Trans.\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/t)}",
+                            "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/t)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/t)}", "\\makecell{Corpor.\\\\inc. tax\\\\(min 21\\%)}")), collapse="\n"), file = "../tables/transfers_gain_pop.tex")
 
-cat(paste(kbl(100*table_new_taxes_pop[row.names(table_new_taxes_pop) %in% c("World", "DRC", "Indonesia", "India", "China", "Japan", "United States"), 1:9], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
-              position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, 1, rep(2, 7)), linesep = rep("", nrow(table_new_taxes_pop)-1), longtable = F, label = "transfers_gain_pop", align = 'c',
-              col.names = c("\\makecell{Budget\\\\gain}", "\\makecell{Int'l\\\\transfers}", "\\makecell{Wealth\\\\Tax (3\\%\\\\$>$100M)}", "\\makecell{Wealth\\\\Tax (2\\%\\\\$>$5M)}","\\makecell{Fin.\\\\Trans.\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/t)}",
-                            "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/t)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/t)}", "\\makecell{Corporate\\\\inc. tax\\\\(min 21\\%)}")), collapse="\n"), file = "../tables/transfers_gain_pop_selected.tex")
+cat(paste(kbl(100*table_new_taxes_pop[row.names(table_new_taxes_pop) %in% c("World", "DRC", "Indonesia", "India", "China", "Japan", "USA"), 1:10], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
+              position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, 1, 1, rep(2, 7)), linesep = rep("", nrow(table_new_taxes_pop)-1), longtable = F, label = "transfers_gain_pop", align = 'c',
+              col.names = c("\\makecell{Budget\\\\gain}", "\\makecell{Int'l\\\\transfers\\\\(all)}", "\\makecell{Int'l\\\\transfers\\\\1\\% GNI}", "\\makecell{Wealth\\\\Tax (3\\%\\\\$>$100M)}", "\\makecell{Wealth\\\\Tax (2\\%\\\\$>$5M)}","\\makecell{Fin.\\\\Trans.\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/t)}",
+                            "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/t)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/t)}", "\\makecell{Corpor.\\\\inc. tax\\\\(min 21\\%)}")), collapse="\n"), file = "../tables/transfers_gain_pop_selected.tex")
+# TODO: replace by \multicolumn{2}{c}{\makecell{International\\transfer\\Total \quad 1\% GNI}} 
+#              and \textbar 0.7\textbar & \textbar 0.5\textbar
+
+# Without transfer from ultra-high wealth tax
+# table_new_taxes_pop <- cbind("transfer" = df$net_gain_both_taxes_pc_pop, "budget_gain" = df$budget_gain_both_taxes_pc_pop, "global_wealth" = df$global_wealth_tax_revenue_pc, "national_wealth" = df$national_wealth_tax_revenue_pc, "ftt" = df$ftt_pc, 
+#                              "carbon" = carbon_tax*df$emissions_pc_2023, "maritime" = maritime_carbon_price*df$emissions_maritime_mean/df$pop_2018, "aviation" = aviation_carbon_price*df$emissions_pc_aviation, 
+#                              "cit" = df$cit_revenue_pc, "pop" = df$pop_2023*df$gni_pc_nom_2023) / df$gni_pc_nom_2023
+# row.names(table_new_taxes_pop) <- df$country
+# row.names(table_new_taxes_pop)[row.names(table_new_taxes_pop) %in% c("Democratic Republic of Congo", "Democratic Republic of the Congo")] <- "DRC"
+# (table_new_taxes_pop <- rbind("World" = colSums(sweep(table_new_taxes_pop, 1, df$pop_2023*df$gni_pc_nom_2023/(sum(df$pop_2023*df$gni_pc_nom_2023, na.rm = T)), `*`), na.rm = TRUE),
+#                               table_new_taxes_pop[order(-table_new_taxes_pop[,1]),]))
+# cat(paste(kbl(100*table_new_taxes_pop[no.na(table_new_taxes_pop[,10] > 35e6, F, F), 1:9], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
+#               position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, 1, rep(2, 6)), linesep = rep("", nrow(table_new_taxes_pop)-1), longtable = F, label = "transfers_gain_pop", align = 'c',
+#               col.names = c("\\makecell{Int'l\\\\transfers}", "\\makecell{Budget\\\\gain}", "\\makecell{Wealth\\\\Tax (3\\%\\\\$>$100M)}", "\\makecell{Wealth\\\\Tax (2\\%\\\\$>$5M)}","\\makecell{Fin.\\\\Trans.\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/t)}",
+#                             "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/t)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/t)}", "\\makecell{Corporate\\\\inc. tax\\\\(min 21\\%)}")), collapse="\n"), file = "../tables/transfers_gain_pop.tex")
+# 
+# cat(paste(kbl(100*table_new_taxes_pop[row.names(table_new_taxes_pop) %in% c("World", "DRC", "Indonesia", "India", "China", "Japan", "United States"), 1:9], "latex", #caption = "Net tax gain and revenues collected from global taxes (in \\% of GDP).",
+#               position = "h", escape = F, booktabs = T, table.envir = NULL,  digits = c(1, 1, rep(2, 6)), linesep = rep("", nrow(table_new_taxes_pop)-1), longtable = F, label = "transfers_gain_pop", align = 'c',
+#               col.names = c("\\makecell{Int'l\\\\transfers}", "\\makecell{Budget\\\\gain}", "\\makecell{Wealth\\\\Tax (3\\%\\\\$>$100M)}", "\\makecell{Wealth\\\\Tax (2\\%\\\\$>$5M)}","\\makecell{Fin.\\\\Trans.\\\\Tax}", "\\makecell{Carbon\\\\Tax\\\\(10\\$/t)}",
+#                             "\\makecell{Maritime\\\\fuel tax\\\\(100\\$/t)}", "\\makecell{Aviation\\\\fuel tax\\\\(300\\$/t)}", "\\makecell{Corporate\\\\inc. tax\\\\(min 21\\%)}")), collapse="\n"), file = "../tables/transfers_gain_pop_selected.tex")
 
 
 ##### With carbon debt #####
