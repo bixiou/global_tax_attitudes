@@ -1,0 +1,1088 @@
+﻿% Outlets: Climate Policy (7k ~ 20p, supplemental allowed, full page figure counts 500w); Review of International Political Economy (12k); PLOS Climate (no limit, $2500); Global Environmental Change (8k); Environmental Politics (8k); Global Environmental Politics; Earth System Governance (upon invite); Global Policy (8k)
+% Order: Global Environmental Change (8k, highest impact, cat 3 CNRS); Ecological Economics (8k for articles, 5k for commentaries, good chances); Global Environmental Politics (8k); Environmental Politics (8k); Global Policy (8k, great fit but low impact)
+
+% not counting Table: 6,622 words (excl. appendix and abstract): 6,267 in text, 133 in headers, 222 in footnotes. [note that texcount doesn't count the words in a table, just the 28w caption ones]
+% TODO! Ctrl + F "revision" to put back ~500 words deleted
+
+% revision: cite more prominently Dafermos
+% AI: I am a researcher and am drafting an academic paper intended for publication in Climate Policy. I want you to help me improve the English style of that paper, paragraph by paragraph. Keep your responses concise: no need to comment on your editing suggestions, just give the suggested edited paragraph. Highlight (e.g. in bold or strikes) the changes you make. 
+
+% Contributions:
+% This paper: Paper I
+% Paper I: FFU-NICE 1-4 + suppl. 7
+% 1 FFU-SU proposal + principles. 13p
+% 2 NICE extensions: income redistr; PPP; footprint.  1-5p
+% 3 Simulations FFU, differentiated prices, Stoft, etc.  3p
+% 4 Correspondence transfers different prices. 4p
+% Suppl: treaty incl. voting procedure. 4-12p
+
+% Intro
+% Rationale for an international cap-and-trade: principles, correspondence
+% Treaty proposals for a coalition of the willing: FFU-SU proposal scenarios (FFU with different coverage, FFU-SU with main coverages)
+% Distributive effects of the different scenarios: distributive FFU, differentiated prices
+
+% Paper II: critique-ITMO 5-6
+% 5 Critical analysis of current regime. 15p
+% 6 NDC-ITMOs proposal. 2-5p
+
+
+\documentclass[12pt,english]{article}
+% NB: the damage function used (from Kalkuhl & Wenz) doesn't account for mortality (half of the SCC in Rennert et al) nor sea-level rise. It is 25% lower than Rennert's one and much lower than Kotz et al 24 update.
+% NB: BAU assumes emission peak around 2025, i.e. may be too optimistic on technical/decarbonization progress.
+% : budget => quota (or rights) at country level (terminology)
+% : compatibility with Paris Agreement
+%  Aggregate EDE with different discount rates.
+%  Year at which undiscounted aggregate EDE turns positive.
+
+% Arguments against uniform price: Boeters (14): other taxes, terms-of-trade (numerical); Anthoff, Dennig, Emmerling (22): different discount rates; Babiker et al. (04): other taxes, terms-of-trade (theoretical).
+% Also cite Bauer et al. (2020): efficiency-sovereignty trade-off.
+% https://bsky.app/profile/did:plc:2b4tsqp7a47hhyk3weki7epo/post/3lydrek33fc2x
+
+\usepackage[utf8]{inputenc}
+\usepackage{tgpagella} % Palatino text only
+\usepackage{mathpazo}  % Palatino math & text
+\usepackage[left=1.5in,right=1.5in,top=1.5in,bottom=1.5in]{geometry}
+% \linespread{2}
+% \usepackage[super,comma,sort]{natbib} % WPcomment
+\usepackage[round,sort&compress]{natbib} % NCCcomment
+% \usepackage[natbibapa]{apacite}
+% \bibliographystyle{apacite} 
+\usepackage{url} % [hyphens]
+\usepackage[hyperpageref]{backref} % back references biblio. Needs latexmk at compilation. Incompatible with apacite.
+% \usepackage{hyperref}
+\usepackage[pagebackref]{hyperref} % Incompatible with apacite.
+% \usepackage{hyperref}
+% \usepackage{multibib} % incompatible with backref
+\hypersetup{
+  colorlinks=true, % breaklinks=true,
+  urlcolor=purple,    % color of external links
+  linkcolor=blue,  % color of toc, list of figs etc.
+  citecolor=violet,   % color of links to bibliography
+}
+\usepackage{bm}
+\usepackage{indentfirst}
+\setcitestyle{aysep={}} 
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{tcolorbox}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{supertabular}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{gensymb}
+\usepackage{textcomp}
+\usepackage{placeins} % Floats appear in their section (to use with \FloatBarrier or [section])
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{fullpage}
+\usepackage{morefloats}
+\usepackage{makecell}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{rotating}
+\usepackage{fancyhdr}
+\usepackage{tocbibind} % Adds biblio to ToC
+% \usepackage{tocloft}
+\usepackage{titletoc} % Adds title to ToC (use with tocloft?)
+\usepackage[export]{adjustbox}
+\usepackage[anythingbreaks]{breakurl} % for links
+\usepackage{multicol}
+\usepackage{lineno}
+\usepackage{endnotes}
+\usepackage{ragged2e}
+\newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}} % left-align in tables with fixed column widths
+% \let\footnote=\endnote
+\linenumbers
+\makeatletter
+\renewcommand\tableofcontents{% removes "Contents" from ToC
+    \@starttoc{toc}%
+}
+\makeatother
+\newsavebox\ltmcbox % For net gain table over two columns
+%\usepackage[nomarkers,figuresonly]{endfloat} % Figures at the end
+%\usepackage[section,below]{placeins} % Floats placed in the section they appear in.
+\renewcommand{\floatpagefraction}{.99}
+\newenvironment{stretchpars}{\par\setlength{\parfillskip}{0pt}}{\par} % to justify a line
+
+\newcommand{\bo}[1]{\textbf{#1}}
+\newcommand{\gras}[1]{\textbf{#1}}
+% \renewcommand*\thefootnote{\alph{footnote}} % footnote as letters
+% \newcites{App}{Appendix References}
+
+% \captionsetup[table]{skip=-10pt}
+% \begin{document}
+
+% \maketitle
+
+% % \clearpage
+% \renewcommand{\bibsection}{\section{\refname}}
+% \bibliographystyle{naturemag}
+% \bibliography{global_tax_attitudes}
+% % \stopcontents
+
+% \end{document}
+
+% Beyond Current Initiatives: ITMO Regulations to Ratchet up Ambition
+\title{Beyond Current Initiatives:\\ ITMO Regulations to Ratchet up Ambition
+%Operationalizing the Paris Temperature Target
+} % Achieving... 
+
+% \author{Adrien Fabre$^{1,2}$} % WPcomment
+\author{Adrien Fabre\footnote{CNRS, CIRED%, Global Redistribution Advocates% TODO! edit affiliations for revision
+. E-mail: adrien.fabre@cnrs.fr.} \footnote{I am very grateful for outstanding research assistance of Agathe Chardon. %
+I thank Ana Toni for inspiring me this reflection. I thank Christophe Cassen and Emma Jagu Schippers for their insightful feedback. I thank Marie Young-Brun and her co-authors for sharing their model NICE and for their insightful advice. 
+I received funding from the Agence Nationale de la Recherche (ANR-24-CE03-7110). I have no conflict of interest to disclose.}}  % submission
+
+\date{\today} % NCCcomment
+
+\begin{document}
+
+\sloppy
+\maketitle
+
+\vspace{-1cm}  % submission
+\begin{center}
+{\bo{\href{https://github.com/bixiou/global_tax_attitudes/raw/main/paper/itmo_rules.pdf}{Link to most recent version}}}
+\end{center}
+
+% WPcomment
+% \begin{affiliations}
+% \item CNRS
+% \item CIRED
+% \end{affiliations}
+
+% \begin{small} % NCCcomment
+\begin{abstract} % 245 words (Climate Policy: up to 350 words) 
+The various principles, obligations, and partnerships forming the international climate policy regime are insufficient to achieve the Paris Agreement temperature target. Although Internationally Transferred Mitigation Outcomes (ITMOs) aim to make mitigation more efficient, their unfettered use could weaken the domestic ambition of countries buying them. To bolster ambition and align Nationally Determined Contributions (NDCs) with the Paris target, this paper proposes that a coalition of willing countries commit to additional rules governing ITMO use and NDC definition. Basic rules include the harmonization of NDC targets using a comparable metric and requiring that no ITMO be purchased from a country missing its NDC. Then, additional rules with increasing degrees of ambition are described. First, restrictions based on national assessments are discussed, in which coalition members commit not to buy ITMOs from countries with unambitious NDCs. Next, it is argued that NDCs should be assessed for the coalition as a whole rather than country-by-country. Participating countries would cooperate in determining their NDCs to ensure joint alignment with the Paris target and commit not to exchange ITMOs with countries outside the coalition. Then, the study provides a comparative assessment of alternative proposals intended to reinforce the international climate policy regime, including differentiated carbon price floors and a supply-side policy known as \textit{fossil-fuel non-proliferation}, 
+and argues they lack the necessary political realism or efficiency. 
+The article concludes that combining a tightly regulated ITMO coalition with ambitiously expanded Just Energy Transition Partnerships offers a viable pathway for effective international decarbonization.
+
+% 140 words:
+% The international climate policy regime comprises various principles, obligations, and partnerships. 
+% A critical assessment of existing international arrangements shows that they are insufficient to achieve the Paris Agreement temperature target. %overarching goal of limiting the increase in global temperature to a sustainable level. 
+% While Internationally Transferred Mitigation Outcomes (ITMOs) aim to make emission reductions more efficient, their unfettered use could actually weaken the domestic ambition of countries buying them. To bolster ambition and align Nationally Determined Contributions (NDCs) with the Paris target, this paper proposes that a coalition of the willing commit to additional rules governing the use of ITMOs. Participating countries would cooperate on the determination of their NDCs to ensure joint alignment with the Paris target, and would commit to not exchanging ITMOs with countries maintaining unambitious NDCs. The paper concludes by comparing alternative proposals to strengthen the international climate policy regime.
+
+% In this paper, I show that there is a distributional equivalence between a system of carbon prices differentiated by country and a uniform carbon price with differentiated emission rights involving international transfers. I introduce a policy proposal based on a uniform price and international transfers, with emissions rights close to an equal per capita allocation, and show how it compares to existing proposals. Using the model NICE, I simulate prominent international climate policy proposals and compare their welfare effects at the year-country-decile level. 
+% This paper is divided in four sections. First, I take stock of the current international climate policy regime. After showing that the current regime falls short of ensuring decarbonization aligned with the Paris Agreement's target and providing sufficient resources for sustainable development in the Global South, I delineate the objectives that a new regime should meet. Second, I propose that voluntary countries form a \textit{Fossil-Free Union} whereby they would establish an international emissions trading system to guarantee that their emissions are in line with the target, and where the allocation of emissions rights would ensure North-to-South transfers in a way that would make most countries willing to join. I provide precise estimates of the distributive effects of the Fossil-Free Union. Third, I propose a \textit{Sustainable Union}, where voluntary countries would commit to reallocate one percent of their GNI to all participating countries in proportion to their population, financed by global solidarity levies on the wealthiest. These proposals are complementary and would put the world on track for the climate and sustainable development targets. Furthermore, they garner majority support among the population in every country. Fourth, I provide a comparative analysis of alternative international climate policies.
+
+% The most important sentences are in bold to allow fast reading. This document will soon be expanded to include a draft treaty (translating the above proposals in legal terms).
+
+\end{abstract}
+
+\textbf{Keywords}: Climate policy; carbon price; ITMOs; carbon trading.% SDGs; poverty; international taxation.
+
+\textbf{JEL}: Q56; F38; H23; Q54; H87; F64; Q58; F53; F35.
+
+% 3-5 key policy insights (of approximately 100 words in total). 120 words:
+\paragraph{Policy Insights} % submission
+\begin{itemize}
+  \item Unfettered use of ITMOs risks weakening decarbonization efforts of buyer countries, unless the global sum of NDCs align with the Paris temperature target.
+  \item As a prerequisite to stricter rules concerning ITMOs, NDCs should be harmonized: they should cover all gases, be defined in absolute terms, and ideally include a cumulative emissions target.
+  \item Countries should not buy ITMOs from a country which is failing its NDC target.
+  \item A coalition of countries could submit a joint NDC in line with the Paris target and commit not to exchange ITMOs with countries outside the coalition.
+  \item Alternatives to carbon trading are often inefficient, unfair, or unrealistic. For example, fossil fuel non-proliferation requires the unlikely cooperation of fossil fuel producers.
+\end{itemize}
+\clearpage
+
+\paragraph{Contents} \quad \\  % submission
+
+\tableofcontents
+
+% \onehalfspacing % NCCcomment
+
+\clearpage
+
+% Summary of propositions:
+% contributions are to be made in proportion to GNI and entitlements in proportion to population
+% define their target using a common indicator (such as their future cumulative emissions)
+% To prevent ITMOs from weakening domestic action, countries that use them should commit to extra rules
+
+% \section{Where do we stand? What do we need?\label{sec:now}}% NCCcomment
+
+\section*{Introduction}
+% Options:
+% A. Write two papers: (i) 1+3, (ii) 2. Pro: (ii) better for specialists. Con: (i) hard to publish; miss the broad picture in (ii)
+% B. Tables 2-4 in supplemental. Pro: great for noobs. Con: disconnect between 1,2,3
+% C. sec 1 in supplemental. Pro: intermediate level of knowledge. Con: miss big picture
+% => B + cover letter saying I hesitated with other options
+
+% Commentaires Emma:
+% BAU debate, which is central to NDC adequacy and ITMO integrity
+% TODO Rather than emphasising the “limitations” of previous proposals, it might be better to frame your contribution as further specifying or extending them
+% I found the structure of Section 3 is unclear ; My feeling is that Section 3.3 (“limitations of previous options”) would fit more naturally within Section 3.1, rather than after your proposal has started.
+% TODO It would improve readibility to explicitly state that Section 3.2 is the start of your proposal, and to link that to Table 1. It could be a standalone section. 
+% TODO lack of justification for the proposals
+% TODO justify feasibility; explain why a coalition (and not ITMO rules) => for feasibility. Mentionner https://en.wikipedia.org/wiki/Open_Coalition_on_Compliance_Carbon_Markets ainsi que https://www.bafu.admin.ch/fr/article-6-ambition-alliance-aaa6-f
+% acknowledge that additionality condition is already implemented in 6.2, incl. in Table => it is actually not implemented
+% done lenient => unambitious
+% TODO? Remove Section 2 except ITMOs? I also need the JETP part somewhere as I cite it in the conclusion. => Keep but say in cover letter that I can remove section 2 and Tables 2-4.
+
+In 2015, governments universally adopted a global temperature target at the Paris Agreement. While countries have developed various commitments, mechanisms, and initiatives to stabilize the climate, they are still insufficient to achieve the target. This paper reviews the international climate policy regime, assesses existing proposals to ratchet up ambition, and delineates new rules for a coalition of countries to institutionalize higher ambition within cross-border carbon trading.
+
+% rework the intro, explaining that the paper is dividided into 3 largely independent sections: 1) critique of the current regime; 2) proposal for ITMO rules; 3) alternatives to ITMOs. 
+% explain that section 2 is the core contribution and that it includes several proposals with increasing levels of stringency
+At COP29 in 2024, the international community finalized the rules for operationalizing Article 6 of the Paris Agreement, which allows cross-border carbon trading. % TODO? reword "cross-border carbon trading"? carbon market? flexibility mechanism?
+In the core of this paper, I discuss the consequences of Article 6.2, which allows carbon trading at the intergovernmental level in the form of Internationally Transferred Mitigation Outcomes (ITMOs). While the Article 6 is intended to foster higher ambition by directing mitigation funding where it is most effective, there is a risk that the unfettered use of ITMOs could result in the weakening of climate action. Indeed, some developing countries may have specified unambitious NDCs in the hope of selling more ITMOs, whereas some developed countries that have originally considered an ambitious domestic mitigation pathway may later decide to purchase emission reductions abroad as ITMOs offer a cheaper alternative to domestic action. To the extent that NDCs remain collectively inconsistent with the Paris temperature target, ITMOs would be underpriced (unless their use is restricted) since they would not reflect the constraint implied by the Paris target. While authors such as \cite{michaelowa_additionality_2019} have proposed restrictions on the use of ITMOs to ensure that they do not undermine existing ambition, I propose more stringent rules to strengthen ambition and align carbon trading with the Paris Agreement temperature target. 
+
+On a related topic, \cite{michaelowa_towards_2022} offered recommendations to strengthen the integrity of carbon offset markets. They argued for assessing a project's emission reduction relative to a \textit{dynamic baseline} with counterfactual emissions converging to zero at a date depending on the country's development level, rather than relative to a business-as-usual scenario incompatible with the Paris target.   % voluntary carbon markets, 
+This proposal eventually inspired certain rules operationalizing Article 6.4 of the Paris Agreement \citep{unfccc_setting_2025}. 
+With this article, I contribute to the parallel debate on how Article 6.2 can be used to ratchet up ambition. In particular, I make the case for a coalition of the willing to jointly %strenghten the ambition of 
+align its NDCs with the Paris target 
+and commit not to exchange ITMOs with countries outside the coalition. 
+
+The paper is divided into three largely independent sections. 
+%Beyond this proposal, the article also provides a broad overview of existing and potential international climate policies. 
+% To put the issue into context, 
+Section \ref{sec:criticism} contextualizes the paper through a critical assessment of the current international climate policy regime, with particular attention to ITMOs. 
+% Readers familiar with existing rules and initiatives can skip this section. % revision: put back
+In Section \ref{sec:itmo}, I discuss various proposals for aligning ITMOs with the Paris temperature target. I start by describing existing proposals by \cite{michaelowa_additionality_2019} and \cite{la_hoz_theuer_when_2019}. % as well as their limitations. 
+Then, in the core contribution of the paper, I propose different options for leveraging ITMOs to enhance climate ambition, with increasing levels of stringency. Table \ref{tab:proposals} summarizes these proposals. % (see Table \ref{tab:proposals}). 
+Finally, in Section \ref{sec:alternatives}, I discuss alternative proposals to strengthen climate action, from differentiated carbon price floors to a fossil fuel non-proliferation treaty, and show that they lack efficiency or realism compared to the proposed regulations of ITMOs. Section \ref{sec:conclusion} concludes. In the Supplementary Material, I provide three tables summarizing the evaluation of each policy mentioned in this article. 
+% Table \ref{tab:policies} presents each policy, Table \ref{tab:pros_cons} lists their pros and cons, and Table \ref{tab:comparison} attempts to grade the policies' properties in terms of the  multiple desired objectives. 
+
+\section{A critical assessment of the current regime\label{sec:now}}\label{sec:criticism}%
+
+The international climate policy regime is established by the United Nations Framework Convention on Climate Change (UNFCCC) and %its offshoot, 
+the Paris Agreement adopted under it, which sets a global temperature target. The global consensus supporting this regime is an immense success: the UNFCCC has been universally adopted, and the Paris Agreement had been ratified by all countries but three (Iran, Libya, and Yemen) before the U.S. withdrawal. However, reliance on consensus for decision-making within the UNFCCC results in major limitations: agreements reflect the lowest common denominator and fall short of driving any substantial progress on international climate action. In this section, I review the current regime and its most likely developments.
+
+\subsection{Burden-sharing\label{subsubsec:burden_sharing}} % new
+% \subsection{Developed nations taking the lead\label{subsubsec:developed}} % revision: put back
+
+% new
+In 1992, the UNFCCC introduced a distinction between developed and developing nations: the former shall provide financial resources to the latter to promote their sustainable development and climate action. 
+This classification is now outdated, stalling progress in critical negotiations, as newly high-income countries resist being reclassified as developed, and historically developed countries are reluctant to increase their contributions unless all high-income countries do so \citep{earth_negotiations_bulletin_summary_2024,schalatek_decision_2024,eu_council_conclusions_2024}. 
+
+% revision: put back below
+% The UNFCCC introduces a distinction between developed and developing nations: the former shall provide financial resources to the latter to promote their sustainable development and climate action. While aimed at fairly sharing the costs of climate action, this classification dates from 1992 and is now outdated. For example, while Singapore, South Korea, Saudi Arabia, and Slovenia are all wealthier than Greece, only the latter is classified by the UNFCCC as a developed country with financial obligations \citep{pauw_more_2024}. 
+% This outdated classification stalls progress in critical negotiations, as newly high-income countries resist being reclassified as developed, and historically developed countries are reluctant to increase their contributions unless all high-income countries do so \citep{earth_negotiations_bulletin_summary_2024,schalatek_decision_2024,eu_council_conclusions_2024}. % This also an option but it's langue de bois: https://unfccc.int/sites/default/files/resource/G77_and_China_Submission_NCQG.pdf
+
+While high-income countries are obligated to provide resources to foster climate action in lower-income countries, the determination of required transfers would be more appropriately based on up-to-date, continuous indicators such as GNI per capita, rather than an outdated binary classification. A simple yet fair rule would be that a country's contributions should be made in proportion to GNI and entitlements in proportion to population \citep{fabre_global_2025}. % TODO ref to Paper I; ref to Ecol Eco
+
+In contrast, the UNFCCC only refers to the vague principle that protecting the climate should be based on ``Common But Differentiated Responsibilities'' (CBDR). As the key issue of the burden-sharing rule was left unresolved by the CBDR principle and its various possible interpretations, countries have not been able to agree on binding targets for emission reductions and financial transfers between countries. Consequently, NDCs are collectively insufficient, projecting 2.6~\textdegree{}C of warming according to \href{https://climateactiontracker.org/}{Climate Action Tracker}. Meeting the 2~\textdegree{}C target with 67\% probability requires global emissions to drop to 41~GtCO$_\text{2}$e by 2030 \citep{den_elzen_updated_2022}, far below the 51~Gt projected under current NDCs.
+
+% revision: put back
+% \subsection{Common But Differentiated Responsibilities\label{subsubsec:cbdr}} 
+% In its Article 1, the UNFCCC codifies what is now known as the \textit{CBDR} principle: ``Parties should protect the climate system (...) on the basis of equity and in accordance with their common but differentiated responsibilities and respective capabilities.'' This article is commendable in its objective to guide the allocation of climate action burden and reconcile different burden-sharing principles. %: common action, equity, historical responsibility, and ability to pay. 
+% Unfortunately, the CBDR principle offers only vague and inconsistent guidance. %For example, does equity refer to equal per capita emissions rights or to something else, such as equal cost share of emission reductions or equal access to development? % revision: put back
+% How should policymakers balance rules that result in divergent allocations of emissions rights, such as common action, equal per capita entitlements, historical responsibilities, and ability to pay? As the key issue of the burden-sharing rule was left unresolved by the CBDR principle and its various possible interpretations, countries have not been able to agree on binding targets for emission reductions and financial transfers between countries. 
+
+% \subsection{Nationally Determined Contributions\label{subsubsec:ndc}} 
+
+% This absence of consensus on burden-sharing led to the system of Nationally Determined Contributions (NDCs), whereby each country sets its own targets. Currently, countries are not sanctioned for missing their targets. Furthermore, they do not have to define their targets using a common indicator (e.g., future cumulative emissions). As NDCs rarely specify a cumulative emissions target, researchers need to formulate hypotheses to assess whether NDCs are jointly consistent with the universally agreed temperature target.\footnote{Note that the temperature target is itself vague. Article 2 of the Paris Agreement aims at ``holding the increase in the global average temperature to well below 2~\textdegree{}C above pre-industrial levels and pursuing efforts to limit the temperature increase to 1.5~\textdegree{}C above pre-industrial levels.'' Yet, given the uncertainty inherent in the climate system, this (double) target is not precisely defined: does it imply an 83\%, 67\%, or 50\% chance to limit global warming to 2~\textdegree{}C? Each probability is associated with a different carbon budget -- respectively 900, 1,150, and 1,350~GtCO$_\text{2}$ from 2020, according to the IPCC (AR6, WGI, p. 39).} 
+% Even under the most optimistic hypotheses, NDCs are insufficient to meet the temperature target. If all countries respect their NDCs, global GHG emissions are projected to be 51~GtCO$_\text{2}$e in 2030, while 41~Gt would be needed to meet the 2~\textdegree{}C target with 67\% probability \citep{den_elzen_updated_2022}. According to \href{https://climateactiontracker.org/}{Climate Action Tracker}, current policies and actions correspond to a global warming of +2.6~\textdegree{}C by 2100, with warming potentially continuing beyond that date.
+
+\subsection{Climate finance\label{subsubsec:finance}}
+
+Substantial international transfers are required to achieve the Paris temperature target under a fair allocation of %corresponding to 
+the remaining carbon budget. % would entail. 
+% ... can help shed light on the magnitude of North-to-South transfers that . 
+An equal per capita allocation of emissions rights %of emissions rights corresponding to the remaining carbon budget 
+would entail transfers 
+from high to low emitters of \$1.5~trillion in 2035 and of over \$1~trillion annually until 2060.\footnote{I computed these figures using the model NICE under a 1.8\textdegree{}C scenario.} % new
+% of 0.4\% of global GDP from high to low emitters (on average between 2030 and 2080). North-to-South transfers would amount to approximately \$1.5~trillion in 2035 and would exceed \$1~trillion annually until 2060.\footnote{I computed these figures using the model NICE under a 1.8\textdegree{}C scenario.} % NICE, FFU-SU.R TODO! update % revision: put back
+Taking historical responsibility for emissions into account, an equal per capita allocation of cumulative (past and future) emissions rights would entail even larger transfers; the ``carbon debt'' that the North owes to the South is estimated at \$26 to \$192 trillion \citep{fabre_global_2024,fanning_compensation_2023}. 
+
+At COP29, the international community reached a compromise on the New Collective Quantified Goal (NCQG). Developed countries committed to mobilizing \$300 billion per year by 2035 for climate action in developing countries. 
+% Moreover, Parties to the UNFCCC ``call on all actors'' to mobilize \$1.3 trillion, which would be in line with experts' recommendations \citep{unfccc_new_2024,songwe_raising_2024}. The quantum of \$300 billion represents a tripling of the previous climate finance goal. % revision: put back
+However, 
+the NCQG % new
+%it % revision: put back
+can be reached through loans (including from the private sector), and does not specify what share should be provided as grants (or grant-equivalent concessional loans). In fact, the current goal of \$100 billion is met with only \$26 billion provided as grants \citep{oecd_climate_2024}. 
+% In theory, the NCQG could be met with the same amount of grants (i.e. North-to-South transfers), or even less. % revision: put back
+
+In contrast, at COP29, 
+India called for at least \$600 billion in the form of grants and equivalent resources 
+% ``India specified that the NCQG should mobilize \$1.3 trillion, of which at least \$600 billion should come in the form of grants and equivalent resources'' % revision: put back
+\citep{earth_negotiations_bulletin_daily_2024}. 
+% The Indian representative, voicing Global South concerns, \href{https://www.climatechangenews.com/2024/11/25/india-fires-warning-shot-with-rejection-of-finance-deal-at-cop29/}{stated}: ``We are disappointed in the outcome which clearly brings out the unwillingness of the developed country parties to fulfill their responsibilities. We cannot accept it.'' % https://www.youtube.com/watch?v=srS74r4tOJw % revision: put back
+% Transfers aligned with the Global South's demands would enable enormous progress towards the Sustainable Development Goals, including climate action, but also the deployment of public services and poverty reduction programs. Conversely, an insufficient provision of climate finance not only infringes on climate justice but also jeopardizes decarbonization in the Global South, as many countries condition their NDC on the adequate provision of climate finance. % revision: put back
+Global South countries stress that an insufficient provision of climate finance jeopardizes their decarbonization, since many of them condition their NDC on the adequate provision of climate finance. % new
+
+Together with increased North-to-South transfers, reforms to the international financial system are needed to reorient resources towards climate action,
+such as % new
+% . These reforms are multifaceted and are more likely to be accepted by governments in the Global North than direct transfers, since they rely on largely painless, growth-enhancing accounting operations. The government of Barbados (with the support of the UN Secretary-General) leads the movement in favor of these reforms. Their ``Bridgetown Initiative'' calls for % revision: put back
+debt relief for low-income countries, a new issuance of at least \$650 billion in Special Drawing Rights by the IMF to expand loans of Multilateral Development Banks (MDBs) to at least \$500 billion per year, and public guarantees to lower interest rates on sustainable projects in the Global South \citep{bridgetown_initiative_bridgetown_2025}. 
+% Note that although the Bridgetown Initiative is best known for its climate finance proposals, it also calls for other reforms, such as a universal carbon price and international taxes on the super-rich to finance global public goods. % revision: put back
+
+While scaling up climate finance is crucial, it is not sufficient to decarbonize the world, as it does not cap (or directly reduce) emissions. In the worst-case scenario, the expansion of low-emission projects would merely add low-carbon infrastructures on top of fossil ones, failing to meaningfully reduce emissions.
+
+\subsection{Just Energy Transition Partnerships\label{subsubsec:jetp}}
+
+% The last pieces of the climate regime worth mentioning are the 
+Just Energy Transition Partnerships (JETPs) %. JETPs 
+are agreements where a developing country essentially commits to emission reductions through the deployment of renewable energy in exchange for concessional terms on the required loans provided by a group of developed countries. Four JETPs have been signed to date, involving Indonesia, Vietnam, South Africa, and Senegal,
+with \$2 to \$20 billion in pledged loans % new
+\citep{ha-duong_just_2023}. 
+% In existing JETPs, the groups of developed countries pledged to offer loans ranging from \$2.5 billion (for Senegal) to \$20 billion (for Indonesia). % revision: put back
+
+While JETPs offer a promising way to deliver climate finance that guarantees emission reductions, they currently suffer from several shortcomings. First, their coverage is limited regarding sectors and countries. To improve sectoral coverage and efficiency of JETPs, researchers have proposed designing them as financial transfers in exchange for a national carbon price \citep{steckel_climate_2017}. Second, as they focus on emission reductions rather than sustainable development, JETPs do not contribute to poverty reduction. This concern could be mitigated by designing JETPs with a higher reliance on grants \citep{bolton_why_2025}. However, increasing the provision of grants is challenging absent a dedicated source of revenue (such as an international tax).
+% cite those who say they should be grant based and those who say they should involve pricing/regulations
+Lastly, even if JETPs were improved accordingly, they would still fail to guarantee that the decarbonization of major emitters like China or the European Union is consistent with necessary global efforts. 
+
+\subsection{Internationally Transferred Mitigation Outcomes\label{subsubsec:itmo}} 
+
+Article 6.2 of the Paris Agreement allows Parties to exchange Internationally Transferred Mitigation Outcomes (ITMOs). This enables a country to nominally reduce its emissions (for the purpose of NDC assessment) %(the emissions as counted to assess its NDC) 
+by purchasing verified emission reductions from another country. %The latter country will then be credited with the buyer's ITMO emissions. 
+% The buyer's ITMOs will then be counted as emissions of the seller country. 
+The purchased ITMOs are then added to the emissions account of the seller country through a corresponding adjustment.
+
+As any bilateral agreement on ITMO is permitted, the use of ITMOs risks reducing buyers' domestic decarbonization efforts. % Take Switzerland's purchase of ITMOs from Thailand: if they meet their target, these two countries will jointly reach 5.5~tCO$_\text{2}$e per capita in 2030, more than the global level of 4.5~tCO$_\text{2}$e that would be in line with the 2\textdegree{}C target. This observation alone is insufficient to state that these two countries lack climate ambition: for example, if Switzerland and Thailand had the same NDCs but other countries had more ambitious ones, such that the world total is in line with the temperature target, 
+Indeed, to the extent that the NDCs do not add up to the global emission reduction objective, there will be some ``ambition gap'': % (i.e. 
+% excess emission rights): 
+ITMOs will not reflect the required mitigation constraint, and their price will be too low. As a result, ITMOs may propagate a global lack of ambition to countries with otherwise ambitious NDCs, offering a cheap (and less effective) alternative to domestic decarbonization. 
+
+To illustrate this, consider a fictive example with two world regions, Rich and Poor. %, each containing half of the global population. 
+Assume the global carbon budget is 1,000~Gt and that in a business-as-usual scenario without climate action, both regions would emit 750~Gt. Imagine that region Rich sets an ambitious NDC of 500~Gt, while Poor sets a low ambition NDC of 1,000~Gt. In the absence of international carbon trading, region Rich would be expected to emit 500~Gt (in line with its NDC) and region Poor to emit 750~Gt (as no climate action is required to fulfill its NDC). In this example, region Poor may be willing to sell 250~Gt of ITMOs to region Rich at a very low price. Region Rich could then meet its NDCs while emitting 750~Gt, resulting in global emissions of 1,500~Gt, higher than the 1,250~Gt that would have occurred without ITMOs.
+% To the extent that the sum of NDCs' mitigation efforts falls short of the global target, the price of ITMOs will be too low. 
+% In other words, the lack of ambition of some countries' NDCs can propagate to other countries through the sale of ITMOs. 
+
+According to Climate Action Tracker, the sum of current NDCs would lead to global warming of around 2.6\textdegree{}C, far above the Paris target of ``well below 2\textdegree{}C.'' In such a context, international carbon trading risks becoming a vehicle for exporting low ambition rather than reinforcing collective effort. Buyers will find it more attractive to purchase credits abroad than to accelerate the domestic transformation of their economies. In short, unregulated ITMOs can result in ``emissions dumping''.
+
+This dynamic is already apparent. % in large economies. 
+The European Union now allows the use of international credits toward its 2040 climate target. More precisely, up to 5\% of 1990-level emissions could be offset through ITMOs \citep{european_parliament_framework_2025}. 
+Since the European Commission aims to cut EU emissions by 90\% by 2040, relying on ITMOs could enable the EU to emit 50\% above its 2040 domestic goal through purchasing emission reductions abroad. Likewise, Japan plans to emit up to 53\% above its goal in 2040 \citep{japan_japans_2025}. Switzerland has already purchased ITMOs from Thailand and Ghana and may rely on ITMOs for over 50\% of its 2035 goal. Adding intended purchases from South Korea, Norway, and Singapore, the market for ITMOs could reach 500~MtCO$_\text{2}$ per year by 2040. % TODO? cite?
+% Japan: 100 Mt out of 760 Mt (+13%) in 2030, 200Mt out of 380 (+53%) in 2040 \citep{japan_japans_2025}
+% EU: 250 Mt out of 500 Mt in 2040 (+50%) 
+% CH: 11-14Mt out of 19Mt in 2035 (+58-74%) - has already bought from Ghana, Thai: goal of -65% "primarily" through domestic action
+% Singapore: 2.5 out of 60 in 2030
+% Korea: +9%=39Mt in 2030
+% UK stated they won't use it
+% Australia, Canada, US or US state: maybe later, no plan yet
+
+Meanwhile, China pledges to reduce emissions by 7--10\% from their peak by 2035 \citep{china_chinas_2025}. 
+Yet, a reduction of around 20\% would be needed to align with a 2\textdegree{}C scenario \citep{he_towards_2022}. % TODO update
+If China or other countries were to sell ITMOs based on such unambitious trajectories, buyers would acquire credits that do not represent genuine progress toward the Paris goal.
+
+To prevent ITMOs from weakening domestic action, countries that use them should commit to extra rules that go beyond merely verifying the environmental integrity of the credits. %I discuss such rules in the next section. % \ref{sec:itmo}. % revision: put back
+% I. current model: NDCs (pb: don't sum up to carbon budget, no common burden-sharing norm), ITMO (pb: hot air), JETPs (pb: limited coverage, even if expanded wouldn't guarantee big emitters like China or EU decarbonize, absence of funding mechanism, don't address poverty); Bridgetown (necessary but insufficient as doesn't cap emissions)
+
+% \subsection{Objectives for a truly sustainable regime\label{subsec:objectives}}
+
+% Now that we have a critical understanding of the current international climate regime, let us sketch the properties we desire for a new (or improved) regime. We will then be able to assess different proposals in light of these objectives. Here they are:
+% \begin{itemize}
+%   \item \bo{Temperature}. An effective climate regime should achieve the Paris Agreement's temperature target. It should do so by a stabilization of the concentration of each GHG in the atmosphere and abstain from the risky bets of climate engineering such as Solar Radiation Management. This objective would translate into a \textbf{global carbon budget}. For example, the carbon budget could be set at 1,000~GtCO$_\text{2}$ starting in 2025, which corresponds to most likely warming of +1.8\textdegree{}C and a 67\% chance to keep global warming below +2\textdegree{}C. 
+%   \item \bo{SDGs}. A holistic approach requires solving all humanity's greatest challenges, not just climate change. As argued above, justice requires sufficient \textbf{North-to-South transfers} to fund sustainable development (not just climate action). Even though the Sustainable Development Goals (SDGs) and the planetary boundaries would require additional policies and transfers, one important feature of the climate regime is how much climate finance it delivers in the form of transfers to the poorest and improved market conditions. This can be measured through SDGs indicators or the catch-up of GDP per capita in low- and lower-middle-income countries.
+%   \item \bo{Efficiency}. As stated by the \cite{unfccc_united_1992-1} ``measures to deal with climate change should be cost-effective so as to ensure global benefits at the lowest possible cost.'' Economists have argued that ensuring cost-effectiveness require an \textbf{economy-wide carbon price, uniform} across sectors and countries. This fundamentally results from the fact the social cost of emissions is independent from their source or location, therefore emissions should be priced uniformly. %Efficiency can then be measured by the dispersion of (implicit) carbon prices across countries and sectors. 
+%   Note that this argument in favor of carbon pricing does not preclude other, complementary policies: these have also been shown to be optimal by economic analysis \citep{stiglitz_addressing_2019}.
+%   \item \bo{Acceptability}. A viable proposal is one that has good chances to be accepted by most countries. To measure the success of a proposal, we can use the share of global emissions that are covered by participating jurisdictions. Different elements contribute to acceptability: 
+%   \begin{itemize}
+%     \item \textit{Progressivity at the top}. If costs are concentrated on the richest households, the regime can benefit the majority in each country while addressing %the excessive level of 
+%     inequality.
+%     \item \textit{No loss in middle-income countries}. Countries whose population is not rich should not lose from an international climate policy. To assess whether a country loses or not, we should compare its situation in the new regime compared to the status quo. If we synthesize a country's situation by the carbon budget it is granted, a country would lose if its carbon budget is lower than their unconditional NDC completed by the ambitious emissions trajectory that the country currently envisions. % ? by the long-term strategy % add? This challenges the blunt application of the equal per capita allocation of emissions rights, as it would entail transfers from countries with a carbon footprint greater than the world average to countries with a footprint lower than the average. Yet, some middle-income countries such as China, Iran, or South Africa, have a carbon footprint greater than the world average. 
+%     \item \textit{Win-win}. While (per the SDG objective) transfers would be required from high-income countries, this does not necessarily mean that these countries' population would lose out. First, because (as stated above), redistributive policies can concentrate the costs on the richest households in their country. Second, everyone would benefit from a stabilized climate and from a world where SDGs are met. For example, sustainable development would spur global demand, including for advanced technology and low-carbon exports from industrialized economies. Third, while transfers imply a loss compared to the situation with the same worldwide decarbonization efforts and without international transfers, the latter situation is untenable (as transfers are necessary to promote decarbonization in the Global South). As proposed above, the situation that should be used as a point of comparison is the status quo where the country's carbon budget corresponds to its unilaterally planned emissions trajectory and where there is no international trade in emissions allowances. \textbf{To the extent that transfers are the counterpart of the purchase of emissions allowances, a new climate regime could be a \textit{win-win} for all participating countries, as they would all reap the efficiency gains} of an optimal location of emission reductions.
+%   \end{itemize}
+% \end{itemize}
+% % objectives: SDGs (=> transfers / climate finance), 2°C, efficiency (say it's in UNFCCC 92, => uniform price), acceptability (=> concentrate costs on richest, coalition of willing, win win thx to efficiency, LMIC not losing (compared to carbon budget corresponding to their unconditional ambitious scenario)), incentives to expand (remove?)
+
+% \paragraph{Coalition of the willing.} International negotiations have shown that it is illusory to seek universal agreement for an ambitious agreement. Therefore, political realism requires pushing for proposals that do not get accepted by all countries, and thus, that may also fail to deliver on the climate target, as countries outside the coalition would not fulfill their part of the temperature objective. If oil exporting countries, representing 25\% of current emissions, do not join the coalition, temperature in 2100 would be about 0.3\textdegree{}C higher than with a universal participation to decarbonization efforts. While this outcome would be a partial renouncement to some objectives (full acceptability, strict temperature target), %it is a viable agreement that would unblock a) large global improvements b) large geins for those that take part in it.
+% it is probably the only type of outcomes that is accessible given the political balance of power.
+
+
+\section{Aligning Carbon Trading with the Paris Target}\label{sec:itmo} % revision: put back Temperature
+
+The present section reviews existing proposals to regulate ITMOs and considers new ones. %In Section \ref{subsec:existing}, I discuss proposals by \cite{michaelowa_additionality_2019} and \cite{la_hoz_theuer_when_2019}. In Section \ref{subsec:desirable}, I propose other desirable paths to regulate ITMOs based on a national assessment of a country's NDC and emissions, with increasing degrees of stringency. In Section \ref{subsec:limitations}, I expose the limitations of restricting the use of ITMOs based on \textit{national} assessments of NDCs. In Sections \ref{subsec:itmo_proposal} and \ref{subsec:itmo}, I make the case for a joint definition of NDCs and describe how this could be implemented by a coalition of the willing. In Section \ref{subsec:feasibility}, I argue that the last proposal is feasible. 
+All proposed analyzed in this section are summarized in Table \ref{tab:proposals}.
+
+\subsection{Existing proposals\label{subsec:existing}}
+% Michaelowa under BAU
+\cite{michaelowa_additionality_2019} propose verifying that ITMOs are additional, meaning they correspond to emission reductions relative to a counterfactual scenario without such ITMOs. The authors suggest a two-step procedure wherein a new ``Article 6 Supervisory Board'' would first check whether the seller's NDC is more ambitious than the business-as-usual (BAU) trend. If so, the second step would be unnecessary. Otherwise, the seller's unambitious NDC generates ``hot air'', requiring ITMO to be tested at the project level. In this second step, the additionality of each specific activity financed by the ITMO would be assessed individually. 
+% \cite{michaelowa_additionality_2019} propose to check that ITMOs are additional, in the sense that they correspond to emission reductions compared to a counterfactual scenario without said ITMOs. %The authors propose a two-step procedure. 
+% A new ``Article 6 Supervisory Board'' would first check whether the seller's NDC is more ambitious than the business-as-usual trend (BAU). If this is not
+% the case, 
+% %the second step is not required. Otherwise, the seller's unambitious NDC 
+% % is not ambitious enough, it 
+% generates ``hot air'' and the ITMO needs to be tested at the project level, with %. In this second step, 
+% the additionality of each specific activity financed by the ITMO %would be 
+% assessed individually. 
+
+% La Hoz quantity limit
+\cite{la_hoz_theuer_when_2019} discuss restricting ITMOs to emission reductions below the BAU. They compute BAU emissions for a range of countries using four potential definitions for the BAU: extending past emissions levels, extending emission intensity, or projecting their respective historical trend. They show that none of these definitions is satisfactory, as each would still generate \textit{hot air} for some countries where the BAU exceeds emissions as projected by Climate Action Tracker. The authors propose instead to limit the quantity of ITMOs that a country can sell to a fixed share of its emissions (e.g. 1\% or 5\%). They acknowledge that quantity limits would still allow some hot air but argue that such limits can be calibrated to strike a balance between reducing hot air and exploiting the gains from % (carbon credit)
+trade. % argue that the amount of hot air transferred would be limited. 
+
+% Likewise, \cite{la_hoz_theuer_when_2019} 
+% propose to limit the use of ITMOs to emission reductions beyond the BAU. However, they go one step further by discussing how to estimate the BAU. The BAU is computed either using past years' emissions or emission intensity, or their respective trend. 
+
+% both done at national BAU
+While \cite{la_hoz_theuer_when_2019} show that simple definitions of the BAU are ill-suited for regulating ITMOs, \cite{michaelowa_additionality_2019} propose delegating the determination of the BAU to independent experts so that NDC ambition can be accurately assessed.\footnote{Expert projections of BAU emissions already exist, see e.g. \cite{den_elzen_impact_2023,den_elzen_infographics_2024}.} In both papers, the authors agree that an NDC can be assessed at the national level, by comparing it to the country's projected emissions, and that ITMOs should be allowed whenever the NDC is more ambitious than properly projected emissions. 
+% TODO? cite Michaelowa 22 & Paris Agreement Crediting Mechanism? rather not, it's about 6.4
+
+\subsection{Desirable paths to regulate carbon trading\label{subsec:desirable}}
+
+% In absence of a coalition agreeing on a common norm, 
+Principled % virtuous
+buyers of ITMOs could also employ other national criteria to assess the adequacy of a seller's NDC. Here are different original proposals, ordered by degree of stringency.
+
+\paragraph{A necessary precondition: harmonized NDCs.} % Harmonized NDCs
+Currently, few constraints apply to the definition of NDCs. Countries independently choose their sectoral and gas coverage, the methods for converting different gases into CO$_\text{2}$-equivalent, and whether to use an absolute or carbon intensity target, etc. As a result, NDCs are not harmonized. Researchers must make assumptions (e.g. on GDP growth or LULUCF emissions) to express them using a comparable metric, and estimates of NDC targets vary significantly across research teams.\footnote{Estimates of emissions implied by NDC targets are provided by \href{https://climateactiontracker.org/}{Climate Action Tracker}, \href{https://www.climateandforests-undp.org/plant}{UNDP}, \href{https://1p5ndc-pathways.climateanalytics.org/}{Climate Analytics}, \href{https://www.climate-resource.com/tools/ndcs}{Climate Resource}, \href{https://zenodo.org/records/10875617}{PBL}, \href{https://www.climatewatchdata.org/}{Climate Watch}, \cite{nascimento_comparing_2024,den_elzen_updated_2022}.} % cite https://www.climateandforests-undp.org/plant https://www.climate-resource.com/tools/ndcs https://zenodo.org/records/10875617 https://www.climatewatchdata.org/ https://climateactiontracker.org/ https://1p5ndc-pathways.climateanalytics.org/ Nascimento 24
+
+A necessary precondition to assessing NDCs is the strengthening of reporting requirement. NDCs should cover all Kyoto gases and be expressed in absolute terms using harmonized conversion factors between gases (namely GWP100, the most up-to-date being from the IPCC AR6). Furthermore, they should encompass all sectors---broken down individually, or at least separating LULUCF from non-LULUCF emissions. Ideally, NDCs should also specify a country's future cumulative emissions, its planned emission trajectory, and the intended use of ITMOs. These enhanced reporting requirements would allow for the proper assessment of NDCs and enable conditioning the use of ITMOs on the achievement and adequacy of NDCs. 
+
+\paragraph{A sine qua non condition: no ITMOs from failed NDCs.} % no ITMO from failed NDC
+As a minimal requirement, countries should be allowed to sell ITMOs only up to the amount by which their emissions fall below their NDC targets. Consequently, buyers should refrain from purchasing ITMOs from a country that is failing to meet its NDC target. %Failures to achieve one's NDC would extend to countries that would have increased their emission target 
+This principle should also apply to countries that have weakened their emission targets (instead of ratcheting up ambition), resulting in emissions higher than planned under a previous target.\footnote{Angola provides an example of a country that effectively decreased its ambition in an updated NDC, 
+% new
+by revising upwards (by a factor two) its BAU emissions.}
+% Its first NDC defined a 2030 business-as-usual (BAU) level of 111 MtCO$_\text{2}$eq. Later, ``improved national inventories, more robust methodologies and enhanced transparency mechanisms'' led to a revised BAU estimate of 226 MtCO$_\text{2}$eq, roughly double the original figure. This recalculation allows the country to claim higher absolute emission reductions while committing to a lower mitigation rate, ultimately resulting in higher projected emissions for 2030 or 2035. According to the first unconditional NDC, 2030 emissions would have been 88 MtCO$_\text{2}$eq. By contrast, assuming a linear trajectory from the 2035 target in the latest NDC back to 2020, the implied 2030 level rises to 202 MtCO$_\text{2}$eq.} % revision: put back
+
+\paragraph{Principled buyers: no ITMOs from unambitious NDCs.} %  no ITMO for NDC > cost-optimal/equal pc
+Furthermore, to strengthen the additionality requirement proposed by \cite{michaelowa_additionality_2019}, % could be replaced by a more stringent one, where the seller's NDC would be compared to an emission level compatible with the Paris target rather than the BAU. 
+% buyers could commit not to buy ITMOs from countries 
+principled buyers should refuse to buy ITMOs from a country whose NDC target is above the BAU or evidently incompatible with the Paris target, even when it is below the BAU. 
+% In absence of a common norm to disaggregate the Paris target at the country level, 
+Such incompatibility could be safely assumed when a country's NDC target exceeds both its cost-optimal emissions required to limit global warming to 2\textdegree{}C and its equal per capita share of global emissions under that 2\textdegree{}C scenario. Indeed, no credible burden-sharing rule could then justify the NDC's adequacy with the Paris temperature target. % Countries affected by this additional requirement are large emitters setting unambitious NDC targets, such as China. % check if this is the case of Thailand => NICE global C&S 2°C, 1.5°C. 284/422=67% 2024-THA emissions excl. LULUCF are fossil CO2 according to EDGAR; according to Thailand: 163/278=59% of CO2 over GHG (271 non-LULUCF CO2, 163 CO2 incl. LULUCF, 386 GHG excl. LULUCF, 278 incl. LULUCF) https://unfccc.int/sites/default/files/resource/THAILAND%E2%80%99S%20BTR1.pdf; 
+% /!\ according to EDGAR LULUCF emissions are +47 vs. -108 according to Thailand! https://edgar.jrc.ec.europa.eu/report_2025
+% CH-THA agreement: up to 500 Mt ITMOs over 2022-30 (only 1.9 sold so far; the price was not disclosed; just that it was >$30) https://ercst.org/wp-content/uploads/2023/09/Supanut_session-Current-State_Thailand.pdf
+% THA NDC GHG iL 2030: 223 (conditional) - 278.5 (unconditional); 2035: 152
+% THA 2030 pop share: 0.801%. NICE _2c (CO2 iL) equal pc pop share 2031/35: 164 Mt; cost-optimal: 184 (but total CO2 just 20 Gt). Equal pc (GHG iL) NDC implies 28 (conditional) - 35 Gt of world emissions in 2030, 19 Gt in 2035, which is in line with 2°C
+% /!\ According to NICE, THA-2020 CO2iL is ~300 Mt. Equal pc 2020: 288 Mt
+% PB: NICE is bad to compute cost-optimal in the case of Thailand 'cause it doesn't model LULUCF and non-CO2 => cost-optimal 2030 GHG iL of 350-376 (320-385 in 2035); CO2 iL of 265-285 according to Sferra et al. https://zenodo.org/records/8135211
+% In terms of equal pc, Thailand's emissions/NDCs are below world average
+Given that there are multiple ways to define a cost-optimal 2\textdegree{}C scenario (as the carbon budget depends on the probability of achieving the 2\textdegree{}C target, while the trajectory depends on the model used), simple substitutes could be employed instead. In particular, buyers could refuse to acquire ITMOs from countries with per capita emissions or GDP above the world average (subject, perhaps, to an exception if their historical and target emissions are compatible with a 1.5\textdegree{}C scenario).
+
+% more examples of bilateral agreements https://unepccc.org/article-6-pipeline/
+The first exchange of ITMO that has been finalized was between Thailand and Switzerland. %\footnote{More specifically, while 104 bilateral agreements between 64 countries are in the \href{https://unepccc.org/article-6-pipeline/}{pipeline}, the one between Thailand and Switzerland is the only one which has been finalized, leading to a corresponding adjustment.} 
+Thailand appears to meet all aforementioned criteria, suggesting that Switzerland could be considered a principled buyer. However, until the sum of all countries' NDCs aligns with the Paris target, the price of ITMOs might be too low. In other words, the above requirements are necessary but not sufficient conditions to close the ambition gap. % hotair
+
+\paragraph{Adequate climate finance unlocking conditional NDCs.} % {Sellers' conditions
+While these requirements would reduce the amount of hot air, they would exclude from the trade of ITMOs low-emitting countries that set their NDC target above the BAU,\footnote{For example, \cite{van_den_berg_implications_2020} conclude that India has set its 2030 NDC above the BAU. % (note that the BAU trajectory was computed by the authors; India's NDC does not specify a BAU). % revision: put back
+} 
+at (what they consider to be) their fair share. These potential sellers of ITMOs could join forces and use their market power to negotiate guarantees of grant-based climate finance at scale. In particular, these countries could commit to setting their NDC target below the BAU (and selling ITMOs) in exchange for a commitment from buyers to fairly allocate taxing rights of new international levies, or to finance JETPs or debt relief. 
+
+There is another way sellers would incentivize principled buyers to provide sufficient climate finance. Until now, I conflated conditional and unconditional NDC targets. Yet, Global South countries often include both types of target: the conditional target sets more stringent emission reductions than the unconditional one, but applies only at the condition that the country receives a specified amount of climate finance from developed countries. Let me call \textit{unidirectional climate finance} all climate finance flows that do not rely on ITMOs. When assessing a country's NDC (to determine whether ITMOs can be purchased from that country), the conditional NDC target should replace the unconditional target in the adequacy assessment %of the NDC when the 
+once the country's conditions (in terms of climate finance) are met, counting only unidirectional climate finance. Therefore, if a country sets its unconditional target above the BAU and its conditional target below the BAU, principled buyers would have to provide climate finance to that country in order to purchase ITMOs from it, otherwise the seller's NDC would not be ambitious enough.
+
+\subsection{Limitations of the previous options\label{subsec:limitations}}
+
+\paragraph{Issues with national assessments of NDCs.}
+% issues national BAU: effectiveness, fairness
+% Finally, two issues militate against the assessment of NDCs based on national BAUs, as proposed by \cite{michaelowa_additionality_2019}, \cite{la_hoz_theuer_when_2019}, and in the above paragraphs. 
+The aforementioned proposals %(including those by \citealp{michaelowa_additionality_2019,la_hoz_theuer_when_2019}) TODO?
+rely on assessing NDCs against national BAUs. However, this approach raises two issues. 
+% However, one can criticize the assessment of NDCs based on national BAUs for two reasons. 
+First, even if a country's NDC target is set below its BAU, to the extent that NDCs do not align with the Paris temperature target when aggregated at the global level, the ambition gap will persist. % hotair
+Consequently, both the demand for ITMOs and their price will remain too low. Second, given that %their complaint regarding the low 
+grant-based climate finance falls short of their demands, Global South countries could legitimately set up unconditional NDC emission targets above their BAU emissions to use extra emission space to sell ITMOs. Actually, insofar as NDC targets represent how countries should share the burden of emission reductions, low-income countries already claim less than their fair share of emissions.\footnote{Based on my own estimates, the 2030 NDC targets of Global South countries (excluding China) total 13.5~GtCO$_\text{2}$, that is 2.8tCO$_\text{2}$ per capita, which is below equal per capita emissions aligned with the Paris target.} % https://docs.google.com/spreadsheets/d/1ZQyD56JTX91pUu2YN1x_fCNC56StnMkWOLYU4XjSdKA/edit?gid=246938622#gid=246938622
+Therefore, the ratcheting up of ambition should arguably be borne by industrialized countries. For these reasons, assessing an NDC against the national (or project-based) BAU is neither a fair nor effective way to close the ambition gap. % prevent warm air. 
+
+% world only level to assess NDCs
+A rule restricting the sale of ITMOs to cases where the NDC target is below the BAU would be satisfactory only at a global scale or within a large coalition, since this is the scale at which there is consensus that the BAU is inadequate.
+Conversely, at the national level, some countries may have already implemented stringent climate policies % adapted their economy 
+such that their BAU emissions are ambitious enough, while others would legitimately set an NDC target above their BAU since they deserve to sell ITMOs. In both cases, a national comparison of the NDC to the BAU would be inappropriate. 
+
+%oExisting proposals
+%  - Michaelowa 19
+%  - Criticize it for lack of fairness (either allowing higher NDCs or guaranteeing climate finance for LDCs). ITMOs don't weaken buyers' ambition: 
+% TO DO? add: they should set (NDC buyers + ITMO) + BAU seller > NDC buyers + NDC sellr (i.e. seller set their NDC < BAU + ITMO they sell; with a group of buyers agreeing to buy their ITMOs thereby validating they are not inflating ITMO => still nothing guaranteeing buyers+sellers to be ambitious enough) => more stringent that Michaelowa et al 2019. who allows checking ITMO at project level if our condition is not met (we refuse as the implied ITMO price would be too low and seller is illegitimate to sell ITMOs); NDC > BAU allowed for fairness reasons; can later evolve into market linkages. 
+
+% fair alignment solved if common burden-sharing
+The key problem with ITMOs is that the \textit{global} emissions implied by current NDCs (or current trends) do not align with the Paris temperature target. 
+% Some individual countries might already have adapted their economy to that their BAU emissions and their NDC are ambitious enough. 
+Meanwhile, given the disagreement over what constitutes a fair share of the global carbon budget, countries cannot agree on whether a given NDC complies with the Paris target or %whether it 
+claims an excessive carbon budget. However, if a critical mass of countries agreed on a common norm, such as a burden-sharing principle or on a decision rule to assess whether the global carbon budget is fairly shared, then the two issues of effectiveness % ambition  %identified in the previous paragraph 
+and fairness could be resolved. 
+
+\paragraph{Limitations of restrictions to the use of ITMOs.}
+% Mehling trade-off, arbitrary cutoff, institution 
+As \cite{mehling_governing_2019} explain, restricting the use of ITMOs involves a trade-off between limiting hot air and exploiting gains from trade. Furthermore, the restrictions discussed above present additional limitations. They rely on arbitrary cutoffs, which create undesirable discontinuities in the ability to sell ITMOs. Additionally, they do not provide an institution for states to negotiate %in order to reach 
+common ground regarding overall ambition or the scale of climate finance. 
+% TODO? put back below?
+% Yet, conflicting goals must be resolved. For example, while some desirable goals imply more stringent NDC targets (to raise ambition by %making the world's (or a coalition of the willing's) 
+% lowering the sum of targets well below the BAU or even %raising the ambition to match the Paris target (so that the aggregate NDC is aligned 
+% aligning them 
+% with a 1.5\textdegree{}C scenario), other desirable goals call for less ambitious targets for countries with moderate emissions (such as an equal per capita entitlements to emissions in a 2\textdegree{}C scenario). 
+
+% coalition could set up norm
+A coalition of willing countries could %arbitrate between these conflicting goals and 
+establish precise norms for NDC adequacy and climate finance contributions. The adoption of such norms by a large group of countries would alleviate the need for restrictions on ITMO exchanges between them (beyond the sine qua non condition) and overcome the aforementioned limitations.
+
+
+\subsection{The case for a joint definition of NDCs}\label{subsec:itmo_proposal}
+
+% joint NDC, national targets
+A coalition of the willing could even go further and submit a joint NDC %, broken down into country-specific emission targets 
+(just as the European Union does). 
+The common norm would be used to verify that the joint NDC complies with the global target and thereby closes the ambition gap. % would be closed. %warm air would be prevented. % hotair
+This coalition could also allocate its aggregate NDC between countries in a way deemed acceptable and fair, potentially allowing certain countries to get a target higher than their BAU emissions. 
+
+\begin{table}
+  \caption{Proposals to strengthen ambition using ITMOs or NDCs. Restrictions based on national assessments of NDCs are denoted with \textit{Nat}, those based on BAU trajectory are denoted with \textit{BAU}. \label{tab:proposals}}
+  \makebox[\textwidth][c]{%
+\begin{tabular}[t]{P{5.9cm}P{.9cm}P{13.2cm}}
+  \toprule
+  Policy & Type & Description \\
+  \midrule 
+  \textbf{Harmonized NDCs} &  & NDCs should cover all sectors and GHGs, use an absolute target, and specify cumulative emissions. \\
+  \textbf{ITMOs should be additional} \citep{michaelowa_additionality_2019} & Nat, BAU & ITMOs should either be sold by a country whose NDC target is below the BAU, or their additionality verified at the project level. \\
+  \textbf{ITMOs should be limited} \citep{la_hoz_theuer_when_2019} & Nat & ITMOs should not exceed a fixed share (e.g. 1\% or 5\%) of the seller's emissions. \\
+  \textbf{No ITMOs from failed NDCs} & Nat & ITMOs sold should not exceed the difference between the NDC target and actual domestic emissions. \\
+  \textbf{No ITMOs from unambitious NDCs} & Nat, BAU & ITMOs should not be bought from a seller with unambitious NDC target, i.e. a target above the BAU or both above cost-optimal and equal per capita 2\textdegree{C} emissions. \\
+  \textbf{No ITMOs from rich or large emitter} & Nat & ITMOs should not be bought from a seller with per capita GDP or emissions above the world average. \\
+  \textbf{Ambitious NDC in exchange for adequate climate finance} &  & Potential sellers would set their (conditional) NDC target below the BAU in exchange for adequate climate finance. \\
+  \textbf{Conditional NDC prevailing in case of adequate climate finance} &  & The adequacy of a seller's NDC (to sell ITMOs) would be assessed using the conditional NDC target instead of the unconditional one iff the climate finance it receives matches the condition specified in its NDC. \\ %A seller's conditional NDC target would replace the unconditional one in national adequacy assessments iff climate finance conditions are met. \\
+  \textbf{ITMO coalition with a joint NDC} &  & A coalition of countries would submit a joint NDC aligned with the Paris target and exchange ITMOs only among themselves. The NDC would ideally specify a carbon budget and yearly national targets. \\
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+Ideally, the joint NDC would include a carbon budget aligned with the Paris target, broken down into yearly national targets. That way, the adequacy of emission trajectories could be verified jointly and country-by-country, 
+and the system could easily evolve into a fully-fledged compliance carbon market. 
+Alternatively, the joint NDC would define a minimum emission reduction rate, aligned with the Paris target. Initially, this rate could be expressed in terms of emission intensity, consistent with the practice of emerging economies. For example, the coalition's GHG emissions relative to output or final energy use%\footnote{Although emission intensity is usually defined relative to GDP, it may be more advisable to define it relative to final energy use, as emissions may decouple from GDP more easily than from energy use, and GDP indicators may be more susceptible to manipulation.} % revision: put back
+would need to decrease by 2\% each year. In the medium term, the reduction should be defined in absolute terms.
+
+%oThe case for a joint definition of NDCs
+%   - require a critical mass to set a burden-sharing norm or agreed procedure
+%   - a country-based assessment of NDC (as Michaelowa) fails fairness
+%   - only there can it make sense to have rules such as NDC < current policies, as specific countries can have stringent enough current policies or can legitimately sell ITMOs
+
+% tension setting norm as equal pc or cost-optimal
+The countries most likely to join such a coalition are those with moderate emissions. Therefore, there is a tension between setting the coalition's carbon budget based on a cost-optimal allocation of global emissions (favoring large emitters outside the coalition) or an egalitarian allocation (which might not sufficiently strengthen decarbonization ambition). 
+As a compromise, the coalition's carbon budget could be defined as an equal per capita share of a global carbon budget achieving 2\textdegree{}C with a 75\% probability.
+Examples of other definitions with similar levels of ambition include a cost-optimal share of a world carbon budget achieving 1.9\textdegree{}C with a 50\% probability, or an equal per capita share of a global carbon budget achieving 1.8\textdegree{}C with a 50\% probability.\footnote{According to the model NICE by \cite{young-brun_within-country_2025} and extrapolating from the \cite{ipcc_climate_2021}, for a climate coalition comprising China, the Global South, Europe, and Japan, these three carbon budgets would be close to 750~GtCO$_\text{2}$ over 2026--2100 (including LULUCF but excluding non-CO$_\text{2}$ gases).} % figures from other than NICE 2026-2100 2°C: 1349 Gt, 1.8°C: 855 Gt, 1.5°C: 183 Gt / Union (central) 2°C cost-optimal: 966 Gt / 1.8°C equal pc: 753 [= ~1.88° cost-optimal] => again, NICE not best suited as misses non-CO2. 
+% 1.8°C 50% ~ 2°C 75%
+Negotiations within the coalition would be essential to defining fair shares.  
+
+% \paragraph{The best case: a joint NDC submission.}
+% % joint NDC with minimum reduction rate => discard?
+% A coalition of the willing could submit a joint NDC (just as the European Union does for its member states). Ideally, the joint NDC would include a carbon budget aligned with the Paris target and broken down into yearly national targets. Alternatively, the joint NDC would define a minimum emission reduction rate, aligned with the Paris target. Initially, this rate could be expressed in terms of emission intensity, consistent with the practice of emerging economies. For example, the coalition's GHG emissions relative to final energy use would need to decrease by 2\% each year. In the medium term, the reduction should be defined in absolute terms.
+
+%oDesirable principles for carbon trading
+% From buyers' side
+% Minimal: don't buy ITMOs from country failing its target: NDC < emissions
+% Also minimal (and at country-level): In Michaelowa 19, add condition of not buying ITMOs from countries with NDC > max(cost-optimal 2°C, equal pc 2°C), or proxy: emissions p.c. > world average nor GDP pc > world average (unless historical emissions of seller 1.5°C compatible in latter case). + guarantee of climate finance (JETPs, new taxes...)
+% Even better: Must increase ambition: buyers won't buy ITMOs from countries with NDC > current policies and NDC > equal pc 1.8° (or fair 1.8°C e.g. ambitious scenario for China)
+% Jointly
+% Best (joint definition): Must be Paris-aligned: joint NDC < joint carbon budget, e.g. cost-optimal 2°C emissions and/or equal pc 1.5°C
+% Conflicting goals: Mehling trade-off; increase ambition (joint NDC < joint current policies) if not Paris-aligned (joint NDC < equal pc 1.5); fair (NDC = equal pc); realistic (at t=0, joint NDC = current emissions)
+% Avoid hard cutoffs/discontinuities; negotiate
+
+
+% 2.1
+% Michaelowa under BAU
+% La Hoz quantity limit
+% issues national BAU: effectiveness, fairness
+% 2.2
+% fair alignment solved if common burden-sharing
+% world only level to assess NDCs
+% 2.3 no ITMO from failed NDC; no ITMO for NDC > cost-optimal/equal pc; limitations: Mehling trade-off, arbitrary cutoff, institution 
+% coalition could set up norm
+% §
+% joint NDC with minimum reduction rate
+% tension setting norm as equal pc or cost-optimal
+% 2.4
+% joint NDC with gradually increasing ambition, aligned to 2°C
+% national target from focal point
+% new members; scientific council 
+% --->
+% 2.1
+% Michaelowa under BAU
+% La Hoz quantity limit
+% 2.3 no ITMO from failed NDC; no ITMO for NDC > cost-optimal/equal pc; 
+% limitations: Mehling trade-off, arbitrary cutoff, institution 
+% 2.2
+% fair alignment solved if common burden-sharing
+% world only level to assess NDCs
+% coalition could set up norm
+% tension setting norm as equal pc or cost-optimal
+% §
+% joint NDC with minimum reduction rate => discard?
+% 2.4
+% joint NDC with gradually increasing ambition, aligned to 2°C
+% national target from focal point
+% new members; scientific council 
+
+
+\subsection{A coalition for the use of ITMOs\label{subsec:itmo}}
+
+% joint NDC with gradually increasing ambition, aligned to 2°C
+Here is how negotiations could shape an agreement along the lines sketched above. A coalition of countries could agree to jointly define their NDCs and exchange ITMOs exclusively among themselves to ensure that their carbon trading does not undermine the ambition of the Paris Agreement. 
+Once a large coalition of countries agree on the broad vision, this coalition could be taken as given. The coalition's emissions targets would be set below its projected emissions, with a gradually increasing wedge between BAU emissions and the target. Specifically, the 2026 target would correspond to the coalition's emissions, %the 2027 target would be slightly below the BAU, the 2028 more so, etc., realistically increasing the additional decarbonization effort overtime, TODO?
+while the 2027 target would be slightly below the BAU, increasing the divergence in 2028 and beyond. This would realistically scale up the additional decarbonization effort over time 
+until it reaches an emission reduction rate aligned with the Paris target. 
+% and the target for (say) 2040 would be aligned with a
+The resulting emission trajectory of the coalition should not exceed its equal per capita share of a global carbon budget achieving 2\textdegree{}C with a 75\% probability, and would ideally be lower. % harmonize carbon budget with above => 1.8°-50%
+% The resulting emission trajectory of the coalition should not exceed its equal per capita share of a global 2\textdegree{}C carbon budget (with 50\% chance), and would ideally be significantly lower. 
+
+% national target from focal point
+After determining the coalition's trajectory, the disaggregation into national targets would be negotiated. It would be useful to allocate national targets starting from a focal point, such as  %. For example, the focal point could be 
+the minimum between the country's BAU trajectory, its NDC targets, and an equal per capita share of the coalition's emission trajectory. Extra emission rights could then be allocated to countries with the lowest incomes and to those experiencing the greatest welfare loss due to the increased decarbonization effort. % with the highest marginal welfare. 
+The proposed focal point can be justified by the principle that, to strengthen ambition, a country's target should not be higher than projected, committed, or \textit{fair-share} emissions, and by norm that the equal right to emit per capita is the fairness benchmark. % TODO? put back? Given that the equal per capita share is above the BAU and the NDC for some countries, the sum of focal point emissions will be lower than the coalition's emission target, and some extra emission rights will be available. To the extent that projected (and committed) emissions are far lower than the fair share in some low-income countries, and that emission reductions below the NDC are very costly for some middle-income countries, the extra rights should be allocated to these low-income or fossil-dependent countries. While the precise allocation rules need to be negotiated, I propose a specific allocation into yearly national targets in a companion paper \citep{fabre_global_2025}. 
+
+% new members
+If new countries join the coalition, they could propose a new allocation of emission targets. If the proposal is rejected by the coalition, the entire negotiation process would be restarted. The new allocation would then be adopted only if it were accepted by a majority within the coalition and provided it does not lead to reduced emission coverage (resulting from unsatisfied countries leaving the coalition) or to a lower projected ITMO price (which would indicate reduced ambition). 
+
+% scientific council 
+A scientific council would assist the coalition by determining BAU emissions, modelling the climate, economic, and distributive effects of the agreement, providing requested analyses, and proposing target allocations or suggesting other arbitration decisions. Each participating country would be entitled to designate a team of scientists to represent them on the council, and these teams could %would be allowed to 
+overlap. %Appointed scientists could be designated by several countries at the same time. 
+In the event of disagreement within the scientific council, each team would hold voting rights proportional to the population of the country (or countries) that designated them.
+
+%oA desirable vision
+% => Take a given coalition; start with its emission level and projected emissions in next 10 years; gradually (to at least <2°C equal pc though realistically) increase ambition unless it's already fair share 1.5°C; check that carbon budget if all countries followed this equal pc is Paris-aligned; redefine NDCs so they jointly correspond to the new trajectory, with min{BAU, equal pc} as a focal foint; if new countries join, restart the process making sure that price of ITMOs doesn't decrease
+% => Network of researchers appointed by each country, mobilizable (as a whole) by the coalition to project emissions and propose rules / arbitrate
+
+% NDC-ITMO potential goals:
+% a. ITMOs don't weaken buyers' ambition: they should set (NDC buyers + ITMO) + BAU seller > NDC buyers + NDC seller (i.e. seller set their NDC < BAU + ITMO they sell) => more stringent that Michaelowa et al 2019. who allows checking ITMO at project level if our condition is not met (we refuse as the implied ITMO price would be too low and seller is illegitimate to sell ITMOs); NDC > BAU allowed for fairness reasons; can later evolve into market linkages. 
+% b. In Michaelowa 19, add condition of not buying ITMOs from countries with emissions p.c. > world average nor GDP pc > world average (unless historical emissions of seller 1.5°C compatible in latter case). + guarantee of climate finance (JETPs, new taxes...)
+% c. ITMOs only when compatible with Paris target: joint NDC lower than joint cost-optimal 2°C emissions and/or than joint equal pc 1.5°C?
+% A. Must increase ambition: forbidden to sell ITMOs if NDC > current policies
+% B. Must be Paris-aligned: joint NDC < joint equal pc 1.8°C
+%  cite Current policies in all countries given by den Elzen et al. (2023; 24), better than https://1p5ndc-pathways.climateanalytics.org/ or CAT (only 26 countries), or Kotz et al 24 (uses SSP, doesn't model policies)
+
+% In case of linkages between domestic carbon markets, the same rules would be required to the cross-border (or rather, cross-market) purchase of emissions allowances. Let us call \textit{sellers} the countries that are willing to sell ITMOs, and \textit{buyers} the countries they agree to sell them to. The extra rules to prevent hot air could be as follows: 
+% \begin{itemize}
+%   \item \textbf{Sellers and buyers should include a cumulative emissions target (i.e. a national carbon budget) in their NDC, decomposed in yearly targets}.
+%   \item \textbf{The joint carbon budget of sellers and buyers should be compatible with the Paris temperature target}. If the group of sellers and buyers does not include all countries, their joint carbon budget should correspond to their population share of the world's budget.
+%   \item \textbf{The joint target} (of sellers and buyers) \textbf{in a given year should be lower than their preceding year's, % joint emissions, TO DO? put back?
+%   by at least (say) 2\%.} Note that if countries propose a credible emissions trajectory (as per the first rule), this last rule would not be necessary. This last rule is added just to make sure that sellers and buyers propose ambitious emission reductions even in the first years. % remove the last point? the important ones are the first two, they kinda imply the third (if countries are honest)
+% \end{itemize}
+% % Pb: still hot air if the group of sellers and buyers have low emissions. => Add a condition as in la_hoz_theuer_when_2019 or michaelowa_additionality_2019 that their joint target in 5 years should be lower than their current ones, and in 10 years lower than 90% of their current ones.
+
+% % TO DO replace rule by joint NDC reduce emission from current ones by at least 2% per year + countries should respect NDCs. Could be defined in intensity terms.
+
+% If a group of sellers and buyers agrees to these rules, they would effectively impose the principle of an equal per capita allocation of emissions rights, at least to govern the allocation between their group and the rest of the world. While alternative allocation principles are possible, the operationalization of cross-border trading of emissions allowances (or ITMOs) needs to rely on an allocation principle. The inadequacy of NDCs (taken jointly) proves that the global climate regime cannot rely on diverse and self-serving allocation rules to divide the global carbon budget into consistent national targets. 
+% % ? \cite{michaelowa_additionality_2019} propose to check additionality of ITMOs either at the country level if NDCs are more ambitious than a BAU scenario defined by an independent institution, either at the project level otherwise. \cite{la_hoz_theuer_when_2019} propose to limit the use of ITMOs to emission reductions below the BAU.
+
+% new subsection on feasibility (feasibility. Mentionner https://en.wikipedia.org/wiki/Open_Coalition_on_Compliance_Carbon_Markets ainsi que https://www.bafu.admin.ch/fr/article-6-ambition-alliance-aaa6-f; coalition of willing; public support), compatibility with Paris (CBDR, etc.), concluding that feasibility is larger than for alternative proposal discussed after
+
+\subsection{Feasibility of the previous proposal\label{subsec:feasibility}}
+
+% TODO? remove this subsection?
+% TODO: feasibility constraints; e.g. agreeing on what is a lenient NDC or the BAU
+While the last proposal is the most ambitious analyzed here, I argue that it constitutes the most feasible pathway to guarantee emission reductions in line with the Paris target within a large coalition of countries. 
+
+First, relying on a coalition parallel to the UNFCCC would enable the achievement of ambitious agreements. %Admittedly, decarbonization would only be partial since some countries would remain outside the coalition. However, COP outcomes are probably the strongest commitments that can be obtained from reluctant countries at this stage. 
+Second, %contrary to the widespread belief that most people would not be willing to pay their fair share of decarbonization costs, 
+academic surveys show that majorities around the world would genuinely accept international climate policies, even knowing the cost to themselves \citep{fabre_majority_2025,fabre_public_2025,andre_globally_2024}. %The stronger support for international policies compared to national ones can be attributed to their greater fairness and effectiveness. 
+Third, the proposals presented in this article are grounded in the Paris Agreement (and in particular Article 6.2) and they would operationalize the long-standing CBDR principle. These proposals respond to a renewed interest in well-regulated international carbon markets, as evidenced by two initiatives launched at COP30: the \textit{Open Coalition on Compliance Carbon Markets}, which already includes China, the EU, Brazil, and fifteen other countries; and the \textit{Article 6 Ambition Alliance}, a set of ten countries including Switzerland, Norway, and Germany, which intend to finance or host some emission reduction activities without use of ITMOs towards their NDCs.
+% TODO? put back? Fourth, most countries would have an interest in stricter ITMO regulation. All countries would benefit from increased mitigation efforts. Many Global South countries with relatively low emissions could sell ITMOs at the right price and generate much-needed revenue. China would benefit from a larger market for its low-carbon products. High-income countries, such as the EU, would obtain a legitimate and principled access to purchasing ITMOs, which would dispel potential opposition to their use.
+
+\section{Comparison of alternative proposals for phasing out fossil fuels}\label{sec:alternatives}%possible international policies to phase out fossil fuels}
+
+In Section \ref{sec:criticism}, I have reviewed the pros and cons of ITMOs, climate finance, and JETPS, which represent the international decarbonization initiatives %to phase out fossil fuels 
+with the greatest chance of implementation. % While these approaches are acceptable to most countries, they generally fail to guarantee sufficient emission reductions. In Section \ref{sec:itmo}, I have shown how a proper regulation of ITMOs could close the ambition gap. 
+In this section, I assess alternative proposals to guarantee global decarbonization, in particular the expansion of carbon pricing and the restriction of fossil fuel extraction. % In the Supplementary Material, I provide three tables summarizing the evaluation of each policy mentioned in this article. Table \ref{tab:policies} presents each policy, Table \ref{tab:pros_cons} lists their pros and cons, and Table \ref{tab:comparison} attempts to grade the policies' properties in terms of the  multiple desired objectives. 
+% evaluates the policies based on multiple desired objectives. %attempts to grade 
+%' properties in terms of the 
+
+
+%  Proposals on ITMOs, e.g. Michaelowa, michaelowa_towards_2022, 
+
+% \subsection{Linkages between carbon markets}
+
+% % Contrary to the FFU, that would establish a new carbon market on top (and independent) of existing ones; 
+% Existing compliance carbon markets can be linked to each other, or linked to a voluntary carbon offset market \citep{jaffe_linking_2010}. With such linkages, either emissions allowances from a foreign country's carbon market, or carbon offsets (e.g. from forestation projects) are allowed for compliance in the domestic carbon market. The linkage can be partial, in which case there is a cap on the amount of external emission allowances/offsets that can be used for compliance. 
+
+% Linkages are very similar to ITMOs; the main differences are that ITMOs are traded between countries (rather than firms) and always affect the accounting of NDCs (contrary to a link between two ETSs). By making carbon prices converge across borders, linkages achieve gains from trade. Yet, a linkage may induce hot air (and weaken domestic decarbonization efforts) if it is made with a system lacking ambition (cf. Section \ref{subsubsec:itmo}). 
+
+% Furthermore, when a linkage connects ETSs, the difficult question of the allocation of emissions rights between countries arises (like in any international pricing agreement). The connected countries have to either agree in advance on the trajectories of their respective emissions rights, or renegotiate the allocation at regular intervals. The EU was able to opt for the latter solution thanks to its centralized administration (the EU Commission). % In absence of such authority, the former solution seems safer (to avoid later disputes), hence why it is the one chosen in the FFU proposal.
+
+\subsection{Differentiated carbon price floors}
+
+Some authors propose that all countries in a coalition price carbon nationally, without cross-country revenue sharing but with differentiated carbon price floors based on income levels\footnote{Namely, the authors propose \$75/tCO$_\text{2}$ for high-income countries, \$50/t for upper middle-income countries, and \$25/t for lower-income countries.} \citep{parry_proposal_2021,wolfram_building_2025}. In a prominent contribution, \cite{wolfram_building_2025} propose restricting the agreement to carbon-intensive manufacturing products (e.g. steel, aluminum, cement) and applying a carbon border adjustment mechanism (CBAM) only at the borders of the climate coalition (at \$75/tCO$_\text{2}$). This proposal would have the EU renounce its own CBAM in exchange for China pricing carbon emissions in its manufacturing sector --- thereby increasing the price of its final products \citep{chateau_global_2024}. This proposal would reduce global CO$_\text{2}$ emissions by 2\%. It has little chances of being implemented, as China represents about 70\% of emissions covered in the proposed coalition, and China appears unwilling to commit to the proposed carbon price level (\$50/t). 
+
+One may wonder why carbon prices should be differentiated across countries. 
+From a theoretical perspective, absent any imperfections, a uniform carbon price coupled with cross-country transfers is optimal \citep{aldy_promise_2012}. %Some commentators claim that lower-income economies do not have the resources to adapt to a high carbon price and require a lower price than high-income countries. However, this claim is misguided and is not a sound argument in favor of differentiated carbon prices \citep{aldy_promise_2012}. 
+Specifically, a uniform price is more efficient, and under a redistributive system, % like the FFU, 
+lower-income countries would gain purchasing power. %, %contrary to the commonly held 
+% countering the common belief that they would lack the resources to adapt their economies to a high carbon price. 
+Indeed, provided lower-income countries are allocated more emission rights than actual needs, they could in principle choose to keep their emissions stable while receiving
+% and still pocket 
+a financial transfer. Yet, the high carbon price would provide incentives to decarbonize, allowing them to benefit from larger transfers. 
+
+Admittedly, four kinds of imperfections justify differentiated carbon prices across countries or sectors: divergent discount rates, the presence of country-specific distortive taxes, market power in trade, and constraints preventing cross-country transfers. Let us review them in turn. First, \cite{anthoff_differentiated_2021} show that equalizing carbon prices across countries is inefficient ``if the equilibrium features cross-country differences in discount rates (or interest rates)'', themselves due to inefficiencies in the allocation of capital.\footnote{While differentiated carbon prices might be optimal in a second-best world, the first best is in principle attainable through capital market reforms to correct their imperfections.} However, %the authors remain uncertain 
+no model has been developed to know 
+whether welfare would increase or decrease upon equalizing carbon prices (through emission trading). %, as assessing this would require a model of capital market frictions and their interactions with carbon trading. 
+Second, \cite{babiker_is_2004} explain theoretically and \cite{boeters_optimally_2014} models numerically that existing distortions can be reduced by differentiating carbon prices across sectors or countries. For example, if %gasoline is subsidized in a country, then a higher carbon price in this country improves welfare. 
+aviation remains is %(and has to remain) 
+under-taxed, then a higher sector-specific carbon price %on the aviation sector 
+improves welfare.
+Third, the terms-of-trade effect can be well understood taking the example of China, which possesses significant %(due to its size) has 
+market power in the oil or manufactured goods markets. As an oil importer, China would benefit from a lower oil price. By taxing oil more than other sectors, China would reduce global %(domestic hence global) 
+demand for oil, thereby lowering its price and improving its terms-of-trade. Similarly, China has an interest in setting a higher carbon price on manufactured goods to increase the value of its exports. 
+% Optimizing carbon price by sectors in the EU, Boeters shows that the optimal differentiation can be huge (so much that EU could reduce its emissions by 27\% without reducing welfare) but warns against a naive interpretation of these results.
+% Indeed, existing ``distorsions'' may be justified for example existing taxes on transport fuels can be understood not as distorsions but as (second-best) instruments to address local externalities or pay for roads.
+Fourth, differentiated prices are generally justified by the assertion that international transfers are politically infeasible \citep{parry_proposal_2021,young-brun_within-country_2025}. \cite{bauer_quantification_2020} refer to an ``efficiency-sovereignty'' trade-off in climate policies: %\citep{bauer_quantification_2020,bekkers_comparing_2022,young-brun_within-country_2025}: 
+either carbon prices are differentiated and efficiency is lost, or a uniform price is applied alongside transfers to equalize efforts across countries. 
+% TODO? put back? \cite{bauer_quantification_2020} assume that international transfers constitute a stronger infringement on sovereignty than coordinated price differentiation. % in which case sovereignty is seen as constrained. 
+%and sovereignty is lost reduced welfare in low-income countries,
+Because they deem transfers infeasible, 
+they view differentiated prices as a necessary second-best solution. 
+% For these authors, since transfers are deemed infeasible, 
+% differentiated prices offer a second-best solution. 
+
+% https://tbsky.app/profile/did:plc:2b4tsqp7a47hhyk3weki7epo/post/3lydrek33fc2x
+% Many commentators argue that lower-income economies do not have the resources to adapt to a high carbon price and require a lower price than high-income countries. However, this claim is misguided and is not a sound argument in favor of differentiated carbon prices \citep{aldy_promise_2012}. Indeed, a uniform price is more efficient, and in a redistributive system, % like the FFU, 
+% lower-income countries would actually \textit{gain} purchasing power from the policy, meaning that they would obtain the required resources to adapt their economies. As long as they benefit from more emissions rights than emissions needs, they could in principle choose to keep their emissions stable and still pocket a financial transfer. Yet, the high carbon price would provide incentives to decarbonize and benefit from larger transfers. 
+
+% A more reasonable argument in favor of coordinated carbon prices that would be differentiated depending on the country's income level is the claim that international transfers are not feasible \citep{parry_proposal_2021}. In this case, differentiated prices offer a second-best solution. 
+
+However, there is a distributional equivalence between differentiated carbon prices and a uniform price with differentiated emission rights \citep{fabre_global_2025}. %(see Appendix \ref{app:correspondence} for the mathematical derivation). TODO cite paper I
+More precisely, a uniform price combined with an appropriate allocation of emission rights can replicate the distribution of costs and benefits generated by any differentiated price-floor agreement, while typically delivering the same or greater global emission reductions. 
+% More precisely, for a given agreement on differentiated prices, a uniform price can achieve the same global emission reductions and at least as high welfare levels in each country, %costs and benefits by country can be achieved with a uniform price, 
+% by appropriately calibrating the price and the emissions rights. %, at least when efficiency gains are assumed away. 
+% To the extent that a uniform price brings efficiency gains, welfare is strictly higher with a uniform price. 
+This observation should prompt governments to question their apparent reluctance to implement transfers, % claim that transfers are not politically feasible, 
+given that they produce the same distributive effects as differentiated prices without associated inefficiency costs. 
+% Even more so given that representative surveys show that transfers would be accepted by the public: \cite{fabre_majority_2025} and \cite{fabre_global_2025} reveal that majorities around the world would support an international carbon price with equal per capita revenue sharing or other policies involving North-to-South transfers. %, disparaging the fear that transfers would be unpopular  
+%  because a uniform price offers efficiency gains from trade but differentiated prices do not, the latter is an inferior solution.
+
+\subsection{A uniform carbon price with international transfers}
+
+Several authors propose that a coalition of countries implement a uniform carbon price and share the revenue internationally \citep{grubb_greenhouse_1990,bertram_tradeable_1992,jamieson_climate_2001,cramton_global_2017,blanchard_major_2021,rajan_global_2021,fabre_global_2024}. While an equal per capita allocation is viewed as a fair and progressive way to share carbon pricing revenue \citep{grubb_greenhouse_1990,gollier_negotiating_2015}, small departures from the equal per capita benchmark may incentivize more countries to join the coalition and prevent high-income countries from becoming net recipients of transfers \citep{fabre_global_2024}. 
+
+A global cap-and-trade system would guarantee that decarbonization is aligned with climate objectives. %Furthermore, current institutions seem better designed to enforce a cap-and-trade as it regulates firms at the source of emissions. 
+Furthermore, it would enforce carbon pricing directly on the firms at the source of emissions, whereas the achievement of NDCs without a global price must rely on the goodwill of governments to develop comprehensive decarbonization plans. %, pricing the firms at the source of emissions seems more enforceable. % coordinated pricing of firms may be enforceable whereas... 
+
+While this proposal receives genuine support from majorities across countries \citep{fabre_majority_2025,fabre_global_2025}, key governments may be reluctant to join such a coalition for fear of losing sovereignty. By proposing a regulation of carbon trading more closely aligned with the framework of the Paris Agreement, this paper seeks to reproduce the efficiency and fairness of a redistributive cap-and-trade while leaving countries free to implement the policies of their choice. % allowing countries the autonomy to implement their own preferred policies.
+
+\subsection{Country-level incentives to decarbonization}
+
+To allow countries flexibility in their implementation of carbon pricing, \cite{stoft_flexible_2009} proposes a system of monetary rewards for countries based on the extent to which they price carbon above a benchmark or emit less than the average, with symmetric penalties for countries deviating from these thresholds in the other direction. While the increased flexibility makes this proposal more feasible compared to a uniform price, it has its own limitations. This system does not guarantee that countries will implement sufficiently ambitious decarbonization policies. By rewarding countries with high carbon prices and low emissions, this system may lead to transfers to wealthy countries (such as Norway). Finally, the system relies on the willingness of countries to pay penalties.
+
+Proposals for a ``refunding club'' aim to restore incentive-compatibility in agreements that rely on international transfers, ensuring that countries are incentivized to pay their dues and remain in the coalition \citep{gersbach_long-term_2021,finus_mechanism_2024}. These proposals involve country-specific (and potentially negative) initial payments and period-by-period refunds proportional to countries' mitigation spending. % abatement costs
+Initial payments can accommodate any burden-sharing allocation. % and refunds depend on actual abatement levels. 
+\cite{finus_modesty_2008} estimate that an initial fund of \$2.6 trillion (that is, 0.3\% of world GDP over ten years) is required to make the grand coalition stable and close half the gap between the non-cooperative and the social optima. Although this amount could in principle be raised through various means, such as a 2\% tax on billionaire wealth \citep{zucman_blueprint_2024}, persuading countries to make the initial payment could prove insurmountable. %excessively difficult. 
+
+\subsection{Supply-side policies such as \textit{fossil fuel non-proliferation}}
+
+The \textit{Fossil Fuel Non-Proliferation Treaty} has emerged as a prominent campaign to phase out fossil fuels. The call for a treaty (which does not refer to a specific legal proposal) has been endorsed by over one million individuals, four thousands organizations (including Greenpeace and the Climate Action Network International), and 101 Nobel laureates. While the petition only alludes to a consensual call for a ``binding plan to end the expansion of new coal, oil and gas projects and manage a global transition away from fossil fuels''; campaign briefings and related academic research sketch out a more detailed plan \citep{civil_society_equity_review_fair_2021,civil_society_equity_review_equitable_2023,calverley_phaseout_2022,fossil_fuel_non-proliferation_treaty_global_2023}.
+
+The campaign refers to a plan called the \textit{Fair Shares Phase Out}, which involves setting country-specific end dates for fossil fuel extraction \citep{civil_society_equity_review_equitable_2023,calverley_phaseout_2022}. This approaches allows a later phase-out for countries with lower incomes or higher dependence on fossil fuel extraction. For example, the U.S. would be required to %fully % revision: put back 
+phase out oil extraction by 2031, Russia by 2037, Saudi Arabia by 2041, and Iraq by 2050.
+
+This plan is problematic for three reasons. First, it requires the participation of all countries that export fossil fuels, yet these countries are the least likely to take action on climate change. Second, by restricting supply rather than demand for fossil fuels, this plan would increase fossil fuel rents instead of generating carbon price revenue. Therefore, despite the plan being framed as fair, it would probably widen inequality compared to demand-side policies, since (predominantly rich) owners of fossil fuel resources would benefit while the lack of carbon pricing revenue would make it difficult to compensate low-income consumers for higher fuel prices. Admittedly, the plan also calls for North-to-South transfers to address the negative distributive effects, but it fails to include a specific proposal on how to fund these transfers, how to allocate them, let alone an assessment of overall distributive effects. 
+Third, the aforementioned extraction end dates would also result in an inefficient location of fossil fuel extraction \citep{coulomb_bad_2025}, with e.g. cheap oil from Qatar being phased out 13 years before ``dirty'' oil from Venezuela. 
+
+An alternative policy would exhibit similar properties without the inefficiency problem: a producer carbon price. Under this policy, producer countries would price carbon at the wellhead and retain the revenue from carbon pricing (or most of them). Some argue that producer countries would accept a producer carbon price as a compromise if climate-ambitious countries were willing to penalise them for refusing to cooperate. To achieve this, climate-ambitious countries would need to commit to faster decarbonization and trade sanctions on fuel exporter countries (further reducing their revenues) if they fail to price carbon \citep{peszko_cooperative_2019}. Compared to an equal per capita allocation of carbon price revenues, this solution lacks equity as it grants tax revenues to producer countries, most of which are wealthy. Furthermore, proponents acknowledge that the proposal hinges on fuel-importing countries' ability to credibly commit to unilaterally stabilizing the climate to compensate for producers' inaction; %failure to decarbonize), whereas 
+in reality, fossil-fuel exporters may doubt that importing countries are willing to make such sacrifices.
+
+% \subsection{Opting-out from revenue sharing as in the \textit{Global Climate Plan}}\label{subsec:gcp}
+
+% An earlier version of the Fossil-Free Union proposal was dubbed the \textit{Global Climate Plan} (GCP) by \cite{fabre_global_2023,fabre_global_2024}. The two proposals differ in how they prevent middle-income countries from losing % being net contributor 
+% and high-income countries from being net recipients of transfers. In the GCP, countries with a GNI per capita below 1.5 times the world average are authorized to fully opt-out from the mutualization of carbon pricing revenues and to retain the auction revenues collected on their territories (the waiver is phased out linearly for GNI p.c. between 1.5 and 2 times the world average). Thereby, middle-income countries with a higher-than-average carbon footprint, like China, would not be contributor to transfers, making them more likely to join the union. Conversely, emissions rights would be phased out for countries with high income and low emissions. 
+
+% Compared to the FFU, which requires negotiating emission rights trajectories for each country, the GCP requires just a handful of parameters to be negotiated. However, the waiver entails other issues. First, as opting-out countries would obtain carbon pricing revenue corresponding to their territorial emissions, it gives an undue advantage to net exporters, whose territorial emissions are higher than their carbon footprint.\footnote{Note that the Carbon Border Adjustment Mechanism adopted by the EU grants exactly the same advantage on foreign exporting
+% countries which pay an internal carbon price equal to the price on the European market: imports from such countries will be exempt from the carbon tariff, and these countries will benefit from carbon price revenues ultimately paid by European consumers.} Second, countries benefiting from the waiver would have too little incentive to reduce their emissions, which could disproportionately shift the burden of decarbonization onto the rest of the world. 
+
+% Acknowledging these issues, the GCP proposal envisages an alternative mechanism \citep{fabre_global_2024}, whereby the carbon budget of a middle-income country could be increased by a factor equal to the country's carbon footprint in 2025 divided by the average carbon footprint of the union at that date. Doing so introduces the same rigid carbon budget as in the FFU. But the FFU should be preferred, as its carbon budgets are based on official or scientific proposals concerning countries' decarbonization pathways, rather than on a crude approximation of their future needs.
+
+% Types:
+% ITMOs
+% JETPs
+% Limited coverage
+% Differentiated prices
+% Transfers
+% Supply-side
+% Finance
+% Standards
+
+\section{Conclusion\label{sec:conclusion}}
+
+This paper presented a broad overview of the international climate policy regime and examined mechanisms through which climate ambition could be strengthened. I first demonstrated that the current regime fails to guarantee decarbonization in line with the Paris temperature target, as the sum of NDC targets exceeds the required emissions level. In this context, ITMOs will remain under-priced, and their unfettered use risks weakening overall ambition. 
+
+Then, I explored different options to regulate ITMOs. % and restore ambition. 
+By restricting the use of ITMOs based on the adequacy of the seller's NDC, existing proposals (by e.g. \citealp{michaelowa_additionality_2019}) would limit hot air, but 
+% not prevent it entirely. % hotair
+ITMOs would remain under-priced. 
+To fully restore ambition and fairness, I proposed that a coalition of the willing submit a joint NDC aligned with the Paris target, and commit to exchanging ITMOs only among coalition members. I also suggested intermediary steps, such as strengthening reporting requirements to harmonize NDCs and establishing the principle that no ITMO should be sold by a country failing to meet its own NDC.
+
+Finally, I analyzed alternative proposals to ratchet up ambition, such as differentiated carbon price floors, a fossil fuel non-proliferation treaty, and  %an international and egalitarian cap-and-trade, 
+a refunding club. Alternatives appeared to either lack efficiency, lack ambition, or lack political realism, with the exception of JETPs. If ambitiously expanded in terms of scope and funding, these ongoing initiatives could boost both mitigation and climate finance \citep{steckel_climate_2017,bolton_cop29_2024,bolton_why_2025}. 
+
+The success of international climate policy will likely require both a tighter regulation of ITMOs and an expansion of JETPs. In both cases, a coalition of the willing seems the most viable option to reap the gains from the cooperation of ambitious countries. % Researchers of different countries could help foster such a coalition by offering shared expertise to diplomats. 
+
+
+% Taking stock of the strong public support for global climate and redistributive policies,\cite{fabre_majority_2025} we have proposed two complementary international agreements, dubbed the Fossil-Free Union and the Sustainable Union. 
+
+% By establishing an international emissions trading system, the Fossil-Free Union would guarantee that emissions of participating countries are in line with the Paris Agreement's target. It would resolve the long-standing question of how to share the burden of climate action between countries, by setting a benchmark norm of equal per capita emissions allowances. Designed in a flexible way, it should be acceptable by all countries: first, it would allow departures from the benchmark allocation, for example to account for the needs of fossil-dependent countries; second, it would provide transfers to lower-income countries, paid by the efficiency gains resulting from carbon trading.
+
+% In addition, the Sustainable Union would ramp up global solidarity to finance sustainable development. A set of global solidarity taxes on the richest and polluters would finance both the budgets of each collecting country (two-thirds of revenues) and the budgets of low-income countries (one-third). %A set of global solidarity levies on the wealthiest and on polluters would finance each collector country's budget for roughly two thirds, and lower-income countries for one third. 
+% The Sustainable Union would increase even further the incentives for lower-income countries to decarbonize, as their entry to the Sustainable Union would require them to join the Fossil-Free Union. Furthermore, the new levies would ensure that the richest are put to contribution during the sustainable transition and that they bear the costs of international transfers. Lastly, adding to the Fossil-Free Union the Sustainable Union would streamline the determination of international transfers, as these would be based exclusively on the capacity to pay or the needs, measured as the gap between a country's GNI per capita and the world average's.
+
+% As a next step, supportive organizations could launch a taskforce gathering scholars and diplomats to refine or rework these proposals. In particular, dialogue with diplomats or government officials will be key to understand what each country considers as a non-losing allocation, and update the analysis in that regard.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Criteria: Effectiveness; Efficiency; Justice; Adaptability; Rich pay; Acceptability LICs; Acc MICs; Acc HICs; Acc oil; Pros; Cons
+
+% Status quo (ITMO, JETPs)
+% FFU
+% GCP
+% FFU + SU
+% Uniform price floor + SU (or with emissions in excess of pre-agreed amount financing low-emissions countries in proportion to their distance to pre-agreed/equal pc level. Pb: imported carbon not counted + push contributing countries to import carbon)
+% Differentiated price floors without transfers
+% ITMOs avoiding hot air
+% ITMOs with integrity define at country level: lack transfers
+% Expanding JETPs with more grants
+% Expanding JETPs with policy coverage
+% Int'l differentiated prices on CBAM sectors: lack transfers, inefficient
+% Int'l uniform price on CBAM sectors: OK if enough transfers, lack coverage
+% Nordhaus club: conflictual, not clear it'll be enough to make others join, harm own consumers
+% Pezsko: not clear it'll convince oil countries to join
+% fossil non proliferation: vague, benefit oil countries
+% - Finance options (multilateral guarantees, climate bonds, money creation - Dafermos...): good, partial
+% - Common standards (ships, cars, banning coal or oil exploration): good, partial (e.g. lack power, heating)
+
+% Annex: Treaty/ies
+
+% Difficult to reconcile:
+% 1. countries pay marginal footprint to RoW at universal eq price
+% 2. submedial countries are not net contributor in partial union (they lose when price=floor if their planned emissions > rights * club/world average ~ rights * 3/4, when club's rights sum to equal pc). Can be presented as ~1.5°C trajectory with extra rights for submedial or ~1.8°C trajectory with less rights for poor and rich.
+% 3. no discontinuity in price/transfers when union expands (so that members have interest in expansion)
+
+% Options:
+% a. difference between universal and union eq price is collected/recycled nationally for C-submedial countries and the share over the global average is transferred to submedial countries for supermedial ones. Fails 1,2,3.
+%>b. transfers are unrelated to emissions, based on GNI. Fails 1.
+% c. transfers based on GNI + departure from expected emission reductions. May fail 2.
+% d. union price is universal eq, extra transfers for submedial countries (to the expense of high and low income ones). Fails 3.
+% e. countries with GNI pc < 1.5 average can opt out from revenue sharing. Fails 1 (and rights left to others unpredictable).
+% f. keep carbon price floor low. Fails 3, also 2 but mitigated.
+%>g. revenue share of surmedial LMIC augmented by their footprint/club average at t=0. Fails 2 to the extend emissions decrease slower than in the rest of the club. 
+%>h. Differentiated rights + high price floor. May fail 2 (if differentiated prices don't accommodate enough departure, i.e. if AFR doesn't renounce to enough of its rights).
+%>>i No price floor (except for countries who repeal climate laws), MIC rights get as much rights as their needs. Fails 1 (equivalent to higher temperature target), 3 (same issue with Sustainable Union). 
+%>j A price (rather than quantity) target with equal pc sharing except for countries < 1.2 average GDP which can be exempted from revenue sharing (with phase out up to 1.5 average) and rule to avoid HIC being net receiver => clear, rule-based, only issue is that price may be too low; and if automatically increased then too big an advantage for exempted countries as they increase emissions without increasing transfers (i.e. fails 1 for exempted countries => could be avoided by adding payments if departure from expected emission reductions) => give this as alternative?
+
+% Pq je suis passé de GCP à FFU? 1. pour ne plus dire que EU perd (mais j'peux parler de droits équivalents dans GCP), 2. pour donner de la flexibilité sur les departures (par ex éviter de donner un avantage trop grand à la Chine, qui va se décarboner plus vite que le club) et sur la répartition temporelle (donner plus tard à Inde pour éviter qu'elle ne sorte), 3. parce que je renonçais à un prix conséquent les premières années (hot air)
+% Pb de FFU: la répartition temporelle des droits doit tenir compte du prix plancher, qui n'est pas connu (participation partielle induit différence distributive par rapport à simple marché). => fixer le prix (en fonction de qui participe)
+% Avantages du GCP? 1. permet un prix plus élevé au début car les surmédiaux sont ajustés relativement à moyenne du club et pas moyenne mondiale comme ds FFU (il le faut pour éviter une augmentation trop rapide lorsque le marché devient binding ou si US rejoignent), 2. rule-based plutôt que discretionary, 3. permet de s'ajuster aux circonstances changeantes (par ex si Chine a rattrapé EU en PIB/hab), 
+
+% Ask to each country: Imagine int'l ETS (membership, price unknown, though probably just Global South, no price floor): 
+% How much allowances they would want? (minimum acceptable, fair, ideal number; give justification for each)
+% Total/world allowances they would want until net zero (minimum, ideal, maximum).
+% Allocation rules they'd accept: equal pc, cumulative equal pc, CC, BAU for MIC, grandfathering
+% => work out a solution based on the answers
+
+% - Pricing:
+% -- equivalence differentiated prices - rights but uniform price better, countries can always add policies to e.g. subsidize fuels if they wish
+% -- for acceptability + fairness, we need departures from equal pc
+% -- simulations using NICE
+% -- feasibility of global redistributive policy: surveys, informal support of diplomats (even EU saying govts is pb, they personally like)
+
+% Start paper on Fossil-Free Union, then expand.
+
+% Argue in favor of FFU: guarantee the union respects its targets; determines burden sharing.
+% Carbon price floors very important as it's binding in first years. Must be complemented by the obligation to pay higher price if country reduces its domestic carbon price / climate regulations. In effect, acts as a generalized JTEP (more favorable to LDCs). 
+
+% PB of FFU: in first phase with carbon price floor, China loses as it has less rights among the union than its emissions share in the union. => No, I think it's been computed so that China doesn't lose. The above effect is mitigated by the carbon trade + larger rights.
+% PB of SU: same issue if partial participation => No because China is allowed to skip the redistribution part and just apply the FFU.
+% => Think of treaty rules
+% Le prix plancher doit correspondre au prix qui serait atteint en cas de participation universelle, pour qu'il y ait suffisamment de réductions d'émission, de transferts, et que les états membres n'aient pas un désintérêt à ce que les US joignent
+
+% Pb du FFU: EU has no financial interest that US joins (as long as EU is a net contributor => determine loss of EU when US joins; determine date of US joining that makes EU indifferent). Indeed, EU pays price*(emissions - rights). If US joins, price will increase and (e - r) be constant. If instead of fixing the rights we fixed the price, EU would have interest that US joins, as its rights (equal to union average) would increase. EU would also have interest of US joining in the case 1% GNI return in fct of pop.
+% => What rules leave no one worse off when big emitters join? What rules leave big emitters indifferent when bigger emitters join?
+
+% Global policies to phase out fossil fuels 
+% - Principles: non-universal, open, redistributive, non-dichotomic
+% - Climate justice -> justice (burden-sharing options, criticism of CERF, grandfathering would be plausible in absence of broader inequality/justice hence can make sense within country)
+% - Finance options (multilateral guarantees, climate bonds, money creation - Dafermos...)
+% - Common standards (ships, cars, banning coal or oil exploration)
+% - Supply-side policies (critique of fossil non proliferation)
+% - Pricing:
+% -- equivalence differentiated prices p_i = p + a_i where mean(p_i)=p  and differentiated rights per capita r_i : r_i = p*e - a_i*e_i, where e_i is country's emission pc and e global average.
+% -- uniform price better, countries can always add policies to e.g. subsidize fuels if they wish
+% -- for acceptability + fairness, we need departures from equal pc
+% -- simulations using NICE
+% -- critiques of other proposals: Pezsko, Edenhofer, Nordhaus, Piketty, rationing, proposals lacking sectoral coverage (CBAM sectors) or redistribution (restricting ITMOs to high-integrity countries)...
+% -- feasibility of global redistributive policy: surveys, informal support of diplomats (even EU saying govts is pb, they personally like)
+% -- call for expert contributions and common proposal
+
+% \begin{figure}[b!]
+%   \caption[Title.]{Caption
+%   }\label{fig:antipoverty_tax_7}
+%   \makebox[\textwidth][c]{\includegraphics[width=\textwidth]
+%   {../figures/antipoverty_2_tax_7_average.pdf}}
+% \end{figure}
+
+% \begin{figure}[h!]
+%     \caption[Title.]{Caption.}\label{fig:kenya}
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_a.}\label{fig:kenya_policies}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_policies.pdf}
+%   \end{subfigure} \;
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_b.}\label{fig:kenya_cap}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_cap.pdf}
+%   \end{subfigure}
+%   \\ \quad \\
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_c.}\label{fig:kenya_tax}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_tax.pdf}
+%   \end{subfigure} \;
+%   \begin{subfigure}{.5\textwidth}
+%     \caption[]{Caption_d.}\label{fig:kenya_floor}
+%     \includegraphics[width=\textwidth]{../figures/Kenya_floor.pdf}
+%   \end{subfigure}
+% \end{figure}  
+
+
+% \section{Discussion\label{sec:conclusion}} 
+
+% \begin{methods}  % WPcomment
+  % \begin{small} % NCCcomment
+% \section*{\normalsize Data and code availability}
+
+% \end{methods} % WPcomment
+% \end{small}  % NCCcomment
+
+% \theendnotes
+
+% \input{app} 
+
+% \begin{itemize}
+% \item[Acknowledgments] %I am grateful to 
+% %  \item[Competing Interests] I declare that I also serve as president of Global Redistribution Advocates.
+% \item[JEL codes] 
+% \item[Keywords]  
+% \item[Correspondence] Correspondence and requests for materials should be addressed to Adrien Fabre~(email: adrien.fabre@cnrs.fr).
+% \end{itemize}
+% % \end{addendum}
+
+% \onehalfspacing
+\clearpage
+\renewcommand{\url}[1]{\href{#1}{Link}} % NCCcomment
+\bibliographystyle{plainnaturl_clean} % NCCcomment
+\bibliography{global_tax_attitudes}
+
+\appendix
+
+\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\thefigure}{A\arabic{figure}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+\clearpage
+\begin{center}
+  \Large \textbf{Supplementary Tables} \\
+  \Large \textit{Beyond Current Initiatives: \\
+  ITMO Regulations to Ratchet up Ambition}
+% Operationalizing the Paris Temperature Target}
+\end{center}
+
+\begin{table}
+  \caption{Description of possible international policies to phase out fossil fuels.\label{tab:policies}}
+  \makebox[\textwidth][c]{
+
+\begin{tabular}[t]{P{6.1cm}P{14.3cm}} 
+  \toprule
+  International policy & Description \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & Countries trade Internationally Transferred Mitigation Outcomes, bringing flexibility to the location of NDCs' emission reductions. \\
+  Partial linkage of carbon markets \citep{jaffe_linking_2010} & Carbon markets such as the EU ETS would accept external ETS allowance or emission reduction certificates up to some limit. \\
+  ITMOs + country-level integrity \citep{michaelowa_additionality_2019} & ITMOs with extra rules preventing countries lacking ambition to participate. \\
+  ITMOs avoiding ambition gap  &  ITMOs with extra rules (described in Section \ref{subsec:itmo_proposal}) ensuring that countries trading ITMOs have joint NDCs in line with the Paris target. \\ % hotair
+  (\textit{Status quo}) JETPs \citep{ha-duong_just_2023} &  Just Energy Transition Partnerships where one developing country obtains concessional loans from a set of HICs to decarbonize % in exchange for decarbonizing TODO?
+  its power sector. \\ %conditional on the decarbonization of its power sector. \\
+  JETPs with more grants \citep{bolton_why_2025}  & JETPs financed by grants more than loans, of \$120 billion per year. \\
+  JETPs with wider scope \citep{steckel_climate_2017}  & JETPs with grants conditional on implementation of climate policy such as national carbon pricing. \\
+  Differentiated price floors \citep{parry_proposal_2021}  & Coordinated carbon price floors (\$25/tCO$_\text{2}$ for LICs and lower-MICs, \$50 for upper-MICs, \$75 for HICs), with little revenue sharing between countries. \\
+  % Uniform price on CBAM sectors \citep{wolfram_building_2025} & International cap-and-trade on carbon-intensive manufacturing sectors, with little revenue sharing between countries. \\
+  % Diff. prices on CBAM sectors  \citep{wolfram_building_2025} & Differentiated price floors limited to CBAM sectors, with little revenue sharing between countries.  \\
+  Carbon price on CBAM sectors \citep{wolfram_building_2025} & International carbon price on carbon-intensive manufacturing sectors, with little revenue sharing between countries, either uniform price or differentiated price floors. \\
+  Climate club \citep{nordhaus_climate_2015,cramton_international_2015,weitzman_world_2017}; Refunding club \citep{finus_mechanism_2024,gersbach_long-term_2021} & Uniform carbon price, with little revenue sharing between countries, with a CBAM, and dissuasive tariffs on imports from outside the club. Refunding clubs add initial payments and performance-based refunds to incentivize compliance. \\
+  Carbon price incentive \citep{stoft_flexible_2009} & Countries of a coalition receive (pay) transfers to the extent they price carbon above (below) a benchmark and emit less (more) than global average. \\
+  Fossil-Free Union (FFU) \citep{fabre_global_2025} & International cap-and-trade, with revenue returned on a basis given by an equal per capita benchmark with some adjustments. \\ % (cf. Section \ref{sec:ffu}). \\ TODO link paper
+  FFU + Sustainable Union (SU) \citep{fabre_global_2025} &  International cap-and-trade and new taxes (especially on wealth), where international transfers are proportional to the difference between a country's GNI per capita to the world average. \\% (cf. Section \ref{sec:su}). \\ TODO link paper
+  Uniform price floor + SU  & Sustainable Union with a % (negotiated)
+  uniform carbon tax rather than a cap-and-trade. \\
+  Fossil non-proliferation treaty \citep{newell_towards_2020,calverley_phaseout_2022} & Coordinated phase out of fossil fuel extraction, with supply cuts starting in richest countries and ending with poorer, more fossil-dependent ones. \\ 
+  Producer carbon tax \citep{peszko_cooperative_2019} &  Uniform carbon tax applied on extraction or imports of fossil fuels, with part of the revenue shared with LICs and tariffs. \\
+  Expansion of climate finance \citep{songwe_raising_2024,mazzucato_green_2024,bridgetown_initiative_bridgetown_2025,hourcade_climate_2025,green_climate_fund_scaling_2021,dafermos_climate_2025}  & Reforms to the financial system to orient investment towards sustainable projects in the Global South, through public multilateral guarantees on climate projects, expansion of Multilateral Development Banks' (MDBs) operations, rechannelling of Special Drawing Rights to MDBs' capital, debt-for-climate swaps, money creation, etc. \\
+  Standards and bans &  Implementation of common sectoral norms, e.g. standards on the CO$_\text{2}$-emission intensity of cars, shipping or aviation fuel; bans of fossil-fuel exploration, or on the opening of new coal power plants; common taxonomy for climate finance. \\
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+\begin{table}
+  \caption{Pros and cons of possible international policies.\label{tab:pros_cons}}
+  \makebox[\textwidth][c]{
+
+\begin{tabular}[t]{P{4cm}P{8cm}P{8cm}}
+  \toprule
+  International policy & Pros & Cons \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & Cross-border financing of efficient decarbonization projects. & \textit{Hot air}, risks weakening domestic climate action. \\
+  Partial linkage of carbon markets & Same as ITMOs. & Same as ITMOs. \\
+  ITMOs + country-level integrity  & ITMOs with reduced hot air. & Either ambition gap or risks of unfair burden-sharing. \\% hotair
+  ITMOs avoiding ambition gap  & ITMOs without ambition gap. & Trading between countries rather than firms, weakening enforcement. \\% hotair
+  (\textit{Status quo}) JETPs  & Cross-border financing of electricity decarbonization. & Limited scope; few grants; no effect on high emitting countries. \\
+  JETPs with more grants  & JETPs with North--South transfers. & Limited scope; no effect on high emitting countries. \\
+  JETPs with wider scope   & Potentially full country decarbonization. & No effect on high emitting countries. \\
+  % Partial linkage of carbon markets & Increases North--South climate finance. & Weakens climate ambition unless rules to avoid hot air. \\
+  Differentiated price floors  & Country-wide efficiency; ambition adapted to country circumstances. & Few North--South transfer; no gains from trade. \\
+  % Uniform price on CBAM sectors  & Efficient decarbonization of manufacturing, settling the CBAM issue. & Limited scope; no North--South transfer. \\  
+  Diff. prices on CBAM sectors  & Decarbonization of manufacturing (efficient if uniform price). & Few North--South transfer (none if uniform price); limited scope. \\
+  Climate club; Refunding club  & Efficient decarbonization. & Few North--South transfer; trade sanctions may fail to incentivize recalcitrant countries and will hurt the club. \\
+  Carbon price incentive & Incentivizes decarbonization; respects sovereignty. & Weak enforcement capacity; wealthy countries may receive transfers. \\
+  Fossil-Free Union (FFU)  & Efficient decarbonization with North--South transfers. & Ambition and burden-sharing rigid to changing circumstances. \\
+  FFU + Sustainable Union (SU)  & Efficient decarbonization with large North--South transfers, spurring development. & Climate ambition rigid to changing circumstances; imperfect incentives for countries to implement complementary climate policies (as international transfers don't depend on the country's emissions). \\
+  Uniform price floor + SU  & Efficient decarbonization with large North--South transfers, spurring development.  & Climate ambition not guaranteed (price may be too low); imperfect incentives for countries to implement complementary climate policies. \\
+  Fossil non-proliferation treaty  & Decarbonization. & Relies on the (unlikely) participation of fossil-fuel producing countries; would increase oil rents and hurt consumers, especially low-income ones; lacks efficiency. \\
+  Producer carbon tax  & Efficient decarbonization. & Relies on the (unlikely) participation of fossil-fuel producing countries; would increase oil rents and hurt consumers, especially low-income ones. \\
+  Expansion of climate finance  & Lower interest rates in LMICs, spurring sustainable development. & Does not cap emissions. \\
+  Standards and bans  & Decarbonizes one sector. %Aligns one sector towards decarbonization. 
+  & Limited scope; no North--South transfer. \\
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+% TODO! check grades. 
+\begin{table}
+  \caption{Comparison summary of possible international policies.\label{tab:comparison}}
+  \makebox[\textwidth][c]{
+\begin{tabular}[t]{lccccccccc}
+  \toprule
+  International policy & Emission & Least & \multicolumn{2}{c}{Fair} & \multicolumn{4}{c}{Acceptable by} & Flexible \\
+  & \makecell{reductions\\} & \makecell{cost\\} & \makecell{Rich\\pay} & \makecell{Poor\\gain} & LICs & MICs & HICs & \makecell{Oil\\countries} &  \\
+  \midrule 
+  (\textit{Status quo}) Unregulated ITMOs & 0 & + & 0 & 0 & +++ & +++ & +++ & +++ & +++ \\   
+  Partial linkage of carbon markets & 0 & + & 0 & 0 & +++ & +++ & +++ & +++ & +++ \\
+  ITMOs + country-level integrity  & + & + & + & + & + & + & ++ & ++ & +++ \\      
+  ITMOs avoiding ambition gap  & +++ & +++ & ++ & ++ & +++ & ++ & + & \texttt{--} & - \\   % Very similar to FFU but trading between countries rather than firms % hotair
+  (\textit{Status quo}) JETPs  & + & 0 & 0 & + & +++ & +++ & +++ & +++ & +++ \\   
+  JETPs with more grants  & + & 0 & ++ & ++ & +++ & ++ & + & \texttt{--} & +++ \\   
+  JETPs covering broad policy   & ++ & + & ++ & ++ & +++ & ++ & + & \texttt{--} & +++ \\   
+  Differentiated price floors  & + & + & 0 & - & - & + & +++ & - & + \\    
+  Uniform price on CBAM sectors  & ++ & ++ & 0 & \texttt{--} & - & + & +++ & \texttt{--} & + \\  
+  Diff. prices on CBAM sectors  & + & + & + & - & 0 & ++ & ++ & \texttt{--} & +\\   
+  Climate club; Refunding club  & +++ & +++ & 0 & - & + & + & +++ & \texttt{---} & + \\   
+  Carbon price incentive & ++ & ++ & + & + & ++ & + & + & -- & ++ \\
+  Fossil-Free Union (FFU)  & ++++ & +++ & ++ & ++ & +++ & ++ & + & \texttt{--} & \texttt{--} \\   
+  FFU + Sustainable Union (SU)  & ++++ & +++ & +++ & +++ & +++ & ++ & 0 & \texttt{---} & \texttt{--} \\   
+  Uniform price floor + SU  & ++ & ++ & +++ & +++ & +++ & +++ & 0 & \texttt{--} & + \\   
+  Fossil non-proliferation treaty  & + & - & - & - & - & - & - & - & + \\   
+  Producer carbon tax  & ++ & ++ & \texttt{--} & \texttt{---} & \texttt{---} & \texttt{--} & - & - & + \\   
+  Expansion of climate finance  & ++ & + & + & + & +++ & +++ & ++ & + & +++ \\   
+  Standards and bans  & ++ & 0 & 0 & 0 & + & + & ++ & + & 0 \\   
+  \bottomrule\\[-0.81em]
+\end{tabular}}
+\end{table}
+
+% \clearpage
+% \listoftables
+% \listoffigures
+
+
+% \clearpage
+% \section{Appendix}
+
+
+% \subsection{Additional tables}
+% \input{../tables/income.tex}
+
+
+\end{document}
