@@ -1052,7 +1052,7 @@ $u_i(c_i;E^*)=u_i(t_i,p_i)$.
 \subsubsection*{Equivalent variation from the benchmark in the absence of
 transfers}\label{equivalent-variation-from-the-benchmark-in-the-absence-of-transfers}
 
-To analyze an arbitrary situation $s$, it will be useful to relate it to two special cases. First, the coordinated situation $c*=(0,p^*)$ without transfer and with a uniform carbon price, which we take as a benchmark. Second, the autarchy situation $a=(0, p_i)$, without transfer and with differentiated prices, which will be a useful intermediary to analyze an arbitrary situation. We denote $V_i(p_i)$ the equivalent variation between situation $a$ and $c*$, i.e.~the transfer required at $c*$ to get $a$'s welfare: 
+To analyze an arbitrary situation $s$, it will be useful to relate it to two special cases. First, the coordinated situation $c*=(0,p^*)$ without transfer and with a uniform carbon price, which we take as a benchmark. Second, the autarky situation $a=(0, p_i)$, without transfer and with differentiated prices, which will be a useful intermediary to analyze an arbitrary situation. We denote $V_i(p_i)$ the equivalent variation between situation $a$ and $c*$, i.e.~the transfer required at $c*$ to get $a$'s welfare: 
 $$\begin{aligned}
 u_i(V_i(p_i), p^*)&=u^a_i=u_i(0, p_i) \\
 c^{c*}_i + V_i(p_i) &= c^a_i \\
@@ -1109,17 +1109,17 @@ Imagine that countries establish a uniform carbon price $p^*$, for example throu
 
 In the static case, \textbf{there is a correspondence between emission
 rights $r_i$ in a cap-and-trade and welfare-equivalent differentiated prices $p_i$ in
-autarchy (without transfers)}: $$\begin{aligned}
+autarky (without transfers)}: $$\begin{aligned}
 g^a_i &= V_i(p_i) = a^*_i - a_i \sim (e_i - e^*_i) p^* \sim (p^* - p_i) e^*_i  \varepsilon^* \\
 g^*_i &= t^*_i = (r_i - e^*_i) p^* \\
 g^*_i = g^a_i &\Leftrightarrow t^*_i = a^*_i - a_i \\
 &\Leftrightarrow (r_i - e^*_i) p^* \sim (p^* - p_i) e^*_i  \varepsilon^*
 \end{aligned}$$
 
-The left-hand side is the cap-and-trade equivalent transfer, which corresponds to the net monetary transfer received in the uniform cap-and-trade. This transfer is equal to the extra abatement cost incurred by going from autarchy to the cap-and-trade without transfer. The (first-order) equivalence relation states that the transfer is negatively related to the difference between the autarchy price and the global cap-and-trade price. The coefficient of this linear relation is the emissions times their price elasticity: the higher the emissions and the more they are sensitive to the carbon price, the larger the effect of the autarchy carbon price on the cap-and-trade equivalent transfer.
-%The coefficient of this linear relation is the marginal abatement cost: the costlier abatement is, the larger the effect of the autarchy carbon price on the cap-and-trade equivalent transfer. % TODO? explain that e^*_i  \varepsilon^* = \partial a^_i / \partial p ?
+The left-hand side is the cap-and-trade equivalent transfer, which corresponds to the net monetary transfer received in the uniform cap-and-trade. This transfer is equal to the extra abatement cost incurred by going from autarky to the cap-and-trade without transfer. The (first-order) equivalence relation states that the transfer is negatively related to the difference between the autarky price and the global cap-and-trade price. The coefficient of this linear relation is the emissions times their price elasticity: the higher the emissions and the more they are sensitive to the carbon price, the larger the effect of the autarky carbon price on the cap-and-trade equivalent transfer.
+%The coefficient of this linear relation is the marginal abatement cost: the costlier abatement is, the larger the effect of the autarky carbon price on the cap-and-trade equivalent transfer. % TODO? explain that e^*_i  \varepsilon^* = \partial a^_i / \partial p ?
 
-One can easily isolate cap-and-trade emission rights or autarchy price in function of the other variables: $$\begin{aligned}
+One can easily isolate cap-and-trade emission rights or autarky price in function of the other variables: $$\begin{aligned}
 g^*_i = g^a_i &\Leftrightarrow r_i \sim e_i \sim (1 + (1 - \frac{p_i}{p^*}) \varepsilon^*) e_i^*  \\
 &\Leftrightarrow p_i \sim (1 + \frac{e^*_i - r_i}{e^*_i  \varepsilon^*}) p^*
 \end{aligned}$$
@@ -1134,7 +1134,7 @@ g^*_i = g^a_i &\Leftrightarrow r_i \sim e_i \sim (1 + (1 - \frac{p_i}{p^*}) \var
 \subsubsection*{Efficiency of a uniform price} \label{efficiency-of-a-uniform-price}
 
 When there is undue inequality between countries, differentiated carbon prices can help improve the world's welfare, as reduced abatement in low-income countries act as a subsitute for transfers. However, the Diamond-Mirrlees production efficiency theorem states that, in absence of other imperfections (such as market power or imperfect capital markets), direct transfers are always preferable to differentiated prices to address inequality.\citep{diamond_optimal_1971} In our setting, this theorem means that carbon trading is always beneficial.  
-More precisely, for any country $i$, compared to the autarchy situation $(0,p_i)$, welfare is at least as high in the situation with uniform price where rights correspond to the autarchy emissions: $(\widetilde{t_i}=(e_i - e^*_i)p^* ,p^*)$. 
+More precisely, for any country $i$, compared to the autarky situation $(0,p_i)$, welfare is at least as high in the situation with uniform price where rights correspond to the autarky emissions: $(\widetilde{t_i}=(e_i - e^*_i)p^* ,p^*)$. 
 % This result goes beyond the first-order equivalence between the two that we have just derived. It uses second-order terms, which correspond to efficiency gains from trade.
 
 % Equivalent price:
@@ -1156,13 +1156,13 @@ More precisely, for any country $i$, compared to the autarchy situation $(0,p_i)
 % For all $i$, let us define $\tilde{t_i} = a^*_i - a_i$. From the previous equation, we have $\sum_j \tilde{t_j} \nu_j \leq 0$. 
 This results stems from the convexity of abatement costs, which gives: $$a_i - a^*_i \geq (e_i - e^*) \frac{da^*_i}{de} = (e_i - e^*) (-p^*)$$ 
 %Note that $\partial a^*_i(p^*) = (\partial a^*_i / \partial e) (\partial e / \partial p) = - p^* \partial e / \partial p$ 
-The transfer obtained from trading, $\widetilde{t_i}$, is therefore greater than the transfer equivalent to autarchy, $t^*_i$. Indeed: $$\widetilde{t_i} = (e_i - e^*_i ) p^* \geq a^*_i - a_i = t^*_i$$
+The transfer obtained from trading, $\widetilde{t_i}$, is therefore greater than the transfer equivalent to autarky, $t^*_i$. Indeed: $$\widetilde{t_i} = (e_i - e^*_i ) p^* \geq a^*_i - a_i = t^*_i$$
 Rearranging the inequality and adding $y_i$, we can verify that the consumption is greater under trading: %as $t^*_i \geq a^*_i - a_i$, we have 
 $\widetilde{c_i} = y_i + \widetilde{t_i} - a^*_i \geq y_i - a_i = c^a_i$, which proves the efficiency of trading at a uniform price.
 
 %transfers $t_j \geq \tilde{t_j}$ such that $0 = \sum_j t_j \nu_j \geq \sum_j \tilde{t_j} \nu_j$. Now, for all $i$, as $t_i \geq \tilde{t_i} = a^*_i - a_i$, we have $c^{c*}_i = y_i + t_i - a^*_i \geq y_i - a_i = c^a_i$, which proves the efficiency of a uniform price.% \hfill $\blacksquare$
 
-%Finally, by convexity of abatement costs, $a_i - a^*_i \geq (p_i - p^*) \partial a^*_i(p^*)$. The cap-and-trade right $r_i$ equivalent to the autarchy price $p_i$ therefore lower than the transfer $t_i$ chosen in the above proof. To see this, let us plug $r_i$ into the transfer received under cap-and-trade: $$t^*_i = (r_i - e^*_i) p^* = (p^* - p_i) \partial a^*_i(p^*) \geq a^*_i - a_i = \tilde{t_i}$$
+%Finally, by convexity of abatement costs, $a_i - a^*_i \geq (p_i - p^*) \partial a^*_i(p^*)$. The cap-and-trade right $r_i$ equivalent to the autarky price $p_i$ therefore lower than the transfer $t_i$ chosen in the above proof. To see this, let us plug $r_i$ into the transfer received under cap-and-trade: $$t^*_i = (r_i - e^*_i) p^* = (p^* - p_i) \partial a^*_i(p^*) \geq a^*_i - a_i = \tilde{t_i}$$
 
 
 % \subsubsection*{Using the status quo as
@@ -1254,7 +1254,7 @@ prices and
 rights}\label{a-more-limited-correspondence-between-differentiated-prices-and-rights}
 
 As in the static case, let us look for a correspondence between an
-autarchy situation $A$ with differentiated prices and a cap-and-trade
+autarky situation $A$ with differentiated prices and a cap-and-trade
 system $U$ with uniform price. In the general case,
 $A=(0, (p_{it})_t)$, while
 $U=((r_{it}p^*_t-e^*_{it}p^*_t)_t, (p^*_t)_t)$ is indirectly
@@ -1283,7 +1283,7 @@ carbon budget and its intertemporal welfare, as the price trajectory
 matters}.
 
 Let us study whether we can find a correspondence in simpler cases. For
-the autarchy situation $A$, consider a homothetic carbon price
+the autarky situation $A$, consider a homothetic carbon price
 vis-à-vis the world average: $p_{it}=\pi_i p_t$. For the cap-and-trade
 situation $U$, consider that $i$ is granted a fixed share of the
 world's carbon budget: $r_{it}=r_ir_t$. Now, the equivalence between
@@ -1293,7 +1293,7 @@ $$\begin{aligned}
 G^U_i = G^A_i &\Leftrightarrow r_i \sum_t r_{t} \beta_t p^*_t - \sum_t e^*_{it} p^*_t \beta_t \sim \sum_t (p^*_t - \pi_i p_t) e^*_{it}  \varepsilon^*_t \beta_t  
 \end{aligned}$$
 
-Provided that the price trajectories in autarchy are homothetic to the
+Provided that the price trajectories in autarky are homothetic to the
 price trajectory in the cap-and-trade (without loss of generality):
 $p_{it}=\pi_i p^*_t$; the equivalence simplifies further:
 

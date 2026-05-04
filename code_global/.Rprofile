@@ -1,4 +1,4 @@
-library(utils)
+# library(utils) # causes a bug with new RStudio
 chooseCRANmirror(ind = 1)
 .libPaths(c("C:/Users/fabre/AppData/Local/R/win-library/4.4", "C:/Program Files/R/R-4.4.3/library", "C:/Program Files/R/R-4.3.1/library", "C:/Users/fabre/AppData/Local/R/win-library/4.3"))
 
