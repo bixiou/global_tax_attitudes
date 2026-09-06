@@ -169,7 +169,7 @@ compute_gain_given_parties <- function(parties = df$code, df = sm, return = "df"
   max_gain_as_fraction <- max_gain
   if ("Dem USA" %in% parties & !"USA" %in% parties) parties <- c(parties, "USA")
   basic_income <- basic_income_adj <- c()
-  if (!any(df[[paste0("large_footprint_", start)]] * (df[[paste0("optout_right_", y)]] < 1) * (df$code %in% parties))) warning("/!\\ Error: All countries opt out, there is no international transfer.")
+  if (!any(df[[paste0("large_footprint_", start)]] * (df[[paste0("optout_right_", start)]] < 1) * (df$code %in% parties))) warning("/!\\ Error: All countries opt out, there is no international transfer.")
   for (y in start:end) { 
     if (max_gain_as_fraction < 1) max_gain <- max_gain_as_fraction*df[[paste0("gdp_pb_", y)]]
     else max_gain <- rep(max_gain_as_fraction, nrow(df))
@@ -272,7 +272,7 @@ create_var_ssp <- function(ssp = NULL, df = sm, CC_convergence = 2040, discount 
     df[[paste0("gain_pa_", y)]] <- df[[paste0("gain_pb_", y)]] * df[[paste0(beneficiary, y)]]/df[[paste0("adult_", y)]] 
     df[[paste0("gain_over_gdp_", y)]] <- df[[paste0("gain_pb_", y)]]/df[[paste0("gdp_pb_", y)]]    
     # Adjusted for opt out
-    df[[paste0("optout_right_", y)]] <- (full_part_threshold - pmax(opt_out_threshold, pmin(full_part_threshold, df[[paste0("gdp_pc_", y)]] / wtd.mean(df[[paste0("gdp_pc_", y)]], df[[paste0("pop_", y)]]))))/(full_part_threshold - opt_out_threshold)
+    df[[paste0("optout_right_", y)]] <- if (full_part_threshold == opt_out_threshold) FALSE else (full_part_threshold - pmax(opt_out_threshold, pmin(full_part_threshold, df[[paste0("gdp_pc_", y)]] / wtd.mean(df[[paste0("gdp_pc_", y)]], df[[paste0("pop_", y)]]))))/(full_part_threshold - opt_out_threshold)
     # Accounts for non-universal participation
     average_revenues[[ssp_name]][yr] <- wtd.mean(df[[paste0("revenues_pb_", y)]], df[[paste0(beneficiary, y)]])
     df[[paste0("large_footprint_", y)]] <- (df[[paste0("revenues_pb_", y)]] > average_revenues[[ssp_name]][yr])
